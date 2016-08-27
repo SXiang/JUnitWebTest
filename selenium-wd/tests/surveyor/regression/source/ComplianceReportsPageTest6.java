@@ -26,6 +26,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
@@ -73,6 +74,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageLocationPageAction = new ManageLocationPageActions(driver, getBaseURL(), getTestSetup());
 		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
@@ -692,10 +694,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedAscByColumn(LISAIndicationTableColumns.LISANum.toString(), getReportRowID(reportDataRowID1)));
 	}
  
 	/**

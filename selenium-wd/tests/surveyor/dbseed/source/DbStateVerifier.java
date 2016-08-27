@@ -40,14 +40,20 @@ public class DbStateVerifier {
 		User sqacussu = User.getUser(SQACUSSU);
 		User sqacusua = User.getUser(SQACUSUA);
 		User sqapgedr = User.getUser(SQAPGEDR);
+		User sqapgeua = User.getUser(SQAPGEUA);
+		User sqapgesu = User.getUser(SQAPGESU);
 		User sqapicad = User.getUser(SQAPICAD);
 		User sqapicdr = User.getUser(SQAPICDR);
 		User sqapicsu = User.getUser(SQAPICSU);
+		User sqapicsu1 = User.getUser(SQAPICSU1);
 		User sqapicsup = User.getUser(SQAPICSUP);
 		User sqapicua = User.getUser(SQAPICUA);
+		User driver1pic = User.getUser(DRIVER1PIC);
+		User picDr = User.getUser(PICDR);
 
-		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null
-				|| sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsup == null || sqapicua == null) {
+		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null || sqapgeua == null
+				|| sqapgesu == null || sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null 
+				|| sqapicua == null || driver1pic == null || picDr == null) {
 			return false;
 		}
 
@@ -76,13 +82,16 @@ public class DbStateVerifier {
 		Analyzer fdds2038 = Analyzer.getAnalyzerBySerialNumber(SQAPICLOC4SURANA);
 		Analyzer fdds2037_2 = Analyzer.getAnalyzerBySerialNumber(SQACUSLOCANZ2);
 		Analyzer feds2015 = Analyzer.getAnalyzerBySerialNumber(FEDS2015ANZ);
+		Analyzer feds2050 = Analyzer.getAnalyzerBySerialNumber(FEDS2050ANZ);
+		Analyzer feds2055 = Analyzer.getAnalyzerBySerialNumber(FEDS2055ANZ);
+		Analyzer rfads2004 = Analyzer.getAnalyzerBySerialNumber(RFADS2004ANZ);
 		Analyzer fdds2037_1 = Analyzer.getAnalyzerBySerialNumber(SQACUSLOCANZ1);
 		Analyzer simautoAnalyzer1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER1);
 		Analyzer simautoAnalyzer2 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER2);
 		Analyzer simautoAnalyzer3 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER3);
 
-		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || fdds2037_1 == null
-				|| simautoAnalyzer1 == null || simautoAnalyzer2 == null || simautoAnalyzer3 == null) {
+		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null 
+				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null || simautoAnalyzer3 == null) {
 			return false;
 		}
 
@@ -90,6 +99,10 @@ public class DbStateVerifier {
 		SurveyorUnit softwarecar_2037_picarro = SurveyorUnit.getSurveyorUnit(SURVEYOR_SOFTWARECAR2037PIC);
 		SurveyorUnit softwarecar_2037_cust = SurveyorUnit.getSurveyorUnit(SURVEYOR_SOFTWARECAR2037CUST);
 		SurveyorUnit pgefeds2015 = SurveyorUnit.getSurveyorUnit(SURVEYOR_PGEFEDS2015);
+		SurveyorUnit silverNissanRogue = SurveyorUnit.getSurveyorUnit(SURVEYOR_SILVERNISSANROGUE);
+		SurveyorUnit picProd10 = SurveyorUnit.getSurveyorUnit(SURVEYOR_PICPROD10);
+		SurveyorUnit lightBlueEsc = SurveyorUnit.getSurveyorUnit(SURVEYOR_LIGHTBLUEESC);
+		SurveyorUnit blackDodge3300 = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKDODGE3300);		
 		SurveyorUnit softwarecar_2037_testcust = SurveyorUnit.getSurveyorUnit(SURVEYOR_SOFTWARECAR2037TESTCUST);
 		SurveyorUnit softwareCar = SurveyorUnit.getSurveyorUnit(SQAPICLOC4SUR);
 		SurveyorUnit simautoSurveyor1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR1);
@@ -97,7 +110,8 @@ public class DbStateVerifier {
 		SurveyorUnit simautoSurveyor3 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR3);
 		SurveyorUnit whiteDodge = SurveyorUnit.getSurveyorUnit(SQACUSLOCSUR);
 
-		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null
+		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null 
+				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null 
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
 				|| simautoSurveyor2 == null || simautoSurveyor3 == null || whiteDodge == null) {
 			return false;
@@ -123,8 +137,11 @@ public class DbStateVerifier {
 			// check assets count.
 			long count = 0;
 			String tableName = AssetDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info("Checking Asset seed data ...");
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
@@ -139,8 +156,11 @@ public class DbStateVerifier {
 			// check boundaries count.
 			count = 0;
 			tableName = BoundaryDbSeedBuilder.TABLE_NAME;
+			selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info("Checking Boundary seed data ...");
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
@@ -159,6 +179,84 @@ public class DbStateVerifier {
 		return true;
 	}
 
+	/**
+	 * Verified if CustomerBoundaryType seed is present for the specified customer in database or not.
+	 * 
+	 * @param customerId
+	 *            - Customer Id
+	 * @param expectedCustomerBoundaryTypeCount
+	 *            - Expected rows for Customer Boundary Type for the specified customer.
+	 * @return - True/False. Whether CustomerBoundaryType seed is present in database.
+	 */
+	public boolean isGISCustomerBoundaryTypeSeedPresent(String customerId, Integer expectedCustomerBoundaryTypeCount) {
+		Log.method("DbStateVerifier.isGISCustomerBoundarySeedPresent", customerId, expectedCustomerBoundaryTypeCount);
+		// check if GIS CustomerBoundarySeedPresent seed data is already present in the database.
+		try (Statement stmt = connection.createStatement()) {
+			// check CustomerBoundaryType count.
+			long count = 0;
+			String tableName = CustomerBoundaryTypeDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt
+					.executeQuery(selectQuery)) {
+				rsRowCount.next();
+				count = rsRowCount.getInt(1);
+				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
+						count));
+				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
+						expectedCustomerBoundaryTypeCount, count));
+				if (expectedCustomerBoundaryTypeCount > count) {
+					Log.info("isGISCustomerBoundaryTypeSeedPresent = FALSE");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			Log.error(String.format("EXCEPTION in isGISCustomerBoundaryTypeSeedPresent(). ERROR Message: %s",
+					ExceptionUtility.getStackTraceString(e)));
+		}
+
+		return true;
+	}
+	
+	/**
+	 * Verified if CustomerMaterialType seed is present for the specified customer in database or not.
+	 * 
+	 * @param customerId
+	 *            - Customer Id
+	 * @param expectedCustomerMaterialTypeCount
+	 *            - Expected rows for Customer Material Type for the specified customer.
+	 * @return - True/False. Whether CustomerMaterialType seed is present in database.
+	 */
+	public boolean isGISCustomerMaterialTypeSeedPresent(String customerId, Integer expectedCustomerMaterialTypeCount) {
+		Log.method("DbStateVerifier.isGISCustomerBoundarySeedPresent", customerId, expectedCustomerMaterialTypeCount);
+		// check if GIS CustomerBoundarySeedPresent seed data is already present in the database.
+		try (Statement stmt = connection.createStatement()) {
+			// check CustomerMaterialType count.
+			long count = 0;
+			String tableName = CustomerMaterialTypeDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE CustomerId='%s';", tableName, customerId);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt
+					.executeQuery(selectQuery)) {
+				rsRowCount.next();
+				count = rsRowCount.getInt(1);
+				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId,
+						count));
+				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
+						expectedCustomerMaterialTypeCount, count));
+				if (expectedCustomerMaterialTypeCount > count) {
+					Log.info("isGISCustomerMaterialTypeSeedPresent = FALSE");
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			Log.error(String.format("EXCEPTION in isGISCustomerMaterialTypeSeedPresent(). ERROR Message: %s",
+					ExceptionUtility.getStackTraceString(e)));
+		}
+
+		return true;
+	}
+	
 	/**
 	 * Verified if Survey seed is present in database or not.
 	 * 
@@ -182,8 +280,10 @@ public class DbStateVerifier {
 			// check survey count.
 			long count = 0;
 			String tableName = SurveyDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE Id='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE Id='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Survey[Id=%s] = %d", tableName, surveyId, count));
@@ -226,8 +326,10 @@ public class DbStateVerifier {
 			// check surveyCondition count.
 			long count = 0;
 			String tableName = SurveyConditionDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for SurveyCondition[Id=%s] = %d", tableName, surveyId,
@@ -270,8 +372,10 @@ public class DbStateVerifier {
 			// check surveyResult count.
 			long count = 0;
 			String tableName = SurveyResultDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(
@@ -304,19 +408,25 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of Measurement rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether Measurement seed is present in database.
 	 */
 	public boolean isMeasurementSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minMeasurementCount) {
+			Integer minMeasurementCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isMeasurementSeedPresent", surveyId, minMeasurementCount);
 		// check if measurement seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
 			// check measurement count.
 			long count = 0;
 			String tableName = MeasurementDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
+			Log.info(String.format("Select query is: %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Measurement[Id=%s] = %d", tableName, surveyId, count));
@@ -348,19 +458,26 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of GPSRaw rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether GPSRaw seed is present in database.
 	 */
 	public boolean isGPSRawSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minGPSRawCount) {
+			Integer minGPSRawCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isGPSRawSeedPresent", surveyId, minGPSRawCount);
 		// check if gPSRaw seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
 			// check gPSRaw count.
 			long count = 0;
 			String tableName = GPSRawDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for GPSRaw[Id=%s] = %d", tableName, surveyId, count));
@@ -392,19 +509,26 @@ public class DbStateVerifier {
 	 *            - End Epoch
 	 * @param minNoteCount
 	 *            - Minimum number of AnemometerRaw rows in database.
+	 * @param checkForAnalyzerOnly
+	 *            - Specifies whether row count for only Analyzer needs to be checked and skip check for Start and End Epoch.
 	 * @return - True/False. Whether AnemometerRaw seed is present in database.
 	 */
 	public boolean isAnemometerRawSeedPresent(String surveyId, String analyzerId, String startEpoch, String endEpoch,
-			Integer minAnemometerRawCount) {
+			Integer minAnemometerRawCount, boolean checkForAnalyzerOnly) {
 		Log.method("DbStateVerifier.isAnemometerRawSeedPresent", surveyId, minAnemometerRawCount);
 		// check if anemometerRaw seed data is already present in the database.
 		try (Statement stmt = connection.createStatement()) {
 			// check anemometerRaw count.
 			long count = 0;
 			String tableName = AnemometerRawDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			if (checkForAnalyzerOnly) {
+				selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s';", tableName, analyzerId);
+			}
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for AnemometerRaw[Id=%s] = %d", tableName, surveyId,
@@ -447,9 +571,11 @@ public class DbStateVerifier {
 			// check captureEvent count.
 			long count = 0;
 			String tableName = CaptureEventDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(
@@ -492,9 +618,11 @@ public class DbStateVerifier {
 			// check fieldOfView count.
 			long count = 0;
 			String tableName = FieldOfViewDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for FieldOfView[Id=%s] = %d", tableName, surveyId, count));
@@ -536,9 +664,11 @@ public class DbStateVerifier {
 			// check peak count.
 			long count = 0;
 			String tableName = PeakDbSeedBuilder.TABLE_NAME;
-			try (ResultSet rsRowCount = stmt.executeQuery(String.format(
+			String selectQuery = String.format(
 					"SELECT COUNT(*) FROM %s WHERE SurveyId='%s' AND AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-					tableName, surveyId, analyzerId, startEpoch, endEpoch))) {
+					tableName, surveyId, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is : %s", selectQuery));
+			try (ResultSet rsRowCount = stmt.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Peak[Id=%s] = %d", tableName, surveyId, count));
@@ -580,8 +710,10 @@ public class DbStateVerifier {
 			// check segment count.
 			long count = 0;
 			String tableName = SegmentDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId);
+			Log.info(String.format("Select query is : %s", selectQuery));
 			try (ResultSet rsRowCount = stmt
-					.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE SurveyId='%s';", tableName, surveyId))) {
+					.executeQuery(selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Segment[Id=%s] = %d", tableName, surveyId, count));
@@ -623,9 +755,11 @@ public class DbStateVerifier {
 			// check note count.
 			long count = 0;
 			String tableName = NoteDbSeedBuilder.TABLE_NAME;
+			String selectQuery = String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
+					tableName, analyzerId, startEpoch, endEpoch);
+			Log.info(String.format("Select query is: %s", selectQuery));
 			try (ResultSet rsRowCount = stmt.executeQuery(
-					String.format("SELECT COUNT(*) FROM %s WHERE AnalyzerId='%s' AND EpochTime>=%s AND EpochTime<=%s;",
-							tableName, analyzerId, startEpoch, endEpoch))) {
+					selectQuery)) {
 				rsRowCount.next();
 				count = rsRowCount.getInt(1);
 				Log.info(String.format("%s table row count for Note[Id=%s] = %d", tableName, surveyId, count));

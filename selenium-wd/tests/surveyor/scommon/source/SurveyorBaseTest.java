@@ -123,6 +123,7 @@ public class SurveyorBaseTest {
 	}
 	
 	public static void reportTestFailed(Throwable e) {
+		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 	}
 

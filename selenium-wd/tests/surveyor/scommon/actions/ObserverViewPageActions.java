@@ -111,7 +111,6 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnStatusButton")) { return this.clickOnStatusButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
-		else if (actionName.equals("hideCurtainView")) { return this.hideCurtainView(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
@@ -296,6 +295,6 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	}
 
 	public ObserverViewPage getObserverViewPage() {
-		return (ObserverViewPage)this.pageObject;
+		return (ObserverViewPage)this.getPageObject();
 	}
 }

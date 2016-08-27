@@ -41,8 +41,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
-
-	private static ComplianceReportsPage complianceReportsPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 	@BeforeClass
@@ -80,6 +78,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
 		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
@@ -120,6 +119,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
 	 * Test Description: Generate report and try to delete the survey used while generating the report
 	 * Script: -  	
@@ -164,6 +164,8 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	}	
 
 	/**
+=======
+>>>>>>> master
 	 * Test Case ID: TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens
 	 * Test Description: S1 report and survey mode should not be present on New and Copy Compliance report screens
 	 * Script: -  	

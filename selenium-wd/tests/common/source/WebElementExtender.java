@@ -29,18 +29,26 @@ import org.openqa.selenium.NoSuchElementException;
 public class WebElementExtender {
 
 	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
+		Log.method("WebElementExtender.executeScript", element, driver, jsScript);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript(jsScript, element);
 	}
 
-   public static boolean isAttributePresent(WebElement element, String attributeName)
-   {
+	public static void printAllElementAttributes(WebElement element, WebDriver driver) {
+		Log.method("WebElementExtender.printAllElementAttributes", element, driver);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Object output = js.executeScript("var items={}; for(index=0;index<arguments[0].attributes.length;++index){items[arguments[0].attributes[index].name]=arguments[0].attributes[index].value};return items;", element);
+		Log.info(output.toString());
+	}
+	
+	public static boolean isAttributePresent(WebElement element, String attributeName)
+	{
 	   try {
 	       String attrValue = element.getAttribute(attributeName);
 	       return (attrValue != null);
 	   } catch (Exception e) {}
 	   return false;
-   }
+	}
 
    /**
     * Use this method for elements detected using PageFactory and you want to confirm 

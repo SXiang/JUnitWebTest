@@ -26,8 +26,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	// Use the Driver view data reader as the input could be read from DriverViewTestData.
 	private DriverViewDataReader dataReader = null;
 
-	private DateUtility dateUtility = new DateUtility();
-	
 	public SurveyViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new SurveyViewPage(driver, testSetup, strBaseURL));
@@ -179,7 +177,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
 		logAction("SurveyViewPageActions.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat", data, dataRowID);
 		String startTimeText = getSurveyViewPage().getStartTimeLabelText().replace(SURVEY_INFO_START_TIME_PREFIX, "");
-		return dateUtility.isValidLongDateTimeFormat(startTimeText);
+		return DateUtility.isValidLongDateTimeFormat(startTimeText);
 	}
  
 	/**
@@ -191,7 +189,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(String data, Integer dataRowID) {
 		logAction("SurveyViewPageActions.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat", data, dataRowID);
 		String endTimeText = getSurveyViewPage().getEndTimeLabelText().replace(SURVEY_INFO_END_TIME_PREFIX, "");
-		return dateUtility.isValidLongDateTimeFormat(endTimeText);
+		return DateUtility.isValidLongDateTimeFormat(endTimeText);
 	}
  
 	/* Invoke action using specified ActionName */
@@ -214,7 +212,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("clickOnPicarroLogoButton")) { return this.clickOnPicarroLogoButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
-		else if (actionName.equals("hideCurtainView")) { return this.hideCurtainView(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
@@ -368,6 +365,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	}
 
 	public SurveyViewPage getSurveyViewPage() {
-		return (SurveyViewPage)this.pageObject;
+		return (SurveyViewPage)this.getPageObject();
 	}
 }

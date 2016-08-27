@@ -14,4 +14,9 @@ public class ReportJob {
 	public Long getProcessingCompletedTimeInMs() {
 		return Long.valueOf(ProcessingCompleted.replace("/Date(", "").replace(")/", ""));
 	}
+	
+	public String toString() {
+		return String.format("ReportJob=[ReportJobId=%s, ReportJobType=%s, ReportJobStatus=%s, ProcessingStarted=%s, ProcessingCompleted=%s]", 
+				ReportJobId, ReportJobType, ReportJobStatus, ProcessingStarted, ProcessingCompleted);
+	}
 }

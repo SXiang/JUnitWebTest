@@ -157,12 +157,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	public boolean hideCurtainView(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".hideCurtainView", data, dataRowID);
-		getBaseMapViewPageObject().hideCurtainMenu();
-		return true;
-	}
-
 	public boolean showCurtainView(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".showCurtainView", data, dataRowID);
 		getBaseMapViewPageObject().clickCurtainButton();
@@ -400,7 +394,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
 		String runtimeType = getRuntimeType();
 		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
-		if (!runtimeType.equals("ObserverViewPageActions")) {
+		if (!runtimeType.equals("ObserverViewPageActions") && !runtimeType.equals("SurveyViewPageActions")) {
 			turnOnEightHourHistory(data, dataRowID);
 		}
 		turnOnConcentrationChart(data, dataRowID);
@@ -432,6 +426,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, true);
 		return true;
 	}
+	public boolean turnOnPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnPossibleNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnNotNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnVehicleExhaust", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, true);
+		return true;
+	}
 	public boolean turnOnIsotopicAnalysis(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnIsotopicAnalysis", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, true);
@@ -455,7 +464,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
 		String runtimeType = getRuntimeType();
 		logAction(runtimeType + ".turnOffAllDisplayOptions", data, dataRowID);
-		if (!runtimeType.equals("ObserverViewPageActions")) {
+		if (!runtimeType.equals("ObserverViewPageActions") && !runtimeType.equals("SurveyViewPageActions")) {
 			turnOffEightHourHistory(data, dataRowID);
 		}
 		turnOffConcentrationChart(data, dataRowID);
@@ -469,6 +478,13 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 	public boolean turnOffEightHourHistory(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffEightHourHistory", data, dataRowID);
+		try {
+			// Intentional delay included in this action. 
+			// Observed Behavior: Not including a delay before this action intermittently causes some elements to not appear on the map.
+			new TestEnvironmentActions().idleForSeconds("2", NOTSET);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, false);
 		return true;
 	}
@@ -485,6 +501,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffIndications(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffIndications", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, false);
+		return true;
+	}
+	public boolean turnOffPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffPossibleNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffNotNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffVehicleExhaust", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, false);
 		return true;
 	}
 	public boolean turnOffIsotopicAnalysis(String data, Integer dataRowID) {
@@ -1239,7 +1270,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
  
 	public BaseMapViewPage getBaseMapViewPageObject() {
-		return (BaseMapViewPage)pageObject;
+		return (BaseMapViewPage)getPageObject();
 	}
 
 	protected String getRuntimeType() {

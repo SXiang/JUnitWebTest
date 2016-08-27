@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
-
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
@@ -21,7 +20,7 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 
 	public BasePerformanceTest() {
 	}
-
+	
 	@After
 	public void afterTestMethod() {
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
@@ -30,6 +29,8 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 	}
 
 	protected void generateReportJobBaselineRunExecutionCsv(String testCaseID) throws IOException {
+		Log.method("generateReportJobBaselineRunExecutionCsv", testCaseID);
+
 		Log.info(String.format("Generating baseline run execution csv for : [TestCase=%s]", testCaseID));
 
 		String rootFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data";

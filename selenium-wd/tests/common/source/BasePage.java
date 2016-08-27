@@ -105,6 +105,9 @@ public class BasePage {
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-server-log']/a")
 	private WebElement linkViewServerLogs;
 
+	@FindBy(how = How.CSS, using = "#datatable td.dataTables_empty")
+	private WebElement emptyDataTableMessage;
+	
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -115,11 +118,17 @@ public class BasePage {
 	}
 
 	public void open() {
-		Log.info("Get URL: '"+strPageURL+"'");
-		driver.get(strPageURL);
+		open(strPageURL);
 		this.waitForPageToLoad();
 	}
-
+	public void open(String path) {
+		String url = path;
+		if(url.startsWith("/")){
+			url = strBaseURL + url;
+		}
+		Log.info("Get URL: '"+url+"'");
+		driver.get(url);
+	}
 	public String getStrPageURL() {
 		return this.strPageURL;
 	}

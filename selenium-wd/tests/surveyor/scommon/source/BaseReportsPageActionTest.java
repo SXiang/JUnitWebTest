@@ -1,15 +1,7 @@
 package surveyor.scommon.source;
 
 import surveyor.scommon.actions.BaseActions;
-import java.util.HashMap;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.*;
-
-import common.source.ExceptionUtility;
-import common.source.Log;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.actions.LoginPageActions;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
@@ -43,44 +35,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		}
 	}
 
-	private static ReportTestRunMode testRunMode = ReportTestRunMode.FullTestRun; 	
-	
-	private HashMap<Integer, ComplianceReportsPageActions> newReportsMap = null;
-
 	private boolean cleanUpPerformed = false;
-	
+
 	public BaseReportsPageActionTest() {
 		super();
 	}
 
-	@After
-	public void afterTestMethod() {
-		if (!isCleanUpPerformed()) {
-			try {
-				getHomePage().logout();
-			} catch (Exception e) {
-				Log.warn("Exception in BaseReportsPageActionTest.afterTestMethod(). Exception message:");
-				Log.warn(ExceptionUtility.getStackTraceString(e));
-			}
-		}
-	}
-
-	protected void removeReportDataRowIDFromMap(Integer reportDataRowID) {
-		if (newReportsMap != null) {
-			if (newReportsMap.containsKey(reportDataRowID)) {
-				newReportsMap.remove(reportDataRowID);
-			}
-		}
-	}
-	
-	protected static ReportTestRunMode getTestRunMode() {
-		return testRunMode;
-	}
-
-	protected static void setTestRunMode(ReportTestRunMode testRunModeValue) {
-		testRunMode = testRunModeValue;
-	}
-	
 	//==============================================================================================================
 	// Set working data row and reports compliance row.
 	// This method is used for unit testing page actions.
@@ -92,14 +52,12 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	protected void createNewComplianceReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
-			storeNewReportDataRowID(reportDataRowID, complianceReportsPageAction);
 		}
 	}
 
 	protected void modifyComplianceReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
 			complianceReportsPageAction.modifyReport(EMPTY, reportDataRowID);
-			storeNewReportDataRowID(reportDataRowID, complianceReportsPageAction);
 		} else if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			// If running in unit test mode go back to manage reports page.
 			complianceReportsPageAction.open(EMPTY, NOTSET);
@@ -108,12 +66,10 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
 	protected void clickOnConfirmDeleteReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		complianceReportsPageAction.clickOnConfirmDeleteReport(EMPTY, reportDataRowID);
-		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
 	protected void deleteReport(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
 		complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
-		removeReportDataRowIDFromMap(reportDataRowID);
 	}
 
 	protected void waitForComplianceReportGenerationToComplete(ComplianceReportsPageActions complianceReportsPageAction, Integer reportDataRowID) throws Exception {
@@ -144,31 +100,10 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		return testDataRowID1_User1;
 	}
 
-	private void storeNewReportDataRowID(Integer reportDataRowID, ComplianceReportsPageActions complianceReportsPageAction) {
-		if (newReportsMap == null) {
-			newReportsMap = new HashMap<Integer, ComplianceReportsPageActions>();
-		}
-		if (!newReportsMap.containsKey(reportDataRowID)) {
-			newReportsMap.put(reportDataRowID, complianceReportsPageAction);
-		}
-	}
-
-	private void deleteComplianceReport() throws Exception {
-		if (getTestRunMode() == ReportTestRunMode.FullTestRun) {
-			if (newReportsMap != null) {
-				for (Integer reportDataRowID : newReportsMap.keySet()) {
-					ComplianceReportsPageActions complianceReportsPageAction = newReportsMap.get(reportDataRowID);
-					complianceReportsPageAction.open(EMPTY, reportDataRowID);
-					complianceReportsPageAction.searchAndDeleteReport(EMPTY, reportDataRowID);
-				}
-			}
-		}
-	}
-
 	public boolean isCleanUpPerformed() {
 		return cleanUpPerformed;
 	}
-
+	
 	public void setCleanUpPerformed(boolean cleanUpPerformed) {
 		this.cleanUpPerformed = cleanUpPerformed;
 	}

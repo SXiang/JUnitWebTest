@@ -86,7 +86,8 @@ public final class SurveyorConstants {
 	public static final String SQAPGEUA = "sqapgeua@email.com";
 	public static final String SQAPGESU = "sqapgesu@email.com";
 	public static final String SQAPGEDR = "sqapgedr1@email.com";
-	
+	public static final String DRIVER1PIC = "driver1@picarro.com";
+	public static final String PICDR = "picdr@picarro.com";
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
@@ -104,7 +105,11 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
 
 	public static final String FEDS2015ANZ = "FEDS2015";
+	public static final String FEDS2050ANZ = "FEDS2050";
+	public static final String FEDS2055ANZ = "FEDS2055";
 	
+	public static final String RFADS2004ANZ = "RFADS2004";
+
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
 	public static final String SQAETHLOC= "PGE-Santa Clara";
@@ -139,6 +144,9 @@ public final class SurveyorConstants {
 	public static final String TITLENAMEBASE = "sqacrpt";
 	public static final String TIMEZONE = "Pacific Standard Time";
 	public static final String EXCLUSIONRADIUS = "50";
+	public static final String EXCLUSIONRADIUS_0 = "0";
+	public static final String EXCLUSIONRADIUS_100 = "100";
+	public static final String EXCLUSIONRADIUS_150 = "150";
 	public static final String REPORTMODES1 = "S1";
 	public static final String REPORTMODES = "Standard";
 
@@ -322,6 +330,10 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_SOFTWARECAR2037CUST = "SoftwareCar_2037_cust";
 	public static final String SURVEYOR_SOFTWARECAR2037TESTCUST = "SoftwareCar_2037_Testcust";
 	public static final String SURVEYOR_PGEFEDS2015 = "PGE-FEDS2015";
+	public static final String SURVEYOR_SILVERNISSANROGUE = "Silver Nissan Rogue";
+	public static final String SURVEYOR_PICPROD10 = "Picarro Production #10";
+	public static final String SURVEYOR_LIGHTBLUEESC = "Light Blue Escape";
+	public static final String SURVEYOR_BLACKDODGE3300 = "BlackDodgeP3300";
 
 
 	/*
@@ -367,6 +379,7 @@ public final class SurveyorConstants {
 	public static final String RSUVMODEMANUAL = "Manual";
 	
 	public static final String SQACUSSULOC="Santa Clara";
+	public static final String PICARROLOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
 	
 	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
@@ -462,6 +475,7 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
+	
 	public static enum UserTimezone {
 		PACIFIC ("Pacific Standard Time"),
 		MOUNTAIN ("Mountain Standard Time"),
@@ -477,6 +491,44 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
+	
+	public enum Environment {
+		SQAAuto ("CI-SQAAuto", 1),
+		Staging ("CI-STG", 2),
+		P3Scale ("CI-P3Scale", 3);
+		
+		private final String name;
+		private final Integer index;
+
+		Environment(String nm) {
+			this(nm, -1);
+		}
+
+		Environment(String nm, Integer idx) {
+			name = nm;
+			index = idx;
+		}
+
+		public Integer getIndex() {
+			return index;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+		
+		public static Environment getEnvironment(String environmentName) {
+			Environment environment = Environment.P3Scale;
+			Environment[] values = Environment.values();
+			for (Environment env : values) {
+				if (env.toString().equals(environmentName)) {
+					environment = env;
+					break;
+				}
+			}
+			return environment;
+		}
+	}
 	
 	public static List<String> getCustomersWithAssets() {
 		return RegexUtility.split(CUSTOMERS_WITH_ASSETS, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);

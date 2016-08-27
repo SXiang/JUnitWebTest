@@ -300,6 +300,6 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	}
 	
 	public BaseDrivingViewPage getBaseDrivingViewPage() {
-		return (BaseDrivingViewPage)this.pageObject;
+		return (BaseDrivingViewPage)this.getPageObject();
 	}
 }

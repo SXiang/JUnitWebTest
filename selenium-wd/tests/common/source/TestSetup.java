@@ -19,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -57,6 +59,7 @@ import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.source.SurveyorConstants.Environment;
 
 /**
  * This is the initial class to setup up the testing environment and
@@ -73,6 +76,8 @@ public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
+	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
+	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
 	private static String testPropFileName;
 
@@ -123,7 +128,8 @@ public class TestSetup {
 
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
-	private boolean isRemoteBrowser;
+	private String testCleanUpMode;
+	public boolean isRemoteBrowser;
 	public static String reportDir = "reports/";
 	
 	private String downloadPath;
@@ -199,7 +205,6 @@ public class TestSetup {
 		extent.loadConfig(new File(configFilePath));
 		return extent;
 	}
-
 
 	/* NETWORK PROXY related methods */
 	/*
@@ -331,6 +336,9 @@ public class TestSetup {
 		return Integer.parseInt(this.slowdownInSeconds);
 	}
 
+	public int getTestCleanUpMode() {
+		return Integer.parseInt(this.testCleanUpMode);
+	}
 	public WebDriver getDriver() {
 		return WebDriverFactory.getDriver();
 	}
@@ -597,7 +605,7 @@ public class TestSetup {
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 			this.setPlatform(this.testProp.getProperty("platform"));
 			
-			this.automationReportingApiEndpoint = this.testProp.getProperty("automationReporting.ApiEndPoint");
+			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
 				this.automationReportingApiEnabled = Boolean.valueOf(automationReportingApiEnabledValue);
@@ -615,6 +623,7 @@ public class TestSetup {
 				this.debug = false;
 			}
 
+			this.testCleanUpMode = this.testProp.getProperty("testCleanUpMode");
 			this.slowdownInSeconds = this.testProp.getProperty("slowdownInSeconds");
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
@@ -923,6 +932,7 @@ public class TestSetup {
 		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
 			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 			try {
+				TestSetup.stopAnalyzerIfRunning();
 				TestSetup.setupSimulatorPreReqs();
 				TestSetup.startAnalyzer();
 			} catch (IOException e) {
@@ -1075,7 +1085,7 @@ public class TestSetup {
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
 			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, automationReportingApiEndpoint, htmlResultFilePath);
+					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1083,6 +1093,52 @@ public class TestSetup {
 		}
 	}
 
+	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
+			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime, LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 String buildNumber, String testCaseID, Environment environment) {
+		try {
+			String workingFolder = getRootPath();
+			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
+			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath + 
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
+							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
+							 reportJobTypeId, reportJobTypeName, 
+							 DateUtility.getLongDateString(reportJobStartTime), 
+							 DateUtility.getLongDateString(reportJobEndTime),
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate), 
+							 buildNumber, testCaseID, environment.getIndex());
+			Log.info("Posting report job perf stat. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	public void postAnalyzerApiPerfStat(String aPIName, String aPIUrl, int numberOfSamples,
+			 float average, float median, float responseTime90Pctl, float responseTime95Pctl, float responsetime99Pctl,
+			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate, 
+			 LocalDateTime testExecutionEndDate, String buildNumber, String testCaseID, Environment environment) {
+		try {
+			String workingFolder = getRootPath();
+			String analyzerApiCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String analyzerApiCmdFullPath = analyzerApiCmdFolder + File.separator + POST_ANALYZER_API_PERF_STAT_CMD;
+			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath + 
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\""
+							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
+							 aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, responsetime99Pctl,
+							 min, max, errorPercent, throughputPerSec, kBPerSec, 
+							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 DateUtility.getLongDateString(testExecutionEndDate),
+							 buildNumber, testCaseID, environment.getIndex());
+			Log.info("Posting analyzer api perf stat. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+	}
+	
 	public static void main(String[] args) {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -1256,13 +1312,6 @@ public class TestSetup {
 		return automationReportingApiEnabled;
 	}
 
-	public static String getWorkingAnalyzerSerialNumber() {
-		if (TestEnvironmentActions.workingDataRow != null) {
-			return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
-		}
-		return TEST_ANALYZER_SERIAL_NUMBER;
-	}
-
 	public String getSurveyUploadBaseUrl() {
 		return surveyUploadBaseUrl;
 	}
@@ -1395,5 +1444,14 @@ public class TestSetup {
 
 	public void setParallelBuildRequiredNodes(Integer parallelBuildRequiredNodes) {
 		this.parallelBuildRequiredNodes = parallelBuildRequiredNodes;
+	}
+
+
+	public String getAutomationReportingApiEndpoint() {
+		return automationReportingApiEndpoint;
+	}
+
+	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
+		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
 	}
 }

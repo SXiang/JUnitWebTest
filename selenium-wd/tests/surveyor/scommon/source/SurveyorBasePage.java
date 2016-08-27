@@ -28,11 +28,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import common.source.BasePage;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
@@ -250,10 +252,23 @@ public class SurveyorBasePage extends BasePage {
 	
 	public LoginPage logout() {
 		Log.method("logout");
-		openTopDropdownMenu();
-		Log.clickElementInfo("Log Out",ElementType.LINK);
-		this.linkLogOut.click();
+		return logout(false);
+	}
 
+	private LoginPage logout(boolean failOnError) {
+		Log.method("logout", failOnError);
+		try {
+			openTopDropdownMenu();
+			Log.clickElementInfo("Log Out",ElementType.LINK);
+			this.linkLogOut.click();
+		} catch (Exception e) {
+			if (failOnError) {
+				throw e;
+			} else {
+				Log.warn(String.format("Exception when calling logout : %s", ExceptionUtility.getStackTraceString(e)));
+			}
+		}
+		
 		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
 		PageFactory.initElements(driver, loginPage);
 		return loginPage;
@@ -265,8 +280,16 @@ public class SurveyorBasePage extends BasePage {
 		PageFactory.initElements(driver, loginPage);
 
 		loginPage.open();
-
 		loginPage.loginNormalAs(user, password);
+		
+		// Post login Code first will revert back the default location entry.
+		// This is a workaround to fix the Default location if lat/long is NULL.
+		Location location = Location.getLocation("Default");
+		if (location.getLatitude() < Float.MIN_VALUE + 1) {
+			location.setLatitude(37.4020925705503F);
+			location.setLongitude(-121.984820397399F);
+			location.updateLocation();
+		}
 	}
 
 	public void setPagination(String str) {
@@ -602,7 +625,7 @@ public class SurveyorBasePage extends BasePage {
 	
 	public void waitForNumberOfRecords(String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -624,14 +647,12 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
-		String dataTableFilterText = Resources.getResource(ResourceKeys.Constant_FilteredFromMaxTotalEntries);
-		Integer index = dataTableFilterText.indexOf("_MAX_");
-		String dataTableFilterTextPrefix = dataTableFilterText.substring(0, index-1);
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return (tableInfoElement.getText().contains(dataTableFilterTextPrefix));
+				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+				return (splitArgs.size()>0 && splitArgs.get(1)!="0");
 			}
 		});
 	}

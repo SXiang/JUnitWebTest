@@ -37,6 +37,18 @@ public class ActionBuilder {
 		return new ManageLocationPageActions(driver, baseURL, testSetup);
 	}
 
+	public static ManageAnalyzerPageActions createManageAnalyzerPageAction() {
+		return new ManageAnalyzerPageActions(driver, baseURL, testSetup);
+	}
+
+	public static ManageSurveyorPageActions createManageSurveyorPageAction() {
+		return new ManageSurveyorPageActions(driver, baseURL, testSetup);
+	}
+
+	public static ManageRefGasBottlesPageActions createManageRefGasBottlePageAction() {
+		return new ManageRefGasBottlesPageActions(driver, baseURL, testSetup);
+	}
+
 	public static ManageUsersPageActions createManageUsersPageAction() {
 		return new ManageUsersPageActions(driver, baseURL, testSetup);
 	}

@@ -31,13 +31,10 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static ComplianceReportsPage complianceReportsPage;
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  complianceReportsPage);
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
@@ -62,7 +59,8 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
   		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+  		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
 	/**
@@ -356,9 +354,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
-		PreCustomerValue = complianceReportsPage.getCustomerValue();
-		complianceReportsPage.selectCustomer(CUSNAMEBASE,false);
-		assertEquals(PreCustomerValue,complianceReportsPage.getCustomerValue());
+		PreCustomerValue = complianceReportsPageAction.getComplianceReportsPage().getCustomerValue();
+		complianceReportsPageAction.getComplianceReportsPage().selectCustomer(CUSNAMEBASE,false);
+		assertEquals(PreCustomerValue,complianceReportsPageAction.getComplianceReportsPage().getCustomerValue());
 	}
  
 	/**
@@ -382,9 +380,9 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnFirstCopyComplianceButton(EMPTY, getReportRowID(reportDataRowID1));
-		PreCustomerValue = complianceReportsPage.getCustomerValue();
-		complianceReportsPage.selectCustomer(CUSNAMEBASE,false);
-		assertEquals(PreCustomerValue,complianceReportsPage.getCustomerValue());
+		PreCustomerValue = complianceReportsPageAction.getComplianceReportsPage().getCustomerValue();
+		complianceReportsPageAction.getComplianceReportsPage().selectCustomer(CUSNAMEBASE,false);
+		assertEquals(PreCustomerValue,complianceReportsPageAction.getComplianceReportsPage().getCustomerValue());
 		
 	}
  

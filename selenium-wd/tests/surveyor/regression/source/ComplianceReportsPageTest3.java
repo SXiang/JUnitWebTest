@@ -28,14 +28,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static ComplianceReportsPage complianceReportsPage;
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  complianceReportsPage);
-
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 	}
@@ -60,6 +56,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 	
 	/**
@@ -162,17 +159,17 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		
 		//Add 1 survey
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
         complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
 		//Add 2 surveys, same tag
         complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
 		//Add 2 surveys, different tags
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertFalse(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 
 		
 	}
@@ -210,25 +207,25 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		
 		//Add no survey
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPage.deleteAllDrivingSurveys();
-        complianceReportsPage.clickOnOKButton();
-		assertTrue(complianceReportsPage.verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));		
+        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
+        complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));		
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));		
 		
 		//Add 2 surveys, same tag
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPage.deleteAllDrivingSurveys();
+        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		
 		//Add 2 surveys, different tags
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
-        complianceReportsPage.deleteAllDrivingSurveys();
+        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertFalse(complianceReportsPage.verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 
 	}
  
@@ -761,8 +758,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 
-		complianceReportsPage.minimizeBrowserWindow();
-		complianceReportsPage.maxmizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().minimizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().maxmizeBrowserWindow();
 		
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -815,8 +812,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("2", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("3", getReportRowID(reportDataRowID1));
 		
-		complianceReportsPage.minimizeBrowserWindow();
-		complianceReportsPage.maxmizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().minimizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().maxmizeBrowserWindow();
 		
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -865,8 +862,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyViewThumbnailIsShownInComplianceViewerByViewIndex("1", getReportRowID(reportDataRowID1));
 
-		complianceReportsPage.minimizeBrowserWindow();
-		complianceReportsPage.maxmizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().minimizeBrowserWindow();
+		complianceReportsPageAction.getComplianceReportsPage().maxmizeBrowserWindow();
 		
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyPDFZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));

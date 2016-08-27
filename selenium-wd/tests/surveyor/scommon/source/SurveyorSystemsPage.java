@@ -8,6 +8,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,6 +30,15 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Surveyors) + " - " + Resources.getResource(ResourceKeys.Constant_Surveyors);
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Constant_Surveyors);
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	protected WebElement txtSurveyorSearch;
+    
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+   	protected List<WebElement> tableRows;
+
+    @FindBy(how = How.XPATH, using = "//*[@id='datatable']")
+   	protected WebElement surveyorsTable;
+    
 	public enum SurveyorStatusType {
 		Online,
 		Offline
@@ -120,7 +131,26 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 		return false;
 	}
 
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
 
+	public WebElement getSurveyorsTable() {
+		return surveyorsTable;
+	}
+
+    public WebElement getTxtSurveyorSearch() {
+		return txtSurveyorSearch;
+	}
+
+	public void waitForDataTabletoLoad() {
+        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return getSurveyorsTable().isDisplayed();
+            }
+        });
+    }
+	
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

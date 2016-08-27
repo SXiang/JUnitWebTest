@@ -18,10 +18,10 @@ public class BaseReportsPageActions extends BasePageActions {
 	}
 
 	public ReportsBasePage getReportsBasePageObject() {
-		return (ReportsBasePage) pageObject;
+		return (ReportsBasePage) getPageObject();
 	}
 
 	public void setPageObject(ReportsBasePage reportsBasePage) {
-		this.pageObject = reportsBasePage;
+		this.pageObject.set(reportsBasePage);
 	}
 }

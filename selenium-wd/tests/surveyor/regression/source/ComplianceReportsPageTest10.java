@@ -21,6 +21,7 @@ import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 
@@ -72,6 +73,8 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		manageLocationPageAction = new ManageLocationPageActions(driver, getBaseURL(), getTestSetup());
 		surveyViewPageAction = new SurveyViewPageActions(driver, getBaseURL(), getTestSetup());
 		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 

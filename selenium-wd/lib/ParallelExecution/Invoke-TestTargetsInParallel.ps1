@@ -17,11 +17,13 @@
 #--------- MODIFY THIS BEFORE RUNNING SCRIPT -------#
 # Ant Test Targets
 $targetsToRun = 
- "testsanity",
- "testsurveyview"
+ "performancetestsLight",
+ "performancetestsMedium",
+ "performancetestsHigh",
+ "performancetestsUltraHigh"
 #---------------------------------------------------#
 
- . C:\Repositories\surveyor-qa-parallel-with-grid-prototype\selenium-wd\lib\ParallelExecution\Invoke-Parallel.ps1
+ . C:\Repositories\surveyor-qa\selenium-wd\lib\ParallelExecution\Invoke-Parallel.ps1
  
 $jobs = New-Object System.Collections.ArrayList
  
@@ -40,7 +42,7 @@ Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 18000 -ScriptBlock {
 	$guid = [guid]::NewGuid().toString()
 	$guid = $guid.replace("-", "")
 
-    $buildSrcDir = "C:\Repositories\surveyor-qa-parallel-with-grid-prototype\selenium-wd"
+    $buildSrcDir = "C:\Repositories\surveyor-qa\selenium-wd"
     $buildRoot = "C:\Build\work"
 
 	$buildWork = "$buildRoot\$guid"
@@ -56,7 +58,7 @@ Invoke-Parallel -InputObject $targetsToRun -runspaceTimeout 18000 -ScriptBlock {
 	SET ANT_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
 	
 	# add firewall rule to chromedriver.
-	. C:\Repositories\surveyor-qa-parallel-with-grid-prototype\selenium-wd\lib\ParallelExecution\Add-FirewallRule.ps1
+	. C:\Repositories\surveyor-qa\selenium-wd\lib\ParallelExecution\Add-FirewallRule.ps1
 	$chromeDriverPath = "$buildWork\selenium-wd\lib\chromedriver.exe"
 	Write-Host "Adding firewall rule for - '$chromeDriverPath'"
 	Add-FirewallRule "ChromeDriver-ParallelTest" "1000-59000" "$chromeDriverPath" $null

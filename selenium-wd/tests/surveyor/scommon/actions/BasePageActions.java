@@ -15,10 +15,10 @@ public class BasePageActions extends BaseActions {
 	protected static final String DEFAULT_DATE_FORMAT = "MM/dd/yyyy HH:mm:ss a";
 
 	private static final String FN_SORT_RECORDS_BY = "sortRecordsBy";
-	private WebDriver driver = null;
 	private String baseURL = null;
 	
-	protected SurveyorBasePage pageObject;
+	private ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+	protected ThreadLocal<SurveyorBasePage> pageObject = new ThreadLocal<SurveyorBasePage>();
 	
 	public BasePageActions(WebDriver driver, String baseURL) {
 		super();
@@ -32,11 +32,11 @@ public class BasePageActions extends BaseActions {
 	}
 
 	public SurveyorBasePage getPageObject() {
-		return pageObject;
+		return pageObject.get();
 	}
 
 	public void setPageObject(SurveyorBasePage basePage) {
-		this.pageObject = basePage;
+		this.pageObject.set(basePage);
 	}
 
 	public String getBaseURL() {
@@ -48,11 +48,11 @@ public class BasePageActions extends BaseActions {
 	}
 
 	protected WebDriver getDriver() {
-		return driver;
+		return driver.get();
 	}
 
 	protected void setDriver(WebDriver driver) {
-		this.driver = driver;
+		this.driver.set(driver);
 	}
 
 	protected void clickElement(WebElement element) {
@@ -62,12 +62,12 @@ public class BasePageActions extends BaseActions {
 	}
 
 	protected WebElement getElementById(String elementID) {
-		WebElement element = driver.findElement(By.id(elementID));
+		WebElement element = getDriver().findElement(By.id(elementID));
 		return element;
 	}
 
 	protected WebElement getElementByXPath(String elementXPath) {
-		WebElement element = driver.findElement(By.xpath(elementXPath));
+		WebElement element = getDriver().findElement(By.xpath(elementXPath));
 		return element;
 	}
 
