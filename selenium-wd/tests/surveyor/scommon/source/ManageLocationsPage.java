@@ -45,7 +45,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageLocations_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageLocation_NewLocation);
 	public static final String STREditPageContentText = Resources.getResource(ResourceKeys.ManageLocation_EditLocation);
-	public static final String STRDuplicateLocMsg = "Location name already exists for customer, please try another name.";
+	public static final String STRDuplicateLocMsg = Resources.getResource(ResourceKeys.ManageLocation_DuplicateNameError);
 
 	@FindBy(css = "a[href='/Picarro/ManageLocation']")
 	protected WebElement btnAddNewLocation;

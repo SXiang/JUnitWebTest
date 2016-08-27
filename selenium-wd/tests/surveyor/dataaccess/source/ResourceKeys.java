@@ -109,6 +109,8 @@ public class ResourceKeys {
 	public static final String Constant_LotNumber = "Constant_LotNumber";
 	public static final String Constant_IsotopicValue = "Constant_IsotopicValue";
 	public static final String Constant_DateTime = "Constant_DateTime";
+	public static final String Constant_Investigator="Constant_Investigator";
+	public static final String Constant_Date="Constant_Date";
 	
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
@@ -143,6 +145,7 @@ public class ResourceKeys {
 	public static final String ManageCustomers_PageTitle = "ManageCustomers_PageTitle";
 	public static final String ManageLocation_EditLocation = "ManageLocation_EditLocation";
 	public static final String ManageLocation_NewLocation = "ManageLocation_NewLocation";
+	public static final String ManageLocation_DuplicateNameError = "ManageLocation_DuplicateNameError";
 	public static final String ManageLocation_RapidResponse = "ManageLocation_RapidResponse";
 	public static final String ManageLocations_AddNew = "ManageLocations_AddNew";
 	public static final String ManageLocations_PageTitle = "ManageLocations_PageTitle";
@@ -178,6 +181,8 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_Amplitude = "LisaInvestigationReportSSRS_Amplitude";
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
+	public static final String LisaInvestigations_PageTitle = "LisaInvestigations_PageTitle";
+
 	public static final String Constant_Offline = "Constant_Offline";
 
 	
@@ -199,6 +204,7 @@ public class ResourceKeys {
 	public static final String Survey_EthaneRatio = "Survey_EthaneRatio";
 	public static final String Survey_amplitude = "Survey_amplitude";
 	
+	public static final String SystemHistoryReport_PageTitle = "SystemHistoryReport_PageTitle";
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";
 	public static final String SystemHistoryReports_PageSubTitle = "SysHistoryReportSSRS_SurveyorHistoryNotesTable";

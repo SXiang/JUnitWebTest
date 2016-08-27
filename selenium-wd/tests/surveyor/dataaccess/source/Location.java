@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import common.source.Log;
+import common.source.NumberUtility;
  
 public class Location extends BaseEntity {
 	private static final String CACHE_KEY = "LOCATION.";
@@ -67,8 +68,8 @@ public class Location extends BaseEntity {
 		this.latitude = latitude;
 	}
  
-	public static Location getLocation(String id) {
-		Location objLocation = new Location().get(id);
+	public static Location getLocation(String description) {
+		Location objLocation = new Location().get(description);
 		return objLocation;
 	}
  
@@ -89,6 +90,13 @@ public class Location extends BaseEntity {
 		return objLocation;
 	}
  
+	public void updateLocation() {
+		String SQL = String.format("UPDATE [dbo].[Location] SET Latitude=%s, Longitude=%s WHERE Id='%s'",
+				NumberUtility.formatString(getLatitude(), 15), NumberUtility.formatString(getLongitude(), 15),
+				getId());
+		executeNonQuery(SQL);
+	}
+	
 	private static Location loadFrom(ResultSet resultSet) {
 		Location objLocation = new Location();
 		try {

@@ -46,7 +46,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	public BaseReportsPageActionTest() {
 		super();
 	}
-		
+
 	//==============================================================================================================
 	// Set working data row and reports compliance row.
 	// This method is used for unit testing page actions.

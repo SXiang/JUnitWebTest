@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import common.source.DateUtility;
+import common.source.Log;
 
 public class BaseEntity {
     protected Connection connection = null;
@@ -38,6 +39,17 @@ public class BaseEntity {
 		this.resultSet = resultSet;
 	}
 
+	public int executeNonQuery(String SQL) {
+		try {
+			statement = connection.createStatement();
+			return statement.executeUpdate(SQL);
+			
+		} catch (SQLException e) {
+			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
+		}
+		return -1;
+	}
+	
 	public static String getStringColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
 		Object columnValue = resultSet.getString(columnName);

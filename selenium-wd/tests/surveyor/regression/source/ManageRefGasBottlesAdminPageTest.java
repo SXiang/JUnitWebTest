@@ -14,10 +14,9 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCANZ;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import common.source.BaseHelper;
@@ -28,12 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
 
 /**
  * @author zlu
@@ -206,7 +202,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNumber, isoValue,
 				SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesAdminPage.searchRefGasBottle(SQACUSLOC,
-				SQACUSLOCSUR, SQACUSLOCANZ, lotNumber, isoValue));
+				SQACUSLOCSUR, SQAPICLOC4SURANA, lotNumber, isoValue));
 	}
 
 	/**
