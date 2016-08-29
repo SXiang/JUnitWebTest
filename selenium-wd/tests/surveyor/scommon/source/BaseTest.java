@@ -44,7 +44,6 @@ public class BaseTest {
 	protected static ExtentTest test = null; 
 	protected static StringBuilder extentReportFile = null;
 	protected static ScreenShotOnFailure screenCapture;	
-	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
@@ -68,13 +67,14 @@ public class BaseTest {
 		protected void failed(Throwable e, Description description) {
 			BaseTest.reportTestLogMessage();			
 			screenCapture.takeScreenshot(driver);
-			Log.error("Exception: "+e+" Description: "+description);
+			Log.error("_FAIL_ Exception: "+e);
 			BaseTest.reportTestFailed(e);
 			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
+			 Log.info("_PASS_ ");
 			 BaseTest.reportTestSucceeded();
 			 postTestMethodProcessing();
 		}
@@ -122,7 +122,7 @@ public class BaseTest {
 
 		public static void reportTestStarting(String className, String methodName, String firstLogLine) {
 			ExtentReports report = getExtentReport(className);
-			setExtentTest(report.startTest(methodName));
+			setExtentTest(report.startTest(methodName), className);
 			getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 			getExtentTest().log(LogStatus.INFO, firstLogLine);
 			getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
@@ -161,9 +161,9 @@ public class BaseTest {
 			return test;
 		}
 
-		private static void setExtentTest(ExtentTest test) {
+		private static void setExtentTest(ExtentTest test, String className) {
 			BaseTest.test = test;
-			TestContext.INSTANCE.setExtentTest(test);
+			TestContext.INSTANCE.setExtentTest(test, className);
 		}
 
 	public static void logoutQuitDriver() {

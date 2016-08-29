@@ -12,6 +12,8 @@ import common.source.TestSetup;
  */
 public class SurveyorBaseTest extends BaseTest{
 
+	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -27,5 +29,4 @@ public class SurveyorBaseTest extends BaseTest{
 		testSetup = new TestSetup();
 		BaseTest.initializeTestObjects();
 	}
-	
 }
