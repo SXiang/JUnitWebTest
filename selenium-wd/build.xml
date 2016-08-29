@@ -513,6 +513,11 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ManageLocationsPageTest.class" />
+					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/DriverViewPageTest.class" />
+					<include name="**/ObserverViewPageTest.class" />
+					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest3.class" />
 				</fileset>
 			</batchtest>
 		</junit>

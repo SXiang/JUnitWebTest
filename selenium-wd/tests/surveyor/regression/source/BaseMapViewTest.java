@@ -1,33 +1,31 @@
 package surveyor.regression.source;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.SurveyorBaseTest;
 
-public class BaseMapViewTest {
-
+public class BaseMapViewTest extends BaseTest{
 	protected static final int ANALYZER1_INSTRUMENT_WARMING_ROW_ID = 2;
 	protected static final int ANALYZER1_REPLAY_ROW_ID = 3;
 	protected static final int ANALYZER3_REPLAY_ROW_ID = 9;
@@ -97,13 +95,6 @@ public class BaseMapViewTest {
 	protected static LoginPageActions loginPageAction;
 	protected static TestEnvironmentActions testEnvironmentAction;
 
-	protected static HomePage homePage = null;
-	protected static LoginPage loginPage = null;
-
-	protected static TestSetup testSetup = null;
-	protected static WebDriver driver = null;
-	protected static String baseURL = null;
-
 	// Extra instance actions and page objects. 
 	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
 	protected ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
@@ -122,62 +113,18 @@ public class BaseMapViewTest {
 		initializePageActions();
 	}
 	
-	// JUnit does NOT give a good way to detect which TestClass is executing.
-	// So we watch for the Test method under execution and install simulator pre-reqs
-	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
-	@Rule
-	public TestWatcher watcher = new TestWatcher() {
-		@Override
-		public void starting(Description description) {
-			PageActionsStore.INSTANCE.clearStore();
-			try {
-				TestSetup.deleteAnalyzerLocalDB3();
-			} catch (UnknownHostException e) {
-				Log.info(ExceptionUtility.getStackTraceString(e));
-			}
-			SurveyorBaseTest.reportTestStarting(description);
-			TestSetup.simulatorTestStarting(description);
-		}
-
-		@Override
-		public void finished(Description description) {
-			SurveyorBaseTest.reportTestFinished(description.getClassName());
-			TestSetup.simulatorTestFinishing(description);
-		}
-
-		@Override
-		protected void failed(Throwable e, Description description) {
-			SurveyorBaseTest.reportTestFailed(e);
-		}
-
-		 @Override
-		 protected void succeeded(Description description) {
-			 SurveyorBaseTest.reportTestSucceeded();
-		}
-	};
-
 	/**
 	 * Initializes the page action objects.
+	 * @throws IOException 
 	 */
-	protected static void initializePageActions() {
+	protected static void initializePageActions(){
 		if(testSetup == null || testSetup.getDriver() == null){
 			testSetup = new TestSetup();
 		}
-		driver = testSetup.getDriver();
-		baseURL = testSetup.getBaseUrl();
-		Log.info("Deleting all cookies...***:" +driver);
-		driver.manage().deleteAllCookies();
-		TestContext.INSTANCE.setTestSetup(testSetup);
+		BaseTest.initializeTestObjects();
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
-		
-		loginPage = new LoginPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, loginPage);
-
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
 	}
 
 	/**
@@ -205,22 +152,33 @@ public class BaseMapViewTest {
 			PageFactory.initElements(setup.getDriver(), homePageList.get(index));
 		}
 	}
+	@BeforeClass
+	public static void beforeTestClass() throws Exception {
+		disposeProcesses();
+	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		// Post run result to DB if enabled.
-		SurveyorBaseTest.postResultsToAutomationAPI();
+	@Before
+	public void setUp() throws Exception {
+		try {
+			TestSetup.deleteAnalyzerLocalDB3();
+		} catch (UnknownHostException e) {
+			Log.info(ExceptionUtility.getStackTraceString(e));
+		}
 	}
 	
+	@After
+    public void afterTestMethod() {
+		try {
+			afterTest();			
+			disposeProcesses();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+	
 	protected void afterTest() {
-		homePage.open();
-		
-		if (!driver.getTitle().equalsIgnoreCase("Login"))
-			homePage.logout();
-		
-		driver.quit();
+		logoutQuitDriver();
 		testSetup = null;
-		
 		// clean up - extra web drivers 
 		for(int index=0;index<testSetupList.size(); index++){
 			homePageList.get(index).open();
