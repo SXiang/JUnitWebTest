@@ -372,7 +372,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsPageTest3.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -539,8 +539,7 @@
 					<include name="**/SurveyViewPageTest.class" />
 					<include name="**/DriverViewPageTest.class" />
 					<include name="**/ObserverViewPageTest.class" />
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ActionsExecutionDriver.class" />
 				</fileset>
 			</batchtest>
 		</junit>
