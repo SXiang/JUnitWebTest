@@ -631,10 +631,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().modifyReportDetails(newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(newRptTitle, PICDFADMIN, testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(newRptTitle, PICDFADMIN));
-		else
-			fail("\nTestcase TC181 failed.\n");
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(newRptTitle, testSetup.getLoginUser()));
 	}
 
 	/**

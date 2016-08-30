@@ -118,11 +118,17 @@ public class BasePage {
 	}
 
 	public void open() {
-		Log.info("Get URL: '"+strPageURL+"'");
-		driver.get(strPageURL);
+		open(strPageURL);
 		this.waitForPageToLoad();
 	}
-
+	public void open(String path) {
+		String url = path;
+		if(url.startsWith("/")){
+			url = strBaseURL + url;
+		}
+		Log.info("Get URL: '"+url+"'");
+		driver.get(url);
+	}
 	public String getStrPageURL() {
 		return this.strPageURL;
 	}

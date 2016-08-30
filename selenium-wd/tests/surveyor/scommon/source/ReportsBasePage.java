@@ -1440,13 +1440,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				boolean bContinue = true;
 				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
 				int numRetriesForNullError = 0; 
-
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
@@ -1455,14 +1455,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
 							}							
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
 						return handleFileDownloads(rptTitle, testCaseID);
@@ -1588,11 +1588,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1600,7 +1600,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							//* Double check the correctness of the rowNum
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,

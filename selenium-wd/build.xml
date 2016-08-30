@@ -9,7 +9,10 @@
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
-
+	<tstamp>
+	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
+	</tstamp>
+	
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
@@ -111,6 +114,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -133,6 +137,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -152,6 +157,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -171,6 +177,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -190,6 +197,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -209,6 +217,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -231,6 +240,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -259,6 +269,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -269,9 +280,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-
 					<include name="**/ObserverViewPageTest.class" />
-
+					<include name="**/ObserverViewPageStressTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -281,6 +291,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -300,6 +311,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -322,6 +334,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -347,6 +360,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -368,6 +382,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -396,6 +411,7 @@
 			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 				<sysproperty key = "testReportCategory" value = "Regression" />
+				<sysproperty key = "test_run_id" value = "${local_date}"/>
 				<classpath>
 					<pathelement path="${build}" />
 					<fileset dir="${basedir}/lib">
@@ -406,10 +422,10 @@
 				<batchtest fork="yes" todir="${reports}/regression/xml">
 					<formatter type="xml" />
 					<fileset dir="${build}">
-
 						<include name="**/ActionsExecutionDriver.class" />
 						<include name="**/DriverViewPageTest.class" />
-						
+						<include name="**/ObserverViewPageTest.class" />
+						<include name="**/ObserverViewPageStressTest.class" />
 					</fileset>
 				</batchtest>
 			</junit>
@@ -419,6 +435,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -462,6 +479,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -482,6 +500,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Sanity" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -503,6 +522,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -513,7 +533,13 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
+<<<<<<< HEAD
 					<include name="**/ComplianceReportsPageTest6.class" />
+=======
+					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
+					<include name="**/ManageLocationsPageTest.class" />
+>>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>

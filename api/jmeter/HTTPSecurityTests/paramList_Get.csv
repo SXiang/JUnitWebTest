@@ -1,0 +1,87 @@
+Controller,ActionName,QueryString,Description,PicarroDriver,CustomerDriver,CustomerSupervisor,CustomerAdmin,PicarroSupervisor,PicarroAdmin,Support,Admin
+Account,Preferences,,,YES,YES,YES,YES,YES,YES,YES,YES
+Account,ChangePassword,,,YES,YES,YES,YES,YES,YES,YES,YES
+Picarro,ResetPassword,?id=${Driver_Picarro},user: sqapicdr@picarro.com,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,LaunchCalibration,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,Calibration,?Address=https%3A%2F%2Fsurveyorprivate.picarro.com&Port=5600,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageSurveyors,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageSurveyorsData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageSurveyor,?id=${APISecurityTest_Surveyor001},SimAuto-Surveyor1 - Picarro,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageCustomers,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageCustomersData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageCustomer,?id=${Customer_Picarro},,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageSurveyorHistories,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageSurveyorHistoriesData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageUsers,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageUser,?id=${Driver_Picarro}&picarro=true ,user: sqapicdr@picarro.com,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageUsersData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ValidateUser,?userId=${DriverName_Picarro},,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageRefGasBottles,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageRefGasBottlesData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AddRefGasBottle,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageLocations,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageLocation,?id=${Location_Picarro},Picarro Default,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ManageLocationsData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerLogs,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerLogsData,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerAlarmLog,?analyzerId=${Analyzer_Picarro},,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerAlarmLogData,?analyzerId=${Analyzer_Picarro}&sEcho=1&iColumns=2&sColumns=%2C&iDisplayStart=0&iDisplayLength=10&mDataProp_0=MessageDate&sSearch_0=&bRegex_0=false&bSearchable_0=true&mDataProp_1=Message&sSearch_1=&bRegex_1=false&bSearchable_1=true&sSearch=&bRegex=false&_=1460144059353,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerLog,?analyzerId=${Analyzer_Picarro},,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,AnalyzerLogData,?analyzerId=${Analyzer_Picarro}&sEcho=1&iColumns=3&sColumns=%2C%2C&iDisplayStart=0&iDisplayLength=10&mDataProp_0=Id&sSearch_0=&bRegex_0=false&bSearchable_0=true&mDataProp_1=Message&sSearch_1=&bRegex_1=false&bSearchable_1=true&mDataProp_2=MessageDate&sSearch_2=&bRegex_2=false&bSearchable_2=true&sSearch=&bRegex=false&_=1460144065236,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ServerLog,,,NO,NO,NO,NO,NO,NO,YES,YES
+Picarro,ServerLogData,?sEcho=1&iColumns=6&sColumns=%2C%2C%2C%2C%2C&iDisplayStart=0&iDisplayLength=10&mDataProp_0=Id&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=Thread&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=Level&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=Message&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&mDataProp_4=Exception&sSearch_4=&bRegex_4=false&bSearchable_4=true&bSortable_4=false&mDataProp_5=MessageDate&sSearch_5=&bRegex_5=false&bSearchab,,NO,NO,NO,NO,NO,NO,YES,YES
+Home,SurveyorSystems,,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,SurveyorSystemsData,?sEcho=1&iColumns=4&sColumns=%2C%2C%2C&iDisplayStart=0&iDisplayLength=10&mDataProp_0=SurveyorName&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=SerialNumber&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=AnalyzerBuildNumber&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=Status&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&sSearch=&bRegex=false&iSortCol_0=3&sSortDir_0=desc&iSortingCols=1&_=1460079331460,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,MeasurementSessions,,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,MeasurementSessionData,?sEcho=1&iColumns=11&sColumns=%2C%2C%2C%2C%2C%2C%2C%2C%2C%2C&iDisplayStart=0&iDisplayLength=10&mDataProp_0=Tag&sSearch_0=&bRegex_0=false&bSearchable_0=true&bSortable_0=true&mDataProp_1=UserName&sSearch_1=&bRegex_1=false&bSearchable_1=true&bSortable_1=true&mDataProp_2=SurveyorUnit&sSearch_2=&bRegex_2=false&bSearchable_2=true&bSortable_2=true&mDataProp_3=SerialNumber&sSearch_3=&bRegex_3=false&bSearchable_3=true&bSortable_3=true&mDataProp_4=Start&sSearch_4=&bRegex_4=false&bSearchable_4=true&bSortable_4=true&mDataProp_5=End&sSearch_5=&bRegex_5=false&bSearchable_5=true&bSortable_5=true&mDataProp_6=Status&sSearch_6=&bRegex_6=false&bSearchable_6=true&bSortable_6=true&mDataProp_7=SurveyModeType&sSearch_7=&bRegex_7=false&bSearchable_7=true&bSortable_7=true&mDataProp_8=MinAmplitude&sSearch_8=&bRegex_8=false&bSearchable_8=true&bSortable_8=true&mDataProp_9=Duration&sSearch_9=&bRegex_9=false&bSearchable_9=true&bSortable_9=true&mDataProp_10=&sSearch_10=&bRegex_10=false&bSearchable_10=true&bSortable_10=false&sSearch=&bRegex=false&iSortCol_0=5&sSortDir_0=desc&iSortingCols=1&_=,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,DashboardMeasurementSessionData,,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,DashboardSurveyorSystemsData,,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,FleetMap,,,YES,YES,YES,YES,YES,YES,YES,YES
+Home,FleetMapData,,,YES,YES,YES,YES,YES,YES,YES,YES
+Live,Survey,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,YES,YES,YES,NO,YES,YES,YES,YES
+Home,ReProcessSession,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportSession,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportPeaks,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportAnalysis,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportSession,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportPeaks,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Home,ExportAnalysis,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES
+Reports,ComplianceReports,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,ComplianceReport,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,ResubmitReport,?reportType=ComplianceReports&reportId=${APISecurityTest_ReportDelete002},,NO,NO,NO,NO,NO,NO,YES,YES
+Reports,CancelReport,?reportType=ComplianceReports&reportId=${APISecurityTest_ReportDelete002},,NO,NO,NO,NO,NO,NO,YES,YES
+Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,GetReportStat,?reportTitle=${APISecurityTest_ReportTitle001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,ViewReportPdf,?reportId=${APISecurityTest_Report001}&ReportType=Investigation,APISecurityTestReport001,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,LisaInvestigations,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,LisaInvestigationsData,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,LisaInvestigationsAssignment,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,ShowGenerateShapeFile,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,ShowGenerateReportMeta,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,ThumbnailPaths,?reportId=${APISecurityTest_Report001}&ReportType=Compliance,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,Thumbnail,?id=${APISecurityTest_Thumbnail001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,DownloadPdf,?reportId=${APISecurityTest_Report001}&ReportType=Compliance,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,DownloadReportMeta,?reportId=${APISecurityTest_Report001}&ReportType=Compliance,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,DownloadShapefile,?reportId=${APISecurityTest_Report001}&ReportType=Compliance,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,DownloadReportView,?id=${APISecurityTest_View001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,EQReports,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,EQReport,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,AssessmentReport,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,AssessmentReports,,,NO,NO,YES,YES,YES,YES,YES,YES
+Reports,ResubmitReport,?reportType=AssessmentReports&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,NO,NO,NO,NO,YES,YES
+Reports,CancelReport,?reportType=AssessmentReports&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,NO,NO,NO,NO,YES,YES
+Reports,CopyAssessmentReport,?reportId=${APISecurityTest_Assessment002},,NO,NO,NO,NO,YES,YES,YES,YES
+Investigation,GetReportPeaksDataByReportId,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Admin,ManageSurveyors,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageSurveyorsData,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageSurveyor,?id=${APISecurityTest_Surveyor001},SimAuto-Surveyor1 - Picarro,NO,NO,NO,NO,NO,YES,NO,YES
+Admin,ManageUsers,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageUsersData,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageUser,?id=${Driver_Picarro},,NO,NO,NO,NO,NO,YES,NO,YES
+Admin,ResetPassword,?id=${Driver_Picarro},,NO,NO,NO,NO,NO,YES,NO,YES
+Admin,ManageRefGasBottles,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageRefGasBottlesData,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,AddrefGasBottle,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageLocationsData,,,NO,NO,NO,YES,NO,YES,NO,YES
+Admin,ManageLocation,?id=${Location_Picarro},,NO,NO,NO,NO,NO,YES,NO,YES
+Admin,ValidateUser,?userId=${DriverName_Picarro},,NO,NO,NO,NO,NO,YES,NO,YES

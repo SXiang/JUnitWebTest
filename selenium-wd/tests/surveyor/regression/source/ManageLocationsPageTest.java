@@ -5,9 +5,6 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -376,7 +373,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
-		String errorMsg = "Location name already exists for customer, please try another name.";
+		String errorMsg = ManageLocationsPage.STRDuplicateLocMsg;
 
 		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
 				"Test Description: Picarro user not allowed to create duplicate location\n");
@@ -424,7 +421,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String locationName = testSetup.getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
-		String errorMsg = "Location name already exists for customer, please try another name.";
+		String errorMsg = ManageLocationsPage.STRDuplicateLocMsg;
 
 		Log.info("\nRunning - "+testCaseID+"_DuplicateLocationNotAllowed_["+role+"] - "+
 				"Test Description: Picarro user not allowed to edit duplicate location details same as existing location details\n");
