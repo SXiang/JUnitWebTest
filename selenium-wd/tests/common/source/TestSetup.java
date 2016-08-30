@@ -171,7 +171,7 @@ public class TestSetup {
 	private boolean automationReportingApiEnabled;
 
 	private static boolean parallelBuildEnabled;
-	
+
 	public TestSetup() {
 		initialize();
 	}
@@ -696,7 +696,7 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-
+			
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
