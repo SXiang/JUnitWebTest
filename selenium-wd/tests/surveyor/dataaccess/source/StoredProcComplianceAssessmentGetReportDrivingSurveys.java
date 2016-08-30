@@ -107,25 +107,25 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		String actualDate = this.getStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
 
 		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
-			Log.error(String.format("StartDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
+			Log.warn(String.format("StartDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
 			return false;
 		}
 		expectedDate = obj.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
 		actualDate = this.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
 		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
-			Log.error(String.format("EndDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
+			Log.warn(String.format("EndDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
 			return false;
 		}
 		if (!((this.getUserName().trim()).equals(obj.getUserName().trim()))) {
-			Log.error(String.format("UserName is not match, Expect '%s', Actual '%s'", this.getUserName().trim(), obj.getUserName().trim()));
+			Log.warn(String.format("UserName is not match, Expect '%s', Actual '%s'", this.getUserName().trim(), obj.getUserName().trim()));
 			return false;
 		}
 		if (!((this.getStabilityClass().trim()).equals(obj.getStabilityClass().trim()))) {
-			Log.error(String.format("Stability is not match, Expect '%s', Actual '%s'", this.getStabilityClass().trim(), obj.getStabilityClass().trim()));
+			Log.warn(String.format("Stability is not match, Expect '%s', Actual '%s'", this.getStabilityClass().trim(), obj.getStabilityClass().trim()));
 			return false;
 		}
 		if (!((this.getDescription().trim()).equals(obj.getDescription().trim()))) {
-			Log.error(String.format("Description is not match, Expect '%s', Actual '%s'", this.getDescription().trim(), obj.getDescription().trim()));
+			Log.warn(String.format("Description is not match, Expect '%s', Actual '%s'", this.getDescription().trim(), obj.getDescription().trim()));
 			return false;
 		}
 		return true;
