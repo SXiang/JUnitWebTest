@@ -148,11 +148,13 @@ public class BaseMapViewTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
+			Log.error("_FAIL_ Exception: "+e+" Description: "+description);
 			SurveyorBaseTest.reportTestFailed(e);
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
+			 Log.info("_PASS_ Description: "+description);
 			 SurveyorBaseTest.reportTestSucceeded();
 		}
 	};

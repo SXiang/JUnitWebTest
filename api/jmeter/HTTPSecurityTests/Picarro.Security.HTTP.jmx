@@ -3568,7 +3568,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\sxiang\dev\JMeterTest\Surveyor\Controller\result\httpTestResult.csv</stringProp>
+        <stringProp name="filename">C:\QAAutomationProgram\jmeter\report\resultTable.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatGraphVisualizer" testclass="ResultCollector" testname="Aggregate Graph" enabled="true">

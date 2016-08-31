@@ -10,6 +10,13 @@
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
 	<property environment="env" />
+	<property name="jmeter.result.jtl.dir" value="C:/QAAutomationProgram/jmeter/report/jtl" />
+	<property name="jmeter.result.html.dir" value="C:/QAAutomationProgram/jmeter/report/html" />
+	<property name="ReportName" value="TestReport" />
+	
+	<tstamp>
+	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
+	</tstamp>
 	
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
@@ -24,8 +31,8 @@
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
 		
-		<mkdir dir="${reports}/jmeter/jtl" />
-		<mkdir dir="${reports}/jmeter/html" />
+		<mkdir dir="${jmeter.result.jtl.dir}" />
+		<mkdir dir="${jmeter.result.html.dir}" />
 	</target>
 
 	<target name="clean" description="Clean up">
@@ -41,6 +48,9 @@
 		<delete dir="${basedir}/tests/surveyor/scommon/build" />
 		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
 		<delete file="${basedir}/lib/${scommon_jar}" />
+		
+		<delete dir="${jmeter.result.jtl.dir}" />
+		<delete dir="${jmeter.result.html.dir}" />
 	</target>
 
 	<target name="compile_common" depends="init"
@@ -115,6 +125,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -137,6 +148,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -156,6 +168,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -175,6 +188,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -194,6 +208,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -213,6 +228,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -235,6 +251,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -263,6 +280,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -284,6 +302,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -303,6 +322,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -325,6 +345,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -350,6 +371,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -371,6 +393,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -399,6 +422,7 @@
 			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 				<sysproperty key = "testReportCategory" value = "Regression" />
+				<sysproperty key = "test_run_id" value = "${local_date}"/>
 				<classpath>
 					<pathelement path="${build}" />
 					<fileset dir="${basedir}/lib">
@@ -422,6 +446,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -465,6 +490,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -485,6 +511,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Sanity" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -507,6 +534,7 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -517,6 +545,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
+					<include name="**/ManageAnalyzersPageTest.class" />
+					<include name="**/ManageCustomersPageTest.class" />
 					<include name="**/ManageLocationsPageTest.class" />
 				</fileset>
 			</batchtest>
@@ -527,11 +557,8 @@
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx" />
-			<property name="jmeter.result.jtl.dir" value="${reports}/jmeter/jtl" />
-			<property name="jmeter.result.html.dir" value="${reports}/jmeter/html" />
-			<property name="ReportName" value="TestReport" />
-			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${time}.jtl" />
-			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${time}.html" />
+			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${local_date}.jtl" />
+			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${local_date}.html" />
 		</jmeter>
 	</target>
 	
