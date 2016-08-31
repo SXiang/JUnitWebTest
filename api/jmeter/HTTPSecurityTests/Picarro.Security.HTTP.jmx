@@ -8,27 +8,27 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
-      <stringProp name="TestPlan.user_define_classpath">C:\Users\sxiang\dev\apache-jmeter-3.0\lib\jdbc\sqljdbc_4.0\enu\sqljdbc.jar</stringProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Surveyor Constants" enabled="true">
         <collectionProp name="Arguments.arguments">
+          <elementProp name="APISecurityTest_Report001View000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001View000</stringProp>
+            <stringProp name="Argument.value">B53788E5-12BF-C3A6-6A0D-39D9D1302A18</stringProp>
+            <stringProp name="Argument.desc">Test view from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report001Peak000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001Peak000</stringProp>
+            <stringProp name="Argument.value">07BC4E2B-A080-8AE8-05EA-39D9D13049A6</stringProp>
+            <stringProp name="Argument.desc">Peakid from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="APISecurityTest_Report001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Report001</stringProp>
             <stringProp name="Argument.value">ebedbede-ca40-deaa-6871-39d9d13029ca</stringProp>
             <stringProp name="Argument.desc">Copy from TC1373 in ComplianceReportsPageTest3.java</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_View001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_View001</stringProp>
-            <stringProp name="Argument.value">b53788e5-12bf-c3a6-6a0d-39d9d1302a18</stringProp>
-            <stringProp name="Argument.desc">Test view from APISecurityTestReport001</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_ReportPeak001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_ReportPeak001</stringProp>
-            <stringProp name="Argument.value">be9bf996-f728-e394-96e8-39d9d13049a6</stringProp>
-            <stringProp name="Argument.desc">Peakid from APISecurityTestReport001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_Report002" elementType="Argument">
@@ -48,10 +48,55 @@
             <stringProp name="Argument.desc">copy of 001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
+            <stringProp name="Argument.value">514941cd-ba07-353e-e5f4-39d9db872a76</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete001</stringProp>
+            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete001</stringProp>
+            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete002</stringProp>
+            <stringProp name="Argument.value">c67cefab-3038-83e7-cd5c-39d9db86f2dc</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_EQReport001</stringProp>
             <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.desc">/Reports/CopyEQReport will be added to test after this report ready</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Analyzer_Picarro_SerialNumber001" elementType="Argument">
+            <stringProp name="Argument.name">Analyzer_Picarro_SerialNumber001</stringProp>
+            <stringProp name="Argument.value">SimAuto-Analyzer1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_Survey001" elementType="Argument">
@@ -75,6 +120,7 @@
             <stringProp name="Argument.name">Analyzer_Picarro</stringProp>
             <stringProp name="Argument.value">00000015-db64-fde7-7e67-39c8ac533d49</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">serialNumber=https://p3sqaauto.picarro.com/Live/Observer?serialNumber=SimAuto-Analyzer1</stringProp>
           </elementProp>
           <elementProp name="Location_Picarro" elementType="Argument">
             <stringProp name="Argument.name">Location_Picarro</stringProp>
@@ -91,54 +137,14 @@
             <stringProp name="Argument.value">sqapicdr@picarro.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="APISecurityTest_Thumbnail001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_Thumbnail001</stringProp>
-            <stringProp name="Argument.value">c7402957-23ee-904e-3556-39d7041b9140</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="SQAAuto_DB" elementType="Argument">
             <stringProp name="Argument.name">SQAAuto_DB</stringProp>
             <stringProp name="Argument.value">SurveyorSQAAUTO_blankDB_20160823</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="APISecurityTest_ReportTitle001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_ReportTitle001</stringProp>
-            <stringProp name="Argument.value">APISecurityTest_Report001</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_ReportTitle002" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_ReportTitle002</stringProp>
-            <stringProp name="Argument.value">APISecurityTest_Report002</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_AssessmentTitle001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle001</stringProp>
-            <stringProp name="Argument.value">APISecurityTest_Assessment001</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_AssessmentTitle002" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle002</stringProp>
-            <stringProp name="Argument.value">APISecurityTest_Assessment002</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_ReportDelete001</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_AssessmentDelete001" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete001</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_ReportDelete002" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APISecurityTest_AssessmentDelete002" elementType="Argument">
-            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete002</stringProp>
-            <stringProp name="Argument.value"></stringProp>
+          <elementProp name="SQA_Password" elementType="Argument">
+            <stringProp name="Argument.name">SQA_Password</stringProp>
+            <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -238,675 +244,21 @@
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Setup" enabled="false">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
-        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">AutomationAdmin</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
-            <stringProp name="XPathExtractor.default"></stringProp>
-            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
-            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
-            <boolProp name="XPathExtractor.validate">false</boolProp>
-            <boolProp name="XPathExtractor.tolerant">true</boolProp>
-            <boolProp name="XPathExtractor.namespace">false</boolProp>
-            <stringProp name="Sample.scope">all</stringProp>
-            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
-          </XPathExtractor>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
-              </elementProp>
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">AutomationAdmin</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
-            <boolProp name="XPath.negate">false</boolProp>
-            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
-            <boolProp name="XPath.validate">false</boolProp>
-            <boolProp name="XPath.whitespace">false</boolProp>
-            <boolProp name="XPath.tolerant">true</boolProp>
-            <boolProp name="XPath.namespace">false</boolProp>
-          </XPathAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="APISecurityTest_Report001" enabled="false">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{  &#xd;
-   &quot;ReportTitle&quot;:&quot;APISecurityTest_Report001&quot;,&#xd;
-   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
-   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
-   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
-   &quot;ReportModel&quot;:{  &#xd;
-      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
-      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
-      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
-      &quot;ShowIndications&quot;:true,&#xd;
-      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
-      &quot;ShowGaps&quot;:false,&#xd;
-      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
-      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
-      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
-      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;ReportAreaModel&quot;:{  &#xd;
-         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
-         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
-         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
-         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
-         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
-         &quot;BoundaryId&quot;:null&#xd;
-      },&#xd;
-      &quot;ReportViewModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
-            &quot;ShowLisa&quot;:true,&#xd;
-            &quot;ShowFov&quot;:true,&#xd;
-            &quot;ShowVehiclePath&quot;:false,&#xd;
-            &quot;ShowIndications&quot;:false,&#xd;
-            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
-            &quot;ShowAnnotations&quot;:false,&#xd;
-            &quot;ShowGaps&quot;:false,&#xd;
-            &quot;ShowAssets&quot;:false,&#xd;
-            &quot;ShowBoundaries&quot;:false,&#xd;
-            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;ViewNameOrder&quot;:1&#xd;
-         }&#xd;
-      ],&#xd;
-      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportAssetLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
-            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
-            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
-            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
-            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
-            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
-         }&#xd;
-      ]&#xd;
-   }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Main test report - don&apos;t delete it.   Customer: Picarro</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="APISecurityTest_Report002" enabled="true">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{  &#xd;
-   &quot;ReportTitle&quot;:&quot;APISecurityTest_Report002&quot;,&#xd;
-   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
-   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
-   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
-   &quot;ReportModel&quot;:{  &#xd;
-      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
-      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
-      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
-      &quot;ShowIndications&quot;:true,&#xd;
-      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
-      &quot;ShowGaps&quot;:false,&#xd;
-      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
-      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
-      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
-      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;ReportAreaModel&quot;:{  &#xd;
-         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
-         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
-         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
-         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
-         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
-         &quot;BoundaryId&quot;:null&#xd;
-      },&#xd;
-      &quot;ReportViewModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
-            &quot;ShowLisa&quot;:true,&#xd;
-            &quot;ShowFov&quot;:true,&#xd;
-            &quot;ShowVehiclePath&quot;:false,&#xd;
-            &quot;ShowIndications&quot;:false,&#xd;
-            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
-            &quot;ShowAnnotations&quot;:false,&#xd;
-            &quot;ShowGaps&quot;:false,&#xd;
-            &quot;ShowAssets&quot;:false,&#xd;
-            &quot;ShowBoundaries&quot;:false,&#xd;
-            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;ViewNameOrder&quot;:1&#xd;
-         }&#xd;
-      ],&#xd;
-      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportAssetLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;SurveyId&quot;:&quot;4ce925c5-a081-319d-220a-39d83a6b8751&quot;,&#xd;
-            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
-            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
-            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
-            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
-            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
-         }&#xd;
-      ]&#xd;
-   }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Reports/ComplianceReport</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments"> test report   Customer: Picarro</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="APISecurityTest_Assessment001" enabled="false">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{  &#xd;
-   &quot;ReportTitle&quot;:&quot;APISecurityTest_Assessment001&quot;,&#xd;
-   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
-   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
-   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
-   &quot;ReportModel&quot;:{  &#xd;
-      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
-      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
-      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
-      &quot;ShowIndications&quot;:true,&#xd;
-      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
-      &quot;ShowGaps&quot;:false,&#xd;
-      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
-      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
-      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
-      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;ReportAreaModel&quot;:{  &#xd;
-         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
-         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
-         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
-         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
-         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
-         &quot;BoundaryId&quot;:null&#xd;
-      },&#xd;
-      &quot;ReportViewModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
-            &quot;ShowLisa&quot;:true,&#xd;
-            &quot;ShowFov&quot;:true,&#xd;
-            &quot;ShowVehiclePath&quot;:false,&#xd;
-            &quot;ShowIndications&quot;:false,&#xd;
-            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
-            &quot;ShowAnnotations&quot;:false,&#xd;
-            &quot;ShowGaps&quot;:false,&#xd;
-            &quot;ShowAssets&quot;:false,&#xd;
-            &quot;ShowBoundaries&quot;:false,&#xd;
-            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;ViewNameOrder&quot;:1&#xd;
-         }&#xd;
-      ],&#xd;
-      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportAssetLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
-            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
-            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
-            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
-            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
-            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
-         }&#xd;
-      ]&#xd;
-   }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Don&apos;t delete, customer: picarro</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="APISecurityTest_Assessment002" enabled="false">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{  &#xd;
-   &quot;ReportTitle&quot;:&quot;APISecurityTest_Assessment002&quot;,&#xd;
-   &quot;TimeZoneId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-   &quot;SelectedCustomerId&quot;:&quot;b1252204-04fb-4a67-82d4-3f4666fd855c&quot;,&#xd;
-   &quot;MapHeight&quot;:&quot;11&quot;,&#xd;
-   &quot;MapWidth&quot;:&quot;8.5&quot;,&#xd;
-   &quot;ReportModel&quot;:{  &#xd;
-      &quot;SurveyModeTypeId&quot;:&quot;b310238a-a5ae-4e94-927b-f0f165e24522&quot;,&#xd;
-      &quot;MinimumAmplitude&quot;:&quot;&quot;,&#xd;
-      &quot;ExclusionRadius&quot;:&quot;0&quot;,&#xd;
-      &quot;ShowIndications&quot;:true,&#xd;
-      &quot;ShowIsotopicAnalysis&quot;:false,&#xd;
-      &quot;ShowGaps&quot;:false,&#xd;
-      &quot;ShowPercentCoverageAssets&quot;:false,&#xd;
-      &quot;ShowPercentCoverageReportArea&quot;:false,&#xd;
-      &quot;ShowPercentCoverageForecast&quot;:false,&#xd;
-      &quot;FovOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;LisaOpacity&quot;:&quot;0.5&quot;,&#xd;
-      &quot;ReportAreaModel&quot;:{  &#xd;
-         &quot;ReportAreaModeTypeDesc&quot;:&quot;Custom Boundary&quot;,&#xd;
-         &quot;StartLat&quot;:&quot;37.41922165375503&quot;,&#xd;
-         &quot;StartLong&quot;:&quot;-121.96578744222937&quot;,&#xd;
-         &quot;EndLat&quot;:&quot;37.40517779908774&quot;,&#xd;
-         &quot;EndLong&quot;:&quot;-122.01230767538367&quot;,&#xd;
-         &quot;BoundaryId&quot;:null&#xd;
-      },&#xd;
-      &quot;ReportViewModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;ViewName&quot;:&quot;View 1&quot;,&#xd;
-            &quot;ShowLisa&quot;:true,&#xd;
-            &quot;ShowFov&quot;:true,&#xd;
-            &quot;ShowVehiclePath&quot;:false,&#xd;
-            &quot;ShowIndications&quot;:false,&#xd;
-            &quot;ShowIsotopicCaptures&quot;:false,&#xd;
-            &quot;ShowAnnotations&quot;:false,&#xd;
-            &quot;ShowGaps&quot;:false,&#xd;
-            &quot;ShowAssets&quot;:false,&#xd;
-            &quot;ShowBoundaries&quot;:false,&#xd;
-            &quot;BaseMapId&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;ViewNameOrder&quot;:1&#xd;
-         }&#xd;
-      ],&#xd;
-      &quot;ReportBoundaryLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportAssetLayerModels&quot;:[  &#xd;
-&#xd;
-      ],&#xd;
-      &quot;ReportDrivingSurveyModels&quot;:[  &#xd;
-         {  &#xd;
-            &quot;SurveyId&quot;:&quot;6c4450dc-a1c3-c2c5-6291-39ceee0b0f57&quot;,&#xd;
-            &quot;PeakColor&quot;:&quot;00000000-0000-0000-0001-000000000000&quot;,&#xd;
-            &quot;LisaColor&quot;:&quot;00000000-0000-0000-0007-000000000000&quot;,&#xd;
-            &quot;IsotopicColor&quot;:&quot;00000000-0000-0000-0006-000000000000&quot;,&#xd;
-            &quot;FovColor&quot;:&quot;00000000-0000-0000-0002-000000000000&quot;,&#xd;
-            &quot;FovOpacity&quot;:&quot;0.4&quot;,&#xd;
-            &quot;LisaOpacity&quot;:&quot;0.5&quot;&#xd;
-         }&#xd;
-      ]&#xd;
-   }&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Reports/AssessmentReport</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">customer: picarro</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="APISecurityTest_ReportPeak001" enabled="false">
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&#xd;
-  &quot;ReportId&quot;: &quot;e8a3d007-1a9d-57e0-1b3f-39d71f4de954&quot;,&#xd;
-  &quot;AssigneeId&quot;: &quot;de734ddf-363e-49fc-8dbc-39c8c221c570&quot;,&#xd;
-  &quot;ReportPeaks&quot;: [&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;c76beecb-28bc-f399-1a50-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;c2d5ed9d-fae6-585c-e70d-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;ec51c949-a6de-723c-902c-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;a88361af-598f-be96-97f5-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;a67188a6-ab7b-9097-042d-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;67208606-1c78-6097-137f-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;085be9c0-cbda-cfbb-e80a-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;c93acda4-d550-6f73-0e3d-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;c6c7680c-20a8-e2d0-76a5-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;ae2c16ef-f6f5-21d9-849e-39d71f5f7064&quot;&#xd;
-    },&#xd;
-    {&#xd;
-      &quot;Id&quot;: &quot;9a3ddde4-a726-9982-422a-39d71f5f7064&quot;&#xd;
-    }&#xd;
-  ]&#xd;
-}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">Reports/AssignReportPeak?mode=table</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="TestPlan.comments">Don&apos;t delete</stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="-1263448268">{&quot;Message&quot;:&quot;Success&quot;}</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-        </hashTree>
-        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
-          <collectionProp name="CookieManager.cookies"/>
-          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
-        </CookieManager>
-        <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+        <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -1011,7 +363,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -1073,6 +425,61 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Admin" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -1089,20 +496,6 @@ for(int i=0; i&lt;size; i++){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -1159,7 +552,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -1215,6 +608,61 @@ for(int i=0; i&lt;size; i++){
 		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
 	}
 }
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
 </stringProp>
           <stringProp name="BeanShellSampler.filename"></stringProp>
           <stringProp name="BeanShellSampler.parameters"></stringProp>
@@ -1418,39 +866,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Support" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -1467,20 +882,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -1537,7 +938,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -1593,6 +994,61 @@ for(int i=0; i&lt;size; i++){
 		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
 	}
 }
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
 </stringProp>
           <stringProp name="BeanShellSampler.filename"></stringProp>
           <stringProp name="BeanShellSampler.parameters"></stringProp>
@@ -1796,39 +1252,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Admin" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -1845,20 +1268,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -1914,6 +1323,123 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="resultVariable">AssessmentReports002</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+
+
+//AssessmentReports - 1
+result = vars.getObject(&quot;AssessmentReports001&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
+	}
+}
+
+//AssessmentReports - 2
+result = vars.getObject(&quot;AssessmentReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -2112,40 +1638,79 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Supervisor" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -2207,148 +1772,55 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Supervisor" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
-        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
           <stringProp name="queryType">Select Statement</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
           <stringProp name="queryType">Select Statement</stringProp>
           <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports001</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports002</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
-          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
-ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
 int size = result.size();
 for(int i=0; i&lt;size; i++){
 	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
-	}
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
 }
-//ComplianceReports - 2
-result = vars.getObject(&quot;ComplianceReports002&quot;);
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
 size = result.size();
 for(int i=0; i&lt;size; i++){
 	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
-	}
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
 }
 
-
-//AssessmentReports - 1
-result = vars.getObject(&quot;AssessmentReports001&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
-	}
-}
-
-//AssessmentReports - 2
-result = vars.getObject(&quot;AssessmentReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
-	}
-}
 </stringProp>
           <stringProp name="BeanShellSampler.filename"></stringProp>
           <stringProp name="BeanShellSampler.parameters"></stringProp>
@@ -2458,7 +1930,7 @@ for(int i=0; i&lt;size; i++){
           <stringProp name="WhileController.condition">${endpoint}</stringProp>
         </WhileController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorHTTPGETS" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupervisorHTTPGETS" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -2552,39 +2024,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro Driver" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -2601,20 +2040,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -2671,7 +2096,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -2727,6 +2152,61 @@ for(int i=0; i&lt;size; i++){
 		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
 	}
 }
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
 </stringProp>
           <stringProp name="BeanShellSampler.filename"></stringProp>
           <stringProp name="BeanShellSampler.parameters"></stringProp>
@@ -2930,39 +2410,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer Supervisor" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -2979,20 +2426,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -3049,7 +2482,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -3105,6 +2538,61 @@ for(int i=0; i&lt;size; i++){
 		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
 	}
 }
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
 </stringProp>
           <stringProp name="BeanShellSampler.filename"></stringProp>
           <stringProp name="BeanShellSampler.parameters"></stringProp>
@@ -3308,39 +2796,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer Driver" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -3357,20 +2812,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
@@ -3427,7 +2868,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -3489,24 +2930,64 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">AutomationAdmin</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
@@ -3686,39 +3167,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Customer Admin" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -3735,21 +3183,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
-          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
-        </ConfigTestElement>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3763,7 +3197,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3777,7 +3211,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3791,7 +3225,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3805,7 +3239,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="false">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -3867,24 +3301,64 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="false">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="false">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="false">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">AutomationAdmin</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
@@ -3980,7 +3454,7 @@ for(int i=0; i&lt;size; i++){
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-            <stringProp name="HTTPSampler.path">v</stringProp>
+            <stringProp name="HTTPSampler.path">/${Controller}/${ActionName}${__eval(${QueryString})}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -4064,40 +3538,73 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
       </hashTree>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>false</time>
+            <latency>false</latency>
+            <timestamp>false</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>false</code>
+            <message>false</message>
+            <threadName>false</threadName>
+            <dataType>false</dataType>
+            <encoding>false</encoding>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <url>true</url>
+          </value>
+        </objProp>
+        <stringProp name="filename">C:\Users\sxiang\dev\JMeterTest\Surveyor\Controller\result\httpTestResult.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatGraphVisualizer" testclass="ResultCollector" testname="Aggregate Graph" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">C:\Users\sxiang\dev\JMeterTest\Surveyor\Controller\result\httpTestResult.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>

@@ -9,7 +9,8 @@
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
-
+	<property environment="env" />
+	
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
@@ -22,6 +23,9 @@
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
+		
+		<mkdir dir="${reports}/jmeter/jtl" />
+		<mkdir dir="${reports}/jmeter/html" />
 	</target>
 
 	<target name="clean" description="Clean up">
@@ -498,6 +502,7 @@
 		<echo message="junit build : ${build}" />
 	</target>
 	
+	
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -518,6 +523,17 @@
 		</junit>
 	</target>
 
+	<target name="securityapitest" depends="init">
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx" />
+			<property name="jmeter.result.jtl.dir" value="${reports}/jmeter/jtl" />
+			<property name="jmeter.result.html.dir" value="${reports}/jmeter/html" />
+			<property name="ReportName" value="TestReport" />
+			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${time}.jtl" />
+			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${time}.html" />
+		</jmeter>
+	</target>
 	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
