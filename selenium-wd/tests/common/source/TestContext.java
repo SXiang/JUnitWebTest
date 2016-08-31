@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ public enum TestContext {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
+		this.testReportIdSet = new HashSet<String>();
 		this.testMap = new HashMap<String, Object>();
 		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 	}
