@@ -89,7 +89,7 @@ public class BaseTest {
 		try {
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + testSetup.getTestReportCategory();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.error(e.toString());
 		}
 		
 		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
