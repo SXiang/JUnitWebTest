@@ -10,8 +10,8 @@
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
 	<property environment="env" />
-	<property name="jmeter.result.jtl.dir" value="C:/QAAutomationProgram/jmeter/report/jtl" />
-	<property name="jmeter.result.html.dir" value="C:/QAAutomationProgram/jmeter/report/html" />
+	<property name="jmeter.result.jtl.dir" value="${reports}/jmeter/jtl" />
+	<property name="jmeter.result.html.dir" value="${reports}/jmeter/html" />
 	<property name="ReportName" value="TestReport" />
 	
 	<tstamp>
@@ -557,6 +557,7 @@
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx" />
+			<property name="jmeter.result.dir" value="${reports}/jmeter" />
 			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${local_date}.jtl" />
 			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${local_date}.html" />
 		</jmeter>

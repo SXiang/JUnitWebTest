@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.Secutiry.HTTP" enabled="true">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.Security.HTTP" enabled="true">
       <stringProp name="TestPlan.comments">Controller HTTP Call Security Testing</stringProp>
       <boolProp name="TestPlan.functional_mode">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
@@ -3568,7 +3568,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">C:\QAAutomationProgram\jmeter\report\resultTable.csv</stringProp>
+        <stringProp name="filename">${__P(jmeter.result.dir)}/resultTable.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatGraphVisualizer" testclass="ResultCollector" testname="Aggregate Graph" enabled="true">
@@ -3602,7 +3602,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\sxiang\dev\JMeterTest\Surveyor\Controller\result\httpTestResult.csv</stringProp>
+        <stringProp name="filename">${__P(jmeter.result.dir)}/resultTable.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
