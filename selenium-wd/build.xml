@@ -533,13 +533,12 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/LoginPageTest.class" />
+					<include name="**/ManageLocationsPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
-
 	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">

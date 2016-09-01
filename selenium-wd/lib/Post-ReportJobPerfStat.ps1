@@ -55,13 +55,14 @@ param
 
 $libFolder = "selenium-wd\lib"
 
+. $BuildWorkingDir\$libFolder\Execute-WithRetry.ps1
 . $BuildWorkingDir\$libFolder\Reporting-CommonFunctions.ps1
 
 # ------------------------------------------------------------
 # Post run results code starts from here
 # ------------------------------------------------------------
 
-$authToken = Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl
+$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
 
 # Post perf stat info to API/PerfStatReportJobs url
 $reportJobPerfStatApiUrl = "api/PerfStatReportJobs"
