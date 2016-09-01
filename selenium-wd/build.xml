@@ -539,7 +539,6 @@
 			</batchtest>
 		</junit>
 	</target>
-
 	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">

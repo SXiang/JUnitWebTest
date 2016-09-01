@@ -21,6 +21,7 @@ param
 
 $libFolder = "selenium-wd\lib"
 
+. $BuildWorkingDir\$libFolder\Execute-WithRetry.ps1
 . $BuildWorkingDir\$libFolder\Reporting-CommonFunctions.ps1
 
 [String] $HtmlAgilityDllPath = "$BuildWorkingDir\$libFolder\HtmlAgilityPack.dll"
@@ -29,7 +30,7 @@ $libFolder = "selenium-wd\lib"
 # Post run results code starts from here
 # ------------------------------------------------------------
 
-$authToken = Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl
+$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
 
 # Post run result to API/RunResults url
 $runResultPostApiUrl = "api/RunResults"
