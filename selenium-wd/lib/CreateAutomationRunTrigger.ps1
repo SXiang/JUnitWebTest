@@ -8,7 +8,7 @@
 #        -gridHost "10.10.3.54" `
 #        -gridPlatform "WINDOWS" `
 #        -gridPort "4444" `
-#        -testTarget "testSanity" `
+#        -testTarget "testsanity" `
 #        -emailTo "spulikkal@picarro.com" `
 #        -runFriendlyName "SP TestRun 01" `
 #        -triggeredBy "Shirish Pulikkal"
