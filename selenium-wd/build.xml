@@ -372,7 +372,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -533,8 +533,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ActionsExecutionDriver.class" />
+					<include name="**/SurveyViewPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
