@@ -48,7 +48,7 @@ public class LoginPage extends BasePage {
 	 */
 	public LoginPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
-		Log.info("\nThe Login Page URL is: " + this.strPageURL);
+		Log.info("The Login Page URL is: " + this.strPageURL);
 	}
 
 	private void handleEULA() {

@@ -73,13 +73,14 @@ public class SurveyorBaseTest {
 		protected void failed(Throwable e, Description description) {
 			SurveyorBaseTest.reportTestLogMessage();			
 			screenCapture.takeScreenshot(driver);
-			Log.error("Exception: "+e+" Description: "+description);
+			Log.error("_FAIL_ Exception: "+e);
 			SurveyorBaseTest.reportTestFailed(e);
 			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
+			 Log.info("_PASS_ ");
 			 SurveyorBaseTest.reportTestSucceeded();
 			 postTestMethodProcessing();
 		}
@@ -101,7 +102,7 @@ public class SurveyorBaseTest {
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
 		ExtentReports report = getExtentReport(className);
-		setExtentTest(report.startTest(methodName));
+		setExtentTest(report.startTest(methodName), className);
 		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 		getExtentTest().log(LogStatus.INFO, firstLogLine);
 		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
@@ -140,9 +141,9 @@ public class SurveyorBaseTest {
 		return test;
 	}
 
-	private static void setExtentTest(ExtentTest test) {
+	private static void setExtentTest(ExtentTest test, String className) {
 		SurveyorBaseTest.test = test;
-		TestContext.INSTANCE.setExtentTest(test);
+		TestContext.INSTANCE.setExtentTest(test,className);
 	}
 
 	/**
