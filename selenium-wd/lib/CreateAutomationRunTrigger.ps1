@@ -15,29 +15,29 @@
 
 param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $BuildWorkingDir = "C:\Repositories\surveyor-qa",                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
+  [Parameter(Mandatory=$true)]
+  [String] $BuildWorkingDir,                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
 
-  [Parameter(Mandatory=$false)]
-  [String] $AutomationReportingAPIBaseUrl = "http://localhost:63087",         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
+  [Parameter(Mandatory=$true)]
+  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
 
-  [Parameter(Mandatory=$false)]
-  [String] $teamCityBuildConfigId = "Surveyor_2_AutoTriggeredAutomationRunSqaSeleniumRunSurveyorQaMaster_01",
+  [Parameter(Mandatory=$true)]
+  [String] $teamCityBuildConfigId,
 
-  [Parameter(Mandatory=$false)]
-  [int] $environmentId = 1,
+  [Parameter(Mandatory=$true)]
+  [int] $environmentId,
 
-  [Parameter(Mandatory=$false)]
-  [String] $testTarget = "testsanity",
+  [Parameter(Mandatory=$true)]
+  [String] $testTarget,
 
-  [Parameter(Mandatory=$false)]
-  [String] $emailTo = "spulikkal@picarro.com",
+  [Parameter(Mandatory=$true)]
+  [String] $emailTo,
 
-  [Parameter(Mandatory=$false)]
-  [String] $runFriendlyName = "Test Sanity Run",
+  [Parameter(Mandatory=$true)]
+  [String] $runFriendlyName,
 
-  [Parameter(Mandatory=$false)]
-  [String] $triggeredBy = "SPulikkal",
+  [Parameter(Mandatory=$true)]
+  [String] $triggeredBy,
 
   [Parameter(Mandatory=$false)]
   [String] $gridHost,
