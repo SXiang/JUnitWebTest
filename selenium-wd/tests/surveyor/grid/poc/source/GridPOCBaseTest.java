@@ -292,9 +292,9 @@ public class GridPOCBaseTest {
 		testSetupThreadLocal.set(tstSetup);
 	}
 
-	private static void setExtentTest(ExtentTest test) {
+	private static void setExtentTest(ExtentTest test, String className) {
 		GridPOCBaseTest.extentTestThreadLocal.set(test);
-		TestContext.INSTANCE.setExtentTest(test);
+		TestContext.INSTANCE.setExtentTest(test, className);
 	}
 
 	private static ExtentReports getExtentReport(String className) {
@@ -316,7 +316,7 @@ public class GridPOCBaseTest {
 
 	protected static void reportTestStarting(String className, String methodName, String firstLogLine) {
 		ExtentReports report = getExtentReport(className);
-		setExtentTest(report.startTest(methodName));
+		setExtentTest(report.startTest(methodName), className);
 		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 		getExtentTest().log(LogStatus.INFO, firstLogLine);
 		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 

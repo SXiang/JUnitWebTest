@@ -12,22 +12,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
@@ -36,16 +31,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.runner.Description;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 
 import com.relevantcodes.extentreports.DisplayOrder;
@@ -169,6 +156,7 @@ public class TestSetup {
 	private boolean automationReportingApiEnabled;
 	
 	private static boolean parallelBuildEnabled;
+
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
 	
@@ -599,7 +587,7 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-
+			
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
