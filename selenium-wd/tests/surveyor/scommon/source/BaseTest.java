@@ -66,13 +66,11 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			BaseTest.reportTestFailed(e);
-			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			 BaseTest.reportTestSucceeded();
-			 postTestMethodProcessing();
 		}
 	};
 
@@ -187,9 +185,7 @@ public class BaseTest {
 		}
 	}
 	
-	public void postTestMethodProcessing() {
-	}
-	
+
 	protected boolean isValidRunAsUser(String username, String functionName) {
 		String runAsUsers = DataAnnotations.getRunAsUsers(getClass(), functionName);
 		List<String> listUsers = RegexUtility.split(runAsUsers, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
