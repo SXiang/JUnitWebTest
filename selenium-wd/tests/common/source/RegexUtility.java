@@ -217,8 +217,6 @@ public class RegexUtility {
 	}
 	
 	public static String getValidFileName(String inputString){
-//		inputString = removeSpecialChars(inputString);
-//		inputString = replaceSpecialChars(inputString);
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_NOT_METHODNAME_CHARACTERS, "");
 	}
 	/**

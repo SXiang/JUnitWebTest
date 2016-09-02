@@ -20,7 +20,7 @@ import surveyor.scommon.source.SurveyorBaseTest;
  * 
  * @author spulikkal
  */
-public class ActionsExecutionEngine extends BaseTest implements IMethodObserver{
+public class ActionsExecutionEngine implements IMethodObserver{
 	private static final String CLASS_NAME = "ActionsExecutionDriver";
 	private static final String DATA_FOLDER = "data";
 	private static final String TEST_CASES_XLSX = "TestCases.xlsx";
@@ -76,9 +76,7 @@ public class ActionsExecutionEngine extends BaseTest implements IMethodObserver{
 		    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 		    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 		    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-
-		    			testCaseName = RegexUtility.getValidFileName(testCaseName);
-		    			
+		    			testCaseName = RegexUtility.getValidFileName(testCaseName);		    			
 		    			Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
 		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
