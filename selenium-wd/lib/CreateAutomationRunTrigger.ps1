@@ -60,7 +60,12 @@ $runTriggerPostApiUrl = "api/TriggerAutomationRun"
 # Post entry to AutomationRunTrigger table. (This also sets 'env.RunUUID' in CI build config)
 # ----------------------------------------------------------------------------------------------
 
-$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
+try {
+	$authToken = Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl
+} catch {
+    # retry on failure.
+	$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
+}
 
 $postContentType = "application/json; charset=UTF-8"
 $Headers = @{
