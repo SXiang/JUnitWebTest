@@ -111,7 +111,7 @@ public class ActionsExecutionEngine extends BaseTest implements IMethodObserver{
 		TestSetup.stopChromeProcesses();
 		TestSetup.deleteAnalyzerLocalDB3();
 		SurveyorBaseTest.initializeTestObjects();
-		BaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
+		BaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + "_" + testCaseName, testCaseID + " : " + testCaseName);
 	}
 
 	private void afterTestTearDown() throws Exception {
