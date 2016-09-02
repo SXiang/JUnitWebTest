@@ -192,9 +192,7 @@ public class ActionsExecutionEngine extends BaseTest implements IMethodObserver{
 	    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 	    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-
 	    			testCaseName = RegexUtility.getValidFileName(testCaseName);
-	    			
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
 	    				Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
