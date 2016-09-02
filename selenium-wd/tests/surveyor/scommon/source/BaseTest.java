@@ -65,16 +65,12 @@ public class BaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			BaseTest.reportTestLogMessage();			
-			screenCapture.takeScreenshot(driver);
-			Log.error("_FAIL_ Exception: "+e);
 			BaseTest.reportTestFailed(e);
 			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 Log.info("_PASS_ ");
 			 BaseTest.reportTestSucceeded();
 			 postTestMethodProcessing();
 		}
@@ -145,6 +141,9 @@ public class BaseTest {
 		}
 		
 		public static void reportTestFailed(Throwable e) {
+			BaseTest.reportTestLogMessage();			
+			screenCapture.takeScreenshot(driver);
+			Log.error("_FAIL_ Exception: "+e);
 			TestContext.INSTANCE.setTestStatus("FAIL");
 			getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 		}
@@ -154,6 +153,7 @@ public class BaseTest {
 		}
 
 		public static void reportTestSucceeded() {
+			Log.info("_PASS_ ");
 			getExtentTest().log(LogStatus.PASS, "PASSED");
 		}
 

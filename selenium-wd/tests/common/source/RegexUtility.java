@@ -30,7 +30,7 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_EXTRACT_EVERYTHING = "(.*?)";
 	public static final String REGEX_PATTERN_SPACES = "\\s+";
 	public static final String REGEX_PATTERN_NOT_ALPHANUMERIC = "[^:,.)(/\\&\\s\\|\\.\\r\\n a-zA-Z0-9_-]";
-	public static final String REGEX_PATTEN_SPECIAL_CHARACTERS = "[<>:/?*\"|\\\\]";
+	public static final String REGEX_PATTEN_SPECIAL_CHARACTERS = "[\\-<>:/?*\"|\\\\]";
 
 	public static final String FIELD_NOTE_LINE_REGEX_PATTERN = "^\\d+\\. .*";
 	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^\\? \\d+ .*";
@@ -216,6 +216,11 @@ public class RegexUtility {
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 	}
 	
+	public static String getValidFileName(String inputString){
+		inputString = replaceSpecialChars(inputString);
+		inputString = removeSpecialChars(inputString);
+		return inputString;
+	}
 	/**
 	 * Compare strings by equals or matches
 	 * @param line
