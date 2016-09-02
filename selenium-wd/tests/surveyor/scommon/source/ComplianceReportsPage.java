@@ -2723,11 +2723,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
 			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim());
@@ -2759,7 +2759,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info(String.format("LISA Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.", reportListObj.toString()));
 				return false;
 			}
 		}
