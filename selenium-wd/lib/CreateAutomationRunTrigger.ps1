@@ -60,7 +60,12 @@ $runTriggerPostApiUrl = "api/TriggerAutomationRun"
 # Post entry to AutomationRunTrigger table. (This also sets 'env.RunUUID' in CI build config)
 # ----------------------------------------------------------------------------------------------
 
-$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
+try {
+	$authToken = Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl
+} catch {
+    # retry on failure.
+	$authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
+}
 
 $postContentType = "application/json; charset=UTF-8"
 $Headers = @{
@@ -100,5 +105,15 @@ if ($PSBoundParameters.ContainsKey("gridHost") -and $PSBoundParameters.ContainsK
 $jsonBody = (ConvertTo-Json $Body)
 Write-Host "Posting automation run trigger to $AutomationReportingAPIBaseUrl/$runTriggerPostApiUrl ..." 
 $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$runTriggerPostApiUrl" -Headers $Headers -Method POST -Body $jsonBody -ContentType $postContentType
-Write-Host "Posting automation run trigger successful!"
+$json = $response.Content | ConvertFrom-Json
+Write-Host "Posting automation run trigger successful! Response -> $json"
+
+$runUUID = $json.Id
+
+# set build parameter to be visible in subsequent build steps using TeamCity Service Message Processing. 
+# REFERENCE - https://confluence.jetbrains.com/display/TCD65/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-AddingorChangingaBuildParameterfromaBuildStep
+Write-Host "Setting build parameter [runUUID='$runUUID'] to be visible in subsequent build steps"
+echo "##teamcity[setParameter name='env.RunUUID' value='$runUUID']"
+
+
 

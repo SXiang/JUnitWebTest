@@ -19,6 +19,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseTest;
 
 public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageActionTest {
 

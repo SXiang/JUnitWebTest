@@ -386,7 +386,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 				</fileset>
 			</batchtest>
@@ -603,11 +603,8 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
-<<<<<<< HEAD
 			<sysproperty key="maxParallelTestThreads" value="5" />
-=======
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
->>>>>>> master
 			<classpath>
 				<pathelement path="${build}" />
 				<fileset dir="${basedir}/lib">
@@ -618,12 +615,11 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-<<<<<<< HEAD
 					<include name="**/ComplianceReportsPageLoadTest.class" />
-=======
 					<include name="**/LoginPageTest.class" />
 					<include name="**/ManageLocationsPageTest.class" />
->>>>>>> master
+					<include name="**/ActionsExecutionDriver.class" />
+					<include name="**/SurveyViewPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

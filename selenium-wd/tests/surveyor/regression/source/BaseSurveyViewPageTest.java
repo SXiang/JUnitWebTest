@@ -68,8 +68,6 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		disposeProcesses();
-		
 		// Initialization needed at class level for automation reports.
 		initializePageActions();
 	}
@@ -79,11 +77,11 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 		try {
 			initializePageActions();
 			
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			surveyViewPageAction = new SurveyViewPageActions(driver, baseURL,testSetup);
+			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(), getTestSetup());
+			surveyViewPageAction = new SurveyViewPageActions(driver, getBaseURL(),getTestSetup());
 
 			// Initialize page objects.
-			surveyViewPage = new SurveyViewPage(driver, testSetup, baseURL);
+			surveyViewPage = new SurveyViewPage(driver, getTestSetup(), getBaseURL());
 			PageFactory.initElements(driver, surveyViewPage);
 
 		} catch (Exception e) {
@@ -91,14 +89,4 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 		}		
 	}
 	
-	@After
-    public void afterTestMethod() {
-		try {
-			afterTest();
-			
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

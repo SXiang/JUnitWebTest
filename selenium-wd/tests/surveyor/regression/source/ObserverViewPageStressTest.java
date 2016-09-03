@@ -44,12 +44,6 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 	private static DriverViewPage driverViewPage;
 	private static ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 
-
-	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		disposeProcesses();
-	}
-
 	@Before
 	public void beforeTestMethod() {
 		try {
@@ -57,20 +51,10 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 			initializePageActions();
 			initializeObserverViewPageActionList();
 
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(), getTestSetup());
+			driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
 			PageFactory.initElements(driver, driverViewPage);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@After
-	public void afterTestMethod() {
-		try {
-			afterTest();
-			disposeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

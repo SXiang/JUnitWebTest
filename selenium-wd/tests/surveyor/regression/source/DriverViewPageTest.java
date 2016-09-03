@@ -61,44 +61,28 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		super();
 	}
 
-	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		disposeProcesses();
-	}
-
 	@Before
 	public void beforeTestMethod() {
 		try {
 			initializePageObjects();
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL,testSetup);
+			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(),getTestSetup());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
 
 	private void initializePageObjects() {
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
+		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
 		PageFactory.initElements(driver, driverViewPage);
 
 		// Additional page objects.
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageCustomersPage);
 		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
+		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
 		PageFactory.initElements(driver,  manageUsersPage);
 	}
 
-	@After
-    public void afterTestMethod() {
-		try {
-			afterTest();		
-			
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Test Case ID: TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin
 	 * Script: -  	
@@ -121,8 +105,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() throws Exception {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		testEnvironmentAction.startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
 
@@ -134,7 +118,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 1.
 		assertTrue(driverViewPage.isPositionButtonGreen());
@@ -151,7 +135,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on DISPLAY button");
 		driverViewPage.clickDisplayButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 3.
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
@@ -165,7 +149,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on MAP button");
 		driverViewPage.clickMapButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Verify 4.
 		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
@@ -173,7 +157,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on GIS button");
 		driverViewPage.clickGisButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 5.
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
@@ -189,7 +173,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on STATUS button");
 		driverViewPage.clickStatusButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Verify 6.
 		assertTrue(driverViewPage.isStatusButtonRed());
@@ -223,8 +207,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() throws Exception {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		testEnvironmentAction.startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
 		
@@ -236,7 +220,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Verify 1.
 		assertTrue(driverViewPage.isPositionButtonGreen());
@@ -254,18 +238,18 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
 		
 		// Start Driving Survey.
-		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1094";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1094";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
 		// Verify Isotopic Capture and Ref Bottle Measurement buttons ARE displayed.
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
 		assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
 
 		Log.info("Clicking on DISPLAY button");
 		driverViewPage.clickDisplayButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Verify 3.
 		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
@@ -279,7 +263,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on MAP button");
 		driverViewPage.clickMapButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Verify 4.
 		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
@@ -287,7 +271,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on GIS button");
 		driverViewPage.clickGisButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 5.
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
@@ -306,7 +290,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on STATUS button to expand gauges");
 		driverViewPage.clickStatusButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 6.
 		// TODO: Check may not be accurate anymore.
@@ -341,8 +325,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -352,18 +336,18 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// 1., 2., 3., 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
-		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1097";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1097";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 		
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Open Header box and check the survey information.
 		driverViewPage.clickHeaderInfoBox();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		Log.info("MODE:[" + driverViewPage.getSurveyModeLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyModeLabelText().equals(SURVEY_INFO_MODE_STANDARD));
@@ -396,7 +380,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// 7.
 		assertTrue(driverViewPage.getStopDrivingSurveyButton().isDisplayed());
@@ -436,8 +420,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
@@ -445,35 +429,35 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// 3.
 		assertTrue(driverViewPage.getStartSurveyButton().isDisplayed());
 		assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
 		
 		driverViewPage.clickStartSurveyButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// 1., 2. 4.
 		// Start Driving Survey. Survey Time: Day, Solar Radiation: Strong, Wind: Light, Survey Type: Operator 
-		String tag = testSetup.getFixedSizePseudoRandomString(10) + "_TC1098";
+		String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1098";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Strong, Wind.Light, CloudCover.LessThan50, SurveyType.Operator);
 
 		// 5. "Car icon is displayed in red color. Breadcrumb will  be displayed in blue color" <-- [Check feasibility in Open Layer]
 		
 		// Open Header box and check the survey information.
 		driverViewPage.clickMapButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		driverViewPage.toggleMapSwitch(MapSwitchType.Map, true /*turnOn*/);
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// 6.
 		driverViewPage.verifyLoadedMap(MapSwitchType.Map);
 		
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// 7.
 		assertTrue(driverViewPage.getStopDrivingSurveyButton().isDisplayed());
@@ -482,7 +466,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		Log.info("Clicking on STOP SURVEY");
 		driverViewPage.getStopDrivingSurveyButton().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		Log.info("Waiting on UI unblock.");
 		driverViewPage.waitForUIUnBlock();
@@ -490,7 +474,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// 8. "Only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color." <-- [Check Feasibility]
 		Log.info("Click Header Info Box.");
 		driverViewPage.clickHeaderInfoBox();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// 8.
 		Log.info("SURVEY INACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
@@ -517,7 +501,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
+		loginPageAction.login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -567,7 +551,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC302_SimulatorTest_DriverViewUserSeesLastTagValue");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(testSetup.getLoginUser() + ":" + testSetup.getLoginPwd(), NOTSET);
+		loginPageAction.login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -674,7 +658,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// goto home by clicking on picarro logo on driver view page.
 		driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
 		
-		homePage.waitForPageLoad();
+		getHomePage().waitForPageLoad();
 		
 		// go back to driver view page using browser back button.
 		BrowserCommands.goBack();
@@ -1050,13 +1034,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	// Partially automated.
 	@Test
 	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() throws Exception {
-		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String userName = SQACUS + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 		
 		Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1064,8 +1048,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 		
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
@@ -1146,13 +1130,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 **/
 	@Test
 	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() {
-		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
+		String userName = SQACUS + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 		
 		Log.info("\nRunning TC1213_SimulatorTest_NewDriverNavigatedToHomePage - Test Description: Standard Survey as new driver user");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1160,10 +1144,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, USERPASSWORD);
 		
-		assertTrue(homePage.checkIfAtHomePage());
+		assertTrue(getHomePage().checkIfAtHomePage());
 	}
 
 	/**
@@ -1181,8 +1165,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPage.open();
 
-		loginPage.waitForPageLoad();
-		assertTrue(loginPage.checkIfAtLoginPage());
+		getLoginPage().waitForPageLoad();
+		assertTrue(getLoginPage().checkIfAtLoginPage());
 	}
 	
 	/**
