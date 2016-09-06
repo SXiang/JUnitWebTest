@@ -34,10 +34,10 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 	}
 
 	private static void initializePageObjects() {
-		eqReportsPage = new EqReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, eqReportsPage);
-		latLongSelectionControl = new LatLongSelectionControl(driver);
-		PageFactory.initElements(driver, latLongSelectionControl);
+		eqReportsPage = new EqReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), eqReportsPage);
+		latLongSelectionControl = new LatLongSelectionControl(getDriver());
+		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
 
 	/**

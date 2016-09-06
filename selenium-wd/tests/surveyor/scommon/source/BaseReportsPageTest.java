@@ -30,7 +30,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
 		setReportsPage(reportsBasePage);
-		PageFactory.initElements(driver, reportsBasePage);
+		PageFactory.initElements(getDriver(), reportsBasePage);
 	}
 
 	public BaseReportsPageTest() {

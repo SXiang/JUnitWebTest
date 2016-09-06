@@ -40,12 +40,12 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
-		homePage = new HomePage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, homePage);
-		eulaPage = new EULAPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, eulaPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		homePage = new HomePage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), homePage);
+		eulaPage = new EULAPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), eulaPage);
 	}
 
 	@Test

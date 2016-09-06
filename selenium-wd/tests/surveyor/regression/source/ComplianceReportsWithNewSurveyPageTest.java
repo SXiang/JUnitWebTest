@@ -44,9 +44,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
 
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());;
-		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver,  measurementSessionsPage);
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());;
+		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(),  measurementSessionsPage);
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
@@ -70,8 +70,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 

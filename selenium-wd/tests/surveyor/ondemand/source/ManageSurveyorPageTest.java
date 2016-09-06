@@ -29,8 +29,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;	
 
 	public ManageSurveyorPageTest() {
-		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageSurveyorPage);		
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);		
 	}
 
 	/**

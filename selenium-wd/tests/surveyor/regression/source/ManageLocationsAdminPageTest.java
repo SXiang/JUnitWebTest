@@ -67,35 +67,35 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageLocationsAdminPageTest() {
-		homePage = new HomePage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, homePage);
+		homePage = new HomePage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), homePage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(),
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver,
+		manageLocationsAdminPage = new ManageLocationsAdminPage(getDriver(),
 				getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsAdminPage);
+		PageFactory.initElements(getDriver(), manageLocationsAdminPage);
 
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(),
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageCustomersPage);
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, getBaseURL(),
+		manageUsersAdminPage = new ManageUsersAdminPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageUsersAdminPage);
+		PageFactory.initElements(getDriver(), manageUsersAdminPage);
 
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver,
+		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(getDriver(),
 				getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, manageRefGasBottlesAdminPage);
+		PageFactory.initElements(getDriver(), manageRefGasBottlesAdminPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, getBaseURL(),
+		manageSurveyorAdminPage = new ManageSurveyorAdminPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorAdminPage);
+		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
 	}
 
 	/**
@@ -493,7 +493,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageSurveyorAdminPage.clickOnCustomerFirstEditSurveyorBtn();
 		manageSurveyorAdminPage.waitForEditPageLoad();
 		manageSurveyorAdminPage.getBtnCancel().click();
@@ -501,7 +501,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				curURL));
 
 		manageUsersAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageUsersAdminPage.getBtnAddNewUser().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
@@ -514,7 +514,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				.equalsIgnoreCase(curURL));
 
 		manageLocationsAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageLocationsAdminPage.clickOnFirstEditLocationBtn();
 		manageLocationsAdminPage.waitForEditPageLoad();
 		manageLocationsAdminPage.getBtnCancel().click();
@@ -522,7 +522,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				curURL));
 
 		manageRefGasBottlesAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageRefGasBottlesAdminPage.getBtnAddNewRefGasBottle().click();
 		manageRefGasBottlesAdminPage.waitForNewPageLoad();
 		manageRefGasBottlesAdminPage.getBtnCancel().click();

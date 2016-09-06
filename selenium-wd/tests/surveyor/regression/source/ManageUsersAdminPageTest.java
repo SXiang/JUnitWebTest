@@ -32,9 +32,9 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageUsersAdminPageTest() {
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, getBaseURL(),
+		manageUsersAdminPage = new ManageUsersAdminPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageUsersAdminPage);
+		PageFactory.initElements(getDriver(), manageUsersAdminPage);
 	}
 
 	/**

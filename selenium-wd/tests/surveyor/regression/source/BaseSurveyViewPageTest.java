@@ -77,12 +77,12 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 		try {
 			initializePageActions();
 			
-			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(), getTestSetup());
-			surveyViewPageAction = new SurveyViewPageActions(driver, getBaseURL(),getTestSetup());
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
+			surveyViewPageAction = new SurveyViewPageActions(getDriver(), getBaseURL(),getTestSetup());
 
 			// Initialize page objects.
-			surveyViewPage = new SurveyViewPage(driver, getTestSetup(), getBaseURL());
-			PageFactory.initElements(driver, surveyViewPage);
+			surveyViewPage = new SurveyViewPage(getDriver(), getTestSetup(), getBaseURL());
+			PageFactory.initElements(getDriver(), surveyViewPage);
 
 		} catch (Exception e) {
 			e.printStackTrace();

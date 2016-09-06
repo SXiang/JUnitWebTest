@@ -61,8 +61,8 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	}
 
 	private static void initializePageObjects() {
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, complianceReportsPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	/**
@@ -128,8 +128,8 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	
 	private void isSurveyDeleted(List<String> tagList) throws Exception{
 		String tagName=tagList.get(0);
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), msp);
 		msp.open();
 		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey));
 		msp.open();

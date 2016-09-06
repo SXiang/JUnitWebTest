@@ -50,20 +50,20 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageCustomersPage);
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
-		homePage = new HomePage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, homePage);
-		preferencesPage = new PreferencesPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, preferencesPage);
-		fleetMapPage = new FleetMapPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, fleetMapPage);
-		surveyorPage = new SurveyorSystemsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, surveyorPage);
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, complianceReportsPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		homePage = new HomePage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), homePage);
+		preferencesPage = new PreferencesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), preferencesPage);
+		fleetMapPage = new FleetMapPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), fleetMapPage);
+		surveyorPage = new SurveyorSystemsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), surveyorPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	/**
@@ -168,8 +168,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLESU, location);
 
-		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageCustomersPage);
+		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 
@@ -879,8 +879,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		ManageUsersPage manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
+		ManageUsersPage manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
 		Log.info("Creating Picarro support user with username-" + userName);
 

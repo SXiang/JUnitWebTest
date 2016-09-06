@@ -27,8 +27,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	
 	public ManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);		
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);		
 	}
 
 	/**

@@ -51,9 +51,9 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 			initializePageActions();
 			initializeObserverViewPageActionList();
 
-			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(), getTestSetup());
-			driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
-			PageFactory.initElements(driver, driverViewPage);
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
+			driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+			PageFactory.initElements(getDriver(), driverViewPage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,7 +65,7 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
 			// Initialize page objects.
 			observerViewPageList.add(new ObserverViewPage(driverList.get(i), testSetupList.get(i), baseURLList.get(i)));
-			PageFactory.initElements(driver, observerViewPageList.get(i));
+			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {

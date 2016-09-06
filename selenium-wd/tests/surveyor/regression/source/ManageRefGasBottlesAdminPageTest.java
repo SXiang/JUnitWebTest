@@ -43,8 +43,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupManageRefGasBottlesAdminPageTest () {
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver,  manageRefGasBottlesAdminPage);
+		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(),  manageRefGasBottlesAdminPage);
 	}
 
 	/**

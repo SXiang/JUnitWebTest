@@ -63,23 +63,23 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static PreferencesPage preferencesPage;
 
 	public PageObjectVerificationTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, complianceReportsPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, driverViewPage);
+		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), driverViewPage);
 
-		latLongSelectionControl = new LatLongSelectionControl(driver);
-		PageFactory.initElements(driver, latLongSelectionControl);
+		latLongSelectionControl = new LatLongSelectionControl(getDriver());
+		PageFactory.initElements(getDriver(), latLongSelectionControl);
 
-		eqReportsPage = new EqReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, eqReportsPage);
+		eqReportsPage = new EqReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), eqReportsPage);
 
-		preferencesPage = new PreferencesPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, preferencesPage);
+		preferencesPage = new PreferencesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), preferencesPage);
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Let the survey run for a few seconds.
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check car icon shown is RED
-		OLMapUtility mapUtility = new OLMapUtility(this.driver);
+		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 		assertTrue(mapUtility.isCrossHairIconShownOnMap(IconColor.Red));
 
 		Log.info("Clicking on MODE button");
@@ -325,7 +325,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Let the survey run for a few seconds.
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		// check breadcrumb color shown is BLUE
-		OLMapUtility mapUtility = new OLMapUtility(this.driver);
+		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 		assertTrue(mapUtility.isBreadcrumbShownOnMap(BreadcrumbColor.Blue));
 
 		Log.info("Clicking on MODE button");
@@ -428,7 +428,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		TestSetup.stopReplay();
 
 		// Call the various OLMapUtility methods.
-		OLMapUtility mapUtility = new OLMapUtility(driver);
+		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 
 		String mapCanvasXPath = "//*[@id='map']/div/canvas";
 		boolean clickFirstIndicationOnMap = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);

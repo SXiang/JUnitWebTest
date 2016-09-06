@@ -54,8 +54,8 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupReferenceGasReportsPageTest() {
-		referenceGasReportsPage = new ReferenceGasReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, referenceGasReportsPage);
+		referenceGasReportsPage = new ReferenceGasReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), referenceGasReportsPage);
 	}
 
 	/**

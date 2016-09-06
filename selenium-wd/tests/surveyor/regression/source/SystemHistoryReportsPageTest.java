@@ -50,11 +50,11 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupSystemHistoryReportsPageTest() {
-		systemHistoryReportsPage = new SystemHistoryReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, systemHistoryReportsPage);
+		systemHistoryReportsPage = new SystemHistoryReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
 
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 	}
 
 	/**

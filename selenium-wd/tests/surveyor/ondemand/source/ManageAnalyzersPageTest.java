@@ -29,8 +29,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	
 	public ManageAnalyzersPageTest() {
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageAnalyzersPage);		
+		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);		
 	}
 	
 	/**

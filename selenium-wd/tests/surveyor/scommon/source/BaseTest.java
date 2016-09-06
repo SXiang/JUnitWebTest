@@ -3,6 +3,8 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -30,19 +32,22 @@ import surveyor.scommon.actions.PageActionsStore;
 
 public class BaseTest {
 
-	public static WebDriver driver;
-	private static TestSetup testSetup;
-	private static String baseURL;
+	private static List<WebDriver> spawnedWebDrivers = new ArrayList<WebDriver>();
+
+	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
+	private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
+	private static ThreadLocal<String> baseURLThreadLocal = new ThreadLocal<String>();
+
+	private static ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<LoginPage>();
+	private static ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<HomePage>();
+	
+	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>(); 
+	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
+	private static ThreadLocal<ScreenShotOnFailure> screenCaptureThreadLocal = new ThreadLocal<ScreenShotOnFailure>();
+
 	public static String screenShotsDir;
 	public static String screenShotsSubFolder = "screenshots/";
 	private static boolean debug;
-
-	private static LoginPage loginPage;
-	private static HomePage homePage;
-	
-	protected static ExtentTest test = null; 
-	protected static StringBuilder extentReportFile = null;
-	protected static ScreenShotOnFailure screenCapture;	
 
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
@@ -77,7 +82,21 @@ public class BaseTest {
 		setBaseURL(getTestSetup().getBaseUrl());		
 		setDebug(getTestSetup().isRunningDebug());
 		TestContext.INSTANCE.setTestSetup(getTestSetup());
-		driver = getTestSetup().getDriver();
+
+		WebDriver webDriver = getTestSetup().getDriver();
+		List<WebDriver> list = Collections.synchronizedList(spawnedWebDrivers);
+		synchronized (list) {
+			if (!list.contains(webDriver)) {
+				Log.info(String.format("[THREAD Debug Log]..Adding webdriver instance -'%s' to the LIST", webDriver));
+				list.add(webDriver);
+			}
+		}
+		
+		if (getDriver() == null) {
+			driverThreadLocal.set(webDriver);
+			getDriver().manage().deleteAllCookies();
+			Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
+		}
 
 		try {
 			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + getTestSetup().getTestReportCategory();
@@ -87,99 +106,107 @@ public class BaseTest {
 		
 		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
 		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
-		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
-				screenShotsDir, getTestSetup().isRemoteBrowser);
+		setScreenCapture(new ScreenShotOnFailure(screenShotsSubFolder, 
+				screenShotsDir, getTestSetup().isRemoteBrowser));
 		
-		driver.manage().deleteAllCookies();
+		getDriver().manage().deleteAllCookies();
 		
-		setLoginPage(new LoginPage(driver, getBaseURL(), getTestSetup()));
-		PageFactory.initElements(driver,  getLoginPage());
+		setLoginPage(new LoginPage(getDriver(), getBaseURL(), getTestSetup()));
+		PageFactory.initElements(getDriver(),  getLoginPage());
 		
-		setHomePage(new HomePage(driver, getBaseURL(), getTestSetup()));
-		PageFactory.initElements(driver,  getHomePage());
+		setHomePage(new HomePage(getDriver(), getBaseURL(), getTestSetup()));
+		PageFactory.initElements(getDriver(),  getHomePage());
 	}
 	
 	private static ExtentReports getExtentReport(String className) {
-		   ExtentReports extentReport = TestContext.INSTANCE.getReport();
-		   if (extentReport == null) {
-			   extentReportFile = new StringBuilder();
-			   extentReport = TestSetup.createExtentReport(className, extentReportFile);
-			   TestContext.INSTANCE.setReport(extentReport);
-		   }
-		   return extentReport;
+		Log.info(String.format("[THREAD Debug Log] - calling getExtentReport(className=[%s])", className));
+		ExtentReports extentReport = TestContext.INSTANCE.getReport();
+		if (extentReport == null) {
+		   StringBuilder outReportFilePath = new StringBuilder();
+		   extentReport = TestSetup.createExtentReport(className, outReportFilePath);
+		   extentReportFilePathThreadLocal.set(outReportFilePath);
+		   TestContext.INSTANCE.setReport(extentReport);
 		}
+		return extentReport;
+	}
 		
-		public static void reportTestStarting(Description description) {
-			reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
-		}
+	public static void reportTestStarting(Description description) {
+		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
+	}
 
-		public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-			ExtentReports report = getExtentReport(className);
-			setExtentTest(report.startTest(methodName), className);
-			getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
-			getExtentTest().log(LogStatus.INFO, firstLogLine);
-			getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
-					DateUtility.getCurrentDate()));
-		}
+	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
+		Log.info("[THREAD Debug Log] - calling reportTestStarting()");
+		ExtentReports report = getExtentReport(className);
+		setExtentTest(report.startTest(methodName), className);
+		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
+		getExtentTest().log(LogStatus.INFO, firstLogLine);
+		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+				DateUtility.getCurrentDate()));
+	}
 
-		public static void reportTestFinished(String className) {
-			ExtentReports report = getExtentReport(className);
-			getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
-					DateUtility.getCurrentDate()));
-			report.endTest(getExtentTest());
-			report.flush();
-		}
+	public static void reportTestFinished(String className) {
+		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
+		ExtentReports report = getExtentReport(className);
+		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+				DateUtility.getCurrentDate()));
+		report.endTest(getExtentTest());
+		report.flush();
+	}
 
-		public static void reportTestLogMessage() {
-			List<String> testMessage = TestContext.INSTANCE.getTestMessage();
-			for(String message:testMessage){
-				getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
-			}
+	public static void reportTestLogMessage() {
+		Log.info("[THREAD Debug Log] - calling reportTestLogMessage()");
+		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
+		for(String message:testMessage){
+			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
-		
-		public static void reportTestFailed(Throwable e) {
-			BaseTest.reportTestLogMessage();			
-			screenCapture.takeScreenshot(driver);
-			Log.error("_FAIL_ Exception: "+e);
-			TestContext.INSTANCE.setTestStatus("FAIL");
-			getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
-		}
+	}
+	
+	public static void reportTestFailed(Throwable e) {
+		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
+		BaseTest.reportTestLogMessage();			
+		getScreenCapture().takeScreenshot(getDriver());
+		Log.error("_FAIL_ Exception: "+e);
+		TestContext.INSTANCE.setTestStatus("FAIL");
+		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+	}
 
-		public static void reportTestError(String errorMsg) {
-			getExtentTest().log(LogStatus.ERROR, "ERROR: " + errorMsg);
-		}
+	public static void reportTestError(String errorMsg) {
+		Log.info("[THREAD Debug Log] - calling reportTestError()");
+		getExtentTest().log(LogStatus.ERROR, "ERROR: " + errorMsg);
+	}
 
-		public static void reportTestSucceeded() {
-			Log.info("_PASS_ ");
-			getExtentTest().log(LogStatus.PASS, "PASSED");
-		}
+	public static void reportTestSucceeded() {
+		Log.info("[THREAD Debug Log] - calling reportTestSucceeded()");
+		Log.info("_PASS_ ");
+		getExtentTest().log(LogStatus.PASS, "PASSED");
+	}
 
-		public static ExtentTest getExtentTest() {
-			return test;
-		}
-
-		private static void setExtentTest(ExtentTest test, String className) {
-			BaseTest.test = test;
-			TestContext.INSTANCE.setExtentTest(test, className);
-		}
+	protected static ExtentTest getExtentTest() {
+		return extentTestThreadLocal.get();
+	}
+	
+	private static void setExtentTest(ExtentTest test, String className) {
+		BaseTest.extentTestThreadLocal.set(test);
+		TestContext.INSTANCE.setExtentTest(test, className);
+	}
 
 	public static void logoutQuitDriver() {
-		if(driver == null){
+		if(getDriver() == null){
 			return;
 		}
-		if (!driver.getTitle().equalsIgnoreCase("Login")) {
+		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
 			getHomePage().open();
 			getHomePage().logout();
 		}
 		
-		driver.quit();
-		driver = null;
+		getDriver().quit();
+		setDriver(null);
 	}
 
 	public static void postResultsToAutomationAPI() {
-		if (extentReportFile!=null) {
+		if (getExtentReportFilePath()!=null) {
 			if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
-				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(extentReportFile.toString());
+				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(getExtentReportFilePath().toString());
 			}
 		}
 	}
@@ -221,36 +248,48 @@ public class BaseTest {
 	public void tearDown() throws Exception {
 	}
 
-	public static TestSetup getTestSetup() {
-		return testSetup;
+	protected static WebDriver getDriver() {
+		return driverThreadLocal.get();
 	}
 
-	public static void setTestSetup(TestSetup testSetup) {
-		BaseTest.testSetup = testSetup;
+	private static void setDriver(WebDriver webDriver) {
+		driverThreadLocal.set(webDriver);
 	}
 
-	public static String getBaseURL() {
-		return baseURL;
+	protected static TestSetup getTestSetup() {
+		return testSetupThreadLocal.get();
 	}
 
-	public static void setBaseURL(String baseURL) {
-		BaseTest.baseURL = baseURL;
+	protected static void setTestSetup(TestSetup tstSetup) {
+		testSetupThreadLocal.set(tstSetup);
 	}
 
-	public static LoginPage getLoginPage() {
-		return loginPage;
+	protected static String getBaseURL() {
+		return baseURLThreadLocal.get();
 	}
 
-	public static void setLoginPage(LoginPage loginPage) {
-		BaseTest.loginPage = loginPage;
+	protected static void setBaseURL(String baseUrl) {
+		baseURLThreadLocal.set(baseUrl);
 	}
 
-	public static HomePage getHomePage() {
-		return homePage;
+	protected static StringBuilder getExtentReportFilePath() {
+		return extentReportFilePathThreadLocal.get();
 	}
 
-	public static void setHomePage(HomePage homePage) {
-		BaseTest.homePage = homePage;
+	protected static LoginPage getLoginPage() {
+		return loginPageThreadLocal.get();
+	}
+
+	protected static void setLoginPage(LoginPage loginPg) {
+		loginPageThreadLocal.set(loginPg);
+	}
+
+	protected static HomePage getHomePage() {
+		return homePageThreadLocal.get();
+	}
+
+	protected static void setHomePage(HomePage homePg) {
+		homePageThreadLocal.set(homePg);
 	}
 
 	public static boolean isDebug() {
@@ -260,5 +299,12 @@ public class BaseTest {
 	public static void setDebug(boolean debug) {
 		BaseTest.debug = debug;
 	}
-	
+
+	public static ScreenShotOnFailure getScreenCapture() {
+		return screenCaptureThreadLocal.get();
+	}
+
+	public static void setScreenCapture(ScreenShotOnFailure screenCapture) {
+		BaseTest.screenCaptureThreadLocal.set(screenCapture);
+	}	
 }

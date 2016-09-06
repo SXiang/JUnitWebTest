@@ -122,8 +122,8 @@ public class BaseMapViewTest extends BaseTest{
 			setTestSetup(new TestSetup());
 		}
 		BaseTest.initializeTestObjects();
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 

@@ -33,14 +33,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 	}
 
 	/**

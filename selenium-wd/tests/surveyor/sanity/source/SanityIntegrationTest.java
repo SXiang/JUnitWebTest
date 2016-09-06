@@ -81,39 +81,39 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void SetupSanityIntegrationTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(),
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, complianceReportsPage);
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(),
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageCustomersPage);
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(),
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageSurveyorsPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorsPage);
+		manageSurveyorsPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageSurveyorsPage);
 
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(),
+		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageAnalyzersPage);
+		PageFactory.initElements(getDriver(), manageAnalyzersPage);
 
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver,
+		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(),
 				getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, manageRefGasBottlesPage);
+		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
 
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver,
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(),
 				getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
+		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 
-		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, getBaseURL(),
+		manageReleaseNotesPage = new ManageReleaseNotesPage(getDriver(), getBaseURL(),
 				getTestSetup());
-		PageFactory.initElements(driver, manageReleaseNotesPage);
+		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
 	}
 
 	@Test

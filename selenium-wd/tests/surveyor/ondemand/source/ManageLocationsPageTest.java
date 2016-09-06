@@ -28,8 +28,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	
 	public ManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageLocationsPage);		
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageLocationsPage);		
 	}
 	
 	/**

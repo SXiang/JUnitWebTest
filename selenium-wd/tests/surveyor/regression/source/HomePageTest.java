@@ -52,26 +52,26 @@ public class HomePageTest extends SurveyorBaseTest {
 	private static LoginPageActions loginPageAction;
 
 	public HomePageTest() {
-		setHomePage(new HomePage(driver, getBaseURL(), getTestSetup()));
-		PageFactory.initElements(driver, getHomePage());
+		setHomePage(new HomePage(getDriver(), getBaseURL(), getTestSetup()));
+		PageFactory.initElements(getDriver(), getHomePage());
 
-		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, measurementSessionsPage);
+		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
-		fleetMapPage = new FleetMapPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, fleetMapPage);
+		fleetMapPage = new FleetMapPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), fleetMapPage);
 
-		surveyorSystemsPage = new SurveyorSystemsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, surveyorSystemsPage);
+		surveyorSystemsPage = new SurveyorSystemsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), surveyorSystemsPage);
 
-		preferencesPage = new PreferencesPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, preferencesPage);
+		preferencesPage = new PreferencesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), preferencesPage);
 
-		surveyViewPage = new SurveyViewPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, surveyViewPage);
+		surveyViewPage = new SurveyViewPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), surveyViewPage);
 		
-		manageUsersPageAction = new ManageUsersPageActions(driver, getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		manageUsersPageAction = new ManageUsersPageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		getHomePage().getLinkSurveyors().click();
 		surveyorSystemsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + SURVEYORS));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + SURVEYORS));
 		assertTrue(getHomePage().getSubTitleSurveyors().isDisplayed() && getHomePage().getSubTitleSurveyors().getText().trim().equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Surveyors)));
 	}
 
@@ -179,7 +179,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		getHomePage().getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
 		assertTrue(getHomePage().getSubTitleDrivingSurveys().isDisplayed() && getHomePage().getSubTitleDrivingSurveys().getText().trim().equalsIgnoreCase("Driving Surveys"));
 	}
 
@@ -198,7 +198,7 @@ public class HomePageTest extends SurveyorBaseTest {
 		getHomePage().getLinkFleetMap().click();
 		fleetMapPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + FLEETMAP));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + FLEETMAP));
 	}
 
 	/**

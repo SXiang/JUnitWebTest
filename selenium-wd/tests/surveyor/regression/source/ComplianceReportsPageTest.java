@@ -100,7 +100,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	}
 
 	private static void initializePageObjects() {
-		initializePageObjects(new ComplianceReportsPage(driver, getBaseURL(), getTestSetup()));
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 	
 	private ComplianceReportsPage getComplianceReportsPage() {

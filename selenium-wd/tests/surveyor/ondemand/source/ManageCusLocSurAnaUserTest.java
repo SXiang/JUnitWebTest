@@ -60,20 +60,20 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	
 	public ManageCusLocSurAnaUserTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
 		
-		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageSurveyorPage);		
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);		
 		
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageAnalyzersPage);
+		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
 		
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageUsersPage);		
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageUsersPage);		
 	}
 
 	/**

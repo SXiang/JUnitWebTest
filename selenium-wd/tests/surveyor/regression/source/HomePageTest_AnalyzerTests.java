@@ -37,14 +37,14 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	private static DriverViewPage driverViewPage;
 
 	public HomePageTest_AnalyzerTests() {
-		setHomePage(new HomePage(driver, getBaseURL(), getTestSetup()));
-		PageFactory.initElements(driver, getHomePage());
+		setHomePage(new HomePage(getDriver(), getBaseURL(), getTestSetup()));
+		PageFactory.initElements(getDriver(), getHomePage());
 
-		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, measurementSessionsPage);
+		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
-		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, driverViewPage);
+		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), driverViewPage);
 	}
 
 

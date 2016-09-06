@@ -50,17 +50,17 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageSurveyorAdminPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsAdminPage);
+		manageLocationsAdminPage = new ManageLocationsAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsAdminPage);
 
-		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorPage);
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageSurveyorPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorAdminPage);
+		manageSurveyorAdminPage = new ManageSurveyorAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
 	}
 
 	/**

@@ -68,12 +68,12 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, getBaseURL(), getTestSetup());
-		manageUsersPageAction = new ManageUsersPageActions(driver, getBaseURL(), getTestSetup());
-		manageLocationPageAction = new ManageLocationPageActions(driver, getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPageAction = new ManageUsersPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationPageAction = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}

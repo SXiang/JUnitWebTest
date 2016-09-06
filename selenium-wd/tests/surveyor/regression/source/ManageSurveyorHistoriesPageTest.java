@@ -35,8 +35,8 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
+		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 	}
 
 	/**

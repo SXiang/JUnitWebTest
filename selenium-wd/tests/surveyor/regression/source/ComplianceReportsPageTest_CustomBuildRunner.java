@@ -62,7 +62,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
-		initializePageObjects(new ComplianceReportsPage(driver, getBaseURL(), getTestSetup()));
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();

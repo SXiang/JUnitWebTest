@@ -100,14 +100,14 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * Initializes the page action objects.
 	 */
 	protected static void initializePageActions() {
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageLocationsPage);
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver, manageUsersPage);
-		initializePageObjects(new ComplianceReportsPage(driver, getBaseURL(), getTestSetup()));
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 		testEnvironmentAction = new TestEnvironmentActions();
 	}
 

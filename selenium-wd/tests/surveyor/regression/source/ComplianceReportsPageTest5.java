@@ -47,11 +47,11 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
 
-		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
-		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver,  measurementSessionsPage);
+		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(),  measurementSessionsPage);
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
@@ -75,9 +75,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 		testEnvironmentAction = new TestEnvironmentActions();
 	}

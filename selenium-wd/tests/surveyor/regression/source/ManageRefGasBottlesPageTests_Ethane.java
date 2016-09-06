@@ -31,8 +31,8 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupManageRefGasBottlesPageTest() {
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver,  manageRefGasBottlesPage);
+		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
 	}
 
 

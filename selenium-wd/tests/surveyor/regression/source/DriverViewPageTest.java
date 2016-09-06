@@ -65,22 +65,22 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void beforeTestMethod() {
 		try {
 			initializePageObjects();
-			driverViewPageAction = new DriverViewPageActions(driver, getBaseURL(),getTestSetup());
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(),getTestSetup());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
 
 	private void initializePageObjects() {
-		driverViewPage = new DriverViewPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, driverViewPage);
+		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), driverViewPage);
 
 		// Additional page objects.
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageUsersPage = new ManageUsersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageUsersPage);
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageUsersPage);
 	}
 
 	/**
@@ -525,7 +525,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);			
 
 		// Verify browser is redirected to Home
-		assertTrue(driver.getCurrentUrl().contains(HomePage.STRURLPath));
+		assertTrue(getDriver().getCurrentUrl().contains(HomePage.STRURLPath));
 		
 		// TODO : This capability needs to be verified in Simulator.
 		//assertTrue(testEnvironmentAction.verifyAnalyzerIsShutdown(EMPTY, NOTSET));			

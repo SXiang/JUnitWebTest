@@ -37,8 +37,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupMeasurementSessionsPageTest() {
-		measurementSessionsPage = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, measurementSessionsPage);
+		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
@@ -147,15 +147,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		getHomePage().open();
 		assertTrue(getHomePage().checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), msp);
 
 		getHomePage().getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(msp.getStrPageURL()));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(msp.getStrPageURL()));
 
 		assertTrue(msp.getTagNameList(SQACUSDR).containsAll(strListTagCusDr));
 	}
@@ -183,8 +183,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		getHomePage().open();
 		assertTrue(getHomePage().checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, getTestSetup(), getBaseURL());
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		PageFactory.initElements(getDriver(), msp);
 
 		msp.open();
 

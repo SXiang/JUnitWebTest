@@ -82,7 +82,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
-		initializePageObjects(new ComplianceReportsPage(driver, getBaseURL(), getTestSetup()));
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 		createTestCaseMap();
 
 	}
@@ -227,13 +227,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
-		driver.navigate().refresh();
+		getDriver().navigate().refresh();
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVETHSTDTAG));
 
-		driver.navigate().refresh();
+		getDriver().navigate().refresh();
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVRRTAG));
 
-		driver.navigate().refresh();
+		getDriver().navigate().refresh();
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.RapidResponse, CUSDRVETHOPTAG));
 	}
 
@@ -277,7 +277,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Standard, SurveyModeFilter.Operator));
 
-		driver.navigate().refresh();
+		getDriver().navigate().refresh();
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.Operator));
 	}
 

@@ -36,17 +36,17 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageLocationsPage = new ManageLocationsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
 		
-		manageSurveyorPage = new ManageSurveyorPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageSurveyorPage);
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);
 		
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  manageAnalyzersPage);
+		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
 	}
 	
 	/**
@@ -352,9 +352,9 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);	
 		manageAnalyzersPage.open();
-		List<WebElement> addAnalyzerButton=driver.findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a"));
+		List<WebElement> addAnalyzerButton=getDriver().findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a"));
 		assertTrue(addAnalyzerButton.size()==0);
-		List<WebElement> editAnalyzerButton=driver.findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]"));
+		List<WebElement> editAnalyzerButton=getDriver().findElements(By.xpath("//*[@id='datatable']/tbody/tr[1]/td[7]/a[1]"));
 		assertTrue(editAnalyzerButton.size()==0);
 	
 	}

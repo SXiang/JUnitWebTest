@@ -43,8 +43,8 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(driver, getBaseURL(), getTestSetup());
-		PageFactory.initElements(driver,  complianceReportsPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  complianceReportsPage);
 		initializePageActions();
 	}
 
@@ -53,12 +53,12 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, getBaseURL(), getTestSetup());
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, getBaseURL(), getTestSetup());
-		manageUsersPageAction = new ManageUsersPageActions(driver, getBaseURL(), getTestSetup());
-		manageLocationPageAction = new ManageLocationPageActions(driver, getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(driver, getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, getBaseURL(), getTestSetup());
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPageAction = new ManageUsersPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationPageAction = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
