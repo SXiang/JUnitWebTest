@@ -9,6 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,10 @@ import common.source.Log;
 import common.source.BaseHelper;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -29,11 +33,35 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersAdminPage manageUsersAdminPage;
-
+	private static HomePage homePage;
+	private static LoginPage loginPage;
+	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageUsersAdminPageTest() {
-		manageUsersAdminPage = new ManageUsersAdminPage(getDriver(), getBaseURL(),
-				getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageUsersAdminPage = pageObjectFactory.getManageUsersAdminPage();
 		PageFactory.initElements(getDriver(), manageUsersAdminPage);
 	}
 
@@ -46,14 +74,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC438 - Customer Admin - add new user\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -63,10 +91,10 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				CUSUSERROLEDR));
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 	}
 
 	/**
@@ -78,14 +106,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC439 - Customer Admin - edit user\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -114,8 +142,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC440 - Customer specific user can change its password\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -125,18 +153,18 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
-		assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
 
 		manageUsersAdminPage.changeUserPassword(USERPASSWORD, USERPASSWORD
 				+ "1");
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		if (getLoginPage().loginNormalAs(userName, USERPASSWORD + "1") != null)
-			assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		if (loginPage.loginNormalAs(userName, USERPASSWORD + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
 		else
 			fail("\nTestcase TC440 - failed to login by the new password.\n");
 	}
@@ -150,14 +178,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC441 - Test Description: Customer Admin - Disabled User\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -172,8 +200,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 						Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(userName, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 	}
 
 	/**
@@ -187,14 +215,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addTestUser(userName, USERPASSWORD, USERPASSWORD);
@@ -215,14 +243,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC444 - Test Description: Add User - Password and Confirm Password values different\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName, USERPASSWORD,
@@ -238,14 +266,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		String userName2 = "rpitter@b.c";
 		Log.info("\nRunning - TC445 - Test Description: add user - invalid email address values\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser(userName1, USERPASSWORD,
@@ -265,14 +293,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC446 - Test Description: add user - blank required fields\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		assertTrue(manageUsersAdminPage.addTestUser("", USERPASSWORD,
@@ -297,14 +325,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC447 - Test Description: Admin can change role, timezone and location of existing user\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -330,14 +358,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ getTestSetup().getFixedSizePseudoRandomString(34) + "@email.com";
 		Log.info("\nRunning - TC448 - Test Description: More than 50 characters not allowed in email address field\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 
 		String rtnMsg = manageUsersAdminPage.addTestUser(userName,
@@ -359,8 +387,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		List<String> userNameList;
 		Log.info("\nRunning - TC450_ManageUserAdminPagination - Test Description: Pagination (Manage Users Customer Admin)\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.setPagination(PAGINATIONSETTING);
@@ -405,8 +433,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	public void TC451_SearchValidUser() {
 		Log.info("\nRunning - TC451 - Test Description: Search valid user record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageUsersAdminPage.open();
 		assertTrue(manageUsersAdminPage.searchUser(SQACUSUA, SQACUSLOC,
@@ -422,14 +450,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC452 - Test Description: Search invalid user record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 
 		manageUsersAdminPage.waitForPageLoad();
 		manageUsersAdminPage.getInputSearch().sendKeys(userName + userName);
@@ -448,14 +476,14 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 		List<String> list = new ArrayList<String>();
 		Log.info("\nRunning - TC453 - Test Description: Sort user records based on attributes present\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getLinkCusAdmin().click();
+		homePage.waitForPageLoad();
+		homePage.getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		getHomePage().getLinkAdminManageUsers().click();
+		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.getTheadUserName().click();
 		list = manageUsersAdminPage.getUserNameList(false);
 		assertTrue(BaseHelper.isStringListSortedDes(list));
@@ -499,8 +527,8 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC468 - Reset customer user password as customer admin\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
 		manageUsersAdminPage.addNewUser(userName, USERPASSWORD, SQACUSLOC,
@@ -510,15 +538,15 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageUsersAdminPage.open();
 		if (!manageUsersAdminPage.resetUserPassword(userName, USERPASSWORD + "1", true))
@@ -526,9 +554,9 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		manageUsersAdminPage.logout();
 
-		getLoginPage().open();
-		if (getLoginPage().loginNormalAs(userName, USERPASSWORD + "1") != null)
-			assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		if (loginPage.loginNormalAs(userName, USERPASSWORD + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
 		else
 			fail("\nTestcase TC468 - failed to login by the new password.\n");
 	}

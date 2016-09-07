@@ -14,7 +14,7 @@ import surveyor.scommon.source.ManageSurveyorPage;
 public class ManageSurveyorPageActions extends BasePageActions {
 
 	private SurveyorDataReader dataReader = null;
-	public static SurveyorDataRow workingDataRow = null;    // Stores the workingDataRow from createNewSurveyor action
+	public static ThreadLocal<SurveyorDataRow> workingDataRow = new ThreadLocal<SurveyorDataRow>();    // Stores the workingDataRow from createNewSurveyor action
 
 	public ManageSurveyorPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -28,7 +28,7 @@ public class ManageSurveyorPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class ManageSurveyorPageActions extends BasePageActions {
 		String surveyorDesc = surveyorDataRow.description;
 		
 		String customerName = null;
-		if (ManageCustomerPageActions.workingDataRow != null) {
-			customerName = ManageCustomerPageActions.workingDataRow.name;
+		if (ManageCustomerPageActions.workingDataRow.get() != null) {
+			customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		} else {	
 			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
 			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.valueOf(surveyorDataRow.customerRowID));
@@ -67,8 +67,8 @@ public class ManageSurveyorPageActions extends BasePageActions {
 		}
 		
 		String locationName = null;
-		if (ManageLocationPageActions.workingDataRow != null) {
-			locationName = ManageLocationPageActions.workingDataRow.name;
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			locationName = ManageLocationPageActions.workingDataRow.get().name;
 		} else {	
 			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
 			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(surveyorDataRow.locationRowID));
@@ -77,7 +77,7 @@ public class ManageSurveyorPageActions extends BasePageActions {
 		
 		this.getManageSurveyorPage().addNewSurveyor(surveyorDesc, locationName, customerName);
 		
-		workingDataRow = surveyorDataRow;
+		workingDataRow.set(surveyorDataRow);
 		
 		return true;
 	}

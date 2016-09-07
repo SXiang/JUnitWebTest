@@ -15,7 +15,7 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 public class ManageCustomerPageActions extends BasePageActions {
 
 	private CustomerDataReader dataReader = null;
-	public static CustomerDataRow workingDataRow = null;    // Stores the workingDataRow from createNewCustomer action
+	public static ThreadLocal<CustomerDataRow> workingDataRow = new ThreadLocal<CustomerDataRow>();    // Stores the workingDataRow from createNewCustomer action
 
 	public ManageCustomerPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -29,7 +29,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 	
 	/**
@@ -41,15 +41,15 @@ public class ManageCustomerPageActions extends BasePageActions {
 	 */
 	public boolean createNewCustomer(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.createNewCustomer", data, dataRowID);
-		workingDataRow = this.dataReader.getDataRow(dataRowID);
-		String customerName = ActionArguments.evaluateArgForFunction(workingDataRow.name);
-		workingDataRow.name = customerName;
-		if (workingDataRow.licensedFeaturesRowIDs.isEmpty()) {
-			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled));
+		workingDataRow.set(this.dataReader.getDataRow(dataRowID));
+		String customerName = ActionArguments.evaluateArgForFunction(workingDataRow.get().name);
+		workingDataRow.get().name = customerName;
+		if (workingDataRow.get().licensedFeaturesRowIDs.isEmpty()) {
+			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.get().eULA, Boolean.parseBoolean(workingDataRow.get().enabled));
 		} else {
-			LicensedFeatures[] licensedFeatures = getLicensedFeatures(workingDataRow.licensedFeaturesRowIDs);
-			workingDataRow.setLicensedFeatures(licensedFeatures);
-			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.eULA, Boolean.parseBoolean(workingDataRow.enabled),
+			LicensedFeatures[] licensedFeatures = getLicensedFeatures(workingDataRow.get().licensedFeaturesRowIDs);
+			workingDataRow.get().setLicensedFeatures(licensedFeatures);
+			this.getManageCustomersPage().addNewCustomer(customerName, workingDataRow.get().eULA, Boolean.parseBoolean(workingDataRow.get().enabled),
 					licensedFeatures);
 		}
 		return true;
@@ -65,7 +65,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	public boolean editCustomerSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerSelectLicensedFeatures", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("editCustomerSelectLicensedFeatures", ARG_DATA, data);
-		this.getManageCustomersPage().editAndSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		this.getManageCustomersPage().editAndSelectLicensedFeatures(workingDataRow.get().name, getLicensedFeatures(data));
 		return true;
 	}
 
@@ -79,7 +79,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 	public boolean editCustomerUnSelectLicensedFeatures(String data, Integer dataRowID) throws Exception {
 		logAction("ManageCustomersPageActions.editCustomerUnSelectLicensedFeatures", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("editCustomerUnSelectLicensedFeatures", ARG_DATA, data);
-		this.getManageCustomersPage().editAndUnSelectLicensedFeatures(workingDataRow.name, getLicensedFeatures(data));
+		this.getManageCustomersPage().editAndUnSelectLicensedFeatures(workingDataRow.get().name, getLicensedFeatures(data));
 		return true;
 	}
 

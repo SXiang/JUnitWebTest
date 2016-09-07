@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -19,7 +18,6 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
@@ -30,14 +28,15 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
 		initializePageActions();
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -203,7 +202,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.title;
+		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 		
 		//Add no survey
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
@@ -300,7 +299,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.getRptTitle(), getReportRowID(reportDataRowID1));		
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.get().getRptTitle(), getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -391,7 +390,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));			
 		
 		
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -481,7 +480,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));			
 		
 		
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));		
@@ -915,7 +914,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
         complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", getReportRowID(reportDataRowID1));		
         complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", getReportRowID(reportDataRowID1));	
         
-        Assert.assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.timezone, getReportRowID(reportDataRowID1)));
+        Assert.assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.get().timezone, getReportRowID(reportDataRowID1)));
         Assert.assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 //        Assert.assertTrue(complianceReportsPageAction.verifyAssetsAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
         Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));

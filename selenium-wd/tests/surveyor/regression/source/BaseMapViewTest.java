@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,6 +18,7 @@ import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.TestSetupFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -91,23 +94,21 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final String Live_Obvserver_Pattern = "/Live/Observer?serialNumber=%s";
 	
 	// Instance 1 actions and page objects.
-	protected static HomePageActions homePageAction;
-	protected static LoginPageActions loginPageAction;
-	protected static TestEnvironmentActions testEnvironmentAction;
+	private static ThreadLocal<HomePageActions> homePageAction = new ThreadLocal<HomePageActions>();
+	private static ThreadLocal<LoginPageActions> loginPageAction = new ThreadLocal<LoginPageActions>();
+	private static ThreadLocal<TestEnvironmentActions> testEnvironmentAction = new ThreadLocal<TestEnvironmentActions>();
 
 	// Extra instance actions and page objects. 
 	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
-	protected ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
-	protected ArrayList<LoginPageActions> loginPageActionList = new ArrayList<LoginPageActions>();
+	protected List<HomePageActions> homePageActionList = Collections.synchronizedList(new ArrayList<HomePageActions>());
+	protected List<LoginPageActions> loginPageActionList = Collections.synchronizedList(new ArrayList<LoginPageActions>());
 
-	protected ArrayList<HomePage> homePageList = new ArrayList<HomePage>();
-	protected ArrayList<LoginPage> loginPageList = new ArrayList<LoginPage>();
+	protected List<HomePage> homePageList = Collections.synchronizedList(new ArrayList<HomePage>());
+	protected List<LoginPage> loginPageList = Collections.synchronizedList(new ArrayList<LoginPage>());
 
-	protected ArrayList<TestSetup> testSetupList = new ArrayList<TestSetup>();
-	protected ArrayList<WebDriver> driverList = new ArrayList<WebDriver>();
-	protected ArrayList<String> baseURLList = new ArrayList<String>(); 
-
-	protected static DateUtility dateUtility = new DateUtility();
+	protected List<TestSetup> testSetupList = Collections.synchronizedList(new ArrayList<TestSetup>());
+	protected List<WebDriver> driverList = Collections.synchronizedList(new ArrayList<WebDriver>());
+	protected List<String> baseURLList = Collections.synchronizedList(new ArrayList<String>()); 
 
 	public BaseMapViewTest() {
 		initializePageActions();
@@ -119,12 +120,13 @@ public class BaseMapViewTest extends BaseTest{
 	 */
 	protected static void initializePageActions(){
 		if(getTestSetup() == null || getTestSetup().getDriver() == null){
-			setTestSetup(new TestSetup());
+			setTestSetup(TestSetupFactory.getTestSetup());
 		}
+		
 		BaseTest.initializeTestObjects();
-		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
-		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
-		testEnvironmentAction = new TestEnvironmentActions();
+		setLoginPageAction(new LoginPageActions(getDriver(), getBaseURL(), getTestSetup()));
+		setHomePageAction(new HomePageActions(getDriver(), getBaseURL(), getTestSetup()));
+		setTestEnvironmentAction(new TestEnvironmentActions());
 	}
 
 	/**
@@ -133,6 +135,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected void initializePageActionsList() {
 		addPageActionsForNewDrivers(1);
 	}
+	
 	protected void addPageActionsForNewDrivers(int num) {
 		int currentSize = testSetupList.size();
 		for(int index = currentSize; index < num + currentSize; index++ ){
@@ -152,6 +155,7 @@ public class BaseMapViewTest extends BaseTest{
 			PageFactory.initElements(setup.getDriver(), homePageList.get(index));
 		}
 	}
+	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		disposeProcesses();
@@ -166,19 +170,20 @@ public class BaseMapViewTest extends BaseTest{
 		}
 	}
 	
-	@After
-    public void afterTestMethod() {
+	@AfterClass
+    public static void afterTestClass() {
 		try {
-			afterTest();			
+			logoutQuitDriver();
 			disposeProcesses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}	
 	
-	protected void afterTest() {
-		logoutQuitDriver();
+	@After
+	public void afterTest() {
 		setTestSetup(null);
+		
 		// clean up - extra web drivers 
 		for(int index=0;index<testSetupList.size(); index++){
 			homePageList.get(index).open();
@@ -190,31 +195,33 @@ public class BaseMapViewTest extends BaseTest{
 	}
 
 	protected static void disposeProcesses() {
-		TestSetup.stopChromeProcesses();
-		TestSetup.stopAnalyzer();
+		if (!TestSetup.isParallelBuildEnabled()) {
+				TestSetup.stopChromeProcesses();
+				TestSetup.stopAnalyzer();
+		}
 	}
 
 	protected void startDrivingSurvey(DriverViewPageActions driverViewPageAction, Integer analyzerRowId, Integer surveyRowId,
 			Integer idleTimeInSeconds) throws Exception {
 		// Start Analyzer & replay db3
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerRowId); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(5), NOTSET);
 		
-		TestEnvironmentDataRow environmentDataRow = testEnvironmentAction.getDataReader().getDataRow(analyzerRowId);
-		testEnvironmentAction.startReplay(environmentDataRow.replayScriptDB3File, analyzerRowId); 	
+		TestEnvironmentDataRow environmentDataRow = getTestEnvironmentAction().getDataReader().getDataRow(analyzerRowId);
+		getTestEnvironmentAction().startReplay(environmentDataRow.replayScriptDB3File, analyzerRowId); 	
 		// Start Operator Survey
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);	
-		testEnvironmentAction.idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
 	}
 
 	protected void startReplay(DriverViewPageActions driverViewPageAction, Integer analyzerRowId) throws Exception {
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerRowId); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, analyzerRowId);
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerRowId);
 	}
 
 	protected void stopSurvey(DriverViewPageActions driverViewPageAction) {
@@ -226,7 +233,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected void stopSurveyAndAnalyzer(DriverViewPageActions driverViewPageAction) {
 		stopSurvey(driverViewPageAction);	
 		// Stop Analyzer
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	protected int getHourOfDay() {
@@ -238,8 +245,32 @@ public class BaseMapViewTest extends BaseTest{
 	}
 	
 	protected String getLiveObservePath(){
-		String serialNumber = TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+		String serialNumber = TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber;
 		String path = String.format(Live_Obvserver_Pattern, serialNumber);
 		return path;
+	}
+	
+	protected static LoginPageActions getLoginPageAction() {
+		return loginPageAction.get();
+	}
+
+	private static void setLoginPageAction(LoginPageActions loginPgAction) {
+		loginPageAction.set(loginPgAction);
+	}
+
+	protected static HomePageActions getHomePageAction() {
+		return homePageAction.get();
+	}
+
+	private static void setHomePageAction(HomePageActions homePgAction) {
+		homePageAction.set(homePgAction);
+	}
+
+	protected static TestEnvironmentActions getTestEnvironmentAction() {
+		return testEnvironmentAction.get();
+	}
+
+	private static void setTestEnvironmentAction(TestEnvironmentActions testEnvAction) {
+		testEnvironmentAction.set(testEnvAction);
 	}
 }

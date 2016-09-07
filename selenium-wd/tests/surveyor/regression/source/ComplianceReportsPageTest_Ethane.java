@@ -45,10 +45,12 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,13 +80,20 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	private String STRReportAreaTooLargeMsg = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
 	private String STRReportAssetNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidAssetTypeMessage);
 	private String STRReportBoundaryNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidBoundaryTypeMessage);
-	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
+	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
-		createTestCaseMap();
+	public static void beforeClass() {
+		initializeTestObjects();
 
+		createTestCaseMap();
+	}
+	
+	@Before
+	public void beforeTest() {
+		initializeTestObjects();
+
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
 	private ComplianceReportsPage getComplianceReportsPage() {
@@ -108,7 +117,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		assertTrue(this.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
 		assertTrue(this.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
-
 	}
 
 	/**

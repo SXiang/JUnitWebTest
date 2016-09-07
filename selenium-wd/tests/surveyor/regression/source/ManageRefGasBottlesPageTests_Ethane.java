@@ -5,21 +5,20 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
-
-import java.util.List;
 
 /**
  *
@@ -28,10 +27,31 @@ import java.util.List;
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-
+	private static LoginPage loginPage;
+	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageRefGasBottlesPageTest() {
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getTestSetup(), getBaseURL());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
 		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
 	}
 
@@ -63,8 +83,8 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC1735 - Test Description: Ethane - Verify that user can add value to Ethane To Methane Ratio column to ReferenceGasBottle Page");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", "15", SQACUS, SQACUSLOC, SQACUSLOCSUR);

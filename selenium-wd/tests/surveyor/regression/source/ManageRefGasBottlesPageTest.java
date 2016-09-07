@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +17,9 @@ import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -27,16 +30,38 @@ import static surveyor.scommon.source.SurveyorConstants.*;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
-	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
 	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+
+	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
+	private static LoginPage loginPage;
 	
 	private enum ManageRefGasBottleTestCaseType {
 		MaxCharsLimit
 	}
 	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageRefGasBottlesPageTest() {
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getTestSetup(), getBaseURL());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
 		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
 	}
 	
@@ -52,8 +77,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC135_AddRefGasBottle_PicAdmin - Test Description: Adding a Ref Gas Bottle to a customer surveyor by "
 				+ "Picarro Default Administrator");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -72,8 +97,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC1250_AddRefGasBottle_PicSU - Test Description: Add Reference Gas Bottles as Picarro Support user");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -97,8 +122,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC1251_AddLocationBlankFields_PicSupport - "+
 		         "Test Description: Add reference gas bottle - blank required fields");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addRefGasBottle("", "", null, SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
 		
@@ -136,8 +161,8 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 				+ "_AddRefGasBottleLotNumber50CharLimit_PicarroAdminSupport - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
@@ -163,15 +188,15 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC500_ManageRefGasBottle_PicSup");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageRefGasBottlesPage.open();
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber1, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageRefGasBottlesPage.open();
 		assertTrue(manageRefGasBottlesPage.findExistingRefGasBottle(strLotNumber1, SQACUSLOCSUR));
 		manageRefGasBottlesPage.addNewRefGasBottle(strLotNumber2, "-32", SQACUS, SQACUSLOC, SQACUSLOCSUR);

@@ -42,9 +42,7 @@ import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
@@ -53,10 +51,12 @@ import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +75,8 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -90,13 +92,24 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
-	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
+	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
+	private static LoginPage loginPage;
+	
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects();
-		createTestCaseMap();
+	public static void beforeClass() {
+		initializeTestObjects();
 
+		createTestCaseMap();
+	}
+	
+	@Before
+	public void beforeTest() {
+		initializePageObjects();
+	
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	private static void initializePageObjects() {
@@ -754,8 +767,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = "TC167 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC167: User can delete the specified report, " + rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -820,8 +833,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = "TC168 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC168: User can delete the specified report, " + rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -960,8 +973,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = "TC797 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC797: Search compliance reports based on report name, " + rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -1085,8 +1098,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Software version on UI and reports PDF should match, " + rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();

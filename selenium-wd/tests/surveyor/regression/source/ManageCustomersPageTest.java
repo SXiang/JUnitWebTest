@@ -6,15 +6,19 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -30,17 +34,41 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsPage manageLocationsPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 	
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
+		PageActionsStore.INSTANCE.clearStore();
+		
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
 		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	/**
@@ -64,8 +92,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
                  "Test Description: Disable Existing Customer can not login");
 		
 		// *** Add a new user/customer for this test ***
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
@@ -75,34 +103,34 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECT, locationDesc);
 		
-		setLoginPage(manageCustomersPage.logout());
+		loginPage = manageCustomersPage.logout();
 		
 		// *** Start test ***
        
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, false);
 		
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(userName, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 				
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
 		manageCustomersPage.changeCustomerAccountStatus(customerName, true);
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
 		// verify disabled customer user cannot login.
-		getLoginPage().open();
-		assertNotNull(getLoginPage().loginNormalAs(userName, USERPASSWORD));
+		loginPage.open();
+		assertNotNull(loginPage.loginNormalAs(userName, USERPASSWORD));
 	}
 	
 	/**
@@ -123,8 +151,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC77_addCustomerBlankRequiredFields_PicAdmin - "+
 		         "Test Description: add customer - blank required fields");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// add customer with an empty Eula
@@ -159,16 +187,16 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		         "Test Description: edit customer - blank required fields");
 		
 		// *** Add a new customer for this test ***
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);	
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 		
 		// *** Start test ***
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		
@@ -202,8 +230,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC58_AddNewCustomer_PicAdmin - Test Description: Adding Customer");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
@@ -227,8 +255,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC59_EditCustomer_PicAdmin - Test Description: Editing Customer");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();		
 
@@ -260,8 +288,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		String eula = customerName + ": " + EULASTRING;
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
@@ -291,8 +319,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String locationName = customerName + "loc";
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// create disabled customer.
@@ -312,8 +340,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 
 		// verify disabled customer user cannot login.
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(userName, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 	}
 
 	/**
@@ -338,8 +366,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// create customer (not enabled).
@@ -359,8 +387,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Looking for User: Location-[%s], UserName-[%s]", customerName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -385,8 +413,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String eula100KPlusOne = eula100K + "A";
 		assertTrue(eula100K.length() == HUNDRED_K);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// Add customer with 100K characters in EULA.
@@ -423,8 +451,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		assertTrue(customerName255.length() == MAX_CHARS);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// Add customer with 255 characters Customer name.
@@ -451,8 +479,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning MCP000B - Test Description: Checking Customer Account Status");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 
@@ -473,8 +501,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning MCP000C - Test Description: Changing Customer Account Status");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 
@@ -502,8 +530,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC469_ManageCustomer_PicSupport - Test Description: View Customer");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(),
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(),
 				getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
@@ -515,8 +543,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		manageCustomersPage.logout();
 
-		getLoginPage().login(SQAPICSUP, USERPASSWORD);
-		getHomePage().waitForPageLoad();
+		loginPage.login(SQAPICSUP, USERPASSWORD);
+		homePage.waitForPageLoad();
 		
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
@@ -534,8 +562,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageCustomer_SortColumns() {
 		Log.info("\nRunning TC132_ManageCustomer_SortColumns");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.areTableColumnsSorted());		
 	}

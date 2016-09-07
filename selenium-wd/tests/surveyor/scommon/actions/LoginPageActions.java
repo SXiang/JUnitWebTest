@@ -18,7 +18,7 @@ public class LoginPageActions extends BasePageActions {
 	private HomePage homePage = null;
 	private UserDataReader dataReader = null;
 	
-	public static UserDataRow workingDataRow = null;    // Stores the workingDataRow from login action
+	public static ThreadLocal<UserDataRow> workingDataRow = new ThreadLocal<UserDataRow>();    // Stores the workingDataRow from login action
 	
 	public LoginPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -31,7 +31,7 @@ public class LoginPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	public UserDataRow getUsernamePassword(String usernameColonPassword, Integer dataRowID) throws Exception {
@@ -43,8 +43,8 @@ public class LoginPageActions extends BasePageActions {
 			}
 			dataRow = dataReader.createDataRow("", userPassList.get(0), userPassList.get(1), "", "",
 					"", "", "", "", "", "", "");
-		} else if (workingDataRow != null) {
-			dataRow = workingDataRow;
+		} else if (workingDataRow.get() != null) {
+			dataRow = workingDataRow.get();
 		} else if (dataRowID >0) {
 			dataRow = dataReader.getDataRow(dataRowID);
 		} else {
@@ -65,7 +65,7 @@ public class LoginPageActions extends BasePageActions {
 		loginPage.loginNormalAs(dataRow.username, dataRow.password);
 		homePage.waitForPageLoad();
 		// store the working login datarow
-		workingDataRow = dataRow; 
+		workingDataRow.set(dataRow); 
 		return true;
 	}
 

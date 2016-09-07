@@ -138,7 +138,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 	 * @param baseURL
 	 * @param testSetup
 	 */
-	public SurveyViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
+	public SurveyViewPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe SurveyView Page URL is: " + this.strPageURL);

@@ -3,9 +3,9 @@
  */
 package surveyor.regression.source;
 
-import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
 
 import org.openqa.selenium.support.PageFactory;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
@@ -24,13 +23,13 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -41,25 +40,49 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageUsersPageTest extends SurveyorBaseTest {
 	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";
 	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
+	
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
-
-
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
 	private enum ManageUserTestCaseType {
 		ResetPwd, DuplicateUser, DisabledUser, SearchValidUser, MaxEmailChars, ReEnableUsers, EditUser, ChangeRoleLocTz, AddCustUser, AddPicUser
 	}
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageUsersPageTest() {
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
 		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(), manageCustomersPage);
 
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(), manageLocationsPage);
 	}
 
@@ -80,18 +103,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String locationDesc = customerName + " - " + location;
 
 		// *** Add a new user for this test ***
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEDR, locationDesc, TIMEZONECT);
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
 		// *** Start test ***
 
 		Log.info("\nRunning - TC1675_MaxPasswordLength_PicUser - " + "Test Description: More than 15 characters not allowed in New password and confirm password fields\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, password);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
 
 		manageUsersPage.changeUserPassword(password, password_16);
 		assertEquals(manageUsersPage.getNewPasswordError(), errorMsg);
@@ -120,18 +143,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning " + tcID + " - Test Description: Picarro Admin - Add New Picarro user");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, CUSUSERROLEUA, locationDesc, TIMEZONECT);
 
 		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -151,18 +174,18 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning " + tcID + " - Test Description: Picarro Admin - Add New Customer user");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
 
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -182,8 +205,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning " + tcID + " - Test Description: Picarro Admin - edit user");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -196,10 +219,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Editing user: Location=[%s]; Username=[%s]; IsCustomerUser=[%b]", locationName, userName, false));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -220,8 +243,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Reset customer user password as %s \n", testCaseID, role));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -232,15 +255,15 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(usernameNew, password);
+		loginPage.open();
+		loginPage.loginNormalAs(usernameNew, password);
 
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -249,9 +272,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		if (getLoginPage().loginNormalAs(usernameNew, password + "1") != null)
-			assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		if (loginPage.loginNormalAs(usernameNew, password + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
 		else
 			fail(String.format("\nTestcase %s - failed to login by the new password.\n", testCaseID));
 	}
@@ -264,8 +287,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + "TC72" + REGBASEUSERNAME;
 		Log.info("\nRunning - TC72 - Change customer user password \n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -276,17 +299,17 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(usernameNew, USERPASSWORD);
-		assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		loginPage.loginNormalAs(usernameNew, USERPASSWORD);
+		assertTrue(homePage.checkIfAtHomePage());
 
 		manageUsersPage.changeUserPassword(USERPASSWORD, USERPASSWORD + "1");
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		if (getLoginPage().loginNormalAs(usernameNew, USERPASSWORD + "1") != null)
-			assertTrue(getHomePage().checkIfAtHomePage());
+		loginPage.open();
+		if (loginPage.loginNormalAs(usernameNew, USERPASSWORD + "1") != null)
+			assertTrue(homePage.checkIfAtHomePage());
 		else
 			fail("\nTestcase TC72 - failed to login by the new password.\n");
 	}
@@ -311,8 +334,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC87_TC483_TC484_TC485 - Test Description: Picarro Admin Support - edit user - change role, location and timezone of existing user");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.waitForPageLoad();
@@ -338,10 +361,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("Finding user - Location=%s;Username=%s;IsCustomerUser=%b", locationNameNew, userName, false));
 		assertTrue(manageUsersPage.findExistingUser(locationNameNew, userName, false));
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -359,10 +382,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info(String.format("\nRunning - %s - %s not allowed to create duplicate User\n", testCaseID, role));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -389,10 +412,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Test Description: %s - Disabled User\n", testCaseID, role));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -403,8 +426,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.getUserStatus(usernameNew, false).equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(usernameNew, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
 	}
 
 	/**
@@ -422,10 +445,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - " + tcID + "_ReEnableUser_PicAdminSupport - Test Description: Picarro Admin - Re-Enable User\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -439,8 +462,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.logout();
 
 		// verify user can login correctly
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 	}
 
@@ -459,10 +482,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String userName51 = SQACUS + getTestSetup().getFixedSizePseudoRandomString(MAX_SIZE - 16) + REGBASEUSERNAME + "A";
 		Log.info("\nRunning - " + tcID + "_UserEmailMax50Chars_PicAdmin - Test Description: Picarro Admin - " + "More than 50 characters not allowed in email address field\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -500,8 +523,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC115 - Test Description: Pagination (Manage Users)\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		pageSize = 10;
 		manageUsersPage.open();
@@ -572,10 +595,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + "TC475" + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - TC475 - Test Description: Picarro Support - Disabled Customer User\n"));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -586,8 +609,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.getUserStatus(usernameNew, false).equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(usernameNew, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
 	}
 
 	/**
@@ -601,10 +624,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info(userName);
 		Log.info(String.format("\nRunning - TC476 - Test Description: Picarro Support - Disabled Existing Picarro User\n"));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -615,8 +638,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.getUserStatus(userName, false).equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(userName, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 	}
 
 	/**
@@ -627,10 +650,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + "TC477" + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - TC477 - Test Description: Picarro Support - Disabled Existing Customer User\n"));
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
@@ -641,8 +664,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		assertTrue(manageUsersPage.getUserStatus(usernameNew, false).equalsIgnoreCase(Resources.getResource(ResourceKeys.Constant_Disabled)));
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		assertTrue(getLoginPage().loginNormalAs(usernameNew, USERPASSWORD) == null);
+		loginPage.open();
+		assertTrue(loginPage.loginNormalAs(usernameNew, USERPASSWORD) == null);
 	}
 
 	/**
@@ -656,8 +679,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String password = CryptoUtility.decrypt(pwd);
 		Log.info("\nRunning - " + tcID + " - Test Description: Search valid user record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageUsersPage.open();
 		assertTrue(manageUsersPage.searchUser(SQACUSUA, SQACUSLOC, CUSUSERROLEUA, USERENABLED, false /* searchAsCustomerAdmin */));
@@ -671,8 +694,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm117" + REGBASEUSERNAME;
 		Log.info("\nRunning - TC117 - Test Description: Search invalid user record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageToLoad();
@@ -776,8 +799,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC480_ConfirmPasswordDifferent_PicSupport - " + "Test Description:  Add User - Password and Confirm Password values different\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageUsersPage.open();
 
 		// Picarro user
@@ -813,8 +836,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC481_InvalidEmailAddress_PicSupport - " + "Test Description: Add user - invalid email address values\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageUsersPage.open();
 
 		// Picarro user
@@ -850,8 +873,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC482_AddUserBlankFields_PicSupport - " + "Test Description: Add user - blank required fields\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageUsersPage.open();
 
 		// Add Picarro User
@@ -886,8 +909,8 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC488_NoMatchingUsersFound_PicSupport - " + "Test Description: Add user - blank required fields\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageUsersPage.open();
 
 		manageUsersPage.performSearch(invalidKey);
@@ -900,10 +923,9 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageUsers_SortColumns() {
 		Log.info("\nRunning TC132_ManageUsers_SortColumns");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageUsersPage.open();		
 		assertTrue(manageUsersPage.areTableColumnsSorted());
 	}
-
 }

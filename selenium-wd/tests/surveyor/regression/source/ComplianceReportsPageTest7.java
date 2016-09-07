@@ -18,7 +18,6 @@ import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -26,7 +25,6 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
-
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -41,15 +39,17 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	private static SurveyViewPageActions surveyViewPageAction;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
 		initializePageActions();
 
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 

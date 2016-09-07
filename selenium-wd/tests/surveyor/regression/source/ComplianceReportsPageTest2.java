@@ -53,12 +53,11 @@ import static surveyor.scommon.source.SurveyorConstants.SWLON_SMALL;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -67,15 +66,16 @@ import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
@@ -90,9 +90,16 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageUsersPage manageUsersPage;
+	private static LoginPage loginPage;
 	
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
 		initializePageActions();
 	}
 
@@ -101,14 +108,19 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() {
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageLocationsPage);
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 		testEnvironmentAction = new TestEnvironmentActions();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+		
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
 	private ComplianceReportsPage getComplianceReportsPage() {
@@ -163,10 +175,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEUA, locationName);
 
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
-		setLoginPage(manageUsersPage.logout());
+		loginPage = manageUsersPage.logout();
 
-		getLoginPage().open();
-		HomePage homePage = getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		HomePage homePage = loginPage.loginNormalAs(userName, USERPASSWORD);
 		assertTrue(homePage.checkIfAtHomePage());
 
 		this.getComplianceReportsPage().open();

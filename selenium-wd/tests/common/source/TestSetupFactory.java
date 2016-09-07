@@ -35,20 +35,21 @@ public class TestSetupFactory {
 	public static TestSetup getTestSetup() {
 		return threadLocalTestSetup.get();
 	}
-
+	
 	private static ScreenShotOnFailure createDefaultScreenShotOnFailure() throws IOException {
-		String screenshotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + getTestSetup().getTestReportCategory();
-		Path screenShotsPath = Paths.get(screenshotsDir, screenShotsSubFolder);
-		
+		ScreenShotOnFailure screenshotOnFailure = null;
 		Lock lock = new ReentrantLock();
 		try {
 			lock.lock();
+			String screenshotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + getTestSetup().getTestReportCategory();
+			Path screenShotsPath = Paths.get(screenshotsDir, screenShotsSubFolder);
 			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
+			screenshotOnFailure = new ScreenShotOnFailure(screenShotsSubFolder, screenshotsDir, getTestSetup().isRemoteBrowser()); 
 		} finally {
 			lock.unlock();
 		}
 		
-		return new ScreenShotOnFailure(screenShotsSubFolder, screenshotsDir, getTestSetup().isRemoteBrowser());
+		return screenshotOnFailure;
 	}
 	
 	public static ScreenShotOnFailure getScreenShotOnFailure() {

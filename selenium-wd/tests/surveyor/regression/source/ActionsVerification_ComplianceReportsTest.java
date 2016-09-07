@@ -2,15 +2,10 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import common.source.Log;
-import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -19,7 +14,6 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseTest;
 
 public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageActionTest {
 

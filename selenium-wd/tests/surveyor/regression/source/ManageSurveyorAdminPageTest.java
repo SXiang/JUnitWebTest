@@ -23,15 +23,18 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsAdminPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
@@ -47,19 +50,40 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	private static ManageLocationsAdminPage manageLocationsAdminPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
+	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageSurveyorAdminPageTest() {
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationsAdminPage = pageObjectFactory.getManageLocationsAdminPage();
 		PageFactory.initElements(getDriver(), manageLocationsAdminPage);
 
-		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
 		PageFactory.initElements(getDriver(), manageSurveyorPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
 		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
 	}
 
@@ -76,14 +100,14 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC455_EditSurveyor_CustUA - Test Description: edit surveyor\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, SQACUS + " - " + SQACUSLOC);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.editExistingSurveyor(SQACUS, locationName, surveyorName, locationName, surveyorNameNew, false);
@@ -107,8 +131,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC456_EditSurveyorAssignLoc_CustUA - Test Description: Administrator is allowed to associate and " + "disassociate Surveyor Units within Locations associated only to his customer\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Add Surveyor with Location1
 		manageSurveyorPage.open();
@@ -119,8 +143,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageLocationsPage.addNewLocation(locationName2, SQACUS, cityName);
 
 		// Login as Customer Utility Admin.
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		// Edit Surveyor and assign to Location2.
 		manageSurveyorAdminPage.open();
@@ -149,15 +173,15 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 400 characters not allowed " + "in Surveyor Description field\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, SQACUSLOC, SQACUS);
 		manageSurveyorPage.waitForPageLoad();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		Log.info("surveyorName400Chars=" + surveyorName400Chars);
 		Log.info("surveyorName401Chars=" + surveyorName401Chars);
@@ -169,8 +193,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String allowedSurveyorName = surveyorName401Chars.substring(0, 400);
 		Log.info("allowedSurveyorName=" + allowedSurveyorName);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
 		assertTrue(manageSurveyorAdminPage.findExistingSurveyor(SQACUSLOC, allowedSurveyorName));
@@ -187,14 +211,14 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC458_EditSurveyorBlankRequiredFields_CustUA - Test Description: edit surveyor - blank required fields\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, SQACUSLOC, SQACUS);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUS, SQACUSLOC, surveyorName, "", surveyorName, false));
@@ -214,8 +238,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC467_DuplicateSurveyorNotAllowed_CustUA - Test Description: Edit surveyor name with an existing name asociated to same location\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
@@ -229,8 +253,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.addNewSurveyor(surveyorName2, locationName, SQACUS);
 
 		// Login as Customer Utility Admin.
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		// Edit SurveyorName same as existing one associated to same location
 		manageSurveyorAdminPage.open();
@@ -248,8 +272,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		List<String> surveyorList;
 		Log.info("\nRunning - TC450_ManageSurveyorAdminPagination - Test Description: Pagination (Manage Surveyor)\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.setPagination(PAGINATIONSETTING);
@@ -290,8 +314,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName);
@@ -299,8 +323,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, SQACUS);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageSurveyorAdminPage.open();
 
 		assertTrue(manageSurveyorAdminPage.searchSurveyor(locationName, surveyorName));
@@ -314,8 +338,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String surveyorName = "TC452_" + SQACUSSURVEYOR + getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageSurveyorAdminPage.open();
 		manageSurveyorAdminPage.waitForPageLoad();
 		manageSurveyorAdminPage.getInputSearch().sendKeys(surveyorName);
@@ -332,8 +356,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		List<String> list = new ArrayList<String>();
 		Log.info("\nRunning - TC453 - Test Description: Sort surveyor records based on attributes present\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageSurveyorAdminPage.open();
 
 		manageSurveyorAdminPage.getTheadLocation().click();

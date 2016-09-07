@@ -8,14 +8,17 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
@@ -31,13 +34,39 @@ import static surveyor.scommon.source.SurveyorP3URLs.*;
 @RunWith(SurveyorTestRunner.class)
 public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	private static MeasurementSessionsPage measurementSessionsPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
+	
 	private static List<String> strListTagCus = null;
 	private static List<String> strListTagPic = null;
 	private static List<String> strListTagCusDr = null;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupMeasurementSessionsPageTest() {
-		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
 		strListTagCus = new ArrayList<String>();
@@ -66,8 +95,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC35_CheckVisibilityDriverRole() throws Exception {
 		Log.info("\nRunning TC35_CheckVisibilityDriverRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 
 		measurementSessionsPage.open();
 
@@ -85,8 +114,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC36_CheckVisibilityCustomerSupervisorRole() throws Exception {
 		Log.info("\nRunning TC36_CheckVisibilityCustomerSupervisorRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 
 		measurementSessionsPage.open();
 
@@ -104,8 +133,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC37_CheckVisibilityUtilityAdminRole() throws Exception {
 		Log.info("\nRunning TC37_CheckVisibilityUtilityAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		measurementSessionsPage.open();
 
@@ -123,8 +152,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC38_CheckVisibilityPicarroAdminRole() throws Exception {
 		Log.info("\nRunning TC38_CheckVisibilityPicarroAdminRole - Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICAD, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 
 		measurementSessionsPage.open();
 
@@ -141,16 +170,16 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC51_CheckRecentDrivingSurveyInDashboard() {
 		Log.info("\nRunning - TC51_CheckRecentDrivingSurveyInDashboard - Test Description: Recent Driving Surveys Section present on Dashboard should display latest surveys\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 
-		getHomePage().open();
-		assertTrue(getHomePage().checkIfAtHomePage());
+		homePage.open();
+		assertTrue(homePage.checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		MeasurementSessionsPage msp = new PageObjectFactory().getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), msp);
 
-		getHomePage().getLinkDrivingSurveys().click();
+		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 
 		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
@@ -177,13 +206,13 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning - TC49_DeleteSurveys - Delete surveys\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICAD, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 
-		getHomePage().open();
-		assertTrue(getHomePage().checkIfAtHomePage());
+		homePage.open();
+		assertTrue(homePage.checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		MeasurementSessionsPage msp = new PageObjectFactory().getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), msp);
 
 		msp.open();
@@ -208,10 +237,10 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC125_ExportSurveyPeaksAnalysis() throws Exception {
 		Log.info("\nRunning - TC125_ExportSurveyPeaksAnalysis - Test Description: Export Raw Data\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICAD, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
 
-		getHomePage().getLinkDrivingSurveys().click();
+		homePage.getLinkDrivingSurveys().click();
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey);
 		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, getTestSetup().getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
@@ -232,8 +261,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC144_MeasurementSessions_VerifyPagination() {
 		Log.info("\nRunning Pagination - 10,25,50 and 100 Pagination MeasurementSessions");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		measurementSessionsPage.open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";

@@ -37,7 +37,7 @@ public class BasePage {
 	protected WebDriver driver;
 	protected TestSetup testSetup;
 
-	protected int timeout = 30;   // Intermittent test failures seen with 15 seconds. Increasing timeout to 30 seconds.
+	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;

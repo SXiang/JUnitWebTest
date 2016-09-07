@@ -199,7 +199,7 @@ public class GridPOCTestClass8 {
 			surveyViewPageAction = new SurveyViewPageActions(driver.get(), baseURL,testSetup.get());
 
 			// Initialize page objects.
-			surveyViewPage = new SurveyViewPage(driver.get(), testSetup.get(), baseURL);
+			surveyViewPage = new SurveyViewPage(driver.get(), baseURL, testSetup.get());
 			PageFactory.initElements(driver.get(), surveyViewPage);
 
 		} catch (Exception e) {

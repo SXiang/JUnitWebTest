@@ -9,11 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.io.IOException;
-import java.util.Calendar;
-
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +32,10 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -56,6 +54,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	protected static DriverViewPage driverViewPage;
 	protected static ManageCustomersPage manageCustomersPage = null;
 	protected static ManageUsersPage manageUsersPage = null;
+	protected static HomePage homePage;
+	protected static LoginPage loginPage;
 	
 	public DriverViewPageTest() throws IOException {
 		super();
@@ -72,14 +72,22 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	}
 
 	private void initializePageObjects() {
-		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);
 
 		// Additional page objects.
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
 		PageFactory.initElements(getDriver(),  manageUsersPage);
 	}
 
@@ -105,16 +113,16 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() throws Exception {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		testEnvironmentAction.startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 
-		testEnvironmentAction.startReplay(EMPTY, 2);  // start Analyzer instr_ready.defn
+		getTestEnvironmentAction().startReplay(EMPTY, 2);  // start Analyzer instr_ready.defn
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
@@ -207,16 +215,16 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() throws Exception {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		testEnvironmentAction.startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
 		
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
 		driverViewPage.waitForConnectionComplete();
 
-		testEnvironmentAction.startReplay(EMPTY, 1);	// start replay instr_ready.defn
+		getTestEnvironmentAction().startReplay(EMPTY, 1);	// start replay instr_ready.defn
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
@@ -325,8 +333,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
 		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -420,8 +428,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
@@ -500,19 +508,19 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC256_ActionTest_DriverViewInstrumentStartWaitStopShutdown() throws Exception {
 		Log.info("\nRunning TC256_SimulatorTest_DriverViewInstrumentStartWaitStopShutdown");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 		
 		driverViewPageAction.startDrivingSurvey(EMPTY, 3);
 		
 		// Intentional sleep for 3 minutes as per test case steps. (Use 1/4th the time)
-		testEnvironmentAction.idleForSeconds(String.valueOf(45), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(45), NOTSET);
 		
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
@@ -522,13 +530,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.clickOnShutdownConfirmButton(EMPTY,NOTSET));
 		
 		// Wait for 15 seconds to allow Analyzer EXE to shutdown and browser to close and get redirected to home.
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);			
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);			
 
 		// Verify browser is redirected to Home
 		assertTrue(getDriver().getCurrentUrl().contains(HomePage.STRURLPath));
 		
 		// TODO : This capability needs to be verified in Simulator.
-		//assertTrue(testEnvironmentAction.verifyAnalyzerIsShutdown(EMPTY, NOTSET));			
+		//assertTrue(getTestEnvironmentAction().verifyAnalyzerIsShutdown(EMPTY, NOTSET));			
 	}
 
 	/**
@@ -550,18 +558,18 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC302_ActionTest_DriverViewUserSeesLastTagValue() throws Exception {
 		Log.info("\nRunning TC302_SimulatorTest_DriverViewUserSeesLastTagValue");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(getTestSetup().getLoginUser() + ":" + getTestSetup().getLoginPwd(), NOTSET);
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start replay db3 file.
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 		
 		driverViewPageAction.startDrivingSurvey(EMPTY, 3);
 		
 		// Run the survey for 50 seconds.. (Use ~1/4th the time)
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 		
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
@@ -569,12 +577,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 		driverViewPageAction.openStartSurveyModalDialog(EMPTY,NOTSET);
 		
-		assertTrue(driverViewPageAction.verifySurveyTagInStartSurveyDialogEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
+		assertTrue(driverViewPageAction.verifySurveyTagInStartSurveyDialogEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
 		
 		// {DEFECT}: Check if this test step is correct. If YES, this is a probable defect.
 		//assertTrue(driverViewPageAction.verifyStartSurveyButtonFromSurveyDialogIsDisabled(EMPTY, NOTSET));
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -593,25 +601,25 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC777_ActionTest_DriverViewFlatteningCustomerBoundaryData() throws Exception {
 		Log.info("\nRunning TC777_SimulatorTest_DriverViewFlatteningCustomerBoundaryData");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 9);   /* PG&E Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 9);   /* PG&E Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 		driverViewPageAction.turnOffBigBoundary(EMPTY, NOTSET);
 		driverViewPageAction.turnOffSmallBoundary(EMPTY, NOTSET);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 2);   /* Customer Supervisor */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		// To get a new instance of Driver view page, initialize the driver view page.
 		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -625,7 +633,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyGisSwitchIsOn("SmallBoundary",NOTSET));
 		assertTrue(driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY,NOTSET));
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -645,33 +653,33 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1095_ActionTest_NavigateBetweenDriverViewAndHomePage() throws Exception {
 		Log.info("\nRunning TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start replay db3 file.
 
 		// Let replay run for 5 seconds.
-		testEnvironmentAction.idleForSeconds("5", NOTSET);
+		getTestEnvironmentAction().idleForSeconds("5", NOTSET);
 		
 		// goto home by clicking on picarro logo on driver view page.
 		driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
 		
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 		
 		// go back to driver view page using browser back button.
 		BrowserCommands.goBack();
 		
 		// To get a new instance of Driver view page, initialize the driver view page.
 		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);	
 		
 		assertTrue(driverViewPageAction.verifyPageLoaded(EMPTY,NOTSET));
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -700,19 +708,19 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1103_ActionTest_DriverViewStartDrivingSurveySatelliteView() throws Exception {
 		Log.info("\nRunning TC1103_SimulatorTest_DriverViewStartDrivingSurveySatelliteView");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		
 		// Verify 1. and 2.
 		// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
 		driverViewPageAction.startDrivingSurvey(EMPTY, 4);	
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(5), NOTSET);
 		
 		driverViewPageAction.clickOnMapButton(EMPTY, NOTSET);
 		driverViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
@@ -723,11 +731,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 
 		// Verify 3.
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
@@ -759,7 +767,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsEnabled(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifySystemShutdownButtonIsNotDisplayed(EMPTY, NOTSET));
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -787,12 +795,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1104_ActionTest_DriverViewStopDrivingSurveySatelliteView() throws Exception {
 		Log.info("\nRunning TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start replay db3 file.
 
 		// Verify 1.
 		driverViewPageAction.clickOnGisButton(EMPTY, NOTSET);
@@ -804,15 +812,15 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
 		driverViewPageAction.startDrivingSurvey(EMPTY, 5);  /* Day, Strong, Light, Operator */	
 		
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
 		driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 
 		// Verify 1.
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
@@ -861,7 +869,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		//assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
 		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));			
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -886,13 +894,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1133_ActionTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON() throws Exception {
 		Log.info("\nRunning TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 
@@ -904,7 +912,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.turnOnMapView("Map", NOTSET);
 		
 		// perform the survey for 1 min. (Use 1/4th the time)
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 
 		// Stop driving survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -920,13 +928,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		//-------------------
 		// Verify 1.
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
 		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
 
 		// Verify 1.
 		// (check???) surveys conducted in the past 8-hour should be displayed on the map.
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -953,14 +961,14 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1134_ActionTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON() throws Exception {
 		Log.info("\nRunning TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON");
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
 		
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 
 		// This action internally verifies that the startSurvey button is ONLY enabled after survey mode is selected.
@@ -974,26 +982,26 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.turnOnMapView("Map", NOTSET);
 		
 		// perform the survey for 2 mins. (Use 1/4th the time)
-		testEnvironmentAction.idleForSeconds(String.valueOf(30), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(30), NOTSET);
 
 		// Stop driving survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
 		// Stop current simulator and start another with a different Analyzer.
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
 		// To get a new instance of Driver view page, initialize the driver view page.
 		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		driverViewPageAction.initializePageObject(TestContext.INSTANCE.getDriver(), driverViewPage);		
 
-		testEnvironmentAction.startAnalyzer(EMPTY, 4);
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 4);
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 4); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 4); 	// start simulator and replay db3 file.
 
 		// start survey again.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1017,7 +1025,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// Verify 1.
 		// (check???) surveys conducted in the past 8-hour should NOT be displayed on the map.
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -1039,8 +1047,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1048,14 +1056,14 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 		
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 		
 		// Verify that Driver view page was opened.
 		assertTrue(driverViewPageAction.verifyDriverViewPageIsOpened(EMPTY, NOTSET));
@@ -1078,14 +1086,14 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
 		
 		// perform the survey for 1 mins. (Use 1/4th the time)
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 		
 		driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 		
 		//-------------------
 		// Verify 
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
 		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + userName;
@@ -1117,7 +1125,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -1135,8 +1143,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("\nRunning TC1213_SimulatorTest_NewDriverNavigatedToHomePage - Test Description: Standard Survey as new driver user");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1144,10 +1152,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 		
-		assertTrue(getHomePage().checkIfAtHomePage());
+		assertTrue(homePage.checkIfAtHomePage());
 	}
 
 	/**
@@ -1162,11 +1170,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1215_ActionTest_CannotLoginDriverViewInvalidCredentials() throws Exception {
 		Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
 
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPage.open();
 
-		getLoginPage().waitForPageLoad();
-		assertTrue(getLoginPage().checkIfAtLoginPage());
+		loginPage.waitForPageLoad();
+		assertTrue(loginPage.checkIfAtLoginPage());
 	}
 	
 	/**
@@ -1187,17 +1195,17 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1232_ActionTest_DriverViewRefreshBrowser() throws Exception {
 		Log.info("\nRunning TC1232_SimulatorTest_DriverViewRefreshBrowser");
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.startDrivingSurvey(EMPTY, 17);	/* Day, Overcast, Strong, Standard */
-		testEnvironmentAction.idleForSeconds(String.valueOf(30), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(30), NOTSET);
 
 		driverViewPageAction.clickOnHeaderInfoBox(EMPTY, NOTSET);
 		String elapsedTimeBeforeRefresh = driverViewPageAction.getDriverViewPage().getTimeElapsedLabelText().replace(SURVEY_INFO_ELAPSED_PREFIX, "");
@@ -1214,11 +1222,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("Wait complete for connection complete");
 
 		// Verify Survey properties.
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
@@ -1252,7 +1260,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifySurveyInfoStabilityClassLabelEquals(expectedStabilityClass, NOTSET));
 	
 		// Stop current simulator and start another with a different Analyzer.
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -1281,21 +1289,21 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		final int surveyDataRowID = 22;
 		final int surveyRuntimeInSeconds = 5;
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, userDataRowID);   /* Customer Driver */
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
 		
 		Log.info("Starting Analyzer...");
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 		
 		Log.info("Starting Replay...");
-		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);	/* Day, Overcast, Strong, Standard */
-		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1309,14 +1317,14 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.getDriverViewPage().clickStartSurvey();
 		driverViewPageAction.getDriverViewPage().waitForPageToLoad();
 		
-		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// Verify Survey has started.
-		String expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		String expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		String expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		String expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+		String expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username;
 		String expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
@@ -1346,13 +1354,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("Starting the Driving Survey...");
 		driverViewPageAction.startDrivingSurvey(EMPTY, 18);	/* Night, Calm, CloudCover<50, Standard */
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(5), NOTSET);
 
-		expectedTagValue = DriverViewPageActions.workingDataRow.surveyTag;
-		expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType;
+		expectedTagValue = DriverViewPageActions.workingDataRow.get().surveyTag;
+		expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		expectedTimeStartsWith = SURVEY_INFO_TIME_PREFIX + String.valueOf(DateUtility.getSystemHourIn12HourFormat());
 		expectedSurveyStatus = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username;
+		expectedDriverInfo = SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username;
 		expectedTimeElapsedStartsWith = SURVEY_INFO_ELAPSED_TIME_00;
 		expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
@@ -1372,7 +1380,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		// Stop current simulator and start another with a different Analyzer.
 		Log.info("Stopping Analyzer...");
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -1389,12 +1397,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1277_ActionTest_DriverViewCustUserManualSurveyNotAllowed() throws Exception {
 		Log.info("\nRunning TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed");
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Utility admin */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 1);   /* Customer Utility admin */
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -1405,7 +1413,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
 
 		// Stop current simulator and start another with a different Analyzer.
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -1423,19 +1431,19 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1385_ActionTest_DriverViewGISDataPersistsPostDisplayOptionsOff() throws Exception {
 		Log.info("\nRunning TC1385_SimulatorTest_DriverViewGISDataPersistsPostDisplayOptionsOff");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver user */
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 3);   /* Customer Driver user */
 
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		getTestEnvironmentAction().startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
 
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 
 		driverViewPageAction.startDrivingSurvey(EMPTY, 6);	/* Day, Overcast, Calm, Standard */
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
 		
 		// turn ON all Display options.
 		driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
@@ -1495,6 +1503,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.turnOnSmallBoundary(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));		// TODO Look into how to check for specific BoundaryType showing.
 
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 }

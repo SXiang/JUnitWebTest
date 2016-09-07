@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +50,8 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -59,14 +62,28 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPageTest {
-
+	private static LoginPage loginPage;
+	
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
+	public static void beforeClass() {
+		initializeTestObjects();
 	}
+	
+	@Before
+	public void beforeTest() {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		initializePageObjects(pageObjectFactory.getComplianceReportsPage());
+	}
+	
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
+	
 	/**
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * @throws Exception 
@@ -110,8 +127,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -182,8 +199,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -295,8 +312,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast, %s\n", rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -366,8 +383,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags, %s\n", rptTitle);
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();

@@ -1,14 +1,11 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -25,8 +22,10 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.UserDataProvider;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -39,8 +38,7 @@ import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.EqReportsPage;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.HomePage;
 
 
 @RunWith(SurveyorTestRunner.class)
@@ -61,24 +59,34 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage = null;
 	private static EqReportsPage eqReportsPage = null;
 	private static PreferencesPage preferencesPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
 	public PageObjectVerificationTest() {
-		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complianceReportsPage);
 
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);
 
 		latLongSelectionControl = new LatLongSelectionControl(getDriver());
 		PageFactory.initElements(getDriver(), latLongSelectionControl);
 
-		eqReportsPage = new EqReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		eqReportsPage = pageObjectFactory.getEqReportsPage();
 		PageFactory.initElements(getDriver(), eqReportsPage);
 
-		preferencesPage = new PreferencesPage(getDriver(), getBaseURL(), getTestSetup());
+		preferencesPage = pageObjectFactory.getPreferencesPage();
 		PageFactory.initElements(getDriver(), preferencesPage);
 	}
 
@@ -176,8 +184,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_TestEQMethods() {
 		Log.info("Running ReferenceOnly_SimulatorTest_TestEQMethods");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -220,8 +228,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_ButtonsVisibleVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -261,8 +269,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_CarIconColorVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_CarIconColorVerification");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -305,8 +313,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_BreadcrumbColorVerification() {
 		Log.info("Running ReferenceOnly_SimulatorTest_BreadcrumbColorVerification");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -350,8 +358,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_DatetimeTicksTest() throws InterruptedException {
 		Log.info("Running ReferenceOnly_SimulatorTest_DatetimeTicksTest");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -398,8 +406,8 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	public void ReferenceOnly_SimulatorTest_OLMapFunctionality() {
 		Log.info("Running ReferenceOnly_SimulatorTest_OLMapFunctionality");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -606,16 +614,16 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		
 		password = CryptoUtility.decrypt(password);
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 
-		getHomePage().waitForPageLoad();
-		getHomePage().getDropDownLoginUser().click();
-		getHomePage().getLinkPreference().click();
+		homePage.waitForPageLoad();
+		homePage.getDropDownLoginUser().click();
+		homePage.getLinkPreference().click();
 
 		preferencesPage.waitForPageLoad();
 		preferencesPage.setSelectedCulture(cultureString);
 		preferencesPage.getBtnOk().click();
-		getHomePage().waitForPageLoad();
+		homePage.waitForPageLoad();
 	}
 }

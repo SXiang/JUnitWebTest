@@ -7,14 +7,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.junit.Test;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -33,15 +31,17 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
 		initializePageActions();
 
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -92,7 +92,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		String rptTitle = ComplianceReportsPageActions.workingDataRow.title;
+		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 		complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
 		
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));

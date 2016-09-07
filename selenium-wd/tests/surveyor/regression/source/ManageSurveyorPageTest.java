@@ -13,15 +13,18 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.util.HashMap;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
@@ -39,20 +42,42 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static LoginPage loginPage;
+	
 	protected String pagination = "100";
 	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageSurveyorPageTest() {
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(),  manageLocationsPage);
 		
-		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
 		PageFactory.initElements(getDriver(),  manageSurveyorPage);
 		
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
 		PageFactory.initElements(getDriver(),  manageSurveyorAdminPage);
 	}
 	
@@ -71,8 +96,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC63_AddSurveyor_PicAdmin...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -111,8 +136,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC63_AddSurveyor_PicAdmin...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -149,8 +174,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		String surveyorName = locationName + "Sur";
 		String cityName ="Santa Clara";
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -187,8 +212,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC121_EditSurveyor_PicAdmin...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -231,8 +256,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC101_MaxSurveyorDescLimit...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -282,8 +307,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC127_AddMultipleSurveyor_PicAdmin...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -327,8 +352,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC498_ManageSurveyors_PicSup...");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -343,8 +368,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName);
 		assertTrue(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName));
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageSurveyorPage.open();
 		assertFalse(manageSurveyorPage.isAddNewSurveyorBtnPresent());
 		
@@ -364,8 +389,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageSurveyors_SortColumns() {
 		Log.info("\nRunning TC132_ManageUsers_SortColumns");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorPage.open();
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(CONSTANT_CUSTOMER, TableColumnType.String);
@@ -384,8 +409,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC144_ManageSurveyors_VerifyPagination() {
 		Log.info("\nRunning Pagination - 10,25,50 and 100 Pagination ManageSurveyors");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageSurveyorPage.open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";

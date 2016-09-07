@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +14,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.scommon.actions.PageActionsStore;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -33,22 +37,42 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
+	private static LoginPage loginPage;
 	
 	@BeforeClass
 	public static void setupManageAnalyzersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-		
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageLocationsPage);
-		
-		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageSurveyorPage);
-		
-		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
 	}
 	
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
+		PageActionsStore.INSTANCE.clearStore();
+		
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+		
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
+		
+		manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);
+		
+		manageAnalyzersPage = pageObjectFactory.getManageAnalyzersPage();
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+	}
+
 	/**
 	 * Test Case ID: TC65_AddAnalyzer_PicAdmin
 	 * Test Description: Adding Analyzer for Picarro by Picarro default Administrator
@@ -64,8 +88,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC65_AddAnalyzer_PicAdmin - Test Description: Adding Analyzer for Picarro by Picarro default Administrator");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
@@ -76,8 +100,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName));
-	}
-	
+	}	
  	
  	/**
  	/**
@@ -104,8 +127,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC66_AddAnalyzerNonPicarroCustomer_PicAdmin - Test Description: add analyzer under customer other than Picarro");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
@@ -135,8 +158,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC67_EditAnalyzer_PicAdmin - Test Description: Editing Analyzer for Picarro, changing the Analyzer Name, "
 				+ "by Picarro default Administrator");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
@@ -176,8 +199,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC99_AnalyzerMax50CharsSerialNumber_PicAdmin - Test Description: More than 50 characters not allowed in Serial Number field");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
@@ -218,8 +241,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC122_DuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to create duplicate Analyzer");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName ,cityName);
@@ -251,8 +274,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC123_EditDuplicateAnalyzer_PicAdmin - Test Description: Admin not allowed to edit Analyzer having details same as existing analyzer detials");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName, cityName);
@@ -334,8 +357,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageAnalyzer_SortColumns() {
 		Log.info("\nRunning TC132_ManageAnalyzer_SortColumns");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageAnalyzersPage.open();
 		assertTrue(manageAnalyzersPage.areTableColumnsSorted());	
 	}
@@ -349,8 +372,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	public void TC499_EditAnalyzer_PicSupport() {
 		Log.info("\nRunning TC499_EditAnalyzer_PicSupport - Test Description: Pic Support not allowed to edit Analyzer");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);	
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);	
 		manageAnalyzersPage.open();
 		List<WebElement> addAnalyzerButton=getDriver().findElements(By.xpath("//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a"));
 		assertTrue(addAnalyzerButton.size()==0);
@@ -360,8 +383,8 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 	}
 	
 	private void addNewLocationSurveyorAnalyzer(String userName, String password, String customerName, String locationName, String surveyorName, String analyzerName, String city, String sharedKey){
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, password);			
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);			
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, customerName, city);		
 		manageSurveyorPage.open();
@@ -369,5 +392,4 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, sharedKey, surveyorName, customerName, locationName);
 	}
-
 }

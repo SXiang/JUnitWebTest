@@ -22,12 +22,15 @@ import java.util.List;
 import common.source.BaseHelper;
 import common.source.Log;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -38,12 +41,31 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
-
-
+	private static LoginPage loginPage;
 	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageRefGasBottlesAdminPageTest () {
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(getDriver(), getTestSetup(), getBaseURL());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageRefGasBottlesAdminPage = pageObjectFactory.getManageRefGasBottlesAdminPage();
 		PageFactory.initElements(getDriver(),  manageRefGasBottlesAdminPage);
 	}
 
@@ -64,8 +86,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
@@ -91,8 +113,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
@@ -123,8 +145,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
@@ -146,8 +168,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		List<String> lotNumberList;
 		Log.info("\nRunning - TC450_ManageRefGasBottlesAdminPagination - Test Description: Pagination (Manage Ref Gas Bottles Customer Admin)\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.setPagination(PAGINATIONSETTING);
 
@@ -195,8 +217,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String isoValue = "-32.7";
 		Log.info("\nRunning - TC451 - Test Description: Search ref gas bottle record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNumber, isoValue,
@@ -213,8 +235,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		String lotNumber = "Invalid_TC452_" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC452 - Test Description: Search invalid Ref Gas Bottle record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.waitForPageLoad();
 		manageRefGasBottlesAdminPage.getInputSearch().sendKeys(lotNumber);
@@ -233,8 +255,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		List<String> list = new ArrayList<String>();
 		Log.info("\nRunning - TC453 - Test Description: Sort Ref Gas Bottle records based on attributes present\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
 		
 		manageRefGasBottlesAdminPage.getTheadSurveyor().click();
@@ -271,8 +293,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC132_ManageRefGas_SortColumns() {
 		Log.info("\nRunning TC132_ManageRefGas_SortColumns");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageRefGasBottlesAdminPage.open();		
 		assertTrue(manageRefGasBottlesAdminPage.areTableColumnsSorted());
 	}

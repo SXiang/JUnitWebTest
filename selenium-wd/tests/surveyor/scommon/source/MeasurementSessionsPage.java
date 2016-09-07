@@ -140,7 +140,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	 * @param testSetup
 	 * @param strBaseURL
 	 */
-	public MeasurementSessionsPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
+	public MeasurementSessionsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 	}
 

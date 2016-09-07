@@ -20,14 +20,11 @@ public class SurveyorBaseTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		if (!TestSetup.isParallelBuildEnabled()) {
-			TestSetup.stopChromeProcesses();
-		}
-		initializeTestObjects();
+		//initializeTestObjects();
 	}
 
-	public static void initializeTestObjects(){
-		BaseTest.setTestSetup(new TestSetup());
-		BaseTest.initializeTestObjects();
-	}
+//	public static void initializeTestObjects(){
+//		//BaseTest.setTestSetup(new TestSetup());
+//		BaseTest.initializeTestObjects();
+//	}
 }

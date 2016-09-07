@@ -19,10 +19,12 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,6 +41,7 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
@@ -51,17 +54,23 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
-	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
+	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects();
+	public static void beforeClass() {
+		initializeTestObjects();
 		createTestCaseMap();
-
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		initializePageObjects();
 	}
 
 	private static void initializePageObjects() {
-		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
@@ -128,7 +137,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	
 	private void isSurveyDeleted(List<String> tagList) throws Exception{
 		String tagName=tagList.get(0);
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), msp);
 		msp.open();
 		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey));

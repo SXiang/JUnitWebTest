@@ -1,8 +1,5 @@
 package surveyor.scommon.source;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,23 +7,22 @@ import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
-import common.source.FileUtility;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.TestSetupFactory;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.PageActionsStore;
 
@@ -35,12 +31,9 @@ public class BaseTest {
 	private static List<WebDriver> spawnedWebDrivers = new ArrayList<WebDriver>();
 
 	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
-	private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
+	//private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
 	private static ThreadLocal<String> baseURLThreadLocal = new ThreadLocal<String>();
 
-	private static ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<LoginPage>();
-	private static ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<HomePage>();
-	
 	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>(); 
 	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
 	private static ThreadLocal<ScreenShotOnFailure> screenCaptureThreadLocal = new ThreadLocal<ScreenShotOnFailure>();
@@ -78,11 +71,28 @@ public class BaseTest {
 		}
 	};
 
-	public static void initializeTestObjects(){
-		setBaseURL(getTestSetup().getBaseUrl());		
-		setDebug(getTestSetup().isRunningDebug());
-		TestContext.INSTANCE.setTestSetup(getTestSetup());
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		if (!TestSetup.isParallelBuildEnabled()) {
+			TestSetup.stopChromeProcesses();
+		}
 
+		initializeTestObjects();
+	}
+	
+	public static void initializeTestObjects(){
+		if (getTestSetup()==null) {
+			setTestSetup(TestSetupFactory.getTestSetup());
+			Log.info(String.format("[THREAD Debug Log].. Set TestSetup - '%s'", getTestSetup()));
+		}
+		if (getBaseURL() == null) {		
+			setBaseURL(getTestSetup().getBaseUrl());
+			Log.info(String.format("[THREAD Debug Log].. Set BaseURL - '%s'", getBaseURL()));
+		}
+		
+		setDebug(getTestSetup().isRunningDebug());
+
+		// Store webdriver instances that are spawned.
 		WebDriver webDriver = getTestSetup().getDriver();
 		List<WebDriver> list = Collections.synchronizedList(spawnedWebDrivers);
 		synchronized (list) {
@@ -98,24 +108,10 @@ public class BaseTest {
 			Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
 		}
 
-		try {
-			screenShotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + getTestSetup().getTestReportCategory();
-		} catch (IOException e) {
-			Log.error(e.toString());
+		if (TestSetupFactory.getScreenShotOnFailure() == null) {
+			screenCaptureThreadLocal.set(TestSetupFactory.getScreenShotOnFailure());
+			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
-		
-		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
-		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
-		setScreenCapture(new ScreenShotOnFailure(screenShotsSubFolder, 
-				screenShotsDir, getTestSetup().isRemoteBrowser));
-		
-		getDriver().manage().deleteAllCookies();
-		
-		setLoginPage(new LoginPage(getDriver(), getBaseURL(), getTestSetup()));
-		PageFactory.initElements(getDriver(),  getLoginPage());
-		
-		setHomePage(new HomePage(getDriver(), getBaseURL(), getTestSetup()));
-		PageFactory.initElements(getDriver(),  getHomePage());
 	}
 	
 	private static ExtentReports getExtentReport(String className) {
@@ -191,14 +187,11 @@ public class BaseTest {
 	}
 
 	public static void logoutQuitDriver() {
+		Log.method("BaseTest.logoutQuitDriver");
 		if(getDriver() == null){
 			return;
 		}
-		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
-			getHomePage().open();
-			getHomePage().logout();
-		}
-		
+
 		getDriver().quit();
 		setDriver(null);
 	}
@@ -257,11 +250,11 @@ public class BaseTest {
 	}
 
 	protected static TestSetup getTestSetup() {
-		return testSetupThreadLocal.get();
+		return TestContext.INSTANCE.getTestSetup();
 	}
 
 	protected static void setTestSetup(TestSetup tstSetup) {
-		testSetupThreadLocal.set(tstSetup);
+		TestContext.INSTANCE.setTestSetup(tstSetup);
 	}
 
 	protected static String getBaseURL() {
@@ -274,22 +267,6 @@ public class BaseTest {
 
 	protected static StringBuilder getExtentReportFilePath() {
 		return extentReportFilePathThreadLocal.get();
-	}
-
-	protected static LoginPage getLoginPage() {
-		return loginPageThreadLocal.get();
-	}
-
-	protected static void setLoginPage(LoginPage loginPg) {
-		loginPageThreadLocal.set(loginPg);
-	}
-
-	protected static HomePage getHomePage() {
-		return homePageThreadLocal.get();
-	}
-
-	protected static void setHomePage(HomePage homePg) {
-		homePageThreadLocal.set(homePg);
 	}
 
 	public static boolean isDebug() {

@@ -28,7 +28,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 
 	public SurveyViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
-		initializePageObject(driver, new SurveyViewPage(driver, testSetup, strBaseURL));
+		initializePageObject(driver, new SurveyViewPage(driver, strBaseURL, testSetup));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
@@ -55,8 +55,8 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		logAction(getRuntimeType() + ".refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
 		SurveyViewPage surveyViewPage = new SurveyViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		initializePageObject(TestContext.INSTANCE.getDriver(), surveyViewPage);
 		return true;
 	}
@@ -111,7 +111,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifySurveyInfoTagLabelEquals", data, dataRowID);
 		String actualTagValue = getSurveyViewPage().getTagLabelText();
-		return verifySurveyInfoTagLabelEquals(data, dataRowID, DriverViewPageActions.workingDataRow, actualTagValue);
+		return verifySurveyInfoTagLabelEquals(data, dataRowID, DriverViewPageActions.workingDataRow.get(), actualTagValue);
 	}
 	public boolean verifySurveyInfoModeLabelEquals(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifySurveyInfoModeLabelEquals", data, dataRowID);

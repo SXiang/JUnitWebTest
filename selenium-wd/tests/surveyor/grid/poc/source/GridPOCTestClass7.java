@@ -65,7 +65,7 @@ public class GridPOCTestClass7 extends GridPOCBaseTest {
 		PageFactory.initElements(getDriver(), manageAnalyzersPage);
 
 		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(),
-				getTestSetup(), getBaseURL());
+				getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
 
 		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(),

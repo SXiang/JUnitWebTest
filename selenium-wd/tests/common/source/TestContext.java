@@ -146,9 +146,11 @@ public enum TestContext {
 
 	public void setTestSetup(TestSetup testSetup) {		
 		this.testSetup = testSetup;
-	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
-	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
-	    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
+		if (this.testSetup != null) {
+		    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
+		    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
+		    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
+		}
 	}
 
 	public String getLoggedInUser() {

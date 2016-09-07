@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,8 +32,8 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
-import common.source.TestContext;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SystemHistoryReportsPage;
@@ -48,12 +49,29 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	private static DateFormat dateFormat = new SimpleDateFormat("dd");
 	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupSystemHistoryReportsPageTest() {
-		systemHistoryReportsPage = new SystemHistoryReportsPage(getDriver(), getBaseURL(), getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		
+		systemHistoryReportsPage = pageObjectFactory.getSystemHistoryReportsPage();
 		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
 
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(), getBaseURL(), getTestSetup());
+		manageSurveyorHistoriesPage = pageObjectFactory.getManageSurveyorHistoriesPage();
 		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 	}
 

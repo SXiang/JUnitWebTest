@@ -114,8 +114,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	 * @param testSetup
 	 * @param strBaseURL
 	 */
-	public ManageRefGasBottlesPage(WebDriver driver, TestSetup testSetup,
-			String strBaseURL) {
+	public ManageRefGasBottlesPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPATH);
 
 		Log.info("\nThe Manage Ref Gas Bottles Page URL is: %s\n" +

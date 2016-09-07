@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,12 +14,14 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
-import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
@@ -44,28 +47,50 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	private static ComplianceReportsPage complianceReportsPage;
 	private static HomePage homePage;
+	private static LoginPage loginPage;
 	private static PreferencesPage preferencesPage;
 	private static FleetMapPage fleetMapPage;
 	private static SurveyorSystemsPage surveyorPage;
 	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupACLandVisibilityTest() {
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageCustomersPage);
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-		homePage = new HomePage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), homePage);
-		preferencesPage = new PreferencesPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), preferencesPage);
-		fleetMapPage = new FleetMapPage(getDriver(), getTestSetup(), getBaseURL());
-		PageFactory.initElements(getDriver(), fleetMapPage);
-		surveyorPage = new SurveyorSystemsPage(getDriver(), getTestSetup(), getBaseURL());
-		PageFactory.initElements(getDriver(), surveyorPage);
-		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), complianceReportsPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
 	}
 
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
+		PageActionsStore.INSTANCE.clearStore();
+		
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+		preferencesPage = pageObjectFactory.getPreferencesPage();
+		PageFactory.initElements(getDriver(), preferencesPage);
+		fleetMapPage = pageObjectFactory.getFleetMapPage();
+		PageFactory.initElements(getDriver(), fleetMapPage);
+		surveyorPage = pageObjectFactory.getSurveyorSystemsPage();
+		PageFactory.initElements(getDriver(), surveyorPage);
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
+	}
+	
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description:
 	 * Check ACLV for customer user with Driver role
@@ -81,8 +106,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info(
 				"\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
@@ -90,8 +115,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
@@ -108,8 +133,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes() {
 		Log.info(
 				"\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -127,8 +152,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC35_CheckACLVCustomerUser_DriverRole_Preferences() {
 		Log.info(
 				"\nRunning TC35_CheckACLVCustomerUser_DriverRole_Preferences - Test Description: RPreferences link is working");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSDR, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -162,19 +187,17 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info(
 				"\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLESU, location);
 
-		ManageCustomersPage manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageCustomersPage);
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
@@ -196,8 +219,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseID
 				+ "_CheckReportLink_SupervisorRole - Test Description: Report link is working and user is able to view report's menu");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		complianceReportsPage.open();
 
@@ -290,8 +313,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC36_CheckUserLink_ReleaseNotes() {
 		Log.info(
 				"\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Release Notes link is working and can download Release Notes");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -309,8 +332,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC36_CheckUserLink_Preferences() {
 		Log.info(
 				"\nRunning TC36_CheckReportLink_CustomerSupervisorRole - Test Description: Preferncess link is working");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSSU, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -343,8 +366,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info(
 				"\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEUA, location);
@@ -352,8 +375,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
@@ -374,8 +397,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseID
 				+ "_CheckReportLink_UtilityAdminRole - Test Description: Report link is working and user is able to view report's menu");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		complianceReportsPage.open();
 
@@ -468,8 +491,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC37_CheckUserLink_ReleaseNotes() {
 		Log.info(
 				"\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Release Notes link is working and can download Release Notes");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -486,8 +509,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC37_CheckUserLink_Preferences() {
 		Log.info("\nRunning TC37_CheckReportLink_UtilityAdminRole - Test Description: Prefernces link");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -525,8 +548,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info(
 				"\nRunning TC38_CheckACLV_PicAdminRole - Test Description: Check ACLV for Picarro Administrator role, non-default Administrator account\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPage.open();
 
@@ -539,8 +562,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			fail("\nTC38: failed to create a non-default Picarro Administrator user.\n");
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
 		assertTrue(homePage.checkVisibilityForPicarroAdministrator(userName));
@@ -560,8 +583,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseID
 				+ "_CheckReportLink_PicarroAdminRole - Test Description: Report link is working and user is able to view report's menu");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		complianceReportsPage.open();
 
@@ -654,8 +677,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC38_CheckUserLink_ReleaseNotes_PicarroAdminRole() {
 		Log.info(
 				"\nRunning TC38_CheckReportLink_PicarroAdminRole - Test Description: Release Notes link is working and can download Release Notes");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -675,8 +698,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC38_CheckUserLink_Preferences() {
 		Log.info("\nRunning TC38_CheckReportLink_UtilityAdminRole - Test Description: Prefernces link is working");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		homePage.open();
 
@@ -718,8 +741,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseID
 				+ "_CheckReportLink_PicarroSupportRole - Test Description: Report link is working and user is able to view report's menu");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		complianceReportsPage.open();
 
@@ -812,8 +835,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC40_CheckUserLink_ReleaseNotes_PicarroSupportRole() {
 		Log.info(
 				"\nRunning TC40_CheckReportLink_PicarroSupportRole - Test Description: Release Notes link is working and can download Release Notes");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -832,8 +855,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC40_CheckUserLink_Preferences() {
 		Log.info("\nRunning TC38_CheckReportLink_PicarroSupportRole - Test Description: Prefernces link is working");
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		homePage.open();
 		homePage.waitForPageLoad();
@@ -876,14 +899,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		Log.info(
 				"\nRunning TC40_CheckACLV_PicSupportRole - Test Description: Check ACLV for Picarro user with Picarro Support role\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-
-		ManageUsersPage manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		Log.info("Creating Picarro support user with username-" + userName);
-
 		manageUsersPage.open();
 
 		Log.info(String.format("Adding new Picarro user: Username-[%s];Role-[%s];Location-[%s];Timezone-[%s]", userName,
@@ -895,8 +914,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			fail("\nTC40: failed to create a Picarro user with Picarro Support role.\n");
 		manageUsersPage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
 		assertTrue(homePage.checkVisibilityForPicarroSUP(userName));

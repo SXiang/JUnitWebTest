@@ -36,23 +36,23 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	private static final String CLS_DRIVER_VIEW_PAGE_ACTIONS = "DriverViewPageActions::";
 	
 	private DriverViewDataReader dataReader = null;
-	public static DriverViewDataRow workingDataRow = null;    // Stores the workingDataRow from startSurvey action
+	public static ThreadLocal<DriverViewDataRow> workingDataRow = new ThreadLocal<DriverViewDataRow>();    // Stores the workingDataRow from startSurvey action
 
 	public DriverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
-		initializePageObject(driver, new DriverViewPage(driver, testSetup, strBaseURL));
+		initializePageObject(driver, new DriverViewPage(driver, strBaseURL, testSetup));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	private DriverViewPage createNewPageObject() {
 		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		return driverViewPage;
 	}
 	
@@ -273,8 +273,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			}
 			
 			// store the working datarow.
-			workingDataRow = dataRow;
-			workingDataRow.surveyTag = surveyTag;	// update the tag to value evaluated by function.
+			workingDataRow.set(dataRow);
+			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
 		}
 		try {
 			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
@@ -739,7 +739,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyInfoTagLabelEquals", data, dataRowID);
 		String actualTagValue = getDriverViewPage().getTagLabelText();
-		return verifySurveyInfoTagLabelEquals(data, dataRowID, workingDataRow, actualTagValue);
+		return verifySurveyInfoTagLabelEquals(data, dataRowID, workingDataRow.get(), actualTagValue);
 	}
 
 	/* TO BE IMPLEMENTED METHODS */

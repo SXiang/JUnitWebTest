@@ -72,18 +72,18 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	@Test
 	public void US2774_EnableBaselineShapeFilesForComplianceReports() throws Exception {
         Log.info("\nUS2774_EnableBaselineShapeFilesForComplianceReports");
-        complianceReportsPageAction.workingDataRow = new ComplianceReportDataReader(null).new ComplianceReportsDataRow(null,null,
+        complianceReportsPageAction.workingDataRow.set(new ComplianceReportDataReader(null).new ComplianceReportsDataRow(null,null,
         		null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-        		null);
-        complianceReportsPageAction.workingDataRow.title = "TC148 Report639729";
-        complianceReportsPageAction.workingDataRow.tCID = "UnitTest-US2774";
+        		null));
+        complianceReportsPageAction.workingDataRow.get().title = "TC148 Report639729";
+        complianceReportsPageAction.workingDataRow.get().tCID = "UnitTest-US2774";
         
         
         complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
-		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.title);
-		LoginPageActions.workingDataRow = new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null);
-		LoginPageActions.workingDataRow.username = "sqapicsup@picarro.com";
+		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.get().title);
+		LoginPageActions.workingDataRow.set(new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null));
+		LoginPageActions.workingDataRow.get().username = "sqapicsup@picarro.com";
 		
 		//Delete all the download zips before test or change the parameter "0" to the download index of the this zip
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 0);

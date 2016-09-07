@@ -43,15 +43,17 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	private static TestEnvironmentActions testEnvironmentAction;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
 		initializePageActions();
 
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -257,7 +259,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
@@ -388,7 +390,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		// TODO: Check implementation.
 		//assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchDateRange(EMPTY, NOTSET));
 
-		String TIMEZONE_STRING = ComplianceReportsPageActions.workingDataRow.timezone;
+		String TIMEZONE_STRING = ComplianceReportsPageActions.workingDataRow.get().timezone;
 		String ASSET_DATA_STRING = complianceReportsPageAction.getSelectedAssetNames(getReportRowID(reportDataRowID1));
 
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
@@ -646,7 +648,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, 12 /*userRowID*/);
 
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, ManageUsersPageActions.workingDataRow.password);
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 		
@@ -893,7 +895,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, 13 /*userRowID*/);
 
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, ManageUsersPageActions.workingDataRow.password);
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 		
@@ -1091,7 +1093,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, 13 /*userRowID*/);
 
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.username, ManageUsersPageActions.workingDataRow.password);
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 

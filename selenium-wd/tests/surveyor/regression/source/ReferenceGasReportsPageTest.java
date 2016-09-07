@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -54,7 +55,8 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	@BeforeClass
 	public static void setupReferenceGasReportsPageTest() {
-		referenceGasReportsPage = new ReferenceGasReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
 		PageFactory.initElements(getDriver(), referenceGasReportsPage);
 	}
 

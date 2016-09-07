@@ -15,7 +15,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	
 	public ObserverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
-		initializePageObject(driver, new ObserverViewPage(driver, testSetup, strBaseURL));
+		initializePageObject(driver, new ObserverViewPage(driver, strBaseURL, testSetup));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
@@ -41,8 +41,8 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("ObserverViewPageActions.refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
 		ObserverViewPage observerViewPage = new ObserverViewPage(TestContext.INSTANCE.getDriver(), 
-				TestContext.INSTANCE.getTestSetup(),
-				TestContext.INSTANCE.getBaseUrl());
+				TestContext.INSTANCE.getBaseUrl(),
+				TestContext.INSTANCE.getTestSetup());
 		initializePageObject(TestContext.INSTANCE.getDriver(), observerViewPage);
 		return true;
 	}
@@ -85,7 +85,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("ObserverViewPageActions.verifySurveyInfoTagLabelEquals", data, dataRowID);
 		String actualTagValue = getObserverViewPage().getTagLabelText();
 		// If the survey started from DriverView then we look for the tag from workingDataRow of DriverView.
-		return verifySurveyInfoTagLabelEquals(data, dataRowID, DriverViewPageActions.workingDataRow, actualTagValue);
+		return verifySurveyInfoTagLabelEquals(data, dataRowID, DriverViewPageActions.workingDataRow.get(), actualTagValue);
 	}
 
 	/* Invoke action using specified ActionName */

@@ -33,32 +33,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC946_SurveyView_ViewOperatorSurveySurveyMapViewWhenLISAFieldNotesAreONGISOFF() throws Exception {
 		Log.info("\nRunning TC946_SurveyView_ViewOperatorSurveySurveyMapViewWhenLISAFieldNotesAreONGISOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -81,32 +81,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC947_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenLISAFieldNotesAreONGISOFF() throws Exception {
 		Log.info("\nRunning TC947_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenLISAFieldNotesAreONGISOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -129,32 +129,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC948_SurveyView_ViewOperatorSurveySurveyMapViewWhenFovIndicationONGISON() throws Exception {
 		Log.info("\nRunning TC948_SurveyView_ViewOperatorSurveySurveyMapViewWhenFovIndicationONGISON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
  
 	/**
@@ -177,32 +177,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC949_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenFovIndicationONGISON() throws Exception {
 		Log.info("\nRunning TC949_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenFovIndicationONGISON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
 
 	/**
@@ -223,25 +223,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC953_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenIndicationsONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC953_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenIndicationsONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -262,25 +262,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC954_SurveyView_ViewOperatorSurveySurveyMapViewWhenLISAONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC954_SurveyView_ViewOperatorSurveySurveyMapViewWhenLISAONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -301,25 +301,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC955_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenLISAONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC955_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenLISAONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -340,25 +340,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC956_SurveyView_ViewOperatorSurveySurveyMapViewWhenFOVONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC956_SurveyView_ViewOperatorSurveySurveyMapViewWhenFOVONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -379,25 +379,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC957_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenFOVONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC957_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenFOVONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -418,25 +418,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC958_SurveyView_ViewOperatorSurveySurveyMapViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC958_SurveyView_ViewOperatorSurveySurveyMapViewWhenFieldNotesONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -457,25 +457,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC959_SurveyView_ViewOperatorSurveySurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC959_SurveyView_ViewOperatorSurveySurveySatellliteViewWhenFieldNotesONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -496,25 +496,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC960_SurveyView_ViewOperatorSurveySurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC960_SurveyView_ViewOperatorSurveySurveyMapViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NATURAL_GAS, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -535,25 +535,25 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC961_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC961_SurveyView_ViewOperatorSurveySurveySatelliteViewWhenIsotopicAnalysisONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIsotopicAnalysis(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NATURAL_GAS, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIsotopicAnalysis(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NATURAL_GAS, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -571,20 +571,20 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC970_SurveyView_ViewStandardSurveySatelliteViewWhenAllGISDisplayOptionsAreTurnedOFF() throws Exception {
 		Log.info("\nRunning TC970_SurveyView_ViewStandardSurveySatelliteViewWhenAllGISDisplayOptionsAreTurnedOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -604,31 +604,31 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC971_SurveyView_ViewFOVIndicationsLisasSurveyDataStandardSurveyWhenBoundariesDataLoadedSatelliteView() throws Exception {
 		Log.info("\nRunning TC971_SurveyView_ViewFOVIndicationsLisasSurveyDataStandardSurveyWhenBoundariesDataLoadedSatelliteView ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssets(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().turnOnAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssets(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -648,31 +648,31 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC972_SurveyView_ViewFOVIndicationsLisasSurveyDataStandardSurveyWhenAssetsAreLoadedSatelliteView() throws Exception {
 		Log.info("\nRunning TC972_SurveyView_ViewFOVIndicationsLisasSurveyDataStandardSurveyWhenAssetsAreLoadedSatelliteView ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().turnOnAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllBoundaries(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -690,19 +690,19 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC973_SurveyView_ViewIndicationsDataSatelliteViewStandardSurveyWhenBoundariesPipeLoaded() throws Exception {
 		Log.info("\nRunning TC973_SurveyView_ViewIndicationsDataSatelliteViewStandardSurveyWhenBoundariesPipeLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
  
 	/**
@@ -720,19 +720,19 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC974_SurveyView_ViewFOVDataSatelliteViewStandardSurveyWhenBoundariesAssetsLoaded() throws Exception {
 		Log.info("\nRunning TC974_SurveyView_ViewFOVDataSatelliteViewStandardSurveyWhenBoundariesAssetsLoaded ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
  
 	/**
@@ -755,32 +755,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC975_SurveyView_ViewStandardSurveyMapViewWhenLISAFieldNotesAreONGISOFF() throws Exception {
 		Log.info("\nRunning TC975_SurveyView_ViewStandardSurveyMapViewWhenLISAFieldNotesAreONGISOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -803,32 +803,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC976_SurveyView_ViewStandardSurveySatelliteViewWhenLISAFieldNotesAreONGISOFF() throws Exception {
 		Log.info("\nRunning TC976_SurveyView_ViewStandardSurveySatelliteViewWhenLISAFieldNotesAreONGISOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -851,32 +851,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC977_SurveyView_ViewStandardSurveyMapViewWhenFovIndicationONGISON() throws Exception {
 		Log.info("\nRunning TC977_SurveyView_ViewStandardSurveyMapViewWhenFovIndicationONGISON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
  
 	/**
@@ -899,32 +899,32 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC978_SurveyView_ViewStandardSurveySatelliteViewWhenFovIndicationONGISON() throws Exception {
 		Log.info("\nRunning TC978_SurveyView_ViewStandardSurveySatelliteViewWhenFovIndicationONGISON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnFOVs(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnFOVs(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_STANDARD1_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_STANDARD1_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_STANDARD1_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 	}
  
 	/**
@@ -945,34 +945,34 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC979_SurveyView_ViewStandardSurveyMapViewWhenAllDisplayOptionsAreONProtectedSteelCastIronAssetsBoundariesON() throws Exception {
 		Log.info("\nRunning TC979_SurveyView_ViewStandardSurveyMapViewWhenAllDisplayOptionsAreONProtectedSteelCastIronAssetsBoundariesON ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMaterialTypeCastIron(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMaterialTypeProtectedSteel(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMaterialTypeCastIron(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -993,34 +993,34 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC980_SurveyView_ViewStandardSurveySatelliteViewWhenAllDisplayOptionsAreONUn_ProtectedSteelCopperAssetsONBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC980_SurveyView_ViewStandardSurveySatelliteViewWhenAllDisplayOptionsAreONUn_ProtectedSteelCopperAssetsONBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMaterialTypeUnprotectedSteel(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMaterialTypeCastIron(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnSatelliteView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
-		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMaterialTypeUnprotectedSteel(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMaterialTypeCastIron(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_RAPID_RESP_TAG, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_RAPID_RESP_TYPE, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_RAPID_RESP_USERNAME, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_ANALYZER, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
  
 	/**
@@ -1041,24 +1041,24 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 	public void TC981_SurveyView_ViewStandardSurveyMapViewWhenIndicationsONAssetsBoundariesOFF() throws Exception {
 		Log.info("\nRunning TC981_SurveyView_ViewStandardSurveyMapViewWhenIndicationsONAssetsBoundariesOFF ...");
 		
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-		surveyViewPageAction.open(TEST_SURVEY_STANDARD1_ID, NOTSET);
-		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnIndications(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
-		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnMapView(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
+		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnIndications(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
+		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
+		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
+		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
 }

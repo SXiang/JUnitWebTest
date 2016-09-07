@@ -3,7 +3,6 @@ package surveyor.regression.source;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import com.googlecode.junittoolbox.ParallelSuite;

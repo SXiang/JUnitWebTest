@@ -4,10 +4,8 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -16,19 +14,14 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.PageObjectFactory;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -39,21 +32,28 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static MeasurementSessionsPage measurementSessionsPage;
+	private static HomePage homePage;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
 		initializePageActions();
 
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());;
-		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(),  measurementSessionsPage);
 
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -119,8 +119,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		measurementSessionsPage.open();
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
-		assertTrue(getHomePage().getReturnHomePage().isEnabled());
-		assertTrue(getHomePage().getReturnHomePage().isDisplayed());
-		getHomePage().getReturnHomePage().click();
+		assertTrue(homePage.getReturnHomePage().isEnabled());
+		assertTrue(homePage.getReturnHomePage().isDisplayed());
+		homePage.getReturnHomePage().click();
 	}	
 }

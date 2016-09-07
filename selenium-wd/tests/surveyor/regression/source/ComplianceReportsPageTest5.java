@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -22,13 +21,10 @@ import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.PageObjectFactory;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
@@ -42,23 +38,28 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static MeasurementSessionsPage measurementSessionsPage;
+	private static HomePage homePage;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		initializePageActions();
-
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
 		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
-		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(),  measurementSessionsPage);
 
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -107,9 +108,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -158,14 +159,12 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		measurementSessionsPage.open();
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
-		assertTrue(getHomePage().getReturnHomePage().isEnabled());
-		assertTrue(getHomePage().getReturnHomePage().isDisplayed());
-		getHomePage().getReturnHomePage().click();
+		assertTrue(homePage.getReturnHomePage().isEnabled());
+		assertTrue(homePage.getReturnHomePage().isDisplayed());
+		homePage.getReturnHomePage().click();
 	}	
 
 	/**
-=======
->>>>>>> master
 	 * Test Case ID: TC227_S1ReportSurveyModeShouldNotPresentNewCopyComplianceReportScreens
 	 * Test Description: S1 report and survey mode should not be present on New and Copy Compliance report screens
 	 * Script: -  	
@@ -396,9 +395,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -433,9 +432,9 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -513,7 +512,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));

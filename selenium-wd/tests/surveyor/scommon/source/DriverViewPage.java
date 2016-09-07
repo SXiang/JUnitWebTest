@@ -283,7 +283,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @param baseURL
 	 * @param testSetup
 	 */
-	public DriverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
+	public DriverViewPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, getPageFullUrl(baseURL));
 		Log.info("\nThe DriverView Page URL is: " + this.strPageURL);
 	}

@@ -18,7 +18,7 @@ import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 
 public class BaseReportsPageTest extends SurveyorBaseTest {
 
-	private static ReportsBasePage reportsPage = null;
+	private static ThreadLocal<ReportsBasePage> reportsPageThreadLocal = new ThreadLocal<ReportsBasePage>();
 
 	private boolean isCollectReportJobPerfMetric;
 	private boolean isGenerateBaselineSSRSImages;
@@ -72,14 +72,14 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	public static void setReportsPage(ReportsBasePage reportsPage) {
-		BaseReportsPageTest.reportsPage = reportsPage;
+		reportsPageThreadLocal.set(reportsPage);
 	}
 		
 	@Override
 	public void postTestMethodProcessing() {
 		try {
 			cleanUp();
-			reportsPage.logout();
+			getReportsPage().logout();
 		} catch (Exception e) {
 			Log.warn("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message:");
 			Log.warn(ExceptionUtility.getStackTraceString(e));
@@ -87,7 +87,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	public static ReportsBasePage getReportsPage() {
-		return reportsPage;
+		return reportsPageThreadLocal.get();
 	}
 	
 	protected static ReportTestRunMode getTestRunMode() {
@@ -99,20 +99,20 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 	
 	private void cleanUp() throws Exception {
-		if(reportsPage==null||keepTestData()){
+		if(getReportsPage()==null||keepTestData()){
 			TestContext.INSTANCE.clearTestReportSet();
 			return;
 		}
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		//Delete report and related downloads
-		reportsPage.open();
+		getReportsPage().open();
 		for(String reportId:reportIdSet){	
 			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
-			reportsPage.deleteReportById(reportId);
+			getReportsPage().deleteReportById(reportId);
 		}
-		reportsPage.open();
+		getReportsPage().open();
 		TestContext.INSTANCE.clearTestReportSet();
 	}	
 	

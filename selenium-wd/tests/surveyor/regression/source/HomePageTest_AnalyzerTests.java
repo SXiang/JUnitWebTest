@@ -13,7 +13,9 @@ import common.source.Log;
 import common.source.TestSetup;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.CloudCover;
@@ -35,15 +37,22 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 
 	private static MeasurementSessionsPage measurementSessionsPage;
 	private static DriverViewPage driverViewPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
 	public HomePageTest_AnalyzerTests() {
-		setHomePage(new HomePage(getDriver(), getBaseURL(), getTestSetup()));
-		PageFactory.initElements(getDriver(), getHomePage());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		
+		homePage = pageObjectFactory.getHomePage(); 
+		PageFactory.initElements(getDriver(), homePage);
 
-		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getTestSetup(), getBaseURL());
+		loginPage = pageObjectFactory.getLoginPage(); 
+		PageFactory.initElements(getDriver(), loginPage);
+
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
-		driverViewPage = new DriverViewPage(getDriver(), getTestSetup(), getBaseURL());
+		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);
 	}
 
@@ -56,8 +65,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	public void TC140_SimulatorTest_VerifyAllDrivingSurveysLink_PicAdminRole() {
 		Log.info("\nTestcase - TC140_SimulatorTest_VerifyAllDrivingSurveysLink_PicAdminRole: Sanity check on home page DashBoard/View All Driving Surveys " + "Link with Picarro Admin login\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Create a driving survey.
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
@@ -83,8 +92,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Run the verifications.
-		getHomePage().open();
-		assertTrue(getHomePage().checkDashBoardViewAllDrivingSurveysLink());
+		homePage.open();
+		assertTrue(homePage.checkDashBoardViewAllDrivingSurveysLink());
 
 		TestSetup.stopAnalyzer();
 	}
@@ -97,8 +106,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	public void TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole() {
 		Log.info("\nTestcase - TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole: Sanity check on home page DashBoard/View All Surveyors Link with Picarro Admin login\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Start Driving Survey to get the Surveyor online.
 		TestSetup.replayDB3Script(INSTR_READY_DEFN_FILE);
@@ -110,8 +119,8 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		
 		// Run the verifications.
-		getHomePage().open();
-		assertTrue(getHomePage().checkDashBoardViewAllSurveyorsLink());
+		homePage.open();
+		assertTrue(homePage.checkDashBoardViewAllSurveyorsLink());
 		
 		TestSetup.stopAnalyzer();
 	}

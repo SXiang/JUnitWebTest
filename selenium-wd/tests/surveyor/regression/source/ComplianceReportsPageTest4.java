@@ -10,7 +10,6 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -26,14 +25,15 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	private static TestEnvironmentActions testEnvironmentAction;
 	
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+	
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
 		initializePageActions();
 		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 	}
 
@@ -79,7 +79,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewComplianceReport(complianceReportsPageAction, 4);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 4);
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
 		modifyComplianceReport(complianceReportsPageAction, 5);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 5);
@@ -106,7 +106,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewComplianceReport(complianceReportsPageAction, 6);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 6);
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		modifyComplianceReport(complianceReportsPageAction, 7);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
@@ -134,7 +134,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		createNewComplianceReport(complianceReportsPageAction, 8);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 8);
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		modifyComplianceReport(complianceReportsPageAction, 9);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 9);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);

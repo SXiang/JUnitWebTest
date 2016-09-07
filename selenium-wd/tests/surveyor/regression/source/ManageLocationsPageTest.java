@@ -5,6 +5,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +17,10 @@ import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataprovider.RunAs;
 import surveyor.dataprovider.UserDataProvider;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
@@ -30,6 +33,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageLocationsPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static LoginPage loginPage;
+	
 	private enum ManageUserTestCaseType {
 		AddDuplicateLocation,
 		EditDuplicateLocation
@@ -43,14 +48,36 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		EditLoc,
 		MaxLocChar
 	}
+
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(),  manageLocationsPage);
 		
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 	}
+	
 	// TODO [GENERIC]: Utilize data driven approach for Username/Password.
 	
 	/**
@@ -79,8 +106,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("------------------------");
 		Log.info("\nRunning -"+ tcID+"_AddLocationUsingLatLongSelector_PicAdmin - Test Description: Add new location\n");
 		// Add Location as Picarro admin.
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocationUsingLatLongSelector(locationName, SQACUS, cityName);
@@ -121,8 +148,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				+ "_EditLocationAddedUsingLatLongSelector - Test Description: Add new location\n");
 
 		// Add Location as Picarro admin.	
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocationUsingLatLongSelector(locationName, SQACUS, cityName);
@@ -151,8 +178,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC60_TC489_AddLocation_PicAdmin_PicSupport - Test Description: Adding Location");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);		
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);		
 	
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
@@ -182,8 +209,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning " + tcID
 				+ "_EditLocation - Test Description: Editing Location");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName);
@@ -210,8 +237,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC61_EditLocation_PicAdmin - Test Description: Editing Location");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -256,8 +283,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				+ tcID
 				+ "_EditLoc50CharLimit - Test Description: More than 50 characters not allowed in Location Description field\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(user, password);
+		loginPage.open();
+		loginPage.loginNormalAs(user, password);
 
 		manageLocationsPage.open();
 
@@ -296,8 +323,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	public void TC496_SearchValidLocation() {
 		Log.info("\nRunning - TC496 - Test Description: Search valid location record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 
 		manageLocationsPage.open();
 		assertTrue(manageLocationsPage.searchLocation(SQACUS, SQACUSLOC));
@@ -379,8 +406,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				"Test Description: Picarro user not allowed to create duplicate location\n");
 
 		// *** Adding a location for this test 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);    
@@ -388,7 +415,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		// *** Starting test
 
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.performSearch(locationName);
@@ -427,8 +454,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 				"Test Description: Picarro user not allowed to edit duplicate location details same as existing location details\n");
 
 		// *** Adding a location for this test 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.open();
+		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);    
@@ -438,7 +465,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		String newLocationName = SQAPICLOC;
 
-		getLoginPage().loginNormalAs(username, password);
+		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Editing location: " + locationName + " -> " + newLocationName);
 		manageLocationsPage.performSearch(locationName);
@@ -469,8 +496,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC493_AddLocationBlankFields_PicSupport - "+
 				"Test Description: Add location- blank required fields\n");
 	
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
 		Log.info("Adding location empty description: required field" + locationName);
 		manageLocationsPage.addNewLocation("", SQACUS, cityName, false, "1","2",false);  
@@ -500,8 +527,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC494_EditLocationBlankFields_PicSupport - "+
 				"Test Description:  - Edit location- blank required fields\n");
 	
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQAPICSUP, USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);  
 		
@@ -531,8 +558,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning - TC497_NoMatchingLocationFound_PicSupport - "+
 				"Test Description: Search invalid location record\n");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs( SQAPICSUP,USERPASSWORD);
+		loginPage.open();
+		loginPage.loginNormalAs( SQAPICSUP,USERPASSWORD);
 		manageLocationsPage.open();
 
 		manageLocationsPage.performSearch(invalidKey);
@@ -576,8 +603,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		
 		Log.info("\nRunning TC1409_AddLocation_PicAdmin- Test Description: Adding Location");
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 	
 		manageLocationsPage.open();			
 		manageLocationsPage.addNewLocation(locationName,  customerName, cityName );
