@@ -3962,6 +3962,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+
+	public boolean isReportColumnSorted(String columnName, String type){
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), 200);
+	}
 	
 	public boolean isAmplitudeColumnSorted(){
 		Log.method("isAmplitudeColumnSorted");

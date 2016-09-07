@@ -2,6 +2,8 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -107,11 +109,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, 6);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 6);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
-		modifyComplianceReport(complianceReportsPageAction, 7);
+		complianceReportsPageAction.selectReportMode("Manual", 7);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
+		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
+		modifyComplianceReport(complianceReportsPageAction, 7);		
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
-
-		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
  
 	/**
@@ -135,11 +138,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, 8);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 8);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.title, NOTSET);
+		complianceReportsPageAction.selectReportMode("Standard", 7);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
+		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
 		modifyComplianceReport(complianceReportsPageAction, 9);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 9);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);
-
-		// TODO: Methods missing for survey filter verifications. Tracked by Task TA862
 	}
 
 	/**
@@ -151,13 +155,18 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- User is able to sort the list of reports based on specified attribute
 	 *		- Sorting by Report Name not allowed
 	 */
-	@Test
+	@Test //debuging null pointer
 	public void TC165_SortReportListBasedOnCompletionDateAndOtherAttributes() throws Exception {
 		Log.info("\nRunning TC165_SortReportListBasedOnCompletionDateAndOtherAttributes ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
+
+		assertTrue(getComplianceReportsPage().isReportColumnSorted("Report Title","String"));
+		assertTrue(getComplianceReportsPage().isReportColumnSorted("Created By","String"));
+		assertTrue(getComplianceReportsPage().isReportColumnSorted("Date","Date"));
+		assertFalse(getComplianceReportsPage().isReportColumnSorted("Report Name","String"));
 	}
 	
 	/**
@@ -222,5 +231,9 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-	}	
+	}
+	
+	private ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)getReportsPage();
+	}
 }

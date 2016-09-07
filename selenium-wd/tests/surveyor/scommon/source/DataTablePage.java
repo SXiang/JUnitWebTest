@@ -63,6 +63,18 @@ public class DataTablePage extends BasePage {
 		public String toString() {
 			return this.name;
 		}
+		
+		public static TableColumnType getTableColumnType(String type){
+			if(type.equalsIgnoreCase("Number")){
+				return Number;
+			}else if(type.equalsIgnoreCase("String")){
+				return String;
+			}else if(type.equalsIgnoreCase("Date")){
+				return Date;
+			}else{
+				return String;
+			}
+		}
 	}
 
 	private DataTablePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -112,6 +124,7 @@ public class DataTablePage extends BasePage {
 		int colIdx = getColumnIndex(columnName);
 		List<String> columnValues = new ArrayList<String>();
 		int numFound = 0;
+		boolean done = false;
 		do{			
 			for(WebElement row: tableRow){
 				List<WebElement> field = row.findElements(By.cssSelector("td"));
@@ -119,10 +132,11 @@ public class DataTablePage extends BasePage {
 				columnValues.add(field.get(colIdx).getText());
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
+					done = true;
 					break;
 				}
 			}
-		}while(toNextPage());		
+		}while(!done&&toNextPage());		
         return columnValues;
    }
     
@@ -241,9 +255,12 @@ public class DataTablePage extends BasePage {
 	 * @return
 	 */
 	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		return isTableSortedAsc(cloumnMap, str, paginationOption, dataTable, -1);
+	}
+	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable, int numRecords) {
 		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
-			List<String> values = getRecords(entry.getKey().trim(), -1 ).stream().map(String::toLowerCase).collect(Collectors.toList());
+			List<String> values = getRecords(entry.getKey().trim(), numRecords ).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
 				return SortHelper.isDateSortedASC(values.stream().toArray(String[]::new));
 			}else if (columnType == TableColumnType.String){
@@ -262,9 +279,12 @@ public class DataTablePage extends BasePage {
 	 * @return
 	 */
 	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
+		return isTableSortedDesc(cloumnMap, str, paginationOption, dataTable, -1);
+	}
+	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable, int numRecords) {
 		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
-			List<String> values = getRecords(entry.getKey().trim(), -1).stream().map(String::toLowerCase).collect(Collectors.toList());
+			List<String> values = getRecords(entry.getKey().trim(), numRecords).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
 				return SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new));
 			}else if (columnType == TableColumnType.String){
