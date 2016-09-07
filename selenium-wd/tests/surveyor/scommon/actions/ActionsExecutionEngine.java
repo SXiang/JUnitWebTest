@@ -10,15 +10,17 @@ import common.source.Constants;
 import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 /**
  * 
  * @author spulikkal
  */
-public class ActionsExecutionEngine implements IMethodObserver {
+public class ActionsExecutionEngine implements IMethodObserver{
 	private static final String CLASS_NAME = "ActionsExecutionDriver";
 	private static final String DATA_FOLDER = "data";
 	private static final String TEST_CASES_XLSX = "TestCases.xlsx";
@@ -60,7 +62,6 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		String testCaseExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + TEST_CASES_XLSX;
 		excelUtility.setExcelFile(testCaseExcelPath);
 		Boolean foundMatchingTestCase = false;
-		
     	for (String testCaseSheetName : Constants.Excel_Sheets_TestCases) {
     		if (testCaseSheetName.equalsIgnoreCase(sheetName)) {  // Found match.
 	    		if (isExecutableTestGroup(testCaseSheetName)) {    		
@@ -75,7 +76,7 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 		    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 		    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-
+		    			testCaseName = RegexUtility.getValidFileName(testCaseName);		    			
 		    			Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
 		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
@@ -87,7 +88,6 @@ public class ActionsExecutionEngine implements IMethodObserver {
 			    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
 			    			}
 		    			}
-		    			
 		    			afterTestTearDown();
 		    		}
 				}
@@ -109,16 +109,16 @@ public class ActionsExecutionEngine implements IMethodObserver {
 		TestSetup.stopChromeProcesses();
 		TestSetup.deleteAnalyzerLocalDB3();
 		SurveyorBaseTest.initializeTestObjects();
-		SurveyorBaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + " - " + testCaseName, testCaseID + " : " + testCaseName);
+		BaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + "_" + testCaseName, testCaseID + " : " + testCaseName);
 	}
 
 	private void afterTestTearDown() throws Exception {
-		SurveyorBaseTest.reportTestFinished(CLASS_NAME);
-		SurveyorBaseTest.logoutQuitDriver();
+		BaseTest.reportTestFinished(CLASS_NAME);
+		BaseTest.logoutQuitDriver();
 	}
 
 	private void afterTestClassTearDown() throws Exception {
-		SurveyorBaseTest.postResultsToAutomationAPI();
+		BaseTest.postResultsToAutomationAPI();
 	}
 	
 	private void executeTestCaseAction(String testCaseSheetName, String testStepsSheetName, int iTestcase) throws Exception {
@@ -147,16 +147,14 @@ public class ActionsExecutionEngine implements IMethodObserver {
 			try {
 				bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
 			} catch (Exception e) {
-				SurveyorBaseTest.reportTestFailed(e);
-				Log.error(String.format("Error executing action - [%s]. Exception details: %s", testStepAction, ExceptionUtility.getStackTraceString(e)));
+				BaseTest.reportTestFailed(e);
 			}
 			
 			if (bResult==false) {
 				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
 						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs);
 				excelUtility.setCellData(Constants.KEYWORD_FAIL + " : " + failureMessage, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
-				SurveyorBaseTest.reportTestError(failureMessage);
-				Log.info(failureMessage);
+				BaseTest.reportTestFailed(new Exception(failureMessage));
 				break;
 			}						
 
@@ -192,14 +190,14 @@ public class ActionsExecutionEngine implements IMethodObserver {
 	    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 	    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-	    			
+	    			testCaseName = RegexUtility.getValidFileName(testCaseName);
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
 	    				Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
 		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
 	    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
 		    			afterTestTearDown();
-	    			}	    			
+	    			}
 	    		}
 	    		afterTestClassTearDown();
 			}

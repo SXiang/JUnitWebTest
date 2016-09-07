@@ -68,8 +68,6 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		disposeProcesses();
-		
 		// Initialization needed at class level for automation reports.
 		initializePageActions();
 	}
@@ -91,14 +89,4 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 		}		
 	}
 	
-	@After
-    public void afterTestMethod() {
-		try {
-			afterTest();
-			
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
