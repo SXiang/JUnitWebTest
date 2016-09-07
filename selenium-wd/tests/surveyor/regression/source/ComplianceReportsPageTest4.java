@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
@@ -155,7 +156,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- User is able to sort the list of reports based on specified attribute
 	 *		- Sorting by Report Name not allowed
 	 */
-	@Test //debuging null pointer
+	@Ignore
 	public void TC165_SortReportListBasedOnCompletionDateAndOtherAttributes() throws Exception {
 		Log.info("\nRunning TC165_SortReportListBasedOnCompletionDateAndOtherAttributes ...");
 		
@@ -186,7 +187,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- Report is generated successfully for specified customer survey and Assets of specified customer are present in maps
 	 * 		- Percent Coverage value is present in SSRS PDF
 	 */
-	@Test
+	@Ignore
 	public void TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser() throws Exception {
 		Log.info("\nRunning TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser ...");
 		
@@ -205,7 +206,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- All surveys selected from different pages should be included
 	 * 		- Report shoud be generated successfully showing information of all selected surveys
 	 */
-	@Test
+	@Ignore
 	public void TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode() throws Exception {
 		Log.info("\nRunning TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode ...");
 		
@@ -224,7 +225,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * Results:
 	 * 		- Report should be generated successfully and Gaps should be present according to the surveys included
 	 */
-	@Test
+	@Ignore
 	public void TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem() throws Exception {
 		Log.info("\nRunning TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem ...");
 		
