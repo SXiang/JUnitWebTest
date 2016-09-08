@@ -405,7 +405,12 @@ public final class SurveyorConstants {
 	public static final String CONSTANT_CUSTOMER = Resources.getResource(ResourceKeys.Constant_Customer);
 	public static final String CONSTANT_SURVEYOR = Resources.getResource(ResourceKeys.Constant_Surveyor);
 	public static final String CONSTANT_LOCATION = Resources.getResource(ResourceKeys.Constant_Location);
-			
+	
+	/*
+	 * Num Records for functionality checking
+	 */
+	public static final int NUM_RECORDS_TOBEVERIFIED = 200;
+	
 	/*
 	 * Timeout constants
 	 */
