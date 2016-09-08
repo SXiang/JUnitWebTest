@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +63,7 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static List<String> getMatchingGroups(String inputString, String regexPattern) {
-		List<String> output = new ArrayList<String>();
+		List<String> output = Collections.synchronizedList(new ArrayList<String>());
 		Pattern pattern = Pattern.compile(regexPattern, flags);
 		Matcher matcher = pattern.matcher(inputString);
 		if (matcher.find()) {
@@ -85,7 +86,7 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static List<String> split(String inputString, String regexPattern) {
-		List<String> output = new ArrayList<String>();
+		List<String> output = Collections.synchronizedList(new ArrayList<String>());
 		Pattern pattern = Pattern.compile(regexPattern, flags);
 		String[] items = pattern.split(inputString);
 		for (String s : items) {
@@ -172,7 +173,7 @@ public class RegexUtility {
 	 */
 	public static List<String> getStringsInBetween(String inputString, String regexPattern1, String regexPattern2,
 			boolean matchBeginningOfLine, boolean matchEndOfLine) {
-		List<String> matchingStrings = new ArrayList<String>();
+		List<String> matchingStrings = Collections.synchronizedList(new ArrayList<String>());
 		String regexString = (matchBeginningOfLine ? "^" : "") + Pattern.quote(regexPattern1) + REGEX_PATTERN_EXTRACT_EVERYTHING + Pattern.quote(regexPattern2) + (matchEndOfLine ? "$" : "");
 		Pattern pattern = Pattern.compile(regexString, flags | Pattern.DOTALL | Pattern.MULTILINE);
 		Matcher matcher = pattern.matcher(inputString);

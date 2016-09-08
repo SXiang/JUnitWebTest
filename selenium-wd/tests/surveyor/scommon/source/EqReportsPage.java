@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -125,7 +126,7 @@ public class EqReportsPage extends ReportsBasePage {
 		expectedReportString.add(EQReportSSRS_EmissionsQuantificationReport);
 		expectedReportString.add(EQReportSSRS_EmissionsQuantificationData);
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;

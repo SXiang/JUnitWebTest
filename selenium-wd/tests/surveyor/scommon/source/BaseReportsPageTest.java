@@ -1,10 +1,10 @@
 package surveyor.scommon.source;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.junit.After;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.ExceptionUtility;
@@ -25,7 +25,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	private boolean isGenerateBaselineViewImages;
 	private boolean isGenerateBaselineShapeFiles;
 	
-	private static HashMap<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
+	private static Map<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
 	private static ReportTestRunMode testRunMode = ReportTestRunMode.FullTestRun;
 	
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
@@ -42,7 +42,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	public static void initializeProperties() {
-		reportJobProcessingTimeNumberMap = new HashMap<ReportJobType, NumberUtility>();
+		reportJobProcessingTimeNumberMap = Collections.synchronizedMap(new HashMap<ReportJobType, NumberUtility>());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.DataGeneration, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.EQDataGeneration, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.EQMap, new NumberUtility());
@@ -67,7 +67,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		reportJobProcessingTimeNumberMap.put(reportJobType, numberUtility);
 	}
 
-	protected static HashMap<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
+	protected static Map<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
 		return reportJobProcessingTimeNumberMap;
 	}
 

@@ -28,7 +28,7 @@ import surveyor.scommon.actions.PageActionsStore;
 
 public class BaseTest {
 
-	private static List<WebDriver> spawnedWebDrivers = new ArrayList<WebDriver>();
+	private static List<WebDriver> spawnedWebDrivers = Collections.synchronizedList(new ArrayList<WebDriver>());
 
 	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
 	//private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
@@ -108,8 +108,8 @@ public class BaseTest {
 			Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
 		}
 
-		if (TestSetupFactory.getScreenShotOnFailure() == null) {
-			screenCaptureThreadLocal.set(TestSetupFactory.getScreenShotOnFailure());
+		if (getScreenCapture() == null) {
+			setScreenCapture(TestSetupFactory.getScreenShotOnFailure());
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
 	}
@@ -282,6 +282,6 @@ public class BaseTest {
 	}
 
 	public static void setScreenCapture(ScreenShotOnFailure screenCapture) {
-		BaseTest.screenCaptureThreadLocal.set(screenCapture);
+		screenCaptureThreadLocal.set(screenCapture);
 	}	
 }

@@ -11,8 +11,6 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;

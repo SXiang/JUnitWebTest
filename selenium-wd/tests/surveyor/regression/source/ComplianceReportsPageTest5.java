@@ -49,9 +49,7 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
 		
-		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
-		testEnvironmentAction = new TestEnvironmentActions();
+		initializePageActions();
 
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 		homePage = pageObjectFactory.getHomePage();
@@ -120,7 +118,6 @@ public class ComplianceReportsPageTest5 extends BaseReportsPageActionTest {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
 	 * Test Description: Generate report and try to delete the survey used while generating the report
 	 * Script: -  	

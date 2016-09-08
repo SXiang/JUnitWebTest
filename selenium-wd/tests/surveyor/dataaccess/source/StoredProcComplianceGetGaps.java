@@ -2,11 +2,8 @@ package surveyor.dataaccess.source;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-
 import common.source.Log;
 
 public class StoredProcComplianceGetGaps extends BaseEntity {

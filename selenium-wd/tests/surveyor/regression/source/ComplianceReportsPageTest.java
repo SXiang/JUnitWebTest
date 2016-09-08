@@ -105,6 +105,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	
 	@Before
 	public void beforeTest() {
+		initializeTestObjects();
+
 		initializePageObjects();
 	
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();

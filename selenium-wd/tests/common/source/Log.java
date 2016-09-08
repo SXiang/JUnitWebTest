@@ -2,9 +2,8 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +159,7 @@ public class Log {
 	}
 	
 	private static Map<String, ?> getMessageMap(String msg) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = Collections.synchronizedMap(new HashMap<>());
 		StackTraceElement caller = getStackTraceElement();
 		map.put(LogField.MSG_CLASS.toString(), caller.getClassName());
 		map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());

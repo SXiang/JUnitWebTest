@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DatUtility {
 	 */
 
 	public  List<String> getHeadings() {
-		List<String> listOfHeading = new ArrayList<String>();
+		List<String> listOfHeading = Collections.synchronizedList(new ArrayList<String>());
 		try {
 			listOfHeading = csv.getHeadings(csvPath);
 		} catch (IOException e) {
@@ -53,7 +54,7 @@ public class DatUtility {
 
 
 	public List<HashMap<String,String>> getAllRows() throws FileNotFoundException, IOException {
-		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
+		List<HashMap<String,String>> rowsList= Collections.synchronizedList(new ArrayList<HashMap<String,String>>());
 
 		try{
 			rowsList = csv.getAllRows(csvPath);

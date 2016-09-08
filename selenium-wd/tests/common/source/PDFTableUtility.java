@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class PDFTableUtility extends PDFUtility{
 		int maxWordNumLine = 2;
 		String header = "";
 		int numLines = 0;        		
-		List<String[]> pdfTable = new ArrayList<String[]>();
+		List<String[]> pdfTable = Collections.synchronizedList(new ArrayList<String[]>());
 		for(int i=0,j=0; i<pdfLines.length; i++){
 			String line = trimTableRow(pdfLines[i]);        	
 			int numWords = line.split(wordSeparatorPattern).length;

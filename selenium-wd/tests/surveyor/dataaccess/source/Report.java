@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import common.source.Log;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
  
 public class Report extends BaseEntity {
 	public static final String CACHE_KEY = "REPORT.";

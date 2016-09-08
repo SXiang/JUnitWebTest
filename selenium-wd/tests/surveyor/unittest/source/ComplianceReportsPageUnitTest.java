@@ -1,17 +1,12 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
-import common.source.PDFUtility;
-
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -22,12 +17,9 @@ import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
-import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.UserDataReader;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ManageCustomersPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {

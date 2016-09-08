@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,7 @@ public class CSVUtility {
 	 */
 	
 	public List<String> getHeadings(String fileAbsolutePath) throws FileNotFoundException, IOException{
-		ArrayList<String> headers=new ArrayList<String>();
+		List<String> headers= Collections.synchronizedList(new ArrayList<String>());
 		FileReader fileReader = new FileReader(fileAbsolutePath);
 		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
 		try {
@@ -45,8 +46,9 @@ public class CSVUtility {
 	 * @param - absolute path to the csv file
 	 * @return - list of hashmaps, hashmap per record
 	 */
+	@SuppressWarnings("unchecked")
 	public List<HashMap<String,String>> getTopRows(String fileAbsolutePath, Integer rowsToFetch) throws FileNotFoundException, IOException{
-		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
+		List<HashMap<String, String>> rowsList= Collections.synchronizedList(new ArrayList<HashMap<String,String>>());
 		FileReader fileReader = new FileReader(fileAbsolutePath);
 		CSVParser parser = new CSVParser(fileReader,CSVFormat.EXCEL.withHeader());
 		try {
@@ -56,7 +58,7 @@ public class CSVUtility {
 			int count = 0;
 			while(rowIterator.hasNext() && count<rowsToFetch){
 				CSVRecord currentRow=rowIterator.next();
-				HashMap<String, String> rowMap=new HashMap<String, String>();
+				HashMap<String, String> rowMap = (HashMap<String, String>)Collections.synchronizedMap(new HashMap<String, String>());
 				for(String key:headerMap.keySet()){
 					rowMap.put(key, currentRow.get(key));				
 				}

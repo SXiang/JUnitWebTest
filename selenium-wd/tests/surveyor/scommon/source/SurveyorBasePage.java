@@ -35,8 +35,6 @@ import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.Location;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorConstants.TopNavMenuItem;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;

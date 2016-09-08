@@ -1,4 +1,3 @@
-
 package surveyor.regression.source;
 
 import org.junit.Test;

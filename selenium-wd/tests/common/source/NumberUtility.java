@@ -3,6 +3,7 @@ package common.source;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,15 +12,12 @@ import java.util.Map;
 
 import org.testng.Assert;
 
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
-
 public class NumberUtility {
-	private ArrayList<Integer> rollingNumbers = new ArrayList<Integer>();
+	private List<Integer> rollingNumbers = Collections.synchronizedList(new ArrayList<Integer>());
 	private Integer currentRollingSum = 0;
 	private Integer rollingNumCount = 0;
 
-	private HashMap<Integer, String> numberOrdinalMap = new HashMap<Integer, String>();
+	private Map<Integer, String> numberOrdinalMap = Collections.synchronizedMap(new HashMap<Integer, String>());
 
 	public NumberUtility() {
 		initializeRollingNumbers();
@@ -64,7 +62,7 @@ public class NumberUtility {
 	}
 
 	public void initializeRollingNumbers() {
-		setRollingNumbers(new ArrayList<Integer>());
+		setRollingNumbers(Collections.synchronizedList(new ArrayList<Integer>()));
 		currentRollingSum = 0;
 		rollingNumCount = 0;
 	}
@@ -82,11 +80,11 @@ public class NumberUtility {
 		return (Integer) currentRollingSum / rollingNumCount;
 	}
 
-	public ArrayList<Integer> getRollingNumbers() {
+	public List<Integer> getRollingNumbers() {
 		return rollingNumbers;
 	}
 
-	public void setRollingNumbers(ArrayList<Integer> rollingNumbers) {
+	public void setRollingNumbers(List<Integer> rollingNumbers) {
 		this.rollingNumbers = rollingNumbers;
 	}
 

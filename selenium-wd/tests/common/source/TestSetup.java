@@ -642,6 +642,9 @@ public class TestSetup {
 	}
 
 	private void processSingleExecutionUnit() throws IOException {
+		// cleanup processes once for all tests.
+		TestSetup.stopChromeProcesses();
+		
 		// If survey upload is enabled, upload the specified surveys to
 		// environment.
 		// We have a 2nd level of check (ie matching base url provided) to

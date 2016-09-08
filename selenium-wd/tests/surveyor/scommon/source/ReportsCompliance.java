@@ -3,16 +3,10 @@
  */
 package surveyor.scommon.source;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import common.source.Log;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
-
-import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  * @author zlu

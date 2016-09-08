@@ -1,14 +1,12 @@
 package surveyor.scommon.actions;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import common.source.Constants;
 import common.source.ExcelUtility;
-import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestContext;

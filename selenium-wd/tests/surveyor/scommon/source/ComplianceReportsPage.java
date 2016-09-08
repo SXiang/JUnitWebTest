@@ -50,7 +50,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
-import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
@@ -94,7 +93,6 @@ import org.jsoup.select.Elements;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -2090,7 +2088,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("Expected Strings in PDF Text Content : %s",
 				LogHelper.strListToString(expectedReportString)));
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
@@ -2117,7 +2115,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		setReportName("CR-" + reportId);
 		setReportName(getReportName());
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
@@ -2150,7 +2148,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageForecast);
 		expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Show Coverage Table verification failed");
@@ -2285,7 +2283,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		Log.info(String.format("Matching expected report strings-[%s], with actual PDF text.", LogHelper.arrayToString(expectedReportString.toArray(new String[expectedReportString.size()]))));
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Coverage Values data verification failed");
@@ -2336,7 +2334,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(KEYASSETPROTECTEDSTEEL);
 		expectedReportString.add(KEYASSETUNPROTECTEDSTEEL);
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Layers Table data verification failed");
@@ -2431,7 +2429,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ReportSSRS_SelectedDrivingSurveys);
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Driving survey table static text verification failed");
@@ -2499,7 +2497,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_EthaneAnalysisTable);
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Ethane Capture table static text verification failed");
@@ -2563,7 +2561,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(LisaInvestigationReportSSRS_Investigator);
 		expectedReportString.add(LisaInvestigationReportSSRS_InvestigationReport);
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Investigation Result table static text verification failed");
@@ -2951,7 +2949,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Ethane Analysis table verification failed");
@@ -3019,7 +3017,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Isotopic Analysis table verification failed");
@@ -3086,7 +3084,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Did NOT find match for all expected Strings!");
@@ -3119,7 +3117,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
 
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.error("Indication table static text verification failed");
@@ -3200,7 +3198,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_GapTable);
-		HashMap<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
 				Log.info("Gaps Table verification failed");

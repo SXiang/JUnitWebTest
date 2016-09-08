@@ -3,21 +3,12 @@
  */
 package surveyor.ondemand.source;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import common.source.Log;
-import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**

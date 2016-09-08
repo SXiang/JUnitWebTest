@@ -4,7 +4,6 @@
 package surveyor.scommon.source;
 
 import org.junit.BeforeClass;
-import common.source.TestSetup;
 
 /**
  * @author zlu

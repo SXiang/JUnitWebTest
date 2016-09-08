@@ -40,8 +40,8 @@ public enum TestContext {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
-		this.testReportIdSet = new HashSet<String>();
-		this.testMap = new HashMap<String, Object>();
+		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
+		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
 		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 	}
 

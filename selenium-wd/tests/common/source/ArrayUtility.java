@@ -1,8 +1,10 @@
 package common.source;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArrayUtility {
 
@@ -12,7 +14,7 @@ public class ArrayUtility {
 	public static List<String> getColumnStringList(List<String[]> valuesList, Integer columnIdx) {
 		List<String> retList = null;
 		if (valuesList != null) {
-			retList = new ArrayList<String>(valuesList.size());
+			retList = Collections.synchronizedList(new ArrayList<String>(valuesList.size()));
 			for (String[] arr : valuesList) {
 				if (arr != null || arr.length > columnIdx) {
 					retList.add(arr[columnIdx]);
@@ -24,7 +26,7 @@ public class ArrayUtility {
 	}
 	
 	public static List<String[]> getListValuesSkipHeader(List<String[]> values) {
-		List<String[]> retList = new ArrayList<String[]>(); 
+		List<String[]> retList = Collections.synchronizedList(new ArrayList<String[]>()); 
 		if (values != null && values.size() > 1) {
 			for (int i = 1; i < values.size(); i++) {
 				retList.add(values.get(i));
@@ -44,9 +46,9 @@ public class ArrayUtility {
 	}
 
 	public static List<String> getDistinctValues(List<String> stringValues) {
-		List<String> outputList = new ArrayList<String>();
+		List<String> outputList = Collections.synchronizedList(new ArrayList<String>());
 		if (stringValues != null) {
-			HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+			Map<String, Boolean> map = Collections.synchronizedMap(new HashMap<String, Boolean>());
 			if (stringValues != null) {
 				for (String strValue : stringValues) {
 					if (!map.containsKey(strValue)) {
@@ -67,7 +69,7 @@ public class ArrayUtility {
 	public static List<String> convertIntListToStrList(List<Integer> intList) {
 		List<String> strList = null;
 		if (intList != null) {
-			strList = new ArrayList<String>(intList.size());
+			strList = Collections.synchronizedList(new ArrayList<String>(intList.size()));
 			for (Integer element : intList) {
 				strList.add(String.valueOf(element));
 			}
@@ -78,7 +80,7 @@ public class ArrayUtility {
 	public static List<Integer> convertStrListToIntList(List<String> strList) {
 		List<Integer> intList = null;
 		if (strList != null) {
-			intList = new ArrayList<Integer>(strList.size());
+			intList = Collections.synchronizedList(new ArrayList<Integer>(strList.size()));
 			for (String element : strList) {
 				if (!BaseHelper.isNullOrEmpty(element)) {
 					intList.add(Integer.valueOf(element.trim()));

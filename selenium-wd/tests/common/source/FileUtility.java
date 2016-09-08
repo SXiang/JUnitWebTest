@@ -3,7 +3,6 @@ package common.source;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
@@ -74,7 +74,7 @@ public class FileUtility {
 	 */
 	public static List<String> readFileLinesToList(String filePath) throws IOException {
 		String lineText = null;
-		List<String> list = new ArrayList<String>();
+		List<String> list = Collections.synchronizedList(new ArrayList<String>());
 		
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
 		try {
@@ -150,7 +150,7 @@ public class FileUtility {
 	 * Returns list of files in the specified directory.
 	 */
 	public static List<String> getFilesInDirectory(Path directory, boolean includeFullPath) throws IOException {
-		List<String> files = new ArrayList<String>();
+		List<String> files = Collections.synchronizedList(new ArrayList<String>());
 		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
 	    for (Path file: stream) {
 	    	if (includeFullPath) {
@@ -335,7 +335,7 @@ public class FileUtility {
 	 * @throws IOException
 	 */
 	public static List<String> getFilesInDirectory(Path directory, String filter) throws IOException {
-		List<String> files = new ArrayList<String>();
+		List<String> files = Collections.synchronizedList(new ArrayList<String>());
 		DirectoryStream<Path> stream = Files.newDirectoryStream(directory);
 		List<String> extFilterList = null;
 		if (filter != null) {

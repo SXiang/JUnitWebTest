@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.After;
 import common.source.FileUtility;
@@ -41,10 +40,10 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, "baseline-run-data.csv");
 
 		StringBuilder fileContent = new StringBuilder();
-		HashMap<ReportJobType, NumberUtility> timeNumberMap = getReportJobProcessingTimeNumberMap();
+		Map<ReportJobType, NumberUtility> timeNumberMap = getReportJobProcessingTimeNumberMap();
 		for(Map.Entry<ReportJobType, NumberUtility> entry : timeNumberMap.entrySet()){
 			NumberUtility numberUtility = entry.getValue();
-			ArrayList<Integer> rollingNumbers = numberUtility.getRollingNumbers();
+			List<Integer> rollingNumbers = numberUtility.getRollingNumbers();
 			int size = rollingNumbers.size();
 			if (size > 0) {
 				fileContent.append(String.format("%s,%s", entry.getKey().toString(), rollingNumbers.get(0)));
@@ -65,10 +64,10 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 		Log.info("----------------------------------------------------------------");
 		Log.info("Baseline Collection Metrics");
 		Log.info("Report Job Type | Processing Times (in msec) for various runs");
-		HashMap<ReportJobType, NumberUtility> timeNumberMap = getReportJobProcessingTimeNumberMap();
+		Map<ReportJobType, NumberUtility> timeNumberMap = getReportJobProcessingTimeNumberMap();
 		for(Map.Entry<ReportJobType, NumberUtility> entry : timeNumberMap.entrySet()){
 			NumberUtility numberUtility = entry.getValue();
-			ArrayList<Integer> rollingNumbers = numberUtility.getRollingNumbers();
+			List<Integer> rollingNumbers = numberUtility.getRollingNumbers();
 			StringBuilder builder = new StringBuilder();
 			int size = rollingNumbers.size();
 			if (size > 0) {
