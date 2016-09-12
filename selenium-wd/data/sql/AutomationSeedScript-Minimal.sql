@@ -222,6 +222,12 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', @locationID, N'BlackDodgeP3300')
 END
+-- iGPS car
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', @locationID, N'iGPS car')
+END
 
 -- Analyzer
 -- NOTE: [SerialNumber] AND [SharedKey] are UNIQUE for Analyzer. 
@@ -281,23 +287,27 @@ IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Ana
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB4F3579-843A-113E-001C-39D4011393C9', [SerialNumber]=N'SimAuto-Analyzer1', [SharedKey]=N'SimAuto-AnalyzerKey1' WHERE [Id]='58839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer1' AND [SharedKey]='SimAuto-AnalyzerKey1')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', N'FB4F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer1', N'SimAuto-AnalyzerKey1')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer2' AND [SharedKey]=N'SimAuto-AnalyzerKey2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB5F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer2', [SharedKey]=N'SimAuto-AnalyzerKey2' WHERE [Id]='59839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer2' AND [SharedKey]='SimAuto-AnalyzerKey2')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', N'FB5F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer2', N'SimAuto-AnalyzerKey2')
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer3' AND [SharedKey]=N'SimAuto-AnalyzerKey3')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB6F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'SimAuto-AnalyzerKey3' WHERE [Id]='5a839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer3' AND [SharedKey]='SimAuto-AnalyzerKey3')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'5a839947-9569-952D-16D6-39D4011442FA', N'FB6F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer3', N'SimAuto-AnalyzerKey3')
 END
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-PICARRO' AND [SharedKey]=N'rfads2004-picarro')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'rfads2004-picarro' WHERE [Id]='D2CCC285-2BD3-5D22-667E-39D823D4D255'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'RFADS2004-PICARRO', N'rfads2004-picarro')
+END
+
 	
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='00000014-fb61-2ef6-5dd1-39c8ac533d40', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2014-01-01 00:00:00.000' AS DateTime) WHERE [Id]='00000015-db64-fde7-7e67-39c8ac544d60'
@@ -341,7 +351,12 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='47FC54A4-26ED-7306-4D1D-39D76AFC27C4', [BatchId]='RFADS2004', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-04-27 17:42:17.007' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC', N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', N'RFADS2004', -32.7 ,CAST(N'2016-04-27 17:42:17.007' AS DateTime), 0.03)
+-- RefGasBottle for 'iGPS car'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-06-28 02:52:45.447' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='AE226F93-63FB-181B-F319-39D8A7193208'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'AE226F93-63FB-181B-F319-39D8A7193208', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'109-56-12523', -32.7 ,CAST(N'2016-06-28 02:52:45.447' AS DateTime), 0.03)
 
+	
 -- Add AnalyzerHardwareCapabilityType
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'00000015-DB64-FDE7-7E67-39C8AC533D49'
 IF @@ROWCOUNT=0
