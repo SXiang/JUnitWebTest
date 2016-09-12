@@ -72,11 +72,9 @@ public class Reports {
 		Assessment ("Assessment");
 		
 		private final String name;
-
 		ReportModeFilter(String nm) {
 			name = nm;
 		}
-		
 		public String toString() {
 			return this.name;
 		}

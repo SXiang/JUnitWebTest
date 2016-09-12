@@ -499,8 +499,11 @@ public class SurveyorBasePage extends BasePage {
 		}
 		
 	}
-	
+
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
+		return checkTableSort(dataTableElement, columnHeadings, str, paginationOption, -1);
+	}
+	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
 		By tableContextBy = By.id(dataTableElement);
 		WebElement tableContext = driver.findElement(tableContextBy);
@@ -511,13 +514,14 @@ public class SurveyorBasePage extends BasePage {
 				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
 					tableHeadingElement.click();
 					if(tableHeadingElement.getAttribute("aria-sort").equals("ascending")){
-						return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext);
+						return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
 					}
 					if(tableHeadingElement.getAttribute("aria-sort").equals("descending")){
-						return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext);
+						return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
 					}
+					return false;
 				}
-			}			
+			}
 		}
 		return true;
 	}
