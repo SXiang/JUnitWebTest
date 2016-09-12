@@ -147,6 +147,21 @@
             <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="projectHome" elementType="Argument">
+            <stringProp name="Argument.name">projectHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jmeterHome" elementType="Argument">
+            <stringProp name="Argument.name">jmeterHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;user.dir&quot;);)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jsonHome" elementType="Argument">
+            <stringProp name="Argument.name">jsonHome</stringProp>
+            <stringProp name="Argument.value">${projectHome}/json</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -3602,7 +3617,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename">${__P(jmeter.result.dir)}/resultTable.csv</stringProp>
+        <stringProp name="filename">${projectHome}\result\resultTable_Controller.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
