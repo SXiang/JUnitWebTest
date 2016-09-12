@@ -61,11 +61,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		super();
 	}
 
-	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		disposeProcesses();
-	}
-
 	@Before
 	public void beforeTestMethod() {
 		try {
@@ -88,17 +83,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		PageFactory.initElements(driver,  manageUsersPage);
 	}
 
-	@After
-    public void afterTestMethod() {
-		try {
-			afterTest();		
-			
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Test Case ID: TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin
 	 * Script: -  	

@@ -382,7 +382,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 				</fileset>
 			</batchtest>
@@ -545,13 +545,13 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest4.class" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
-
+	
 	<target name="securityapitest" depends="init">
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
@@ -561,7 +561,6 @@
 			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${local_date}.html" />
 		</jmeter>
 	</target>
-	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">

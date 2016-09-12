@@ -485,7 +485,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String testCaseID = "TC174";
 		String rptTitle = testCaseID + " RR Report" + testSetup.getRandomNumber();
 		Log.info("Running " + testCaseID + ": Generate report for same surveys but in different modes " + rptTitle);
-
+		
+		ReportModeFilter[] reportModes = {ReportModeFilter.Standard, ReportModeFilter.RapidResponse};
+		
 		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		this.getComplianceReportsPage().open();
 
@@ -531,31 +533,18 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.RapidResponse);
-		rpt.setViewLayersList(viewLayerList);
+		for(ReportModeFilter reportMode : reportModes){
+			rptTitle = testCaseID + " "+reportMode.toString() + " " + testSetup.getRandomNumber();
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", 
+					listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, reportMode);
+			rpt.setViewLayersList(viewLayerList);
+			this.getComplianceReportsPage().addNewReport(rpt);
+			this.getComplianceReportsPage().waitForPageLoad();
 
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\n report creation failed.\n");
-
-		rptTitle = "TC174 Standard Report" + testSetup.getRandomNumber();
-
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		this.getComplianceReportsPage().open();
-
-		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\nTestcase TC174 failed.\n");
+			if (!this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)){
+				fail("\n report "+rptTitle+" creation failed.\n");
+			}
+		}
 	}
 
 	/**
@@ -640,20 +629,21 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 * @throws Exception
 	 * 
 	 */
-	@Test
+	@Test 
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC184_: Very small or big report area selection not allowed\n");
-		String rptTitle = "TC184_Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC184_Report" +" SmallArea "+ testSetup.getRandomNumber();
 		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		this.getComplianceReportsPage().open();
 
+		//Small Area
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
 		listBoundary.add("36.42252593456309");
 		listBoundary.add("-122.83494567871095");
-		listBoundary.add("38.27989023941680");
-		listBoundary.add("-124.05415725708008");
+		listBoundary.add("36.42252593456300");
+		listBoundary.add("-122.83494567871090");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -694,6 +684,20 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 
+		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
+		
+		// Big Area
+		rptTitle = "TC184_Report" +" BigArea "+ testSetup.getRandomNumber();
+		this.getComplianceReportsPage().open();
+		listBoundary.clear();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("36.42252593456309");
+		listBoundary.add("-122.83494567871095");
+		listBoundary.add("38.27989023941680");
+		listBoundary.add("-124.05415725708008");		
+		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
+		this.getComplianceReportsPage().addNewReport(rpt);
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
 
 	}

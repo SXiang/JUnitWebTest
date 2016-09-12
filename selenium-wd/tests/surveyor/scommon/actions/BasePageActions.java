@@ -1,5 +1,6 @@
 package surveyor.scommon.actions;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -7,8 +8,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import common.source.RegexUtility;
 import surveyor.scommon.source.SurveyorBasePage;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorBasePage.TableSortOrder;
 
 public class BasePageActions extends BaseActions {
@@ -167,7 +170,7 @@ public class BasePageActions extends BaseActions {
 		this.getPageObject().sortTableByColumn(columnIdx, sortOrder);
 		return true;
 	}
- 
+
 	public boolean waitForSignalRCallsToComplete() {
 		this.getPageObject().waitForAJAXCallsToComplete();
 		this.getPageObject().waitForAnimationToComplete();
