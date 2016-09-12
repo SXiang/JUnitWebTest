@@ -87,6 +87,7 @@ public final class SurveyorConstants {
 	public static final String SQAPGESU = "sqapgesu@email.com";
 	public static final String SQAPGEDR = "sqapgedr1@email.com";
 	public static final String DRIVER1PIC = "driver1@picarro.com";
+	public static final String DRIVER2PIC = "driver2@picarro.com";
 	public static final String PICDR = "picdr@picarro.com";
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";

@@ -49,11 +49,12 @@ public class DbStateVerifier {
 		User sqapicsup = User.getUser(SQAPICSUP);
 		User sqapicua = User.getUser(SQAPICUA);
 		User driver1pic = User.getUser(DRIVER1PIC);
-		User picDr = User.getUser(PICDR);
+		User driver2pic = User.getUser(DRIVER2PIC);
+		User picDr = User.getUser(PICDR);		
 
 		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null || sqapgeua == null
 				|| sqapgesu == null || sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null 
-				|| sqapicua == null || driver1pic == null || picDr == null) {
+				|| sqapicua == null || driver1pic == null || driver2pic == null || picDr == null) {
 			return false;
 		}
 
