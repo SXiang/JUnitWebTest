@@ -30,7 +30,8 @@ public class Log {
 			e.printStackTrace();
 		}
 	}
-//	%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: 
+	
+	//	%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: 
 	public enum LogField{
 		INDEX_ID ("index-id"),
 		TEST_ENVIROMENT ("test-enviroment"),
@@ -134,21 +135,23 @@ public class Log {
 		// ### NOTE: COMMENTED FOR Debugging Purpose. Uncomment before final review.
 		//StackTraceElement caller = getStackTraceElement();
 		//String logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
-		//		", Line: "+caller.getLineNumber() +"]: "
-		//		+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		//", Line: "+caller.getLineNumber() +"]: "
+		//+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
 		//return logMessage;
 	}
 
 	public static String formatLogstashMessage(String msg){
-		Map<String, ?> msgMap = getMessageMap(msg);
-		String fieldSep = " ";
-		String logstashMessage = "["+msgMap.get(LogField.INDEX_ID.toString()) + fieldSep + msgMap.get(LogField.TEST_CATEGORY.toString())
-			+ fieldSep + msgMap.get(LogField.TEST_ENVIROMENT.toString()) + fieldSep + msgMap.get(LogField.TEST_URL.toString())
-			+ fieldSep + msgMap.get(LogField.TEST_CLASS.toString()) + fieldSep + msgMap.get(LogField.TEST_METHOD.toString())
-			+ fieldSep + msgMap.get(LogField.MSG_CLASS.toString()) + fieldSep + msgMap.get(LogField.MSG_METHOD.toString())
-			+ fieldSep + msgMap.get(LogField.MSG_LINE.toString()) +"]:"
-			+ fieldSep + msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
-		return logstashMessage;
+		return msg;
+		// ### NOTE: COMMENTED FOR Debugging Purpose. Uncomment before final review.
+		//Map<String, ?> msgMap = getMessageMap(msg);
+		//String fieldSep = " ";
+		//String logstashMessage = "["+msgMap.get(LogField.INDEX_ID.toString()) + fieldSep + msgMap.get(LogField.TEST_CATEGORY.toString())
+		//	+ fieldSep + msgMap.get(LogField.TEST_ENVIROMENT.toString()) + fieldSep + msgMap.get(LogField.TEST_URL.toString())
+		//	+ fieldSep + msgMap.get(LogField.TEST_CLASS.toString()) + fieldSep + msgMap.get(LogField.TEST_METHOD.toString())
+		//	+ fieldSep + msgMap.get(LogField.MSG_CLASS.toString()) + fieldSep + msgMap.get(LogField.MSG_METHOD.toString())
+		//	+ fieldSep + msgMap.get(LogField.MSG_LINE.toString()) +"]:"
+		//	+ fieldSep + msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		//return logstashMessage;
 	}
 	
 	public static String getJSONMessage(String msg){

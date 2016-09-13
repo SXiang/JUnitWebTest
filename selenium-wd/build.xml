@@ -7,6 +7,7 @@
 	<property name="sanity_jar" value="sanity.jar" />
 	<property name="gridpoc_jar" value="gridpoc.jar" />
 	<property name="regression_jar" value="regression.jar" />
+	<property name="testsuite_jar" value="testsuite.jar" />
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
@@ -84,6 +85,18 @@
 
 		<jar jarfile="${dist}/${regression_jar}" basedir="${build}" />
 
+	</target>
+
+	<target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
+		<javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${testsuite_jar}" basedir="${build}" />
 	</target>
 
 	<target name="compileperformance" depends="compile_scommon" description="Compile performance tests source code">
@@ -599,10 +612,10 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
-	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
+	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "testReportCategory" value = "JUnitParallel" />
 			<sysproperty key="maxParallelTestThreads" value="5" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
@@ -615,11 +628,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageLoadTest.class" />
-					<include name="**/LoginPageTest.class" />
-					<include name="**/ManageLocationsPageTest.class" />
-					<include name="**/ActionsExecutionDriver.class" />
-					<include name="**/SurveyViewPageTest.class" />
+					<include name="**/ComplianceReportsTestSuite1.class" />
 				</fileset>
 			</batchtest>
 		</junit>

@@ -17,19 +17,22 @@ public class GridNodesManager {
 		Log.method("GridNodesManager.requestGridNodes", nodesToSpin, runUUID, browser, os);
 		try {
 			if (isGridServletAlive) {
-				String gridHost = TestContext.INSTANCE.getTestSetup().getRemoteServerHost();
-				String gridPort = TestContext.INSTANCE.getTestSetup().getRemoteServerPort();
-				
-				String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-				String invokeCmdFullPath = invokeCmdFolder + File.separator + REQUEST_GRID_NODES_CMD;
-				String command = "cd \"" + invokeCmdFolder + "\" && " + invokeCmdFullPath + 
-						String.format(" \"%s\" \"%s\" \"%s\" \"%d\" \"%s\" \"%s\"", 
-								gridHost, gridPort, runUUID, nodesToSpin, browser, os);
-				Log.info("Executing Request Grid Nodes Command -> " + command);
-				ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
-				// Possible return status (HANDLE these):
-				//  HTTP/1.1 400 Test run already exists with the same UUID
-				//  HTTP/1.1 201 Created
+				// skip requesting grid nodes for local runs.
+				if (!TestContext.INSTANCE.getTestSetup().isLocalGridRun()) {
+					String gridHost = TestContext.INSTANCE.getTestSetup().getRemoteServerHost();
+					String gridPort = TestContext.INSTANCE.getTestSetup().getRemoteServerPort();
+					
+					String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+					String invokeCmdFullPath = invokeCmdFolder + File.separator + REQUEST_GRID_NODES_CMD;
+					String command = "cd \"" + invokeCmdFolder + "\" && " + invokeCmdFullPath + 
+							String.format(" \"%s\" \"%s\" \"%s\" \"%d\" \"%s\" \"%s\"", 
+									gridHost, gridPort, runUUID, nodesToSpin, browser, os);
+					Log.info("Executing Request Grid Nodes Command -> " + command);
+					ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+					// Possible return status (HANDLE these):
+					//  HTTP/1.1 400 Test run already exists with the same UUID
+					//  HTTP/1.1 201 Created
+				}
 			}
 		} catch (IOException e) {
 			Log.error(e.toString());
@@ -50,19 +53,25 @@ public class GridNodesManager {
 		Integer nodesCount = 0;
 		try {
 			if (isGridServletAlive) {
-				String gridHost = TestContext.INSTANCE.getTestSetup().getRemoteServerHost();
-				String gridPort = TestContext.INSTANCE.getTestSetup().getRemoteServerPort();
-				String workingFolder = TestSetup.getRootPath();
-				
-				String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-				String invokeCmdFullPath = invokeCmdFolder + File.separator + GET_GRID_NODES_AVAILABILITY_CMD;
-				String command = "cd \"" + invokeCmdFolder + "\" && " + invokeCmdFullPath + 
-						String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%d\" \"%s\" \"%s\"", 
-								workingFolder, gridHost, gridPort, runUUID,  nodesToSpin, browser, os);
-				Log.info("Executing Grid Nodes Availability Check Command -> " + command);
-				ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
-				String responseText = processOutputInfo.getOutput();
-				nodesCount = extractNodesCountFromResponse(responseText);
+				// skip checking for available grid nodes for local runs.
+				if (!TestContext.INSTANCE.getTestSetup().isLocalGridRun()) {
+					String gridHost = TestContext.INSTANCE.getTestSetup().getRemoteServerHost();
+					String gridPort = TestContext.INSTANCE.getTestSetup().getRemoteServerPort();
+					String workingFolder = TestSetup.getRootPath();
+					
+					String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+					String invokeCmdFullPath = invokeCmdFolder + File.separator + GET_GRID_NODES_AVAILABILITY_CMD;
+					String command = "cd \"" + invokeCmdFolder + "\" && " + invokeCmdFullPath + 
+							String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%d\" \"%s\" \"%s\"", 
+									workingFolder, gridHost, gridPort, runUUID,  nodesToSpin, browser, os);
+					Log.info("Executing Grid Nodes Availability Check Command -> " + command);
+					ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+					String responseText = processOutputInfo.getOutput();
+					nodesCount = extractNodesCountFromResponse(responseText);
+				} else {
+					// Local grid run assumes nodes are available before the run.
+					nodesCount = nodesToSpin;
+				}
 			} else {
 				// To simulate availability of grid nodes we read number of available GridNodes from 'availableGridNodes.txt' file in lib folder.
 				// This intentional delay from user mechanism is to verify threads are working correctly.

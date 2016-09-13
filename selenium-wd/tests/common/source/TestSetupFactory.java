@@ -41,7 +41,7 @@ public class TestSetupFactory {
 		Lock lock = new ReentrantLock();
 		try {
 			lock.lock();
-			String screenshotsDir = TestSetup.getExecutionPath() + TestSetup.reportDir + getTestSetup().getTestReportCategory();
+			String screenshotsDir = TestSetup.getExecutionPath() + ExtentReportGenerator.reportDir + getTestSetup().getTestReportCategory();
 			Path screenShotsPath = Paths.get(screenshotsDir, screenShotsSubFolder);
 			FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
 			screenshotOnFailure = new ScreenShotOnFailure(screenShotsSubFolder, screenshotsDir, getTestSetup().isRemoteBrowser()); 

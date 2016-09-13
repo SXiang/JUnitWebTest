@@ -10,6 +10,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
+import common.source.ExtentReportGenerator;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -108,7 +109,7 @@ public class BasePageTest {
 	   ExtentReports extentReport = TestContext.INSTANCE.getReport();
 	   if (extentReport == null) {
 		   StringBuilder outReportFilePath = new StringBuilder();
-		   extentReport = TestSetup.createExtentReport(className, outReportFilePath);
+		   extentReport = ExtentReportGenerator.createExtentReport(className, outReportFilePath);
 		   extentReportFilePath = outReportFilePath;
 		   TestContext.INSTANCE.setReport(extentReport);
 	   }

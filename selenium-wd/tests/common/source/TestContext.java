@@ -42,7 +42,7 @@ public enum TestContext {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
 		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
-		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
+		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 	}
 
 	public String getTestStatus() {

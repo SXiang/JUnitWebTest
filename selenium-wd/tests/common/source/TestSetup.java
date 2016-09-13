@@ -86,6 +86,7 @@ public class TestSetup {
 	private String runningOnRemoteServer;
 	private String remoteServerHost;
 	private String remoteServerPort;
+	private String isLocalGridRun;
 
 	private String loginUser;
 	private String loginPwd;
@@ -117,7 +118,6 @@ public class TestSetup {
 										// recommended to use in real test case
 	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
-	public static String reportDir = "reports/";
 	
 	private String downloadPath;
 
@@ -171,27 +171,6 @@ public class TestSetup {
 		if (initialize) {
 			initialize();
 		}
-	}
-
-	public static ExtentReports createExtentReport(String reportClassName, StringBuilder outReportFilePath) {
-		String executionPath = null;
-		try {
-			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestReportCategory()+File.separator
-				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
-		outReportFilePath.append(reportFilePath);
-		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
-
-		ExtentReports extent = new ExtentReports(reportFilePath, true /* replaceExisting */, DisplayOrder.NEWEST_FIRST,
-				NetworkMode.ONLINE, Locale.US);
-		extent.addSystemInfo("ChromeDriver Version", "2.20");
-		extent.addSystemInfo("Environment", runEnvironment);
-		extent.loadConfig(new File(configFilePath));
-		return extent;
 	}
 
 	/* NETWORK PROXY related methods */
@@ -559,6 +538,7 @@ public class TestSetup {
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
 			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
+			this.setIsLocalGridRun(this.testProp.getProperty("isLocalGridRun"));
 			this.loginUser = this.testProp.getProperty("loginUser");
 			this.loginPwd = this.testProp.getProperty("loginPwd");
 			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
@@ -1347,6 +1327,17 @@ public class TestSetup {
 
 	private void setRunningOnRemoteServer(String runningOnRemoteServer) {
 		this.runningOnRemoteServer = runningOnRemoteServer;
+	}
+
+	public boolean isLocalGridRun() {
+		if (!BaseHelper.isNullOrEmpty(this.isLocalGridRun) && this.isLocalGridRun.trim().equalsIgnoreCase("true"))
+			return true;
+		
+		return false;
+	}
+
+	public void setIsLocalGridRun(String isLocalGridRun) {
+		this.isLocalGridRun = isLocalGridRun;
 	}
 
 	public String getRemoteServerHost() {

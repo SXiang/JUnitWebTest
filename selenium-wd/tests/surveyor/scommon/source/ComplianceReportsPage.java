@@ -3125,7 +3125,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		ArrayList<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		List<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
 		String indicationTable = "";
 		for (String table : indicationTables) {
 			indicationTable += System.lineSeparator() + table;

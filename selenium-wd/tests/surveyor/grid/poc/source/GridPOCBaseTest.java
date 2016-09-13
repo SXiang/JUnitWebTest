@@ -21,6 +21,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
+import common.source.ExtentReportGenerator;
 import common.source.Log;
 import common.source.LogCategory;
 import common.source.RegexUtility;
@@ -302,7 +303,7 @@ public class GridPOCBaseTest {
 		ExtentReports extentReport = TestContext.INSTANCE.getReport();
 		if (extentReport == null) {
 		   StringBuilder outReportFilePath = new StringBuilder();
-		   extentReport = TestSetup.createExtentReport(className, outReportFilePath);
+		   extentReport = ExtentReportGenerator.createExtentReport(className, outReportFilePath);
 		   extentReportFilePathThreadLocal.set(outReportFilePath);
 		   TestContext.INSTANCE.setReport(extentReport);
 		}
