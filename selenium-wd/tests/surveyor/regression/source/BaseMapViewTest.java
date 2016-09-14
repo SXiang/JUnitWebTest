@@ -157,15 +157,6 @@ public class BaseMapViewTest extends BaseTest{
 		disposeProcesses();
 	}
 
-	@Before
-	public void setUp() throws Exception {
-		try {
-			TestSetup.deleteAnalyzerLocalDB3();
-		} catch (UnknownHostException e) {
-			Log.info(ExceptionUtility.getStackTraceString(e));
-		}
-	}
-	
 	@After
     public void afterTestMethod() {
 		try {

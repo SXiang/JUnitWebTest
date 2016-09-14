@@ -9,11 +9,8 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.io.IOException;
-import java.util.Calendar;
-
-import org.junit.After;
+import java.net.UnknownHostException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +18,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BrowserCommands;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -66,9 +64,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		try {
 			initializePageObjects();
 			driverViewPageAction = new DriverViewPageActions(driver, baseURL,testSetup);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+			TestSetup.restartAnalyzer();
+		} catch (UnknownHostException e) {
+			Log.info(ExceptionUtility.getStackTraceString(e));
+		} catch (IOException e) {
+			Log.info(ExceptionUtility.getStackTraceString(e));
+		}
 	}
 
 	private void initializePageObjects() {
