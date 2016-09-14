@@ -61,6 +61,7 @@ import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorConstants.Environment;
+import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
 /**
  * @author zlu
@@ -431,6 +432,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
 	private WebElement surveyGroupDivs;
 	
+	@FindBy(how = How.CSS, using = ".surveyGroup > [id^=surveyContent-]:not(#surveyContent-x)")
+	private List<WebElement> selectedSurveys;
+	
+		
 	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
@@ -703,6 +708,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
+		fillReport(reports);
+		addReport();
+	}
+	
+	public void selectFOVColor(ReportColorOption... colors){
+		By fovPathBy = By.cssSelector(".form-group [id$=-fov-color-picker] > .ColorBlotch");
+		selectColor(fovPathBy, colors);
+	}
+	
+	public void selectLISAColor(ReportColorOption... colors){
+		By fovPathBy = By.cssSelector(".form-group [id$=-lisa-color-picker] > .ColorBlotch");
+		selectColor(fovPathBy, colors);
+	}
+	
+	public void selectColor(By colorPickerBy, ReportColorOption... colors){
+		for(int i=selectedSurveys.size()-1,j=0; i>-1; i--){
+			WebElement selectedSurvey = selectedSurveys.get(i);
+			List<WebElement> colorPicker = selectedSurvey.findElements(colorPickerBy);
+			ReportColorOption colorOption = colors[j++ % colors.length];
+			int colorIndex = colorOption.toIndex();
+			
+			Log.clickElementInfo(String.format("Select color '%s' at index '%d'", colorOption, colorIndex));
+			colorPicker.get(colorIndex).click();
+		}
+	}
+	public void fillReport(Reports reports) throws Exception {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
@@ -723,9 +754,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
-		this.clickOnOKButton();
 	}
 
+	public void addReport(){
+		this.clickOnOKButton();
+	}
+	
+	public void cancelReport(){
+		this.clickOnCancelBtn();
+	}
+	
 	public void addSurveyInformation(Reports reports) throws Exception {
 		addSurveyInformation(reports, null);
 	}

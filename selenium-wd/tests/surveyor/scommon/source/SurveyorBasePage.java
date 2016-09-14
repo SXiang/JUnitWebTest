@@ -505,6 +505,8 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
 		return checkTableSort(dataTableElement, columnHeadings, str, paginationOption, -1);
 	}
+	
+
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
 		By tableContextBy = By.id(dataTableElement);
@@ -515,12 +517,20 @@ public class SurveyorBasePage extends BasePage {
 			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
 				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
 					tableHeadingElement.click();
-					if(tableHeadingElement.getAttribute("aria-sort").equals("ascending")){
-						return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
+					waitForTableDataToLoad();
+					try{
+						WebElementExtender.isAttributePresent(tableHeadingElement, "aria-sort");
+						boolean isAscending =  tableHeadingElement.getAttribute("aria-sort").equals("ascending");
+						if(isAscending){
+							return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
+						}else{
+							return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
+						}
+					}catch(Exception e){
+						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
+						Log.warn(e.toString());
 					}
-					if(tableHeadingElement.getAttribute("aria-sort").equals("descending")){
-						return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
-					}
+					
 					return false;
 				}
 			}

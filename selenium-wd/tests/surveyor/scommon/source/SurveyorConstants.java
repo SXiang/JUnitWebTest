@@ -218,6 +218,7 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYHIGHLIGHTLISAASSETS = "Highlight LISA Assets";
+	public static final String KEYHIGHLIGHTBOXASSETS = "Highlight BOX Assets";
 	public static final String KEYHIGHLIGHTGAPASSETS = "Highlight GAP Assets";
 	public static final String KEYBASEMAP = "Base Map";
 	public static final String KEYASSETCASTIRON = "Cast Iron";
@@ -496,7 +497,27 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
-	
+
+	public static enum ReportColorOption {
+		LIGHTBLUE(0), 
+		BLUE(1), 
+		LIGHTGREEN(2), 
+		GREEN(3), 
+		PINK(4), 
+		RED(5), 
+		YELLOW(6), 
+		ORANGE(7), 
+		LIGHTPURPLE(8), 
+		PURPLE(9);
+		
+		private final int index;
+		ReportColorOption (int index){
+			this.index =  index;
+		}
+		public int toIndex(){
+			return index;
+		}
+	}
 	public enum Environment {
 		SQAAuto ("CI-SQAAuto", 1),
 		Staging ("CI-STG", 2),
