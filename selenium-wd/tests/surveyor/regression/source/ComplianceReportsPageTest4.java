@@ -190,7 +190,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- Report is generated successfully for specified customer survey and Assets of specified customer are present in maps
 	 * 		- Percent Coverage value is present in SSRS PDF
 	 */
-	@Test //debug
+	@Test /* Using picarro customer as there is no assets / survey for other customer on sqaauto now */
 	public void TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser() throws Exception {
 		Log.info("\nRunning TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser ...");
 		
