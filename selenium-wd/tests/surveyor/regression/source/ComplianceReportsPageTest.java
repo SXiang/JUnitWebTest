@@ -46,6 +46,7 @@ import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
@@ -278,6 +279,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -377,6 +379,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -525,6 +528,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -584,6 +588,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -659,6 +664,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -739,6 +745,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 		viewList.add(viewMap1);
@@ -793,6 +800,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
@@ -859,6 +867,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
@@ -917,6 +926,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -1002,6 +1012,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 
 		
@@ -1059,6 +1070,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -1128,6 +1140,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 

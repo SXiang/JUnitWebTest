@@ -16,6 +16,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
@@ -588,22 +589,30 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
-				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.RADIOBUTTON);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+			}else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				colNum = 12;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
-				colNum = 12;
+				colNum = 13;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
-
+			
 			if (selectView(viewMap, KEYBOUNDARIES)) {
-				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				if (rowNum == 1) {
+					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'view-showboundry')]";
+				} else {
+					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/input[contains(@class,'view-showboundry')]";
+				}
 				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
@@ -614,15 +623,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/select[contains(@class,'view-basemap')]";
 				}
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					String thisMap = viewMap.get(KEYBASEMAP);
-					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
-						Log.info(String.format("Select base map - '%s'", thisMap));
-						option.click();
-						break;
-					}
-				}
+				String thisMap = viewMap.get(KEYBASEMAP);
+				Log.info(String.format("Select base map - '%s'", thisMap));
+				selectDropdownOption(dropdownBaseMap, thisMap);
 			}
 		}
 	}
