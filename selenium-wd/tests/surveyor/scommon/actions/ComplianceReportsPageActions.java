@@ -303,8 +303,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
-			Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
-			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+			if (ManageCustomerPageActions.workingDataRow != null) {
+				customer = ManageCustomerPageActions.workingDataRow.name;
+			} else {
+				Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
+				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+			}
 		}
 		String timeZone = workingDataRow.timezone;
 		String exclusionRadius = workingDataRow.exclusionRadius;
@@ -1360,7 +1364,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 
 		this.getComplianceReportsPage().selectCustomer(customer);
-		this.getComplianceReportsPage().confirmInChangeCustomerDialog();
+		this.getComplianceReportsPage().getChangeCustomerDialog().confirmInChangeCustomerDialog();
 		return true;
 	}
  
