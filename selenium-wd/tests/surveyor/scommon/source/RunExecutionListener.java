@@ -61,7 +61,7 @@ public class RunExecutionListener extends RunListener {
 	    	}
     	}
     	Log.error(exceptionMessage.toString());
-		SurveyorBaseTest.getExtentTest().log(LogStatus.FAIL, exceptionMessage.toString());
+		SurveyorBaseTest.getExtentTest(failure.getDescription().getClassName()).log(LogStatus.FAIL, exceptionMessage.toString());
     }
     
     /**

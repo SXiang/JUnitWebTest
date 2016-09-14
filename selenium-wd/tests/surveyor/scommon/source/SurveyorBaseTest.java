@@ -19,11 +19,5 @@ public class SurveyorBaseTest extends BaseTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//initializeTestObjects();
 	}
-
-//	public static void initializeTestObjects(){
-//		//BaseTest.setTestSetup(new TestSetup());
-//		BaseTest.initializeTestObjects();
-//	}
 }

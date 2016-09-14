@@ -133,12 +133,12 @@ public class GridPOCTestClass8 {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			SurveyorBaseTest.reportTestFailed(e);
+			SurveyorBaseTest.reportTestFailed(e, description.getClassName());
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 SurveyorBaseTest.reportTestSucceeded();
+			 SurveyorBaseTest.reportTestSucceeded(description.getClassName());
 		}
 	};
 		

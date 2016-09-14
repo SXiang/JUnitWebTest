@@ -2,7 +2,9 @@ package surveyor.scommon.source;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -30,12 +32,10 @@ import surveyor.scommon.actions.PageActionsStore;
 public class BaseTest {
 
 	private static List<WebDriver> spawnedWebDrivers = Collections.synchronizedList(new ArrayList<WebDriver>());
+	private static Map<String, ExtentTest> extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
 
 	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
-	//private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
 	private static ThreadLocal<String> baseURLThreadLocal = new ThreadLocal<String>();
-
-	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>(); 
 	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
 	private static ThreadLocal<ScreenShotOnFailure> screenCaptureThreadLocal = new ThreadLocal<ScreenShotOnFailure>();
 
@@ -63,12 +63,12 @@ public class BaseTest {
 
 		@Override
 		protected void failed(Throwable e, Description description) {
-			BaseTest.reportTestFailed(e);
+			BaseTest.reportTestFailed(e, description.getClassName());
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 BaseTest.reportTestSucceeded();
+			 BaseTest.reportTestSucceeded(description.getClassName());
 		}
 	};
 
@@ -117,12 +117,12 @@ public class BaseTest {
 	
 	private static ExtentReports getExtentReport(String className) {
 		Log.info(String.format("[THREAD Debug Log] - calling getExtentReport(className=[%s])", className));
-		ExtentReports extentReport = TestContext.INSTANCE.getReport();
+		ExtentReports extentReport = ExtentReportGenerator.getExtentReport(className);
 		if (extentReport == null) {
 		   StringBuilder outReportFilePath = new StringBuilder();
 		   extentReport = ExtentReportGenerator.createExtentReport(className, outReportFilePath);
 		   extentReportFilePathThreadLocal.set(outReportFilePath);
-		   TestContext.INSTANCE.setReport(extentReport);
+		   ExtentReportGenerator.setExtentReport(extentReport, className);
 		}
 		return extentReport;
 	}
@@ -135,55 +135,50 @@ public class BaseTest {
 		Log.info("[THREAD Debug Log] - calling reportTestStarting()");
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
-		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
-		getExtentTest().log(LogStatus.INFO, firstLogLine);
-		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
+		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
+		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
 				DateUtility.getCurrentDate()));
 	}
 
 	public static void reportTestFinished(String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
 		ExtentReports report = getExtentReport(className);
-		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
 				DateUtility.getCurrentDate()));
-		report.endTest(getExtentTest());
+		report.endTest(getExtentTest(className));
 		report.flush();
 	}
 
-	public static void reportTestLogMessage() {
+	public static void reportTestLogMessage(String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestLogMessage()");
 		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
-			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
+			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
 	}
 	
-	public static void reportTestFailed(Throwable e) {
+	public static void reportTestFailed(Throwable e, String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
-		BaseTest.reportTestLogMessage();			
+		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshot(getDriver());
 		Log.error("_FAIL_ Exception: "+e);
 		TestContext.INSTANCE.setTestStatus("FAIL");
-		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
 	}
 
-	public static void reportTestError(String errorMsg) {
-		Log.info("[THREAD Debug Log] - calling reportTestError()");
-		getExtentTest().log(LogStatus.ERROR, "ERROR: " + errorMsg);
-	}
-
-	public static void reportTestSucceeded() {
+	public static void reportTestSucceeded(String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestSucceeded()");
 		Log.info("_PASS_ ");
-		getExtentTest().log(LogStatus.PASS, "PASSED");
+		getExtentTest(className).log(LogStatus.PASS, "PASSED");
 	}
 
-	protected static ExtentTest getExtentTest() {
-		return extentTestThreadLocal.get();
+	protected static ExtentTest getExtentTest(String className) {
+		return extentTestMap.get(className);
 	}
 	
 	private static void setExtentTest(ExtentTest test, String className) {
-		BaseTest.extentTestThreadLocal.set(test);
+		extentTestMap.put(className, test);
 		TestContext.INSTANCE.setExtentTest(test, className);
 	}
 

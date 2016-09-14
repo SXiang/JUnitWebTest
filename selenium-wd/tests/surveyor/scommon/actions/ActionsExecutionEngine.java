@@ -145,14 +145,14 @@ public class ActionsExecutionEngine implements IMethodObserver{
 			try {
 				bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
 			} catch (Exception e) {
-				BaseTest.reportTestFailed(e);
+				BaseTest.reportTestFailed(e, CLASS_NAME);
 			}
 			
 			if (bResult==false) {
 				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
 						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs);
 				excelUtility.setCellData(Constants.KEYWORD_FAIL + " : " + failureMessage, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
-				BaseTest.reportTestFailed(new Exception(failureMessage));
+				BaseTest.reportTestFailed(new Exception(failureMessage), CLASS_NAME);
 				break;
 			}						
 
