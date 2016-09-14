@@ -535,75 +535,75 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYFOV)) {
 				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYBREADCRUMB)) {
 				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYINDICATIONS)) {
 				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
 				colNum = 7;
 				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYANNOTATION)) {
 				colNum = 8;
 				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
 				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYASSETS)) {
 				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
 				Log.clickElementInfo("Highlight LISA Assets", ElementType.RADIOBUTTON);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
 			}else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
 				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
 				colNum = 13;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 			
 			if (selectView(viewMap, KEYBOUNDARIES)) {
@@ -613,7 +613,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				} else {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/input[contains(@class,'view-showboundry')]";
 				}
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewMap.get(KEYBASEMAP) != null) {
@@ -1722,27 +1722,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectPercentCoverageReportArea() {
-		SelectCheckbox(checkBoxPCRA);
+		SelectElement(checkBoxPCRA);
 	}
 
 	public void selectPercentCoverageAssetCheckBox() {
-		SelectCheckbox(checkBoxPCA);
+		SelectElement(checkBoxPCA);
 	}
 
 	public void selectPercentCoverageForecastCheckBox() {
-		SelectCheckbox(checkBoxPCF);
+		SelectElement(checkBoxPCF);
 	}
 
 	public void selectGapTableCheckBox() {
-		SelectCheckbox(checkBoxGapTb);
+		SelectElement(checkBoxGapTb);
 	}
 
 	public void selectIsotopicAnalysisCheckBox() {
-		SelectCheckbox(checkBoxIsoAna);
+		SelectElement(checkBoxIsoAna);
 	}
 
 	public void selectIndicationsTableCheckBox() {
-		SelectCheckbox(checkBoxIndTb);
+		SelectElement(checkBoxIndTb);
 	}
 
 	public void selectCustomBoundaryRadioButton() {
@@ -1870,7 +1870,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		for (WebElement element : elements) {
 			if (select)
-				SelectCheckbox(element);
+				SelectElement(element);
 			else
 				UnselectCheckbox(element);
 		}
@@ -1887,7 +1887,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				// Asset key.
 				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
 				if (assetElements.size() > 0) {
-					SelectCheckbox(assetElements.get(0));
+					SelectElement(assetElements.get(0));
 				}
 			}
 		}
@@ -1903,7 +1903,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
 				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
 				if (boundaryElements.size() > 0) {
-					SelectCheckbox(boundaryElements.get(0));
+					SelectElement(boundaryElements.get(0));
 				}
 			}
 		}
