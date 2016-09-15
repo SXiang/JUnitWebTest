@@ -33,6 +33,7 @@ import common.source.BaseHelper;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 
 /**
  * @author zlu
@@ -237,15 +238,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.stdMinAmp.clear();
 		this.stdMinAmp.sendKeys("0.035");
-		this.opdMinAmp.clear();
-		this.opdMinAmp.sendKeys("5");
-		this.RRMinAmp.clear();
-		this.RRMinAmp.sendKeys("5");
-		if (this.assessmentMinAmp.isDisplayed()) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.opdMinAmp)) {
+			this.opdMinAmp.clear();
+			this.opdMinAmp.sendKeys("5");
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.RRMinAmp)) {
+			this.RRMinAmp.clear();
+			this.RRMinAmp.sendKeys("5");
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.assessmentMinAmp)) {
 			this.assessmentMinAmp.clear();
 			this.assessmentMinAmp.sendKeys("0.035");
 		}
-		if (this.eqMinAmp.isDisplayed()) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.eqMinAmp)) {
 			this.eqMinAmp.clear();
 			this.eqMinAmp.sendKeys("0.035");
 		}
