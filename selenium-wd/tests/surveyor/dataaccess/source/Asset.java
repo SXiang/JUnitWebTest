@@ -154,7 +154,7 @@ public class Asset extends BaseEntity {
 		String SQL = "SELECT * FROM dbo.[Asset]";
 		return load(SQL);
 	}
- 
+
 	public ArrayList<Asset> load(String SQL) {
 		ArrayList<Asset> objAssetList = new ArrayList<Asset>();
 		

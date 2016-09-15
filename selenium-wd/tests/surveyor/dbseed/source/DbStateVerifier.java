@@ -90,11 +90,13 @@ public class DbStateVerifier {
 		Analyzer simautoAnalyzer1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER1);
 		Analyzer simautoAnalyzer2 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER2);
 		Analyzer simautoAnalyzer3 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER3);
+		Analyzer simautoAnalyzer4 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER4);
+		Analyzer simautoAnalyzer5 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER5);
 		Analyzer rfads2004Picarro = Analyzer.getAnalyzerBySerialNumber(RFADS2004PICARRO);
 
 		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null 
-				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null || simautoAnalyzer3 == null
-				|| rfads2004Picarro == null) {
+				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null 
+				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || rfads2004Picarro == null) {
 			return false;
 		}
 
@@ -111,14 +113,16 @@ public class DbStateVerifier {
 		SurveyorUnit simautoSurveyor1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR1);
 		SurveyorUnit simautoSurveyor2 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR2);
 		SurveyorUnit simautoSurveyor3 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR3);
+		SurveyorUnit simautoSurveyor4 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR4);
+		SurveyorUnit simautoSurveyor5 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR5);
 		SurveyorUnit whiteDodge = SurveyorUnit.getSurveyorUnit(SQACUSLOCSUR);
 		SurveyorUnit surveyorIGPSCar = SurveyorUnit.getSurveyorUnit(SURVEYOR_IGPSCAR);
 
 		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null 
 				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null 
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
-				|| simautoSurveyor2 == null || simautoSurveyor3 == null || whiteDodge == null
-				|| surveyorIGPSCar == null) {
+				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null 
+				|| simautoSurveyor5 == null || whiteDodge == null || surveyorIGPSCar == null) {
 			return false;
 		}
 

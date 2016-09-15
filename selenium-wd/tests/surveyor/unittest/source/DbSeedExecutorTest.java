@@ -10,8 +10,7 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.EPSILON;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -66,10 +65,12 @@ public class DbSeedExecutorTest {
 	}
 
 	@Test
-	public void execute02_PicarroCustomerGisSeedTest() throws Exception {
+	public void execute02_GisDataSeedTest() throws Exception {
 		// By default is no customerId is specified the GIS data is pushed for Picarro customer.
 		DbSeedExecutor.executeGisSeed();
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PICARRO).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 		
 	@Test

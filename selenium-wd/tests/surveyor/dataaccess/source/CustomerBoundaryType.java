@@ -141,6 +141,11 @@ public class CustomerBoundaryType extends BaseEntity {
 		String SQL = "SELECT * FROM dbo.[CustomerBoundaryType]";
 		return load(SQL);
 	}
+	
+	public ArrayList<CustomerBoundaryType> getAllForCustomer(String customerId) {
+		String SQL = String.format("SELECT * FROM dbo.[CustomerBoundaryType] WHERE CustomerId='%s'", customerId);
+		return load(SQL);
+	}
  
 	public ArrayList<CustomerBoundaryType> load(String SQL) {
 		ArrayList<CustomerBoundaryType> objCustomerBoundaryTypeList = new ArrayList<CustomerBoundaryType>();

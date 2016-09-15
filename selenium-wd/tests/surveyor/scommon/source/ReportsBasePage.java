@@ -249,14 +249,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
 	protected WebElement dropdownCustomer;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
-	protected WebElement btnChangeCustomer;
-	protected String btnChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[2]")
-	protected WebElement btnCancelChangeCustomer;
-	protected String btnCancelChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[2]";
-
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeMode;
 	protected String btnChangeModeXPath = "//*[@id='surveyModal']/div/div/div[3]/a[1]";
@@ -436,6 +428,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
 	private List<ReportJobPerfDBStat> postDBStatList = null;
+	
+	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
 	/**
 	 * @param driver
@@ -445,6 +439,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportsBasePage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
+		
+		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
+		PageFactory.initElements(driver, changeCustomerDialog);
 	}
 
 	public WebElement getInputStartDate() {
@@ -706,9 +703,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
-			Log.info("Select customer '"+reports.getCustomer());
+			Log.info("Select customer '"+reports.getCustomer()+"'");
 			selectCustomer(reports.getCustomer());
-			Boolean confirmed = confirmInChangeCustomerDialog();
+			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
 			if (confirmed) {
 				inputReportTitle(reports.getRptTitle());
 			}
@@ -1022,6 +1019,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectCustomer(String customer) {
 		selectCustomer(customer,true);
 	}
+	
 	public void selectCustomer(String customer, boolean confirm) {
 		if (dropdownCustomer.isDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1029,28 +1027,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
 					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
-					confirmInChangeCustomerDialog(confirm);
+					getChangeCustomerDialog().confirmInChangeCustomerDialog(confirm);
 					return;
 				}
 			}			
 		}
-	}
-
-	public boolean confirmInChangeCustomerDialog() {
-		return confirmInChangeCustomerDialog(true);
-	}
-	public boolean confirmInChangeCustomerDialog(boolean confirm) {
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				Log.clickElementInfo("Confirm Change Customer",ElementType.LINK);
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				if(confirm){
-				   js.executeScript("arguments[0].click();", btnChangeCustomer);
-				}else{
-					jsClick(btnCancelChangeCustomer);
-				}
-				return true;
-			}
-		return false;
 	}
 
 	public void clickOnOKButton() {
@@ -1267,11 +1248,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				Log.clickElementInfo("Confirm change customer",ElementType.LINK);
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-
+			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
 				inputReportTitle(reportsCompliance.getRptTitle());
 			}
 		}
@@ -1361,12 +1338,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-				Log.info(String.format("Input title - '%s'",title));
+			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(title);
+				Log.info(String.format("Input title - '%s'",title));
 			}
 		}
 
@@ -2798,5 +2773,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private void setPostDBStatList(List<ReportJobPerfDBStat> postDBStatList) {
 		this.postDBStatList = postDBStatList;
+	}
+
+	public ChangeCustomerDialogControl getChangeCustomerDialog() {
+		return changeCustomerDialog;
 	}
 }
