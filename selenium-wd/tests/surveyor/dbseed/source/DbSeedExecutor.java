@@ -22,8 +22,7 @@ import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.EPSILON;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
 
@@ -333,7 +332,9 @@ public class DbSeedExecutor {
 	
 	public static void executeGisSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed");
-		executeGisSeed(null /*customerId*/);
+		executeGisSeed(null /*customerId*/); // default -> Picarro customer.
+		executeGisSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		executeGisSeed(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 	
 	public static void executeGisSeed(String customerId) throws Exception {

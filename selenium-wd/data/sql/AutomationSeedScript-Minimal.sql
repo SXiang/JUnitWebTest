@@ -325,21 +325,37 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'F4A45601-E357-3CED-6EE6-39D6D20B16D9', @locationID, N'Light Blue Escape')
 END
+-- SimAuto-Surveyor1 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='FB4F3579-843A-113E-001C-39D4011393C9')
 BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'FB4F3579-843A-113E-001C-39D4011393C9', @locationID, N'SimAuto-Surveyor1')
 END
+-- SimAuto-Surveyor2 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='FB5F3579-843A-113E-001C-39D4011393C9')
 BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'FB5F3579-843A-113E-001C-39D4011393C9', @locationID, N'SimAuto-Surveyor2')
 END
+-- SimAuto-Surveyor3 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='FB6F3579-843A-113E-001C-39D4011393C9')
 BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'FB6F3579-843A-113E-001C-39D4011393C9', @locationID, N'SimAuto-Surveyor3')
 END
+-- SimAuto-Surveyor4 (sqacus)
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='84F35FAA-71CB-44AE-AB4A-15C343F1C84A')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', @locationID, N'SimAuto-Surveyor4')
+END
+-- SimAuto-Surveyor5 (PG&E)
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='B432D533-83DB-4EC2-8A39-38DF4125B609')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'B432D533-83DB-4EC2-8A39-38DF4125B609', @locationID, N'SimAuto-Surveyor5')
+END
+-- White Dodge
 IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A')
 BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
@@ -406,26 +422,40 @@ UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'00000014-fb61-2ef6-5dd1-39c8ac533
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'00000015-db64-fde7-7e67-39c8ac533d51', N'00000014-fb61-2ef6-5dd1-39c8ac533d41', N'FDDS2037-1', N'fdds2037-1')
 END
+-- SimAuto-Analyzer1 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer1' AND [SharedKey]=N'SimAuto-AnalyzerKey1')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB4F3579-843A-113E-001C-39D4011393C9', [SerialNumber]=N'SimAuto-Analyzer1', [SharedKey]=N'SimAuto-AnalyzerKey1' WHERE [Id]='58839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer1' AND [SharedKey]='SimAuto-AnalyzerKey1')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', N'FB4F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer1', N'SimAuto-AnalyzerKey1')
 END
+-- SimAuto-Analyzer2 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer2' AND [SharedKey]=N'SimAuto-AnalyzerKey2')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB5F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer2', [SharedKey]=N'SimAuto-AnalyzerKey2' WHERE [Id]='59839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer2' AND [SharedKey]='SimAuto-AnalyzerKey2')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', N'FB5F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer2', N'SimAuto-AnalyzerKey2')
 END
+-- SimAuto-Analyzer3 (Picarro)
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer3' AND [SharedKey]=N'SimAuto-AnalyzerKey3')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'FB6F3579-843A-113E-001C-39D4011393C90', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'SimAuto-AnalyzerKey3' WHERE [Id]='5a839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
-IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='SimAuto-Analyzer3' AND [SharedKey]='SimAuto-AnalyzerKey3')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'5a839947-9569-952D-16D6-39D4011442FA', N'FB6F3579-843A-113E-001C-39D4011393C9', N'SimAuto-Analyzer3', N'SimAuto-AnalyzerKey3')
+END
+-- SimAuto-Analyzer4 (sqacus)
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer4' AND [SharedKey]=N'SimAuto-AnalyzerKey4')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', [SerialNumber]=N'SimAuto-Analyzer4', [SharedKey]=N'SimAuto-AnalyzerKey4' WHERE [Id]='AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E', N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', N'SimAuto-Analyzer4', N'SimAuto-AnalyzerKey4')
+END
+-- SimAuto-Analyzer5 (PG&E)
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-Analyzer5' AND [SharedKey]=N'SimAuto-AnalyzerKey5')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'B432D533-83DB-4EC2-8A39-38DF4125B609', [SerialNumber]=N'SimAuto-Analyzer5', [SharedKey]=N'SimAuto-AnalyzerKey4' WHERE [Id]='56E4AA85-2E22-4233-A64A-00D75D284111'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'56E4AA85-2E22-4233-A64A-00D75D284111', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'SimAuto-Analyzer5', N'SimAuto-AnalyzerKey5')
 END
 	
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
@@ -441,15 +471,26 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-09-29 00:00:00.000' AS DateTime) WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC544D63'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC544D63', N'C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', N'109-56-12100', -32.7 ,CAST(N'2015-09-29 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SimAuto-Surveyor1'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB4F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FA982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FA982CC-6232-D7B9-F5AC-39D40114FA56', N'FB4F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SimAuto-Surveyor2'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB5F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle2', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FB982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FB982CC-6232-D7B9-F5AC-39D40114FA56', N'FB5F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle2', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SimAuto-Surveyor3'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB6F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle3', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FC982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FC982CC-6232-D7B9-F5AC-39D40114FA56', N'FB6F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle3', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SimAuto-Surveyor4'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='84F35FAA-71CB-44AE-AB4A-15C343F1C84A', [BatchId]='Sim-RefGasBottle4', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-09-14 00:00:00.000' AS DateTime) WHERE [Id]='10A2997C-7D61-4D27-B97A-20453837300A'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'10A2997C-7D61-4D27-B97A-20453837300A', N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', N'Sim-RefGasBottle4', -32.7 ,CAST(N'2016-09-14 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SimAuto-Surveyor5'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='B432D533-83DB-4EC2-8A39-38DF4125B609', [BatchId]='Sim-RefGasBottle5', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-09-14 00:00:00.000' AS DateTime) WHERE [Id]='B65CFDB0-7964-4E1E-80CE-F0DA93A6140E'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'B65CFDB0-7964-4E1E-80CE-F0DA93A6140E', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'Sim-RefGasBottle5', -32.7 ,CAST(N'2016-09-14 00:00:00.000' AS DateTime))
 -- RefGasBottle for 'White Dodge'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', [BatchId]='WhiteDodge-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='AF197B16-C53F-FF50-8056-39CEC9EA1F23'
 IF @@ROWCOUNT=0
@@ -487,15 +528,26 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'45E3BFBC-E42C-459A-91A2-39CFD6851706'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'45E3BFBC-E42C-459A-91A2-39CFD6851706', 1)
+-- HardwareCapabilityType for SimAuto-Analyzer1
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'58839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'58839947-9569-952D-16D6-39D4011442FA', 1)
+-- HardwareCapabilityType for SimAuto-Analyzer2
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'59839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'59839947-9569-952D-16D6-39D4011442FA', 1)
+-- HardwareCapabilityType for SimAuto-Analyzer3
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'5A839947-9569-952D-16D6-39D4011442FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'5A839947-9569-952D-16D6-39D4011442FA', 1)
+-- HardwareCapabilityType for SimAuto-Analyzer4
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'AB60E5EC-4B6D-4CAF-B0D2-7D5813AA572E', 1)
+-- HardwareCapabilityType for SimAuto-Analyzer5
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'56E4AA85-2E22-4233-A64A-00D75D284111'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'56E4AA85-2E22-4233-A64A-00D75D284111', 1)
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'34A34021-8814-8A01-9183-39D4B4DE03BE'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'34A34021-8814-8A01-9183-39D4B4DE03BE', 1)

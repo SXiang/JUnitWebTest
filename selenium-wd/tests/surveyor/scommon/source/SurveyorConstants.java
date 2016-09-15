@@ -315,6 +315,8 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_ANALYZER1 = "SimAuto-Analyzer1";
 	public static final String SIMAUTO_ANALYZER2 = "SimAuto-Analyzer2";
 	public static final String SIMAUTO_ANALYZER3 = "SimAuto-Analyzer3";
+	public static final String SIMAUTO_ANALYZER4 = "SimAuto-Analyzer4";
+	public static final String SIMAUTO_ANALYZER5 = "SimAuto-Analyzer5";
 
 	/*
 	 * Simulator SurveyorUnits
@@ -322,6 +324,8 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_SURVEYOR1 = "SimAuto-Surveyor1";
 	public static final String SIMAUTO_SURVEYOR2 = "SimAuto-Surveyor2";
 	public static final String SIMAUTO_SURVEYOR3 = "SimAuto-Surveyor3";
+	public static final String SIMAUTO_SURVEYOR4 = "SimAuto-Surveyor4";
+	public static final String SIMAUTO_SURVEYOR5 = "SimAuto-Surveyor5";
 
 	/*
 	 * Surveyor Units
