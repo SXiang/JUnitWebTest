@@ -118,7 +118,7 @@ public class GridPOCTestClass8 {
 			PageActionsStore.INSTANCE.clearStore();
 			try {
 				TestSetup.deleteAnalyzerLocalDB3();
-			} catch (UnknownHostException e) {
+			} catch (IOException e) {
 				Log.info(ExceptionUtility.getStackTraceString(e));
 			}
 			SurveyorBaseTest.reportTestStarting(description);

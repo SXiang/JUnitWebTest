@@ -844,7 +844,7 @@ public class TestSetup {
 		startAnalyzer();
 	}
 
-	public static void deleteAnalyzerLocalDB3() throws UnknownHostException {
+	public static void deleteAnalyzerLocalDB3() throws IOException {
 		Log.method("deleteAnalyzerLocalDB3");
 		stopAnalyzerIfRunning();
 		String appDataFolder = SystemUtility.getAppDataFolder();

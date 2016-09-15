@@ -119,6 +119,7 @@ public class BasePage {
 		open(strPageURL);
 		this.waitForPageToLoad();
 	}
+	
 	public void open(String path) {
 		String url = path;
 		if(url.startsWith("/")){
@@ -127,17 +128,13 @@ public class BasePage {
 		Log.info("Get URL: '"+url+"'");
 		driver.get(url);
 	}
+	
 	public String getStrPageURL() {
 		return this.strPageURL;
 	}
 
 	public boolean isElementPresent(By by) {
-		try {
-			this.driver.findElement(by);
-			return true;
-		} catch (org.openqa.selenium.NoSuchElementException e) {
-			return false;
-		}
+		return WebElementExtender.findElementBy(this.driver, by);
 	}
 
 	public boolean isElementPresent(String strXPath) {
@@ -348,8 +345,7 @@ public class BasePage {
 	 * @param element - element to be clicked
 	 */
 	public void jsClick(WebElement element){
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", element);
+		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
 	}
 	
 	public void minimizeBrowserWindow(){
@@ -361,7 +357,7 @@ public class BasePage {
     	driver.manage().window().maximize();
 	}
 
-    public void SelectCheckbox(WebElement checkbox) {
+    public void SelectElement(WebElement checkbox) {
     	if (!checkbox.isSelected()){
     		jsClick(checkbox);
     	}

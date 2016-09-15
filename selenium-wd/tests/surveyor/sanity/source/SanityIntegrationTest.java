@@ -47,13 +47,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -65,6 +68,7 @@ import surveyor.scommon.source.ManageReleaseNotesPage;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -83,42 +87,60 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static HomePage homePage;
 	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void SetupSanityIntegrationTest() {
-		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), complianceReportsPage);
-
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageCustomersPage);
-
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageLocationsPage);
-
-		manageSurveyorsPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageSurveyorsPage);
-
-		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageAnalyzersPage);
-
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
-
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
-
-		manageReleaseNotesPage = new ManageReleaseNotesPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
-
-		homePage = new HomePage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), homePage);
-	
-		loginPage = new LoginPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), loginPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
 	}
 
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
+
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
+
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		manageSurveyorsPage = pageObjectFactory.getManageSurveyorPage();
+		PageFactory.initElements(getDriver(), manageSurveyorsPage);
+
+		manageAnalyzersPage = pageObjectFactory.getManageAnalyzersPage();
+		PageFactory.initElements(getDriver(), manageAnalyzersPage);
+
+		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
+		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
+
+		manageSurveyorHistoriesPage = pageObjectFactory.getManageSurveyorHistoriesPage();
+		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
+
+		manageReleaseNotesPage = pageObjectFactory.getManageReleaseNotesPage();
+		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+	
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+	}
+	
 	@Test
 	public void TC25_LoginTest_PicarroAdmin() {
 		loginPage.open();

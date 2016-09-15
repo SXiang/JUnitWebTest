@@ -1,13 +1,18 @@
 package surveyor.scommon.actions;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.ExcelUtility;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Customer;
+import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.UserDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -51,6 +56,17 @@ public class LoginPageActions extends BasePageActions {
 			throw new Exception("Neither 'usernameColonPassword' nor 'dataRowID' specified for action 'login'");
 		}
 		return dataRow;
+	}
+	
+	public Customer getLoggedInUserCustomer() throws Exception, IOException {
+		Customer customer = null;
+    	if (LoginPageActions.workingDataRow.get() != null) {
+    		CustomerDataReader customerDataReader = new CustomerDataReader(this.excelUtility);
+    		Integer customerRowID = Integer.valueOf(LoginPageActions.workingDataRow.get().customerRowID);
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(customerRowID);
+			customer = new Customer().get(customerDataRow.name);
+    	}
+		return customer;
 	}
 
 	public boolean open(String data, Integer dataRowID) throws Exception {

@@ -16,6 +16,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
@@ -64,7 +65,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 	}
 	
 	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, 
-			String boundary, String lisaAsset, String lisaBoundary, String map) {
+			String boundary, String lisaAsset, String boxAsset, String lisaBoundary, String map) {
 		Map<String, String> viewMap = Collections.synchronizedMap(new HashMap<String, String>());
 		viewMap.put(KEYVIEWNAME, viewName);
 		viewMap.put(KEYLISA, lisa);
@@ -77,6 +78,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		viewMap.put(KEYASSETS, asset);
 		viewMap.put(KEYBOUNDARIES, boundary);
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, lisaAsset);
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, boxAsset);
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, lisaBoundary);
 		viewMap.put(KEYBASEMAP, map);
 		return viewMap;
