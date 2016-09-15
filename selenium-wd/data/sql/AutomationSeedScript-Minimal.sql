@@ -367,6 +367,12 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', @locationID, N'BlackDodgeP3300')
 END
+-- iGPS car
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', @locationID, N'iGPS car')
+END
 
 -- Analyzer
 -- NOTE: [SerialNumber] AND [SharedKey] are UNIQUE for Analyzer. 
@@ -457,6 +463,12 @@ UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'B432D533-83DB-4EC2-8A39-38DF4125B
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'56E4AA85-2E22-4233-A64A-00D75D284111', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'SimAuto-Analyzer5', N'SimAuto-AnalyzerKey5')
 END
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-PICARRO' AND [SharedKey]=N'rfads2004-picarro')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [SerialNumber]=N'SimAuto-Analyzer3', [SharedKey]=N'rfads2004-picarro' WHERE [Id]='D2CCC285-2BD3-5D22-667E-39D823D4D255'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'RFADS2004-PICARRO', N'rfads2004-picarro')
+END
 	
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='00000014-fb61-2ef6-5dd1-39c8ac533d40', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2014-01-01 00:00:00.000' AS DateTime) WHERE [Id]='00000015-db64-fde7-7e67-39c8ac544d60'
@@ -511,7 +523,12 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='47FC54A4-26ED-7306-4D1D-39D76AFC27C4', [BatchId]='RFADS2004', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-04-27 17:42:17.007' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC', N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', N'RFADS2004', -32.7 ,CAST(N'2016-04-27 17:42:17.007' AS DateTime), 0.03)
+-- RefGasBottle for 'iGPS car'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-06-28 02:52:45.447' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='AE226F93-63FB-181B-F319-39D8A7193208'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'AE226F93-63FB-181B-F319-39D8A7193208', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'109-56-12523', -32.7 ,CAST(N'2016-06-28 02:52:45.447' AS DateTime), 0.03)
 
+	
 -- Add AnalyzerHardwareCapabilityType
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=1 WHERE [AnalyzerId]=N'00000015-DB64-FDE7-7E67-39C8AC533D49'
 IF @@ROWCOUNT=0
@@ -636,14 +653,16 @@ UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Activ
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C575',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'driverTestMR',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver@testmr.com')
 
-
-	
 -- User for assessment surveys.
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
 SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'driver1',[LastName]=N'Picarro',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='driver1@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'B195D287-52BA-FFA4-9405-39D60DAE335C',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'driver1',N'Picarro',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver1@picarro.com')
+-- User for StandardWithLeak,NoFov surveys.
+UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'driver2',[LastName]=N'Picarro',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='driver2@picarro.com'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'A4897D62-26A6-48E5-9966-39D23A68B161',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'driver2',N'Picarro',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver2@picarro.com')
 
 	
 --User Role:
@@ -708,7 +727,12 @@ IF NOT EXISTS (SELECT * FROM [dbo].[UserRole] WHERE [RoleId]='00000000-0000-0000
 SELECT @userId = [Id] FROM [dbo].[User] WHERE [UserName]='driver1@picarro.com'  
 IF NOT EXISTS (SELECT * FROM [dbo].[UserRole] WHERE [RoleId]='00000000-0000-0000-0001-000000000000' AND [UserId]=@userId)
 	INSERT INTO [dbo].[UserRole]([RoleId],[UserId]) VALUES (N'00000000-0000-0000-0001-000000000000',@userId)	
-SELECT @userId = [Id] FROM [dbo].[User] WHERE [UserName]='picdr@picarro.com'  
+SELECT @userId = [Id] FROM [dbo].[User] WHERE [UserName]='driver2@picarro.com'  
+IF NOT EXISTS (SELECT * FROM [dbo].[UserRole] WHERE [RoleId]='00000000-0000-0000-0001-000000000000' AND [UserId]=@userId)
+	INSERT INTO [dbo].[UserRole]([RoleId],[UserId]) VALUES (N'00000000-0000-0000-0001-000000000000',@userId)	
+
+	
+	SELECT @userId = [Id] FROM [dbo].[User] WHERE [UserName]='picdr@picarro.com'  
 IF NOT EXISTS (SELECT * FROM [dbo].[UserRole] WHERE [RoleId]='00000000-0000-0000-0001-000000000000' AND [UserId]=@userId)
 	INSERT INTO [dbo].[UserRole]([RoleId],[UserId]) VALUES (N'00000000-0000-0000-0001-000000000000',@userId)	
 SELECT @userId = [Id] FROM [dbo].[User] WHERE [UserName]='sqapicsu1@picarro.com'  

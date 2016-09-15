@@ -359,7 +359,7 @@ public class BasePage {
     	driver.manage().window().maximize();
 	}
 
-    public void SelectCheckbox(WebElement checkbox) {
+    public void SelectElement(WebElement checkbox) {
     	if (!checkbox.isSelected()){
     		jsClick(checkbox);
     	}
