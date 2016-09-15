@@ -220,6 +220,7 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYHIGHLIGHTLISAASSETS = "Highlight LISA Assets";
+	public static final String KEYHIGHLIGHTBOXASSETS = "Highlight Box Assets";
 	public static final String KEYHIGHLIGHTGAPASSETS = "Highlight GAP Assets";
 	public static final String KEYBASEMAP = "Base Map";
 	public static final String KEYASSETCASTIRON = "Cast Iron";
