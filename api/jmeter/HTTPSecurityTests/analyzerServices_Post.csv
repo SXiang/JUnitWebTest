@@ -1,11 +1,13 @@
 Method,Controller,ActionName,BodyData,Anonymous,Authorize
 POST,api/Analyzer,Installer,analyzer/analyzerLogin.json,YES,YES
+POST,api/Analyzer,Installer,analyzer/analyzerWrongLogin.json,NO,NO
 POST,api/Analyzer,VerifySignature,analyzer/signaturePayload.json,YES,YES
+POST,api/Analyzer,VerifySignature,analyzer/signaturePayloadWrong.json,NO,NO
 POST,api/Analyzer,GPS,analyzer/gpsRows.json,NO,YES
 POST,api/Analyzer,Anemometer,analyzer/anemometerRows.json,NO,YES
 POST,api/Analyzer,Measurement,analyzer/measurements.json,NO,YES
-POST,api/Analyzer,HeartBeat,analyzer/analyzerHeartbeat.json,NO,YES
-POST,api/Analyzer,HeartBeatV2,analyzer/analyzerHeartbeat.json,NO,YES
+POST,api/Analyzer,Heartbeat,analyzer/analyzerHeartbeat.json,NO,YES
+POST,api/Analyzer,HeartbeatV2,analyzer/analyzerHeartbeatV2.json,NO,YES
 POST,api/Analyzer,Alarm,analyzer/alarms.json,NO,YES
 POST,api/Analyzer,Note,analyzer/notes.json,NO,YES
 POST,api/Analyzer,Session,analyzer/session.json,NO,YES

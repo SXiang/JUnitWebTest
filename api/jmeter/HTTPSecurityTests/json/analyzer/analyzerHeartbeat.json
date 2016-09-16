@@ -1,3 +1,1 @@
-{"GpsLatitude":37.4033235,"GpsLongitude":-121.99088933333333,
-"GpsBearing":2.0000000,"BuildNumber":"2.4.0.78c13fc","UserName":"${Username_Driver}",
-"HardwareDescription:[{}]"}
+{"GpsLatitude":37.3970796775, "GpsLongitude":-121.98426825866666, "GpsBearing":2.0000000, "BuildNumber":"2.3.0.30fd67a", "UserName":"${Username_Driver}", "HardwareDescription":{"Chassis":"API-Test", "Analyzer":"${Analyzer_Picarro_SerialNumber}", "AnalyzerNum":"${Analyzer_Picarro_SerialNumber}","HardwareCapabilities":[{"HardwareCapabilityTypes":1}, {"HardwareCapabilityTypes":0}]}}

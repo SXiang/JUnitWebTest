@@ -1,3 +1,1 @@
-[{"EpochTime":1462206050.162,"Type":"API-Test","Lat":37.3970796775,"Lon":-121.98426825866666,
-"Text":"API-Test-Notes", "AnalyzerId":{}, Deleted:true},{"EpochTime":1462206050.163,"Type":"API-Test","Lat":37.3970796775,"Lon":-121.98426825866666,
-"Text":"API-Test-Notes-1", "AnalyzerId":{}, Deleted:true}]
+[{"Id":"API-Test", "User":"${Username_Driver}", "EpochTime":1462206050.162,"Type":"API-Test","Lat":37.3970796755,"Lon":-121.98426825866666,"Text":"API-Test-Notes", "AnalyzerId":"${Analyzer_Picarro_ID}", "Deleted":false}]

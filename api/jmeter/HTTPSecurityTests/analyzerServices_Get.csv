@@ -6,6 +6,6 @@ GET,api/Analyzer,SignatureVerificationKey,,YES,YES
 GET,api/Analyzer,GPS,,NO,YES
 GET,api/Analyzer,Anemometer,,NO,YES
 GET,api/Analyzer,Alarm,,NO,YES
-GET,api/Analyzer,SurveyCurtain,/${analyzer_picarro_surveyID},NO,YES
+GET,api/Analyzer,SurveyCurtain,?surveyId=${analyzer_picarro_surveyID},NO,YES
 GET,api/Analyzer,AnalyzerConfiguration,,NO,YES
 GET,api/Analyzer,SurveyHistory,?tag=${analyzer_picarro_surveyTag},NO,YES
