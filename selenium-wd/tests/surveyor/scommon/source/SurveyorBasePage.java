@@ -170,9 +170,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsg_Prefix = "Showing 1 to ";
-	public static final String STRPaginationPattern_Suffix = " of [\\d,]+ entries|";
-	public static final String STRPaginationPattern_Suffix1 = "([\\d]+) of \\1 entries";
+	public static final String STRPaginationMsgPattern = "Showing 1 to %s of [\\d,]+ entries|Showing [10] to ([\\d]+) of \\1 entries";
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
@@ -577,10 +575,8 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkPaginationSetting(String numberOfReports) {
 		Log.method("checkPaginationSetting", numberOfReports);
 		setPagination(numberOfReports);
-		this.waitForPageLoad();
-		String patternToVerify = STRPaginationMsg_Prefix + numberOfReports + STRPaginationPattern_Suffix +
-				STRPaginationMsg_Prefix +  STRPaginationPattern_Suffix1;		
-		return this.waitForNumberOfRecords(patternToVerify);
+		this.waitForPageLoad();	
+		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern, numberOfReports));
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
