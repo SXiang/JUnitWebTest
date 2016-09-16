@@ -1530,19 +1530,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return done;
 	}
 	
-	public boolean checkPaginationSettingInvestogation(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForInvestigationPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfInvestigationRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationInvestigationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
-	
 	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
 		
 		this.inputInvestigationSearchReport.sendKeys(reportTitle);

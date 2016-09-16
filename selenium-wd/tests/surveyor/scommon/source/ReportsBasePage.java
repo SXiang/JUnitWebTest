@@ -397,8 +397,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
-	public static final String STRPaginationMsg = "Showing 1 to ";
-
 	private String reportName;
 	private String reportId;
 	@FindBy(name = "survey-mode-type")
@@ -2074,18 +2072,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String msg = dataTableEmpty.getText();
 		return msg.trim();		
 	}
-	public boolean checkPaginationSetting(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
 
 	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
 			String SWLong, List<Map<String, String>> views) throws Exception {
@@ -2271,14 +2257,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnOK.isEnabled();
-			}
-		});
-	}
-
-	public void waitForNumberOfRecords(String actualMessage) {
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
 			}
 		});
 	}
