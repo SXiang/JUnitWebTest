@@ -172,7 +172,7 @@ public class SurveyorBasePage extends BasePage {
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
 	public static final String STRPaginationMsg_Prefix = "Showing 1 to ";
 	public static final String STRPaginationPattern_Suffix = " of [\\d,]+ entries|";
-	public static final String STRPaginationPattern_Suffix1 = "([\\d]+) of $1+ entries";
+	public static final String STRPaginationPattern_Suffix1 = "([\\d]+) of \\1 entries";
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
@@ -578,15 +578,9 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("checkPaginationSetting", numberOfReports);
 		setPagination(numberOfReports);
 		this.waitForPageLoad();
-
 		String patternToVerify = STRPaginationMsg_Prefix + numberOfReports + STRPaginationPattern_Suffix +
-				STRPaginationMsg_Prefix +  STRPaginationPattern_Suffix1;
-		this.waitForNumberOfRecords(patternToVerify);
-
-		if (this.paginationMsg.getText().trim().matches(patternToVerify))
-			return true;
-
-		return false;
+				STRPaginationMsg_Prefix +  STRPaginationPattern_Suffix1;		
+		return this.waitForNumberOfRecords(patternToVerify);
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
@@ -628,13 +622,14 @@ public class SurveyorBasePage extends BasePage {
 		return true;
 	}
 	
-	public void waitForNumberOfRecords(String actualMessage) {
+	public boolean waitForNumberOfRecords(String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return tableInfoElement.getText().trim().matches(actualMessage);
+				String text = tableInfoElement.getText().trim();
+				return text.matches(actualMessage);
 			}
 		});
 	}

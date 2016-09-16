@@ -2261,14 +2261,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public void waitForNumberOfRecords(String actualMessage) {
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
-			}
-		});
-	}
-
 	public void clickOnSurveyTableColumnHeader(Integer columnIndex, Integer numTimesToClick) {
 		WebElement headerElement = driver
 				.findElement(By.xpath(String.format(surveyTableHeaderColumnBaseXPath, columnIndex)));
