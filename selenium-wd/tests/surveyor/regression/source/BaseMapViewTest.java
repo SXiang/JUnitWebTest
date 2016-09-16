@@ -164,16 +164,6 @@ public class BaseMapViewTest extends BaseTest{
 	}
 
 	@After
-    public void afterTestMethod() {
-		try {
-			logoutQuitDriver();
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}	
-	
-	@After
 	public void afterTest() {
 		setTestSetup(null);
 		
