@@ -60,6 +60,15 @@ public class WebElementExtender {
 	   }
 	   return false;
    }
+   
+   public static boolean findElementBy(WebDriver driver, By by) {
+	   try {
+		   driver.findElement(by);
+		   return true;
+	   } catch (org.openqa.selenium.NoSuchElementException e) {
+		   return false;
+	   }
+   }
 
    public static String getInnerHtml(WebElement element) {
 	   return element.getAttribute("innerHTML");

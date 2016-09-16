@@ -10,8 +10,7 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.EPSILON;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -66,10 +65,12 @@ public class DbSeedExecutorTest {
 	}
 
 	@Test
-	public void execute02_PicarroCustomerGisSeedTest() throws Exception {
+	public void execute02_GisDataSeedTest() throws Exception {
 		// By default is no customerId is specified the GIS data is pushed for Picarro customer.
 		DbSeedExecutor.executeGisSeed();
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PICARRO).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 		
 	@Test
@@ -146,7 +147,8 @@ public class DbSeedExecutorTest {
 		// Verify seed data pushed correctly for each survey tag.
 		final String[] surveyTags = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey", 
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3"};
+				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
+				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
 		
 		boolean isRedate = false;
 		Connection connection = null;

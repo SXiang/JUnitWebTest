@@ -87,6 +87,7 @@ public final class SurveyorConstants {
 	public static final String SQAPGESU = "sqapgesu@email.com";
 	public static final String SQAPGEDR = "sqapgedr1@email.com";
 	public static final String DRIVER1PIC = "driver1@picarro.com";
+	public static final String DRIVER2PIC = "driver2@picarro.com";
 	public static final String PICDR = "picdr@picarro.com";
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
@@ -109,6 +110,7 @@ public final class SurveyorConstants {
 	public static final String FEDS2055ANZ = "FEDS2055";
 	
 	public static final String RFADS2004ANZ = "RFADS2004";
+	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
 
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
@@ -218,6 +220,7 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYHIGHLIGHTLISAASSETS = "Highlight LISA Assets";
+	public static final String KEYHIGHLIGHTBOXASSETS = "Highlight Box Assets";
 	public static final String KEYHIGHLIGHTGAPASSETS = "Highlight GAP Assets";
 	public static final String KEYBASEMAP = "Base Map";
 	public static final String KEYASSETCASTIRON = "Cast Iron";
@@ -315,6 +318,8 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_ANALYZER1 = "SimAuto-Analyzer1";
 	public static final String SIMAUTO_ANALYZER2 = "SimAuto-Analyzer2";
 	public static final String SIMAUTO_ANALYZER3 = "SimAuto-Analyzer3";
+	public static final String SIMAUTO_ANALYZER4 = "SimAuto-Analyzer4";
+	public static final String SIMAUTO_ANALYZER5 = "SimAuto-Analyzer5";
 
 	/*
 	 * Simulator SurveyorUnits
@@ -322,6 +327,8 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_SURVEYOR1 = "SimAuto-Surveyor1";
 	public static final String SIMAUTO_SURVEYOR2 = "SimAuto-Surveyor2";
 	public static final String SIMAUTO_SURVEYOR3 = "SimAuto-Surveyor3";
+	public static final String SIMAUTO_SURVEYOR4 = "SimAuto-Surveyor4";
+	public static final String SIMAUTO_SURVEYOR5 = "SimAuto-Surveyor5";
 
 	/*
 	 * Surveyor Units
@@ -334,6 +341,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_PICPROD10 = "Picarro Production #10";
 	public static final String SURVEYOR_LIGHTBLUEESC = "Light Blue Escape";
 	public static final String SURVEYOR_BLACKDODGE3300 = "BlackDodgeP3300";
+	public static final String SURVEYOR_IGPSCAR = "iGPS car";
 
 
 	/*
@@ -445,14 +453,25 @@ public final class SurveyorConstants {
 	}
 
 	public enum LicensedFeatures {
-		GAPGRID ("GAP Grid 1.0"),
+		ASSETBOX ("Asset Box"),
+		MOBILEVIEW ("Mobile View"),
 		REPORTMETADATA ("Report Metadata"),
+		RAPIDRESPONSE ("Rapid Response"),
 		ASSESSMENT ("Assessment"),
+		MANUAL ("Manual"),
+		PERCENTCOVERAGE ("Percent Coverage"),
+		FLEETMAPVIEW ("FleetMap View"),
+		OPERATOR ("Operator"),
 		EQ ("EQ"),
-		LISABOX ("LISA Box 1.0"),
-		SURVEYFORECAST ("Survey Protocol Forecast"),
+		CUSTOMCOLORS ("Custom Colors"),
+		CURTAINVIEW ("Curtain View"),
+		OPACITYFINETUNING ("Opacity Fine-Tuning"),
+		OBSERVERVIEW ("Observer View"),
+		GISLAYERS ("GIS Layers"),
+		LISABOX10 ("LISA Box 1.0"),
+		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast"),
 		REPORTSHAPEFILE ("Report ShapeFile");
-		
+
 		private final String name;
 
 		LicensedFeatures(String nm) {

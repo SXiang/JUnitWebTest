@@ -22,8 +22,7 @@ import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.EPSILON;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
 
@@ -88,7 +87,8 @@ public class DbSeedExecutor {
 		// Push 'Ethane-*' survey tags. Tracked by US3279.
 		final String[] surveyTags = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey", 
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3"};
+				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
+				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
 
 		try {
 			connection = ConnectionFactory.createConnection();
@@ -333,7 +333,9 @@ public class DbSeedExecutor {
 	
 	public static void executeGisSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed");
-		executeGisSeed(null /*customerId*/);
+		executeGisSeed(null /*customerId*/); // default -> Picarro customer.
+		executeGisSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		executeGisSeed(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 	
 	public static void executeGisSeed(String customerId) throws Exception {

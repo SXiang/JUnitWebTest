@@ -33,6 +33,7 @@ import common.source.BaseHelper;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 
 /**
  * @author zlu
@@ -148,6 +149,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	private String latitude;
 	private String longitude;
+	
+	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
 	/**
 	 * @param driver
@@ -161,6 +164,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
 
+		changeCustomerDialog = new ChangeCustomerDialogControl(driver);
+		PageFactory.initElements(driver, changeCustomerDialog);
+		
 		Log.info("\nThe Manage Locations Page URL is: " + this.strPageURL);
 	}
 
@@ -204,6 +210,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.btnAddNewLocation.click();
 		waitForNewPageLoad();
+
+		Log.info("Select customer - '"+customer+"'");
+		selectDropdownOption(this.dropDownCustomer, customer);
+		changeCustomerDialog.confirmInChangeCustomerDialog();
+
 		this.inputLocationDesc.sendKeys(locationDesc);
 
 		if (!useLatLongSelector) {
@@ -224,21 +235,22 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Location Longitude Field value = " + locationLongitudeText);
 			assertTrue(!locationLongitudeText.isEmpty());
 		}
-		
-		Log.info("Select customer - '"+customer+"'");
-		selectDropdownOption(this.dropDownCustomer, customer);
 
 		this.stdMinAmp.clear();
 		this.stdMinAmp.sendKeys("0.035");
-		this.opdMinAmp.clear();
-		this.opdMinAmp.sendKeys("5");
-		this.RRMinAmp.clear();
-		this.RRMinAmp.sendKeys("5");
-		if (this.assessmentMinAmp.isDisplayed()) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.opdMinAmp)) {
+			this.opdMinAmp.clear();
+			this.opdMinAmp.sendKeys("5");
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.RRMinAmp)) {
+			this.RRMinAmp.clear();
+			this.RRMinAmp.sendKeys("5");
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.assessmentMinAmp)) {
 			this.assessmentMinAmp.clear();
 			this.assessmentMinAmp.sendKeys("0.035");
 		}
-		if (this.eqMinAmp.isDisplayed()) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.eqMinAmp)) {
 			this.eqMinAmp.clear();
 			this.eqMinAmp.sendKeys("0.035");
 		}
