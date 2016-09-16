@@ -24,6 +24,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
@@ -1379,7 +1380,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	/**
 	 * Test Case ID: TC1277_ActionTest_DriverViewCustUserManualSurveyNotAllowed
 	 * Script: -  	
-	 *	- Log into the tablet as a customer user
+	 *	- Log into the tablet as a customer user (not Utility admin)
 	 *	- Click on the Mode button
 	 *	- Click on the Start Survey button
 	 * Results: - 
@@ -1391,7 +1392,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* sqacus -> Customer Utility admin */
+		loginPageAction.login(EMPTY, 3);   /* sqacus -> Customer driver */
 		testEnvironmentAction.startAnalyzer(EMPTY, 33); 	// start analyzer. SimAuto-Analyzer4
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -1401,7 +1402,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		// click Start Survey button.
 		driverViewPageAction.getDriverViewPage().clickStartSurveyButton();
-		driverViewPageAction.getDriverViewPage().waitForPageToLoad();
+		driverViewPageAction.getDriverViewPage().waitForStartSurveyModalDialogToShow();
+
 		// verify manual button is NOT showing.
 		assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
 
