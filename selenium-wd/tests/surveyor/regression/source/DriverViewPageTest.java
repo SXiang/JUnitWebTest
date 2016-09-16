@@ -9,11 +9,8 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.io.IOException;
-import java.util.Calendar;
-
-import org.junit.After;
+import java.net.UnknownHostException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +18,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.BrowserCommands;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -66,9 +64,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		try {
 			initializePageObjects();
 			driverViewPageAction = new DriverViewPageActions(driver, baseURL,testSetup);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+			TestSetup.restartAnalyzer();
+		} catch (UnknownHostException e) {
+			Log.info(ExceptionUtility.getStackTraceString(e));
+		} catch (IOException e) {
+			Log.info(ExceptionUtility.getStackTraceString(e));
+		}
 	}
 
 	private void initializePageObjects() {
@@ -595,19 +596,19 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 9);   /* PG&E Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startAnalyzer(EMPTY, 34); 	// start simulator and replay db3 file. (SimAuto-Analyzer5)
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startReplay(EMPTY, 34); 	// start simulator and replay db3 file.
 		driverViewPageAction.clickOnGisButton(EMPTY,NOTSET);
 		driverViewPageAction.turnOffBigBoundary(EMPTY, NOTSET);
 		driverViewPageAction.turnOffSmallBoundary(EMPTY, NOTSET);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 2);   /* Customer Supervisor */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		loginPageAction.login(EMPTY, 8);   /* PG&E Customer Supervisor */
+		testEnvironmentAction.startAnalyzer(EMPTY, 34); 	// start simulator and replay db3 file.
 		// To get a new instance of Driver view page, initialize the driver view page.
 		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
 				TestContext.INSTANCE.getTestSetup(),
@@ -646,7 +647,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1095_SimulatorTest_NavigateBetweenDriverViewAndHomePage");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		loginPageAction.login(EMPTY, 16);   /* Picarro Driver */
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -702,10 +703,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startAnalyzer(EMPTY, 33); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startReplay(EMPTY, 33); 	// start simulator and replay db3 file.
 
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		
@@ -732,7 +733,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 19);
 		String expectedAnalyzerValue = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedSurveyorValue = SURVEY_INFO_SURVEYOR1_ANALYZER1;
+		String expectedSurveyorValue = SURVEY_INFO_SURVEYOR4_ANALYZER4;
 		String expectedStabilityClass = SURVEY_INFO_STABILITY_CLASS_A;
 		
 		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
@@ -788,7 +789,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1104_SimulatorTest_DriverViewStopDrivingSurveySatelliteView");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		loginPageAction.login(EMPTY, 16);   /* Picarro Driver */
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -887,7 +888,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1133_SimulatorTest_DriverView2SurveysSameTagSameAnalyzer8HrHistoryON");
 		
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		loginPageAction.login(EMPTY, 16);   /* Picarro Driver */
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
@@ -954,7 +955,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1134_SimulatorTest_DriverView2SurveysSameTagDifferentAnalyzers8HrHistoryON");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 3);   /* Customer Driver */
+		loginPageAction.login(EMPTY, 16);   /* Customer Driver */
 		
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
@@ -1051,11 +1052,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		loginPage.open();
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 		
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startAnalyzer(EMPTY, 33); 	// start simulator and replay db3 file.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start simulator and replay db3 file.
+		testEnvironmentAction.startReplay(EMPTY, 33); 	// start simulator and replay db3 file.
 		
 		// Verify that Driver view page was opened.
 		assertTrue(driverViewPageAction.verifyDriverViewPageIsOpened(EMPTY, NOTSET));
@@ -1093,7 +1094,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		String expectedTimeRemainingStartsWith = SURVEY_INFO_REMAINING_TIME_07;
 		String expectedZoomLevel = String.format(SURVEY_INFO_ZOOM_LEVEL_X, 16);
 		String expectedAnalyzerValue = SURVEY_INFO_SURVEY_STATUS_ACTIVE;
-		String expectedSurveyorValue = SURVEY_INFO_SURVEYOR1_ANALYZER1;
+		String expectedSurveyorValue = SURVEY_INFO_SURVEYOR4_ANALYZER4;
 		String expectedStabilityClass = SURVEY_INFO_STABILITY_CLASS_C;
 		
 		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(expectedTagValue, NOTSET));			
@@ -1390,11 +1391,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("\nRunning TC1277_SimulatorTest_DriverViewCustUserManualSurveyNotAllowed");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Customer Utility admin */
-		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer.
+		loginPageAction.login(EMPTY, 1);   /* sqacus -> Customer Utility admin */
+		testEnvironmentAction.startAnalyzer(EMPTY, 33); 	// start analyzer. SimAuto-Analyzer4
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, 3); 	// start replay db3 file.
+		testEnvironmentAction.startReplay(EMPTY, 33); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);

@@ -49,6 +49,8 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
 	protected static final String SURVEY_INFO_SURVEYOR2_ANALYZER2 = "Surveyor: SimAuto-Surveyor2 - SimAuto-Analyzer2";
 	protected static final String SURVEY_INFO_SURVEYOR3_ANALYZER3 = "Surveyor: SimAuto-Surveyor3 - SimAuto-Analyzer3";
+	protected static final String SURVEY_INFO_SURVEYOR4_ANALYZER4 = "Surveyor: SimAuto-Surveyor4 - SimAuto-Analyzer4";
+	protected static final String SURVEY_INFO_SURVEYOR5_ANALYZER5 = "Surveyor: SimAuto-Surveyor5 - SimAuto-Analyzer5";
 	protected static final String SURVEY_INFO_SURVEY_STATUS_ACTIVE = "Survey Active";
 	protected static final String SURVEY_INFO_SURVEY_STATUS_INACTIVE = "Survey Inactive";
 	protected static final String SURVEY_INFO_SURVEYOR1 = "Surveyor: SimAuto-Surveyor1";
@@ -157,15 +159,6 @@ public class BaseMapViewTest extends BaseTest{
 		disposeProcesses();
 	}
 
-	@Before
-	public void setUp() throws Exception {
-		try {
-			TestSetup.deleteAnalyzerLocalDB3();
-		} catch (UnknownHostException e) {
-			Log.info(ExceptionUtility.getStackTraceString(e));
-		}
-	}
-	
 	@After
     public void afterTestMethod() {
 		try {
