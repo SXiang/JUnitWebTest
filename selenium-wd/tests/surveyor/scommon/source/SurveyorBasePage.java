@@ -170,8 +170,9 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsg = "Showing 1 to ";
-	
+	public static final String STRPaginationMsg_Prefix = "Showing 1 to ";
+	public static final String STRPaginationPattern_Suffix = " of [\\d,]+ entries|";
+	public static final String STRPaginationPattern_Suffix1 = "([\\d]+) of $1+ entries";
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
@@ -578,10 +579,11 @@ public class SurveyorBasePage extends BasePage {
 		setPagination(numberOfReports);
 		this.waitForPageLoad();
 
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
+		String patternToVerify = STRPaginationMsg_Prefix + numberOfReports + STRPaginationPattern_Suffix +
+				STRPaginationMsg_Prefix +  STRPaginationPattern_Suffix1;
+		this.waitForNumberOfRecords(patternToVerify);
 
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
+		if (this.paginationMsg.getText().trim().matches(patternToVerify))
 			return true;
 
 		return false;
@@ -632,7 +634,7 @@ public class SurveyorBasePage extends BasePage {
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return tableInfoElement.getText().substring(0, 16).trim().equals(actualMessage);
+				return tableInfoElement.getText().trim().matches(actualMessage);
 			}
 		});
 	}
