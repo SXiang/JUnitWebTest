@@ -71,23 +71,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	private WebElement btnEditCustomer;
 	private String btnEditCustomerXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]/a";
 
-	@FindBy(id = "LicencedFeatureId-GAP Grid 1.0")
-	private WebElement inputGAPGrid;
-
 	@FindBy(id = "LicencedFeatureId-Report Metadata")
 	private WebElement inputReportMetadata;
-
-	@FindBy(id = "LicencedFeatureId-Assessment")
-	private WebElement inputAssessment;
-
-	@FindBy(id = "LicencedFeatureId-EQ")
-	private WebElement inputEQ;
-
-	@FindBy(id = "LicencedFeatureId-LISA Box 1.0")
-	private WebElement inputLISABox;
-
-	@FindBy(id = "LicencedFeatureId-Survey Protocol Forecast")
-	private WebElement inputSurveyForecast;
 
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
@@ -149,34 +134,9 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	private WebElement getInputBoxOfLicensedFeature(LicensedFeatures lf) {
 		Log.method("getInputBoxOfLicensedFeature", lf);
-		WebElement inputBox;
-		switch (lf) {
-		case ASSESSMENT:
-			inputBox = inputAssessment;
-			break;
-		case GAPGRID:
-			inputBox = inputGAPGrid;
-			break;
-		case REPORTMETADATA:
-			inputBox = inputReportMetadata;
-			break;
-		case EQ:
-			inputBox = inputEQ;
-			break;
-		case LISABOX:
-			inputBox = inputLISABox;
-			break;
-		case SURVEYFORECAST:
-			inputBox = inputSurveyForecast;
-			break;
-		case REPORTSHAPEFILE:
-			inputBox = inputReportShapeFile;
-			break;
-		default:
-			inputBox = inputGAPGrid;
-			break;
-		}
-		return inputBox;
+		String elementId = String.format("LicencedFeatureId-%s", lf.toString());
+		Log.info(String.format("Checkbox element id -> %s", elementId));
+		return driver.findElement(By.id(elementId));
 	}
 
 	public boolean addNewCustomer(String customerName, String eula) {
@@ -537,19 +497,41 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		Log.method("getLicensedFeature", licFeatureName);
-		LicensedFeatures licensedFeatures = LicensedFeatures.ASSESSMENT;
-		if (licFeatureName.equals("GAP Grid 1.0")) {
-			licensedFeatures = LicensedFeatures.GAPGRID;
+		LicensedFeatures licensedFeatures = LicensedFeatures.ASSETBOX;
+		if (licFeatureName.equals("Asset Box")) {
+			licensedFeatures = LicensedFeatures.ASSETBOX;
+		} else if (licFeatureName.equals("Mobile View")) {
+			licensedFeatures = LicensedFeatures.MOBILEVIEW;
 		} else if (licFeatureName.equals("Report Metadata")) {
 			licensedFeatures = LicensedFeatures.REPORTMETADATA;
+		} else if (licFeatureName.equals("Rapid Response")) {
+			licensedFeatures = LicensedFeatures.RAPIDRESPONSE;
 		} else if (licFeatureName.equals("Assessment")) {
 			licensedFeatures = LicensedFeatures.ASSESSMENT;
+		} else if (licFeatureName.equals("Manual")) {
+			licensedFeatures = LicensedFeatures.MANUAL;
+		} else if (licFeatureName.equals("Percent Coverage")) {
+			licensedFeatures = LicensedFeatures.PERCENTCOVERAGE;
+		} else if (licFeatureName.equals("FleetMap View")) {
+			licensedFeatures = LicensedFeatures.FLEETMAPVIEW;
+		} else if (licFeatureName.equals("Operator")) {
+			licensedFeatures = LicensedFeatures.OPERATOR;
 		} else if (licFeatureName.equals("EQ")) {
 			licensedFeatures = LicensedFeatures.EQ;
+		} else if (licFeatureName.equals("Custom Colors")) {
+			licensedFeatures = LicensedFeatures.CUSTOMCOLORS;
+		} else if (licFeatureName.equals("Curtain View")) {
+			licensedFeatures = LicensedFeatures.CURTAINVIEW;
+		} else if (licFeatureName.equals("Opacity Fine-Tuning")) {
+			licensedFeatures = LicensedFeatures.OPACITYFINETUNING;
+		} else if (licFeatureName.equals("Observer View")) {
+			licensedFeatures = LicensedFeatures.OBSERVERVIEW;
+		} else if (licFeatureName.equals("GIS Layers")) {
+			licensedFeatures = LicensedFeatures.GISLAYERS;
 		} else if (licFeatureName.equals("LISA Box 1.0")) {
-			licensedFeatures = LicensedFeatures.LISABOX;
+			licensedFeatures = LicensedFeatures.LISABOX10;
 		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
-			licensedFeatures = LicensedFeatures.SURVEYFORECAST;
+			licensedFeatures = LicensedFeatures.SURVEYPROTOCOLFORECAST;
 		} else if (licFeatureName.equals("Report ShapeFile")) {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
 		}

@@ -37,8 +37,7 @@ public class LoginPage extends BasePage {
 	private WebElement btnAccept;
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
-	private WebElement txtAccountDisabled;
-	
+	private WebElement txtAccountDisabled;	
 
 	/**
 	 * @param driver

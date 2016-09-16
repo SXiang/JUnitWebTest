@@ -4,6 +4,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
@@ -228,6 +229,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightLisaAssets = reportViewsDataRow.highlightLisa.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String highlightBoxAssets = reportViewsDataRow.highlightBox.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightGapAssets = reportViewsDataRow.highlightGap.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String baseMapType = reportViewsDataRow.baseMap;
@@ -241,6 +243,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (showGaps != "") viewMap.put(KEYGAPS, showGaps);
 		if (showAssets != "") viewMap.put(KEYASSETS, showAssets);
 		if (highlightLisaAssets != "") viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAssets);
+		if (highlightBoxAssets != "") viewMap.put(KEYHIGHLIGHTBOXASSETS, highlightBoxAssets);
 		if (highlightGapAssets != "") viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAssets);
 		if (showBoundaries != "") viewMap.put(KEYBOUNDARIES, showBoundaries);
 		viewMap.put(KEYBASEMAP, baseMapType);
@@ -303,8 +306,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String customer = null; 
 		String customerRowID = workingDataRow.customerRowID;
 		if (customerRowID != "") {
-			Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
-			customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+			if (ManageCustomerPageActions.workingDataRow != null) {
+				customer = ManageCustomerPageActions.workingDataRow.name;
+			} else {
+				Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
+				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+			}
 		}
 		String timeZone = workingDataRow.timezone;
 		String exclusionRadius = workingDataRow.exclusionRadius;
@@ -1360,7 +1367,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		}
 
 		this.getComplianceReportsPage().selectCustomer(customer);
-		this.getComplianceReportsPage().confirmInChangeCustomerDialog();
+		this.getComplianceReportsPage().getChangeCustomerDialog().confirmInChangeCustomerDialog();
 		return true;
 	}
  
