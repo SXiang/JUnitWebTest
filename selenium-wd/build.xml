@@ -556,7 +556,8 @@
 	<target name="securityapitest" depends="init">
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
-			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx" />
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
+																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
 			<property name="jmeter.result.dir" value="${reports}/jmeter" />
 			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${local_date}.jtl" />
 			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${local_date}.html" />
