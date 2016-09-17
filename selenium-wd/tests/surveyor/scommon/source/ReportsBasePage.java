@@ -1397,6 +1397,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String lastSeenTitleCellText = "";
 		String lastSeenCreatedByCellText = "";
 
+		reportId = Report.getReport(rptTitle).getId();
+
+		Log.info(String.format("Looking for Report Title='%s', Created By='%s'", rptTitle.trim(), strCreatedBy.trim()));
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
@@ -1410,8 +1413,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-
-				reportId = Report.getReport(rptTitle).getId();
+				
+				Log.info(String.format("Setting reportId to TestContext. ReportId='%s'", reportId));
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1423,22 +1426,30 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
+							Log.info("RowSize == 1. Getting ReportViewer button element...");
 							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
+							Log.info("First call -> skipNewlyAddedRows()");
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
+							// At this point we have the rowNum of interest.
 							if (rowNum > maxRows) {
 								break;
 							}
 							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
+							// Double check if we have the rowNum of interest.
+							// If current rowNum doesn't match the new rowNum continue.
+							Log.info("Second call -> skipNewlyAddedRows()");
 							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)) {
 								continue;
 							}
+							// rowNum matches. Try to click on ReportViewer button.							
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
@@ -1456,7 +1467,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (NullPointerException ne) {
 						numRetriesForNullError++;
 						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
-							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
+							Log.info(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
 							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
 								return false;
@@ -1464,8 +1475,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							continue;
 						}
 
-						Log.error(String.format(
-								"MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s",
+						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s",
 								ExceptionUtility.getStackTraceString(ne)));
 						fail("Report failed to be generated!!");
 					}
@@ -1560,6 +1570,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
+		reportId = Report.getReport(rptTitle).getId();
+
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
@@ -1574,17 +1586,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
-				reportId = Report.getReport(rptTitle).getId();
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1592,7 +1601,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							// * Double check the correctness of the rowNum
 							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)) {
@@ -2545,10 +2553,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			} else {
 				// compare actual with baseline.
 				CSVUtility csvUtility = new CSVUtility();
-				List<HashMap<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
+				List<Map<String, String>> csvRows = csvUtility.getAllRows(expectedFilePath.toString());
 
 				boolean foundInCsv = false;
-				for (HashMap<String, String> csvRow : csvRows) {
+				for (Map<String, String> csvRow : csvRows) {
 					String expectedReportJobId = csvRow.get("ReportJobTypeId");
 					if (reportJobTypeId.equals(expectedReportJobId)) {
 						foundInCsv = true;
@@ -2599,8 +2607,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return reportJobsStatObj;
 	}
 
-	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum,
-			int maxRows) {
+	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
+		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
+		
 		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 

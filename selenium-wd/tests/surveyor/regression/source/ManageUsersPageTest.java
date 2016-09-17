@@ -135,7 +135,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC68_TC470_AddNewPicarroUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.AddPicUser, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String userName = "PicarroUser" + getTestSetup().getRandomNumber() + tcID + REGBASEUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
@@ -167,7 +167,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC69_TC471_AddNewCustomerUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.AddCustUser, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String customerName = SQACUS;
 		String userName = customerName + tcID + getTestSetup().getFixedSizePseudoRandomString(11) + REGBASEUSERNAME;
 		String locationName = SQACUSLOC;
@@ -198,7 +198,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC70_TC472_EditUser_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.EditUser, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String customerName = SQACUS;
 		String userName = customerName + tcID + getTestSetup().getFixedSizePseudoRandomString(11) + REGBASEUSERNAME;
 		String locationName = SQACUSLOC;
@@ -238,7 +238,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		}
 
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Reset customer user password as %s \n", testCaseID, role));
@@ -323,7 +323,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC87_TC483_TC484_TC485_EditUserChangeRoleLocationTimezone_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.ChangeRoleLocTz, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String customerName = SQACUS;
 		String userName = customerName + "User" + tcID + REGBASEUSERNAME;
 		String cityName = "Santa Clara";
@@ -376,7 +376,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC90_TC479_DuplicateUserCreationNotAllowed(String username, String password, String role, String customerName, String customerLocation) {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.ResetPwd, username);
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 
 		String usernameNew = SQACUS + getTestSetup().getFixedSizePseudoRandomString(12) + testCaseID + REGBASEUSERNAME;
 
@@ -407,7 +407,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC94_TC474_DisableUser(String username, String password, String role, String customerName, String customerLocation) {
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.DisabledUser, username);
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 
 		String usernameNew = SQACUS + getTestSetup().getRandomNumber() + testCaseID + REGBASEUSERNAME;
 		Log.info(String.format("\nRunning - %s - Test Description: %s - Disabled User\n", testCaseID, role));
@@ -439,7 +439,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC95_TC478_ReEnableUser_PicAdminSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.ReEnableUsers, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String userName = SQACUS + getTestSetup().getRandomNumber() + tcID + REGBASEUSERNAME;
 		String locationDesc = SQACUS + " - " + SQACUSLOC;
 
@@ -477,7 +477,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	public void TC98_TC486_UserEmailMax50Chars_PicAdminSupport(String user, String pwd) {
 		final int MAX_SIZE = 50;
 		String tcID = getTestCaseName(ManageUserTestCaseType.MaxEmailChars, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String userName50 = SQACUS + getTestSetup().getFixedSizePseudoRandomString(MAX_SIZE - 16) + REGBASEUSERNAME;
 		String userName51 = SQACUS + getTestSetup().getFixedSizePseudoRandomString(MAX_SIZE - 16) + REGBASEUSERNAME + "A";
 		Log.info("\nRunning - " + tcID + "_UserEmailMax50Chars_PicAdmin - Test Description: Picarro Admin - " + "More than 50 characters not allowed in email address field\n");
@@ -676,7 +676,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@RunAs(users = SQAPICAD_AND_SQAPICSUP)
 	public void TC116_TC487_SearchValidUser(String user, String pwd) {
 		String tcID = getTestCaseName(ManageUserTestCaseType.SearchValidUser, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		Log.info("\nRunning - " + tcID + " - Test Description: Search valid user record\n");
 
 		loginPage.open();

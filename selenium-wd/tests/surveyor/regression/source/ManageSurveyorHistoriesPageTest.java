@@ -107,7 +107,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 			strNote1500chars = strNote + str1467chars;
 			strNote1501chars = strNote + str1468chars;
 		}
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 
 		Log.info("\nRunning - " + tcID + "_AddNoteMaxCharLimit - Test Description: More than 1500 characters not allowed in Note field present on Manage Add Surveyor History screen\n");
 

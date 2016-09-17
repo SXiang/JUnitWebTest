@@ -1,21 +1,17 @@
 package surveyor.regression.source;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.DateUtility;
-import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.TestSetupFactory;
@@ -113,19 +109,22 @@ public class BaseMapViewTest extends BaseTest{
 	protected List<String> baseURLList = Collections.synchronizedList(new ArrayList<String>()); 
 
 	public BaseMapViewTest() {
-		initializePageActions();
+		initializeBasePageActions();
 	}
 	
 	/**
 	 * Initializes the page action objects.
 	 * @throws IOException 
 	 */
-	protected static void initializePageActions(){
-		if(getTestSetup() == null || getTestSetup().getDriver() == null){
-			setTestSetup(TestSetupFactory.getTestSetup());
-		}
+	protected static void initializeBasePageActions(){
+		// NOTE: 2016/09/16: 
+		//  Specific implementations of this class should have called initializeTestObjects() in BeforeTest
+		//  and initialized testSetup before call to this method
+		// TODO: REMOVE THIS COMMENTED CODE DURING CODE REVIEW.
+		//if(getTestSetup() == null || getTestSetup().getDriver() == null){
+		//	setTestSetup(TestSetupFactory.getTestSetup());
+		//}
 		
-		BaseTest.initializeTestObjects();
 		setLoginPageAction(new LoginPageActions(getDriver(), getBaseURL(), getTestSetup()));
 		setHomePageAction(new HomePageActions(getDriver(), getBaseURL(), getTestSetup()));
 		setTestEnvironmentAction(new TestEnvironmentActions());
@@ -165,7 +164,7 @@ public class BaseMapViewTest extends BaseTest{
 
 	@After
 	public void afterTest() {
-		setTestSetup(null);
+		//setTestSetup(null);
 		
 		// clean up - extra web drivers 
 		for(int index=0;index<testSetupList.size(); index++){

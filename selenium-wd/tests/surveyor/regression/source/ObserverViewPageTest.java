@@ -48,8 +48,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
 			initializePageActionsList();
-			initializePageActions();
+			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());

@@ -612,7 +612,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Change this value to dropdown culture value in Preferences page to set culture for users. 
 		String cultureString = "English (United States)";
 		
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 		
 		loginPage.open();
 		loginPage.loginNormalAs(username, password);

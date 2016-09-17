@@ -154,7 +154,7 @@ public class ManageRefGasBottlesPageTest extends SurveyorBaseTest {
 		String tcID = getTestCaseName(ManageRefGasBottleTestCaseType.MaxCharsLimit, user);
 		String lotNum50Chars = getTestSetup().getFixedSizeRandomNumber(16) + str34chars;
 		String lotNum51Chars = getTestSetup().getFixedSizeRandomNumber(16) + str35chars;
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		
 		Log.info("\nRunning "
 				+ tcID

@@ -185,7 +185,7 @@ public enum TestContext {
 	}
 	
 	public void stayIdle(int seconds) {
-		this.testSetup.slowdownInSeconds(seconds);
+		TestSetup.idleForSeconds(seconds);
 	}
 
 	public String getExecutionPath() {

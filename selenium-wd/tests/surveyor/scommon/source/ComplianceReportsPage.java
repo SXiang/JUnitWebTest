@@ -2636,12 +2636,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		setReportName(reportName);
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceAssessmentGetReportDrivingSurveys> reportList = new ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys>();
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceAssessmentGetReportDrivingSurveys reportDrivingObj = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
-			HashMap<String, String> csvRow = csvIterator.next();
+			Map<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().toLowerCase().equals(reportId.trim().toLowerCase())) {
 				return false;
 			}
@@ -2684,12 +2684,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportIsotopicCapture.csv";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIsotopics> reportList = new ArrayList<StoredProcComplianceGetIsotopics>();
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIsotopics reportIsoObj = new StoredProcComplianceGetIsotopics();
-			HashMap<String, String> csvRow = csvIterator.next();
+			Map<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
 				Log.info("Isotopic meta data file verification failed");
 				return false;
@@ -2738,12 +2738,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			pathToCsv = actualPath;
 		}
 		setReportName(reportName);
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetEthaneCapture> reportList = new ArrayList<StoredProcComplianceGetEthaneCapture>();
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetEthaneCapture ethaneCapture = new StoredProcComplianceGetEthaneCapture();
-			HashMap<String, String> csvRow = csvIterator.next();
+			Map<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
 				return false;
 			}
@@ -2797,12 +2797,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			pathToCsv = actualPath;
 		}
 		setReportName(reportName);
-		List<HashMap<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		Iterator<HashMap<String, String>> csvIterator = csvRows.iterator();
+		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
-			HashMap<String, String> csvRow = csvIterator.next();
+			Map<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
 				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
 				return false;

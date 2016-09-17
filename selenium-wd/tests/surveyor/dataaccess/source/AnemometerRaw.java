@@ -110,19 +110,6 @@ public class AnemometerRaw extends BaseEntity {
 		return objAnemometerRawList;
 	}
  
-	/*
-	public AnemometerRaw getFirst() {
-		AnemometerRaw objAnemometerRaw = null;
-		String SQL = "SELECT TOP 1 * FROM dbo.[AnemometerRaw] ORDER BY EpochTime ASC";
-		ArrayList<AnemometerRaw> objAnemometerRawList = load(SQL);
-		if (objAnemometerRawList!=null && objAnemometerRawList.size()>0) {
-			objAnemometerRaw = objAnemometerRawList.get(0);
-		}
-
-		return objAnemometerRaw;
-	}
-	*/
-
 	public AnemometerRaw getFirst(String analyzerId) {
 		AnemometerRaw objAnemometerRaw = null;
 		

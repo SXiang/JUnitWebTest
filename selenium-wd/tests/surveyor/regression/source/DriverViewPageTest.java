@@ -66,6 +66,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
 			initializePageObjects();
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(),getTestSetup());
 			TestSetup.restartAnalyzer();

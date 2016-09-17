@@ -98,7 +98,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC16_TC18_AddLocationUsingLatLongSelector_PicAdminSupport(String user, String pswd ) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLocUsingSelector, user);
-		String password = CryptoUtility.decrypt(pswd);
+		String password = new CryptoUtility().decrypt(pswd);
 		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + tcID;
 		String cityName = "Santa Clara";
 		Log.info("user: "+user);
@@ -137,7 +137,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC17_TC19_EditLocationAddedUsingLatLongSelector_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLocUsingSelector, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + tcID;
 		String locationNameNew = getTestSetup().getFixedSizeRandomNumber(8) + tcID
 				+ "_New";
@@ -170,7 +170,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC60_TC489_AddLocation_PicAdmin_PicSupport(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.AddLoc, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + getTestSetup().getRandomNumber() + "Loc";
@@ -197,7 +197,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	@RunAs(users=SQAPICAD_AND_SQAPICSUP)
 	public void TC61_TC490_EditLocation_PicAdmin(String user, String pwd) {
 		String tcID = getTestCaseName(ManageLocationTestCaseType.EditLoc, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String locationName = customerName + "Loc"
@@ -268,7 +268,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 
 		String tcID = getTestCaseName(ManageLocationTestCaseType.MaxLocChar, user);
-		String password = CryptoUtility.decrypt(pwd);
+		String password = new CryptoUtility().decrypt(pwd);
 
 		String locationName50Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ tcID + str34chars;
@@ -396,7 +396,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 			String customerName, String customerLocation) {
 
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.AddDuplicateLocation, username);		
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 
 		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";
@@ -444,7 +444,7 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 			String customerName, String customerLocation) {
 
 		String testCaseID = getTestCaseName(ManageUserTestCaseType.EditDuplicateLocation, username);		
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 
 		String locationName = getTestSetup().getFixedSizeRandomNumber(8) + testCaseID;
 		String cityName = "Santa Clara";

@@ -949,6 +949,10 @@ public class TestSetup {
 
 	// for testing code debug only
 	public void slowdownInSeconds(int seconds) {
+		idleForSeconds(seconds);
+	}
+
+	public static void idleForSeconds(int seconds) {
 		try {
 			Thread.sleep(seconds * 1000);
 		} catch (Exception e) {

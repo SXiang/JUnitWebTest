@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -451,8 +452,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
-			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
+			List<Map<String, String>> rows = dUtil.getAllRows();
+			Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
 
 			List<Peak> listOfDBPeak = Peak.getPeaks(tag, analyzer, mode);
 
@@ -499,9 +500,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
-			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
-
+			List<Map<String, String>> rows = dUtil.getAllRows();
 			Analyzer analyzerObj = Analyzer.getAnalyzerBySerialNumber(analyzer);
 			List<Measurement> listOfDBMeasurement = Measurement.getMeasurements(analyzerObj.getId().toString(), startEpoch, endEpoch);
 
@@ -531,8 +530,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		DatUtility dUtil = new DatUtility();
 		try {
 			dUtil.convertDATtoCSV(datFileName);
-			List<HashMap<String, String>> rows = dUtil.getAllRows();
-			HashMap<String, String> map = new HashMap<String, String>();
+			List<Map<String, String>> rows = dUtil.getAllRows();
+			Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
 
 			List<CaptureEvent> listOfDBCaptureEvent = CaptureEvent.getCaptureEvent(tag, analyzer);
 

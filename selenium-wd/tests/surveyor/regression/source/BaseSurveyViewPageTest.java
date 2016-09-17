@@ -68,14 +68,18 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
+		initializeTestObjects();
+		
 		// Initialization needed at class level for automation reports.
-		initializePageActions();
+		initializeBasePageActions();
 	}
 
 	@Before
 	public void beforeTestMethod() {
 		try {
-			initializePageActions();
+			initializeTestObjects();
+			
+			initializeBasePageActions();
 			
 			setDriverViewPageAction(new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup()));
 			setSurveyViewPageAction(new SurveyViewPageActions(getDriver(), getBaseURL(),getTestSetup()));

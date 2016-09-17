@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
@@ -42,8 +42,8 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {              
     		CSVUtility csvUtility = new CSVUtility();
-    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
-    		for (HashMap<String, String> rowItem : allRows) {
+    		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		for (Map<String, String> rowItem : allRows) {
     			String id = rowItem.get("Id");
     			String externalId = rowItem.get("ExternalId");
     			String custId = rowItem.get("CustomerId");

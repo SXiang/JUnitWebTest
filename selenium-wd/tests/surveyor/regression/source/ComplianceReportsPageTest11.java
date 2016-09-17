@@ -93,7 +93,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 
-		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
@@ -166,7 +166,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 
-		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
