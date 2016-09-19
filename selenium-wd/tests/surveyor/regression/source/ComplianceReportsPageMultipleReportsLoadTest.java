@@ -26,7 +26,7 @@ import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 @RunWith(ParallelParameterized.class)
-public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
+public class ComplianceReportsPageMultipleReportsLoadTest extends BaseReportsPageActionTest {
 
 	private static AtomicInteger testIndex = new AtomicInteger();
 	private ThreadLocal<HomePageActions> homePageAction = new ThreadLocal<HomePageActions>();
@@ -56,7 +56,7 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
         );
     }
 
-    public ComplianceReportsPageLoadTest(String testCaseId, Integer userDataRowId,  Integer reportDataRowId1, Integer reportDataRowId2) {
+    public ComplianceReportsPageMultipleReportsLoadTest(String testCaseId, Integer userDataRowId,  Integer reportDataRowId1, Integer reportDataRowId2) {
     	this.testCaseID = testCaseId;
     	this.userDataRowID = userDataRowId;
     	this.reportDataRowID1 = reportDataRowId1;
