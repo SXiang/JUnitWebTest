@@ -14,7 +14,7 @@ import surveyor.regression.source.ManageCustomersPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	ACLandVisibilityTest.class
 	,HomePageTest.class
 	,LoginPageTest.class
@@ -22,14 +22,14 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,ManageCustomersPageTest.class
 })
 public class RegressionTestSuite1 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for RegressionTestSuite1 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for RegressionTestSuite1 executing...");
     }
 }

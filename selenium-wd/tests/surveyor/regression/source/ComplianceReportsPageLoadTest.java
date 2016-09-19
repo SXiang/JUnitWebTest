@@ -8,6 +8,7 @@ import common.source.Log;
 import common.source.WebDriverFactory;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.WebDriver;
@@ -43,30 +44,37 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
 	private Integer reportDataRowID1;
 	@SuppressWarnings("unused")
 	private Integer reportDataRowID2;
-	
+
 	@Parameters(name = "{index}: TC243[TestCaseID={0},userDataRowID={1},reportDataRowID1={2},reportDataRowID2={3}]")
     public static Iterable<Object[]> tc243_data() {
         return asList(
-    		new Object[]{ "TC243-1" /*TestCaseID*/, 4 /*userDataRowID*/,  106 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-    		new Object[]{ "TC243-2" /*TestCaseID*/, 4 /*userDataRowID*/,  107 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-    		new Object[]{ "TC243-3" /*TestCaseID*/, 4 /*userDataRowID*/,  108 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-    		new Object[]{ "TC243-4" /*TestCaseID*/, 4 /*userDataRowID*/,  109 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
-    		new Object[]{ "TC243-5" /*TestCaseID*/, 4 /*userDataRowID*/,  110 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+    		new Object[]{ "TC243-1" /*TestCaseID*/, 4 /*userDataRowID*/,  112 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
+    		new Object[]{ "TC243-2" /*TestCaseID*/, 4 /*userDataRowID*/,  113 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
+    		new Object[]{ "TC243-3" /*TestCaseID*/, 4 /*userDataRowID*/,  114 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
+    		new Object[]{ "TC243-4" /*TestCaseID*/, 4 /*userDataRowID*/,  115 /*reportDataRowID1*/, -1/*reportDataRowID2*/},
+    		new Object[]{ "TC243-5" /*TestCaseID*/, 4 /*userDataRowID*/,  116 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
         );
     }
-    
+
     public ComplianceReportsPageLoadTest(String testCaseId, Integer userDataRowId,  Integer reportDataRowId1, Integer reportDataRowId2) {
     	this.testCaseID = testCaseId;
     	this.userDataRowID = userDataRowId;
     	this.reportDataRowID1 = reportDataRowId1;
     	this.reportDataRowID2 = reportDataRowId2;
     }
-	
+
+	@BeforeClass
+	public static void beforeClass() throws Exception{
+		initializeTestObjects(false /*initializeDriver*/);
+	}
+
 	@Before
 	public void beforeTest() throws Exception{
+		initializeTestObjects(false /*initializeDriver*/);
+
 		// Create new web driver for each test.
 		webDriver.set(WebDriverFactory.getDriver(testIndex.incrementAndGet()));
-		
+
 		initializePageActions();
 
 		// Select run mode here.
@@ -75,7 +83,7 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
 
 	private void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.get().fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -83,7 +91,7 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected void initializePageActions() throws Exception {
 		homePageAction.set(new HomePageActions(webDriver.get(), getBaseURL(), getTestSetup()));
@@ -99,7 +107,7 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
 	/**
 	 * Test Case ID: TC243_Generate4_5_ComplianceReportsWithMultipleViewsSurveysInParallel
 	 * Test Description: Generate multiple compliance reports (4-5) at the same time
-	 * Validation: 	
+	 * Validation:
 	 *	- Generate 4 or 5 compliance reports simultaneously with multiple views and multiple surveys
 	 * Expected Result:
 	 *	- Reports generated successfully
@@ -107,10 +115,10 @@ public class ComplianceReportsPageLoadTest extends BaseReportsPageActionTest {
 	@Test
 	public void TC243_Generate4_5_ComplianceReportsWithMultipleViewsSurveysInParallel() throws Exception {
 		Log.info("\nRunning TC243_Generate4_5_ComplianceReportsWithMultipleViewsSurveysInParallel ...");
-		
+
 		loginPageAction.get().open(EMPTY, NOTSET);
-		loginPageAction.get().login(EMPTY, getUserRowID(userDataRowID));   
-		
+		loginPageAction.get().login(EMPTY, getUserRowID(userDataRowID));
+
 		complianceReportsPageAction.get().open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.get().createNewReport(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.get().waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));

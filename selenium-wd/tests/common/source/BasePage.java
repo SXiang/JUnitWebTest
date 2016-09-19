@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package common.source;
 
@@ -25,9 +25,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author zlu
- * 
+ *
  *         Add more general code later for pages
- * 
+ *
  */
 public class BasePage {
 	protected String strBaseURL;
@@ -105,7 +105,7 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = "#datatable td.dataTables_empty")
 	private WebElement emptyDataTableMessage;
-	
+
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -119,7 +119,7 @@ public class BasePage {
 		open(strPageURL);
 		this.waitForPageToLoad();
 	}
-	
+
 	public void open(String path) {
 		String url = path;
 		if(url.startsWith("/")){
@@ -128,7 +128,7 @@ public class BasePage {
 		Log.info("Get URL: '"+url+"'");
 		driver.get(url);
 	}
-	
+
 	public String getStrPageURL() {
 		return this.strPageURL;
 	}
@@ -283,7 +283,7 @@ public class BasePage {
 	}
 
 	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
-		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
+		// Chromedriver does NOT send keys correctly to TextArea for some controls.
 		// Use Actions workaround to send keys instead.
 		if(eula == null){
 			return;
@@ -333,7 +333,7 @@ public class BasePage {
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
-	
+
 	/*
 	 * Default implementation of this method makes a call to waitForPageToLoad(). Inherited Page classes can provide a page specific implementation of this method.
 	 */
@@ -347,7 +347,7 @@ public class BasePage {
 	public void jsClick(WebElement element){
 		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
 	}
-	
+
 	public void minimizeBrowserWindow(){
 		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));
@@ -358,13 +358,17 @@ public class BasePage {
 	}
 
     public void SelectElement(WebElement checkbox) {
+    	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){
+    		Log.info("Element is NOT selected. Selecting element with JSClick");
     		jsClick(checkbox);
     	}
     }
 
     public void UnselectCheckbox(WebElement checkbox) {
+    	Log.method("UnselectCheckbox", checkbox);
     	if (checkbox.isSelected()){
+    		Log.info("Element is selected. Un-selecting element with JSClick");
     		jsClick(checkbox);
     	}
     }
@@ -400,7 +404,7 @@ public class BasePage {
     	}
     	return text;
     }
-    
+
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;

@@ -34,7 +34,7 @@ public class BaseTest {
 	private static List<WebDriver> spawnedWebDrivers = Collections.synchronizedList(new ArrayList<WebDriver>());
 	private static Map<String, ExtentTest> extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
 
-	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
+	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<String> baseURLThreadLocal = new ThreadLocal<String>();
 	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
 	private static ThreadLocal<ScreenShotOnFailure> screenCaptureThreadLocal = new ThreadLocal<ScreenShotOnFailure>();
@@ -46,7 +46,7 @@ public class BaseTest {
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
 	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
+	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_*
 	@Rule
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
@@ -80,33 +80,39 @@ public class BaseTest {
 
 		initializeTestObjects();
 	}
-	
+
 	public static void initializeTestObjects(){
+		initializeTestObjects(true /*initializeDriver*/);
+	}
+
+	protected static void initializeTestObjects(boolean initializeDriver) {
 		if (getTestSetup()==null) {
 			setTestSetup(TestSetupFactory.getTestSetup());
 			Log.info(String.format("[THREAD Debug Log].. Set TestSetup - '%s'", getTestSetup()));
 		}
-		if (getBaseURL() == null) {		
+		if (getBaseURL() == null) {
 			setBaseURL(getTestSetup().getBaseUrl());
 			Log.info(String.format("[THREAD Debug Log].. Set BaseURL - '%s'", getBaseURL()));
 		}
-		
+
 		setDebug(getTestSetup().isRunningDebug());
 
-		// Store webdriver instances that are spawned.
-		WebDriver webDriver = getTestSetup().getDriver();
-		List<WebDriver> list = Collections.synchronizedList(spawnedWebDrivers);
-		synchronized (list) {
-			if (!list.contains(webDriver)) {
-				Log.info(String.format("[THREAD Debug Log]..Adding webdriver instance -'%s' to the LIST", webDriver));
-				list.add(webDriver);
+		if (initializeDriver) {
+			// Store webdriver instances that are spawned.
+			WebDriver webDriver = getTestSetup().getDriver();
+			List<WebDriver> list = Collections.synchronizedList(spawnedWebDrivers);
+			synchronized (list) {
+				if (!list.contains(webDriver)) {
+					Log.info(String.format("[THREAD Debug Log]..Adding webdriver instance -'%s' to the LIST", webDriver));
+					list.add(webDriver);
+				}
 			}
-		}
-		
-		if (getDriver() == null) {
-			driverThreadLocal.set(webDriver);
-			getDriver().manage().deleteAllCookies();
-			Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
+
+			if (getDriver() == null) {
+				driverThreadLocal.set(webDriver);
+				getDriver().manage().deleteAllCookies();
+				Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
+			}
 		}
 
 		if (getScreenCapture() == null) {
@@ -114,7 +120,7 @@ public class BaseTest {
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
 	}
-	
+
 	private static ExtentReports getExtentReport(String className) {
 		Log.info(String.format("[THREAD Debug Log] - calling getExtentReport(className=[%s])", className));
 		ExtentReports extentReport = ExtentReportGenerator.getExtentReport(className);
@@ -126,25 +132,25 @@ public class BaseTest {
 		}
 		return extentReport;
 	}
-		
+
 	public static void reportTestStarting(Description description) {
 		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
 	}
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-		Log.info("[THREAD Debug Log] - calling reportTestStarting()");
+		Log.method("reportTestStarting", className, methodName, firstLogLine);
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
 		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
-		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 				DateUtility.getCurrentDate()));
 	}
 
 	public static void reportTestFinished(String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
 		ExtentReports report = getExtentReport(className);
-		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
 		report.endTest(getExtentTest(className));
 		report.flush();
@@ -157,7 +163,7 @@ public class BaseTest {
 			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
 	}
-	
+
 	public static void reportTestFailed(Throwable e, String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		BaseTest.reportTestLogMessage(className);
@@ -176,7 +182,7 @@ public class BaseTest {
 	protected static ExtentTest getExtentTest(String className) {
 		return extentTestMap.get(className);
 	}
-	
+
 	private static void setExtentTest(ExtentTest test, String className) {
 		extentTestMap.put(className, test);
 		TestContext.INSTANCE.setExtentTest(test, className);
@@ -199,10 +205,10 @@ public class BaseTest {
 			}
 		}
 	}
-	
+
 	public void postTestMethodProcessing() {
 	}
-	
+
 	protected boolean isValidRunAsUser(String username, String functionName) {
 		String runAsUsers = DataAnnotations.getRunAsUsers(getClass(), functionName);
 		List<String> listUsers = RegexUtility.split(runAsUsers, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
@@ -211,7 +217,7 @@ public class BaseTest {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -221,7 +227,7 @@ public class BaseTest {
 		// Post run result to DB if enabled.
 		postResultsToAutomationAPI();
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -279,5 +285,5 @@ public class BaseTest {
 
 	public static void setScreenCapture(ScreenShotOnFailure screenCapture) {
 		screenCaptureThreadLocal.set(screenCapture);
-	}	
+	}
 }
