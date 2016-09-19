@@ -297,7 +297,7 @@
           </HTTPSamplerProxy>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">analyzerServices_Get.csv</stringProp>
+              <stringProp name="filename">data/analyzerServices_Get.csv</stringProp>
               <stringProp name="fileEncoding"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="delimiter">,</stringProp>
@@ -412,7 +412,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           </HTTPSamplerProxy>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">analyzerServices_Get.csv</stringProp>
+              <stringProp name="filename">data/analyzerServices_Get.csv</stringProp>
               <stringProp name="fileEncoding"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="delimiter">,</stringProp>
@@ -661,7 +661,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           </HTTPSamplerProxy>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">analyzerServices_Post.csv</stringProp>
+              <stringProp name="filename">data/analyzerServices_Post.csv</stringProp>
               <stringProp name="fileEncoding"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="delimiter">,</stringProp>
@@ -791,7 +791,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           </HTTPSamplerProxy>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">analyzerServices_Post.csv</stringProp>
+              <stringProp name="filename">data/analyzerServices_Post.csv</stringProp>
               <stringProp name="fileEncoding"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="delimiter">,</stringProp>
