@@ -10,8 +10,7 @@
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
 	<property environment="env" />
-	<property name="jmeter.result.jtl.dir" value="${reports}/jmeter/jtl" />
-	<property name="jmeter.result.html.dir" value="${reports}/jmeter/html" />
+	<property name="jmeter.result.dir" value="../api/jmeter/result" />
 	<property name="ReportName" value="TestReport" />
 	
 	<tstamp>
@@ -31,8 +30,7 @@
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
 		
-		<mkdir dir="${jmeter.result.jtl.dir}" />
-		<mkdir dir="${jmeter.result.html.dir}" />
+		<mkdir dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="clean" description="Clean up">
@@ -49,8 +47,7 @@
 		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
 		<delete file="${basedir}/lib/${scommon_jar}" />
 		
-		<delete dir="${jmeter.result.jtl.dir}" />
-		<delete dir="${jmeter.result.html.dir}" />
+		<delete dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="compile_common" depends="init"
@@ -558,9 +555,8 @@
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
 																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
-			<property name="jmeter.result.dir" value="${reports}/jmeter" />
-			<property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}/${ReportName}${local_date}.jtl" />
-			<property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}/${ReportName}${local_date}.html" />
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+			<property name="runUUID" value="${env.RunUUID}" />
 		</jmeter>
 	</target>
 	<!-- JUnit Test Reports -->

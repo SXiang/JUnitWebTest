@@ -939,7 +939,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_Analyzer.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_Analyzer.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>

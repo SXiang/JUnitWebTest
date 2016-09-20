@@ -3617,7 +3617,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_Controller.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_Controller.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
