@@ -1,0 +1,4 @@
+Controller,LicenseFeatures,QueryString,XpathOfElements
+Home,,,"//*[@id=""fleet-map""]/a"
+Home,FleetMap,,"//*[@id=""fleet-map""]/a"
+Live,Survey,/${e60fd229-3c31-b900-590c-39da59600014},"//*[@id=""bottom_button_curtain_view""]"
