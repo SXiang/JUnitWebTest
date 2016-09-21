@@ -312,12 +312,17 @@
 String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
 	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -427,12 +432,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
 	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -688,12 +698,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
 	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -818,12 +833,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
 	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
