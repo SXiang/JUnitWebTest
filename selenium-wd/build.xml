@@ -11,7 +11,6 @@
 	<property name="scommon_jar" value="scommon.jar" />
 	<property environment="env" />
 	<property name="jmeter.result.dir" value="../api/jmeter/result" />
-	<property name="ReportName" value="TestReport" />
 	
 	<tstamp>
 	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
@@ -557,8 +556,10 @@
 																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 			<property name="runUUID" value="${env.RunUUID}" />
+			<property name="runEnvironment" value="${env.RunEnvironment}" />
 		</jmeter>
 	</target>
+	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
