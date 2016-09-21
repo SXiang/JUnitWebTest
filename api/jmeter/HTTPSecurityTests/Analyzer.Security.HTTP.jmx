@@ -313,7 +313,7 @@ String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
@@ -428,7 +428,7 @@ String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
@@ -689,7 +689,7 @@ String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
@@ -819,7 +819,7 @@ String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
