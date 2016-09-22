@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package common.source;
 
@@ -61,16 +61,16 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
 /**
  * This is the initial class to setup up the testing environment and
  * configuration
- * 
+ *
  * 1. Load the testing property for test setup information.
- * 
+ *
  * 2. Setting up the drivers.
- * 
+ *
  * 3. It is ongoing and add more code here later when needed
- * 
+ *
  * @version 1.0
  * @author zlu
- * 
+ *
  */
 public class TestSetup {
 
@@ -135,7 +135,7 @@ public class TestSetup {
 	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
 	public static String reportDir = "reports/";
-	
+
 	private String downloadPath;
 
 	private String dbIPAddress;
@@ -273,7 +273,7 @@ public class TestSetup {
 		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-		
+
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -311,14 +311,14 @@ public class TestSetup {
 		}
 		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
 	}
-	
+
 	/* NETWORK PROXY related methods */
 	/*
 	 * EXAMPLE USAGE: 1. Using Proxy to limit Upstream/Downstream KBPS.
 	 * startNetworkProxy(true|false); setNetworkProxyDownstreamKbps(<long>);
 	 * setNetworkProxyUpstreamKbps(<long>); ... <perform test actions> ...
 	 * stopNetworkProxy();
-	 * 
+	 *
 	 * 2. Using Proxy to turn OFF/ON HTTP Traffic for Selenium tests.
 	 * turnOffHttpTraffic(); ... <perform test actions> ... turnOnHttpTraffic()
 	 */
@@ -544,11 +544,11 @@ public class TestSetup {
 	public String getTestRunCategory() {
 		return testRunCategory;
 	}
-	
+
 	public String getTestReportCategory() {
 		return getSystemProperty(this.testProp, "testReportCategory","testRunCategory");
 	}
-	
+
 	public boolean isGenerateBaselineShapeFiles() {
 		return generateBaselineShapeFiles;
 	}
@@ -696,11 +696,11 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-			
+
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
-			
+
 			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
@@ -920,7 +920,7 @@ public class TestSetup {
 		Log.method("deleteAnalyzerLocalDB3");
 		stopAnalyzerIfRunning();
 		String appDataFolder = SystemUtility.getAppDataFolder();
-		Path surveyorDb3Path = Paths.get(appDataFolder, 
+		Path surveyorDb3Path = Paths.get(appDataFolder,
 				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
 		Log.info(String.format("Deleting file - '%s'", surveyorDb3Path.toString()));
 		FileUtility.deleteFile(surveyorDb3Path);
@@ -1127,7 +1127,7 @@ public class TestSetup {
 			String workingFolder = getRootPath();
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
-			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath + 
+			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath +
 					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
@@ -1143,14 +1143,14 @@ public class TestSetup {
 			String workingFolder = getRootPath();
 			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
-			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
+			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath +
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
-							 reportJobTypeId, reportJobTypeName, 
-							 DateUtility.getLongDateString(reportJobStartTime), 
+							 reportJobTypeId, reportJobTypeName,
+							 DateUtility.getLongDateString(reportJobStartTime),
 							 DateUtility.getLongDateString(reportJobEndTime),
-							 DateUtility.getLongDateString(testExecutionStartDate), 
-							 DateUtility.getLongDateString(testExecutionEndDate), 
+							 DateUtility.getLongDateString(testExecutionStartDate),
+							 DateUtility.getLongDateString(testExecutionEndDate),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting report job perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
@@ -1161,18 +1161,18 @@ public class TestSetup {
 
 	public void postAnalyzerApiPerfStat(String aPIName, String aPIUrl, int numberOfSamples,
 			 float average, float median, float responseTime90Pctl, float responseTime95Pctl, float responsetime99Pctl,
-			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate, 
+			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate,
 			 LocalDateTime testExecutionEndDate, String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String analyzerApiCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String analyzerApiCmdFullPath = analyzerApiCmdFolder + File.separator + POST_ANALYZER_API_PERF_STAT_CMD;
-			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath + 
+			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath +
 					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\""
 							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
 							 aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, responsetime99Pctl,
-							 min, max, errorPercent, throughputPerSec, kBPerSec, 
-							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 min, max, errorPercent, throughputPerSec, kBPerSec,
+							 DateUtility.getLongDateString(testExecutionStartDate),
 							 DateUtility.getLongDateString(testExecutionEndDate),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting analyzer api perf stat. Command -> " + command);
@@ -1181,7 +1181,7 @@ public class TestSetup {
 			Log.error(e.toString());
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -1192,7 +1192,7 @@ public class TestSetup {
 
 	/**
 	 * Executes the unit tests for BrowserMobProxy related methods.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testBrowserMobProxyMethods(TestSetup testSetup) {
@@ -1223,7 +1223,7 @@ public class TestSetup {
 
 	/**
 	 * Tests startNetworkProxy() method.
-	 * 
+	 *
 	 * @param testSetup
 	 * @throws MalformedURLException
 	 */
@@ -1233,7 +1233,7 @@ public class TestSetup {
 
 	/**
 	 * Tests stopNetworkProxy() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testStopNetworkProxy(TestSetup testSetup) {
@@ -1242,7 +1242,7 @@ public class TestSetup {
 
 	/**
 	 * Tests getNetworkProxyHarData() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testHarDataFile(TestSetup testSetup) throws IOException {
@@ -1268,7 +1268,7 @@ public class TestSetup {
 
 	/**
 	 * Tests turnOnNetworkConnection() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testNetworkConnectionOn(TestSetup testSetup, String validTag, Survey objSurvey) {
@@ -1287,7 +1287,7 @@ public class TestSetup {
 
 	/**
 	 * Tests turnOffNetworkConnection() method.
-	 * 
+	 *
 	 * @param testSetup
 	 * @throws MalformedURLException
 	 */
@@ -1369,7 +1369,7 @@ public class TestSetup {
 
 	public void setPushDBSeedBaseUrl(String pushDBSeedBaseUrl) {
 		this.pushDBSeedBaseUrl = pushDBSeedBaseUrl;
-	}	
+	}
 
 	/**
 	 * Use value of System property over VM property
@@ -1379,7 +1379,7 @@ public class TestSetup {
 	public String getSystemProperty(String key){
 		return getSystemProperty(testProp, key, key);
 	}
-	
+
 	public String getSystemProperty(Properties testProp, String sysKey, String propKey){
 		String propValue = null;
 		try{

@@ -1,12 +1,14 @@
 package surveyor.performance.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import common.source.CryptoUtility;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageActionTest {
@@ -31,6 +34,20 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 	public static void setupComplianceReportsPageTest() {
 		initializePageObjects();
 		createTestCaseMap();
+
+		// Ensure surveys required for the test cases are present in DB.
+		ensureTestSurveysArePresent();
+	}
+
+	private static void ensureTestSurveysArePresent() {
+		final String[] surveyTags = {PICGREATER4HRTAG, PICLESS4HRTAG
+				,PIC8HR01TAG, PIC8HR02TAG, PIC8HR03TAG, PIC8HR04TAG, PIC8HR05TAG, PIC8HR06TAG
+				,PIC8HR07TAG, PIC8HR08TAG, PIC8HR09TAG, PIC8HR10TAG, PIC8HR11TAG, PIC8HR12TAG};
+		try {
+			DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		} catch (Exception e) {
+			Log.error(ExceptionUtility.getStackTraceString(e));
+		}
 	}
 
 	private static void initializePageObjects() {
