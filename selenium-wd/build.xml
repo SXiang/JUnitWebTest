@@ -45,8 +45,6 @@
 		<delete dir="${basedir}/tests/surveyor/scommon/build" />
 		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
 		<delete file="${basedir}/lib/${scommon_jar}" />
-		
-		<delete dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="compile_common" depends="init"
@@ -550,6 +548,7 @@
 	</target>
 	
 	<target name="securityapitest" depends="init">
+		<delete dir="${jmeter.result.dir}" />
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
@@ -561,6 +560,7 @@
 	</target>
 
 	<target name="analyzerapiloadtest" depends="init">
+		<delete dir="${jmeter.result.dir}" />
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/picarro.analyzer.http.jmx"/>
