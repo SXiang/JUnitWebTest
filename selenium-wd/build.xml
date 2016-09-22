@@ -559,7 +559,23 @@
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
 		</jmeter>
 	</target>
+
+	<target name="analyzerapiloadtest" depends="init">
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/picarro.analyzer.http.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+		</jmeter>
+	</target>
 	
+	<target name="analyzerapiloadtestreporter" depends="init">
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/Publisher_PerfStatAnalyzer.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+		</jmeter>
+		
+	</target>	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
