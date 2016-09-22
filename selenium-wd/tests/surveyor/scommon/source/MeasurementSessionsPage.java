@@ -102,7 +102,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public enum DrivingSurveyButtonType {
-		ViewSurvey, ExportSurvey, ExportPeaks, ExportAnalysis, Resubmit, DeleteSurvey;
+		ViewSurvey, ExportSurvey, ExportCustomerSurvey, ExportPeaks, ExportAnalysis, Resubmit, DeleteSurvey;
 
 	}
 
@@ -247,17 +247,20 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		case ExportSurvey:
 			buttonXPath = "td[11]/a[2]/img";
 			break;
-		case ExportPeaks:
+		case ExportCustomerSurvey:
 			buttonXPath = "td[11]/a[3]/img";
 			break;
-		case ExportAnalysis:
+		case ExportPeaks:
 			buttonXPath = "td[11]/a[4]/img";
 			break;
-		case Resubmit:
+		case ExportAnalysis:
 			buttonXPath = "td[11]/a[5]/img";
 			break;
-		case DeleteSurvey:
+		case Resubmit:
 			buttonXPath = "td[11]/a[6]/img";
+			break;
+		case DeleteSurvey:
+			buttonXPath = "td[11]/a[7]/img";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");

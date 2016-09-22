@@ -52,7 +52,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_PageTitle);
 	public static final String STRReportTitle = Resources.getResource(ResourceKeys.SystemHistoryReports_ReportTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.SystemHistoryReport_PageTitle);
-	public static final String STRPaginationMsg = "Showing 1 to ";
 	public static final String STRRptSubHeading = Resources.getResource(ResourceKeys.SystemHistoryReports_PageSubTitle);
 	public static final String STRRptColumnDate = Resources.getResource(ResourceKeys.SystemHistoryReports_DateColumn);
 	public static final String STRRptColumnUser = Resources.getResource(ResourceKeys.SystemHistoryReports_UserNameColumn);
@@ -267,18 +266,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		result = BaseHelper.validatePdfFileForSysHis(pdfFile1);
 		Log.info(String.format("Validation results = %b", result));
 		return result;
-	}
-
-	public boolean checkPaginationSetting(String numberOfReports) {
-		setPagination(numberOfReports);
-		testSetup.slowdownInSeconds(3);
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		String actualText = this.paginationMsg.getText().substring(0, 15);
-
-		if (actualText.compareTo(msgToVerify) <= 0)
-			return true;
-
-		return false;
 	}
 
 	public boolean verifyCancelButtonFunctionality() {

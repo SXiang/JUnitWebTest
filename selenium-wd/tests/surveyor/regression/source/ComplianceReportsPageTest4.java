@@ -280,8 +280,8 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		
 		getComplianceReportsPage().fillReport(rpt);
 		getComplianceReportsPage().selectFOVColor(colors);
-		//getComplianceReportsPage().addReport();
-		getComplianceReportsPage().cancelReport();
+		getComplianceReportsPage().addReport();
+		//getComplianceReportsPage().cancelReport();
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);

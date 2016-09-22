@@ -1,5 +1,7 @@
 package surveyor.scommon.source;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -12,14 +14,22 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ExcelUtility;
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerBoundaryType;
+import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.PageActionsFactory;
+import surveyor.scommon.actions.data.CustomerDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 
@@ -144,43 +154,43 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "d08fc87f-f979-4131-92a9-3d82f37f4bba")
 	@CacheLookup
-	protected WebElement materialTypeCopper;
+	private WebElement materialTypeCopper;
 
 	@FindBy(id = "f3955e82-dd13-4842-84f7-502bcda6b57a")
 	@CacheLookup
-	protected WebElement materialTypeUnprotectedSteel;
+	private WebElement materialTypeUnprotectedSteel;
 
 	@FindBy(id = "44353e68-0694-4f05-85cb-84d753ea278c")
 	@CacheLookup
-	protected WebElement materialTypeProtectedSteel;
+	private WebElement materialTypeProtectedSteel;
 
 	@FindBy(id = "96caf1f5-d5c5-461d-9ce3-d210c20a1bb0")
 	@CacheLookup
-	protected WebElement materialTypeCastIron;
+	private WebElement materialTypeCastIron;
 
 	@FindBy(id = "ad701312-c470-482a-be45-ef37770e2ce6")
 	@CacheLookup
-	protected WebElement materialTypeOtherPlastic;
+	private WebElement materialTypeOtherPlastic;
 
 	@FindBy(id = "f14735de-6c9b-4423-8533-f243a7fe4e90")
 	@CacheLookup
-	protected WebElement materialTypePEPlastic;
+	private WebElement materialTypePEPlastic;
 
 	@FindBy(id = "gis_switch_all_pipes")
 	@CacheLookup
-	protected WebElement useAllPipes;
+	private WebElement useAllPipes;
 
 	@FindBy(id = "551cb7c0-005b-4e3e-bfae-d19da0ed7efe")
 	@CacheLookup
-	protected WebElement smallBoundary;
+	private WebElement smallBoundary;
 
 	@FindBy(id = "024249ae-374b-4f6f-bd87-e8fdcacb48e1")
 	@CacheLookup
-	protected WebElement bigBoundary;
+	private WebElement bigBoundary;
 
 	@FindBy(id = "gis_switch_all_boundaries")
 	@CacheLookup
-	protected WebElement useAllBoundaries;
+	private WebElement useAllBoundaries;
 
 	@FindBy(id = "bottom_button_exit")
 	@CacheLookup
@@ -588,42 +598,39 @@ public class BaseMapViewPage extends SurveyorBasePage {
 					this.useAllBoundariesDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
-	public boolean isGisSwitchOn(GisSwitchType switchType) throws IllegalArgumentException {
+	public boolean isGisSwitchOn(GisSwitchType switchType) throws Exception {
 		boolean isSelected = false;
 
 		switch (switchType) {
 		case BigBoundary:
-			isSelected = this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case SmallBoundary:
-			isSelected = this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeCopper:
-			isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeCastIron:
-			isSelected = this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeOtherPlastic:
-			isSelected = this.materialTypeOtherPlastic.getAttribute("class")
-					.equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypePEPlastic:
-			isSelected = this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeProtectedSteel:
-			isSelected = this.materialTypeProtectedSteel.getAttribute("class")
-					.equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypeProtectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case MaterialTypeUnprotectedSteel:
-			isSelected = this.materialTypeUnprotectedSteel.getAttribute("class")
-					.equalsIgnoreCase("switch material_radio on");
+			isSelected = this.getMaterialTypeUnprotectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio on");
 			break;
 		case UseAllBoundaries:
-			isSelected = this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch on");
+			isSelected = this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		case UseAllPipes:
-			isSelected = this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch on");
+			isSelected = this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		default:
 			throw new IllegalArgumentException("Gis switch type unknown and not currently handled.");
@@ -633,41 +640,39 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
-	public boolean isGisSwitchOff(GisSwitchType switchType) throws IllegalArgumentException {
+	public boolean isGisSwitchOff(GisSwitchType switchType) throws IOException, Exception {
 		boolean isSelected = false;
 
 		switch (switchType) {
 		case BigBoundary:
-			isSelected = this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case SmallBoundary:
-			isSelected = this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeCopper:
-			isSelected = this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeCastIron:
-			isSelected = this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeOtherPlastic:
-			isSelected = this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypePEPlastic:
-			isSelected = this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeProtectedSteel:
-			isSelected = this.materialTypeProtectedSteel.getAttribute("class")
-					.equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypeProtectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case MaterialTypeUnprotectedSteel:
-			isSelected = this.materialTypeUnprotectedSteel.getAttribute("class")
-					.equalsIgnoreCase("switch material_radio");
+			isSelected = this.getMaterialTypeUnprotectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio");
 			break;
 		case UseAllBoundaries:
-			isSelected = this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch");
+			isSelected = this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch");
 			break;
 		case UseAllPipes:
-			isSelected = this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch");
+			isSelected = this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch");
 			break;
 		default:
 			throw new IllegalArgumentException("Gis switch type unknown and not currently handled.");
@@ -677,140 +682,140 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
-	public boolean toggleGisSwitch(GisSwitchType switchType, boolean turnOn) throws IllegalArgumentException {
+	public boolean toggleGisSwitch(GisSwitchType switchType, boolean turnOn) throws IOException, Exception {
 		boolean isSelected = false;
 
 		switch (switchType) {
 		case BigBoundary:
-			if (this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.bigBoundary.click();
+					this.getBigBoundary().click();
 				}
-			} else if (this.bigBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.bigBoundary.click();
+					this.getBigBoundary().click();
 				}
 			}
 			break;
 		case SmallBoundary:
-			if (this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.smallBoundary.click();
+					this.getSmallBoundary().click();
 				}
-			} else if (this.smallBoundary.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.smallBoundary.click();
+					this.getSmallBoundary().click();
 				}
 			}
 			break;
 		case MaterialTypeCopper:
-			if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.materialTypeCopper.click();
+					this.getMaterialTypeCopper().click();
 				}
-			} else if (this.materialTypeCopper.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypeCopper.click();
+					this.getMaterialTypeCopper().click();
 				}
 			}
 			break;
 		case MaterialTypeCastIron:
-			if (this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString());
-					this.materialTypeCastIron.click();
+					this.getMaterialTypeCastIron().click();
 				}
-			} else if (this.materialTypeCastIron.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypeCastIron.click();
+					this.getMaterialTypeCastIron().click();
 				}
 			}
 			break;
 		case MaterialTypeOtherPlastic:
-			if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.materialTypeOtherPlastic.click();
+					this.getMaterialTypeOtherPlastic().click();
 				}
 			} else
-				if (this.materialTypeOtherPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+				if (this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypeOtherPlastic.click();
+					this.getMaterialTypeOtherPlastic().click();
 				}
 			}
 			break;
 		case MaterialTypePEPlastic:
-			if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.materialTypePEPlastic.click();
+					this.getMaterialTypePEPlastic().click();
 				}
-			} else if (this.materialTypePEPlastic.getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
+			} else if (this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypePEPlastic.click();
+					this.getMaterialTypePEPlastic().click();
 				}
 			}
 			break;
 		case MaterialTypeProtectedSteel:
-			if (this.materialTypeProtectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypeProtectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.materialTypeProtectedSteel.click();
+					this.getMaterialTypeProtectedSteel().click();
 				}
-			} else if (this.materialTypeProtectedSteel.getAttribute("class")
+			} else if (this.getMaterialTypeProtectedSteel().getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypeProtectedSteel.click();
+					this.getMaterialTypeProtectedSteel().click();
 				}
 			}
 			break;
 		case MaterialTypeUnprotectedSteel:
-			if (this.materialTypeUnprotectedSteel.getAttribute("class").equalsIgnoreCase("switch material_radio")) {
+			if (this.getMaterialTypeUnprotectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.materialTypeUnprotectedSteel.click();
+					this.getMaterialTypeUnprotectedSteel().click();
 				}
-			} else if (this.materialTypeUnprotectedSteel.getAttribute("class")
+			} else if (this.getMaterialTypeUnprotectedSteel().getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.materialTypeUnprotectedSteel.click();
+					this.getMaterialTypeUnprotectedSteel().click();
 				}
 			}
 			break;
 		case UseAllBoundaries:
-			if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch")) {
+			if (this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.useAllBoundaries.click();
+					this.getUseAllBoundaries().click();
 				}
-			} else if (this.useAllBoundaries.getAttribute("class").equalsIgnoreCase("switch on")) {
+			} else if (this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.useAllBoundaries.click();
+					this.getUseAllBoundaries().click();
 				}
 			}
 			break;
 		case UseAllPipes:
-			if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch")) {
+			if (this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.useAllPipes.click();
+					this.getUseAllPipes().click();
 				}
-			} else if (this.useAllPipes.getAttribute("class").equalsIgnoreCase("switch on")) {
+			} else if (this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.useAllPipes.click();
+					this.getUseAllPipes().click();
 				}
 			}
 			break;
@@ -1210,7 +1215,191 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
 	}
 
-    /**
+	private CustomerBoundaryType getBoundaryTypeForLoggedInCustomer(String boundaryTypeDescription) throws Exception, IOException {
+		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
+		if (loggedInUserCustomer != null) {
+			String customerId = loggedInUserCustomer.getId();    	
+	    	CustomerBoundaryType customerBoundaryType = new CustomerBoundaryType();
+	    	ArrayList<CustomerBoundaryType> custBoundaryList = customerBoundaryType.getAllForCustomer(customerId);
+	    	CustomerBoundaryType boundaryType = custBoundaryList.stream()
+	    			.filter(b -> b.getFeatureClassDescription().equals(boundaryTypeDescription))
+	    			.findFirst()
+	    			.orElse(null);
+			return boundaryType;
+		}
+		
+		return null;
+	}
+
+	private CustomerMaterialType getMaterialTypeForLoggedInCustomer(String materialTypeDescription) throws Exception, IOException {
+		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
+		if (loggedInUserCustomer != null) {
+			String customerId = loggedInUserCustomer.getId();    	
+	    	CustomerMaterialType customerMaterialType = new CustomerMaterialType();
+	    	ArrayList<CustomerMaterialType> custBoundaryList = customerMaterialType.getAllForCustomer(customerId);
+	    	CustomerMaterialType materialType = custBoundaryList.stream()
+	    			.filter(b -> b.getDescription().equals(materialTypeDescription))
+	    			.findFirst()
+	    			.orElse(null);
+			return materialType;
+		}
+		
+		return null;
+	}
+
+    public WebElement getSmallBoundary() throws NumberFormatException, Exception {
+    	Log.method("getSmallBoundary");
+    	// Return specific to customer web element.
+    	CustomerBoundaryType boundaryType = getBoundaryTypeForLoggedInCustomer("Small Boundary");
+    	if (boundaryType != null) {
+    		Log.info(String.format("Customer Boundary Type - Small Boundary Element Id = '%s'", boundaryType.getId().toLowerCase()));
+    		return driver.findElement(By.id(boundaryType.getId().toLowerCase()));
+    	}
+    	
+    	// Return default.
+    	return smallBoundary;
+	}
+
+	public void setSmallBoundary(WebElement smallBoundary) {
+		this.smallBoundary = smallBoundary;
+	}
+
+	public WebElement getBigBoundary() throws IOException, Exception {
+		Log.method("getBigBoundary");
+		// Return specific to customer web element.
+    	CustomerBoundaryType boundaryType = getBoundaryTypeForLoggedInCustomer("Big Boundary");
+    	if (boundaryType != null) {
+    		Log.info(String.format("Customer Boundary Type - Big Boundary Element Id = '%s'", boundaryType.getId().toLowerCase()));
+    		return driver.findElement(By.id(boundaryType.getId().toLowerCase()));
+    	}
+    	
+    	// Return default.
+		return bigBoundary;
+	}
+
+	public void setBigBoundary(WebElement bigBoundary) {
+		this.bigBoundary = bigBoundary;
+	}
+
+	public WebElement getUseAllPipes() {
+		return useAllPipes;
+	}
+
+	public void setUseAllPipes(WebElement useAllPipes) {
+		this.useAllPipes = useAllPipes;
+	}
+
+	public WebElement getUseAllBoundaries() {
+		return useAllBoundaries;
+	}
+
+	public void setUseAllBoundaries(WebElement useAllBoundaries) {
+		this.useAllBoundaries = useAllBoundaries;
+	}
+
+	public WebElement getMaterialTypeCopper() throws IOException, Exception {
+		Log.method("getMaterialTypeCopper");
+    	// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("Copper");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - Copper Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypeCopper;
+	}
+
+	public void setMaterialTypeCopper(WebElement materialTypeCopper) {
+		this.materialTypeCopper = materialTypeCopper;
+	}
+
+	public WebElement getMaterialTypeUnprotectedSteel() throws IOException, Exception {
+		Log.method("getMaterialTypeUnprotectedSteel");
+    	// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("Un-protected Steel");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - Un-Protected Steel Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypeUnprotectedSteel;
+	}
+
+	public void setMaterialTypeUnprotectedSteel(WebElement materialTypeUnprotectedSteel) {
+		this.materialTypeUnprotectedSteel = materialTypeUnprotectedSteel;
+	}
+
+	public WebElement getMaterialTypeProtectedSteel() throws IOException, Exception {
+		Log.method("getMaterialTypeProtectedSteel");
+		// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("Protected Steel");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - Protected Steel Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypeProtectedSteel;
+	}
+
+	public void setMaterialTypeProtectedSteel(WebElement materialTypeProtectedSteel) {
+		this.materialTypeProtectedSteel = materialTypeProtectedSteel;
+	}
+
+	public WebElement getMaterialTypeCastIron() throws IOException, Exception {
+		Log.method("getMaterialTypeCastIron");
+    	// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("Cast Iron");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - Cast Iron Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypeCastIron;
+	}
+
+	public void setMaterialTypeCastIron(WebElement materialTypeCastIron) {
+		this.materialTypeCastIron = materialTypeCastIron;
+	}
+
+	public WebElement getMaterialTypeOtherPlastic() throws IOException, Exception {
+		Log.method("getMaterialTypeOtherPlastic");
+    	// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("Other Plastic");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - Other Plastic Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypeOtherPlastic;
+	}
+
+	public void setMaterialTypeOtherPlastic(WebElement materialTypeOtherPlastic) {
+		this.materialTypeOtherPlastic = materialTypeOtherPlastic;
+	}
+
+	public WebElement getMaterialTypePEPlastic() throws IOException, Exception {
+		Log.method("getMaterialTypePEPlastic");
+    	// Return specific to customer web element.
+    	CustomerMaterialType materialType = getMaterialTypeForLoggedInCustomer("PE Plastic");
+    	if (materialType != null) {
+    		Log.info(String.format("Customer Material Type - PE Plastic Element Id = '%s'", materialType.getId().toLowerCase()));
+    		return driver.findElement(By.id(materialType.getId().toLowerCase()));
+    	}
+
+    	// Return default.
+		return materialTypePEPlastic;
+	}
+
+	public void setMaterialTypePEPlastic(WebElement materialTypePEPlastic) {
+		this.materialTypePEPlastic = materialTypePEPlastic;
+	}
+
+	/**
      * Verify that the page loaded completely.
      *
      * @return the SurveyViewPage class instance.
