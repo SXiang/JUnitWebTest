@@ -168,8 +168,7 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 	
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsg = "Showing 1 to ";
-	
+	public static final String STRPaginationMsgPattern = "Showing 1 to %s of [\\d,]+ entries|Showing [10] to ([\\d]+) of \\1 entries";
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
@@ -574,15 +573,8 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkPaginationSetting(String numberOfReports) {
 		Log.method("checkPaginationSetting", numberOfReports);
 		setPagination(numberOfReports);
-		this.waitForPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
+		this.waitForPageLoad();	
+		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern, numberOfReports));
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
@@ -624,13 +616,14 @@ public class SurveyorBasePage extends BasePage {
 		return true;
 	}
 	
-	public void waitForNumberOfRecords(String actualMessage) {
+	public boolean waitForNumberOfRecords(String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_XPATH)));
 		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_XPATH));
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return tableInfoElement.getText().substring(0, 16).trim().equals(actualMessage);
+				String text = tableInfoElement.getText().trim();
+				return text.matches(actualMessage);
 			}
 		});
 	}

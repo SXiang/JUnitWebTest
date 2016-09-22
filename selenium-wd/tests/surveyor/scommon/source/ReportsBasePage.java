@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -401,8 +401,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
-	public static final String STRPaginationMsg = "Showing 1 to ";
-
 	private String reportName;
 	private String reportId;
 	@FindBy(name = "survey-mode-type")
@@ -432,7 +430,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
 	private List<ReportJobPerfDBStat> postDBStatList = null;
-	
+
 	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
 	/**
@@ -443,7 +441,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportsBasePage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
-		
+
 		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
 		PageFactory.initElements(driver, changeCustomerDialog);
 	}
@@ -1095,7 +1093,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -1413,7 +1411,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-				
+
 				Log.info(String.format("Setting reportId to TestContext. ReportId='%s'", reportId));
 				TestContext.INSTANCE.addReportId(reportId);
 
@@ -1449,7 +1447,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 									maxRows)) {
 								continue;
 							}
-							// rowNum matches. Try to click on ReportViewer button.							
+							// rowNum matches. Try to click on ReportViewer button.
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
@@ -2110,19 +2108,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return msg.trim();
 	}
 
-	public boolean checkPaginationSetting(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
-
 	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
 			String SWLong, List<Map<String, String>> views) throws Exception {
 		openNewReportPage();
@@ -2312,14 +2297,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public void waitForNumberOfRecords(String actualMessage) {
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
-			}
-		});
-	}
-
 	public void clickOnSurveyTableColumnHeader(Integer columnIndex, Integer numTimesToClick) {
 		WebElement headerElement = driver
 				.findElement(By.xpath(String.format(surveyTableHeaderColumnBaseXPath, columnIndex)));
@@ -2505,7 +2482,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * Compares the processing times for each reportJob type with baseline
 	 * processingTime values and checks actual values are not greater than the
 	 * baseline values.
-	 * 
+	 *
 	 * @param testCaseID
 	 *            - Test case ID
 	 * @param reportTitle
@@ -2609,7 +2586,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
 		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
-		
+
 		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
 		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
@@ -2671,7 +2648,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/**
 	 * Verify availability of survey modes with specific report mode selected
-	 * 
+	 *
 	 * @param rmf
 	 *            - ReportModeFilter
 	 * @return true if passed
@@ -2726,7 +2703,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/**
 	 * Verify the Type of Surveys in the resulted table are valid for the Survey
 	 * Mode Filter
-	 * 
+	 *
 	 * @param smf
 	 * @return true if passed
 	 */
@@ -2790,7 +2767,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/**
 	 * Method to check for invalid surveys in the search result table
-	 * 
+	 *
 	 * @param invalidTypes
 	 * @return true if invalid type found
 	 */

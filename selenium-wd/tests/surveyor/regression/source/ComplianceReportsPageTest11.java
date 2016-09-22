@@ -194,7 +194,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	}
 	
 	private void checkPagination(){
-		assertTrue(complianceReportsPage.checkPaginationSettingInvestogation(PAGINATIONSETTING));
+		assertTrue(complianceReportsPage.checkPaginationSetting(PAGINATIONSETTING));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
 	}
 	

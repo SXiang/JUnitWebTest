@@ -59,7 +59,6 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRReportTableColumnIsotopic = Resources.getResource(ResourceKeys.RefGasReportSSRS_IsotopicValueUncertainty);
 	public static final String STRReportTableColumnTestResult = Resources.getResource(ResourceKeys.RefGasReportSSRS_TestResult);
 
-	public static final String STRPaginationMsg = "Showing 1 to ";
 	public String LotNumberInReport = null;
 
 	/**
@@ -443,20 +442,6 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 		return resultsList;
 
-	}
-
-	public boolean checkPaginationSetting(String numberOfReports) {
-		Log.method("checkPaginationSetting", numberOfReports);
-		
-		setPagination(numberOfReports);
-		testSetup.slowdownInSeconds(3);
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		String actualText = this.paginationMsg.getText().substring(0, 15);
-
-		if (actualText.compareTo(msgToVerify) <= 0)
-			return true;
-
-		return false;
 	}
 
 	public boolean verifyCancelButtonFunctionality() {

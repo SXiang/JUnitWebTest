@@ -11,6 +11,9 @@
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
+	<property environment="env" />
+	<property name="jmeter.result.dir" value="../api/jmeter/result" />
+
 	<tstamp>
 	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
 	</tstamp>
@@ -28,6 +31,8 @@
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
+
+		<mkdir dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="clean" description="Clean up">
@@ -43,6 +48,8 @@
 		<delete dir="${basedir}/tests/surveyor/scommon/build" />
 		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
 		<delete file="${basedir}/lib/${scommon_jar}" />
+
+		<delete dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="compile_common" depends="init"
@@ -629,9 +636,24 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/RegressionTestSuite1.class" />
+					<include name="**/RegressionTestSuite2.class" />
+					<include name="**/RegressionTestSuite3.class" />
+					<include name="**/RegressionTestSuite4.class" />
+					<include name="**/RegressionTestSuite5.class" />
 				</fileset>
 			</batchtest>
 		</junit>
+	</target>
+
+	<target name="securityapitest" depends="init">
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
+																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+			<property name="runUUID" value="${env.RunUUID}" />
+			<property name="runEnvironment" value="${env.RunEnvironment}" />
+		</jmeter>
 	</target>
 
 	<!-- JUnit Test Reports -->

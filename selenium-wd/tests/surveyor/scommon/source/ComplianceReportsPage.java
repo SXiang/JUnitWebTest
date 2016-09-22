@@ -1602,21 +1602,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return done;
 	}
 
-	public boolean checkPaginationSettingInvestogation(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForInvestigationPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfInvestigationRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationInvestigationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
-
 	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
-
 		this.inputInvestigationSearchReport.sendKeys(reportTitle);
 		if (this.tdInvReportTitle.getText().contentEquals(reportTitle)) {
 			if (this.tdInvReportCreatedBy.getText().contentEquals(reportCreatedBy))
@@ -1624,8 +1610,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return false;
 	}
-
-
 
 	public void waitForNumberOfInvestigationRecords(String actualMessage) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
@@ -1635,19 +1619,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-
 	private void waitForInvestigationPageLoad() {
-
-			waitForAJAXCallsToComplete();
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return d.getPageSource().contains(LisaInvestigations_PageTitle);
-
-				}
-			});
-		}
-
-
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(LisaInvestigations_PageTitle);
+			}
+		});
+	}
 
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
@@ -1698,7 +1677,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.waitForDeleteSurveyButtonToLoad();
 			js.executeScript("arguments[0].click();", this.btnDeleteSurvey);
 		}
-
 	}
 
 	public boolean deleteAllDrivingSurveys() {
