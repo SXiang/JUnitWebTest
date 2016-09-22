@@ -81,9 +81,24 @@ public class DbSeedExecutorTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"8HourSurvey-2"}; // {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
+		final String[] surveyTags = {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
+	}
+
+	@Test
+	public void execute03_SurveyDataSeedTest_GeneratedSurveys() throws Exception {
+		final String[] surveyTags = {"8HourSurvey-2", "8HourSurvey-3", "8HourSurvey-4", "8HourSurvey-5", "8HourSurvey-6", "8HourSurvey-7"
+				,"8HourSurvey-8","8HourSurvey-9","8HourSurvey-10","8HourSurvey-11","8HourSurvey-12"};
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags, true, true);
+	}
+
+	@Test
+	public void execute03_SurveyDataSeedALLTest() throws Exception {
+		execute03_SurveyDataSeedTest();
+		execute03_SurveyDataSeedTest_SpecificSurveys();
+		execute03_SurveyDataSeedTest_GeneratedSurveys();
 	}
 
 	@Test
@@ -155,6 +170,10 @@ public class DbSeedExecutorTest {
 	}
 
 	private void verifySurveySeedDataIsPresent(String[] surveyTags) throws IOException, FileNotFoundException, SQLException {
+		verifySurveySeedDataIsPresent(surveyTags, false /*isCaptureRowsRestamped*/, false /*isFOVRowsRestamped*/);
+	}
+
+	private void verifySurveySeedDataIsPresent(String[] surveyTags, boolean isCaptureEventRowsRestamped, boolean isFOVRowsRestamped) throws IOException, FileNotFoundException, SQLException {
 		// Verify seed data pushed correctly for each survey tag.
 		if (surveyTags == null) {
 			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
@@ -237,8 +256,18 @@ public class DbSeedExecutorTest {
 					Assert.assertTrue(dbStateVerifier.isAnemometerRawSeedPresent(surveyId, analyzerId, startEpochWithRedate, endEpochWithRedate, minAnemometerRawCount, checkAnalyzerRowsOnly));
 				}
 
-				Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minCaptureEventCount));
-				Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minFieldOfViewCount));
+				if (isCaptureEventRowsRestamped) {
+					Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, String.valueOf(Float.MIN_VALUE), String.valueOf(Float.MAX_VALUE), minCaptureEventCount));
+				} else {
+					Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minCaptureEventCount));
+				}
+
+				if (isFOVRowsRestamped) {
+					Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, String.valueOf(Float.MIN_VALUE), String.valueOf(Float.MAX_VALUE), minFieldOfViewCount));
+				} else {
+					Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minFieldOfViewCount));
+				}
+
 				Assert.assertTrue(dbStateVerifier.isPeakSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minPeakCount));
 				Assert.assertTrue(dbStateVerifier.isSegmentSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSegmentCount));
 				Assert.assertTrue(dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount));
