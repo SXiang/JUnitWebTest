@@ -14,7 +14,7 @@ public class ArrayUtility {
 		if (valuesList != null) {
 			retList = new ArrayList<String>(valuesList.size());
 			for (String[] arr : valuesList) {
-				if (arr != null || arr.length > columnIdx) {
+				if (arr != null && arr.length > columnIdx) {
 					retList.add(arr[columnIdx]);
 				}
 			}
@@ -22,9 +22,9 @@ public class ArrayUtility {
 		Log.info(String.format("Array values for column index=[%d] : %s", columnIdx, LogHelper.strListToString(retList)));
 		return retList;
 	}
-	
+
 	public static List<String[]> getListValuesSkipHeader(List<String[]> values) {
-		List<String[]> retList = new ArrayList<String[]>(); 
+		List<String[]> retList = new ArrayList<String[]>();
 		if (values != null && values.size() > 1) {
 			for (int i = 1; i < values.size(); i++) {
 				retList.add(values.get(i));
@@ -51,19 +51,19 @@ public class ArrayUtility {
 				for (String strValue : stringValues) {
 					if (!map.containsKey(strValue)) {
 						map.put(strValue, true);
-					} 
+					}
 				}
 			}
-			
+
 			if (map.size() > 0) {
 				for (String key : map.keySet()) {
 					outputList.add(key);
 				}
 			}
-		}		
+		}
 		return outputList;
 	}
-	
+
 	public static List<String> convertIntListToStrList(List<Integer> intList) {
 		List<String> strList = null;
 		if (intList != null) {
@@ -91,7 +91,7 @@ public class ArrayUtility {
 	/**
 	 * Checks if all the values in the specified String array are greater than the specified minValue.
 	 * @param values - String array to check
-	 * @param minValue - minimum value 
+	 * @param minValue - minimum value
 	 * @return
 	 */
 	public static boolean areValuesGreater(String[] values, Float minValue) {
@@ -103,10 +103,10 @@ public class ArrayUtility {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Append text value to the last element in a list
 	 * @param list
@@ -115,7 +115,7 @@ public class ArrayUtility {
 	public static void appendToLastString(List<String> list, String value){
 		appendToString(list, list.size()-1, value);
 	}
-	
+
 	/**
 	 * Append text value to element indexed in a list
 	 * @param list
