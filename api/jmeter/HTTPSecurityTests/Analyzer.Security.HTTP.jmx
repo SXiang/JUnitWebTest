@@ -111,9 +111,14 @@
             <stringProp name="Argument.value">SimAuto-Surveyor1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="SignatureExpired_SQACusDriver" elementType="Argument">
+            <stringProp name="Argument.name">SignatureExpired_SQACusDriver</stringProp>
+            <stringProp name="Argument.value">nTO8r9nDurtxv1LKildx1OUAe2o4XDEXer1EVmWX2GdR98ZvJ+lGmFrk7GWKOC/l6ZTBZSRMovmovi2f99nC/+T9BnkGKHyt16pkap/I/rHWjPH4g4m5Fd1zoLkTaMAd3IO0YmQfG5w24ggZZY+y9RcO0PuPo71x1NNeFwh/VP+NidwMN6HlSz8B4zbmqEqGzRFWy1PlTT4Zz74y+ykbte+3urHtTDpZZXomhL021mpDjxMcYpPaAbls7mFM9d4scoTYamhcicV+HK+GuDaFMimbBqFqsAhgczr3+6mNFnTEd0jV2HBErXBnQR6GklpY1CMIXXR1IzjrPA579hOZtA==</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="Signature_SQACusDriver" elementType="Argument">
             <stringProp name="Argument.name">Signature_SQACusDriver</stringProp>
-            <stringProp name="Argument.value">nTO8r9nDurtxv1LKildx1OUAe2o4XDEXer1EVmWX2GdR98ZvJ+lGmFrk7GWKOC/l6ZTBZSRMovmovi2f99nC/+T9BnkGKHyt16pkap/I/rHWjPH4g4m5Fd1zoLkTaMAd3IO0YmQfG5w24ggZZY+y9RcO0PuPo71x1NNeFwh/VP+NidwMN6HlSz8B4zbmqEqGzRFWy1PlTT4Zz74y+ykbte+3urHtTDpZZXomhL021mpDjxMcYpPaAbls7mFM9d4scoTYamhcicV+HK+GuDaFMimbBqFqsAhgczr3+6mNFnTEd0jV2HBErXBnQR6GklpY1CMIXXR1IzjrPA579hOZtA==</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
