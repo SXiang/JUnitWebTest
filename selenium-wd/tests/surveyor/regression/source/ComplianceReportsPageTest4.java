@@ -217,7 +217,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		String ASSET_DATA_STRING = complianceReportsPageAction.getSelectedAssetNames(reportDataRowID);
 
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
+//		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, reportDataRowID));
 	}
 	

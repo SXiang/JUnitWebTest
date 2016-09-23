@@ -685,11 +685,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
+		By tableInfoBy = By.id(DATATABLESURVEYS_RECORDS_ELEMENT_ID);
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
+				waitForNumberOfRecords(tableInfoBy, String.format(STRPaginationMsgPattern, numPages));
 				break;
 			}
 		}
@@ -817,6 +819,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
+//			checkPaginationSetting(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
 
 			Integer selectedSurveysCount = 0;
@@ -842,6 +845,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				checkBoxXPath = "tr[" + rowNum + "]/td[7]/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				Log.info(String.format("Select survey - row %d", rowNum));
+				if(rowNum==5)
+					Log.warn("Waht....");
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
 
