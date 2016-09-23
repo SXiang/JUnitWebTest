@@ -119,6 +119,11 @@ public class CustomerMaterialType extends BaseEntity {
 		String SQL = "SELECT * FROM dbo.[CustomerMaterialType]";
 		return load(SQL);
 	}
+	
+	public ArrayList<CustomerMaterialType> getAllForCustomer(String customerId) {
+		String SQL = String.format("SELECT * FROM dbo.[CustomerMaterialType] WHERE CustomerId='%s'", customerId);
+		return load(SQL);
+	}
  
 	public ArrayList<CustomerMaterialType> load(String SQL) {
 		ArrayList<CustomerMaterialType> objCustomerMaterialTypeList = new ArrayList<CustomerMaterialType>();

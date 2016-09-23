@@ -27,8 +27,8 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	public String toString() {
 		return this.getPeakNumber().concat(this.getSurveyorUnitName()).concat(this.getDateTime())
 				.concat(String.format("%.2f",this.getAmplitude())).concat(String.format("%.2f", this.getCh4()))
-				.concat(this.getAggregatedEthaneToMethaneRatio()).trim().concat(this.getAggregateDisposition())
-				.concat(this.getAggregatedClassificationConfidence()).concat(this.getText());
+				.concat(this.getAggregatedEthaneToMethaneRatio()!=null?this.getAggregatedEthaneToMethaneRatio().trim():"[AggregatedEthaneToMethaneRatio=NULL]").concat(this.getAggregateDisposition()!=null?this.getAggregateDisposition():"[AggregateDisposition=NULL]")
+				.concat(this.getAggregatedClassificationConfidence()!=null?this.getAggregatedClassificationConfidence():"[AggregatedClassificationConfidence=NULL]").concat(this.getText());
 	}
 
 	public String getPeakNumber() {
@@ -125,38 +125,42 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public boolean isEquals(StoredProcComplianceGetIndications obj) {
+		Log.method("StoredProcComplianceGetIndications.isEquals", obj.toString());
 		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
-			Log.error(String.format("PeakNumber is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
+			Log.warn(String.format("[isEquals=FALSE] : PeakNumber is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
 			return false;
 		}
 		if (!this.getSurveyorUnitName().trim().equalsIgnoreCase(obj.getSurveyorUnitName().trim())) {
-			Log.error(String.format("SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
+			Log.warn(String.format("[isEquals=FALSE] : SurveyorUnitName is not match, Expect '%s', Actual '%s'", obj.getPeakNumber().trim(), getPeakNumber().trim()));
 			return false;
 		}
 		if (this.getAmplitude() != (obj.getAmplitude())) {
-			Log.error(String.format("Amplitude is not match, Expect '%s', Actual '%s'", obj.getAmplitude(), getAmplitude()));
+			Log.warn(String.format("[isEquals=FALSE] : Amplitude is not match, Expect '%s', Actual '%s'", obj.getAmplitude(), getAmplitude()));
 			return false;
 		}
 		if (this.getCh4() != (obj.getCh4())) {
-			Log.error(String.format("Ch4 is not match, Expect '%s', Actual '%s'", obj.getCh4(), getCh4()));
+			Log.warn(String.format("[isEquals=FALSE] : Ch4 is not match, Expect '%s', Actual '%s'", obj.getCh4(), getCh4()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
+			Log.warn(String.format("[isEquals=FALSE] : FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), getText().trim()));
 			return false;
 		}
 		if(!this.getAggregatedClassificationConfidence().equals(obj.getAggregatedClassificationConfidence())){
-			Log.error(String.format("AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
+			Log.warn(String.format("[isEquals=FALSE] : AggregatedClassificationConfidence is not match, Expect '%s', Actual '%s'", obj.getAggregatedClassificationConfidence().trim(), getAggregatedClassificationConfidence().trim()));
 			return false;
 		}
 		if(!this.getAggregatedEthaneToMethaneRatio().equals(obj.getAggregatedEthaneToMethaneRatio())){
-			Log.error(String.format("AggregatedEthaneToMethaneRatio is not match, Expect '%s', Actual '%s'", obj.getAggregatedEthaneToMethaneRatio().trim(), getAggregatedEthaneToMethaneRatio().trim()));
+			Log.warn(String.format("[isEquals=FALSE] : AggregatedEthaneToMethaneRatio is not match, Expect '%s', Actual '%s'", obj.getAggregatedEthaneToMethaneRatio().trim(), getAggregatedEthaneToMethaneRatio().trim()));
 			return false;
 		}
+		
+		Log.info("[isEquals=TRUE]"); 
 		return true;
 	}
 
 	public boolean isInList(ArrayList<StoredProcComplianceGetIndications> list) {
+		Log.method("StoredProcComplianceGetIndications.isInList", String.format("[this=%s]", this.toString()), list);
 		for (StoredProcComplianceGetIndications storedProcIndications : list) {
 			if (this.isEquals(storedProcIndications)) {
 				return true;

@@ -42,6 +42,7 @@ import com.google.gson.GsonBuilder;
 import common.source.ApiUtility;
 import common.source.CSVUtility;
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
@@ -248,14 +249,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
 	protected WebElement dropdownCustomer;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[1]")
-	protected WebElement btnChangeCustomer;
-	protected String btnChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[1]";
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='customerModal']/div/div/div[3]/a[2]")
-	protected WebElement btnCancelChangeCustomer;
-	protected String btnCancelChangeCustomerXPath = "//*[@id='customerModal']/div/div/div[3]/a[2]";
-
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeMode;
 	protected String btnChangeModeXPath = "//*[@id='surveyModal']/div/div/div[3]/a[1]";
@@ -404,10 +397,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
-	public static final String STRPaginationMsg = "Showing 1 to ";
-
 	private String reportName;
-
+	private String reportId;
 	@FindBy(name = "survey-mode-type")
 	private List<WebElement> surveyModeTypeRadiobuttonList;
 
@@ -435,6 +426,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
 	private List<ReportJobPerfDBStat> postDBStatList = null;
+	
+	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
 	/**
 	 * @param driver
@@ -444,6 +437,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportsBasePage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
+		
+		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
+		PageFactory.initElements(driver, changeCustomerDialog);
 	}
 
 	public WebElement getInputStartDate() {
@@ -705,9 +701,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
-			Log.info("Select customer '"+reports.getCustomer());
+			Log.info("Select customer '"+reports.getCustomer()+"'");
 			selectCustomer(reports.getCustomer());
-			Boolean confirmed = confirmInChangeCustomerDialog();
+			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
 			if (confirmed) {
 				inputReportTitle(reports.getRptTitle());
 			}
@@ -780,7 +776,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	private void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
@@ -1021,6 +1017,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectCustomer(String customer) {
 		selectCustomer(customer,true);
 	}
+	
 	public void selectCustomer(String customer, boolean confirm) {
 		if (dropdownCustomer.isDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1028,28 +1025,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
 					Log.info(String.format("Select Customer - '%s'", customer));
 					option.click();
-					confirmInChangeCustomerDialog(confirm);
+					getChangeCustomerDialog().confirmInChangeCustomerDialog(confirm);
 					return;
 				}
 			}			
 		}
-	}
-
-	public boolean confirmInChangeCustomerDialog() {
-		return confirmInChangeCustomerDialog(true);
-	}
-	public boolean confirmInChangeCustomerDialog(boolean confirm) {
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				Log.clickElementInfo("Confirm Change Customer",ElementType.LINK);
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				if(confirm){
-				   js.executeScript("arguments[0].click();", btnChangeCustomer);
-				}else{
-					jsClick(btnCancelChangeCustomer);
-				}
-				return true;
-			}
-		return false;
 	}
 
 	public void clickOnOKButton() {
@@ -1266,11 +1246,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				Log.clickElementInfo("Confirm change customer",ElementType.LINK);
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-
+			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
 				inputReportTitle(reportsCompliance.getRptTitle());
 			}
 		}
@@ -1360,12 +1336,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 				}
 			}
 
-			if (this.isElementPresent(btnChangeCustomerXPath)) {
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click();", btnChangeCustomer);
-				Log.info(String.format("Input title - '%s'",title));
+			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
 				this.inputTitle.clear();
 				this.inputTitle.sendKeys(title);
+				Log.info(String.format("Input title - '%s'",title));
 			}
 		}
 
@@ -1398,6 +1372,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1429,51 +1404,60 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-
+				
+				reportId = Report.getReport(rptTitle).getId();
+				TestContext.INSTANCE.addReportId(reportId);
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-
+				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
+				int numRetriesForNullError = 0; 
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
-
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows);
 							if (rowNum > maxRows) {
 								break;
 							}
-
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
-							
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
-							}
-							
+							}							
 							Log.clickElementInfo("Report Viewer");
-							this.btnReportViewer.click();
+							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
 						return handleFileDownloads(rptTitle, testCaseID);
-						
-
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
 							return false;
 						}
-
 						continue;
 					} catch (NullPointerException ne) {
-						Log.info("Null Pointer Exception: " + ne);
+						numRetriesForNullError++;
+						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
+							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s", 
+									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
+							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+								return false;
+							}
+							continue;
+						}
+						
+						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s", 
+								ExceptionUtility.getStackTraceString(ne)));
 						fail("Report failed to be generated!!");
 					}
 				}
@@ -1540,7 +1524,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
-		String reportName;
 		String reportTitleXPath;
 		String createdByXPath;
 
@@ -1571,18 +1554,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-
+				
+				reportId = Report.getReport(rptTitle).getId();
+				TestContext.INSTANCE.addReportId(reportId);
+				
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-
+				WebElement reportViewer;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							this.btnReportViewer = getTable()
-									.findElement(By.xpath("tr/td[5]/a[3]"));
-							reportName = getElementText(getTable().findElement(By.xpath("tr/td[2]")));
-
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1590,22 +1573,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							this.btnReportViewer = getTable().findElement(
+							reportViewer = getTable().findElement(
 									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							//* Double check the correctness of the rowNum
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
 							}
-							reportName = getElementText(getTable().findElement(By.xpath("tr[" + rowNum + "]/td[2]")));
 						}
-						return reportName;
+						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
 							return null;
 						}
-
 						continue;
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
@@ -1631,6 +1612,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+
 		return null;
 	}
 
@@ -1880,7 +1862,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		return false;
 	}
-
+	public boolean deleteReportById(String reportId) throws Exception {
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		this.waitForPageLoad();
+		this.performSearch(reportName);
+		if(!this.waitForTableDataToLoad()){
+			return false;
+		}		
+		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete,"+"'reportId="+reportId.toLowerCase()+"')]/img";
+		WebElement deleteImg = getTable().findElement(By.xpath(xpathDelete));
+		Log.clickElementInfo("Delete",ElementType.ICON);
+		deleteImg.click();
+		if(waitForDeletePopupLoad()){
+			jsClick(getBtnDeleteConfirm());
+			this.waitForPageLoad();
+			if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+				Log.error(getElementText(errorMsgDeleteCompliacneReport));
+				Log.clickElementInfo("Return to home page");
+				this.btnReturnToHomePage.click();
+				return false;
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
 		setPagination(PAGINATIONSETTING);
 
@@ -2065,18 +2072,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String msg = dataTableEmpty.getText();
 		return msg.trim();		
 	}
-	public boolean checkPaginationSetting(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
 
 	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
 			String SWLong, List<Map<String, String>> views) throws Exception {
@@ -2228,8 +2223,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
-	public void waitForDeletePopupLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+	public boolean waitForDeletePopupLoad() {
+		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean isDisplayed = false;
 				try {
@@ -2262,14 +2257,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return btnOK.isEnabled();
-			}
-		});
-	}
-
-	public void waitForNumberOfRecords(String actualMessage) {
-		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return paginationMsg.getText().substring(0, 16).trim().equals(actualMessage);
 			}
 		});
 	}
@@ -2764,5 +2751,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private void setPostDBStatList(List<ReportJobPerfDBStat> postDBStatList) {
 		this.postDBStatList = postDBStatList;
+	}
+
+	public ChangeCustomerDialogControl getChangeCustomerDialog() {
+		return changeCustomerDialog;
 	}
 }

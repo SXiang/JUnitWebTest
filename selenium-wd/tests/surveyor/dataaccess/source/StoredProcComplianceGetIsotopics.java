@@ -87,19 +87,19 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 		String dispositionValue = Resources.getResource(dispositionType);
 		if (!(this.getDisposition().trim().equals(obj.getDisposition().trim())
 				|| dispositionValue.trim().equals(this.getDisposition().trim()))) {
-			Log.error(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
+			Log.warn(String.format("Disposition is not match, Expect '%s', Actual '%s'", obj.getDisposition().trim()+"/"+dispositionValue, this.getDisposition().trim()));
 			return false;
 		}
 		if (this.getDelta() != (obj.getDelta())) {
-			Log.error(String.format("Delta is not match, Expect '%s', Actual '%s'", obj.getDelta(), this.getDelta()));
+			Log.warn(String.format("Delta is not match, Expect '%s', Actual '%s'", obj.getDelta(), this.getDelta()));
 			return false;
 		}
 		if (this.getUncertainty() != (obj.getUncertainty())) {
-			Log.error(String.format("Uncertainty is not match, Expect '%s', Actual '%s'", obj.getUncertainty(), this.getUncertainty()));
+			Log.warn(String.format("Uncertainty is not match, Expect '%s', Actual '%s'", obj.getUncertainty(), this.getUncertainty()));
 			return false;
 		}
 		if (!this.getText().trim().equals(obj.getText().trim())) {
-			Log.error(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), this.getText().trim()));
+			Log.warn(String.format("FieldNotes is not match, Expect '%s', Actual '%s'", obj.getText().trim(), this.getText().trim()));
 			return false;
 		}
 		return true;

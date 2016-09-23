@@ -1,5 +1,7 @@
 package surveyor.scommon.actions;
 
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -205,8 +207,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOnAllAssets(String data, Integer dataRowID) {
+	public boolean turnOnAllAssets(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllAssets", data, dataRowID);
 		turnOnMaterialTypeCopper(data, dataRowID);
 		turnOnMaterialTypeUnprotectedSteel(data, dataRowID);
@@ -223,8 +227,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOnAllBoundaries(String data, Integer dataRowID) {
+	public boolean turnOnAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
 		turnOnBigBoundary(data, dataRowID);
 		turnOnSmallBoundary(data, dataRowID);
@@ -236,110 +242,112 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOnAllAssetsAndBoundaries(String data, Integer dataRowID) {
+	public boolean turnOnAllAssetsAndBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllAssetsAndBoundaries", data, dataRowID);
 		turnOnAllAssets(data, dataRowID);
 		turnOnAllBoundaries(data, dataRowID);
 		return true;
 	}
 
-	public boolean turnOnBigBoundary(String data, Integer dataRowID) {
+	public boolean turnOnBigBoundary(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrict", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, true);
 		return true;
 	}
-	public boolean turnOnSmallBoundary(String data, Integer dataRowID) {
+	public boolean turnOnSmallBoundary(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnBoundariesDistrictPlat", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypeCopper(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypeCopper(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeCopper", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypeCastIron(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypeCastIron(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeCastIron", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypeOtherPlastic(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypeOtherPlastic(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeOtherPlastic", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypePEPlastic(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypePEPlastic(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypePEPlastic", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypeProtectedSteel(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypeProtectedSteel(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeProtectedSteel", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, true);
 		return true;
 	}
-	public boolean turnOnMaterialTypeUnprotectedSteel(String data, Integer dataRowID) {
+	public boolean turnOnMaterialTypeUnprotectedSteel(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnMaterialTypeUnprotectedSteel", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, true);
 		return true;
 	}
-	public boolean turnOnUseAllBoundaries(String data, Integer dataRowID) {
+	public boolean turnOnUseAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnUseAllBoundaries", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
 		return true;
 	}
-	public boolean turnOnUseAllPipes(String data, Integer dataRowID) {
+	public boolean turnOnUseAllPipes(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnUseAllPipes", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		return true;
 	}
-	public boolean turnOffBigBoundary(String data, Integer dataRowID) {
+	public boolean turnOffBigBoundary(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrict", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.BigBoundary, false);
 		return true;
 	}
-	public boolean turnOffSmallBoundary(String data, Integer dataRowID) {
+	public boolean turnOffSmallBoundary(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffBoundariesDistrictPlat", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.SmallBoundary, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypeCopper(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypeCopper(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeCopper", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCopper, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypeCastIron(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypeCastIron(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeCastIron", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeCastIron, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypeOtherPlastic(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypeOtherPlastic(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeOtherPlastic", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeOtherPlastic, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypePEPlastic(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypePEPlastic(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypePEPlastic", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypePEPlastic, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypeProtectedSteel(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypeProtectedSteel(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeProtectedSteel", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeProtectedSteel, false);
 		return true;
 	}
-	public boolean turnOffMaterialTypeUnprotectedSteel(String data, Integer dataRowID) {
+	public boolean turnOffMaterialTypeUnprotectedSteel(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffMaterialTypeUnprotectedSteel", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.MaterialTypeUnprotectedSteel, false);
 		return true;
 	}
-	public boolean turnOffUseAllBoundaries(String data, Integer dataRowID) {
+	public boolean turnOffUseAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffUseAllBoundaries", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllBoundaries, false);
 		return true;
 	}
-	public boolean turnOffUseAllPipes(String data, Integer dataRowID) {
+	public boolean turnOffUseAllPipes(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffUseAllPipes", data, dataRowID);
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, false);
 		return true;
@@ -350,8 +358,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOffAllAssets(String data, Integer dataRowID) {
+	public boolean turnOffAllAssets(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllAssets", data, dataRowID);
 		turnOffMaterialTypeCopper(data, dataRowID);
 		turnOffMaterialTypeUnprotectedSteel(data, dataRowID);
@@ -368,8 +378,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOffAllBoundaries(String data, Integer dataRowID) {
+	public boolean turnOffAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
 		turnOffBigBoundary(data, dataRowID);
 		turnOffSmallBoundary(data, dataRowID);
@@ -381,8 +393,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean turnOffAllAssetsAndBoundaries(String data, Integer dataRowID) {
+	public boolean turnOffAllAssetsAndBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllAssetsAndBoundaries", data, dataRowID);
 		turnOffAllAssets(data, dataRowID);
 		turnOffAllBoundaries(data, dataRowID);
@@ -394,7 +408,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
 		String runtimeType = getRuntimeType();
 		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
-		if (!runtimeType.equals("ObserverViewPageActions")) {
+		if (!runtimeType.equals("ObserverViewPageActions") && !runtimeType.equals("SurveyViewPageActions")) {
 			turnOnEightHourHistory(data, dataRowID);
 		}
 		turnOnConcentrationChart(data, dataRowID);
@@ -426,6 +440,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, true);
 		return true;
 	}
+	public boolean turnOnPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnPossibleNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnNotNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, true);
+		return true;
+	}
+	public boolean turnOnVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOnVehicleExhaust", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, true);
+		return true;
+	}
 	public boolean turnOnIsotopicAnalysis(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnIsotopicAnalysis", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.IsotopicAnalysis, true);
@@ -449,7 +478,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
 		String runtimeType = getRuntimeType();
 		logAction(runtimeType + ".turnOffAllDisplayOptions", data, dataRowID);
-		if (!runtimeType.equals("ObserverViewPageActions")) {
+		if (!runtimeType.equals("ObserverViewPageActions") && !runtimeType.equals("SurveyViewPageActions")) {
 			turnOffEightHourHistory(data, dataRowID);
 		}
 		turnOffConcentrationChart(data, dataRowID);
@@ -463,6 +492,13 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 	public boolean turnOffEightHourHistory(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffEightHourHistory", data, dataRowID);
+		try {
+			// Intentional delay included in this action. 
+			// Observed Behavior: Not including a delay before this action intermittently causes some elements to not appear on the map.
+			new TestEnvironmentActions().idleForSeconds("2", NOTSET);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.EightHourHistory, false);
 		return true;
 	}
@@ -479,6 +515,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffIndications(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffIndications", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Indications, false);
+		return true;
+	}
+	public boolean turnOffPossibleNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffPossibleNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffNotNaturalGas(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffNotNaturalGas", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, false);
+		return true;
+	}
+	public boolean turnOffVehicleExhaust(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.turnOffVehicleExhaust", data, dataRowID);
+		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, false);
 		return true;
 	}
 	public boolean turnOffIsotopicAnalysis(String data, Integer dataRowID) {

@@ -1,6 +1,7 @@
 package surveyor.scommon.actions;
 
 import java.io.File;
+import java.io.IOException;
 
 import common.source.ExcelUtility;
 import common.source.Log;
@@ -30,6 +31,12 @@ public class BaseActions implements IActions {
 		}
 	}
 
+	public static ExcelUtility getExcelUtility() throws Exception, IOException {
+		ExcelUtility excelUtility = new ExcelUtility();
+		excelUtility.setExcelFile(TestSetup.TEST_DATA_XLSX);
+		return excelUtility;
+	}
+	
 	protected void logAction(String actionName, String data, Integer dataRowID) {
 		Log.info(String.format("Executing action-[%s] : data=[%s], dataRowID=[%d]", actionName, data, dataRowID));
 	}

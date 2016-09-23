@@ -1,11 +1,13 @@
 package surveyor.dbseed.source;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 
@@ -13,18 +15,23 @@ import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
-import static surveyor.scommon.source.SurveyorConstants.EPSILON;
+import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
 
 	private static final boolean ENABLE_VERBOSE_LOGGING = false;
+	private static final boolean DEFAULT_REDATE_SETTING = false;
+	private static final String MEASUREMENT_PREFIX = "Measurement-";
+	private static final String GPSRAW_PREFIX = "GPSRaw-";
+	private static final String ANEMOMETERRAW_PREFIX = "AnemometerRaw-";
+	private static DbSeedBuilderCache surveySeedBuilderCache;
 
 	/* Method to push all the seed data required for automation. */
 	
@@ -61,6 +68,7 @@ public class DbSeedExecutor {
 
 	public static void executeSurveyDataSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeSurveyDataSeed");
+		
 		Connection connection = null;
 		SurveyDbSeedBuilder surveyDbSeedBuilder = null;
 		SurveyConditionDbSeedBuilder surveyConditionDbSeedBuilder = null;
@@ -74,10 +82,13 @@ public class DbSeedExecutor {
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
 		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
-		// NOTE: "stnd-sqacudr-3","man-pic-2","rr-sqacudr-1","EthaneStnd" survey NOT included. 
-		// SurveyResult entry does NOT get inserted using INSERT statements. Tracked by DE2178.
-		final String[] surveyTags = {"stnd-pic","rr-pic","man-pic-1","op-pic",
-				"stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","rr-sqacudr-2","op-sqacudr"};
+		surveySeedBuilderCache = new DbSeedBuilderCache();
+
+		// Push 'Ethane-*' survey tags. Tracked by US3279.
+		final String[] surveyTags = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey", 
+				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
+				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
+				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
 
 		try {
 			connection = ConnectionFactory.createConnection();
@@ -86,17 +97,29 @@ public class DbSeedExecutor {
 		        {
 					Log.info(String.format("***** START Processing survey with tag - '%s' *****", surveyTag));
 					
-					surveyDbSeedBuilder = new SurveyDbSeedBuilder(String.format("Survey-%s.csv", surveyTag));
-					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(String.format("SurveyCondition-%s.csv", surveyTag));
-					surveyResultDbSeedBuilder = new SurveyResultDbSeedBuilder(String.format("SurveyResult-%s.csv", surveyTag));
-					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(String.format("Measurement-%s.csv", surveyTag));
-					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(String.format("GPSRaw-%s.csv", surveyTag));
-					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(String.format("AnemometerRaw-%s.csv", surveyTag));
-					captureEventDbSeedBuilder = new CaptureEventDbSeedBuilder(String.format("CaptureEvent-%s.csv", surveyTag));
-					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(String.format("FieldOfView-%s.csv", surveyTag));
-					peakDbSeedBuilder = new PeakDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
-					segmentDbSeedBuilder = new SegmentDbSeedBuilder(String.format("Segment-%s.csv", surveyTag));
-					noteDbSeedBuilder = new NoteDbSeedBuilder(String.format("Note-%s.csv", surveyTag));
+					String surveySeedKey = String.format("Survey-%s.csv", surveyTag);
+					String surveyConditionSeedKey = String.format("SurveyCondition-%s.csv", surveyTag);
+					String surveyResultSeedKey = String.format("SurveyResult-%s.csv", surveyTag);
+					String measurementSeedKey = String.format("Measurement-%s.csv", surveyTag);
+					String gpsRawSeedKey = String.format("GPSRaw-%s.csv", surveyTag);
+					String anemometerRawSeedKey = String.format("AnemometerRaw-%s.csv", surveyTag);
+					String captureEventSeedKey = String.format("CaptureEvent-%s.csv", surveyTag);
+					String fieldOfViewSeedKey = String.format("FieldOfView-%s.csv", surveyTag);
+					String peakSeedKey = String.format("Peak-%s.csv", surveyTag);
+					String segmentSeedKey = String.format("Segment-%s.csv", surveyTag);
+					String noteSeedKey = String.format("Note-%s.csv", surveyTag);
+
+					surveyDbSeedBuilder = new SurveyDbSeedBuilder(surveySeedKey);
+					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(surveyConditionSeedKey);
+					surveyResultDbSeedBuilder = new SurveyResultDbSeedBuilder(surveyResultSeedKey);
+					measurementDbSeedBuilder = new MeasurementDbSeedBuilder(measurementSeedKey, DEFAULT_REDATE_SETTING);
+					gpsRawDbSeedBuilder = new GPSRawDbSeedBuilder(gpsRawSeedKey, DEFAULT_REDATE_SETTING);
+					anemometerRawDbSeedBuilder = new AnemometerRawDbSeedBuilder(anemometerRawSeedKey, DEFAULT_REDATE_SETTING);
+					captureEventDbSeedBuilder = new CaptureEventDbSeedBuilder(captureEventSeedKey);
+					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(fieldOfViewSeedKey);
+					peakDbSeedBuilder = new PeakDbSeedBuilder(peakSeedKey);
+					segmentDbSeedBuilder = new SegmentDbSeedBuilder(segmentSeedKey);
+					noteDbSeedBuilder = new NoteDbSeedBuilder(noteSeedKey);
 					
 					// check if survey data is present in database for this survey tag.
 					final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
@@ -106,25 +129,41 @@ public class DbSeedExecutor {
 					final Integer minSurveyCount = FileUtility.getLineCountInFile(Paths.get(surveyDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSurveyConditionCount = FileUtility.getLineCountInFile(Paths.get(surveyConditionDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSurveyResultCount = FileUtility.getLineCountInFile(Paths.get(surveyResultDbSeedBuilder.getSeedFilePath())) - 2;
-					final Integer minMeasurementCount = FileUtility.getLineCountInFile(Paths.get(measurementDbSeedBuilder.getSeedFilePath())) - 2;
-					final Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
-					final Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minCaptureEventCount = FileUtility.getLineCountInFile(Paths.get(captureEventDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minFieldOfViewCount = FileUtility.getLineCountInFile(Paths.get(fieldOfViewDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
+					Integer minMeasurementCount = FileUtility.getLineCountInFile(Paths.get(measurementDbSeedBuilder.getSeedFilePath())) - 2;
+					Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
+					Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
 					
 					final List<HashMap<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 					final String surveyId = firstSurveyRow.get(0).get("Id");
 					final String analyzerId = firstSurveyRow.get(0).get("AnalyzerId");
-					
+
+					// If redate is enabled, instead of looking for startEpoch and endEpoch,
+					// look for cumulative line count with corresonding CSVs for current analyzer.
+					if (measurementDbSeedBuilder.isRedate()) {
+						minMeasurementCount += getCumulativeRowCount(surveySeedBuilderCache, analyzerId, MEASUREMENT_PREFIX);
+					}
+					if (gpsRawDbSeedBuilder.isRedate()) {
+						minGPSRawCount += getCumulativeRowCount(surveySeedBuilderCache, analyzerId, GPSRAW_PREFIX);
+					}
+					if (anemometerRawDbSeedBuilder.isRedate()) {
+						minAnemometerRawCount += getCumulativeRowCount(surveySeedBuilderCache, analyzerId, ANEMOMETERRAW_PREFIX);
+					}
+
 					String startEpoch = firstSurveyRow.get(0).get("StartEpoch");
 					String endEpoch = firstSurveyRow.get(0).get("EndEpoch");
+					
+					Log.info(String.format("First survey row from - '%s' is: StartEpoch=%s, EndEpoch=%s", surveyCsvFilePath,
+							startEpoch, endEpoch));
+					
 					Double startEpochValue = Double.parseDouble(startEpoch) - EPSILON;
 					Double endEpochValue = Double.parseDouble(endEpoch) + EPSILON;
-					startEpoch = startEpochValue.toString(); 
-					endEpoch = endEpochValue.toString(); 
+					startEpoch = NumberUtility.formatString(startEpochValue, 10); 
+					endEpoch = NumberUtility.formatString(endEpochValue, 10); 
 
 					// check and execute Survey DB seed.
 					if (dbStateVerifier.isSurveySeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyCount)) {
@@ -153,8 +192,8 @@ public class DbSeedExecutor {
 						}
 					}
 
-					// check and execute Measurement DB seed.
-					if (dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minMeasurementCount)) {
+					// check and execute Measurement DB seed. If redate is enabled, check RowCount for Analyzer.
+					if (dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minMeasurementCount, measurementDbSeedBuilder.isRedate())) {
 						Log.info(String.format("Measurement DB seed is already present for this survey-'%s'. SKIP execution.", surveyId));
 					} else {
 						if (FileUtility.fileExists(measurementDbSeedBuilder.getSeedFilePath())) {
@@ -162,8 +201,8 @@ public class DbSeedExecutor {
 						}
 					}
 
-					// check and execute GPSRaw DB seed.
-					if (dbStateVerifier.isGPSRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minGPSRawCount)) {
+					// check and execute GPSRaw DB seed. If redate is enabled, check RowCount for Analyzer.
+					if (dbStateVerifier.isGPSRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minGPSRawCount, gpsRawDbSeedBuilder.isRedate())) {
 						Log.info(String.format("GPSRaw DB seed is already present for this survey-'%s'. SKIP execution.", surveyId));
 					} else {
 						if (FileUtility.fileExists(gpsRawDbSeedBuilder.getSeedFilePath())) {
@@ -171,8 +210,8 @@ public class DbSeedExecutor {
 						}
 					}
 
-					// check and execute AnemometerRaw DB seed.
-					if (dbStateVerifier.isAnemometerRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minAnemometerRawCount)) {
+					// check and execute AnemometerRaw DB seed. If redate is enabled, check RowCount for Analyzer.
+					if (dbStateVerifier.isAnemometerRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minAnemometerRawCount, anemometerRawDbSeedBuilder.isRedate())) {
 						Log.info(String.format("AnemometerRaw DB seed is already present for this survey-'%s'. SKIP execution.", surveyId));
 					} else {
 						if (FileUtility.fileExists(anemometerRawDbSeedBuilder.getSeedFilePath())) {
@@ -224,6 +263,27 @@ public class DbSeedExecutor {
 							executeSeed(connection, noteDbSeedBuilder.build());;
 						}
 					}
+					
+					// Store all the seed builder in cache for future verification.
+					surveySeedBuilderCache.addDbSeedBuilder(noteSeedKey, noteDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(segmentSeedKey, segmentDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(peakSeedKey, peakDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(fieldOfViewSeedKey, fieldOfViewDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(captureEventSeedKey, captureEventDbSeedBuilder);
+					
+					surveySeedBuilderCache.addDbSeedBuilder(anemometerRawSeedKey, anemometerRawDbSeedBuilder);
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(anemometerRawDbSeedBuilder.getStartEpoch(), 10), 
+							NumberUtility.formatString(anemometerRawDbSeedBuilder.getEndEpoch(), 10)));
+					surveySeedBuilderCache.addDbSeedBuilder(gpsRawSeedKey, gpsRawDbSeedBuilder);
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(gpsRawDbSeedBuilder.getStartEpoch(), 10), 
+							NumberUtility.formatString(gpsRawDbSeedBuilder.getEndEpoch(), 10)));
+					surveySeedBuilderCache.addDbSeedBuilder(measurementSeedKey, measurementDbSeedBuilder);
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(measurementDbSeedBuilder.getStartEpoch(), 10), 
+							NumberUtility.formatString(measurementDbSeedBuilder.getEndEpoch(), 10)));
+					
+					surveySeedBuilderCache.addDbSeedBuilder(surveyResultSeedKey, surveyResultDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(surveyConditionSeedKey, surveyConditionDbSeedBuilder);
+					surveySeedBuilderCache.addDbSeedBuilder(surveySeedKey, surveyDbSeedBuilder);
 
 					Log.info(String.format("----- Done processing survey with tag - '%s' -----", surveyTag));
 					
@@ -251,11 +311,31 @@ public class DbSeedExecutor {
 		}
 	}
 
+	private static Integer getCumulativeRowCount(DbSeedBuilderCache dbSeedBuilderCache, String analyzerId, String filePrefix) throws IOException {
+		Integer rowCount = 0;
+		Set<String> seedBuilderCacheKeys = dbSeedBuilderCache.getDbSeedBuilderCacheKeys();
+		for (String key : seedBuilderCacheKeys) {
+			if (key.startsWith(filePrefix)) {
+				BaseDbSeedBuilder dbSeedBuilder = dbSeedBuilderCache.getDbSeedBuilder(key);
+				final String seedFilePath = dbSeedBuilder.getSeedFilePath();
+				final List<HashMap<String, String>> firstRow = new CSVUtility().getTopRows(seedFilePath, 1);
+				if (firstRow != null && firstRow.size() > 0) {
+					if (firstRow.get(0).get("AnalyzerId").equals(analyzerId)) {
+						rowCount += FileUtility.getLineCountInFile(Paths.get(seedFilePath)) - 2;
+					}
+				}
+			}
+		}
+		return rowCount;
+	}
+
 	/* Methods for pushing GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
 	
 	public static void executeGisSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed");
-		executeGisSeed(null /*customerId*/);
+		executeGisSeed(null /*customerId*/); // default -> Picarro customer.
+		executeGisSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		executeGisSeed(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 	
 	public static void executeGisSeed(String customerId) throws Exception {
@@ -432,5 +512,9 @@ public class DbSeedExecutor {
         	}
         	Log.error(String.format("EXCEPTION Message: %s", ExceptionUtility.getStackTraceString(e)));  
         }  	
+	}
+
+	public static DbSeedBuilderCache getSurveySeedBuilderCache() {
+		return surveySeedBuilderCache;
 	}
 }

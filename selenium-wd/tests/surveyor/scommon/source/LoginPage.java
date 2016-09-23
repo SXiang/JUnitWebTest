@@ -37,8 +37,7 @@ public class LoginPage extends BasePage {
 	private WebElement btnAccept;
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
-	private WebElement txtAccountDisabled;
-	
+	private WebElement txtAccountDisabled;	
 
 	/**
 	 * @param driver
@@ -48,7 +47,7 @@ public class LoginPage extends BasePage {
 	 */
 	public LoginPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
-		Log.info("\nThe Login Page URL is: " + this.strPageURL);
+		Log.info("The Login Page URL is: " + this.strPageURL);
 	}
 
 	private void handleEULA() {

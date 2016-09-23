@@ -2,70 +2,110 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import org.testng.Assert;
 
 import common.source.BasePage.ElementType;
 
 public class Log {
-	private static Logger log = null; 
+	private static Logger log = null;
+	private static Logger stashLog  = null;
 	private static String logFilePath;
 
 	static {
 		try {
+			TestContext.INSTANCE.getTestSetup();
 			System.setProperty("log4j.configurationFile", TestSetup.getExecutionPath(TestSetup.getRootPath()) + "log4j2" + File.separator + "log4j2.xml");
 			log = LogManager.getLogger(Log.class.getName());
+			stashLog = LogManager.getLogger("logstash.json");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void info(String message) {
-		log.info(message);
-		TestContext.INSTANCE.updateTestMessage(message);
+//	%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: 
+	public enum LogField{
+		INDEX_ID ("index-id"),
+		TEST_ENVIROMENT ("test-enviroment"),
+		TEST_URL ("test-url"),
+		TEST_CATEGORY ("test-category"),
+		TEST_CLASS ("test-class"),
+		TEST_METHOD ("test-method"),
+		MSG_CLASS ("msg-class"),
+		MSG_METHOD ("msg-meghod"),
+		MSG_LINE ("msg-line"),
+		MSG ("msg");
+		
+		private final String field;
+		
+		LogField(String field){
+			this.field = field;
+		}
+		
+		@Override
+		public String toString(){
+			return field;
+		}
+		
+		
 	}
-
-	public static void warn(String message) {
-		log.warn(message);
+	public static void info(String message) {
+		log.info(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
+		stashLog.info(formatLogstashMessage(message));
+	}
+	
+	public static void warn(String message) {
+		log.warn(formatLogMessage(message));
+		TestContext.INSTANCE.updateTestMessage(message);
+		stashLog.warn(formatLogstashMessage(message));
 	}
 
 	public static void debug(String message) {
-		log.debug(message);
+		log.debug(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
+		stashLog.debug(formatLogstashMessage(message));
 	}
 
 	public static void error(String message) {
-		log.error(message);
+		log.error(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
+		stashLog.error(formatLogstashMessage(message));
 	}
 
 	public static void info(String message, LogCategory logCategory) {
 		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
-			log.info(message);
+			info(message);
 		}
 	}
 
 	public static void warn(String message, LogCategory logCategory) {
 		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
-			log.warn(message);
+			warn(message);
 		}
 	}
 
 	public static void debug(String message, LogCategory logCategory) {
 		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
-			log.debug(message);
+			debug(message);
 		}
 	}
 
 	public static void error(String message, LogCategory logCategory) {
 		if (LogSwitches.INSTANCE.isEnabled(logCategory)) {
-			log.error(message);
+			error(message);
 		}
 	}
+	
+
 
 	// Extension to logs for page objects	
 	public static void clickElementInfo(String name) {
@@ -91,6 +131,64 @@ public class Log {
 		info(String.format("Calling method '%s' with parameter values -> %s", methodName, Arrays.toString(args)));
 	}
 
+	public static String formatLogMessage(String msg){
+		StackTraceElement caller = getStackTraceElement();
+		String logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
+				", Line: "+caller.getLineNumber() +"]: "
+				+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		return logMessage;
+	}
+
+	public static String formatLogstashMessage(String msg){
+		Map<String, ?> msgMap = getMessageMap(msg);
+		String fieldSep = " ";
+		String logstashMessage = "["+msgMap.get(LogField.INDEX_ID.toString()) + fieldSep + msgMap.get(LogField.TEST_CATEGORY.toString())
+			+ fieldSep + msgMap.get(LogField.TEST_ENVIROMENT.toString()) + fieldSep + msgMap.get(LogField.TEST_URL.toString())
+			+ fieldSep + msgMap.get(LogField.TEST_CLASS.toString()) + fieldSep + msgMap.get(LogField.TEST_METHOD.toString())
+			+ fieldSep + msgMap.get(LogField.MSG_CLASS.toString()) + fieldSep + msgMap.get(LogField.MSG_METHOD.toString())
+			+ fieldSep + msgMap.get(LogField.MSG_LINE.toString()) +"]:"
+			+ fieldSep + msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		return logstashMessage;
+	}
+	
+	public static String getJSONMessage(String msg){
+		Map<String, ?> msgMap = getMessageMap(msg);		
+		String jsonString = new JSONObject(msgMap).toString();
+		jsonString = new JSONObject(msgMap).toString();
+		return jsonString;
+	}
+	
+	   private static Map<String, ?> getMessageMap(String msg) {
+	        Map<String, Object> map = new HashMap<>();
+		    StackTraceElement caller = getStackTraceElement();
+	        map.put(LogField.MSG_CLASS.toString(), caller.getClassName());
+	        map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
+	        map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());
+	        map.put(LogField.MSG.toString(), msg);
+	        map.putAll(TestContext.INSTANCE.getTestMap());
+	        return map;
+	    }
+
+	public static StackTraceElement getStackTraceElement(){
+		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+		if(elements.length<1){
+			return null;
+		}else if(elements.length<2){
+			return elements[0];
+		}
+		String logClass = elements[1].getClassName();
+		for(int i=1; i<elements.length; i++){
+			String currentClass = elements[i].getClassName();
+			if(!currentClass.equals(logClass)
+					&& !currentClass.contains("$")
+					&& !currentClass.contains("TestWatcher")
+					&& !currentClass.contains("org.junit")
+					){
+				return elements[i];
+			}
+		}
+		return elements[0];
+	}
 	/* Unit test */
 	public static void main(String[] args) throws IOException {
 		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";

@@ -2,49 +2,115 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import com.microsoft.sqlserver.jdbc.SQLServerBulkCSVFileRecord;
+import java.util.HashMap;
+import java.util.List;
+
+import common.source.CSVUtility;
+import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.NumberUtility;
+import common.source.Redater;
+import surveyor.dataaccess.source.GPSRaw;
 
 public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[GPSRaw]";
-	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
+	private static final String SEED_DATA_FOLDER = "SurveySeedData";
 	private static final String SEED_FILE_NAME = "GPSRawSeed.csv";
+	private static final String INSERT_TEMPLATE = "INSERT [dbo].[GPSRaw] ([AnalyzerId], [EpochTime], [GpsTime], [GpsLatitude], [GpsLongitude], [GpsFit], [GPSLatitudeUncertainty], [GPSLongitudeUncertainty]) VALUES (N'%s', %s, %s, %s, %s, %s, %s, %s)";
+	private boolean redate = false;
+	private double startEpoch;
+	private double endEpoch;
 
 	public GPSRawDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
 	}
 
-	public GPSRawDbSeedBuilder(String seedFileName) {
+	public GPSRawDbSeedBuilder(String seedFileName, boolean redate) {
 		setSeedFilePath(SEED_DATA_FOLDER, seedFileName);
+		this.setRedate(redate);
 	}
 
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();
-        SQLServerBulkCSVFileRecord fileRecord = null;
-        try
+		
+        try  
         {
-            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.  
-            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.  
-            fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);      
-            fileRecord.addColumnMetadata(1, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(2, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(3, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(4, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(5, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(6, null, java.sql.Types.SMALLINT, 0, 0);  
-            fileRecord.addColumnMetadata(7, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(8, null, java.sql.Types.DOUBLE, 0, 0);  
+    		CSVUtility csvUtility = new CSVUtility();
+    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		Redater redater = null;
+    		for (HashMap<String, String> rowItem : allRows) {
+    			String analyzerId = rowItem.get("AnalyzerId");
+    			
+    			// Initialize the redater once.
+    			redater = checkAndInitializeRedater(allRows, redater, analyzerId);
+    			
+    			String epochTime = isRedate() ? NumberUtility.formatString(redater.getNextUnixTime(), 3) : rowItem.get("EpochTime");
+    			String gpsTime = rowItem.get("GpsTime");
+    			String gpsLatitude = handleNullGetValue(rowItem.get("GpsLatitude"));
+    			String gpsLongitude = handleNullGetValue(rowItem.get("GpsLongitude"));
+    			String gpsFit = handleNullGetValue(rowItem.get("GpsFit"));
+    			String gPSLatitudeUncertainty = handleNullGetValue(rowItem.get("GPSLatitudeUncertainty"));
+    			String gPSLongitudeUncertainty = handleNullGetValue(rowItem.get("GPSLongitudeUncertainty"));
 
-            seedData.setSeedData(fileRecord);
+    			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, gpsTime, gpsLatitude, gpsLongitude, gpsFit, gPSLatitudeUncertainty, gPSLongitudeUncertainty));
+    			
+    			// DEBUGGING STATEMENTS
+    			if (epochTime.length() < 10) {
+    				Log.info(String.format("Break HERE: Found an incorrect Epoch Time entry!!! EpochTime: %s", epochTime));
+    			}
+			}
+    		
+    		this.setStartEpoch(redater.getFirstTime());
+    		this.setEndEpoch(redater.getLastTime());
+
             seedData.setDestinationTableName(TABLE_NAME);
         }
         catch (Exception e)  
         {  
-            // Log error.  
             Log.error(ExceptionUtility.getStackTraceString(e));  
         }  
 		return seedData;
+	}
+
+	private Redater checkAndInitializeRedater(List<HashMap<String, String>> allRows, Redater redater, String analyzerId) {
+		GPSRaw firstGPSRaw;
+		if (redater == null) {
+			GPSRaw gpsRaw = new GPSRaw();
+			gpsRaw.purgeCache();
+			firstGPSRaw = gpsRaw.getFirst(analyzerId);
+			double bufferTime = 1000;
+			double baseUnixTime = DateUtility.getCurrentUnixEpochTime() - allRows.size() - bufferTime;
+			if (firstGPSRaw != null) {
+				baseUnixTime = firstGPSRaw.getEpochTime() - allRows.size() - bufferTime;
+			}
+			redater = new Redater(baseUnixTime);
+		}
+		return redater;
+	}
+
+	public boolean isRedate() {
+		return redate;
+	}
+
+	public void setRedate(boolean redate) {
+		this.redate = redate;
+	}
+	
+	public double getStartEpoch() {
+		return startEpoch;
+	}
+
+	public void setStartEpoch(double startEpoch) {
+		this.startEpoch = startEpoch;
+	}
+
+	public double getEndEpoch() {
+		return endEpoch;
+	}
+
+	public void setEndEpoch(double endEpoch) {
+		this.endEpoch = endEpoch;
 	}
 }

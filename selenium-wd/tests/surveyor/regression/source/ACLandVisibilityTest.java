@@ -846,8 +846,12 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		preferencesPage.waitForPageLoad();
 
+		Log.info(String.format("EXPECTED timezone='%s', Actual timezone='%s'", 
+				TIMEZONE, preferencesPage.getSelectedTimeZone().getText()));
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
-		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(DEFAULTLOC));
+		Log.info(String.format("EXPECTED selected location='%s', Actual selected location='%s'", 
+				PICARROLOC, preferencesPage.getSelectedLocation().getText()));
+		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(PICARROLOC));
 		homePage.getLinkFleetMap().click();
 
 		fleetMapPage.waitForPageLoad();

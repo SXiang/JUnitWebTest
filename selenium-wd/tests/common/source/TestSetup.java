@@ -132,6 +132,7 @@ public class TestSetup {
 	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
+	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
 	public static String reportDir = "reports/";
 	
@@ -170,7 +171,7 @@ public class TestSetup {
 	private boolean automationReportingApiEnabled;
 
 	private static boolean parallelBuildEnabled;
-	
+
 	public TestSetup() {
 		initialize();
 	}
@@ -268,8 +269,11 @@ public class TestSetup {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("profile.default_content_settings.popups", 0);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+		
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
@@ -292,6 +296,8 @@ public class TestSetup {
 	private void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("profile.default_content_settings.popups", 0);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
@@ -305,7 +311,7 @@ public class TestSetup {
 		}
 		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
 	}
-
+	
 	/* NETWORK PROXY related methods */
 	/*
 	 * EXAMPLE USAGE: 1. Using Proxy to limit Upstream/Downstream KBPS.
@@ -436,6 +442,9 @@ public class TestSetup {
 		return Integer.parseInt(this.slowdownInSeconds);
 	}
 
+	public int getTestCleanUpMode() {
+		return Integer.parseInt(this.testCleanUpMode);
+	}
 	public WebDriver getDriver() {
 		return this.driver;
 	}
@@ -687,7 +696,7 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-
+			
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
@@ -710,6 +719,7 @@ public class TestSetup {
 				this.debug = false;
 			}
 
+			this.testCleanUpMode = this.testProp.getProperty("testCleanUpMode");
 			this.slowdownInSeconds = this.testProp.getProperty("slowdownInSeconds");
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
@@ -906,7 +916,7 @@ public class TestSetup {
 		startAnalyzer();
 	}
 
-	public static void deleteAnalyzerLocalDB3() throws UnknownHostException {
+	public static void deleteAnalyzerLocalDB3() throws IOException {
 		Log.method("deleteAnalyzerLocalDB3");
 		stopAnalyzerIfRunning();
 		String appDataFolder = SystemUtility.getAppDataFolder();
