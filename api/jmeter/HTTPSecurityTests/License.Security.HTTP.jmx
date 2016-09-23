@@ -614,7 +614,7 @@ for(int i=0; i&lt;size; i++){
           <stringProp name="WhileController.condition">${endpoint}</stringProp>
         </WhileController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAdminHTTPGETS" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LicensedUserHTTPGET" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -646,23 +646,35 @@ for(int i=0; i&lt;size; i++){
             </CSVDataSet>
             <hashTree/>
             <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-              <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
-String role= &quot;Admin&quot;;
-if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+              <stringProp name="BeanShellAssertion.query">String columnName= &quot;XpathOfElements&quot;;
+String response= new String(ResponseData);
+String xpath = vars.get(columnName);
+
+
+if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)) {
+	String errormsg = xpath + &quot;  string isn&apos;t present in response&quot;;
+	log.info(errormsg);
+	Failure = true;
+	}
+	else
+	{
+		String successmsg = xpath + &quot; string is present in response&quot;;
+		log.info(successmsg);
+		Failure = false;
+	}
+
+
+
+ 
+/*String  xpathResult = document.evaluate( xpathExpression, contextNode, namespaceResolver, resultType, result );
+ System.out.println(vars.get(xpathResult));
+	if (!(response.contains(&quot;document.evaluate( role, document,  null, XPathResult.ANY_TYPE, null )&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) does not have license of this feature&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
-}else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
-		FailureMessage = &quot;User(&quot;+role+&quot;) has license of this feature&quot;;
-		Failure = true;
-	}else{
-		Failure = false;
-	}
-}</stringProp>
+*/</stringProp>
               <stringProp name="BeanShellAssertion.filename"></stringProp>
               <stringProp name="BeanShellAssertion.parameters"></stringProp>
               <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
@@ -676,6 +688,58 @@ if (vars.get(role).equals(&quot;NO&quot;)){
               <boolProp name="XPath.tolerant">true</boolProp>
               <boolProp name="XPath.namespace">false</boolProp>
             </XPathAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1524793090">id=&quot;fleet-map&quot;&gt;&lt;a</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion2" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="609816587">bottom_button_curtain_view</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
             <hashTree/>
           </hashTree>
         </hashTree>
@@ -832,11 +896,11 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           </XPathAssertion>
           <hashTree/>
         </hashTree>
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF licenseList.csv" enabled="true">
           <stringProp name="WhileController.condition">${endpoint}</stringProp>
         </WhileController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroSupportHTTPGETS" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UnLicensedUserHTTPGET" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -867,30 +931,40 @@ if (vars.get(role).equals(&quot;NO&quot;)){
               <stringProp name="shareMode">shareMode.thread</stringProp>
             </CSVDataSet>
             <hashTree/>
-            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="false">
-              <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
-String role= &quot;Support&quot;;
-if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String columnName= &quot;XpathOfElements&quot;;
+String response= new String(ResponseData);
+String xpath = vars.get(columnName);
+
+if(!response.contains (xpath)){
+	String errormsg = xpath + &quot;  string isn&apos;t present in response&quot;;
+	log.info(errormsg);
+	Failure = false;
+	}
+	else {
+		String successmsg = xpath + &quot; string is present in response&quot;;
+		log.info(successmsg);
+		Failure = true;
+		}
+
+
+
+ 
+/*String  xpathResult = document.evaluate( xpathExpression, contextNode, namespaceResolver, resultType, result );
+ System.out.println(vars.get(xpathResult));
+	if (!(response.contains(&quot;document.evaluate( role, document,  null, XPathResult.ANY_TYPE, null )&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+		FailureMessage = &quot;User(&quot;+role+&quot;) does not have license of this feature&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
-}else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
-		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
-		Failure = true;
-	}else{
-		Failure = false;
-	}
-}</stringProp>
+*/</stringProp>
               <stringProp name="BeanShellAssertion.filename"></stringProp>
               <stringProp name="BeanShellAssertion.parameters"></stringProp>
               <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
             </BeanShellAssertion>
             <hashTree/>
-            <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="false">
               <boolProp name="XPath.negate">true</boolProp>
               <stringProp name="XPath.xpath">//*[@id=&quot;fleet-map&quot;]/a</stringProp>
               <boolProp name="XPath.validate">false</boolProp>

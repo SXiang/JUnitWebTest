@@ -1,4 +1,26 @@
-Controller,LicenseFeatures,QueryString,XpathOfElements
-Home,,,"//*[@id=""fleet-map""]/a"
-Home,FleetMap,,"//*[@id=""fleet-map""]/a"
-Live,Survey,/${e60fd229-3c31-b900-590c-39da59600014},"//*[@id=""bottom_button_curtain_view""]"
+Controller,LicenseFeatures,QueryString,XpathOfElements,Licensed Features,UnLicensed Features
+Home,,,"id=""fleet-map""",fleet map - the fleet map option should show up on the main menu,fleet map - the fleet map option should not show up on the main menu
+Home,FleetMap,,"id=""fleet-map""",fleet map - Should be accessible directly through URL,fleet map - Should not be accessible directly through URL either
+Live,Survey,/${APISecurityTest_Survey001},"id=""bottom_button_curtain_view""",curtain view - Curtain view should be available on Survey view,curtain view - Curtain view should not be available on Survey view
+Live,Observer,?serialNumber=${Analyzer_Picarro_SerialNumber001},"id=""bottom_button_curtain_view""",curtain view - Curtain view should be available on Observer view,curtain view - Curtain view should not be available on Observer view
+Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""bottom_button_curtain_view""",curtain view - Curtain view should be available on Driver view,curtain view - Curtain view should not be available on Driver view
+Live,Observer,?serialNumber=${Analyzer_Picarro_SerialNumber001}, <title>Observer</title>,"Observer view - dashboard the user should see the analyzer online and ""clickable""","Observer view - dashboard the user should see the analyzer online but not ""clickable"""
+Live,Observer,?serialNumber=${Analyzer_Picarro_SerialNumber001},<title>Observer</title>,Observer view - Should be accessible directly through URL,Observer view - Should not be accessible directly through URL
+Home,FleetMap,?serialNumber=${Analyzer_Picarro_SerialNumber001}, <title>Fleet Map - Surveyor</title>,"Observer view - fleetmap the user should see the analyzer online and ""clickable""","Observer view - fleetmap the user should see the analyzer online and not ""clickable"""
+Home,DashboardSurveyorSystemsData,?serialNumber=${Analyzer_Picarro_SerialNumber001},"""Status"":2",Observer view - observer view link should be enabled on https://pcube.picarro.com/Home/SurveyorSystems for online surveyors,Observer view - observer view link should not be enabled on https://pcube.picarro.com/Home/SurveyorSystems for online surveyors
+Reports,ComplianceReport,,"id=""Rapid Response""",Rapid Response - New compliance report should have option for Rapid Response report mode and survey mode,Rapid Response - New compliance report should not have option for Rapid Response report mode and survey mode
+Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},"id=""Rapid Response""",Rapid Response - Copy compliance report should have option for Rapid Response report mode and survey mode,Rapid Response - Copy compliance report should not have option for Rapid Response report mode and survey mode
+Picarro,ManageLocation,,"id=""RapidResponseMinimumAmplitude""",Rapid Response - Manage Location should have field for the Rapid Response option ,Rapid Response - Manage Location should not have field for the Rapid Response option 
+Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_rapid_response""",Rapid Response - Driver View should have Rapid Response survey mode available,Rapid Response - Driver View should not have Rapid Response survey mode available
+Reports,ComplianceReport,,"id=""Operator""",Operator - New compliance report should have option for Operator survey mode,Operator - New compliance report should not have option for Operator survey mode
+Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},"id=""Operator""",Operator - Copy compliance report should have option for Operator survey mode,Operator - Copy compliance report should not have option for Operator survey mode
+Picarro,ManageLocation,,"id=""OperatorMinimumAmplitude""",Operator - Manage Location should have field for the Operator option ,Operator - Manage Location should not have field for the Operator option 
+Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_operator""",Operator - Driver View should have Operator survey mode available,Operator - Driver View should not have Operator survey mode available
+Reports,ComplianceReport,,"id=""Manual""",Manual - New compliance report should have option for Manual report mode and survey mode,Manual - New compliance report should not have option for Manual report mode and survey mode
+Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},"id=""Manual""",Manual - Copy compliance report should have option for Manual  report mode and survey mode,Manual  - Copy compliance report should not have option for Manual  report mode and survey mode
+Picarro,ManageLocation,,"id=""ManualMinimumAmplitude""",Manual - Manage Location should have field for the Manual option ,Manual - Manage Location should not have field for the Manual option 
+Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_manual""",Manual - Driver View should have Manual survey mode available,Manual - Driver View should not have Manual survey mode available
+,,,,Mobile view - ,Mobile view - 
+,,,,Mobile view - ,Mobile view - 
+,,,,Mobile view - ,Mobile view - 
+,,,,Mobile view - ,Mobile view - 
