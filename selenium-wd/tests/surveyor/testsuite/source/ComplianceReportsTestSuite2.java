@@ -14,22 +14,20 @@ import surveyor.regression.source.ComplianceReportsPageTest9;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	ComplianceReportsPageTest6.class
-	,ComplianceReportsPageTest7.class
 	,ComplianceReportsPageTest8.class
-	,ComplianceReportsPageTest9.class	
 	,ComplianceReportsPageTest11.class
 })
 public class ComplianceReportsTestSuite2 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for ComplianceReportsTestSuite2 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for ComplianceReportsTestSuite2 executing...");
     }
 }

@@ -108,6 +108,7 @@ public class BasePage {
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
+
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
 		this.testSetup = testSetup;
@@ -308,6 +309,7 @@ public class BasePage {
 	protected String waitForPresenceOfElementText(By locator){
 		return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
 	}
+
 	protected String waitForPresenceOfElementText(By locator, String expectedText){
 		String actualText = null;
 		try {
@@ -330,6 +332,7 @@ public class BasePage {
 		}
 		return actualText;
 	}
+
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
@@ -352,6 +355,7 @@ public class BasePage {
 		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));
 	}
+
     public void maxmizeBrowserWindow(){
     	Log.info("Maximize browser window");
     	driver.manage().window().maximize();
@@ -387,6 +391,7 @@ public class BasePage {
 				Log.error("Failed to select option '"+option+"'");
 			}
 		}while(!selected&&numTry<5);
+
 		if(!selected){
 			WebElement opt =  dropdown.findElement(optBy);
 			opt.click();

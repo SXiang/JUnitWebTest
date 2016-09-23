@@ -216,7 +216,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);
 	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);
 
-
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 
@@ -392,7 +391,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return this.checkBoxStndRptMode;
 	}
 
-	private static LatLongSelectionControl latLongSelectionControl = null;
+	private LatLongSelectionControl latLongSelectionControl = null;
 
 	protected String pagination = "100";
 
