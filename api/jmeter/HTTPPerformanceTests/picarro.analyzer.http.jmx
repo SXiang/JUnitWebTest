@@ -468,22 +468,25 @@
               <message>true</message>
               <threadName>true</threadName>
               <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
+              <encoding>true</encoding>
+              <assertions>false</assertions>
               <subresults>true</subresults>
               <responseData>true</responseData>
-              <samplerData>false</samplerData>
+              <samplerData>true</samplerData>
               <xml>false</xml>
               <fieldNames>true</fieldNames>
               <responseHeaders>false</responseHeaders>
               <requestHeaders>true</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
               <assertionsResultsToSave>0</assertionsResultsToSave>
               <bytes>true</bytes>
               <url>true</url>
+              <fileName>true</fileName>
               <hostname>true</hostname>
               <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
             </value>
           </objProp>
           <stringProp name="filename">${projectHome}\..\result\resultTable_AnalyzerAPIPerformance.csv</stringProp>
