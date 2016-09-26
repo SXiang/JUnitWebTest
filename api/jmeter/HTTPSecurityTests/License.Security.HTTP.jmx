@@ -33,7 +33,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Report002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Report002</stringProp>
-            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.value">FBE59570-637F-7C70-0B12-39DA79CD49F2</stringProp>
             <stringProp name="Argument.desc">copy of 001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -52,11 +52,13 @@
             <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
             <stringProp name="Argument.value">514941cd-ba07-353e-e5f4-39d9db872a76</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_ReportDelete001</stringProp>
             <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_AssessmentDelete001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_AssessmentDelete001</stringProp>
@@ -139,7 +141,7 @@
           </elementProp>
           <elementProp name="SQAAuto_DB" elementType="Argument">
             <stringProp name="Argument.name">SQAAuto_DB</stringProp>
-            <stringProp name="Argument.value">SurveyorSQAAUTO_blankDB_20160823</stringProp>
+            <stringProp name="Argument.value">SurveyorSQAAUTO_blankDB_20160923</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SQA_Password" elementType="Argument">
@@ -273,7 +275,7 @@
         <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
       </ConfigTestElement>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="false">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -511,6 +513,179 @@ for(int i=0; i&lt;size; i++){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+
+
+//AssessmentReports - 1
+result = vars.getObject(&quot;AssessmentReports001&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
+	}
+}
+
+//AssessmentReports - 2
+result = vars.getObject(&quot;AssessmentReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
@@ -797,12 +972,185 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+
+
+//AssessmentReports - 1
+result = vars.getObject(&quot;AssessmentReports001&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
+	}
+}
+
+//AssessmentReports - 2
+result = vars.getObject(&quot;AssessmentReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="Username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">NotLicensedAdmin@email.com</stringProp>
+                <stringProp name="Argument.value">unlicenseduser@email.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Username</stringProp>
@@ -856,7 +1204,7 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
               </elementProp>
               <elementProp name="Username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">NotLicensedAdmin@email.com</stringProp>
+                <stringProp name="Argument.value">unlicenseduser@email.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Username</stringProp>
