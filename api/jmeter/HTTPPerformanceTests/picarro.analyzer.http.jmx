@@ -469,13 +469,13 @@
               <threadName>true</threadName>
               <dataType>true</dataType>
               <encoding>true</encoding>
-              <assertions>false</assertions>
+              <assertions>true</assertions>
               <subresults>true</subresults>
               <responseData>true</responseData>
               <samplerData>true</samplerData>
-              <xml>false</xml>
+              <xml>true</xml>
               <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
+              <responseHeaders>true</responseHeaders>
               <requestHeaders>true</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
               <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
