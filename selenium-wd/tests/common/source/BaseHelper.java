@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package common.source;
 
@@ -33,7 +33,7 @@ public class BaseHelper {
 	private static final int REFGASPDF_MINSIZE_IN_KB = 10;
 
 	/**
-	 * 
+	 *
 	 */
 	public BaseHelper() {
 	}
@@ -170,7 +170,7 @@ public class BaseHelper {
 	public static String getLineSeperator() {
 		return System.getProperty("line.separator");
 	}
-	
+
 	public static String getPaginationShowingStartString() {
 		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
 		// get first 3 parts of the string.
@@ -203,7 +203,7 @@ public class BaseHelper {
 		}
 		return sorted;
 	}
-    
+
 	public static boolean isNullOrEmptyOrZero(String str){
     	return isNullOrEmpty(str)||str.matches("[0\\.]*");
     }
@@ -211,7 +211,7 @@ public class BaseHelper {
 	public static boolean isNullOrEmpty(String str) {
 		return str==null||str.length()==0;
 	}
-    
+
 	public static String prependStringWithChar(String input, char prependChar, int times) {
 		StringBuilder builder = new StringBuilder();
 		if (times > 0) {
@@ -231,7 +231,7 @@ public class BaseHelper {
 
 	/**
 	 * This method checks a list of strings are contained in a given string
-	 * 
+	 *
 	 * @param actualReportString
 	 * @param inputList
 	 * @return HashMap<String, Boolean> a map with the string and whether it's
@@ -256,8 +256,8 @@ public class BaseHelper {
 				}
 			}
 		}
-		
-		Log.info(String.format("Match String Map is : ", LogHelper.mapToString(stringsToMatch)));
+
+		Log.info(String.format("Match String Map is : %s", LogHelper.mapToString(stringsToMatch)));
 		return stringsToMatch;
 	}
 
@@ -317,7 +317,7 @@ public class BaseHelper {
 		TestContext.INSTANCE.setUserCulture("fr");
 		startString = BaseHelper.getPaginationShowingStartString();
 		Log.info("Paging start string is: " + startString);
-		
+
 		Log.info(String.format("Setting user culture to zh-Hans"));
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		startString = BaseHelper.getPaginationShowingStartString();

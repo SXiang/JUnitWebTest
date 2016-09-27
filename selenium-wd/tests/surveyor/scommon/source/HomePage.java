@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -29,138 +29,135 @@ import surveyor.dataaccess.source.Resources;
  */
 public class HomePage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Home";
-	public static final String STRPageTitle = String.format("%s - %s", 
+	public static final String STRPageTitle = String.format("%s - %s",
 			Resources.getResource(ResourceKeys.Index_Title), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Index_Heading);
 	public static final String Constant_Offline = Resources.getResource(ResourceKeys.Constant_Offline);
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
-	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";	
+	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";
 	public static final String EQ_REPORT_LINK_XPATH = "//*[@id='report-investigation']";
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[1]/a/img")
 	private WebElement picarroLogo;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Administrator')]")
 	private WebElement dropDownAdministrator;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[2]/ul/li/a")
-	private WebElement dropDownLoginUser;	
-	
+	private WebElement dropDownLoginUser;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='selected-timezone']")
 	private WebElement dropDownTimeZone;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='user-preferences']/a")
 	private WebElement linkPreference;
-	
+
 	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[2]/a")
 	private WebElement linkChangePwd;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='user-release-notes']/a")
 	private WebElement linkReleaseNotes;
-	
+
 	@FindBy(how = How.XPATH, using = "/html/body/div[1]/div/ul/li/ul/li[4]/a")
 	private WebElement linkManual;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/ul/li[6]/a")
 	private WebElement linkLogOut;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='home']/a")
 	private WebElement linkDashboard;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='driving-surveys']/a")
 	private WebElement linkDrivingSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-surveyors']/a")
 	private WebElement linkSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='fleet-map']/a")
 	private WebElement linkFleetMap;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
 	private WebElement linkReports;
-	
+
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement labelSurveyorDashboard;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]/div/div[1]/h3")
 	private WebElement labelActiveSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[1]/div/div[2]/div[2]/a")
 	private WebElement linkViewAllSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/div/div[1]/h3")
 	private WebElement labelRecentDrivingSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/div/div[2]/div[2]/a")
 	private WebElement linkViewAllDrivingSurveys;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='footer']/div/footer/p")
-	private WebElement labelFooter;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	private WebElement linkCompliance;
 
-	// Link may NOT be present for all users. Conditionally detect this link. 
+	// Link may NOT be present for all users. Conditionally detect this link.
 	private WebElement linkInvestigation;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-reference-gas']")
 	private WebElement linkReferenceGas;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-system-history']")
 	private WebElement linkSystemHistory;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
 	private WebElement linkFirstOnlineSurveyor;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]")
 	private List<WebElement> linkOnlineOffline;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody/tr[1]/td[5]/a")
 	private WebElement firstDrivingSurveyLink;
 
 	private String strTRRDSXPath = "//*[@id='datatable-Session']/tbody/tr";
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody")
 	private WebElement tableActiveSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_length']/label/select")
 	private WebElement paginationInputRDS;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor_length']/label/select")
 	private WebElement paginationInputAS;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_info']")
 	private WebElement labelRDSPagesInfo;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor_info']")
 	private WebElement lableASPagesInfo;
-	
+
 	private String pageNumLinkBaseXPath = "//*[@id='datatable-Session_paginate']/span";
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_next']")
 	private WebElement btnPageNext;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement subTitleSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement subTitileDrivingSurveys;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-surveyors']/a")
 	private WebElement linkManageSurveyors;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
 	protected WebElement linkPicAdminCalibration;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-release-notes']/a")
 	protected WebElement linkPicAdminManageReleaseNotes;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-customers']/a")
 	protected WebElement linkPicAdminManageCus;
 
@@ -187,13 +184,13 @@ public class HomePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
 	protected WebElement linkPicAdminViewSurLogs;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='00000000-0000-0000-0001-000000000000']/a")
 	protected WebElement dropDownPST;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[@href='/Home' and text()='Return to Home Page']")
 	protected WebElement returnHomePage;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody/tr[1]/td[5]/a")
 	protected WebElement firstSurvey;
 
@@ -205,10 +202,10 @@ public class HomePage extends SurveyorBasePage {
 	 */
 	public HomePage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
-		
+
 		Log.info("\nThe Home Page URL is: " + this.strPageURL);
 	}
-	
+
 	public boolean checkIfAtHomePage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle)) {
 			Log.info("Current page is '"+STRPageTitle+"'");
@@ -216,9 +213,9 @@ public class HomePage extends SurveyorBasePage {
 		}
 		return false;
 	}
-	
+
 	@Override
-	public void open() {	
+	public void open() {
 		driver.get(strPageURL);
 		this.waitForPageLoad();
 	}
@@ -234,43 +231,43 @@ public class HomePage extends SurveyorBasePage {
 	public WebElement getLinkPicAdminManageReleaseNotes() {
 		return this.linkPicAdminManageReleaseNotes;
 	}
-	
+
 	public WebElement getLinkPicAdminManageCus() {
 		return this.linkPicAdminManageCus;
 	}
 
 	public WebElement getLinkPicAdminManageUsers() {
 		return this.linkPicAdminManageUsers;
-	}	
+	}
 
 	public WebElement getLinkPicAdminManageLoc() {
 		return this.linkPicAdminManageLoc;
-	}	
+	}
 
 	public WebElement getLinkPicAdminManageSur() {
 		return this.linkPicAdminManageSur;
-	}	
+	}
 
 	public WebElement getLinkPicAdminManageAnl() {
 		return this.linkPicAdminManageAnl;
-	}	
+	}
 
 	public WebElement getLinkPicAdminManageRefGasBottles() {
 		return this.linkPicAdminManageRefGasBottles;
-	}	
+	}
 
 	public WebElement getLinkPicAdminManageSurHistories() {
 		return this.linkPicAdminManageSurHistories;
-	}	
+	}
 
 	public WebElement getLinkPicAdminViewAnlLogs() {
 		return this.linkPicAdminViewAnlLogs;
-	}	
+	}
 
 	public WebElement getLinkPicAdminViewSurLogs() {
 		return this.linkPicAdminViewSurLogs;
 	}
-	
+
 	public WebElement getDropDownLoginUser() {
 		return this.dropDownLoginUser;
 	}
@@ -291,7 +288,7 @@ public class HomePage extends SurveyorBasePage {
 			Log.error("Picarro logo is not visiable");
 			return false;
 		}
-		
+
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
@@ -300,42 +297,42 @@ public class HomePage extends SurveyorBasePage {
 			Log.error("Not found - link to dashboard");
 			return false;
 		}
-		
+
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
 			Log.error("Found - link to Customer Admin");
 			return false;
 		}
-			
+
 		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
 			Log.error("Found - link to Picarro Admin");
 			return false;
 		}
-		
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkFleetMap.isDisplayed()){
 			Log.error("Not found - link to FleetMap");
 			return false;
 		}
-		
+
 		if (!this.linkReports.isDisplayed()){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -344,175 +341,175 @@ public class HomePage extends SurveyorBasePage {
 			Log.error("Not found - picarro logo");
 			return false;
 		}
-		
+
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
-			return false;		
-		
+			return false;
+
 		if (!this.linkDashboard.isDisplayed()){
 			Log.error("Not found - link to Dashboard");
 			return false;
 		}
-		
+
 		if (!this.linkPicarroAdmin.isDisplayed()){
 			Log.error("Not found - link to Picarro Admin");
 			return false;
 		}
-		
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkFleetMap.isDisplayed()){
 			Log.error("Not found - link to Fleet Map");
 			return false;
 		}
-		
+
 		if (!this.linkReports.isDisplayed()){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	public boolean checkVisibilityForCusDR(String loginUser) {
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
-		
+
 		if (!this.linkDashboard.isDisplayed()){
 			Log.error("Not found - link to Dashboard");
 			return false;
 		}
-		
+
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
 			Log.error("Found - link to Customer Admin");
 			return false;
 		}
-			
+
 		if (this.isElementPresent(this.strLinkPicarroAdminXPath)) {
 			Log.error("Found - link to Picarro Admin");
 			return false;
-		}		
-		
+		}
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		//Need check with Chris Vale if "Fleet Map" should be invisible to driver?
 //		if (!this.linkFleetMap.isDisplayed())
 //			return false;
-		
+
 		if (this.isElementPresent(this.strLinkReportsXPath)){
 			Log.error("Found - link to Reports");
 			return false;
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean checkVisibilityForCusSU(String loginUser) {
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
-		
+
 		if (!this.linkDashboard.isDisplayed()){
 			Log.error("Not found - link to Dashboard");
 			return false;
 		}
-		
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkFleetMap.isDisplayed()){
 			Log.error("Not found - link to Fleet Map");
 			return false;
 		}
-		
+
 		if (!this.linkReports.isDisplayed()){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
-		
+
 		if (this.isElementPresent(this.strLinkCusAdminXPath)) {
 			{
 				Log.error("Found - link to Customer Admin");
 				return false;
 			}
 		}
-			
+
 		if (this.isElementPresent(this.strLinkPicarroAdminXPath)){
 			Log.error("Found - link to Picarro Admin");
 			return false;
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
 		return true;
 	}
-	
-	public boolean checkVisibilityForCusUA(String loginUser) {	
+
+	public boolean checkVisibilityForCusUA(String loginUser) {
 		WebElement userDropDown = this.driver.findElement(By.xpath("//a[contains(text(),'" + loginUser + "')]"));
 		if (!userDropDown.getText().trim().equalsIgnoreCase(loginUser))
 			return false;
-		
+
 		if (!this.linkDashboard.isDisplayed()){
 			Log.error("Not found - link to Dashboard");
 			return false;
 		}
-		
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkFleetMap.isDisplayed()){
 			Log.error("Not found - link to Fleet Map");
 			return false;
 		}
-		
+
 		if (!this.linkReports.isDisplayed()){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
-		
+
 		if (!this.linkCusAdmin.isDisplayed()){
 			Log.error("Not found - link to Customer Admin");
 			return false;
@@ -525,114 +522,114 @@ public class HomePage extends SurveyorBasePage {
 		}
 		catch (org.openqa.selenium.NoSuchElementException e) {
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean checkAdministratorHomePage() {
 		if (!this.picarroLogo.isDisplayed()){
 			Log.error("Not found - Picarro Logo");
 			return false;
 		}
-		
+
 		if (!this.dropDownAdministrator.isDisplayed()){
 			Log.error("Not found - link to Admin dropdown");
 			return false;
 		}
-		
+
 		if (!this.linkDashboard.isDisplayed()){
 			Log.error("Not found - link to Dashboard");
 			return false;
 		}
-		
+
 		if (!this.linkDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.linkSurveyors.isDisplayed()){
 			Log.error("Not found - link to Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkFleetMap.isDisplayed()){
 			Log.error("Not found - link to Fleet Map");
 			return false;
 		}
-		
+
 		if (!this.linkReports.isDisplayed()){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
-		
+
 		if (!this.linkPicarroAdmin.isDisplayed()){
 			Log.error("Not found - link to Picarro Admin");
 			return false;
 		}
-		
-		return true;	
-	}	
-	
+
+		return true;
+	}
+
 	public boolean checkAdministratorDashboard() {
 		Log.clickElementInfo("Dashboard",ElementType.LINK);
 		this.linkDashboard.click();
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		if (!this.labelSurveyorDashboard.isDisplayed()){
 			Log.error("Not found - Surveyor Dashboard");
 			return false;
 		}
-		
+
 		if (!this.labelActiveSurveyors.isDisplayed()){
 			Log.error("Not found - Active Surveyors");
 			return false;
 		}
-		
+
 		if (!this.linkViewAllSurveyors.isDisplayed()){
 			Log.error("Not found - link to View All Surveyors");
 			return false;
 		}
-		
+
 		if (!this.labelRecentDrivingSurveys.isDisplayed()){
 			Log.error("Not found - Recent Driving surveys");
 			return false;
 		}
-		
+
 		if (!this.linkViewAllDrivingSurveys.isDisplayed()){
 			Log.error("Not found - link to View All Driving Surveys");
 			return false;
 		}
-		
+
 		if (!this.labelFooter.isDisplayed()){
 			Log.error("Not found - page footer");
 			return false;
 		}
-		
+
 		return true;
-	}	
-	
+	}
+
 	public boolean checkDashBoardViewAllSurveyorsLink() {
 		// 1. Verify link is Online and is clickable.
-		if (!this.getLinkFirstOnlineSurveyor().getText().equals("Online")) 
+		if (!this.getLinkFirstOnlineSurveyor().getText().equals("Online"))
 			return false;
 
 		// Click on the first Online Surveyor
 		this.clickOnFirstOnlineSurveyorLink();
-		
+
 		// 2. Verify user is navigated to Observer view
 		// Wait for Observer view page to load.
 		ObserverViewPage observerViewPage = new ObserverViewPage(driver, testSetup, ObserverViewPage.STRURLPath);
-		PageFactory.initElements(driver, observerViewPage);		
+		PageFactory.initElements(driver, observerViewPage);
 		observerViewPage.waitForPageLoad();
 		observerViewPage.waitForConnectionComplete();
-		
-		// Click on Picarro icon present at bottom of the page 
+
+		// Click on Picarro icon present at bottom of the page
 		observerViewPage.clickPicarroLogoButton();
-		
+
 		// 3. Verify User is navigated back to Home page
 		// Wait for Home page to load.
 		this.waitForPageLoad();
@@ -640,25 +637,25 @@ public class HomePage extends SurveyorBasePage {
 		// Click on View All Surveyors link present in Active Surveyors section
 		Log.clickElementInfo("View All Surveyors",ElementType.LINK);
 		this.linkViewAllSurveyors.click();
-		
+
 		// 4. Verify User is navigated to Surveyors Page
 		// Wait for Surveyor Systems page to load.
 		SurveyorSystemsPage surveyorSystemsPage = new SurveyorSystemsPage(driver, testSetup, SurveyorSystemsPage.STRURLPath);
-		PageFactory.initElements(driver, surveyorSystemsPage);		
+		PageFactory.initElements(driver, surveyorSystemsPage);
 		surveyorSystemsPage.waitForPageLoad();
-		
+
 		Log.info(String.format("\nThe current URL is: %s\n", this.driver.getCurrentUrl()));
 		Log.info(String.format("\nThe current page title is: %s\n", this.driver.getTitle()));
-		
+
 		if (!this.driver.getCurrentUrl().contains("SurveyorSystems"))
 			return false;
-		
+
 		if (!this.driver.getTitle().contains("Surveyors - Surveyor"))
 			return false;
-		
+
 		return true;
-	}	
-	
+	}
+
 	public boolean checkDashBoardViewAllDrivingSurveysLink() {
 		// Click on View all driving surveys.
 		Log.clickElementInfo("View All Driving Surveys",ElementType.LINK);
@@ -666,37 +663,37 @@ public class HomePage extends SurveyorBasePage {
 
 		// Wait for driving survey page to load.
 		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, MeasurementSessionsPage.STRURLPath);
-		PageFactory.initElements(driver, measurementSessionsPage);		
+		PageFactory.initElements(driver, measurementSessionsPage);
 		measurementSessionsPage.waitForPageLoad();
 
 		if (!this.driver.getCurrentUrl().contains("MeasurementSessions"))
 			return false;
-		
+
 		if (!this.driver.getTitle().contains("Driving Surveys"))
 			return false;
-		
+
 		// Wait for the survey to become Completed.
 		measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
-		
+
 		// Click on a recent driving survey
 		measurementSessionsPage.clickOnFirstViewSurveyLink();
-		
-		// 1. Verify User is navigated to Survey view 
+
+		// 1. Verify User is navigated to Survey view
 		// Wait for Survey view to load.
 		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, testSetup, SurveyViewPage.STRURLPath);
-		PageFactory.initElements(driver, surveyViewPage);		
+		PageFactory.initElements(driver, surveyViewPage);
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.checkIfAtSurveyViewPage();
-		
+
 		// Click on Picarro icon present at bottom of the page
 		surveyViewPage.clickPicarroLogoButton();
 		this.waitForPageLoad();
-		
+
 		// 2. Verify User is navigated to Driving Surveys Page
 		// Click on View All Driving Surveys link present under recent driving surveys section
 		this.clickOnViewAllDrivingSurveysLink();
 		measurementSessionsPage.waitForPageLoad();
-		
+
 		// 3. Verify User is navigated to Survey view
 		// Select a survey and click on View Survey button
 		measurementSessionsPage.clickOnFirstViewSurveyLink();
@@ -705,7 +702,7 @@ public class HomePage extends SurveyorBasePage {
 
 		return true;
 	}
-	
+
 	public void clickOnViewAllDrivingSurveysLink() {
 		Log.clickElementInfo("View All Driving Surveys", ElementType.LINK);
 		this.linkViewAllDrivingSurveys.click();
@@ -719,15 +716,15 @@ public class HomePage extends SurveyorBasePage {
 	public WebElement getLinkSurveyors() {
 		return this.linkSurveyors;
 	}
-	
+
 	public WebElement getLinkReports() {
 		return this.linkReports;
 	}
-	
+
 	public WebElement getLinkCompliance() {
 		return this.linkCompliance;
 	}
-	
+
 	public WebElement getLinkInvestigation() {
 		try {
 			this.linkInvestigation = driver.findElement(By.xpath(EQ_REPORT_LINK_XPATH));
@@ -736,51 +733,51 @@ public class HomePage extends SurveyorBasePage {
 		}
 		return this.linkInvestigation;
 	}
-	
+
 	public WebElement getLinkReferenceGas() {
 		return this.linkReferenceGas;
 	}
-	
+
 	public WebElement getLinkSystemHistory() {
 		return this.linkSystemHistory;
 	}
-	
+
 	public WebElement getLinkDrivingSurveys() {
 		return this.linkDrivingSurveys;
 	}
-	
+
 	public WebElement getLinkFleetMap() {
 		return this.linkFleetMap;
 	}
-	
+
 	public String getPageNumLinkBaseXPath() {
 		return this.pageNumLinkBaseXPath;
 	}
-	
+
 	public WebElement getLabelRDSPagesInfo() {
 		return this.labelRDSPagesInfo;
 	}
-	
+
 	public WebElement getLabelActiveSurveyors() {
 		return this.labelActiveSurveyors;
 	}
-	
+
 	public WebElement getBtnPageNext() {
 		return this.btnPageNext;
 	}
-	
+
 	public WebElement getSubTitleSurveyors() {
 		return this.subTitleSurveyors;
 	}
-	
+
 	public WebElement getSubTitleDrivingSurveys() {
 		return this.subTitileDrivingSurveys;
 	}
-	
+
 	public WebElement getLinkManageSurveyors() {
 		return this.linkManageSurveyors;
 	}
-	
+
 	public void setPagination(String str) {
 		List<WebElement> options = this.paginationInputRDS.findElements(By.tagName("option"));
 		for (WebElement option : options) {
@@ -790,7 +787,7 @@ public class HomePage extends SurveyorBasePage {
 				break;
 			}
 		}
-	}	
+	}
 
 	public WebElement getFirstSurvey() {
 		return firstSurvey;
@@ -798,17 +795,17 @@ public class HomePage extends SurveyorBasePage {
 
 	public void clickOnFirstMatchingDrivingSurvey(String surveyTag) {
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		String tagXPath;
 		String completedLinkXPath;
 		WebElement tagCell;
 		WebElement completedLink;
-		
+
 		List<WebElement> rows = this.tableRecentDrivingSurveys.findElements(By.xpath(this.strTRRDSXPath));
 		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
 			tagXPath = this.strTRRDSXPath + "["+rowNum+"]/td[1]";
 			tagCell = this.tableRecentDrivingSurveys.findElement(By.xpath(tagXPath));
-			
+
 			if (tagCell.getText().trim().equalsIgnoreCase(surveyTag)) {
 				completedLinkXPath = this.strTRRDSXPath + "["+rowNum+"]/td[5]/a";
 				completedLink = this.tableRecentDrivingSurveys.findElement(By.xpath(completedLinkXPath));
@@ -822,32 +819,32 @@ public class HomePage extends SurveyorBasePage {
 
 	public List<String> getTagListRecentDrivingSurveys() {
 		List<String> tagList = new ArrayList<String>();
-		
+
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-		
+
 		String tagXPath;
 		WebElement tagCell;
-		
+
 		List<WebElement> rows = this.tableRecentDrivingSurveys.findElements(By.xpath(this.strTRRDSXPath));
-		
+
 		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
 			tagXPath = this.strTRRDSXPath + "["+rowNum+"]/td[1]";
 			tagCell = this.tableRecentDrivingSurveys.findElement(By.xpath(tagXPath));
-			
+
 			tagList.add(tagCell.getText().trim());
 		}
-		
+
 		return tagList;
 	}
-	
+
 	public WebElement getDropDownTimeZone() {
 		return dropDownTimeZone;
 	}
-	
+
 	public void setTimeZoneToPST() {
 		getDropDownPST().click();
 	}
-	
+
 	public WebElement getDropDownPST() {
 		return this.dropDownPST;
 	}
@@ -859,7 +856,7 @@ public class HomePage extends SurveyorBasePage {
 	public List<WebElement> getLinkOnlineOffline() {
 		return linkOnlineOffline;
 	}
-	
+
 	public WebElement getFirstOfflineSurveyLink(){
 		List<WebElement> firstOfflineSurvey=getLinkOnlineOffline();
 		Iterator<WebElement> listIterator=firstOfflineSurvey.iterator();
@@ -868,7 +865,7 @@ public class HomePage extends SurveyorBasePage {
 			if(element.getText().equalsIgnoreCase(Constant_Offline)){
 				return element;
 			}
-		}		
+		}
 		return null;
 	}
 
@@ -878,7 +875,7 @@ public class HomePage extends SurveyorBasePage {
 		}
 		return false;
 	}
-	
+
 	public void waitForReleaseNotesToLoad(WebDriver driver,String winHandle) {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
@@ -886,7 +883,7 @@ public class HomePage extends SurveyorBasePage {
             }
         });
     }
-	
+
 	public void waitForReleaseNotesLinktoLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
@@ -894,7 +891,7 @@ public class HomePage extends SurveyorBasePage {
             }
         });
     }
-	
+
 	@Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -903,7 +900,7 @@ public class HomePage extends SurveyorBasePage {
             }
         });
     }
-	
+
 	public void waitForFirstDrivingSurveyToBeCompleted() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {

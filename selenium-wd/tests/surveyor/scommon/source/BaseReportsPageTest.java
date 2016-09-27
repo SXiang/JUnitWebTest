@@ -76,7 +76,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 		
 	@Override
-	public void postTestMethodProcessing() {
+	public void _postTestMethodProcessing() {
 		try {
 			cleanUp();
 			reportsPage.logout();

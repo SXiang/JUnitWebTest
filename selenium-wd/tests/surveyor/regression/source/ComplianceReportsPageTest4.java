@@ -6,15 +6,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.testng.Assert;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -25,11 +20,8 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
-	
-	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static TestEnvironmentActions testEnvironmentAction;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -57,10 +49,8 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
