@@ -302,6 +302,7 @@ public class SurveyorBasePage extends BasePage {
 				if (str.equals(option.getText().trim())) {
 				Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
+					waitForNumberOfRecords(String.format(STRPaginationMsgPattern,str));
 					break;
 				}
 			}catch(StaleElementReferenceException e){
@@ -427,7 +428,7 @@ public class SurveyorBasePage extends BasePage {
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
 		Log.method("getRecordsShownOnPage", driver);
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));		
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
 		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}

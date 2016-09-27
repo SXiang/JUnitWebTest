@@ -2480,12 +2480,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		logAction("ComplianceReportsPageActions.waitForReportGenerationToComplete", data, dataRowID);
 		this.getComplianceReportsPage().checkErrorMessages();
 		this.getComplianceReportsPage().waitForPageLoad();
-		try{
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(workingDataRow.title,
 				TestContext.INSTANCE.getLoggedInUser());
-		}catch(Exception e){
-			Log.warn("dsfa"+e);
-		}
 		return true;
 	}
 

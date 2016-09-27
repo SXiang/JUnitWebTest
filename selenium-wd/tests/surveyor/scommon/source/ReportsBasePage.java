@@ -1606,8 +1606,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
 				// Use API call for environments where direct DB access is not available (eg P3Scale).
-				ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
-				reportId = reportJobsStatObj.Id;
+				/* DE2331 created: This method is not stable and throwing exceptions - need to be fixed
+				 * The try catch block could be removed after the fix
+				 */
+				try{
+					ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+					reportId = reportJobsStatObj.Id;
+				}catch(Exception e){
+					reportId = Report.getReport(rptTitle).getId();
+				}
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -2601,7 +2608,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info("Getting ReportJobsStat from gson.fromJson()...");
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
 		Log.info(String.format("Successfully returned ReportJobsStat object -> %s", reportJobsStatObj.toString()));
-		return reportJobsStatObj;
+		return reportJobsStatObj;		
 	}
 
 	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum,
