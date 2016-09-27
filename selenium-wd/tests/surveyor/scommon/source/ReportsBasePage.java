@@ -2608,7 +2608,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info("Getting ReportJobsStat from gson.fromJson()...");
 		ReportJobsStat reportJobsStatObj = gson.fromJson(apiResponse, ReportJobsStat.class);
 		Log.info(String.format("Successfully returned ReportJobsStat object -> %s", reportJobsStatObj.toString()));
-		return reportJobsStatObj;		
+		return reportJobsStatObj;
 	}
 
 	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum,
