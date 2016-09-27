@@ -190,7 +190,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- Report is generated successfully for specified customer survey and Assets of specified customer are present in maps
 	 * 		- Percent Coverage value is present in SSRS PDF
 	 */
-	@Test /* Using picarro customer as there is no assets / survey for other customer on sqaauto now */
+	@Test
 	public void TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser() throws Exception {
 		Log.info("\nRunning TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser ...");
 		
@@ -217,7 +217,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		String ASSET_DATA_STRING = complianceReportsPageAction.getSelectedAssetNames(reportDataRowID);
 
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
-//		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, reportDataRowID));
 	}
 	
@@ -231,7 +231,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- All surveys selected from different pages should be included
 	 * 		- Report should be generated successfully showing information of all selected surveys
 	 */
-	@Test //debug
+	@Test
 	public void TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode() throws Exception {
 		Log.info("\nRunning TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode ...");
 		
@@ -260,7 +260,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * Results:
 	 * 		- Report should be generated successfully and Gaps should be present according to the surveys included
 	 */
-	@Test //debug
+	@Test
 	public void TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem() throws Exception {
 		Log.info("\nRunning TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem ...");
 		
@@ -281,7 +281,6 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		getComplianceReportsPage().fillReport(rpt);
 		getComplianceReportsPage().selectFOVColor(colors);
 		getComplianceReportsPage().addReport();
-		//getComplianceReportsPage().cancelReport();
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);

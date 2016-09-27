@@ -2187,13 +2187,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String PCRA = null;
 		StoredProcComplianceGetCoverage storedProcObj = StoredProcComplianceGetCoverage.getCoverage(reportId);
 		List<String> expectedReportString = new ArrayList<String>();
+		int matchIndex = 0;
 		if (userSelection.get(KEYPCA).equals("1")) {
-			PCA = matches.get(0).replaceAll("[\\D+]", "");
+			PCA = matches.get(matchIndex++).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageAssets(PCA);
 			expectedReportString.add(ComplianceReportSSRS_TotalLinearAssetCoverage);
 		}
 		if (userSelection.get(KEYPCRA).equals("1")) {
-			PCRA = matches.get(1).replaceAll("[\\D+]", "");
+			PCRA = matches.get(matchIndex).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageReportArea(PCRA);
 			expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 		}

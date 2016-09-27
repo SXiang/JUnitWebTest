@@ -519,6 +519,8 @@ public class SurveyorBasePage extends BasePage {
 					tableHeadingElement.click();
 					waitForTableDataToLoad();
 					try{
+						String sortOrderCss = "#"+dataTableElement+" thead > tr > th[aria-sort]";
+						waitUntilPresenceOfElementLocated(By.cssSelector(sortOrderCss));
 						WebElementExtender.isAttributePresent(tableHeadingElement, "aria-sort");
 						boolean isAscending =  tableHeadingElement.getAttribute("aria-sort").equals("ascending");
 						if(isAscending){
