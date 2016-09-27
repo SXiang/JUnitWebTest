@@ -678,7 +678,6 @@ public class TestSetup {
 			Log.clickElementInfo("Login");
 			btnLogin.click();
 			WebElementExtender.waitForPageLoad(homePageText, timeout, webDriver);
-			webDriver.quit();
 		}
 	}
 

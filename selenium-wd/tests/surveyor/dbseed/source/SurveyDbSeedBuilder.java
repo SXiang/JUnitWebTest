@@ -25,40 +25,40 @@ public class SurveyDbSeedBuilder extends BaseDbSeedBuilder {
         SQLServerBulkCSVFileRecord fileRecord = null;
         try
         {
-            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.  
-            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.  
-            fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);      
-            fileRecord.addColumnMetadata(1, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(2, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(3, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(4, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(5, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(6, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(7, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(8, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(9, null, java.sql.Types.TIMESTAMP, 0, 0);  
-            fileRecord.addColumnMetadata(10, null, java.sql.Types.TIMESTAMP, 0, 0);  
-            fileRecord.addColumnMetadata(11, null, java.sql.Types.NVARCHAR, 450, 0);  
-            fileRecord.addColumnMetadata(12, null, java.sql.Types.NVARCHAR, 50, 0);  
-            fileRecord.addColumnMetadata(13, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(14, null, java.sql.Types.DOUBLE, 0, 0);  
-            fileRecord.addColumnMetadata(15, null, java.sql.Types.NVARCHAR, 50, 0);  
-            fileRecord.addColumnMetadata(16, null, java.sql.Types.BIT, 0, 0);  
-            fileRecord.addColumnMetadata(17, null, java.sql.Types.TIMESTAMP, 0, 0);  
-            fileRecord.addColumnMetadata(18, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(19, null, java.sql.Types.NVARCHAR, 50, 0); 
-            
-            // Use 2.4 DB schema.
-            //fileRecord.addColumnMetadata(20, null, java.sql.Types.TIMESTAMP, 0, 0); 
+            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.
+            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.
+            fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);
+            fileRecord.addColumnMetadata(1, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(2, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(3, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(4, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(5, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(6, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(7, null, java.sql.Types.DOUBLE, 0, 0);
+            fileRecord.addColumnMetadata(8, null, java.sql.Types.DOUBLE, 0, 0);
+            fileRecord.addColumnMetadata(9, null, java.sql.Types.TIMESTAMP, 0, 0);
+            fileRecord.addColumnMetadata(10, null, java.sql.Types.TIMESTAMP, 0, 0);
+            fileRecord.addColumnMetadata(11, null, java.sql.Types.NVARCHAR, 450, 0);
+            fileRecord.addColumnMetadata(12, null, java.sql.Types.NVARCHAR, 50, 0);
+            fileRecord.addColumnMetadata(13, null, java.sql.Types.DOUBLE, 0, 0);
+            fileRecord.addColumnMetadata(14, null, java.sql.Types.DOUBLE, 0, 0);
+            fileRecord.addColumnMetadata(15, null, java.sql.Types.NVARCHAR, 50, 0);
+            fileRecord.addColumnMetadata(16, null, java.sql.Types.BIT, 0, 0);
+            fileRecord.addColumnMetadata(17, null, java.sql.Types.TIMESTAMP, 0, 0);
+            fileRecord.addColumnMetadata(18, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(19, null, java.sql.Types.NVARCHAR, 50, 0);
+
+            // 2.4 DB schema does NOT have this column. 2.5 DB schema includes this column.
+        	fileRecord.addColumnMetadata(20, null, java.sql.Types.TIMESTAMP, 0, 0);
 
             seedData.setSeedData(fileRecord);
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            // Log error.  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
+        catch (Exception e)
+        {
+            // Log error.
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
 		return seedData;
 	}
 }
