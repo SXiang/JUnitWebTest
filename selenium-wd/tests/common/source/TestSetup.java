@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package common.source;
 
@@ -31,8 +31,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.runner.Description;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.relevantcodes.extentreports.DisplayOrder;
@@ -44,6 +48,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorConstants.Environment;
@@ -51,13 +56,13 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
 /**
  * This is the initial class to setup up the testing environment and
  * configuration
- * 
+ *
  * 1. Load the testing property for test setup information.
  * 2. Check and upload DB seed data.
- * 
+ *
  * @version 1.0
  * @author zlu
- * 
+ *
  */
 public class TestSetup {
 
@@ -91,6 +96,9 @@ public class TestSetup {
 	private String loginUser;
 	private String loginPwd;
 
+	private String firstTimeLoginUser;
+	private String firstTimeLoginPwd;
+
 	private String loginUser0000;
 	private String loginPwd0000;
 	private String loginUserDisplayName;
@@ -118,7 +126,7 @@ public class TestSetup {
 										// recommended to use in real test case
 	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
-	
+
 	private String downloadPath;
 
 	private String dbIPAddress;
@@ -154,15 +162,15 @@ public class TestSetup {
 
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
-	
+
 	private static boolean parallelBuildEnabled;
 
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
-	
+
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
-	
+
 	public TestSetup() {
 		initialize();
 	}
@@ -179,7 +187,7 @@ public class TestSetup {
 	 * startNetworkProxy(true|false); setNetworkProxyDownstreamKbps(<long>);
 	 * setNetworkProxyUpstreamKbps(<long>); ... <perform test actions> ...
 	 * stopNetworkProxy();
-	 * 
+	 *
 	 * 2. Using Proxy to turn OFF/ON HTTP Traffic for Selenium tests.
 	 * turnOffHttpTraffic(); ... <perform test actions> ... turnOnHttpTraffic()
 	 */
@@ -330,6 +338,14 @@ public class TestSetup {
 		return this.loginUserDisplayName;
 	}
 
+	public String getFirstTimeLoginUser() {
+		return this.firstTimeLoginUser;
+	}
+
+	public String getFirstTimeLoginPwd() {
+		return this.firstTimeLoginPwd;
+	}
+
 	public String getRandomNumber() {
 		return this.randomNumber;
 	}
@@ -405,11 +421,11 @@ public class TestSetup {
 	public String getTestRunCategory() {
 		return testRunCategory;
 	}
-	
+
 	public String getTestReportCategory() {
 		return getSystemProperty(this.testProp, "testReportCategory","testRunCategory");
 	}
-	
+
 	public boolean isGenerateBaselineShapeFiles() {
 		return generateBaselineShapeFiles;
 	}
@@ -545,6 +561,9 @@ public class TestSetup {
 			this.loginPwd0000 = this.testProp.getProperty("loginPwd0000");
 			this.loginUserDisplayName = this.testProp.getProperty("loginUserDisplayName");
 
+			this.firstTimeLoginUser = this.testProp.getProperty("firstTimeLoginUser");
+			this.firstTimeLoginPwd = this.testProp.getProperty("firstTimeLoginPwd");
+
 			initializeDBProperties();
 
 			this.setBrowser(this.testProp.getProperty("browser"));
@@ -567,12 +586,12 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
-			
+
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 			this.setPlatform(this.testProp.getProperty("platform"));
-			
+
 			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
 			if (automationReportingApiEnabledValue != null && automationReportingApiEnabledValue != "") {
@@ -602,16 +621,16 @@ public class TestSetup {
 
 			// process the single execution method only once for all threads of execution.
 			if (singleExecutionUnitProcessed.compareAndSet(false, true)) {
-				Log.info(String.format("[Thread - '%s'] Processing Single execution unit method...", 
+				Log.info(String.format("[Thread - '%s'] Processing Single execution unit method...",
 						Thread.currentThread().getName()));
 				processSingleExecutionUnit();
 				singleExecutionCountDown.countDown();
 			} else {
-				Log.info(String.format("[Thread - '%s'] Waiting for Single execution unit method processing to complete", 
+				Log.info(String.format("[Thread - '%s'] Waiting for Single execution unit method processing to complete",
 						Thread.currentThread().getName()));
 				singleExecutionCountDown.await();
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
@@ -621,10 +640,46 @@ public class TestSetup {
 		}
 	}
 
+	// Perform login with Administrator user. Not using page object intentionally to avoid cyclic dependency amongst packages.
+	private void initiateFirstTimeLogin() {
+		Log.method("initiateFirstTimeLogin");
+		// Check if 'AutomationAdmin' user is present in database. If NOT initiate first time login.
+		User user = null;
+		try {
+			user = User.getUser(this.getLoginUser());
+		} catch (Exception ex) {
+			Log.warn(String.format("Did NOT find '%s' user", this.getLoginUser()));
+		}
+		if (user == null) {
+			Log.info("Initiating first time login...");
+			final String loginPageText = "Login";
+			final String homePageText = "Home - Surveyor";
+			final Integer timeout = 30;
+			String loginPageUrl = String.format("%s/Account/Login", this.getBaseUrl());
+			WebDriver webDriver = this.getDriver();
+			webDriver.get(loginPageUrl);
+			WebElementExtender.waitForPageLoad(loginPageText, timeout, webDriver);
+			WebElement tbUserName = webDriver.findElement(By.id("Username"));
+			WebElement tbPassword = webDriver.findElement(By.id("Password"));
+			WebElement btnLogin = webDriver.findElement(By.cssSelector("[type='submit']"));
+			Log.info("Input username as '" + this.getFirstTimeLoginUser() + "'");
+			tbUserName.sendKeys(this.getFirstTimeLoginUser());
+			Log.info("Input password as '<HIDDEN>'");
+			tbPassword.sendKeys(this.getFirstTimeLoginPwd());
+			Log.clickElementInfo("Login");
+			btnLogin.click();
+			WebElementExtender.waitForPageLoad(homePageText, timeout, webDriver);
+			webDriver.quit();
+		}
+	}
+
 	private void processSingleExecutionUnit() throws IOException {
 		// cleanup processes once for all tests.
 		TestSetup.stopChromeProcesses();
-		
+
+		// Verify and invoke first time login with 'Administrator' user if necessary.
+		initiateFirstTimeLogin();
+
 		// If survey upload is enabled, upload the specified surveys to
 		// environment.
 		// We have a 2nd level of check (ie matching base url provided) to
@@ -647,7 +702,7 @@ public class TestSetup {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
 		}
-		
+
 		// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
 		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
 		if (isRunningOnGrid) {
@@ -658,7 +713,7 @@ public class TestSetup {
 			}
 
 			// Final local variable as in-arg to PollManager PollCondition.
-			final Integer requiredNodes = parallelNodes;			
+			final Integer requiredNodes = parallelNodes;
 			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
 			Integer availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 			Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
@@ -667,13 +722,13 @@ public class TestSetup {
 				Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin, nodesToSpin));
 				GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
 				Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
-				
-				PollManager.poll(() -> (GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform()) < requiredNodes), 
+
+				PollManager.poll(() -> (GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform()) < requiredNodes),
 						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES);
-				
+
 			} else {
 				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
-			}				
+			}
 		}
 	}
 
@@ -688,7 +743,7 @@ public class TestSetup {
 		}
 		this.setParallelBuildRunUUID(this.testProp.getProperty("parallelBuild.UUID"));
 	}
-	
+
 	private void setComplianceReportBaselineGenerationTestProperties() {
 		String collectReportJobPerfMetric = this.testProp.getProperty("complianceReport_collectReportJobPerfMetric");
 		if (collectReportJobPerfMetric != null && collectReportJobPerfMetric != "") {
@@ -848,7 +903,7 @@ public class TestSetup {
 		Log.method("deleteAnalyzerLocalDB3");
 		stopAnalyzerIfRunning();
 		String appDataFolder = SystemUtility.getAppDataFolder();
-		Path surveyorDb3Path = Paths.get(appDataFolder, 
+		Path surveyorDb3Path = Paths.get(appDataFolder,
 				"Picarro" + File.separator + "Surveyor" + File.separator + "Data" + File.separator + "Surveyor.db3");
 		Log.info(String.format("Deleting file - '%s'", surveyorDb3Path.toString()));
 		FileUtility.deleteFile(surveyorDb3Path);
@@ -1059,7 +1114,7 @@ public class TestSetup {
 			String workingFolder = getRootPath();
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
-			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath + 
+			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath +
 					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
@@ -1075,14 +1130,14 @@ public class TestSetup {
 			String workingFolder = getRootPath();
 			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
-			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath + 
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", 
+			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath +
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
-							 reportJobTypeId, reportJobTypeName, 
-							 DateUtility.getLongDateString(reportJobStartTime), 
+							 reportJobTypeId, reportJobTypeName,
+							 DateUtility.getLongDateString(reportJobStartTime),
 							 DateUtility.getLongDateString(reportJobEndTime),
-							 DateUtility.getLongDateString(testExecutionStartDate), 
-							 DateUtility.getLongDateString(testExecutionEndDate), 
+							 DateUtility.getLongDateString(testExecutionStartDate),
+							 DateUtility.getLongDateString(testExecutionEndDate),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting report job perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
@@ -1093,18 +1148,18 @@ public class TestSetup {
 
 	public void postAnalyzerApiPerfStat(String aPIName, String aPIUrl, int numberOfSamples,
 			 float average, float median, float responseTime90Pctl, float responseTime95Pctl, float responsetime99Pctl,
-			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate, 
+			 float min, float max, float errorPercent, float throughputPerSec, float kBPerSec, LocalDateTime testExecutionStartDate,
 			 LocalDateTime testExecutionEndDate, String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String analyzerApiCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String analyzerApiCmdFullPath = analyzerApiCmdFolder + File.separator + POST_ANALYZER_API_PERF_STAT_CMD;
-			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath + 
+			String command = "cd \"" + analyzerApiCmdFolder + "\" && " + analyzerApiCmdFullPath +
 					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\""
 							+ " \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), aPIName,
 							 aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, responsetime99Pctl,
-							 min, max, errorPercent, throughputPerSec, kBPerSec, 
-							 DateUtility.getLongDateString(testExecutionStartDate), 
+							 min, max, errorPercent, throughputPerSec, kBPerSec,
+							 DateUtility.getLongDateString(testExecutionStartDate),
 							 DateUtility.getLongDateString(testExecutionEndDate),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting analyzer api perf stat. Command -> " + command);
@@ -1113,7 +1168,7 @@ public class TestSetup {
 			Log.error(e.toString());
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
 		TestContext.INSTANCE.setTestSetup(testSetup);
@@ -1124,7 +1179,7 @@ public class TestSetup {
 
 	/**
 	 * Executes the unit tests for BrowserMobProxy related methods.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testBrowserMobProxyMethods(TestSetup testSetup) {
@@ -1155,7 +1210,7 @@ public class TestSetup {
 
 	/**
 	 * Tests startNetworkProxy() method.
-	 * 
+	 *
 	 * @param testSetup
 	 * @throws MalformedURLException
 	 */
@@ -1165,7 +1220,7 @@ public class TestSetup {
 
 	/**
 	 * Tests stopNetworkProxy() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testStopNetworkProxy(TestSetup testSetup) {
@@ -1174,7 +1229,7 @@ public class TestSetup {
 
 	/**
 	 * Tests getNetworkProxyHarData() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testHarDataFile(TestSetup testSetup) throws IOException {
@@ -1200,7 +1255,7 @@ public class TestSetup {
 
 	/**
 	 * Tests turnOnNetworkConnection() method.
-	 * 
+	 *
 	 * @param testSetup
 	 */
 	private static void testNetworkConnectionOn(TestSetup testSetup, String validTag, Survey objSurvey) {
@@ -1219,7 +1274,7 @@ public class TestSetup {
 
 	/**
 	 * Tests turnOffNetworkConnection() method.
-	 * 
+	 *
 	 * @param testSetup
 	 * @throws MalformedURLException
 	 */
@@ -1301,7 +1356,7 @@ public class TestSetup {
 
 	public void setPushDBSeedBaseUrl(String pushDBSeedBaseUrl) {
 		this.pushDBSeedBaseUrl = pushDBSeedBaseUrl;
-	}	
+	}
 
 	/**
 	 * Use value of System property over VM property
@@ -1311,7 +1366,7 @@ public class TestSetup {
 	public String getSystemProperty(String key){
 		return getSystemProperty(testProp, key, key);
 	}
-	
+
 	public String getSystemProperty(Properties testProp, String sysKey, String propKey){
 		String propValue = null;
 		try{
@@ -1336,7 +1391,7 @@ public class TestSetup {
 	public boolean isLocalGridRun() {
 		if (!BaseHelper.isNullOrEmpty(this.isLocalGridRun) && this.isLocalGridRun.trim().equalsIgnoreCase("true"))
 			return true;
-		
+
 		return false;
 	}
 
@@ -1407,7 +1462,7 @@ public class TestSetup {
 	private void setRemoteBrowser(boolean isRemoteBrowser) {
 		this.isRemoteBrowser = isRemoteBrowser;
 	}
-	
+
 	public static boolean isParallelBuildEnabled() {
 		return parallelBuildEnabled;
 	}
