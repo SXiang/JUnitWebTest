@@ -11,12 +11,12 @@ public class ReportJobPerformanceTestHigh extends BaseReportJobPerformanceTest {
 
 	/**
 	 * Test Case ID: ReportJob_PerformanceTest
-	 * Script: -  	
+	 * Script: -
 	 *	- - Login as specified user
 	 *	- - Create New Compliance Report with specified report data
 	 *  - - Wait for Report to be generated
 	 *  - - Query DB to find processing time for each report job
-	 * Results: - 
+	 * Results: -
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
@@ -24,7 +24,7 @@ public class ReportJobPerformanceTestHigh extends BaseReportJobPerformanceTest {
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
 		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
-		
+
 		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
 	}
 }

@@ -58,7 +58,14 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  * configuration
  *
  * 1. Load the testing property for test setup information.
+<<<<<<< HEAD
  * 2. Check and upload DB seed data.
+=======
+ *
+ * 2. Setting up the drivers.
+ *
+ * 3. It is ongoing and add more code here later when needed
+>>>>>>> master
  *
  * @version 1.0
  * @author zlu
@@ -126,6 +133,8 @@ public class TestSetup {
 										// recommended to use in real test case
 	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
+
+	public static String reportDir = "reports/";
 
 	private String downloadPath;
 
@@ -1124,20 +1133,24 @@ public class TestSetup {
 	}
 
 	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
-			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime, LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime,
+			 LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 LocalDateTime reportStartTime, LocalDateTime reportEndTime,
 			 String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
 			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath +
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
 							 reportJobTypeId, reportJobTypeName,
 							 DateUtility.getLongDateString(reportJobStartTime),
 							 DateUtility.getLongDateString(reportJobEndTime),
 							 DateUtility.getLongDateString(testExecutionStartDate),
 							 DateUtility.getLongDateString(testExecutionEndDate),
+							 DateUtility.getLongDateString(reportStartTime),
+							 DateUtility.getLongDateString(reportEndTime),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting report job perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);

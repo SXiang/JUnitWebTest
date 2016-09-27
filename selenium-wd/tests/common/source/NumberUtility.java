@@ -169,7 +169,7 @@ public class NumberUtility {
 		}
 		return result;
 	}
-	
+
 	public static Double getDoubleValueOf(String str){
 		Double result = 0d;
 		try{
@@ -188,13 +188,9 @@ public class NumberUtility {
 		}
 		return result;
 	}
-	
-	public static String formatString(Double number, Integer maxDecimalsToKeep) {
-		return getDecimalFormat(maxDecimalsToKeep).format(number);
-	}
 
-	public static String formatString(Float number, Integer maxDecimals) {
-		return getDecimalFormat(maxDecimals).format(number);
+	public static <T> String formatString(T number, Integer maxDecimalsToKeep) {
+		return getDecimalFormat(maxDecimalsToKeep).format(number);
 	}
 
 	private static DecimalFormat getDecimalFormat(Integer maxDecimalsToKeep) {
@@ -210,7 +206,7 @@ public class NumberUtility {
 		DecimalFormat format = new DecimalFormat(String.format(formatPattern, formatBldr.toString()));
 		return format;
 	}
-	
+
 	public static void main(String[] args) {
 
 		Log.info("Running test - testFormatString_NoDecimals_InputHasDecimals() ...");
@@ -225,7 +221,7 @@ public class NumberUtility {
 		testFormatString_OneDecimal_InputHasZeroDecimals();
 		Log.info("Running test - testFormatString_FourDecimals() ...");
 		testFormatString_FourDecimals();
-		
+
 		Log.info("Running test - testDecimalsInNumber_NoDecimals() ...");
 		testDecimalsInNumber_NoDecimals();
 		Log.info("Running test - testDecimalsInNumber_OneDecimal() ...");

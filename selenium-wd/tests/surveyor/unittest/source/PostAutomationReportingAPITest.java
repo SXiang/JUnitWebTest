@@ -15,16 +15,16 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
 
 public class PostAutomationReportingAPITest {
 
-	// NOTE: This is local test endpoint. Before running unit tests from this class ensure that this endpoint is alive. 
+	// NOTE: This is local test endpoint. Before running unit tests from this class ensure that this endpoint is alive.
 	private static final String automationReportingApiEndpoint = "http://localhost:63087";
 	private static TestSetup testSetup = null;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		testSetup = new TestSetup();
 		testSetup.setAutomationReportingApiEndpoint(automationReportingApiEndpoint);
 	}
-	
+
 	@Test
 	public void postAutomationRunResultTest() {
 		boolean result = true;
@@ -53,10 +53,12 @@ public class PostAutomationReportingAPITest {
 			LocalDateTime reportJobEndTime = DateUtility.fromUnixTime(1465930655257L);
 			LocalDateTime testExecutionStartDate = DateUtility.fromUnixTime(1465929741383L);
 			LocalDateTime testExecutionEndDate = DateUtility.fromUnixTime(1465930655257L);
+			LocalDateTime reportStartTime = DateUtility.fromUnixTime(DateUtility.getCurrentUnixEpochTime() -300000L);
+			LocalDateTime reportEndTime = DateUtility.fromUnixTime(DateUtility.getCurrentUnixEpochTime());
 			String buildNumber = "2.4.0.0";
 			String testCaseID = "TC1234";
-			testSetup.postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime, reportJobEndTime, 
-					testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, Environment.P3Scale);
+			testSetup.postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime, reportJobEndTime,
+					testExecutionStartDate, testExecutionEndDate, reportStartTime, reportEndTime, buildNumber, testCaseID, Environment.P3Scale);
 		} catch (Exception e) {
 			result = false;
 			message = ExceptionUtility.getStackTraceString(e);
@@ -86,8 +88,8 @@ public class PostAutomationReportingAPITest {
 			LocalDateTime testExecutionEndDate = LocalDateTime.now();
 			String buildNumber = "2.4.0.0";
 			String testCaseID = "TC1234";
-			testSetup.postAnalyzerApiPerfStat(aPIName, aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl, 
-					responsetime99Pctl, min, max, errorPercent, throughputPerSec, kBPerSec, 
+			testSetup.postAnalyzerApiPerfStat(aPIName, aPIUrl, numberOfSamples, average, median, responseTime90Pctl, responseTime95Pctl,
+					responsetime99Pctl, min, max, errorPercent, throughputPerSec, kBPerSec,
 					testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, Environment.P3Scale);
 		} catch (Exception e) {
 			result = false;

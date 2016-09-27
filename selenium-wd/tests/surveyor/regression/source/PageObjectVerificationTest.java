@@ -46,7 +46,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 	private static final String SURVEYOR_DB3 = "Surveyor.db3";
 	private static final String REPLAY_DB3_DEFN_FILE = "replay-db3.defn";
-	
+
 	private static final int X_OFFSET = 100;
 	private static final int Y_OFFSET = 100;
 	private static final int RECT_WIDTH = 100;
@@ -88,6 +88,21 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		preferencesPage = pageObjectFactory.getPreferencesPage();
 		PageFactory.initElements(getDriver(), preferencesPage);
+	}
+
+	/**
+	 * Test Case ID: <None>
+	 * NOTE: This is a test method to verify web application version.
+	 */
+	@Test
+	public void ReferenceOnly_VerifyWebApplicationVersion() {
+		System.out.format("\nRunning ReferenceOnly_VerifyWebApplicationVersion... \n");
+
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		complianceReportsPage.open();
+		complianceReportsPage.waitForPageLoad();
+
+		Log.info("Web application version is: " + complianceReportsPage.getWebAppVersion());
 	}
 
 	/**
@@ -209,7 +224,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 
 		assertTrue(driverViewPage.isEQModeDialogShown());
 		assertTrue(driverViewPage.verifyEQModeDialogMessageEquals(Resources.getResource(ResourceKeys.Dialog_EQModeActive)));
-		
+
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
@@ -244,7 +259,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		assertTrue(driverViewPage.isStartSurveyButtonVisible());
 		assertTrue(driverViewPage.isSystemShutdownButtonVisible());
 
-		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard
 		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
@@ -282,7 +297,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard
 		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
@@ -326,7 +341,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard
 		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
@@ -352,7 +367,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to test the DateTime.isTimeTickingBackward & isTimeTickingForward methods.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	@Test
 	public void ReferenceOnly_SimulatorTest_DatetimeTicksTest() throws InterruptedException {
@@ -371,7 +386,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard
 		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
@@ -419,7 +434,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard 
+		// Start Driving Survey. Survey Time: Day, Solar Radiation: Overcast, Wind: Calm, Survey Type: Standard
 		String tag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Overcast, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
@@ -605,15 +620,14 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	 */
 	@Test
 	@UseDataProvider(value = UserDataProvider.DATA_PROVIDER_ALL_USERS, location = UserDataProvider.class)
-	public void ChangeDefaultLanguageForAllUsers(String username, String password, 
+	public void ChangeDefaultLanguageForAllUsers(String username, String password,
 			String role, String customerName, String customerLocation) {
 		Log.info("\nRunning - ChangeDefaultLanguageForAllUsers ...\n");
-		
-		// Change this value to dropdown culture value in Preferences page to set culture for users. 
+
+		// Change this value to dropdown culture value in Preferences page to set culture for users.
 		String cultureString = "English (United States)";
-		
 		password = new CryptoUtility().decrypt(password);
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(username, password);
 

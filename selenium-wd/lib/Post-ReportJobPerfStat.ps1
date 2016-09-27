@@ -10,6 +10,8 @@
 #           -ReportJobEndTime "2016-07-19T14:48:19.0332528-07:00"  `
 #           -TestExecutionStartDate "2016-07-19T14:48:19.0332528-07:00" `
 #           -TestExecutionEndDate "2016-07-19T14:48:19.0332528-07:00" `
+#           -ReportStartTime "2016-07-19T14:48:19.0332528-07:00" `
+#           -ReportEndTime "2016-07-19T14:48:19.0332528-07:00" `
 #           -BuildNumber "2.4.0.0" `
 #			-TestCaseID "TC1841"  `
 #           -EnvironmentId 3
@@ -42,6 +44,12 @@ param
 
   [Parameter(Mandatory=$true)]
   [String] $TestExecutionEndDate,
+
+  [Parameter(Mandatory=$true)]
+  [String] $ReportStartTime,
+
+  [Parameter(Mandatory=$true)]
+  [String] $ReportEndTime,
 
   [Parameter(Mandatory=$true)]
   [String] $BuildNumber,
@@ -80,12 +88,14 @@ $Body = @{
     ReportJobEndTime = $ReportJobEndTime
     TestExecutionStartDate = $TestExecutionStartDate
     TestExecutionEndDate = $TestExecutionEndDate
+    ReportStartTime = $ReportStartTime
+    ReportEndTime = $ReportEndTime
     BuildNumber = $BuildNumber
 	TestCaseID = $TestCaseID
     EnvironmentId = $EnvironmentId
 }
 
 $jsonBody = (ConvertTo-Json $Body)
-Write-Host "Posting report job perf stat result to $AutomationReportingAPIBaseUrl ..." 
+Write-Host "Posting report job perf stat result to $AutomationReportingAPIBaseUrl ... Body -> $jsonBody" 
 $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$reportJobPerfStatApiUrl" -Headers $Headers -Method POST -Body $jsonBody -ContentType $postContentType
 Write-Host "Posting report job perf stat successful!"

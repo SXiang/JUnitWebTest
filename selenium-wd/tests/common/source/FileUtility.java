@@ -31,7 +31,7 @@ public class FileUtility {
 	public static boolean fileExists(String filePath) {
 		return Files.exists(Paths.get(filePath));
 	}
-	
+
 	/**
 	 * Reads content of the specified file into a String.
 	 * @param filePath - Path of the file.
@@ -39,7 +39,7 @@ public class FileUtility {
 	 * @throws IOException
 	 */
 	public static String readFileContents(String filePath) throws IOException {
-		return readFileContents(filePath, false /*retainNewline*/);		
+		return readFileContents(filePath, false /*retainNewline*/);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class FileUtility {
 	public static String readFileContents(String filePath, boolean retainNewline) throws IOException {
 		String lineText = null;
 		StringBuilder builder = new StringBuilder();
-		
+
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
@@ -59,13 +59,13 @@ public class FileUtility {
 				if (retainNewline) {
 					builder.append(BaseHelper.getLineSeperator());
 				}
-			} 
+			}
 		} finally {
 			buffReader.close();
 		}
-		return builder.toString();		
+		return builder.toString();
 	}
-	
+
 	/**
 	 * Reads content of the specified file into an ArrayList where each line in the file represents an entry in the List.
 	 * @param filePath - Path of the file.
@@ -75,7 +75,6 @@ public class FileUtility {
 	public static List<String> readFileLinesToList(String filePath) throws IOException {
 		String lineText = null;
 		List<String> list = Collections.synchronizedList(new ArrayList<String>());
-		
 		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
@@ -84,13 +83,13 @@ public class FileUtility {
 		} finally {
 			buffReader.close();
 		}
-		
-		return list;		
+
+		return list;
 	}
 
 	/*
 	 * Writes specified string to the file.
-	 * NOTE: This method won't write line breaks into the file. 
+	 * NOTE: This method won't write line breaks into the file.
 	 */
 	public static void writeToFile(String filePath, String fileContent) throws IOException {
 		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(filePath));
@@ -98,7 +97,7 @@ public class FileUtility {
 			buffWriter.write(fileContent);
 		} finally {
 			buffWriter.close();
-		}	
+		}
 	}
 
 	/*
@@ -115,7 +114,7 @@ public class FileUtility {
 			buffWriter.close();
 		}
 	}
-	
+
 	/*
 	 * Searches the specified file for 'searchForText' and replaces it with 'replaceWithText'
 	 * Creates a copy with the updated content and replaces the source file with the copy file.
@@ -138,10 +137,10 @@ public class FileUtility {
 		} finally {
 			buffWriter.close();
 			buffReader.close();
-		}		
+		}
 		// Copy working file to source.
 		Files.copy(Paths.get(workingFullPath), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-		
+
 		// Delete the working file.
 		Files.delete(Paths.get(workingFullPath));
 	}
@@ -171,7 +170,7 @@ public class FileUtility {
 		if (filesInDirectory == null || filesInDirectory.size() == 0 || filesInDirectory.size()!=expectedFileCount) {
 			return false;
 		}
-		
+
 		Integer seenFileCount = 0;
 		for (String file : filesInDirectory) {
 			if (expectedFileNames.contains(file)) {
@@ -180,11 +179,11 @@ public class FileUtility {
 				return false;
 			}
 		}
-		
+
 		if (seenFileCount != expectedFileCount) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -194,7 +193,7 @@ public class FileUtility {
 	public static List<String> getFilesInDirectory(Path directory) throws IOException {
 		return getFilesInDirectory(directory, true /*includeFullPath*/);
 	}
-	
+
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
 		return compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
 	}
@@ -202,68 +201,68 @@ public class FileUtility {
 	public static boolean compareFilesForExactMatch(String firstFolderPath, String secondFolderPath, List<String> includeExtensions) throws IOException {
 		Log.method("compareFilesForExactMatch", firstFolderPath, secondFolderPath, LogHelper.strListToString(includeExtensions));
 		Log.info(String.format("Comparing files content (for specified extensions) in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
-		
+
 		// Check that first folder and second folder have files with exact same content (for specified extensions).
 		List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
 		for (String fDirFile : firstDirectoryFiles) {
 			Path fFileFullPath = Paths.get(firstFolderPath, fDirFile);
 			Path sFileFullPath = Paths.get(secondFolderPath, fDirFile);
-			
+
 			String fFileExt= getFileExtension(fFileFullPath.toString());
 			if ((includeExtensions == null) || (includeExtensions.contains(fFileExt.toLowerCase()))) {
 				if (!FileUtils.contentEqualsIgnoreEOL(new File(fFileFullPath.toString()), new File(sFileFullPath.toString()), null /*charset name*/)) {
-					Log.info(String.format("[File-1 =%s] and [File-2 =%s] content does NOT match . <-- [Return FALSE]", 
+					Log.info(String.format("[File-1 =%s] and [File-2 =%s] content does NOT match . <-- [Return FALSE]",
 							fFileFullPath, sFileFullPath));
-					Log.info(String.format("[File-1 =%s] content : %s", fFileFullPath, 
+					Log.info(String.format("[File-1 =%s] content : %s", fFileFullPath,
 							FileUtility.readFileContents(fFileFullPath.toString(), true /*retainNewline*/)));
-					Log.info(String.format("[File-2 =%s] content : %s", sFileFullPath, 
+					Log.info(String.format("[File-2 =%s] content : %s", sFileFullPath,
 							FileUtility.readFileContents(sFileFullPath.toString(), true /*retainNewline*/)));
 					return false;
 				}
 			}
-		}			
+		}
 
 		return true;
 	}
-		
+
 	public static boolean compareFilesAndSizesInDirectories(String firstFolderPath, String secondFolderPath) throws IOException {
 		return compareFilesAndSizesInDirectories(firstFolderPath, secondFolderPath, null /*skipExtensions*/);
 	}
-	
+
 	public static boolean compareFilesAndSizesInDirectories(String firstFolderPath, String secondFolderPath, List<String> excludeExtensions) throws IOException {
 		Log.info(String.format("Comparing files sizes in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
-		
+
 		// First check all files in both directories are the same.
 		boolean retVal = compareFilesInDirectories(firstFolderPath, secondFolderPath, false);
-		if (retVal) {		
+		if (retVal) {
 			// Check that first folder and second folder have files of exact same size.
 			List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
 			for (String fDirFile : firstDirectoryFiles) {
 				Path fFileFullPath = Paths.get(firstFolderPath, fDirFile);
 				Path sFileFullPath = Paths.get(secondFolderPath, fDirFile);
-				
+
 				String fFileExt= getFileExtension(fFileFullPath.toString());
 				if (excludeExtensions != null && excludeExtensions.contains(fFileExt.toLowerCase())) {
 					continue;    // skip files which are in SKIP list.
 				}
-				
+
 				long fFileSize = new File(fFileFullPath.toString()).length();
 				long sFileSize = new File(sFileFullPath.toString()).length();
-				
+
 				if (fFileSize != sFileSize) {
-					Log.info(String.format("[File-1 =%s, Size=%s] does NOT match in size with [File-2 =%s, Size=%s] . <-- [Return FALSE]", 
+					Log.info(String.format("[File-1 =%s, Size=%s] does NOT match in size with [File-2 =%s, Size=%s] . <-- [Return FALSE]",
 							fFileFullPath, fFileSize, sFileFullPath, sFileSize));
 					return false;
 				}
-			}			
+			}
 		}
 
 		return retVal;
 	}
-		
+
 	public static boolean compareFilesInDirectories(String firstFolderPath, String secondFolderPath, boolean contains) throws IOException {
 		Log.info(String.format("Comparing files in Folders - [%s] <==> [%s]...", firstFolderPath, secondFolderPath));
-		
+
 		// Check that first folder and second folder have the exact same files.
 		List<String> firstDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(firstFolderPath), false /*includeFullPath*/);
 		List<String> secondDirectoryFiles = FileUtility.getFilesInDirectory(Paths.get(secondFolderPath), false /*includeFullPath*/);
@@ -272,7 +271,7 @@ public class FileUtility {
 			Log.info("Both first and second folder have 0 files. <-- [Return TRUE]");
 			return true;
 		}
-		
+
 		if ((firstDirectoryFiles == null && secondDirectoryFiles != null) || (firstDirectoryFiles.size() == 0 && secondDirectoryFiles.size() != 0)) {
 			Log.info("First folder has 0 files. Second folder have 1 or more files. <-- [Return FALSE]");
 			return false;
@@ -296,9 +295,9 @@ public class FileUtility {
 					Log.info(String.format("First folder does NOT contain file - [%s] from second folder. <-- [Return FALSE]", sDirFile));
 					return false;
 				}
-			}			
+			}
 		}
-		
+
 		for (String fDirFile : firstDirectoryFiles) {
 			if (!secondDirectoryFiles.contains(fDirFile)) {
 				Log.info(String.format("Second folder does NOT contain file - [%s] from first folder. <-- [Return FALSE]", fDirFile));
@@ -307,13 +306,13 @@ public class FileUtility {
 		}
 		return true;
 	}
-	
+
 	public static Integer getLineCountInFile(Path filePath) throws IOException {
 		Integer totalNumberOfLines = 0;
 		if (!FileUtility.fileExists(filePath.toString())) {
 			return 0;
 		}
-		
+
 		LineNumberReader lineReader = null;
 		try {
 			lineReader = new LineNumberReader(new FileReader(filePath.toFile()));
@@ -326,7 +325,7 @@ public class FileUtility {
 		}
 		return totalNumberOfLines;
 	}
-	
+
 	/**
 	 * Returns list of files matching the specified filter from the specified directory.
 	 * @param directory - Directory to look for files.
@@ -348,7 +347,7 @@ public class FileUtility {
 	    	if (extFilterList == null || extFilterList.size() == 0) {
 	    		// If no filter, add the file.
 	    		files.add(filePath);
-	    	} else {	    	
+	    	} else {
 	    		// If filter specified, add only matching file.
 		    	String ext = getFileExtension(filePath);
 		    	if (extFilterList.contains(ext)) {
@@ -366,7 +365,7 @@ public class FileUtility {
 	 */
 	public static String getFileName(String filePath) {
 		String fileName = "";
-		if (filePath != null && filePath != "") {
+		if (filePath != null && !BaseHelper.isNullOrEmpty(filePath)) {
 			fileName = Paths.get(filePath).getFileName().toString();
 		}
 		return fileName;
@@ -379,7 +378,7 @@ public class FileUtility {
 	 */
 	public static String getFileExtension(String filePath) {
 		String fileExt = "";
-		if (filePath != null && filePath != "") {
+		if (filePath != null && !BaseHelper.isNullOrEmpty(filePath)) {
 			int dotIdx = filePath.lastIndexOf('.');
 			if (dotIdx >= 0 && dotIdx < filePath.length()) {
 				fileExt = filePath.substring(dotIdx + 1);
@@ -395,8 +394,8 @@ public class FileUtility {
 		File file = new File(filePath.toString());
 		if(!file.exists()) {
 		    file.createNewFile();
-		} 
-		return file; 
+		}
+		return file;
 	}
 
 	/*
@@ -405,14 +404,14 @@ public class FileUtility {
 	public static void createTextFile(Path filePath, String fileContent) throws IOException {
 		createOrWriteToExistingTextFile(filePath, fileContent, true /*createNew*/);
 	}
-	
+
 	/*
 	 * Create specified file or open existing file and write text to it.
 	 */
 	public static void createOrWriteToExistingTextFile(Path filePath, String fileContent) throws IOException {
 		createOrWriteToExistingTextFile(filePath, fileContent, false /*createNew*/);
 	}
-		
+
 	/*
 	 * Create specified file or open existing file and write text to it.
 	 */
@@ -466,9 +465,9 @@ public class FileUtility {
 		    Log.error(x.toString());
 		}
 	}
-	
+
 	/*
-	 * Delete files in the specified directory and then deletes the directory. 
+	 * Delete files in the specified directory and then deletes the directory.
 	 */
 	public static void deleteDirectoryAndFiles(Path directory) throws IOException {
 		deleteFilesInDirectory(directory);
@@ -502,7 +501,7 @@ public class FileUtility {
 		for (Path file: stream) {
 			String fileExt = FileUtility.getFileExtension(file.toString());
 			String fileName = FileUtility.getFileName(file.toString());
-			if (fileExt.equalsIgnoreCase(fileExt) && fileName.startsWith(filePrefix)) {			
+			if (fileExt.equalsIgnoreCase(fileExt) && fileName.startsWith(filePrefix)) {
 				deleteFile(file);
 			}
 	    }
@@ -513,7 +512,7 @@ public class FileUtility {
 	public static void deleteFilesAndSubFoldersInDirectory(String directory, String filePrefix) throws IOException {
 		deleteFilesAndSubFoldersInDirectory(directory, filePrefix, "[a-zA-Z]*");
 	}
-	
+
 	/*
 	 * Delete files in the specified directory and files that start with the specified filePrefix and match the specified extension.
 	 */
@@ -538,12 +537,12 @@ public class FileUtility {
 		 createDirectoryIfNotExists(dirToFile);
 		 FileUtils.copyFile(new File(fromFile), new File(toFile));
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		Path directoryWithFiles = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests");
 		Path emptyDirectory = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\shapefileutility-tests\\empty-dir");
 		createDirectoryIfNotExists(emptyDirectory.toString());
-		
+
 		Path compareFolder1a = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1a");
 		Path compareFolder1b = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1b");
 		Path compareFolder1c = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data\\test-data\\fileutility-tests\\folder1c");
@@ -577,8 +576,8 @@ public class FileUtility {
 		test_getFilesInDirectory_DirWithFiles_ValidFilterSingleExtWithMatch(directoryWithFiles);
 		Log.info("Executing test -> test_getFilesInDirectory_DirWithNoFiles_ValidFilter() ...");
 		test_getFilesInDirectory_DirWithNoFiles_ValidFilter(emptyDirectory);
-		
-		// Unit Test or -> 
+
+		// Unit Test or ->
 		Log.info("Executing test -> test_deleteFilesAndSubFoldersInDirectory()......");
 		test_deleteFilesAndSubFoldersInDirectory();
 		Log.info("Executing test -> test_deleteDirectoryAndFiles() ...");
@@ -588,17 +587,17 @@ public class FileUtility {
 	private static void test_deleteFilesAndSubFoldersInDirectory() throws IOException {
 		createDirectoryIfNotExists(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653");
 		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653"+File.separator+"test.txt"), "test");
-		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653.txt"), "test");		
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653.txt"), "test");
 		deleteFilesAndSubFoldersInDirectory(TestSetup.getSystemTempDirectory(), "CR-D77653");
 		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653.txt").exists());
 		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77653").exists());
 
 	}
-	
+
 	private static void test_deleteDirectoryAndFiles() throws IOException {
 		createDirectoryIfNotExists(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654");
 		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654"+File.separator+"test.txt"), "test");
-		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654.txt"), "test");		
+		createTextFile(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654.txt"), "test");
 		deleteDirectoryAndFiles(Paths.get(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654"));
 		Assert.assertFalse(new File(TestSetup.getSystemTempDirectory()+File.separator+"CR-D77654").exists());
 

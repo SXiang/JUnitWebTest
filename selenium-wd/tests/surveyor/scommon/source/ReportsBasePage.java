@@ -433,6 +433,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
+	private long reportStartEpochTime;
+
+	private long reportEndEpochTime;
+
+	private List<String> reportJobComparisonFailureMessages;
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -444,6 +450,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
 		PageFactory.initElements(driver, changeCustomerDialog);
+
+		reportJobComparisonFailureMessages = new ArrayList<String>();
 	}
 
 	public WebElement getInputStartDate() {
@@ -722,6 +730,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
+
+		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
+
 		this.clickOnOKButton();
 	}
 
@@ -1447,6 +1458,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 									maxRows)) {
 								continue;
 							}
+
 							// rowNum matches. Try to click on ReportViewer button.
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
@@ -1584,6 +1596,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
+				// Use API call for environments where direct DB access is not available (eg P3Scale).
+				ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+				reportId = reportJobsStatObj.Id;
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1903,8 +1918,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (!this.waitForTableDataToLoad()) {
 			return false;
 		}
-		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete," + "'reportId="
-				+ reportId.toLowerCase() + "')]/img";
+		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete,"+"'reportId="+reportId.toLowerCase()+"')]/img";
 		WebElement deleteImg = getTable().findElement(By.xpath(xpathDelete));
 		Log.clickElementInfo("Delete", ElementType.ICON);
 		deleteImg.click();
@@ -2171,13 +2185,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dest;
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException {
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
 		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline)
-			throws IOException {
-		if (generateBaseline) {
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+		if(generateBaseline){
 			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
 			return true;
 		}
@@ -2505,6 +2518,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
+		// Clear existing failures messages.
+		reportJobComparisonFailureMessages.clear();
+
 		ReportJobsStat reportJobsStatObj = getReportJobStat(reportTitle);
 		validateReportStatus(reportJobsStatObj);
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
@@ -2539,22 +2555,27 @@ public class ReportsBasePage extends SurveyorBasePage {
 						foundInCsv = true;
 						Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
 						if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
-							return false;
+							// On comparison failure, let the test proceed on failure to collect the metrics for remaining report jobs.
+							String failureMsg = String.format("Failure in ReportJobType=[%s] baselines comparison. Expected Processing Time in Msec=%s, "
+									+ "Actual Processing Time in MSec=%s", reportJob.ReportJobType, expectedProcessingTimeInMs, actualProcessingTimeInMs);
+							reportJobComparisonFailureMessages.add(failureMsg);
+							Log.error(failureMsg);
 						}
 					}
 				}
 
 				// If no report job type in CSV, throw exception.
 				if (!foundInCsv) {
-					throw new Exception(String.format(
-							"Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
-							expectedFilePath.toString(), Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(),
+					throw new Exception(
+						String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
+							expectedFilePath.toString(),
+							Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(),
 							reportJobTypeId, testCaseID));
 				}
 			}
 		}
 
-		return true;
+		return (reportJobComparisonFailureMessages.size() == 0);
 	}
 
 	private void addToListReportJobDBStat(surveyor.api.source.ReportJob reportJob, String reportJobTypeId) {
@@ -2795,5 +2816,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public ChangeCustomerDialogControl getChangeCustomerDialog() {
 		return changeCustomerDialog;
+	}
+
+	public long getReportStartEpochTime() {
+		return reportStartEpochTime;
+	}
+
+	public void setReportStartEpochTime(long unixEpochTime) {
+		this.reportStartEpochTime = unixEpochTime;
+	}
+
+	public long getReportEndEpochTime() {
+		return reportEndEpochTime;
+	}
+
+	public void setReportEndEpochTime(long reportEndEpochTime) {
+		this.reportEndEpochTime = reportEndEpochTime;
 	}
 }

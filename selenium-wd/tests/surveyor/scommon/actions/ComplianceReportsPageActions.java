@@ -355,7 +355,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
         rpt.setCustomerBoundaryInfo(workingDataRow.get().customerBoundaryType, workingDataRow.get().customerBoundaryName);
 
 		workingReportsComp.set(rpt);		// Store the working report properties.
-
 		return rpt;
 	}
 
@@ -527,6 +526,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		case View:
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(workingDataRow.get().title, false /*includeExtension*/);
 			List<Map<String, String>> viewList = workingReportsComp.get().getViewList();
+
 			Map<String, String> map = viewList.get(fileIndex-1);
 			String viewName = map.get(KEYVIEWNAME);
 			this.getComplianceReportsPage().waitForViewFileDownload(reportName, viewName);

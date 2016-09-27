@@ -174,6 +174,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]")
     protected WebElement firstRowTr;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='footer']/div/footer/p")
+	protected WebElement labelFooter;
+
 	public enum TableSortOrder {
 		ASC ("ASC"),
 		DESC ("DESC");
@@ -751,5 +754,18 @@ public class SurveyorBasePage extends BasePage {
 
 	public WebElement getPreviousBtn() {
 		return previousBtn;
+	}
+
+	public String getFooterText() {
+		return labelFooter.getText();
+	}
+
+	public String getWebAppVersion() {
+		String footerText = getFooterText();
+		List<String> matchingGroups = RegexUtility.getMatchingGroups(footerText, RegexUtility.APP_VERSION_PATTERN);
+		if (matchingGroups != null && matchingGroups.size() > 0) {
+			return matchingGroups.get(0);
+		}
+		return "<unknown>";
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -14,26 +14,26 @@ import java.util.Map;
  *
  */
 public class Reports {
-	
+
 	/**
-	 * 
+	 *
 	 */
-	static {		
+	static {
 		populateGuidMaps();
 	}
-	
+
 	public static Map<String, SurveyModeFilter> SurveyModeFilterGuids;
 	public static Map<String, ReportModeFilter> ReportSurveyModeFilterGuids;
 	public static Map<String, ReportJobType> ReportJobTypeGuids;
 	public static Map<ReportJobType, String> ReportJobTypeReverseGuids;
-	
+
 	protected String rptTitle;
 	protected String strCreatedBy;
 	private String customer;
 	protected String timeZone;
-	
+
 	private List<ReportsSurveyInfo> surveyInfoList;
-	
+
 	// TODO: Deprecate these data members. Replaced with List<ReportsSurveyInfo>
 	protected String surveyorUnit;
 	protected List<String> tagList;
@@ -41,36 +41,36 @@ public class Reports {
 	protected String endDate;
 	protected String userName;
 	protected Boolean geoFilter = false;
-	
+
 	public enum SurveyModeFilter {
-		All ("All"), 
-		Standard ("Standard"), 
-		Operator ("Operator"), 
-		RapidResponse ("Rapid Response"), 
+		All ("All"),
+		Standard ("Standard"),
+		Operator ("Operator"),
+		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
 		Assessment ("Assessment");
-		
+
 		private final String name;
 
 		SurveyModeFilter(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
 	}
 
 	public enum ReportModeFilter {
-		All ("All"), 
-		Standard ("Standard"), 
-		Operator ("Operator"), 
-		RapidResponse ("Rapid Response"), 
+		All ("All"),
+		Standard ("Standard"),
+		Operator ("Operator"),
+		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
 		Assessment ("Assessment");
-		
+
 		private final String name;
 		ReportModeFilter(String nm) {
 			name = nm;
@@ -79,76 +79,77 @@ public class Reports {
 			return this.name;
 		}
 	}
-	
+
 	public enum ReportJobType {
-		Map ("Map"), 
-		SSRS ("SSRS"), 
-		DataGeneration ("DataGeneration"), 
-		EQMap ("EQMap"), 
-		EQSSRS ("EQSSRS"), 
-		EQDataGeneration ("EQDataGeneration"), 
-		ShapeFile ("ShapeFile"), 
-		ReportMeta ("ReportMeta"), 
+		Map ("Map"),
+		SSRS ("SSRS"),
+		DataGeneration ("DataGeneration"),
+		EQMap ("EQMap"),
+		EQSSRS ("EQSSRS"),
+		EQDataGeneration ("EQDataGeneration"),
+		ShapeFile ("ShapeFile"),
+		ReportMeta ("ReportMeta"),
 		PercentCoverageForecast ("PercentCoverageForecast"),
-		Zip ("Zip");
-		
+		Zip ("Zip"),
+		AssetBox ("AssetBox");
+
 		private final String name;
 
 		ReportJobType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
  	}
-	
+
 	public enum ReportStatusType {
-		Pending ("Pending"), 
-		Processing ("Processing"), 
-		Complete ("Complete"), 
-		Failed ("Failed"), 
+		Pending ("Pending"),
+		Processing ("Processing"),
+		Complete ("Complete"),
+		Failed ("Failed"),
 		Zipping ("Zipping");
-		
+
 		private final String name;
 
 		ReportStatusType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
  	}
 
 	public enum ReportJobStatusType {
-		Pending ("Pending"), 
-		Processing ("Processing"), 
-		Complete ("Complete"), 
+		Pending ("Pending"),
+		Processing ("Processing"),
+		Complete ("Complete"),
 		Failed ("Failed");
-		
+
 		private final String name;
 
 		ReportJobStatusType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
  	}
-	
+
 	public enum SSRSPdfFooterColumns {
 		SoftwareVersion ("SoftwareVersion"),
 		ReportUser ("ReportUser"),
 		ReportDate ("ReportDate");
-		
+
 		private final String name;
 
 		SSRSPdfFooterColumns(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -157,7 +158,7 @@ public class Reports {
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, null, tagList);
 	}
@@ -165,23 +166,23 @@ public class Reports {
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, geoFilter, null);
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, null);
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, tagList);
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName,  String startDate, String endDate,  List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, null, tagList);
 	}
-	
+
 	public Reports(){
-		
+
 	}
-	
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, Boolean geoFilter, List<String> tagList){
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
@@ -195,7 +196,7 @@ public class Reports {
 
 		this.startDate = startDate;
 		this.endDate = endDate;
-	
+
 	}
 
 	public String getRptTitle() {
@@ -209,7 +210,7 @@ public class Reports {
 	public String getTimeZone() {
 		return this.timeZone;
 	}
-	
+
 	public String getSurveyorUnit() {
 		return this.surveyorUnit;
 	}
@@ -263,7 +264,7 @@ public class Reports {
 	}
 
 	// TODO --> Deprecate these. To be replaced by List<ReportsSurveyInfo>
-	
+
 	public void setSurveyorUnit(String surveyorUnit) {
 		this.surveyorUnit = surveyorUnit;
 	}
@@ -287,7 +288,7 @@ public class Reports {
 	public void setGeoFilter(Boolean geoFilter) {
 		this.geoFilter = geoFilter;
 	}
-	
+
 	public List<ReportsSurveyInfo> getSurveyInfoList() {
 		return surveyInfoList;
 	}
@@ -295,17 +296,17 @@ public class Reports {
 	public void setSurveyInfoList(List<ReportsSurveyInfo> surveyInfoList) {
 		this.surveyInfoList = surveyInfoList;
 	}
-	
+
 	/**
 	 * Populate map with guids from SurveyModeType.
 	 * NOTE: These guids need to be in sync with Ids used in [SurveyModeType] table.
 	 */
 	private static void populateGuidMaps() {
-		SurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, SurveyModeFilter>()); 
-		ReportSurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, ReportModeFilter>()); 
-		ReportJobTypeGuids = Collections.synchronizedMap(new HashMap<String, ReportJobType>()); 
+		SurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, SurveyModeFilter>());
+		ReportSurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, ReportModeFilter>());
+		ReportJobTypeGuids = Collections.synchronizedMap(new HashMap<String, ReportJobType>());
 		ReportJobTypeReverseGuids = Collections.synchronizedMap(new HashMap<ReportJobType, String>());
-		
+
 		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
 		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", SurveyModeFilter.RapidResponse);
 		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB311", SurveyModeFilter.Manual);
@@ -319,7 +320,7 @@ public class Reports {
 		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", ReportModeFilter.Operator);
 		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
 		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
-		
+
 		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
 		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
 		ReportJobTypeGuids.put("00000000-0000-0000-0003-000000000000", ReportJobType.DataGeneration);
@@ -330,6 +331,7 @@ public class Reports {
 		ReportJobTypeGuids.put("00000000-0000-0000-0008-000000000000", ReportJobType.ReportMeta);
 		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
 		ReportJobTypeGuids.put("00000000-0000-0000-0010-000000000000", ReportJobType.Zip);
+		ReportJobTypeGuids.put("00000000-0000-0000-0011-000000000000", ReportJobType.AssetBox);
 
 		ReportJobTypeReverseGuids.put(ReportJobType.Map, "00000000-0000-0000-0001-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.SSRS, "00000000-0000-0000-0002-000000000000");
@@ -341,8 +343,9 @@ public class Reports {
 		ReportJobTypeReverseGuids.put(ReportJobType.ReportMeta, "00000000-0000-0000-0008-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.Zip, "00000000-0000-0000-0010-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.AssetBox, "00000000-0000-0000-0011-000000000000");
 	}
-	
+
 	public static void main(String[] args) {
 	}
 }
