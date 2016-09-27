@@ -601,7 +601,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
 				colNum = 13;
-				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
