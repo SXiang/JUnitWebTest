@@ -3592,33 +3592,185 @@ if (vars.get(role).equals(&quot;NO&quot;)){
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
-            <latency>true</latency>
+            <latency>false</latency>
             <timestamp>true</timestamp>
             <success>true</success>
             <label>true</label>
             <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
+            <message>false</message>
+            <threadName>false</threadName>
+            <dataType>false</dataType>
             <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
             <responseData>false</responseData>
             <samplerData>false</samplerData>
             <xml>false</xml>
-            <fieldNames>true</fieldNames>
+            <fieldNames>false</fieldNames>
             <responseHeaders>false</responseHeaders>
             <requestHeaders>false</requestHeaders>
             <responseDataOnError>false</responseDataOnError>
             <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
             <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
+            <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_Controller.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_Controller.csv</stringProp>
       </ResultCollector>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Surveyor Constants" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="APISecurityTest_Report001View000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001View000</stringProp>
+            <stringProp name="Argument.value">B53788E5-12BF-C3A6-6A0D-39D9D1302A18</stringProp>
+            <stringProp name="Argument.desc">Test view from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report001Peak000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001Peak000</stringProp>
+            <stringProp name="Argument.value">07BC4E2B-A080-8AE8-05EA-39D9D13049A6</stringProp>
+            <stringProp name="Argument.desc">Peakid from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001</stringProp>
+            <stringProp name="Argument.value">ebedbede-ca40-deaa-6871-39d9d13029ca</stringProp>
+            <stringProp name="Argument.desc">Copy from TC1373 in ComplianceReportsPageTest3.java</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report002</stringProp>
+            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Assessment001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Assessment001</stringProp>
+            <stringProp name="Argument.value">6253d473-6fec-75e8-6394-39d9d132d802</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Assessment002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Assessment002</stringProp>
+            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
+            <stringProp name="Argument.value">514941cd-ba07-353e-e5f4-39d9db872a76</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete001</stringProp>
+            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete001</stringProp>
+            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete002</stringProp>
+            <stringProp name="Argument.value">c67cefab-3038-83e7-cd5c-39d9db86f2dc</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_EQReport001</stringProp>
+            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.desc">/Reports/CopyEQReport will be added to test after this report ready</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Analyzer_Picarro_SerialNumber001" elementType="Argument">
+            <stringProp name="Argument.name">Analyzer_Picarro_SerialNumber001</stringProp>
+            <stringProp name="Argument.value">SimAuto-Analyzer1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Survey001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Survey001</stringProp>
+            <stringProp name="Argument.value">271d9db6-c0bd-eb32-2b48-39d1531dc264</stringProp>
+            <stringProp name="Argument.desc">sqapicdr: simuAuto-Surveyor1-SimAuto-Analyzer1 [name is not fixed]</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Surveyor001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Surveyor001</stringProp>
+            <stringProp name="Argument.value">fb4f3579-843a-113e-001c-39d4011393c9</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">SimAuto-Surveyor1 - Picarro</stringProp>
+          </elementProp>
+          <elementProp name="Customer_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Customer_Picarro</stringProp>
+            <stringProp name="Argument.value">b1252204-04fb-4a67-82d4-3f4666fd855c</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Analyzer_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Analyzer_Picarro</stringProp>
+            <stringProp name="Argument.value">00000015-db64-fde7-7e67-39c8ac533d49</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">serialNumber=https://p3sqaauto.picarro.com/Live/Observer?serialNumber=SimAuto-Analyzer1</stringProp>
+          </elementProp>
+          <elementProp name="Location_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Location_Picarro</stringProp>
+            <stringProp name="Argument.value">00000000-0000-0000-0001-000000000000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Driver_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Driver_Picarro</stringProp>
+            <stringProp name="Argument.value">de734ddf-363e-49fc-8dbc-39c8c221c562</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DriverName_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">DriverName_Picarro</stringProp>
+            <stringProp name="Argument.value">sqapicdr</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQAAuto_DB" elementType="Argument">
+            <stringProp name="Argument.name">SQAAuto_DB</stringProp>
+            <stringProp name="Argument.value">SurveyorSQAAUTO_blankDB_20160823</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQA_Password" elementType="Argument">
+            <stringProp name="Argument.name">SQA_Password</stringProp>
+            <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="projectHome" elementType="Argument">
+            <stringProp name="Argument.name">projectHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jmeterHome" elementType="Argument">
+            <stringProp name="Argument.name">jmeterHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;user.dir&quot;);)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jsonHome" elementType="Argument">
+            <stringProp name="Argument.name">jsonHome</stringProp>
+            <stringProp name="Argument.value">${projectHome}/json</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
       <hashTree/>
     </hashTree>
   </hashTree>

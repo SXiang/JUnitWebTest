@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -420,14 +420,20 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
 	private WebElement surveyGroupDivs;
-	
+
 	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
 	private List<ReportJobPerfDBStat> postDBStatList = null;
-	
+
 	private ChangeCustomerDialogControl changeCustomerDialog = null;
+
+	private long reportStartEpochTime;
+
+	private long reportEndEpochTime;
+
+	private List<String> reportJobComparisonFailureMessages;
 
 	/**
 	 * @param driver
@@ -437,9 +443,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportsBasePage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
-		
+
 		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
 		PageFactory.initElements(driver, changeCustomerDialog);
+
+		reportJobComparisonFailureMessages = new ArrayList<String>();
 	}
 
 	public WebElement getInputStartDate() {
@@ -614,7 +622,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void setReportGenerationTimeout(Integer reportGenerationTimeout) {
 		this.reportGenerationTimeoutInSeconds = reportGenerationTimeout;
 	}
-	
+
 	/************ PDF Output Values *************/
 
 	public boolean isViewLisaSelected() {
@@ -718,6 +726,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
+
+		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
+
 		this.clickOnOKButton();
 	}
 
@@ -904,7 +915,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 			throw new Exception(error);
 		}
-		
+
 	}
 	public boolean verifyErrorMessages(String... errormessages) {
 		try{
@@ -987,7 +998,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		jsClick(this.btnNewComplianceRpt);
 		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
-		
+
 	}
 
 	public void waitForNewPageLoad() {
@@ -1017,7 +1028,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectCustomer(String customer) {
 		selectCustomer(customer,true);
 	}
-	
+
 	public void selectCustomer(String customer, boolean confirm) {
 		if (dropdownCustomer.isDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
@@ -1028,7 +1039,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					getChangeCustomerDialog().confirmInChangeCustomerDialog(confirm);
 					return;
 				}
-			}			
+			}
 		}
 	}
 
@@ -1089,7 +1100,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -1404,15 +1415,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-				
+
 				reportId = Report.getReport(rptTitle).getId();
 				TestContext.INSTANCE.addReportId(reportId);
-				
+
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
 				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
-				int numRetriesForNullError = 0; 
+				int numRetriesForNullError = 0;
 				WebElement reportViewer;
 				while (bContinue) {
 					try {
@@ -1433,7 +1444,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
 									maxRows)){
 								continue;
-							}							
+							}
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
@@ -1448,15 +1459,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (NullPointerException ne) {
 						numRetriesForNullError++;
 						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
-							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s", 
+							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
 							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
 								return false;
 							}
 							continue;
 						}
-						
-						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s", 
+
+						Log.error(String.format("MAX Retry attempts exceeded. Null Pointer Exception Encountered again: %s",
 								ExceptionUtility.getStackTraceString(ne)));
 						fail("Report failed to be generated!!");
 					}
@@ -1520,7 +1531,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
-	
+
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
@@ -1554,10 +1565,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
-				
-				reportId = Report.getReport(rptTitle).getId();
+
+				// Use API call for environments where direct DB access is not available (eg P3Scale).
+				ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+				reportId = reportJobsStatObj.Id;
 				TestContext.INSTANCE.addReportId(reportId);
-				
+
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
@@ -1789,7 +1802,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return deleteSuccess;
 	}
-	
+
 	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
 		setPagination(PAGINATIONSETTING);
 
@@ -1868,7 +1881,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.performSearch(reportName);
 		if(!this.waitForTableDataToLoad()){
 			return false;
-		}		
+		}
 		String xpathDelete = "tr/td/a[@title='Delete' and contains(@data-delete,"+"'reportId="+reportId.toLowerCase()+"')]/img";
 		WebElement deleteImg = getTable().findElement(By.xpath(xpathDelete));
 		Log.clickElementInfo("Delete",ElementType.ICON);
@@ -1887,7 +1900,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
-	
+
 	public boolean copyReport(String rptTitle, String strCreatedBy, String rptTitleNew) {
 		setPagination(PAGINATIONSETTING);
 
@@ -2070,7 +2083,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public String getEmptyTableMessage(){
 		String msg = dataTableEmpty.getText();
-		return msg.trim();		
+		return msg.trim();
 	}
 
 	public boolean verifySurveyNotAdded(String reportTitle, String customer, String NELat, String NELong, String SWLat,
@@ -2136,11 +2149,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return dest;
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{	
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
 		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
 	}
-	
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {	
+
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
 		if(generateBaseline){
 			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
 			return true;
@@ -2331,7 +2344,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-	
+
 	public WebElement getBtnDeleteConfirm() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -2442,7 +2455,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 * Compares the processing times for each reportJob type with baseline
 	 * processingTime values and checks actual values are not greater than the
 	 * baseline values.
-	 * 
+	 *
 	 * @param testCaseID
 	 *            - Test case ID
 	 * @param reportTitle
@@ -2465,6 +2478,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
+		// Clear existing failures messages.
+		reportJobComparisonFailureMessages.clear();
+
 		ReportJobsStat reportJobsStatObj = getReportJobStat(reportTitle);
 		validateReportStatus(reportJobsStatObj);
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
@@ -2481,7 +2497,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					- reportJob.getProcessingStartedTimeInMs());
 
 			addToListReportJobDBStat(reportJob, reportJobTypeId);
-			
+
 			if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 				// generating baselines. Skip comparison.
 				generateBaselinePerfReportJobFiles(testCaseID, reportJobTypeId,
@@ -2499,7 +2515,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 						foundInCsv = true;
 						Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
 						if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
-							return false;
+							// On comparison failure, let the test proceed on failure to collect the metrics for remaining report jobs.
+							String failureMsg = String.format("Failure in ReportJobType=[%s] baselines comparison. Expected Processing Time in Msec=%s, "
+									+ "Actual Processing Time in MSec=%s", reportJob.ReportJobType, expectedProcessingTimeInMs, actualProcessingTimeInMs);
+							reportJobComparisonFailureMessages.add(failureMsg);
+							Log.error(failureMsg);
 						}
 					}
 				}
@@ -2509,13 +2529,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 					throw new Exception(
 							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
 									expectedFilePath.toString(),
-									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(), 
+									Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(),
 									reportJobTypeId, testCaseID));
 				}
 			}
 		}
 
-		return true;
+		return (reportJobComparisonFailureMessages.size() == 0);
 	}
 
 	private void addToListReportJobDBStat(surveyor.api.source.ReportJob reportJob, String reportJobTypeId) {
@@ -2608,7 +2628,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	/**
 	 * Verify availability of survey modes with specific report mode selected
-	 * 
+	 *
 	 * @param rmf
 	 *            - ReportModeFilter
 	 * @return true if passed
@@ -2655,7 +2675,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean isManualSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
 	}
-	
+
 	public boolean isManualSurveyModeSelected() {
 		return inputSurModeFilterManual.isSelected();
 	}
@@ -2663,7 +2683,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/**
 	 * Verify the Type of Surveys in the resulted table are valid for the Survey
 	 * Mode Filter
-	 * 
+	 *
 	 * @param smf
 	 * @return true if passed
 	 */
@@ -2721,13 +2741,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
-		this.btnSurveySearch.click();		
+		this.btnSurveySearch.click();
 		this.waitForSurveyTabletoLoad();
 	}
 
 	/**
 	 * Method to check for invalid surveys in the search result table
-	 * 
+	 *
 	 * @param invalidTypes
 	 * @return true if invalid type found
 	 */
@@ -2755,5 +2775,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public ChangeCustomerDialogControl getChangeCustomerDialog() {
 		return changeCustomerDialog;
+	}
+
+	public long getReportStartEpochTime() {
+		return reportStartEpochTime;
+	}
+
+	public void setReportStartEpochTime(long unixEpochTime) {
+		this.reportStartEpochTime = unixEpochTime;
+	}
+
+	public long getReportEndEpochTime() {
+		return reportEndEpochTime;
+	}
+
+	public void setReportEndEpochTime(long reportEndEpochTime) {
+		this.reportEndEpochTime = reportEndEpochTime;
 	}
 }

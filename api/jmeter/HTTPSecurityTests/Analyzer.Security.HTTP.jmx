@@ -111,9 +111,14 @@
             <stringProp name="Argument.value">SimAuto-Surveyor1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="SignatureExpired_SQACusDriver" elementType="Argument">
+            <stringProp name="Argument.name">SignatureExpired_SQACusDriver</stringProp>
+            <stringProp name="Argument.value">nTO8r9nDurtxv1LKildx1OUAe2o4XDEXer1EVmWX2GdR98ZvJ+lGmFrk7GWKOC/l6ZTBZSRMovmovi2f99nC/+T9BnkGKHyt16pkap/I/rHWjPH4g4m5Fd1zoLkTaMAd3IO0YmQfG5w24ggZZY+y9RcO0PuPo71x1NNeFwh/VP+NidwMN6HlSz8B4zbmqEqGzRFWy1PlTT4Zz74y+ykbte+3urHtTDpZZXomhL021mpDjxMcYpPaAbls7mFM9d4scoTYamhcicV+HK+GuDaFMimbBqFqsAhgczr3+6mNFnTEd0jV2HBErXBnQR6GklpY1CMIXXR1IzjrPA579hOZtA==</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="Signature_SQACusDriver" elementType="Argument">
             <stringProp name="Argument.name">Signature_SQACusDriver</stringProp>
-            <stringProp name="Argument.value">nTO8r9nDurtxv1LKildx1OUAe2o4XDEXer1EVmWX2GdR98ZvJ+lGmFrk7GWKOC/l6ZTBZSRMovmovi2f99nC/+T9BnkGKHyt16pkap/I/rHWjPH4g4m5Fd1zoLkTaMAd3IO0YmQfG5w24ggZZY+y9RcO0PuPo71x1NNeFwh/VP+NidwMN6HlSz8B4zbmqEqGzRFWy1PlTT4Zz74y+ykbte+3urHtTDpZZXomhL021mpDjxMcYpPaAbls7mFM9d4scoTYamhcicV+HK+GuDaFMimbBqFqsAhgczr3+6mNFnTEd0jV2HBErXBnQR6GklpY1CMIXXR1IzjrPA579hOZtA==</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -312,12 +317,17 @@
 String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -427,12 +437,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -688,12 +703,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Authorize&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -818,12 +838,17 @@ if (vars.get(role).equals(&quot;NO&quot;)){
 String role= &quot;Anonymous&quot;;
 String action=&quot;ActionName&quot;;
 String failCode=&quot;401&quot;;
+String serverError=&quot;500&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (ResponseCode.equals(failCode) == true || (vars.get(action).equals(&quot;Installer&quot;) &amp;&amp; ResponseCode.equals(&quot;500&quot;) == true)) {
+	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
 		Failure = false;
 	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		if (ResponseCode.equals(serverError) == true ) {
+			FailureMessage = &quot;Expect status code 401 Unauthorized, Actual status code: 500&quot;;
+		}else {
+			FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this source&quot;;
+		}
 		Failure = true;
 		}else{
 			Failure = false;
@@ -939,7 +964,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_Analyzer.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_Analyzer.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
