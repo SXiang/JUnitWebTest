@@ -33,7 +33,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Report002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Report002</stringProp>
-            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.desc">copy of 001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -44,13 +44,13 @@
           </elementProp>
           <elementProp name="APISecurityTest_Assessment002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Assessment002</stringProp>
-            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.desc">copy of 001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_ReportDelete002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
-            <stringProp name="Argument.value">514941cd-ba07-353e-e5f4-39d9db872a76</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
@@ -65,7 +65,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_AssessmentDelete002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_AssessmentDelete002</stringProp>
-            <stringProp name="Argument.value">c67cefab-3038-83e7-cd5c-39d9db86f2dc</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
@@ -273,7 +273,7 @@
         <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
       </ConfigTestElement>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="false">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -799,7 +799,7 @@ for(int i=0; i&lt;size; i++){
             <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
             <stringProp name="HTTPSampler.path">/${Controller}/${ActionName}${__eval(${QueryString})}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
@@ -3555,7 +3555,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <hashTree/>
       </hashTree>
       <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <boolProp name="ResultCollector.error_logging">true</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
