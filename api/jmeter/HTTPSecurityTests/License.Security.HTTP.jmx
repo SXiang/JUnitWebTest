@@ -27,7 +27,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Report001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Report001</stringProp>
-            <stringProp name="Argument.value">ebedbede-ca40-deaa-6871-39d9d13029ca</stringProp>
+            <stringProp name="Argument.value">35D6B6EC-F089-90B2-AF69-39DA79CD0410</stringProp>
             <stringProp name="Argument.desc">Copy from TC1373 in ComplianceReportsPageTest3.java</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -162,6 +162,12 @@
           <elementProp name="jsonHome" elementType="Argument">
             <stringProp name="Argument.name">jsonHome</stringProp>
             <stringProp name="Argument.value">${projectHome}/json</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_NoLicense_Report001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_NoLicense_Report001</stringProp>
+            <stringProp name="Argument.value">17F87667-C0F6-FC41-49A2-39DA803E5F98</stringProp>
+            <stringProp name="Argument.desc">Manually generated compliance report </stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -631,7 +637,7 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportId, PeakNumber, Id
 From dbo.ReportPeak
@@ -645,7 +651,7 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
 From dbo.ReportJob
@@ -659,7 +665,7 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="false">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
 int size = result.size();
@@ -976,7 +982,7 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+Where ReportTitle like &apos;${APISecurityTest_NoLicense_Report001}&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
@@ -990,7 +996,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+Where ReportTitle like &apos;${APISecurityTest_NoLicense_Report002}&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
@@ -1000,7 +1006,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -1014,7 +1020,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -1035,11 +1041,11 @@ int size = result.size();
 for(int i=0; i&lt;size; i++){
 	HashMap table = result.get(i);
 	if(i==0){
-		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+		vars.put(&quot;APISecurityTest_NoLicense_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_NoLicense_Report001: &quot; + vars.get(&quot;APISecurityTest_NoLicense_Report001&quot;));
 	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+		vars.put(&quot;APISecurityTest_NoLicense_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_NoLicense_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_NoLicense_ReportDelete001&quot;));
 	}
 }
 //ComplianceReports - 2
@@ -1048,40 +1054,11 @@ size = result.size();
 for(int i=0; i&lt;size; i++){
 	HashMap table = result.get(i);
 	if(i==0){
-		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+		vars.put(&quot;APISecurityTest_NoLicense_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_NoLicense_Report002: &quot; + vars.get(&quot;APISecurityTest_NoLicense_Report002&quot;));
 	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
-	}
-}
-
-
-//AssessmentReports - 1
-result = vars.getObject(&quot;AssessmentReports001&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
-	}
-}
-
-//AssessmentReports - 2
-result = vars.getObject(&quot;AssessmentReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+		vars.put(&quot;APISecurityTest_NoLicense_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_NoLicense_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_NoLicense_ReportDelete002&quot;));
 	}
 }
 </stringProp>
@@ -1090,11 +1067,11 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportId, PeakNumber, Id
 From dbo.ReportPeak
-Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+Where ReportId like &apos;${APISecurityTest_NoLicense_Report001}&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
@@ -1104,11 +1081,11 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="false">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
 From dbo.ReportJob
-Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+Where ReportId like &apos;${APISecurityTest_NoLicense_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
           <stringProp name="queryArguments"></stringProp>
           <stringProp name="queryArgumentsTypes"></stringProp>
           <stringProp name="queryTimeout"></stringProp>
@@ -1118,7 +1095,7 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="false">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
 int size = result.size();
@@ -1269,7 +1246,7 @@ for(int i=0; i&lt;size; i++){
           </HTTPSamplerProxy>
           <hashTree>
             <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">data/licenseList_Get.csv</stringProp>
+              <stringProp name="filename">data/NonLicenseList_Get.csv</stringProp>
               <stringProp name="fileEncoding"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="delimiter">,</stringProp>
