@@ -6,27 +6,22 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
-	
-	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static TestEnvironmentActions testEnvironmentAction;
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
@@ -54,10 +49,8 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
-		testEnvironmentAction = new TestEnvironmentActions();
 	}
 
 	/**
@@ -113,7 +106,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.selectReportMode("Manual", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
 		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
-		modifyComplianceReport(complianceReportsPageAction, 7);		
+		modifyComplianceReport(complianceReportsPageAction, 7);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
 	}
@@ -156,7 +149,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- User is able to sort the list of reports based on specified attribute
 	 *		- Sorting by Report Name not allowed
 	 */
-	@Ignore
+	@Test
 	public void TC165_SortReportListBasedOnCompletionDateAndOtherAttributes() throws Exception {
 		Log.info("\nRunning TC165_SortReportListBasedOnCompletionDateAndOtherAttributes ...");
 		
@@ -187,13 +180,35 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * 		- Report is generated successfully for specified customer survey and Assets of specified customer are present in maps
 	 * 		- Percent Coverage value is present in SSRS PDF
 	 */
-	@Ignore
+	@Test
 	public void TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser() throws Exception {
 		Log.info("\nRunning TC175_GenerateReportAsPicarroAdminUserForThesurveyDoneByAnyCustomerUser ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
+		
+		int reportDataRowID = 112;
+		
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
+		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID));
+		
+		modifyComplianceReport(complianceReportsPageAction, reportDataRowID);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID);
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID);
+		
+		String ASSET_DATA_STRING = complianceReportsPageAction.getSelectedAssetNames(reportDataRowID);
+
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, reportDataRowID));
 	}
 	
 	/**
@@ -201,18 +216,28 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * Script:
 	 * 		- Generate report in Rapid Response report mode
-	 * 		- Select Standard, Rapid Response and Operator Survey from differnet pages of the Surveys list and click on Add Survey button
+	 * 		- Select Standard, Rapid Response and Operator Survey from different pages of the Surveys list and click on Add Survey button
 	 * Results:
 	 * 		- All surveys selected from different pages should be included
-	 * 		- Report shoud be generated successfully showing information of all selected surveys
+	 * 		- Report should be generated successfully showing information of all selected surveys
 	 */
-	@Ignore
+	@Test
 	public void TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode() throws Exception {
 		Log.info("\nRunning TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
+		
+		int reportDataRowID = 113;
+		
+		createNewComplianceReport(complianceReportsPageAction, reportDataRowID);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);		
+		
+		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
 	}	
 	
 	/**
@@ -225,13 +250,34 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 	 * Results:
 	 * 		- Report should be generated successfully and Gaps should be present according to the surveys included
 	 */
-	@Ignore
+	@Test
 	public void TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem() throws Exception {
 		Log.info("\nRunning TC191_GenerateReportHavingMultipleSurveysAndVerifyGapsForThem ...");
 		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
+		
+		int reportDataRowID = 114;
+		ReportColorOption[] colors = {ReportColorOption.ORANGE, ReportColorOption.RED};
+		
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID);
+		
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
+		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID));
+		
+		getComplianceReportsPage().fillReport(rpt);
+		getComplianceReportsPage().selectFOVColor(colors);
+		getComplianceReportsPage().addReport();
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);
+		
+		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, reportDataRowID));
 	}
 	
 	private ComplianceReportsPage getComplianceReportsPage() {
