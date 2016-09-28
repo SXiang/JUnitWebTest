@@ -361,7 +361,7 @@
 		</junit>
 	</target>
 
-	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
+	<target name="compliancereportpageactiontests" depends="compileregression,compileperformance" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -382,7 +382,7 @@
 		</junit>
 	</target>
 
-	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+	<target name="testcompliancereport" depends="compileregression,compileperformance" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
