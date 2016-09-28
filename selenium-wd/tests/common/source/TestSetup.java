@@ -685,32 +685,6 @@ public class TestSetup {
 		// cleanup processes once for all tests.
 		TestSetup.stopChromeProcesses();
 
-		// Verify and invoke first time login with 'Administrator' user if necessary.
-		initiateFirstTimeLogin();
-
-		// If survey upload is enabled, upload the specified surveys to
-		// environment.
-		// We have a 2nd level of check (ie matching base url provided) to
-		// prevent accidental upload to unintended environment.
-		if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
-			try {
-				uploadSurveys();
-			} catch (Exception e) {
-				Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
-			}
-		}
-
-		// If pushDBSeed is enabled, push DB seed data to environment.
-		// We have a 2nd level of check (ie matching base url provided) to
-		// prevent accidental upload to unintended environment.
-		if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
-			try {
-				DbSeedExecutor.executeAllDataSeed();
-			} catch (Exception e) {
-				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
-			}
-		}
-
 		// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
 		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
 		if (isRunningOnGrid) {
@@ -736,6 +710,32 @@ public class TestSetup {
 
 			} else {
 				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
+			}
+		}
+
+		// Verify and invoke first time login with 'Administrator' user if necessary.
+		initiateFirstTimeLogin();
+
+		// If survey upload is enabled, upload the specified surveys to
+		// environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				uploadSurveys();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
+			}
+		}
+
+		// If pushDBSeed is enabled, push DB seed data to environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				DbSeedExecutor.executeAllDataSeed();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
 		}
 	}
