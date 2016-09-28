@@ -11,24 +11,24 @@
 	<property name="scommon_jar" value="scommon.jar" />
 	<property environment="env" />
 	<property name="jmeter.result.dir" value="../api/jmeter/result" />
-	
+
 	<tstamp>
 	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
 	</tstamp>
-	
+
 	<target name="init" depends="clean" description="Initialize build environment">
 		<mkdir dir="${build}" />
 		<mkdir dir="${dist}" />
-		
-		<mkdir dir="${reports}/sanity/xml" />	
+
+		<mkdir dir="${reports}/sanity/xml" />
 		<mkdir dir="${reports}/regression/xml" />
 		<mkdir dir="${reports}/performance/xml" />
-		
+
 		<mkdir dir="${basedir}/tests/common/build" />
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
-		
+
 		<mkdir dir="${jmeter.result.dir}" />
 	</target>
 
@@ -264,12 +264,12 @@
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
 					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-					
+
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
-	
+
 	<target name="testobserverview" depends="compileregression" description="Run observer view test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -361,7 +361,7 @@
 		</junit>
 	</target>
 
-	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
+	<target name="compliancereportpageactiontests" depends="compileregression,compileperformance" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -376,14 +376,13 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest.class" />
-					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
 
-	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+	<target name="testcompliancereport" depends="compileregression,compileperformance" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -406,7 +405,8 @@
 					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
-					<include name="**/ComplianceReportsPageTest11.class" />					
+					<include name="**/ComplianceReportsPageTest11.class" />
+					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -435,7 +435,7 @@
 				</batchtest>
 			</junit>
 		</target>
-	
+
 	<target name="testregression" depends="compileregression" description="Run regression test suite">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -472,8 +472,8 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/SystemHistoryReportsPageTest.class" />	
-					<include name="**/ReferenceGasReportsPageTest.class" />	
+					<include name="**/SystemHistoryReportsPageTest.class" />
+					<include name="**/ReferenceGasReportsPageTest.class" />
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
 				</fileset>
@@ -522,8 +522,8 @@
 		</junit>
 		<echo message="junit build : ${build}" />
 	</target>
-	
-	
+
+
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -546,7 +546,7 @@
 			</batchtest>
 		</junit>
 	</target>
-	
+
 	<target name="securityapitest" depends="init">
 		<delete dir="${jmeter.result.dir}" />
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
@@ -567,15 +567,15 @@
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 		</jmeter>
 	</target>
-	
+
 	<target name="analyzerapiloadtestreporter" depends="init">
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/Publisher_PerfStatAnalyzer.jmx"/>
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 		</jmeter>
-		
-	</target>	
+
+	</target>
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
@@ -596,7 +596,7 @@
 			</report>
 		</junitreport>
 	</target>
-	
+
 	<target name="compliancereportreport" depends="testcompliancereport">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
@@ -606,7 +606,7 @@
 			</report>
 		</junitreport>
 	</target>
-	
+
 	<target name="debugreport" depends="tc_localrun">
 		<junitreport todir="${reports}/regression/xml">
 			<fileset dir="${reports}/regression/xml">
@@ -616,5 +616,5 @@
 			</report>
 		</junitreport>
 	</target>
-	
+
 </project>

@@ -128,7 +128,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected void checkAndGenerateReportJobBaselineCsv() throws IOException {
 		Log.method("checkAndGenerateReportJobBaselineCsv");
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
-			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.tCID);
+			generateReportJobBaselineRunExecutionCsv(ComplianceReportsPageActions.workingDataRow.tCID);
 		}
 	}
 
