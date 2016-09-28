@@ -30,6 +30,8 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 
 	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
 
+	protected static final Integer REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
+
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
 		initializePageObjects();
@@ -40,11 +42,11 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 	}
 
 	private static void ensureTestSurveysArePresent() {
-		final String[] surveyTags = {PICGREATER4HRTAG, PICLESS4HRTAG
-				,PIC8HR01TAG, PIC8HR02TAG, PIC8HR03TAG, PIC8HR04TAG, PIC8HR05TAG, PIC8HR06TAG
-				,PIC8HR07TAG, PIC8HR08TAG, PIC8HR09TAG, PIC8HR10TAG, PIC8HR11TAG, PIC8HR12TAG};
+		final String[] surveyDataFiles = {PICGREATER4HR_DATAFILE, PICLESS4HR_DATAFILE
+				,PIC8HR01_DATAFILE, PIC8HR02_DATAFILE, PIC8HR03_DATAFILE, PIC8HR04_DATAFILE, PIC8HR05_DATAFILE, PIC8HR06_DATAFILE
+				,PIC8HR07_DATAFILE, PIC8HR08_DATAFILE, PIC8HR09_DATAFILE, PIC8HR10_DATAFILE, PIC8HR11_DATAFILE, PIC8HR12_DATAFILE};
 		try {
-			DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+			DbSeedExecutor.executeSurveyDataSeed(surveyDataFiles);
 		} catch (Exception e) {
 			Log.error(ExceptionUtility.getStackTraceString(e));
 		}
@@ -87,6 +89,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
+		this.getComplianceReportsPage().setReportGenerationTimeout(REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();

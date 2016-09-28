@@ -257,8 +257,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList19.add(PICLESS4HRTAG);
 
 		return new Object[][] {
-			{ "17", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEET, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList17, tablesList17, viewList17, viewLayerList17 },
-			{ "19", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList19, tablesList19, viewList19, viewLayerList19 }
+			{ "17", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEET, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryListForLoadTests(), tagList17, tablesList17, viewList17, viewLayerList17 },
+			{ "19", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryListForLoadTests(), tagList19, tablesList19, viewList19, viewLayerList19 }
 		};
 	}
 

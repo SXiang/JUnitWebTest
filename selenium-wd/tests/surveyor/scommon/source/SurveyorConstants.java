@@ -315,20 +315,35 @@ public final class SurveyorConstants {
 	/*
 	 * Long driving surveys.
 	 */
-	public static final String PIC8HR01TAG = "8HourSurvey-1";
-	public static final String PIC8HR02TAG = "8HourSurvey-2";
-	public static final String PIC8HR03TAG = "8HourSurvey-3";
-	public static final String PIC8HR04TAG = "8HourSurvey-4";
-	public static final String PIC8HR05TAG = "8HourSurvey-5";
-	public static final String PIC8HR06TAG = "8HourSurvey-6";
-	public static final String PIC8HR07TAG = "8HourSurvey-7";
-	public static final String PIC8HR08TAG = "8HourSurvey-8";
-	public static final String PIC8HR09TAG = "8HourSurvey-9";
-	public static final String PIC8HR10TAG = "8HourSurvey-10";
-	public static final String PIC8HR11TAG = "8HourSurvey-11";
-	public static final String PIC8HR12TAG = "8HourSurvey-12";
-	public static final String PICLESS4HRTAG = "LessThan4Hour-1";
-	public static final String PICGREATER4HRTAG = "GreaterThan4Hour-1";
+	public static final String PIC8HR01TAG = "8HourSurvey01";
+	public static final String PIC8HR02TAG = "8HourSurvey02";
+	public static final String PIC8HR03TAG = "8HourSurvey03";
+	public static final String PIC8HR04TAG = "8HourSurvey04";
+	public static final String PIC8HR05TAG = "8HourSurvey05";
+	public static final String PIC8HR06TAG = "8HourSurvey06";
+	public static final String PIC8HR07TAG = "8HourSurvey07";
+	public static final String PIC8HR08TAG = "8HourSurvey08";
+	public static final String PIC8HR09TAG = "8HourSurvey09";
+	public static final String PIC8HR10TAG = "8HourSurvey10";
+	public static final String PIC8HR11TAG = "8HourSurvey11";
+	public static final String PIC8HR12TAG = "8HourSurvey12";
+	public static final String PICLESS4HRTAG = "LessThan4Hour";
+	public static final String PICGREATER4HRTAG = "GreaterThan4Hour";
+
+	public static final String PIC8HR01_DATAFILE = "8HourSurvey-1";
+	public static final String PIC8HR02_DATAFILE = "8HourSurvey-2";
+	public static final String PIC8HR03_DATAFILE = "8HourSurvey-3";
+	public static final String PIC8HR04_DATAFILE = "8HourSurvey-4";
+	public static final String PIC8HR05_DATAFILE = "8HourSurvey-5";
+	public static final String PIC8HR06_DATAFILE = "8HourSurvey-6";
+	public static final String PIC8HR07_DATAFILE = "8HourSurvey-7";
+	public static final String PIC8HR08_DATAFILE = "8HourSurvey-8";
+	public static final String PIC8HR09_DATAFILE = "8HourSurvey-9";
+	public static final String PIC8HR10_DATAFILE = "8HourSurvey-10";
+	public static final String PIC8HR11_DATAFILE = "8HourSurvey-11";
+	public static final String PIC8HR12_DATAFILE = "8HourSurvey-12";
+	public static final String PICLESS4HR_DATAFILE = "LessThan4Hour-1";
+	public static final String PICGREATER4HR_DATAFILE = "GreaterThan4Hour-1";
 
 	/*
 	 * Simulator Analyzers
