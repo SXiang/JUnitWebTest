@@ -12,7 +12,7 @@ import org.testng.Assert;
 
 /**
  * Regex Matching Utility class.
- * 
+ *
  * @author spulikkal
  *
  */
@@ -34,12 +34,13 @@ public class RegexUtility {
 	public static final String REGEX_PATTEN_NOT_METHODNAME_CHARACTERS = "[^a-zA-Z0-9_\\.]";
 	public static final String FIELD_NOTE_LINE_REGEX_PATTERN = "^\\d+\\. .*";
 	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^\\? \\d+ .*";
-	
+	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
+
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
 	/**
 	 * Returns whether the specified string matches with the specified regex pattern.
-	 * 
+	 *
 	 * @param inputString
 	 *            - string to match.
 	 * @param regexPattern
@@ -54,7 +55,7 @@ public class RegexUtility {
 
 	/**
 	 * Gets matching groups from the specified regex pattern.
-	 * 
+	 *
 	 * @param inputString
 	 *            - string to match.
 	 * @param regexPattern
@@ -77,7 +78,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns a list of String with matching parts after split. If parts are empty then they are not returned in the output
-	 * 
+	 *
 	 * @param inputString
 	 *            - string to split.
 	 * @param regexPattern
@@ -97,7 +98,7 @@ public class RegexUtility {
 	/**
 	 * This methods looks at the culture of the user and determines the date format Regex accordingly Cultures supported right now: English, French, Chinese e.g. When used in combine with
 	 * getMatchingGroups method, can extract the date from a String. "1/23/2016 11:16 PM PST" can be extracted from a String like "1/23/2016 11:16 PM PST Administrator Automation Test Note 122291"
-	 * 
+	 *
 	 * @param whether
 	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
 	 * @return date format for the user locale
@@ -127,7 +128,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns last occurence of String in between two given patterns
-	 * 
+	 *
 	 * @param inputString
 	 * @param regexPattern1
 	 * @param regexPattern2
@@ -139,7 +140,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns all Strings in between two given patterns
-	 * 
+	 *
 	 * @param inputString
 	 * @param regexPattern1
 	 * @param regexPattern2
@@ -151,7 +152,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns last occurence of string between two given patterns
-	 * 
+	 *
 	 * @param inputString
 	 * @param regexPattern1
 	 * @param regexPattern2
@@ -164,7 +165,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns all String in between two given patterns
-	 * 
+	 *
 	 * @param inputString
 	 * @param regexPattern1
 	 * @param regexPattern2
@@ -184,7 +185,7 @@ public class RegexUtility {
 
 	/**
 	 * Returns next line after a pattern
-	 * 
+	 *
 	 * @param inputString
 	 * @param regexPattern
 	 * @return
@@ -194,20 +195,20 @@ public class RegexUtility {
 		String splits[] = remaining.split("\\n");
 		return splits[1].trim();
 	}
-	
+
 	/**
 	 * Removes all characters other than those defined in REGEX_PATTERN_NOT_ALPHANUMERIC
 	 * The character ETX (\\u0003) is handled specially to replace it with <space>.
-	 * NOTE: This method may not give expected results in non en-us locale. 
-	 * TODO: Add fix for all locales. Tracked by DE1968.		
-	 * 
+	 * NOTE: This method may not give expected results in non en-us locale.
+	 * TODO: Add fix for all locales. Tracked by DE1968.
+	 *
 	 * @param inputString
 	 * @return
 	 */
 	public static String removeSpecialChars(String inputString) {
 		// Replace ETX character by <space>
 		inputString = inputString.replaceAll("\\u0003", " ");
-		// Next remove all characters NOT in REGEX_PATTERN_NOT_ALPHANUMERIC 
+		// Next remove all characters NOT in REGEX_PATTERN_NOT_ALPHANUMERIC
 		return inputString.replaceAll(RegexUtility.REGEX_PATTERN_NOT_ALPHANUMERIC, "");
 	}
 
@@ -215,7 +216,7 @@ public class RegexUtility {
 		inputString = inputString.replaceAll(" ", "");
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 	}
-	
+
 	public static String getValidFileName(String inputString){
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_NOT_METHODNAME_CHARACTERS, "");
 	}
@@ -239,14 +240,18 @@ public class RegexUtility {
 		}else{
 			try{
 				isMatch = actualValue.matches(expectedValueOrPattern);
-			}catch(Exception e){				
+			}catch(Exception e){
 			}
 		}
 		return isMatch;
 	}
-	
+
 	public static void main(String[] args) throws IOException {
-		
+
+		Log.info("Running test - testAppVersion_Success() ...");
+		testAppVersion_Success();
+		Log.info("Running test - testAppVersion_FailMatch() ...");
+		testAppVersion_FailMatch();
 		Log.info("Running test - testRemoveSpecialChars_Success() ...");
 		testRemoveSpecialChars_Success();
 		Log.info("Running test - testReplaceSpecialChars_Success() ...");
@@ -278,6 +283,34 @@ public class RegexUtility {
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
 		testgetNextLineAfterPattern_Success();
+	}
+
+	private static void testAppVersion_Success() {
+		String inputString1 = "© 2016 Picarro Inc. Version: 2.162.e9cccd0";
+		String inputString2 = "© 2016 Picarro Inc. Version: 2.4.0.e9cccd0";
+
+		List<String> matchingGroups1 = RegexUtility.getMatchingGroups(inputString1, APP_VERSION_PATTERN);
+		Log.info(String.format("InputString1-[%s]: Matching groups are - '%s', ",
+				inputString1, LogHelper.strListToString(matchingGroups1)));
+		List<String> matchingGroups2 = RegexUtility.getMatchingGroups(inputString2, APP_VERSION_PATTERN);
+		Log.info(String.format("InputString2-[%s]: Matching groups are - '%s', ",
+				inputString2, LogHelper.strListToString(matchingGroups2)));
+
+		String group1 = matchingGroups1.get(0);
+		String group2 = matchingGroups2.get(0);
+		Log.info(String.format("Group1 = [%s]", group1));
+		Log.info(String.format("Group2 = [%s]", group2));
+
+		Assert.assertTrue(group1.equals("2.162.e9cccd0"));
+		Assert.assertTrue(group2.equals("2.4.0.e9cccd0"));
+	}
+
+	private static void testAppVersion_FailMatch() {
+		String inputString1 = "© 2016 Picarro Inc. Version: 1234";
+		List<String> matchingGroups1 = RegexUtility.getMatchingGroups(inputString1, APP_VERSION_PATTERN);
+		Log.info(String.format("InputString1-[%s]: Matching groups are - '%s', ",
+				inputString1, LogHelper.strListToString(matchingGroups1)));
+		Assert.assertTrue(matchingGroups1.size()==0, "No match");
 	}
 
 	private static void testRemoveSpecialChars_Success() throws IOException {

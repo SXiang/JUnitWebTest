@@ -429,6 +429,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
+	private long reportStartEpochTime;
+
+	private long reportEndEpochTime;
+
+	private List<String> reportJobComparisonFailureMessages;
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -440,6 +446,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		this.changeCustomerDialog = new ChangeCustomerDialogControl(driver);
 		PageFactory.initElements(driver, changeCustomerDialog);
+
+		reportJobComparisonFailureMessages = new ArrayList<String>();
 	}
 
 	public WebElement getInputStartDate() {
@@ -718,6 +726,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		} else {
 			addSurveyInformation(reports);
 		}
+
+		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
+
 		this.clickOnOKButton();
 	}
 
@@ -2467,6 +2478,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
+		// Clear existing failures messages.
+		reportJobComparisonFailureMessages.clear();
+
 		ReportJobsStat reportJobsStatObj = getReportJobStat(reportTitle);
 		validateReportStatus(reportJobsStatObj);
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
@@ -2501,7 +2515,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 						foundInCsv = true;
 						Integer expectedProcessingTimeInMs = Integer.valueOf(csvRow.get("ProcessingTimeInMs"));
 						if (actualProcessingTimeInMs > expectedProcessingTimeInMs) {
-							return false;
+							// On comparison failure, let the test proceed on failure to collect the metrics for remaining report jobs.
+							String failureMsg = String.format("Failure in ReportJobType=[%s] baselines comparison. Expected Processing Time in Msec=%s, "
+									+ "Actual Processing Time in MSec=%s", reportJob.ReportJobType, expectedProcessingTimeInMs, actualProcessingTimeInMs);
+							reportJobComparisonFailureMessages.add(failureMsg);
+							Log.error(failureMsg);
 						}
 					}
 				}
@@ -2517,7 +2535,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
-		return true;
+		return (reportJobComparisonFailureMessages.size() == 0);
 	}
 
 	private void addToListReportJobDBStat(surveyor.api.source.ReportJob reportJob, String reportJobTypeId) {
@@ -2757,5 +2775,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public ChangeCustomerDialogControl getChangeCustomerDialog() {
 		return changeCustomerDialog;
+	}
+
+	public long getReportStartEpochTime() {
+		return reportStartEpochTime;
+	}
+
+	public void setReportStartEpochTime(long unixEpochTime) {
+		this.reportStartEpochTime = unixEpochTime;
+	}
+
+	public long getReportEndEpochTime() {
+		return reportEndEpochTime;
+	}
+
+	public void setReportEndEpochTime(long reportEndEpochTime) {
+		this.reportEndEpochTime = reportEndEpochTime;
 	}
 }

@@ -9,6 +9,9 @@
 	<property name="performance_jar" value="performance.jar" />
 	<property name="common_jar" value="common.jar" />
 	<property name="scommon_jar" value="scommon.jar" />
+	<property environment="env" />
+	<property name="jmeter.result.dir" value="../api/jmeter/result" />
+	
 	<tstamp>
 	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
 	</tstamp>
@@ -25,6 +28,8 @@
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
+		
+		<mkdir dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="clean" description="Clean up">
@@ -518,6 +523,7 @@
 		<echo message="junit build : ${build}" />
 	</target>
 	
+	
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
@@ -541,6 +547,35 @@
 		</junit>
 	</target>
 	
+	<target name="securityapitest" depends="init">
+		<delete dir="${jmeter.result.dir}" />
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
+																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+			<property name="runUUID" value="${env.RunUUID}" />
+			<property name="runEnvironment" value="${env.RunEnvironment}" />
+		</jmeter>
+	</target>
+
+	<target name="analyzerapiloadtest" depends="init">
+		<delete dir="${jmeter.result.dir}" />
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/picarro.analyzer.http.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+		</jmeter>
+	</target>
+	
+	<target name="analyzerapiloadtestreporter" depends="init">
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/Publisher_PerfStatAnalyzer.jmx"/>
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+		</jmeter>
+		
+	</target>	
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">

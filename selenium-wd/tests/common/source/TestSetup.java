@@ -645,6 +645,7 @@ public class TestSetup {
 	public void setLogCategoryClickWebElementEnabled(boolean logCategoryWebElementEnabled) {
 		this.logCategoryWebElementEnabled = logCategoryWebElementEnabled;
 	}
+
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
@@ -1137,20 +1138,24 @@ public class TestSetup {
 	}
 
 	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
-			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime, LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime,
+			 LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
+			 LocalDateTime reportStartTime, LocalDateTime reportEndTime,
 			 String buildNumber, String testCaseID, Environment environment) {
 		try {
 			String workingFolder = getRootPath();
 			String reportJobStatCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String reportJobStatCmdFullPath = reportJobStatCmdFolder + File.separator + POST_REPORT_JOB_PERF_STAT_CMD;
 			String command = "cd \"" + reportJobStatCmdFolder + "\" && " + reportJobStatCmdFullPath +
-					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder, getAutomationReportingApiEndpoint(), reportTitle,
 							 reportJobTypeId, reportJobTypeName,
 							 DateUtility.getLongDateString(reportJobStartTime),
 							 DateUtility.getLongDateString(reportJobEndTime),
 							 DateUtility.getLongDateString(testExecutionStartDate),
 							 DateUtility.getLongDateString(testExecutionEndDate),
+							 DateUtility.getLongDateString(reportStartTime),
+							 DateUtility.getLongDateString(reportEndTime),
 							 buildNumber, testCaseID, environment.getIndex());
 			Log.info("Posting report job perf stat. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);

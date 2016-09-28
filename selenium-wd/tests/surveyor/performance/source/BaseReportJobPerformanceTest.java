@@ -1,5 +1,7 @@
 package surveyor.performance.source;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,6 +11,7 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
@@ -135,6 +138,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 
 		LocalDateTime startDate = LocalDateTime.now();
 
+		boolean result = true;
+
 		// Run for specified number of times depending on whether we are generating baselines or not.
 		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
 		for (int i=0; i<testExecutionTimes; i++) {
@@ -146,7 +151,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
 			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_IN_SECONDS), reportDataRowID);
 			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
-			getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
+			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
+			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
 
 		// Generate the CSV if collecting baselines
@@ -155,6 +161,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		// Post execution results to automation DB.
 		LocalDateTime endDate = LocalDateTime.now();
 		postRunResultsToAutomationDB(reportDataRowID, startDate, endDate);
+
+		assertTrue(result);
 	}
 
 	private void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
@@ -174,10 +182,13 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 					LocalDateTime reportJobEndTime = reportJobPerfDBStat.getReportJobEndTime();
 					LocalDateTime testExecutionStartDate = startDate;
 					LocalDateTime testExecutionEndDate = endDate;
-					String buildNumber = reportJobPerfDBStat.getBuildNumber();
+					LocalDateTime reportStartTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportStartEpochTime());
+					LocalDateTime reportEndTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportEndEpochTime());
+					String buildNumber = getComplianceReportsPageAction().getComplianceReportsPage().getWebAppVersion();
 					Environment environment = reportJobPerfDBStat.getEnvironment();
 					TestContext.INSTANCE.getTestSetup().postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime,
-							reportJobEndTime, testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, environment);
+							reportJobEndTime, testExecutionStartDate, testExecutionEndDate,
+							reportStartTime, reportEndTime, buildNumber, testCaseID, environment);
 					i++;
 				}
 			}

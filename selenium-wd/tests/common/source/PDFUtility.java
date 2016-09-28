@@ -21,12 +21,12 @@ import org.apache.pdfbox.util.PDFTextStripper;
 import org.testng.Assert;
 
 public class PDFUtility {
-	
+
 	protected static String wordSeparator = "| ";
 	protected static String wordSeparatorPattern = "[\\|]";
 	protected boolean setWordSeparator = false;
 	protected static String pdfLineSeparator = "", pdfParagraphStart="<\u200E", pdfParagraphEnd="\u200F>";
-	
+
 	public PDFUtility(){
 		this(false);
 	}
@@ -36,30 +36,30 @@ public class PDFUtility {
 	/*
 	 * Extracts text from all pages from specified PDF.
 	 * Returns the extracted text.
-	 * 
+	 *
 	 */
 	public String extractPDFText(String pdfFilePath) throws IOException {
-		
+
 		return extractPDFText(pdfFilePath, -1 /*startPage*/, -1 /*endPage*/);
 	}
 
 	/*
 	 * Extracts text from specified pages from specified PDF.
 	 * Returns the extracted text.
-	 * 
+	 *
 	 */
 	public String extractPDFText(String pdfFilePath, int startPage, int endPage) throws IOException {
-		
+
 		FileInputStream inputStream = null;
 		PDDocument pdDocument = null;
-		StringWriter stringWriter = new StringWriter(); 
+		StringWriter stringWriter = new StringWriter();
 		try
 		{
 			inputStream = new FileInputStream(pdfFilePath);
 			PDFParser pdfParser = new PDFParser(inputStream);
 			pdfParser.parse();
 			pdDocument = pdfParser.getPDDocument();
-			
+
 			PDFTextStripper pdfTextStripper = new PDFTextStripper();
 			if(setWordSeparator){
 				pdfTextStripper.setWordSeparator(wordSeparator);
@@ -83,7 +83,7 @@ public class PDFUtility {
 				inputStream.close();
 			}
 		}
-		
+
 		String pdfContent = stringWriter.toString();
 		Log.info(String.format("'%s' PDF text content is:", pdfFilePath));
 		Log.info(pdfContent);
@@ -93,57 +93,57 @@ public class PDFUtility {
 	/*
 	 * Extracts images from all pages from specified PDF and save them to a temporary output folder.
 	 * Returns the path of the output folder where the images are saved.
-	 * 
+	 *
 	 * @pdfFilePath - input PDF file to be read.
 	 * @outputDirectoryPrefix - prefix appended to output directory. Leave blank or EMPTY for NO prefix.
-	 * 
+	 *
 	 */
 	public String extractPDFImages(String pdfFilePath, String outputDirectoryPrefix) throws IOException {
 		return extractPDFImages(pdfFilePath, outputDirectoryPrefix, -1, -1);
 	}
-	
+
 	/*
 	 * Extracts images from the specified pages from specified PDF and save them to a temporary output folder.
 	 * Returns the path of the output folder where the images are saved.
-	 * 
+	 *
 	 * @pdfFilePath - input PDF file to be read.
 	 * @outputDirectoryPrefix - prefix appended to output directory. Leave blank or EMPTY for NO prefix.
 	 * @startPage - start page to begin reading from. If -1 is specified all pages are read.
 	 * @endPage - end page to end reading at. If -1 is specified all pages are read.
-	 * 
+	 *
 	 */
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public String extractPDFImages(String pdfFilePath, String outputDirectoryPrefix, int startPage, int endPage) throws IOException {
 		FileInputStream inputStream = null;
 		PDDocument pdDocument = null;
-		
+
 		String tempDirectory = TestSetup.getSystemTempDirectory();
 		String uniqueString = TestSetup.getUUIDString();
-		if (outputDirectoryPrefix != null && outputDirectoryPrefix != "") {
-			uniqueString = outputDirectoryPrefix + uniqueString; 
+		if (outputDirectoryPrefix != null && !BaseHelper.isNullOrEmpty(outputDirectoryPrefix)) {
+			uniqueString = outputDirectoryPrefix + uniqueString;
 		}
 		Path uniqueDirectory = Paths.get(tempDirectory, uniqueString);
 		Files.createDirectory(uniqueDirectory);
-		
+
 		try
 		{
 			inputStream = new FileInputStream(pdfFilePath);
 			PDFParser pdfParser = new PDFParser(inputStream);
 			pdfParser.parse();
 			pdDocument = pdfParser.getPDDocument();
-			
+
 			List<PDPage> allPages = pdDocument.getDocumentCatalog().getAllPages();
 			Integer pageNum = 0;
 			for (PDPage pdPage : allPages) {
 				pageNum++;
-				
+
 				boolean isValidPage = false;
 				if ((startPage == -1) || (endPage == -1)) {
 					isValidPage = true;
 				} else if ((pageNum >= startPage) && (pageNum <= endPage)) {
 					isValidPage = true;
 				}
-				
+
 				if (isValidPage) {
 					PDResources resources = pdPage.getResources();
 					Map<String, PDXObjectImage> images = resources.getImages();
@@ -165,10 +165,10 @@ public class PDFUtility {
 				inputStream.close();
 			}
 		}
-		
+
 		return uniqueDirectory.toString();
 	}
-	
+
 	/**
 	 * Executes the unit tests for this class.
 	 * @param args
@@ -202,7 +202,7 @@ public class PDFUtility {
 		filesWithNoTextMap.put("TC193_View 1.pdf", "");
 		filesWithNoTextMap.put("TestReportPGE-nolisa_View 1.pdf", "");
 		filesWithNoTextMap.put("TestReportPGE-surveynotpartofplat_View 1.pdf", "");
-		
+
 		HashMap<String, Integer> expectedImageCountMap = new HashMap<String, Integer>();
 		expectedImageCountMap.put("CustomerSupervisorReportTC739195603.pdf", 41);
 		expectedImageCountMap.put("CustomerSupervisorReportTC739195603_First View.pdf", 1);
@@ -219,7 +219,7 @@ public class PDFUtility {
 		firstPageImageCountMap.put("IV-1505B7.pdf", 5);
 		firstPageImageCountMap.put("IV-6AD1AB.pdf", 23);
 		firstPageImageCountMap.put("LISAassetexcl0.pdf", 5);
-		firstPageImageCountMap.put("Lisaonly.pdf", 5);		
+		firstPageImageCountMap.put("Lisaonly.pdf", 5);
 
 		HashMap<String, Integer> lastPageImageCountMap = new HashMap<String, Integer>();
 		lastPageImageCountMap.put("CustomerSupervisorReportTC739195603.pdf", 1);
@@ -228,7 +228,7 @@ public class PDFUtility {
 		lastPageImageCountMap.put("IV-1505B7.pdf", 5);
 		lastPageImageCountMap.put("IV-6AD1AB.pdf", 23);
 		lastPageImageCountMap.put("LISAassetexcl0.pdf", 1);
-		lastPageImageCountMap.put("Lisaonly.pdf", 1);		
+		lastPageImageCountMap.put("Lisaonly.pdf", 1);
 
 		HashMap<String, Integer> zeroImageCountMap = new HashMap<String, Integer>();
 		zeroImageCountMap.put("Text_plus_TABLE_PDF.pdf", 0);
@@ -244,7 +244,7 @@ public class PDFUtility {
 		lastPageNumberMap.put("Lisaonly.pdf", 3);
 		lastPageNumberMap.put("TC155.pdf", 3);
 		lastPageNumberMap.put("TestReportPGE-surveynotpartofplat.pdf", 3);
-		
+
 		PDFUtility pdfUtility = new PDFUtility();
 
 		try {
@@ -253,40 +253,40 @@ public class PDFUtility {
 
 			for (String filePath : pdfFilesInDirectory) {
 				String filename = Paths.get(filePath).getFileName().toString();
-				
+
 				if (expectedTextMap.containsKey(filename)) {
-					pdfUtility.testExtractPDFText_validPDF(Paths.get(filePath).toString(), 
+					pdfUtility.testExtractPDFText_validPDF(Paths.get(filePath).toString(),
 							expectedTextMap.get(filename));
-					pdfUtility.testExtractPDFText_validPDF_firstPage(Paths.get(filePath).toString(), 
+					pdfUtility.testExtractPDFText_validPDF_firstPage(Paths.get(filePath).toString(),
 							expectedTextMap.get(filename));
 					if (lastPageNumberMap.containsKey(filename) && lastPageNumberMap.containsKey(lastPageNumberMap)) {
-						pdfUtility.testExtractPDFText_validPDF_lastPage(Paths.get(filePath).toString(), lastPageNumberMap.get(filename), 
+						pdfUtility.testExtractPDFText_validPDF_lastPage(Paths.get(filePath).toString(), lastPageNumberMap.get(filename),
 								expectedTextMap.get(filename));
-						pdfUtility.testExtractPDFText_validPDF_innerPages(Paths.get(filePath).toString(), 1, lastPageNumberMap.get(filename), 
+						pdfUtility.testExtractPDFText_validPDF_innerPages(Paths.get(filePath).toString(), 1, lastPageNumberMap.get(filename),
 								expectedTextMap.get(filename));
 					}
 				} else if (filesWithNoTextMap.containsKey(filename)) {
-					pdfUtility.testExtractPDFText_invalidPDF(Paths.get(filePath).toString(), 
-							filesWithNoTextMap.get(filename));					
+					pdfUtility.testExtractPDFText_invalidPDF(Paths.get(filePath).toString(),
+							filesWithNoTextMap.get(filename));
 				}
-				
+
 				if (expectedImageCountMap.containsKey(filename)) {
-					pdfUtility.testExtractImages_validPDF(Paths.get(filePath).toString(), 
+					pdfUtility.testExtractImages_validPDF(Paths.get(filePath).toString(),
 							expectedImageCountMap.get(filename));
 					if (firstPageImageCountMap.containsKey(filename)) {
-						pdfUtility.testExtractImages_validPDF_firstPage(Paths.get(filePath).toString(), 
+						pdfUtility.testExtractImages_validPDF_firstPage(Paths.get(filePath).toString(),
 								firstPageImageCountMap.get(filename));
 					}
 					if (lastPageImageCountMap.containsKey(filename) && lastPageNumberMap.containsKey(filename)) {
-						pdfUtility.testExtractImages_validPDF_lastPage(Paths.get(filePath).toString(), lastPageNumberMap.get(filename), 
+						pdfUtility.testExtractImages_validPDF_lastPage(Paths.get(filePath).toString(), lastPageNumberMap.get(filename),
 								lastPageImageCountMap.get(filename));
 					}
 					if (lastPageNumberMap.containsKey(filename)) {
-						pdfUtility.testExtractImages_validPDF_innerPages(Paths.get(filePath).toString(), 1, lastPageNumberMap.get(filename), 
+						pdfUtility.testExtractImages_validPDF_innerPages(Paths.get(filePath).toString(), 1, lastPageNumberMap.get(filename),
 								expectedImageCountMap.get(filename));
 					}
 				} else if (zeroImageCountMap.containsKey(filename)) {
-					pdfUtility.testExtractImages_invalidPDF(Paths.get(filePath).toString(), 
+					pdfUtility.testExtractImages_invalidPDF(Paths.get(filePath).toString(),
 							zeroImageCountMap.get(filename));
 				}
 			}
@@ -306,7 +306,7 @@ public class PDFUtility {
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
 		Log.info("Completed test - testExtractPDFText_invalidPDF() for file - " + filePath);
 	}
-	
+
 	private void testExtractPDFText_validPDF_firstPage(String filePath, String expectedText) throws IOException {
 		String pdfText = extractPDFText(filePath, 1, 1);
 		Assert.assertTrue(pdfText.contains(expectedText), String.format("Text - '%s' NOT found in file - %s", expectedText, filePath));
@@ -329,7 +329,7 @@ public class PDFUtility {
 		String imageDirectory = extractPDFImages(filePath, Paths.get(filePath).getFileName().toString() + "_");
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(imageDirectory));
 		int actualImageCount = (filesInDirectory != null) ? filesInDirectory.size() : 0;
-		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
+		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files",
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
 		Log.info("Completed test - testExtractImages_validPDF() for file - " + filePath);
@@ -339,17 +339,17 @@ public class PDFUtility {
 		String imageDirectory = extractPDFImages(filePath, Paths.get(filePath).getFileName().toString() + "_");
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(imageDirectory));
 		int actualImageCount = (filesInDirectory != null) ? filesInDirectory.size() : 0;
-		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
+		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files",
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
 		Log.info("Completed test - testExtractImages_invalidPDF() for file - " + filePath);
 	}
-	
+
 	private void testExtractImages_validPDF_firstPage(String filePath, int expectedImageCount) throws IOException {
 		String imageDirectory = extractPDFImages(filePath, Paths.get(filePath).getFileName().toString() + "_", 1, 1);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(imageDirectory));
 		int actualImageCount = (filesInDirectory != null) ? filesInDirectory.size() : 0;
-		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
+		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files",
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
 		Log.info("Completed test - testExtractImages_validPDF_firstPage() for file - " + filePath);
@@ -359,7 +359,7 @@ public class PDFUtility {
 		String imageDirectory = extractPDFImages(filePath, Paths.get(filePath).getFileName().toString() + "_", endPage, endPage);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(imageDirectory));
 		int actualImageCount = (filesInDirectory != null) ? filesInDirectory.size() : 0;
-		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
+		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files",
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
 		Log.info("Completed test - testExtractImages_validPDF_lastPage() for file - " + filePath);
@@ -369,7 +369,7 @@ public class PDFUtility {
 		String imageDirectory = extractPDFImages(filePath, Paths.get(filePath).getFileName().toString() + "_", startPage, endPage);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(imageDirectory));
 		int actualImageCount = (filesInDirectory != null) ? filesInDirectory.size() : 0;
-		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files", 
+		Assert.assertTrue(actualImageCount == expectedImageCount, String.format("Expected - '%d' files in PDF - %s. Found - '%d' files",
 				expectedImageCount, filePath, actualImageCount));
 		FileUtility.deleteDirectoryAndFiles(Paths.get(imageDirectory));
 		Log.info("Completed test - testExtractImages_validPDF_innerPages() for file - " + filePath);
