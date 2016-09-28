@@ -2692,7 +2692,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
-		Log.error("LisaMeta verification function is not working due to product changes, ");
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
