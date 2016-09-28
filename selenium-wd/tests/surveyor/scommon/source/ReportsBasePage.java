@@ -764,8 +764,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void addReport(){
-//		this.clickOnOKButton();
-		cancelReport();
+		this.clickOnOKButton();
 	}
 	
 	public void cancelReport(){

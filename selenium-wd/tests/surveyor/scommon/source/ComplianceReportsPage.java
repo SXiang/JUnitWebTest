@@ -2751,7 +2751,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				Log.info(String.format("LISA Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.", reportListObj.toString()));
 				return false;
 			}
-		}		
+		}
 		Log.info("LISA Meta data file verification passed");
 		return true;
 	}
