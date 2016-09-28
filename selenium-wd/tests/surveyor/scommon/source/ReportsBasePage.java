@@ -147,16 +147,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "report-survey-driver")
 	protected WebElement userName;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='All']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type'] and @id='All'")
 	protected WebElement inputSurModeFilterAll;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Standard']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Standard']")
 	protected WebElement inputSurModeFilterStd;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Operator']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Operator']")
 	protected WebElement inputSurModeFilterOperator;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Rapid Response']")
 	protected WebElement inputSurModeFilterRapidResponse;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
@@ -764,7 +764,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void addReport(){
-		this.clickOnOKButton();
+//		this.clickOnOKButton();
+		cancelReport();
 	}
 	
 	public void cancelReport(){
@@ -794,11 +795,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		selectSurveyInfoGeoFilter(geoFilterOn);
 
 		for (String tagValue : tagList) {
-			if (tagValue != "") {
 				inputSurveyTag(tagValue);
 				clickOnSearchSurveyButton();
 				selectSurveysAndAddToReport(false /*selectAll*/, 1 /*numSurveysToSelect*/);
-			}
 		}
 	}
 

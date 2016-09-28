@@ -106,7 +106,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.selectReportMode("Manual", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
 		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
-		modifyComplianceReport(complianceReportsPageAction, 7);		
+		modifyComplianceReport(complianceReportsPageAction, 7);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
 	}
