@@ -33,7 +33,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Report002" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Report002</stringProp>
-            <stringProp name="Argument.value">FBE59570-637F-7C70-0B12-39DA79CD49F2</stringProp>
+            <stringProp name="Argument.value">4D3B364B-7A8E-A948-D25B-39DA84E27212</stringProp>
             <stringProp name="Argument.desc">copy of 001</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -164,16 +164,6 @@
             <stringProp name="Argument.value">${projectHome}/json</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="LicensedUser_Picarro" elementType="Argument">
-            <stringProp name="Argument.name">LicensedUser_Picarro</stringProp>
-            <stringProp name="Argument.value">Picarro</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="NotLicensedUser_CustomerWithNoLicense" elementType="Argument">
-            <stringProp name="Argument.name">NotLicensedUser_CustomerWithNoLicense</stringProp>
-            <stringProp name="Argument.value">CustomerWithNoLicense</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -248,9 +238,9 @@
             <stringProp name="Argument.value">b1252204-04fb-4a67-82d4-3f4666fd855c</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="CustomerID_sqacus" elementType="Argument">
-            <stringProp name="Argument.name">CustomerID_sqacus</stringProp>
-            <stringProp name="Argument.value">00000000-0000-0000-0000-000000000002</stringProp>
+          <elementProp name="CustomerID_CustomerWithNoLicense" elementType="Argument">
+            <stringProp name="Argument.name">CustomerID_CustomerWithNoLicense</stringProp>
+            <stringProp name="Argument.value">5D073EF1-40E1-9BA0-E7BC-39DA8027337E</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SurveyMode_Standard" elementType="Argument">
@@ -847,20 +837,7 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
 		String successmsg = xpath + &quot; string is present in response&quot;;
 		log.info(successmsg);
 		Failure = false;
-	}
-
-
-
- 
-/*String  xpathResult = document.evaluate( xpathExpression, contextNode, namespaceResolver, resultType, result );
- System.out.println(vars.get(xpathResult));
-	if (!(response.contains(&quot;document.evaluate( role, document,  null, XPathResult.ANY_TYPE, null )&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) does not have license of this feature&quot;;
-		Failure = true;
-		}else{
-			Failure = false;
-		}
-*/</stringProp>
+	}</stringProp>
               <stringProp name="BeanShellAssertion.filename"></stringProp>
               <stringProp name="BeanShellAssertion.parameters"></stringProp>
               <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
@@ -1013,7 +990,7 @@ and CustomerId like &apos;${NotLicensedUser_CustomerWithNoLicense}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -1027,7 +1004,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -1074,7 +1051,7 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportId, PeakNumber, Id
 From dbo.ReportPeak
@@ -1088,7 +1065,7 @@ Where ReportId like &apos;${APISecurityTest_NoLicense_Report001}&apos;</stringPr
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
 From dbo.ReportJob
@@ -1102,7 +1079,7 @@ Where ReportId like &apos;${APISecurityTest_NoLicense_Report001}&apos; and Repor
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="false">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
 int size = result.size();
@@ -1134,14 +1111,14 @@ for(int i=0; i&lt;size; i++){
             <collectionProp name="Arguments.arguments">
               <elementProp name="Username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">unlicenseduser@email.com</stringProp>
+                <stringProp name="Argument.value">CusAdmUserWithNoLic@email.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Username</stringProp>
               </elementProp>
               <elementProp name="Password" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">Test!123</stringProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Password</stringProp>
@@ -1188,14 +1165,14 @@ for(int i=0; i&lt;size; i++){
               </elementProp>
               <elementProp name="Username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">unlicenseduser@email.com</stringProp>
+                <stringProp name="Argument.value">CusAdmUserWithNoLic@email.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Username</stringProp>
               </elementProp>
               <elementProp name="Password" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">Test!123</stringProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Password</stringProp>
@@ -1277,20 +1254,7 @@ if(!response.contains (xpath)){
 		String successmsg = xpath + &quot; string is present in response&quot;;
 		log.info(successmsg);
 		Failure = true;
-		}
-
-
-
- 
-/*String  xpathResult = document.evaluate( xpathExpression, contextNode, namespaceResolver, resultType, result );
- System.out.println(vars.get(xpathResult));
-	if (!(response.contains(&quot;document.evaluate( role, document,  null, XPathResult.ANY_TYPE, null )&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) does not have license of this feature&quot;;
-		Failure = true;
-		}else{
-			Failure = false;
-		}
-*/</stringProp>
+		}</stringProp>
               <stringProp name="BeanShellAssertion.filename"></stringProp>
               <stringProp name="BeanShellAssertion.parameters"></stringProp>
               <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
