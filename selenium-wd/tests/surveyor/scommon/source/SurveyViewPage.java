@@ -26,7 +26,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 	private static final String SURVEY_INFO_TAG_LABEL_XPATH = "//*[@id='header_info_historical']/div[1]";
 	public static final String STRURLPath = "/Live/Survey/";
 	public static final String STRPageTitle = Resources.getResource(ResourceKeys.Constant_Survey);
-	
+
     @FindBy(id = "survey_wind_calm")
     @CacheLookup
     private WebElement calm;
@@ -107,7 +107,7 @@ public class SurveyViewPage extends BaseMapViewPage {
     @CacheLookup
     private WebElement termsOfUse;
 
-    
+
     @FindBy(how = How.XPATH, using = SURVEY_INFO_TAG_LABEL_XPATH)
 	private WebElement labelTag;
 
@@ -131,7 +131,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 
     @FindBy(how = How.XPATH, using = SURVEY_INFO_END_TIME_LABEL_XPATH)
 	private WebElement labelEndTime;
-    
+
 
 	/**
 	 * @param driver
@@ -149,11 +149,14 @@ public class SurveyViewPage extends BaseMapViewPage {
 		driver.get(strPageURL + getSurveyId());
 		this.waitForPageLoad();
 	}
-	
+
 	public boolean checkIfAtSurveyViewPage() {
+		Log.method("checkIfAtSurveyViewPage");
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+
+		Log.info(String.format("MATCH failure. Expected driver.getTitle()=[%s] to match STRPageTitle=[%s]",
+				driver.getTitle(), STRPageTitle));
 		return false;
 	}
 
@@ -417,7 +420,7 @@ public class SurveyViewPage extends BaseMapViewPage {
 		return driver.findElement(By.xpath(SURVEY_INFO_ANALYZER_LABEL_XPATH)).getText();
 	}
 
-	
+
 	/**
      * Submit the form to target page.
      *

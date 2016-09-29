@@ -14,7 +14,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import common.source.ExcelUtility;
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
@@ -28,8 +27,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.PageActionsFactory;
-import surveyor.scommon.actions.data.CustomerDataReader;
-import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 
@@ -54,13 +51,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[1]")
 	private WebElement displaySwitchIndicationsDivElement;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[2]")
 	private WebElement displaySwitchPossibleNaturalGasDivElement;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[3]")
 	private WebElement displaySwitchNotNaturalGasDivElement;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[4]")
 	private WebElement displaySwitchVehicleExhaustDivElement;
 
@@ -97,15 +94,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "display_switch_possible_natural_gas")
 	@CacheLookup
 	protected WebElement displaySwitchPossibleNaturalGas;
-	
+
 	@FindBy(id = "display_switch_not_natural_gas")
 	@CacheLookup
 	protected WebElement displaySwitchNotNaturalGas;
-	
+
 	@FindBy(id = "display_switch_vehicle_exhaust")
 	@CacheLookup
 	protected WebElement displaySwitchVehicleExhaust;
-	
+
 	@FindBy(id = "display_switch_lisas")
 	@CacheLookup
 	protected WebElement displaySwitchLisas;
@@ -121,7 +118,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map_switch_map")
 	@CacheLookup
 	protected WebElement mapSwitchMap;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[1]/div")
 	protected WebElement materialTypeCopperDivElement;
 
@@ -142,7 +139,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/div[3]")
 	protected WebElement useAllPipesDivElement;
-		
+
 	@FindBy(how = How.XPATH, using = "//*[@id='gis_right']/li[1]/div")
 	protected WebElement boundariesSmallBoundaryDivElement;
 
@@ -240,23 +237,23 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "bottom_button_status")
 	private WebElement statusButton;
-	
+
 	@FindBy(id = "bottom_logo")
 	@CacheLookup
 	private WebElement picarroLogoButton;
 
 	@FindBy(css = "#map.map button[title='Zoom in']")
 	protected WebElement zoomInButton;
-	
+
 	@FindBy(css = "#map.map button[title='Zoom out']")
 	protected WebElement zoomOutButton;
-	
+
 	@FindBy(id = "shutting_down")
 	protected WebElement ShutdownAnalyzerButton;
-	
+
 	@FindBy(id = "blocked_ui")
 	private WebElement divBlockedUI;
-	
+
 	@FindBy(id = "btn_close_annotation")
 	@CacheLookup
 	private WebElement fieldNotesDialogCloseButton;
@@ -268,11 +265,11 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "gis_menu")
 	@CacheLookup
 	private WebElement gisMenu;
-	
+
 	@FindBy(id = "base_map_menu")
 	@CacheLookup
 	protected WebElement mapMenu;
-	
+
 	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
 	private WebElement peakInfoEpoch;
 	private WebElement peakInfoLatitude;
@@ -284,7 +281,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
     // Survey ID used for opening the specified survey page.
     private String surveyId;
-    
+
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
@@ -317,7 +314,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		this.zoomOutButton.click();
 		return this;
 	}
-	
+
 	public BaseMapViewPage clickCurtainArrowUpButton() {
 		Log.clickElementInfo("Curtain Arrrow Up");
 		this.curtainArrowUpButton.click();
@@ -365,7 +362,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		this.picarroLogoButton.click();
 		return this;
 	}
-	
+
 	public BaseMapViewPage clickMapButton() {
 		Log.clickElementInfo("Map");
 		this.mapButton.click();
@@ -420,7 +417,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return this;
 	}
-	
+
 	public boolean isDisplayMenuOpen() {
 		return !this.displayMenu.getAttribute("class").toLowerCase().contains("ng-hide");
 	}
@@ -443,7 +440,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public WebElement getDivBlockedUI() {
 		return this.divBlockedUI;
 	}
-	
+
 	public boolean isModeButtonVisible() {
 		return !this.modeButton.getAttribute("class").contains("ng-hide");
 	}
@@ -825,7 +822,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 		return isSelected;
 	}
-	
+
 	public boolean verifyLoadedMap(MapSwitchType switchType) {
 
 		// Check map logo to ensure BingMap is getting loaded.
@@ -874,7 +871,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		default:
 			throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
 		}
-		
+
 		Log.info(switchType + " is "+(isSelected?"":" not ") + "selected");
 		return isSelected;
 	}
@@ -892,7 +889,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		default:
 			throw new IllegalArgumentException("Map switch type unknown and not currently handled.");
 		}
-		
+
 		Log.info(switchType + " is "+(isSelected?"":" not ") + "selected");
 		return isSelected;
 	}
@@ -1173,7 +1170,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public void setSurveyId(String surveyId) {
 		this.surveyId = surveyId;
 	}
-	
+
 	/**
 	 * Executes setMapZoomLevel action.
 	 * @param zoomlevel - specifies the zoom level on the map.
@@ -1183,7 +1180,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		OLMapUtility mapUtility = new OLMapUtility(driver);
 		int currentZoomlevel = mapUtility.getMapZoomLevel();
 		int numClicks = Math.abs(currentZoomlevel-zoomlevel);
-		
+
 		for(int i=0;i<numClicks;i++){
 		  if(currentZoomlevel > zoomlevel){
 			  clickZoomOutButton();
@@ -1195,7 +1192,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return mapUtility.getMapZoomLevel()==zoomlevel;
 	}
-	
+
 	/**
 	 * Executes setMapZoomLevelForAssets action.
 	 * @return - returns whether the action was successful or not.
@@ -1207,18 +1204,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			return true;
 		}
 		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
-		
+
 		for(int i=0;i<numClicks;i++){
 			  clickZoomInButton();
 		}
 		int newZoomlevel = mapUtility.getMapZoomLevel();
-		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;		
+		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
 	}
 
 	private CustomerBoundaryType getBoundaryTypeForLoggedInCustomer(String boundaryTypeDescription) throws Exception, IOException {
 		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
 		if (loggedInUserCustomer != null) {
-			String customerId = loggedInUserCustomer.getId();    	
+			String customerId = loggedInUserCustomer.getId();
 	    	CustomerBoundaryType customerBoundaryType = new CustomerBoundaryType();
 	    	ArrayList<CustomerBoundaryType> custBoundaryList = customerBoundaryType.getAllForCustomer(customerId);
 	    	CustomerBoundaryType boundaryType = custBoundaryList.stream()
@@ -1227,14 +1224,14 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	    			.orElse(null);
 			return boundaryType;
 		}
-		
+
 		return null;
 	}
 
 	private CustomerMaterialType getMaterialTypeForLoggedInCustomer(String materialTypeDescription) throws Exception, IOException {
 		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
 		if (loggedInUserCustomer != null) {
-			String customerId = loggedInUserCustomer.getId();    	
+			String customerId = loggedInUserCustomer.getId();
 	    	CustomerMaterialType customerMaterialType = new CustomerMaterialType();
 	    	ArrayList<CustomerMaterialType> custBoundaryList = customerMaterialType.getAllForCustomer(customerId);
 	    	CustomerMaterialType materialType = custBoundaryList.stream()
@@ -1243,7 +1240,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	    			.orElse(null);
 			return materialType;
 		}
-		
+
 		return null;
 	}
 
@@ -1255,7 +1252,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
     		Log.info(String.format("Customer Boundary Type - Small Boundary Element Id = '%s'", boundaryType.getId().toLowerCase()));
     		return driver.findElement(By.id(boundaryType.getId().toLowerCase()));
     	}
-    	
+
     	// Return default.
     	return smallBoundary;
 	}
@@ -1272,7 +1269,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
     		Log.info(String.format("Customer Boundary Type - Big Boundary Element Id = '%s'", boundaryType.getId().toLowerCase()));
     		return driver.findElement(By.id(boundaryType.getId().toLowerCase()));
     	}
-    	
+
     	// Return default.
 		return bigBoundary;
 	}
@@ -1405,11 +1402,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
      * @return the SurveyViewPage class instance.
      */
     public BaseMapViewPage verifyPageLoaded() {
-        (new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);                		 
-            }
-        });
+        try {
+	    	(new WebDriverWait(driver, timeout * 4)).until(new ExpectedCondition<Boolean>() {
+	            public Boolean apply(WebDriver d) {
+	                return d.getPageSource().contains(STRPageContentText);
+	            }
+	        });
+        } catch (org.openqa.selenium.TimeoutException ex) {
+        	Log.info(String.format("Timeout waiting for on verifyPageLoaded(). Looking for [%s] in PageSource => %s",
+        			STRPageContentText, driver.getPageSource()));
+        	throw ex;
+        }
         return this;
     }
 
@@ -1469,7 +1472,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return keyValue.equals(value);
 	}
-	
+
 	/**
 	 * Wait for peak info popup to be shown.
 	 */
@@ -1504,7 +1507,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			}
 		});
 	}
-	
+
 	/**
 	 * Waits for the Gis menu to open.
 	 */

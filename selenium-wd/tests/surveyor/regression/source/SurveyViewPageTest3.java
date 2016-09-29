@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import org.junit.Test;
 
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.SurveyViewPage;
 import static org.junit.Assert.*;
 import common.source.Log;
@@ -17,7 +18,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	}
 
 	/* * Test Case ID: TC428_SurveyView_ViewIndicationsRapidResponseSurveyWhenNoGISLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
 	 *	- Indications - ON
@@ -25,7 +26,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Breadcrumb and Indications are displayed on map
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
@@ -56,12 +57,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC429_SurveyView_ViewAllDataManualSurveyWhenGISDataLoadedAllDisplayOptionsAreON
-	 * Script: -  	
+	 * Script: -
 	 *	- -On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All ON
 	 *	- - Map View: Map
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
 	 *	- - All pipes and boundaries data are displayed
@@ -117,12 +118,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC430_SurveyView_ViewManualSurveyWhenGISDisplayOptionsAreOFF
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All OFF
 	 *	- - Map View: Map
 	 *	- - GIS: All OFF
-	 * Results: - 
+	 * Results: -
 	 *	- - User should see only Breadcrumb in map view
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
@@ -159,12 +160,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC431_SurveyView_ViewAllDataSatelliteViewManualSurveyWhenGISDataLoadedAllDisplayOptionsAreON
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All ON
 	 *	- - Map View: Satellite
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
 	 *	- - All pipes and boundaries data are displayed
@@ -222,13 +223,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC432_SurveyView_ViewIndicationsDataManualSurveyWhenGISDataLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: Indication ON
 	 *	- All other options OFF
 	 *	- - Map View: Map
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 * --Indications and breadcrumb is displayed on map along with assets and boundaries data
 	 *	- - All other survey data is not displayed
 	 */
@@ -261,13 +262,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC433_SurveyView_ViewFOVDataManualSurveyWhenGISDataLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: FOV ON
 	 *	- All other options OFF
 	 *	- - Map View: Map
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 * --FOV and breadcrumb is displayed on map along with assets and boundaries data
 	 *	- - All other survey data is not displayed
 	 */
@@ -300,13 +301,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC434_SurveyView_ViewFOVIndicationsLisasDataManualSurveyWhenAssetsAreLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All ON
 	 *	- - Map View: Map
 	 *	- - GIS: Assets ON
 	 *	- Boundaries OFF
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
 	 *	- - All pipes data is displayed. Boundaries are not present
@@ -366,13 +367,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC435_SurveyView_ViewFOVIndicationsLisasDataManualSurveyWhenBoundariesLoadedIntoGIS
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: All ON
 	 *	- - Map View: Map
 	 *	- - GIS: Assets OFF
 	 *	- Boundaries ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in map view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map
 	 *	- - Only boundaries are displayed. Assets are not displayed
@@ -430,14 +431,14 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC436_SurveyView_ViewIndicationsLisasDataManualSurveyWhenGISDataLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: Indications ON
 	 *	- LISA ON
 	 *	- All other options OFF
 	 *	- - Map View: Map
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 *	- -  Indications, Lisa and breadcrumb is displayed on map along with assets and boundaries data
 	 *  - - All other survey data is not displayed
 	 */
@@ -470,7 +471,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC437_SurveyView_ViewIndicationsManualSurveyWhenNoGISLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click Display
 	 *	- Indications - ON
@@ -478,7 +479,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - Click GIS
 	 *	- All options OFF
 	 *	- - Click on Map and turn Map view ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Breadcrumb and Indications are displayed on map
 	 *	- - All other survey data, assets and boundaries are not displayed
 	 */
@@ -509,10 +510,10 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC931_PositionConcentrationChartWindRose8_HourHistoryOptionsAreNotPresentSurveyView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Display button
-	 * Results: - 
+	 * Results: -
 	 *  - - Position button not present in survey view
 	 *	- - Concentration Chart, Wind rose, 8-hour history options are not present in survey view
 	 */
@@ -533,14 +534,14 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC932_SurveyView_CheckZoomControlsSurveyViewWhenSurveyDataLoaded_SatelliteView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Satellite View ON
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in by 2-3 levels (clicking on + icon present at top left corner near Tag value)
 	 *	- - Zoom out by 2-3 levels (clicking on - icon present at top left corner near Tag value)
-	 * Results: - 
+	 * Results: -
 	 * --Survey data is displayed in satellite view at every zoom level
 	 */
 	@Test
@@ -570,14 +571,14 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC933_SurveyView_CheckZoomControlsSurveyViewWhenSurveyDataLoaded_MapView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Map View ON
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in by 2-3 levels (clicking on + icon present at top left corner near Tag value)
 	 *	- - Zoom out by 2-3 levels (clicking on - icon present at top left corner near Tag value)
-	 * Results: - 
+	 * Results: -
 	 * --Survey data is displayed in map view at every zoom level
 	 */
 	@Test
@@ -606,14 +607,14 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC934_SurveyView_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Map
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Map View ON
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in using mouse controls
 	 *	- - Zoom out using mouse controls
-	 * Results: - 
+	 * Results: -
 	 * -- Survey data is displayed in map view at every zoom level
 	 */
 	@Test
@@ -640,14 +641,14 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC935_SurveyView_CheckZoomLevelUsingMouseControlsSurveyViewWhenSurveyDataLoaded_Satellite
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Satellite View ON
 	 *	- - Click on Display
 	 *	- All options ON
 	 *	- - Zoom in using mouse controls
 	 *	- - Zoom out using mouse controls
-	 * Results: - 
+	 * Results: -
 	 * --Survey data is displayed in satellite view at every zoom level
 	 */
 	@Test
@@ -673,12 +674,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	}
 	/**
 	 * Test Case ID: TC936_SurveyView_CurtainViewDisplayedUserCanNavigateIt
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Curtain button
 	 *	- - Click on Return button
-	 * Results: - 
-	 *  - - Capture results are not displayed 
+	 * Results: -
+	 *  - - Capture results are not displayed
      *	- - User is returned back to survey view
 	 */
 	@Test
@@ -697,7 +698,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC937_SurveyView_UserAllowedMoveUpDownLeftRightZoomInZoomOutCurtainView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Curtain button
 	 *	- - Click Up
@@ -705,7 +706,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - Click Zoom In
 	 *	- - Click Zoom Out
 	 *	- - Click Return
-	 * Results: - 
+	 * Results: -
 	 * -- Spikes are displayed in Curtain View
 	 * -- User will be rotated as instructed
      * -- User will be zoomed in or out as instructed
@@ -731,9 +732,9 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC938_SurveyView_NavigateBackForthBetweenSurveyViewHomePage
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
-	 * Results: - 
+	 * Results: -
 	 *	- - Click on Picarro Icon present at bottom
 	 *	- - User is navigated to Survey view page
 	 */
@@ -746,16 +747,17 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET));
 		getSurveyViewPageAction().clickOnPicarroLogoButton(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifySurveyViewPageIsOpened(EMPTY, NOTSET));
+		((HomePage)getHomePageAction().getPageObject()).waitForPageLoad();
+		assertTrue(getHomePageAction().verifyPageLoaded(EMPTY, NOTSET));
 	}
 
 	/**
 	 * Test Case ID: TC939_SurveyView_CheckSurveyDataPresentAfterUserRefreshesBrowser_Satellite
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Satellite View ON
 	 *	- - Refresh the browser after couple of mins
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey details - Tag, Mode, Driver Name, Stability Class, Start Time, End Time, Surveyor Name should be present in satellite view
 	 *  - - Start and End Time should not reset after the refresh.
 	 */
@@ -791,12 +793,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC940_SurveyView_CheckSurveyDataPresentAfterUserRefreshesBrowser_Map
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Click on Map and turn Map View ON
 	 *	- - Refresh the browser after couple of mins
 	 *	- - Click on Map and turn Map View ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey details - Tag, Mode, Driver Name, Stability Class, Start Time, End Time, Surveyor Name should be present in map view
 	 *  - - Start and End Time should not reset after the refresh.
 	 */
@@ -835,12 +837,12 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC941_SurveyView_ViewOperatorSurveySatelliteViewWhenAllGISDisplayOptionsAreTurnedOFF
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey (Operator survey)
 	 *	- - Display: All OFF
 	 *	- - Map View: Satellite
 	 *	- - GIS: All OFF
-	 * Results: - 
+	 * Results: -
 	 * 	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class, Surveyor and analyzer info, Start Time, End Time
 	 *  - - User should see only Breadcrumb on map in satellite view
 	 *	- - All other survey data, assets and boundaries are not displayed
@@ -877,13 +879,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC942_SurveyView_ViewFOVIndicationsLisasSurveyDataOperatorSurveyWhenBoundariesDataLoadedSatelliteView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey (Operator survey)
 	 *	- - Display: All ON
 	 *	- - Map View: Satellite
 	 *	- - GIS: Assets OFF
 	 *	- Boundaries ON
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
 	 *	- - Only boundaries are displayed. Assets are not displayed
@@ -893,7 +895,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		Log.info("\nRunning TC942_SurveyView_ViewFOVIndicationsLisasSurveyDataOperatorSurveyWhenBoundariesDataLoadedSatelliteView ...");
 
 		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().login(EMPTY, 6);    /*Picarro Admin*/ 
+		getLoginPageAction().login(EMPTY, 6);    /*Picarro Admin*/
 		getSurveyViewPageAction().open(TEST_SURVEY_OPERATOR1_ID, NOTSET);
 		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
@@ -924,13 +926,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC943_SurveyView_ViewFOVIndicationsLisasSurveyDataOperatorSurveyWhenAssetsAreLoadedSatelliteView
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey (Operator survey)
 	 *	- - Display: All ON
 	 *	- - Map View: Satellite
 	 *	- - GIS: Assets ON
 	 *	- Boundaries OFF
-	 * Results: - 
+	 * Results: -
 	 *	- - Survey Information is displayed in satellite view - Tag, Mode, Driver Info, Stability Class,Surveyor and analyzer info,Start Time, End Time
 	 *	- - User should see Breadcrumb, FOV, Indications, LISA, Capture results (if any) and Field Notes (if any) on map in satellite view
 	 *	- - All pipes data is displayed. Boundaries are not present
@@ -975,13 +977,13 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 
 	/**
 	 * Test Case ID: TC944_SurveyView_ViewIndicationsDataSatelliteViewOperatorSurveyWhenBoundariesPipeLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: Indication ON
 	 *	- All other options OFF
 	 *	- - Map View: Satellite
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 *  - - Indications and breadcrumb is displayed on map in satellite view along with assets and boundaries data for operator survey
 	 *	- - All other survey data is not displayed
 	 */
@@ -1006,20 +1008,20 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
-		
+
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevel(19);
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
 
 	/**
 	 * Test Case ID: TC945_SurveyView_ViewFOVDataSatelliteViewOperatorSurveyWhenGISDataLoaded
-	 * Script: -  	
+	 * Script: -
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 *	- - Display: FOV ON
 	 *	- All other options OFF
 	 *	- - Map View: Satellite
 	 *	- - GIS: All ON
-	 * Results: - 
+	 * Results: -
 	 *  - - FOV and breadcrumb is displayed on map in satellite view along with assets and boundaries data for operator survey
 	 *	- - All other survey data is not displayed
 	 */

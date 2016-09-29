@@ -11,7 +11,7 @@ import common.source.TestSetup;
  *
  */
 
-public class SurveyorBaseTest extends BaseTest{
+public class SurveyorBaseTest extends BaseTest {
 
 	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
 
@@ -23,11 +23,5 @@ public class SurveyorBaseTest extends BaseTest{
 		if (!TestSetup.isParallelBuildEnabled()) {
 			TestSetup.stopChromeProcesses();
 		}
-		//initializeTestObjects();
 	}
-
-	//public static void initializeTestObjects(){
-	//	testSetup = new TestSetup();
-	//	BaseTest.initializeTestObjects();
-	//}
 }

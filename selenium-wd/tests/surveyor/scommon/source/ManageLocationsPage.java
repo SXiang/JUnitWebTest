@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -41,7 +41,7 @@ import common.source.WebElementExtender;
  */
 public class ManageLocationsPage extends SurveyorBasePage {
 	public static final String STRURLPath = "/Picarro/ManageLocations";
-	public static final String STRPageTitle = String.format("%s - %s", 
+	public static final String STRPageTitle = String.format("%s - %s",
 			Resources.getResource(ResourceKeys.ManageLocations_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ManageLocations_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ManageLocation_NewLocation);
@@ -144,12 +144,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "info")
 	protected WebElement selectedPoint;
-	
-	private static LatLongSelectionControl latLongSelectionControl = null;
+
+	private LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
 	private String longitude;
-	
+
 	private ChangeCustomerDialogControl changeCustomerDialog = null;
 
 	/**
@@ -166,7 +166,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		changeCustomerDialog = new ChangeCustomerDialogControl(driver);
 		PageFactory.initElements(driver, changeCustomerDialog);
-		
+
 		Log.info("\nThe Manage Locations Page URL is: " + this.strPageURL);
 	}
 
@@ -222,11 +222,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		} else {
 			final int X_OFFSET = 100;
 			final int Y_OFFSET = 100;
-			
+
 			this.clickOnLatLongSelectorBtn();
-            this.selectOnLatLong(X_OFFSET, Y_OFFSET);            
+            this.selectOnLatLong(X_OFFSET, Y_OFFSET);
 			this.clickOnLatLongOkBtn();
-			
+
 			String locationLatitudeText = this.getLocationLatitudeText();
 			Log.info("Location Latitude Field value = " + locationLatitudeText);
 			assertTrue(!locationLatitudeText.isEmpty());
@@ -279,24 +279,24 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		js.executeScript("arguments[0].click();", this.btnOK);
 
 		this.waitForPageToLoad();
-        
+
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			Log.clickElementInfo("Cancel");
 			this.btnCancel.click();
 		}
 	}
-	
+
 	public boolean verifyErrorMessage(String errorMsg){
 		Log.method("verifyErrorMessage", errorMsg);
 		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
 	}
-	
+
 	private boolean verifyErrorMessage(String errorMsg, boolean checkOnlyErrorSummary){
 		Log.method("verifyErrorMessage", errorMsg, checkOnlyErrorSummary);
 		boolean found = false;
-		if (isElementPresent(this.summaryErrorsBy)) {			
+		if (isElementPresent(this.summaryErrorsBy)) {
 			if (this.summaryErrors.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
-				if (checkOnlyErrorSummary) { 
+				if (checkOnlyErrorSummary) {
 					found = true;
 				} else {
 					for(WebElement element:this.panelErrors){
@@ -311,18 +311,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		return found;
 	}
-	
+
 	public void inputLatLong(String latitude, String longitude){
 		Log.method("inputLatLong", latitude, longitude);
 		this.inputLocationLat.clear();
 		this.inputLocationLong.clear();
-		
+
 		Log.info("Set latitude - '"+latitude+"'");
 		this.inputLocationLat.sendKeys(latitude);
 		Log.info("Set longitude - '"+longitude+"'");
 		this.inputLocationLong.sendKeys(longitude);
 	}
-	
+
 
 	public void selectOnLatLong(int xOffset, int yOffset){
 		Log.method("selectOnLatLong", xOffset, yOffset);
@@ -331,9 +331,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		.switchMode(ControlMode.MapInteraction)
 		.waitForMapImageLoad()
 		.selectLatLong(CANVAS_X_PATH, xOffset, yOffset);
-		latLongSelectionControl.switchMode(ControlMode.Default);		
+		latLongSelectionControl.switchMode(ControlMode.Default);
 	}
-	
+
 	public void clickOnLatLongCancelBtn(){
 		Log.method("clickOnLatLongCancelBtn");
 		latLongSelectionControl.clickCancelButton()
@@ -345,7 +345,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		latLongSelectionControl.clickOkButton()
 		.waitForModalDialogToClose();
 	}
-	
+
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
 		Log.method("findExistingLocationAndClickEdit", customerName, locationName);
 		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
@@ -355,7 +355,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("editExistingLocation", customerName, locationName, newLocationName, checkForError);
 		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
 	}
-	
+
 	public boolean findExistingLocation(String customerName, String locationName) {
 		Log.method("findExistingLocation", customerName, locationName);
 		Log.info(String.format("Find Location '%s', customer = '%s'",
@@ -365,7 +365,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.waitForAJAXCallsToComplete();
 		this.waitForTableDataToLoad();
-		
+
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -397,9 +397,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			locationNameCell = getTable().findElement(By.xpath(locationNameXPath));
 
 			Log.info(String.format("Looking for row - [Customer=%s], [Location=%s]", customerName, locationName));
-			Log.info(String.format("Found row - [Customer=%s], [Location=%s]", customerNameCell.getText().trim(), 
+			Log.info(String.format("Found row - [Customer=%s], [Location=%s]", customerNameCell.getText().trim(),
 					locationNameCell.getText().trim()));
-			
+
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);
@@ -456,7 +456,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return editExistingLocation(customerName, locationName, newLocationName, latValue,
 				longValue, newEthMthMin, newEthMthMax, false,true);
 	}
-	
+
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
 			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
@@ -508,11 +508,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 				actionEditCell.click();
 				this.waitForEditPageLoad();
-				
+
                 if(openEditorOnly){
                 	return true;
                 }
-                
+
 				if (this.inputLocationDesc != null) {
 					Log.info("Set location desc - '"+newLocationName+"'");
 					this.inputLocationDesc.clear();
@@ -565,9 +565,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
                 	if (isElementPresent(this.panelDuplicationErrorXPath)) {
                 		// We are still on the new locations page. Return.
                     	Log.info("Error on page. Returning to caller.");
-                    	return true; 
+                    	return true;
                 	}
-                	
+
                 	// Redirected to Manage location page. Revert back search field and return.
                 	this.clearSearchField();
                 	return true;
@@ -628,7 +628,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("getSelectedPoint", timeout);
 		latLongSelectionControl.waitForModalDialogOpen()
 		.switchMode(ControlMode.MapInteraction);
-		
+
 		String pt = null;
 		try{
 		    pt = (new WebDriverWait(driver,timeout)).until(new ExpectedCondition<String>(){
@@ -651,12 +651,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			pt = null;
 			Log.warn(e.toString() + "Selected point is "+pt+"?");
 		}
-		
+
 		latLongSelectionControl
 		.switchMode(ControlMode.Default);
 		return pt;
 	}
-	
+
 	public WebElement getBtnAddNewLocation() {
 		return this.btnAddNewLocation;
 	}
@@ -680,7 +680,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public String getLocationLongitudeError() {
 		return this.labelLongValueError.getText();
 	}
-	
+
 	public String getLocationDescriptionError(){
 		return this.labelLocDescError.getText();
 	}
@@ -721,7 +721,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 	}
-	
+
 	public void clickOnLatLongSelectorBtn() {
 		Log.clickElementInfo("Lat/Long Selector");
 		this.latLongSelectorBtn.click();
@@ -794,7 +794,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super.open();
 		waitForPageLoad();
 	}
-	
+
 	@Override
 	public void waitForPageLoad() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -19,8 +19,8 @@ import surveyor.scommon.source.ReportsEQ;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsPageTest extends BaseReportsPageTest {
@@ -42,8 +42,8 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Unit Test
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@Test
 	public void ComplianceReportTest_VerifyNonEthaneReport() throws Exception {

@@ -44,7 +44,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		getSurveyViewPage().open();
 		return true;
 	}
-	
+
 	/**
 	 * Executes refreshPage action.
 	 * @param data - specifies the input data passed to the action.
@@ -54,13 +54,13 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 	public boolean refreshPage(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
-		SurveyViewPage surveyViewPage = new SurveyViewPage(TestContext.INSTANCE.getDriver(), 
+		SurveyViewPage surveyViewPage = new SurveyViewPage(TestContext.INSTANCE.getDriver(),
 				TestContext.INSTANCE.getBaseUrl(),
 				TestContext.INSTANCE.getTestSetup());
 		initializePageObject(TestContext.INSTANCE.getDriver(), surveyViewPage);
 		return true;
 	}
-	
+
 	@Override
 	public boolean turnOffAllDisplayOptions(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffAllDisplayOptions", data, dataRowID);
@@ -71,7 +71,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		turnOffNotes(data, dataRowID);
 		return true;
 	}
- 
+
 	@Override
 	public boolean turnOnAllDisplayOptions(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnAllDisplayOptions", data, dataRowID);
@@ -179,7 +179,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		String startTimeText = getSurveyViewPage().getStartTimeLabelText().replace(SURVEY_INFO_START_TIME_PREFIX, "");
 		return DateUtility.isValidLongDateTimeFormat(startTimeText);
 	}
- 
+
 	/**
 	 * Executes verifySurveyInfoEndTimeLabelHasCorrectTimeFormat action.
 	 * @param data - specifies the input data passed to the action.
@@ -191,7 +191,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		String endTimeText = getSurveyViewPage().getEndTimeLabelText().replace(SURVEY_INFO_END_TIME_PREFIX, "");
 		return DateUtility.isValidLongDateTimeFormat(endTimeText);
 	}
- 
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
