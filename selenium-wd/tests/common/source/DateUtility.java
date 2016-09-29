@@ -20,7 +20,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;	
+import org.testng.Assert;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -41,13 +41,13 @@ public class DateUtility {
 		Hour ("Hour"),
 		Minute ("Minute"),
 		Second ("Second");
-		
+
 		private final String name;
 
 		DatePart(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -62,7 +62,7 @@ public class DateUtility {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 		return date.format(dateTimeFormatter);
 	}
-	
+
 	/**
 	 * Returns date object from epoch time in milliseconds.
 	 * @param unixTimeInMSec - epoch time in milliseconds.
@@ -71,10 +71,10 @@ public class DateUtility {
 	public static LocalDateTime fromUnixTime(long unixTimeInMSec) {
 		return Instant.ofEpochMilli(unixTimeInMSec).atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
-	
+
 	/**
 	 * Compares the first time string with second time string and returns if the first time string is greater than the second.
-	 * 
+	 *
 	 * @param timeString1
 	 *            - Time string in 00:00:00 format or 00:00:00 PST format.
 	 * @param timeString2
@@ -115,7 +115,7 @@ public class DateUtility {
 	/**
 	 * Checks if the time displayed in a WebElement is ticking forward. This method expects the time displayed in the WebElement to be in one of the 3 formats: 1. Time: 2:00:28 PM PST 2. Elapsed:
 	 * 2:00:28 PM PST 3. Remaining: 2:00:28 PM PST
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public static boolean isTimeTickingForward(WebElement element) throws InterruptedException {
@@ -125,7 +125,7 @@ public class DateUtility {
 	/**
 	 * Checks if the time displayed in a WebElement is ticking backward. This method expects the time displayed in the WebElement to be in one of the 3 formats: 1. Time: 2:00:28 PM PST 2. Elapsed:
 	 * 2:00:28 PM PST 3. Remaining: 2:00:28 PM PST
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public static boolean isTimeTickingBackward(WebElement element) throws InterruptedException {
@@ -174,7 +174,7 @@ public class DateUtility {
 
 	/**
 	 * Parses and returns the Date object for the specified Date and Date format strings.
-	 * 
+	 *
 	 * @param dateString
 	 *            - Date represented as a string.
 	 * @param dateFormatString
@@ -189,7 +189,7 @@ public class DateUtility {
 
 	/**
 	 * Returns the current date for the current zone for which test is running.
-	 * 
+	 *
 	 */
 	public static Date getCurrentDate() {
 		return getCalendarForCurrentZone().getTime();
@@ -197,15 +197,15 @@ public class DateUtility {
 
 	/**
 	 * Returns the current time in milliseconds since January 1, 1970 UTC (unix time).
-	 * 
+	 *
 	 */
-	public static double getCurrentUnixEpochTime() {
-		return (System.currentTimeMillis() / 1000D);
+	public static long getCurrentUnixEpochTime() {
+		return (System.currentTimeMillis());
 	}
 
 	/**
 	 * Returns system hour in 12-hour format.
-	 * 
+	 *
 	 * @return
 	 */
 	public static Integer getSystemHourIn12HourFormat() {
@@ -215,10 +215,10 @@ public class DateUtility {
 		}
 		return hourOfDay;
 	}
-	
+
 	/**
 	 * Returns the calendar for the system where code is executing.
-	 * 
+	 *
 	 * @return
 	 */
 	public static Calendar getCalendarForSystem() {
@@ -227,7 +227,7 @@ public class DateUtility {
 
 	/**
 	 * Returns the current zone Calendar as per the cultures defined in web application.
-	 * 
+	 *
 	 * @return
 	 */
 	public static Calendar getCalendarForCurrentZone() {
@@ -247,7 +247,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes an input datetime string String and compare the format is correct with the given locale long datetime format
-	 * 
+	 *
 	 * @param inputDateTime
 	 *            - given date time in String, reports- whether the format check is as per long date format.
 	 * @return whether the String is a match for the locale format
@@ -269,7 +269,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes a DateTime formatted String and convert it to DateTime object
-	 * 
+	 *
 	 * @param inputDateTime
 	 *            - given date time in String, reports- whether the format check is as per long date format.
 	 * @return DateTime object
@@ -289,7 +289,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes a Date/Time format in String and compare the format is correct with the given locale format
-	 * 
+	 *
 	 * @param inputDateTime
 	 *            - given date time in String, reports- whether the format check is for the reports
 	 * @return whether the String is a match for the locale format
@@ -311,7 +311,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes two strings in Date/Time format and compare them to be equal
-	 * 
+	 *
 	 * @param inputDateTime1,
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
@@ -336,7 +336,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes two strings in Date/Time format and return the duration
-	 * 
+	 *
 	 * @param inputDateTime1,
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return difference in minutes
@@ -359,7 +359,7 @@ public class DateUtility {
 
 	/**
 	 * This function takes two strings in Date format and compare them to be equal
-	 * 
+	 *
 	 * @param inputDateTime1,
 	 *            inputDateTime2 and whether the date check is for the reports
 	 * @return whether dates are a match or not
@@ -395,7 +395,7 @@ public class DateUtility {
 	 */
 	public static int compareDatesWithTZ(String dateTime1, boolean daylight1, String dateTime2, boolean daylight2) {
 		int diff = 0;
-		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormatComp()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(), 
+		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormatComp()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(),
 				DateTimeFormat.forPattern("dd/MM/yyyy HH:mm zzz").getParser(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm zzz").getParser(),
 				DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a zzz").getParser()};
 		org.joda.time.format.DateTimeFormatter formatter = new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
@@ -431,7 +431,7 @@ public class DateUtility {
 
 	/**
 	 * This methods looks at the culture of the user and determines the long date format according to Cultures supported right now: English, French, Chinese
-	 * 
+	 *
 	 * @return date format for the user locale
 	 */
 
@@ -450,11 +450,11 @@ public class DateUtility {
 		return dateFormat;
 
 	}
-	
+
 	public static String getLongSimpleDateFormat() {
-		return getLongDateFormat().replaceAll("[", "").replaceAll("]", "");		
+		return getLongDateFormat().replaceAll("[", "").replaceAll("]", "");
 	}
-	
+
 	public static String getLongDateFormatComp() {
 		String culture = TestContext.INSTANCE.getUserCulture();
 		String dateFormat = null;
@@ -473,7 +473,7 @@ public class DateUtility {
 
 	/**
 	 * This methods looks at the culture of the user and determines the short date format according to Cultures supported right now: English, French, Chinese
-	 * 
+	 *
 	 * @return date format for the user locale
 	 */
 
@@ -494,7 +494,7 @@ public class DateUtility {
 
 	/**
 	 * This methods looks at the culture of the user and determines the date format accordingly Cultures supported right now: English, French, Chinese
-	 * 
+	 *
 	 * @param whether
 	 *            the date check is for a report or not (Note: Pages have the same Date format without TimeZone
 	 * @return date format for the user locale
@@ -530,7 +530,7 @@ public class DateUtility {
 
 	/**
 	 * This methods looks at the culture of the user and returns the Java specific Locale- language tag
-	 * 
+	 *
 	 * @return locale language tag
 	 */
 
@@ -558,7 +558,7 @@ public class DateUtility {
 
 	/**
 	 * Compares equality of only the date part of the Date objects.
-	 * 
+	 *
 	 * @param date1
 	 * @param date2
 	 * @return
@@ -583,20 +583,20 @@ public class DateUtility {
 		} else if (datePart.equals(DatePart.Year)) {
 			return ChronoUnit.YEARS.between(d1, d2);
 		} else if (datePart.equals(DatePart.Day)) {
-			return ChronoUnit.DAYS.between(d1,  d2);	
+			return ChronoUnit.DAYS.between(d1,  d2);
 		} else if (datePart.equals(DatePart.Hour)) {
 			return ChronoUnit.HOURS.between(d1, d2);
 		} else if (datePart.equals(DatePart.Minute)) {
 			return ChronoUnit.MINUTES.between(d1, d2);
 		} else if (datePart.equals(DatePart.Second)) {
 			return ChronoUnit.SECONDS.between(d1, d2);
-		}		
+		}
 		return 0L;
 	}
-	
+
 	/**
 	 * Executes the unit tests for this class.
-	 * 
+	 *
 	 * @param args
 	 */
 	@SuppressWarnings("deprecation")
@@ -605,7 +605,7 @@ public class DateUtility {
 		// ** Unit tests for isFirstTimeGreater() method
 
 		Log.info(NumberUtility.formatString(DateUtility.getCurrentUnixEpochTime(), 3));
-		
+
 		String timeString1 = "00:00:00";
 		String timeString2 = "00:00:00";
 		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
@@ -751,7 +751,7 @@ public class DateUtility {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		Assert.assertTrue(DateUtility.getDuration("3/7/2016 1:55 PM PST", "3/7/2016 2:29 PM PST", true) == 34 );
 		Assert.assertTrue(DateUtility.getDuration("3/7/2016 3:50 PM PST", "3/7/2016 4:02 PM PST", true) == 12);
-		
+
 		TestContext.INSTANCE.setUserCulture("en-US");
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 11:26:27 PM GMT", false, "3/7/2016 1:55 PM PST", false)==-1);
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 11:16:07 PM GMT", false)==0);

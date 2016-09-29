@@ -1,14 +1,22 @@
 package common.source;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.model.ITest;
+
+import common.source.Log.LogField;
 
 public enum TestContext {
 	INSTANCE;
@@ -20,16 +28,19 @@ public enum TestContext {
 
 	private ExtentReports report;
 	private ExtentTest extentTest;
+	private Map<String,Object> testMap;
 	private ArrayList<String> testMessage;
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
-
+	
 	private TestContext() {
 		// Every time a context is created set a unique run ID.
 		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
 		this.testReportIdSet = new HashSet<String>();
+		this.testMap = new HashMap<String, Object>();
+		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 	}
 
 	public String getTestStatus() {
@@ -55,6 +66,11 @@ public enum TestContext {
 	}
 
 
+	public Map<String, Object> getTestMap() {
+		return testMap;
+	}
+
+
 	public ExtentTest getExtentTest() {
 		return extentTest;
 	}
@@ -72,7 +88,17 @@ public enum TestContext {
 	public ArrayList<String> getTestMessage(){
 		return testMessage;
 	}
-	public void setExtentTest(ExtentTest extentTest) {
+	public void setExtentTest(ExtentTest extentTest, String className) {
+		ITest test = extentTest.getTest();
+	    String methodReplacePattern = "[\\s]*\\[[\\s]*([\\d]*)[\\s]*:[\\s]*([\\d]*).+";
+	    String methodName = test.getName();
+	    try{
+	    	methodName = methodName.replaceAll(methodReplacePattern, "[$1:$2]");
+	    }catch(Exception e){
+	    	Log.warn(e.toString());
+	    }
+		this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
+		this.testMap.put(LogField.TEST_CLASS.toString(), className);
 		this.extentTest = extentTest;
 	}
 
@@ -116,8 +142,11 @@ public enum TestContext {
 		return dbPassword;
 	}
 
-	public void setTestSetup(TestSetup testSetup) {
+	public void setTestSetup(TestSetup testSetup) {		
 		this.testSetup = testSetup;
+	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
+	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
+	    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
 	}
 
 	public String getLoggedInUser() {
@@ -219,4 +248,16 @@ public enum TestContext {
 	public void setReport(ExtentReports report) {
 		this.report = report;
 	}
+	
+	public static String getIndexIdForTestRun(){
+		String indexId = System.getProperty("test_run_id");
+		if(indexId != null){
+			return indexId;
+		}
+		String pattern = "yyyy.MM.dd.H.mm.ss.SSS";
+		SimpleDateFormat formater = new SimpleDateFormat(pattern,Locale.getDefault());
+		indexId = formater.format(new Date());
+		return indexId;
+	}
+	
 }

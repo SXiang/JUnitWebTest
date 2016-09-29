@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -46,6 +46,7 @@ import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
@@ -82,8 +83,8 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest extends BaseReportsPageTest {
@@ -102,18 +103,18 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private static void initializePageObjects() {
 		initializePageObjects(new ComplianceReportsPage(driver, baseURL, testSetup));
 	}
-	
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
-	
+
 	/**
 	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
@@ -121,13 +122,13 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-		
+
 		if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$,\"<>";
 		} else {
 			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
 		}
-		
+
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
 		this.getComplianceReportsPage().login(strCreatedBy, CryptoUtility.decrypt(password));
@@ -163,8 +164,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
-
 	}
 
 	private static String getTestCaseName(String key) {
@@ -200,7 +199,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC157 Test Description: Check that report cannot be generated unless all filters are selected
 	 * On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 * Scripts: - 
+	 * Scripts: -
 	 *	- Don't provide report title, lat long co-ordinates
 	 *	- Don't include any survey
 	 *	- Include Views but dont select any option to display in view
@@ -219,7 +218,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC160 Test Description: Pagination - 10,25,50 and 100 Reports selection on compliance report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC160_ComplianceReportTest_VerifyPagination() {
@@ -243,9 +242,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC163 Test Description: Screen should not refresh while searching an in-progress report, as it completes
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
@@ -278,6 +277,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -311,11 +311,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC164 Test Description: Search invalid reports
-	 * Script: - 
+	 * Script: -
 	 * 	-Provide any invalid report title on compliance or investigation or reference gas or system history report screen
 	 * Result: -
 	 *  Message should be displayed : 'No matching records found'
-	 * 	- 
+	 * 	-
 	 */
 	@Test
 	public void TC164_ComplianceReportTest_VerifySearchInvalidReports() {
@@ -331,9 +331,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC166 Test Description: Picarro Administrator can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC166_ComplianceReportTest_AdminCanDeleteReport() throws Exception {
@@ -377,6 +377,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -400,9 +401,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC170 Test Description: Duplicate report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() throws Exception {
@@ -466,25 +467,27 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
-		
+
 		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
 		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
 		assertNotNull(reportName2);
-		
+
 		assertNotEquals(reportName1, reportName2);
 	}
 
 	/**
 	 * Test Case ID: TC174 Test Description: Generate report for same surveys but in different modes
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC174_ComplianceReportTest_VerifySameReportDifferentModes() throws Exception {
 		String testCaseID = "TC174";
 		String rptTitle = testCaseID + " RR Report" + testSetup.getRandomNumber();
 		Log.info("Running " + testCaseID + ": Generate report for same surveys but in different modes " + rptTitle);
+
+		ReportModeFilter[] reportModes = {ReportModeFilter.Standard, ReportModeFilter.RapidResponse};
 
 		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		this.getComplianceReportsPage().open();
@@ -523,6 +526,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -531,38 +535,25 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.RapidResponse);
-		rpt.setViewLayersList(viewLayerList);
+		for(ReportModeFilter reportMode : reportModes){
+			rptTitle = testCaseID + " "+reportMode.toString() + " " + testSetup.getRandomNumber();
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0",
+					listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, reportMode);
+			rpt.setViewLayersList(viewLayerList);
+			this.getComplianceReportsPage().addNewReport(rpt);
+			this.getComplianceReportsPage().waitForPageLoad();
 
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\n report creation failed.\n");
-
-		rptTitle = "TC174 Standard Report" + testSetup.getRandomNumber();
-
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		this.getComplianceReportsPage().open();
-
-		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		else
-			fail("\nTestcase TC174 failed.\n");
+			if (!this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)){
+				fail("\n report "+rptTitle+" creation failed.\n");
+			}
+		}
 	}
 
 	/**
 	 * Test Case ID: TC181 Test Description: Generate standard or rapid response report from existing reports having survey of Manual type using copy feature
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC181_ComplianceReportTest_VerifyCopyManualReportAsRapidResponse() throws Exception {
@@ -595,6 +586,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -631,32 +623,30 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().modifyReportDetails(newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(newRptTitle, PICDFADMIN, testCaseID)))
-			assertTrue(this.getComplianceReportsPage().findReport(newRptTitle, PICDFADMIN));
-		else
-			fail("\nTestcase TC181 failed.\n");
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(newRptTitle, testSetup.getLoginUser()));
 	}
 
 	/**
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC184_: Very small or big report area selection not allowed\n");
-		String rptTitle = "TC184_Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC184_Report" +" SmallArea "+ testSetup.getRandomNumber();
 		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		this.getComplianceReportsPage().open();
 
+		//Small Area
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
 		listBoundary.add("36.42252593456309");
 		listBoundary.add("-122.83494567871095");
-		listBoundary.add("38.27989023941680");
-		listBoundary.add("-124.05415725708008");
+		listBoundary.add("36.42252593456300");
+		listBoundary.add("-122.83494567871090");
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
@@ -672,6 +662,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -699,11 +690,25 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
 
+		// Big Area
+		rptTitle = "TC184_Report" +" BigArea "+ testSetup.getRandomNumber();
+		this.getComplianceReportsPage().open();
+		listBoundary.clear();
+		listBoundary.add(IMGMAPHEIGHT);
+		listBoundary.add(IMGMAPWIDTH);
+		listBoundary.add("36.42252593456309");
+		listBoundary.add("-122.83494567871095");
+		listBoundary.add("38.27989023941680");
+		listBoundary.add("-124.05415725708008");
+		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
+		this.getComplianceReportsPage().addNewReport(rpt);
+		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
+
 	}
 
 	/**
 	 * Test Case ID: TC185 Test Description: Click on Cancel button present on compliance report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC185_ComplianceReportTest_VerifyCancelButtonFunctionality() {
@@ -717,9 +722,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() throws Exception {
@@ -738,6 +743,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 		viewList.add(viewMap1);
@@ -749,9 +755,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC167 Test Description: Customer Admin can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC167_ComplianceReportTest_CusAdminCanDeleteReport() throws Exception {
@@ -792,6 +798,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
@@ -815,9 +822,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC168 Test Description: Customer Supervisor can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC168_ComplianceReportTest_CusSupervisorCanDeleteReport() throws Exception {
@@ -858,6 +865,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
@@ -881,9 +889,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC212 Test Description: Resubmit compliance report from previously generated reports
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC212_ComplianceReportTest_VerifyResubmitReport() throws Exception {
@@ -916,6 +924,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -945,7 +954,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
 
 		this.getComplianceReportsPage().clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
-		
+
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
@@ -958,9 +967,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC797 Test Description: Search compliance reports based on report name
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC797_ComplianceReportTest_SearchReportByReportName() throws Exception {
@@ -1001,9 +1010,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 
-		
+
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
@@ -1025,9 +1035,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1275 Test Description: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional
 	 * view layers section
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1275_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
@@ -1058,6 +1068,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
+		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 
@@ -1083,9 +1094,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1297 Test Description: Software version on UI and reports PDF should match
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1297_ComplianceReportTest_VerifyVersion() throws Exception {
@@ -1127,6 +1138,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
+		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 

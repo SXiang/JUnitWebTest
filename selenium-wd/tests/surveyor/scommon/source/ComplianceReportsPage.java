@@ -16,6 +16,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
@@ -534,77 +535,85 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYFOV)) {
 				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYBREADCRUMB)) {
 				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYINDICATIONS)) {
 				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
 				colNum = 7;
 				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYANNOTATION)) {
 				colNum = 8;
 				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
 				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYASSETS)) {
 				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
-				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.RADIOBUTTON);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+			}else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				colNum = 12;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
+				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
-				colNum = 12;
+				colNum = 13;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
-
+			
 			if (selectView(viewMap, KEYBOUNDARIES)) {
-				colNum = 13;
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectCheckbox(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				if (rowNum == 1) {
+					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'view-showboundry')]";
+				} else {
+					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/input[contains(@class,'view-showboundry')]";
+				}
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewMap.get(KEYBASEMAP) != null) {
@@ -614,15 +623,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/select[contains(@class,'view-basemap')]";
 				}
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
-				List<WebElement> options = dropdownBaseMap.findElements(By.tagName("option"));
-				for (WebElement option : options) {
-					String thisMap = viewMap.get(KEYBASEMAP);
-					if ((thisMap).equalsIgnoreCase(option.getText().trim())) {
-						Log.info(String.format("Select base map - '%s'", thisMap));
-						option.click();
-						break;
-					}
-				}
+				String thisMap = viewMap.get(KEYBASEMAP);
+				Log.info(String.format("Select base map - '%s'", thisMap));
+				selectDropdownOption(dropdownBaseMap, thisMap);
 			}
 		}
 	}
@@ -1527,19 +1530,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return done;
 	}
 	
-	public boolean checkPaginationSettingInvestogation(String numberOfReports) {
-		setPagination(numberOfReports);
-		this.waitForInvestigationPageLoad();
-
-		String msgToVerify = STRPaginationMsg + numberOfReports;
-		this.waitForNumberOfInvestigationRecords(msgToVerify);
-
-		if (msgToVerify.equals(this.paginationInvestigationMsg.getText().substring(0, 16).trim()))
-			return true;
-
-		return false;
-	}
-	
 	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
 		
 		this.inputInvestigationSearchReport.sendKeys(reportTitle);
@@ -1719,27 +1709,27 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectPercentCoverageReportArea() {
-		SelectCheckbox(checkBoxPCRA);
+		SelectElement(checkBoxPCRA);
 	}
 
 	public void selectPercentCoverageAssetCheckBox() {
-		SelectCheckbox(checkBoxPCA);
+		SelectElement(checkBoxPCA);
 	}
 
 	public void selectPercentCoverageForecastCheckBox() {
-		SelectCheckbox(checkBoxPCF);
+		SelectElement(checkBoxPCF);
 	}
 
 	public void selectGapTableCheckBox() {
-		SelectCheckbox(checkBoxGapTb);
+		SelectElement(checkBoxGapTb);
 	}
 
 	public void selectIsotopicAnalysisCheckBox() {
-		SelectCheckbox(checkBoxIsoAna);
+		SelectElement(checkBoxIsoAna);
 	}
 
 	public void selectIndicationsTableCheckBox() {
-		SelectCheckbox(checkBoxIndTb);
+		SelectElement(checkBoxIndTb);
 	}
 
 	public void selectCustomBoundaryRadioButton() {
@@ -1867,7 +1857,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		for (WebElement element : elements) {
 			if (select)
-				SelectCheckbox(element);
+				SelectElement(element);
 			else
 				UnselectCheckbox(element);
 		}
@@ -1884,7 +1874,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				// Asset key.
 				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
 				if (assetElements.size() > 0) {
-					SelectCheckbox(assetElements.get(0));
+					SelectElement(assetElements.get(0));
 				}
 			}
 		}
@@ -1900,7 +1890,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
 				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
 				if (boundaryElements.size() > 0) {
-					SelectCheckbox(boundaryElements.get(0));
+					SelectElement(boundaryElements.get(0));
 				}
 			}
 		}
@@ -2197,13 +2187,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String PCRA = null;
 		StoredProcComplianceGetCoverage storedProcObj = StoredProcComplianceGetCoverage.getCoverage(reportId);
 		List<String> expectedReportString = new ArrayList<String>();
+		int matchIndex = 0;
 		if (userSelection.get(KEYPCA).equals("1")) {
-			PCA = matches.get(0).replaceAll("[\\D+]", "");
+			PCA = matches.get(matchIndex++).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageAssets(PCA);
 			expectedReportString.add(ComplianceReportSSRS_TotalLinearAssetCoverage);
 		}
 		if (userSelection.get(KEYPCRA).equals("1")) {
-			PCRA = matches.get(1).replaceAll("[\\D+]", "");
+			PCRA = matches.get(matchIndex).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageReportArea(PCRA);
 			expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 		}
@@ -2701,7 +2692,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
-
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
@@ -2711,7 +2701,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = "CR-" + reportId;
-
 		if (actualPath.endsWith("-ReportLISAS.csv")) {
 			pathToCsv = actualPath;
 		}
@@ -2723,18 +2712,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			HashMap<String, String> csvRow = csvIterator.next();
 			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
 			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
-			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim());
+			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim().replaceAll("LISA", ""));
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
-			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
+			double amp = Math.round(Float.parseFloat((csvRow.get("AMPLITUDE")).trim()) * 100.0) / 100.0;
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
@@ -2759,7 +2748,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
-				Log.info("LISA Meta data file verification failed");
+				Log.info(String.format("LISA Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.", reportListObj.toString()));
 				return false;
 			}
 		}
@@ -3895,24 +3884,33 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement radioBox = null;
 		switch (surveyModeFilter) {
 		case All:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterAll);
+			radioBox = this.inputSurModeFilterAll;
 			break;
 		case Standard:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterStd);
+			radioBox = this.inputSurModeFilterStd;
 			break;
 		case Operator:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterOperator);
+			radioBox = this.inputSurModeFilterOperator;
 			break;
 		case RapidResponse:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterRapidResponse);
+			radioBox = this.inputSurModeFilterRapidResponse;
 			break;
 		case Manual:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterManual);
+			radioBox = this.inputSurModeFilterManual;
 			break;
 		default:
 			break;
+		}
+		
+		try{
+			if(radioBox!=null&&!radioBox.isSelected()){
+				js.executeScript("arguments[0].click();", radioBox);
+			}
+		}catch(Exception e){
+			Log.error(e.toString());
 		}
 	}
 
@@ -3961,6 +3959,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean isReportColumnSorted(String columnName, String type){
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isAmplitudeColumnSorted(){
