@@ -60,9 +60,11 @@ Reports,CancelReport,?reportType=ComplianceReports&reportId=${APISecurityTest_Re
 Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},,NO,NO,NO,NO,YES,YES,YES,YES
 Reports,GetReportStat,?reportTitle=${APISecurityTest_ReportTitle001},,NO,NO,NO,NO,YES,YES,YES,YES
 Reports,ViewReportPdf,?reportId=${APISecurityTest_Report001}&ReportType=Investigation,APISecurityTestReport001,NO,NO,NO,NO,YES,YES,YES,YES
-Reports,LisaInvestigations,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
-Reports,LisaInvestigationsData,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
-Reports,LisaInvestigationsAssignment,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,Investigations,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,InvestigationsData,?reportId=${APISecurityTest_Report001}&type=0,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,InvestigationsAssignment,?reportId=${APISecurityTest_Report001}&type=0,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,InvestigationsData,?reportId=${APISecurityTest_Report001}&type=1,,NO,NO,NO,NO,YES,YES,YES,YES
+Reports,InvestigationsAssignment,?reportId=${APISecurityTest_Report001}&type=1,,NO,NO,NO,NO,YES,YES,YES,YES
 Reports,ShowGenerateShapeFile,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
 Reports,ShowGenerateReportMeta,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
 Reports,ThumbnailPaths,?reportId=${APISecurityTest_Report001}&ReportType=Compliance,,NO,NO,NO,NO,YES,YES,YES,YES
@@ -78,7 +80,6 @@ Reports,AssessmentReports,,,NO,NO,YES,YES,YES,YES,YES,YES
 Reports,ResubmitReport,?reportType=Assessment&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,NO,NO,NO,NO,YES,YES
 Reports,CancelReport,?reportType=AssessmentReports&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,NO,YES,YES,YES,YES,YES
 Reports,CopyAssessmentReport,?reportId=${APISecurityTest_Assessment002},,NO,NO,NO,NO,YES,YES,YES,YES
-Investigation,GetReportPeaksDataByReportId,?reportId=${APISecurityTest_Report001},,NO,NO,NO,NO,YES,YES,YES,YES
 Admin,ManageSurveyors,,,NO,NO,NO,YES,NO,YES,NO,YES
 Admin,ManageSurveyorsData,,,NO,NO,NO,YES,NO,YES,NO,YES
 Admin,ManageSurveyor,?id=${APISecurityTest_Surveyor001},SimAuto-Surveyor1 - Picarro,NO,NO,NO,NO,NO,YES,NO,YES
