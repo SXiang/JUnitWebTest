@@ -7,6 +7,7 @@ import org.junit.runner.notification.RunListener;
 
 import com.relevantcodes.extentreports.LogStatus;
 
+import common.source.BaseHelper;
 import common.source.ExceptionUtility;
 import common.source.Log;
 
@@ -60,8 +61,19 @@ public class RunExecutionListener extends RunListener {
 	    		exceptionMessage.append(String.format("EXCEPTION: %s", stackTraceString));
 	    	}
     	}
-    	Log.error(exceptionMessage.toString());
-		SurveyorBaseTest.getExtentTest(failure.getDescription().getClassName()).log(LogStatus.FAIL, exceptionMessage.toString());
+
+    	String exceptionMsg = exceptionMessage.toString();
+    	if (!BaseHelper.isNullOrEmpty(exceptionMsg)) {
+			Log.error(exceptionMsg);
+			SurveyorBaseTest.getExtentTest(failure.getDescription().getClassName()).log(LogStatus.FAIL, exceptionMsg);
+    	} else {
+    		String failureObjectString = String.format("Failure: Description=[%s]; Exception=[%s]; Message=[%s]; TestHeader=[%s]; ",
+    				failure.getDescription().toString(),
+    				failure.getException().toString(),
+    				failure.getMessage().toString(),
+    				failure.getTestHeader().toString());
+    		Log.warn(String.format("Found EMPTY Exception Message. Failure object -> %s", failureObjectString));
+    	}
     }
 
     /**

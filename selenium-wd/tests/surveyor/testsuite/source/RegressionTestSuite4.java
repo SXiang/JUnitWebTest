@@ -14,22 +14,21 @@ import surveyor.regression.source.SurveyViewPageTest2;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
-	ManageUsersPageTest.class
-	,MeasurementSessionsPageTest.class
+@SuiteClasses({
+	MeasurementSessionsPageTest.class
 	,SurveyViewPageTest.class
 	,SurveyViewPageTest1.class
 	,SurveyViewPageTest2.class
 })
 public class RegressionTestSuite4 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for RegressionTestSuite4 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for RegressionTestSuite4 executing...");
     }
 }
