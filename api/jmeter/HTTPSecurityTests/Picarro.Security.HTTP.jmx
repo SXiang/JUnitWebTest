@@ -273,7 +273,7 @@
         <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
       </ConfigTestElement>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -3198,7 +3198,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3212,7 +3212,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3226,7 +3226,7 @@ Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3240,7 +3240,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportTitle, DateStarted, Id
 From dbo.Report
@@ -3254,7 +3254,7 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="false">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
 int size = result.size();
@@ -3316,7 +3316,7 @@ for(int i=0; i&lt;size; i++){
           <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
         </BeanShellSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select ReportId, PeakNumber, Id
 From dbo.ReportPeak
@@ -3330,7 +3330,7 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="false">
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
           <stringProp name="dataSource">SQAAuto</stringProp>
           <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
 From dbo.ReportJob
@@ -3344,7 +3344,7 @@ Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="false">
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
 int size = result.size();
