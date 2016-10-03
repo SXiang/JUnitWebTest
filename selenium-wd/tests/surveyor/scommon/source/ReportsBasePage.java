@@ -1608,10 +1608,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 				 * The try catch block could be removed after the fix
 				 */
 				try{
+					reportId = Report.getReport(rptTitle).getId();
+				}catch(Exception e){
 					ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
 					reportId = reportJobsStatObj.Id;
-				}catch(Exception e){
-					reportId = Report.getReport(rptTitle).getId();
 				}
 				TestContext.INSTANCE.addReportId(reportId);
 
