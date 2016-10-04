@@ -20,6 +20,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.RegexUtility;
@@ -40,15 +41,15 @@ public class BaseTest {
 
 	public static LoginPage loginPage;
 	public static HomePage homePage;
-	
-	protected static ExtentTest test = null; 
+
+	protected static ExtentTest test = null;
 	protected static StringBuilder extentReportFile = null;
-	protected static ScreenShotOnFailure screenCapture;	
+	protected static ScreenShotOnFailure screenCapture;
 
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
 	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
+	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_*
 	@Rule
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
@@ -77,7 +78,7 @@ public class BaseTest {
 	};
 
 	public static void initializeTestObjects(){
-		baseURL = testSetup.getBaseUrl();		
+		baseURL = testSetup.getBaseUrl();
 		debug = testSetup.isRunningDebug();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 		driver = testSetup.getDriver();
@@ -87,21 +88,21 @@ public class BaseTest {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
-		
+
 		Path screenShotsPath = Paths.get(screenShotsDir, screenShotsSubFolder);
-		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());			
-		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder, 
+		FileUtility.createDirectoryIfNotExists(screenShotsPath.toString());
+		screenCapture = new ScreenShotOnFailure(screenShotsSubFolder,
 				screenShotsDir, testSetup.isRemoteBrowser);
-		
+
 		driver.manage().deleteAllCookies();
-		
+
 		loginPage = new LoginPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  loginPage);
-		
+
 		homePage = new HomePage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  homePage);
 	}
-	
+
 	private static ExtentReports getExtentReport(String className) {
 		   ExtentReports extentReport = TestContext.INSTANCE.getReport();
 		   if (extentReport == null) {
@@ -111,7 +112,7 @@ public class BaseTest {
 		   }
 		   return extentReport;
 		}
-		
+
 		public static void reportTestStarting(Description description) {
 			reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
 		}
@@ -121,13 +122,13 @@ public class BaseTest {
 			setExtentTest(report.startTest(methodName), className);
 			getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 			getExtentTest().log(LogStatus.INFO, firstLogLine);
-			getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+			getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 					DateUtility.getCurrentDate()));
 		}
 
 		public static void reportTestFinished(String className) {
 			ExtentReports report = getExtentReport(className);
-			getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+			getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 					DateUtility.getCurrentDate()));
 			report.endTest(getExtentTest());
 			report.flush();
@@ -139,13 +140,13 @@ public class BaseTest {
 				getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 			}
 		}
-		
+
 		public static void reportTestFailed(Throwable e) {
-			BaseTest.reportTestLogMessage();			
+			BaseTest.reportTestLogMessage();
 			screenCapture.takeScreenshot(driver);
-			Log.error("_FAIL_ Exception: "+e);
+			Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 			TestContext.INSTANCE.setTestStatus("FAIL");
-			getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+			getExtentTest().log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
 		}
 
 		public static void reportTestError(String errorMsg) {
@@ -174,7 +175,7 @@ public class BaseTest {
 			homePage.open();
 			homePage.logout();
 		}
-		
+
 		driver.quit();
 		driver = null;
 	}
@@ -186,10 +187,10 @@ public class BaseTest {
 			}
 		}
 	}
-	
+
 	public void postTestMethodProcessing() {
 	}
-	
+
 	protected boolean isValidRunAsUser(String username, String functionName) {
 		String runAsUsers = DataAnnotations.getRunAsUsers(getClass(), functionName);
 		List<String> listUsers = RegexUtility.split(runAsUsers, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
@@ -198,7 +199,7 @@ public class BaseTest {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -208,7 +209,7 @@ public class BaseTest {
 		// Post run result to DB if enabled.
 		postResultsToAutomationAPI();
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -223,5 +224,5 @@ public class BaseTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 }
