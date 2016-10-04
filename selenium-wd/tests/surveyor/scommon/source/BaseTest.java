@@ -66,11 +66,13 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			BaseTest.reportTestFailed(e);
+			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			 BaseTest.reportTestSucceeded();
+			 postTestMethodProcessing();
 		}
 	};
 

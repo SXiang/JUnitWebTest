@@ -2187,13 +2187,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String PCRA = null;
 		StoredProcComplianceGetCoverage storedProcObj = StoredProcComplianceGetCoverage.getCoverage(reportId);
 		List<String> expectedReportString = new ArrayList<String>();
+		int matchIndex = 0;
 		if (userSelection.get(KEYPCA).equals("1")) {
-			PCA = matches.get(0).replaceAll("[\\D+]", "");
+			PCA = matches.get(matchIndex++).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageAssets(PCA);
 			expectedReportString.add(ComplianceReportSSRS_TotalLinearAssetCoverage);
 		}
 		if (userSelection.get(KEYPCRA).equals("1")) {
-			PCRA = matches.get(1).replaceAll("[\\D+]", "");
+			PCRA = matches.get(matchIndex).replaceAll("[\\D+]", "");
 			coverageReportObj.setPercentCoverageReportArea(PCRA);
 			expectedReportString.add(ComplianceReportSSRS_PercentCoverageReportArea);
 		}
@@ -2691,7 +2692,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId) throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
-
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
@@ -2701,7 +2701,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = "CR-" + reportId;
-
 		if (actualPath.endsWith("-ReportLISAS.csv")) {
 			pathToCsv = actualPath;
 		}
@@ -2720,11 +2719,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
-			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim());
+			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim().replaceAll("LISA", ""));
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
-			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
+			double amp = Math.round(Float.parseFloat((csvRow.get("AMPLITUDE")).trim()) * 100.0) / 100.0;
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
@@ -3885,24 +3884,33 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	public void selectSurveyModeForSurvey(SurveyModeFilter surveyModeFilter) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement radioBox = null;
 		switch (surveyModeFilter) {
 		case All:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterAll);
+			radioBox = this.inputSurModeFilterAll;
 			break;
 		case Standard:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterStd);
+			radioBox = this.inputSurModeFilterStd;
 			break;
 		case Operator:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterOperator);
+			radioBox = this.inputSurModeFilterOperator;
 			break;
 		case RapidResponse:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterRapidResponse);
+			radioBox = this.inputSurModeFilterRapidResponse;
 			break;
 		case Manual:
-			js.executeScript("arguments[0].click();", this.inputSurModeFilterManual);
+			radioBox = this.inputSurModeFilterManual;
 			break;
 		default:
 			break;
+		}
+		
+		try{
+			if(radioBox!=null&&!radioBox.isSelected()){
+				js.executeScript("arguments[0].click();", radioBox);
+			}
+		}catch(Exception e){
+			Log.error(e.toString());
 		}
 	}
 

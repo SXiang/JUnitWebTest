@@ -1,5 +1,7 @@
 package surveyor.performance.source;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,6 +11,7 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.PerformanceReportJobDataProvider.ReportJobTestCategory;
@@ -31,9 +34,9 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
-	
+
 	private static ComplianceReportsPage complianceReportsPage;
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
@@ -43,7 +46,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	public void beforeTestMethod() throws Exception {
 		initializeProperties();
 	}
-	
+
 	/**
 	 * Initializes the page action objects.
 	 */
@@ -61,7 +64,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	public LoginPageActions getLoginPageAction() {
 		return loginPageAction;
 	}
-	
+
 	public ComplianceReportsPageActions getComplianceReportsPageAction() {
 		return complianceReportsPageAction;
 	}
@@ -83,7 +86,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	public void UnitTest_compareReportJobPerfBaseline() throws Exception {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, complianceReportsPage);
-		
+
 		String testCaseID = "PerfTest3";
 		String reportTitle = "9a231d51baa34934986b";
 		complianceReportsPage.compareReportJobPerfBaseline(testCaseID, reportTitle);
@@ -91,7 +94,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 
 	protected Integer getTestExecutionTimes(Integer executionTimesForBaselines, ReportJobTestCategory category) {
 		Log.method("getTestExecutionTimes", executionTimesForBaselines, category);
-		
+
 		Integer executionTimes = executionTimesForBaselines;
 		// If not collecting baseline metrics run ONLY once.
 		if (!TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
@@ -99,7 +102,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		} else {
 			Integer executionTimesFromProperties = 0;
 			switch (category) {
-			case High:				
+			case High:
 				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForHighLoadReportJobPerfBaseline();
 				break;
 			case Light:
@@ -125,36 +128,41 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected void checkAndGenerateReportJobBaselineCsv() throws IOException {
 		Log.method("checkAndGenerateReportJobBaselineCsv");
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
-			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.tCID);
+			generateReportJobBaselineRunExecutionCsv(ComplianceReportsPageActions.workingDataRow.tCID);
 		}
 	}
-	
+
 	protected void executePerformanceTest(Integer userDataRowID, Integer reportDataRowID, Integer executionTimesForBaselines,
 			String category) throws Exception, IOException {
 		Log.method("executePerformanceTest", userDataRowID, reportDataRowID, executionTimesForBaselines, category);
-		
-		LocalDateTime startDate = LocalDateTime.now(); 
-		
+
+		LocalDateTime startDate = LocalDateTime.now();
+
+		boolean result = true;
+
 		// Run for specified number of times depending on whether we are generating baselines or not.
 		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
 		for (int i=0; i<testExecutionTimes; i++) {
 			initializePageActions();
-			
+
 			getLoginPageAction().open(EMPTY, NOTSET);
-			getLoginPageAction().login(EMPTY, userDataRowID);   
+			getLoginPageAction().login(EMPTY, userDataRowID);
 			getComplianceReportsPageAction().open(EMPTY, NOTSET);
 			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
 			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_IN_SECONDS), reportDataRowID);
 			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
-			getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
+			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
+			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
 
 		// Generate the CSV if collecting baselines
 		checkAndGenerateReportJobBaselineCsv();
-		
+
 		// Post execution results to automation DB.
 		LocalDateTime endDate = LocalDateTime.now();
 		postRunResultsToAutomationDB(reportDataRowID, startDate, endDate);
+
+		assertTrue(result);
 	}
 
 	private void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
@@ -174,10 +182,13 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 					LocalDateTime reportJobEndTime = reportJobPerfDBStat.getReportJobEndTime();
 					LocalDateTime testExecutionStartDate = startDate;
 					LocalDateTime testExecutionEndDate = endDate;
-					String buildNumber = reportJobPerfDBStat.getBuildNumber();
+					LocalDateTime reportStartTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportStartEpochTime());
+					LocalDateTime reportEndTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportEndEpochTime());
+					String buildNumber = getComplianceReportsPageAction().getComplianceReportsPage().getWebAppVersion();
 					Environment environment = reportJobPerfDBStat.getEnvironment();
-					TestContext.INSTANCE.getTestSetup().postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime, 
-							reportJobEndTime, testExecutionStartDate, testExecutionEndDate, buildNumber, testCaseID, environment);
+					TestContext.INSTANCE.getTestSetup().postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime,
+							reportJobEndTime, testExecutionStartDate, testExecutionEndDate,
+							reportStartTime, reportEndTime, buildNumber, testCaseID, environment);
 					i++;
 				}
 			}
