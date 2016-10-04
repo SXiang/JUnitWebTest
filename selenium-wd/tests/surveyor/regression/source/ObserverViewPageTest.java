@@ -1,11 +1,15 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSU;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import common.source.Log;
+import common.source.TestSetup;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -1254,5 +1258,92 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		stopSurveyAndAnalyzer();
 	}
+
+	/**
+	 * Test Case ID: TC299_SimulatorTest_VerifyObserverViewInfo
+	 * Test Description:
+	 * - Log into UI as customer user (Utility Admin, Support, Driver)
+	 * - On Home Page, click on Surveyors
+	 * - Click on Online link
+	 * Result:
+	 * - User is navigated to Dashboard
+	 * - User is taken to list of Surveyors for that customer
+	 * - User is navigated to Observer View
+	 * - Lag time between Driver and Observer view to display survey data should not be higher than 8 sec
+	 * - Survey information till the current time should be displayed
+	 */
+	@Test /*Lack of verification of 'Lag time between Driver and Observer view to display survey data should not be higher than 8 sec'*/
+	public void TC299_VerifyObserverViewInfo() throws Exception{
+		Log.info("\nTestcase - TC299_SimulatorTest_VerifyObserverViewInfo\n");
+
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_DRIVER);
+
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		
+		stopSurveyAndAnalyzer();
+	}
+
+	/**
+	 * Test Case ID: TC353_CurtainViewIsDisplayedAndUserIsAbleToFollowTheVehicle
+	 * Test Description:Observer View - Curtain View is displayed and user is able to Follow the vehicle
+	 * - Script:
+	 * -  On Home Page, click on Picarro Surveyors -> Online -> Curtain
+	 * - Click on Return. 
+	 * - Turn Position OFF and click on Curtain
+	 * - Click on Return
+	 * Result:
+	 * - Red color cursor will move along with car position and blue spikes are displayed
+	 * - Cursor will stop moving but blue spikes will be displayed
+	 * - User will be returned to Observer View page
+	 */
+	@Test /*TBD*/
+	public void TC353_CurtainViewIsDisplayedAndUserIsAbleToFollowTheVehicle() throws Exception{
+		Log.info("\nTestcase - TC353_CurtainViewIsDisplayedAndUserIsAbleToFollowTheVehicle\n");
+
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_DRIVER);
+
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		
+		stopSurveyAndAnalyzer();
+	}
 	
+	/**
+	 * Test Case ID: TC2133_CurtainViewIsNotAvailableWithoutLicense
+	 * Test Description:Observer View - Curtain View is displayed and user is able to Follow the vehicle
+	 * - Script:
+	 * - Log into UI
+- Click Online link for one of the customer's surveyors
+- Check bottom panel for Curtain View button
+	 * Result:
+	 * - User is navigated to Observer View for selected surveyor
+- Curtain View button should not be present
+	 */
+	@Ignore /*TBD*/
+	public void TC2133_CurtainViewIsNotAvailableWithoutLicense() throws Exception{
+		Log.info("\nTestcase - TC2133_CurtainViewIsNotAvailableWithoutLicense\n");
+
+		loginAsDriver(USER_ROW_ID_PICARRO_DRIVER);
+
+		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_DRIVER);
+
+		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+		
+		stopSurveyAndAnalyzer();
+	}
 }
