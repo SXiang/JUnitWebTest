@@ -43,7 +43,7 @@ import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
 
 public class DbSeedExecutorTest {
-	
+
 	@BeforeClass
 	public static void BeforeClass()	{
 		TestSetup testSetup = new TestSetup(false /* skip initialization */);
@@ -57,7 +57,7 @@ public class DbSeedExecutorTest {
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 	}
-	
+
 	@Test
 	public void execute01_GenericSeedTest() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
@@ -72,11 +72,33 @@ public class DbSeedExecutorTest {
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
-		
+
 	@Test
 	public void execute03_SurveyDataSeedTest() throws Exception {
 		DbSeedExecutor.executeSurveyDataSeed();
 		verifySurveySeedDataIsPresent();
+	}
+
+	@Test
+	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
+		final String[] surveyTags = {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags);
+	}
+
+	@Test
+	public void execute03_SurveyDataSeedTest_GeneratedSurveys() throws Exception {
+		final String[] surveyTags = {"8HourSurvey-2", "8HourSurvey-3", "8HourSurvey-4", "8HourSurvey-5", "8HourSurvey-6", "8HourSurvey-7"
+				,"8HourSurvey-8","8HourSurvey-9","8HourSurvey-10","8HourSurvey-11","8HourSurvey-12"};
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags, true, true);
+	}
+
+	@Test
+	public void execute03_SurveyDataSeedALLTest() throws Exception {
+		execute03_SurveyDataSeedTest();
+		execute03_SurveyDataSeedTest_SpecificSurveys();
+		execute03_SurveyDataSeedTest_GeneratedSurveys();
 	}
 
 	@Test
@@ -94,7 +116,7 @@ public class DbSeedExecutorTest {
 		DbSeedExecutor.executeGisSeed(customerId);
 		verifyGisSeedDataIsPresent(customerId);
 	}
-	
+
 	/**
 	 * NOTES: PGE asset/boundaries seed is required by few Driver view test cases.
 	 * @throws Exception
@@ -118,9 +140,9 @@ public class DbSeedExecutorTest {
 		}
 		Assert.assertTrue(isGenericSeedPresent);
 	}
-	
+
 	private void verifyGisSeedDataIsPresent(String customerId) throws Exception {
-		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache(); 
+		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache();
 		BoundaryDbSeedBuilder boundaryDbSeedBuilder = new BoundaryDbSeedBuilder();
     	boundaryDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
     	AssetDbSeedBuilder assetDbSeedBuilder = new AssetDbSeedBuilder();
@@ -142,14 +164,25 @@ public class DbSeedExecutorTest {
 		}
 		Assert.assertTrue(isGisSeedPresent);
 	}
-	
+
 	private void verifySurveySeedDataIsPresent() throws IOException, FileNotFoundException, SQLException {
+		verifySurveySeedDataIsPresent(null);
+	}
+
+	private void verifySurveySeedDataIsPresent(String[] surveyTags) throws IOException, FileNotFoundException, SQLException {
+		verifySurveySeedDataIsPresent(surveyTags, false /*isCaptureRowsRestamped*/, false /*isFOVRowsRestamped*/);
+	}
+
+	private void verifySurveySeedDataIsPresent(String[] surveyTags, boolean isCaptureEventRowsRestamped, boolean isFOVRowsRestamped) throws IOException, FileNotFoundException, SQLException {
 		// Verify seed data pushed correctly for each survey tag.
-		final String[] surveyTags = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey", 
+		if (surveyTags == null) {
+			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual","EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
 				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
-		
+			surveyTags = surveyTagsTemp;
+		}
+
 		boolean isRedate = false;
 		Connection connection = null;
 		try {
@@ -168,12 +201,12 @@ public class DbSeedExecutorTest {
 				PeakDbSeedBuilder peakDbSeedBuilder = (PeakDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Peak-%s.csv", surveyTag));
 				SegmentDbSeedBuilder segmentDbSeedBuilder = (SegmentDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Segment-%s.csv", surveyTag));
 				NoteDbSeedBuilder noteDbSeedBuilder = (NoteDbSeedBuilder)DbSeedExecutor.getSurveySeedBuilderCache().getDbSeedBuilder(String.format("Note-%s.csv", surveyTag));
-	
+
 				// check if survey data is present in database for this survey tag.
 				final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
 				final DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
-				
-				// get line count from data files (-2 for header and last empty line) 
+
+				// get line count from data files (-2 for header and last empty line)
 				final Integer minSurveyCount = FileUtility.getLineCountInFile(Paths.get(surveyDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSurveyConditionCount = FileUtility.getLineCountInFile(Paths.get(surveyConditionDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSurveyResultCount = FileUtility.getLineCountInFile(Paths.get(surveyResultDbSeedBuilder.getSeedFilePath())) - 2;
@@ -185,52 +218,62 @@ public class DbSeedExecutorTest {
 				final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
-				
+
 				final List<HashMap<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 				final String surveyId = firstSurveyRow.get(0).get("Id");
 				final String analyzerId = firstSurveyRow.get(0).get("AnalyzerId");
-				
+
 				String startEpoch = firstSurveyRow.get(0).get("StartEpoch");
 				String endEpoch = firstSurveyRow.get(0).get("EndEpoch");
 				Double startEpochValue = Double.parseDouble(startEpoch) - EPSILON;
 				Double endEpochValue = Double.parseDouble(endEpoch) + EPSILON;
-				startEpoch = NumberUtility.formatString(startEpochValue, 10); 
-				endEpoch = NumberUtility.formatString(endEpochValue, 10); 
+				startEpoch = NumberUtility.formatString(startEpochValue, 10);
+				endEpoch = NumberUtility.formatString(endEpochValue, 10);
 
-				Assert.assertTrue(dbStateVerifier.isSurveySeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyCount));				
+				Assert.assertTrue(dbStateVerifier.isSurveySeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyCount));
 				Assert.assertTrue(dbStateVerifier.isSurveyConditionSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyConditionCount));
 				Assert.assertTrue(dbStateVerifier.isSurveyResultSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyResultCount));
-				
+
 				if (!isRedate) {
-					Assert.assertTrue(dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minMeasurementCount, false));				
+					Assert.assertTrue(dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minMeasurementCount, false));
 					Assert.assertTrue(dbStateVerifier.isGPSRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minGPSRawCount, false));
 					Assert.assertTrue(dbStateVerifier.isAnemometerRawSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minAnemometerRawCount, false));
 				} else {
 					boolean checkAnalyzerRowsOnly = false;
 					checkAnalyzerRowsOnly = (measurementDbSeedBuilder.getStartEpoch() == 0);
-					String startEpochWithRedate = NumberUtility.formatString(measurementDbSeedBuilder.getStartEpoch() - EPSILON, 10); 
-					String endEpochWithRedate = NumberUtility.formatString(measurementDbSeedBuilder.getEndEpoch() + EPSILON, 10); 
-					Assert.assertTrue(dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpochWithRedate, endEpochWithRedate, minMeasurementCount, checkAnalyzerRowsOnly));				
+					String startEpochWithRedate = NumberUtility.formatString(measurementDbSeedBuilder.getStartEpoch() - EPSILON, 10);
+					String endEpochWithRedate = NumberUtility.formatString(measurementDbSeedBuilder.getEndEpoch() + EPSILON, 10);
+					Assert.assertTrue(dbStateVerifier.isMeasurementSeedPresent(surveyId, analyzerId, startEpochWithRedate, endEpochWithRedate, minMeasurementCount, checkAnalyzerRowsOnly));
 
 					checkAnalyzerRowsOnly = (gpsRawDbSeedBuilder.getStartEpoch() == 0);
-					startEpochWithRedate = NumberUtility.formatString(gpsRawDbSeedBuilder.getStartEpoch() - EPSILON, 10); 
-					endEpochWithRedate = NumberUtility.formatString(gpsRawDbSeedBuilder.getEndEpoch() + EPSILON, 10); 
+					startEpochWithRedate = NumberUtility.formatString(gpsRawDbSeedBuilder.getStartEpoch() - EPSILON, 10);
+					endEpochWithRedate = NumberUtility.formatString(gpsRawDbSeedBuilder.getEndEpoch() + EPSILON, 10);
 					Assert.assertTrue(dbStateVerifier.isGPSRawSeedPresent(surveyId, analyzerId, startEpochWithRedate, endEpochWithRedate, minGPSRawCount, checkAnalyzerRowsOnly));
 
 					checkAnalyzerRowsOnly = (anemometerRawDbSeedBuilder.getStartEpoch() == 0);
-					startEpochWithRedate = NumberUtility.formatString(anemometerRawDbSeedBuilder.getStartEpoch() - EPSILON, 10); 
-					endEpochWithRedate = NumberUtility.formatString(anemometerRawDbSeedBuilder.getEndEpoch() + EPSILON, 10); 
+					startEpochWithRedate = NumberUtility.formatString(anemometerRawDbSeedBuilder.getStartEpoch() - EPSILON, 10);
+					endEpochWithRedate = NumberUtility.formatString(anemometerRawDbSeedBuilder.getEndEpoch() + EPSILON, 10);
 					Assert.assertTrue(dbStateVerifier.isAnemometerRawSeedPresent(surveyId, analyzerId, startEpochWithRedate, endEpochWithRedate, minAnemometerRawCount, checkAnalyzerRowsOnly));
 				}
 
-				Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minCaptureEventCount));
-				Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minFieldOfViewCount));
+				if (isCaptureEventRowsRestamped) {
+					Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, String.valueOf(Float.MIN_VALUE), String.valueOf(Float.MAX_VALUE), minCaptureEventCount));
+				} else {
+					Assert.assertTrue(dbStateVerifier.isCaptureEventSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minCaptureEventCount));
+				}
+
+				if (isFOVRowsRestamped) {
+					Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, String.valueOf(Float.MIN_VALUE), String.valueOf(Float.MAX_VALUE), minFieldOfViewCount));
+				} else {
+					Assert.assertTrue(dbStateVerifier.isFieldOfViewSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minFieldOfViewCount));
+				}
+
 				Assert.assertTrue(dbStateVerifier.isPeakSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minPeakCount));
 				Assert.assertTrue(dbStateVerifier.isSegmentSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSegmentCount));
 				Assert.assertTrue(dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount));
 
 				Log.info(String.format("----- DONE Verifying survey with tag - '%s' -----", surveyTag));
-			} 
+			}
 		} finally {
 			connection.close();
 		}

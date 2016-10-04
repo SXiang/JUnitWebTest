@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -34,13 +36,13 @@ public class DbSeedExecutor {
 	private static DbSeedBuilderCache surveySeedBuilderCache;
 
 	/* Method to push all the seed data required for automation. */
-	
+
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
 	}
-	
+
 	/* Method for pushing generic automation seed data (Users, Customers, Locations, Analyzers, etc.) */
 
 	public static void executeGenericDataSeed() throws Exception {
@@ -53,22 +55,27 @@ public class DbSeedExecutor {
 				Log.info("Automation DB seed is already present. SKIP execution.");
 				return;
 			}
-			
+
 			Log.info("Automation DB seed NOT found. Executing SQL script to push automation DB seed...");
 			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(),"logs", String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 			String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-Minimal.sql").toString();
-			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(), 
+			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
 					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
 		} finally {
 			connection.close();
 		}
 	}
-	
+
 	/* Method for pushing Survey seed data */
 
 	public static void executeSurveyDataSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeSurveyDataSeed");
-		
+		executeSurveyDataSeed(null);
+	}
+
+	public static void executeSurveyDataSeed(String[] surveyTags) throws Exception {
+		Log.method("DbSeedExecutor.executeSurveyDataSeed", LogHelper.arrayToString(surveyTags));
+
 		Connection connection = null;
 		SurveyDbSeedBuilder surveyDbSeedBuilder = null;
 		SurveyConditionDbSeedBuilder surveyConditionDbSeedBuilder = null;
@@ -84,11 +91,15 @@ public class DbSeedExecutor {
 
 		surveySeedBuilderCache = new DbSeedBuilderCache();
 
-		// Push 'Ethane-*' survey tags. Tracked by US3279.
-		final String[] surveyTags = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey", 
+		if (surveyTags == null) {
+			// Use default survey tags if NOT specified by caller.
+			// Push 'Ethane-*' survey tags. Tracked by US3279.
+			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
 				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
+			surveyTags = surveyTagsTemp;
+		}
 
 		try {
 			connection = ConnectionFactory.createConnection();
@@ -96,7 +107,7 @@ public class DbSeedExecutor {
 				try
 		        {
 					Log.info(String.format("***** START Processing survey with tag - '%s' *****", surveyTag));
-					
+
 					String surveySeedKey = String.format("Survey-%s.csv", surveyTag);
 					String surveyConditionSeedKey = String.format("SurveyCondition-%s.csv", surveyTag);
 					String surveyResultSeedKey = String.format("SurveyResult-%s.csv", surveyTag);
@@ -120,12 +131,12 @@ public class DbSeedExecutor {
 					peakDbSeedBuilder = new PeakDbSeedBuilder(peakSeedKey);
 					segmentDbSeedBuilder = new SegmentDbSeedBuilder(segmentSeedKey);
 					noteDbSeedBuilder = new NoteDbSeedBuilder(noteSeedKey);
-					
+
 					// check if survey data is present in database for this survey tag.
 					final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
 					final DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
-					
-					// get line count from data files (-2 for header and last empty line) 
+
+					// get line count from data files (-2 for header and last empty line)
 					final Integer minSurveyCount = FileUtility.getLineCountInFile(Paths.get(surveyDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSurveyConditionCount = FileUtility.getLineCountInFile(Paths.get(surveyConditionDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSurveyResultCount = FileUtility.getLineCountInFile(Paths.get(surveyResultDbSeedBuilder.getSeedFilePath())) - 2;
@@ -137,7 +148,7 @@ public class DbSeedExecutor {
 					Integer minMeasurementCount = FileUtility.getLineCountInFile(Paths.get(measurementDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
-					
+
 					final List<HashMap<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 					final String surveyId = firstSurveyRow.get(0).get("Id");
 					final String analyzerId = firstSurveyRow.get(0).get("AnalyzerId");
@@ -156,14 +167,14 @@ public class DbSeedExecutor {
 
 					String startEpoch = firstSurveyRow.get(0).get("StartEpoch");
 					String endEpoch = firstSurveyRow.get(0).get("EndEpoch");
-					
+
 					Log.info(String.format("First survey row from - '%s' is: StartEpoch=%s, EndEpoch=%s", surveyCsvFilePath,
 							startEpoch, endEpoch));
-					
+
 					Double startEpochValue = Double.parseDouble(startEpoch) - EPSILON;
 					Double endEpochValue = Double.parseDouble(endEpoch) + EPSILON;
-					startEpoch = NumberUtility.formatString(startEpochValue, 10); 
-					endEpoch = NumberUtility.formatString(endEpochValue, 10); 
+					startEpoch = NumberUtility.formatString(startEpochValue, 10);
+					endEpoch = NumberUtility.formatString(endEpochValue, 10);
 
 					// check and execute Survey DB seed.
 					if (dbStateVerifier.isSurveySeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSurveyCount)) {
@@ -263,30 +274,30 @@ public class DbSeedExecutor {
 							executeSeed(connection, noteDbSeedBuilder.build());;
 						}
 					}
-					
+
 					// Store all the seed builder in cache for future verification.
 					surveySeedBuilderCache.addDbSeedBuilder(noteSeedKey, noteDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(segmentSeedKey, segmentDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(peakSeedKey, peakDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(fieldOfViewSeedKey, fieldOfViewDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(captureEventSeedKey, captureEventDbSeedBuilder);
-					
+
 					surveySeedBuilderCache.addDbSeedBuilder(anemometerRawSeedKey, anemometerRawDbSeedBuilder);
-					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(anemometerRawDbSeedBuilder.getStartEpoch(), 10), 
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(anemometerRawDbSeedBuilder.getStartEpoch(), 10),
 							NumberUtility.formatString(anemometerRawDbSeedBuilder.getEndEpoch(), 10)));
 					surveySeedBuilderCache.addDbSeedBuilder(gpsRawSeedKey, gpsRawDbSeedBuilder);
-					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(gpsRawDbSeedBuilder.getStartEpoch(), 10), 
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(gpsRawDbSeedBuilder.getStartEpoch(), 10),
 							NumberUtility.formatString(gpsRawDbSeedBuilder.getEndEpoch(), 10)));
 					surveySeedBuilderCache.addDbSeedBuilder(measurementSeedKey, measurementDbSeedBuilder);
-					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(measurementDbSeedBuilder.getStartEpoch(), 10), 
+					Log.info(String.format("StartEpoch=%s, EndEpoch=%s", NumberUtility.formatString(measurementDbSeedBuilder.getStartEpoch(), 10),
 							NumberUtility.formatString(measurementDbSeedBuilder.getEndEpoch(), 10)));
-					
+
 					surveySeedBuilderCache.addDbSeedBuilder(surveyResultSeedKey, surveyResultDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(surveyConditionSeedKey, surveyConditionDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(surveySeedKey, surveyDbSeedBuilder);
 
 					Log.info(String.format("----- Done processing survey with tag - '%s' -----", surveyTag));
-					
+
 		        } catch (Exception ex) {
 		        	Log.error(String.format("EXCEPTION in executeSurveyDataSeed(), tag='%s'. ERROR: %s", surveyTag, ExceptionUtility.getStackTraceString(ex)));
 		        } finally {
@@ -330,14 +341,14 @@ public class DbSeedExecutor {
 	}
 
 	/* Methods for pushing GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
-	
+
 	public static void executeGisSeed() throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed");
 		executeGisSeed(null /*customerId*/); // default -> Picarro customer.
 		executeGisSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
 		executeGisSeed(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
-	
+
 	public static void executeGisSeed(String customerId) throws Exception {
 		Log.method("DbSeedExecutor.executeGisSeed", customerId);
 		boolean isCustomerSpecified = true;
@@ -346,29 +357,29 @@ public class DbSeedExecutor {
 			Customer customer = Customer.getCustomer(CUSTOMER_PICARRO);
 			customerId = customer.getId();
 		}
-		 
+
 		Connection connection = null;
-		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache(); 
+		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache();
 		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
 		CustomerMaterialTypeDbSeedBuilder customerMaterialTypeDbSeedBuilder = null;
 		BoundaryDbSeedBuilder boundaryDbSeedBuilder = null;
 		AssetDbSeedBuilder assetDbSeedBuilder = null;
-		
+
 		try
         {
 			connection = ConnectionFactory.createConnection();
         	customerBoundaryTypeDbSeedBuilder = new CustomerBoundaryTypeDbSeedBuilder();
         	customerBoundaryTypeDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
-        	
+
         	customerMaterialTypeDbSeedBuilder = new CustomerMaterialTypeDbSeedBuilder();
-        	customerMaterialTypeDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);        	
-        	
+        	customerMaterialTypeDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
+
         	boundaryDbSeedBuilder = new BoundaryDbSeedBuilder();
         	boundaryDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
 
         	assetDbSeedBuilder = new AssetDbSeedBuilder();
         	assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
-        	
+
 			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
@@ -377,7 +388,7 @@ public class DbSeedExecutor {
 
 			int expectedAssetCount = assetDbSeed.getInsertStatements().size();
 			int expectedBoundaryCount = boundaryDbSeed.getInsertStatements().size();
-			
+
 			// check if GIS seed is present in database for this customer.
 			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
 			if (dbStateVerifier.isGISSeedPresent(customerId, expectedAssetCount, expectedBoundaryCount)) {
@@ -387,7 +398,7 @@ public class DbSeedExecutor {
 
 			int expectedCustomerBoundaryTypeCount = FileUtility.getLineCountInFile(Paths.get(customerBoundaryTypeDbSeedBuilder.getSeedFilePath())) - 2;
 			int expectedCustomerMaterialTypeCount = FileUtility.getLineCountInFile(Paths.get(customerMaterialTypeDbSeedBuilder.getSeedFilePath())) - 2;
-			
+
 			// check and push CustomerBoundaryType db seed.
 			boolean customerBoundaryTypeSeedPresent = dbStateVerifier.isGISCustomerBoundaryTypeSeedPresent(customerId, expectedCustomerBoundaryTypeCount);
 			if (!customerBoundaryTypeSeedPresent) {
@@ -415,7 +426,7 @@ public class DbSeedExecutor {
 
 			executeSeed(connection, boundaryDbSeed);
 			executeSeed(connection, assetDbSeed);
-        	
+
         } catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeGisSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
         } finally {
@@ -429,63 +440,63 @@ public class DbSeedExecutor {
 	}
 
 	private static void closeDbSeedBuilder(BaseDbSeedBuilder dbSeedBuilder) {
-		if (dbSeedBuilder!=null) { 
-			dbSeedBuilder.close(); 
+		if (dbSeedBuilder!=null) {
+			dbSeedBuilder.close();
 		}
 	}
-	
+
 	private static void executeSeed(Connection connection, DbSeed dbSeedData) {
 		Log.method("DbSeedExecutor.executeSeed", connection, dbSeedData);
         String executingInsertStatement = null;
-		try  
-        {  
-            // Note: if you are not using try-with-resources statements (as here),  
-            // you must remember to call close() on any Connection, Statement,   
-            // ResultSet, and SQLServerBulkCopy objects that you create.  
-            try (Statement stmt = connection.createStatement())  
-            {  
+		try
+        {
+            // Note: if you are not using try-with-resources statements (as here),
+            // you must remember to call close() on any Connection, Statement,
+            // ResultSet, and SQLServerBulkCopy objects that you create.
+            try (Statement stmt = connection.createStatement())
+            {
                 //  Execute the cleanup statements.
             	List<String> cleanupStatements = dbSeedData.getCleanupStatements();
             	for (String cleanupStmt : cleanupStatements) {
-                    stmt.executeUpdate(cleanupStmt);  
+                    stmt.executeUpdate(cleanupStmt);
 				}
-                 
-            	// Perform an initial count on the destination table.  
-                long countStart = 0;  
-                try (ResultSet rsRowCount = stmt.executeQuery(String.format("SELECT COUNT(*) FROM %s;", dbSeedData.getDestinationTableName())))  
-                {  
-                    rsRowCount.next();  
-                    countStart = rsRowCount.getInt(1);  
-                    Log.info(String.format("%s Table: Starting row count = %d", dbSeedData.getDestinationTableName(), countStart));  
-                }  
+
+            	// Perform an initial count on the destination table.
+                long countStart = 0;
+                try (ResultSet rsRowCount = stmt.executeQuery(String.format("SELECT COUNT(*) FROM %s;", dbSeedData.getDestinationTableName())))
+                {
+                    rsRowCount.next();
+                    countStart = rsRowCount.getInt(1);
+                    Log.info(String.format("%s Table: Starting row count = %d", dbSeedData.getDestinationTableName(), countStart));
+                }
 
                 if (dbSeedData.getSeedData() != null) {
-	                // Set up the bulk copy object.    
-	                // Note that the column positions in the source   
-	                // data reader match the column positions in    
-	                // the destination table so there is no need to   
-	                // map columns.   
-	                try (SQLServerBulkCopy bulkCopy = new SQLServerBulkCopy(connection))  
-	                {  
-	                    bulkCopy.setDestinationTableName(dbSeedData.getDestinationTableName());  
-	
-	                    try  
-	                    {  
+	                // Set up the bulk copy object.
+	                // Note that the column positions in the source
+	                // data reader match the column positions in
+	                // the destination table so there is no need to
+	                // map columns.
+	                try (SQLServerBulkCopy bulkCopy = new SQLServerBulkCopy(connection))
+	                {
+	                    bulkCopy.setDestinationTableName(dbSeedData.getDestinationTableName());
+
+	                    try
+	                    {
 	                        // Write from the source to the destination.
 	                    	Log.info("Bulk copying seed data from CSV file...");
-	                        bulkCopy.writeToServer(dbSeedData.getSeedData());  
-	                    }  
-	                    catch (Exception e)  
-	                    {  
-	                        Log.error(String.format("EXCEPTION in BulkCopy writeToServer. ERROR Message: %s", ExceptionUtility.getStackTraceString(e)));  
-	                    }  
-	                }  
+	                        bulkCopy.writeToServer(dbSeedData.getSeedData());
+	                    }
+	                    catch (Exception e)
+	                    {
+	                        Log.error(String.format("EXCEPTION in BulkCopy writeToServer. ERROR Message: %s", ExceptionUtility.getStackTraceString(e)));
+	                    }
+	                }
                 } else {
                 	List<String> insertStatements = dbSeedData.getInsertStatements();
 					if (insertStatements == null) {
                 		throw new Exception("Either FileRecord or Insert Statements should be specified in a DBSeedBuilder.");
                 	}
-                	
+
                 	for (String insertStmt : insertStatements) {
                 		executingInsertStatement = insertStmt;
                 		if (ENABLE_VERBOSE_LOGGING) {
@@ -495,23 +506,23 @@ public class DbSeedExecutor {
 					}
                 }
 
-                // Perform a final count on the destination table to see how many rows were added.  
-                try (ResultSet rsRowCount = stmt.executeQuery(String.format("SELECT COUNT(*) FROM %s;", dbSeedData.getDestinationTableName())))  
-                {  
-                    rsRowCount.next();  
-                    long countEnd = rsRowCount.getInt(1);  
-                    Log.info(String.format("%s Table: Ending row count = %d", dbSeedData.getDestinationTableName(), countEnd));  
-                    Log.info(String.format("%s Table: %d rows were added.", dbSeedData.getDestinationTableName(), (countEnd - countStart)));  
-                }    
-            }  
-        }  
-        catch (Exception e)  
-        {  
+                // Perform a final count on the destination table to see how many rows were added.
+                try (ResultSet rsRowCount = stmt.executeQuery(String.format("SELECT COUNT(*) FROM %s;", dbSeedData.getDestinationTableName())))
+                {
+                    rsRowCount.next();
+                    long countEnd = rsRowCount.getInt(1);
+                    Log.info(String.format("%s Table: Ending row count = %d", dbSeedData.getDestinationTableName(), countEnd));
+                    Log.info(String.format("%s Table: %d rows were added.", dbSeedData.getDestinationTableName(), (countEnd - countStart)));
+                }
+            }
+        }
+        catch (Exception e)
+        {
         	if (executingInsertStatement != null) {
         		Log.error(String.format("Executing Insert Statement is: %s", executingInsertStatement));
         	}
-        	Log.error(String.format("EXCEPTION Message: %s", ExceptionUtility.getStackTraceString(e)));  
-        }  	
+        	Log.error(String.format("EXCEPTION Message: %s", ExceptionUtility.getStackTraceString(e)));
+        }
 	}
 
 	public static DbSeedBuilderCache getSurveySeedBuilderCache() {

@@ -19,77 +19,27 @@
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1. Admin &amp; Support</stringProp>
           </elementProp>
-          <elementProp name="Username_Support" elementType="Argument">
-            <stringProp name="Argument.name">Username_Support</stringProp>
-            <stringProp name="Argument.value">sqapicsup@picarro.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Username_UtilityAdmin" elementType="Argument">
-            <stringProp name="Argument.name">Username_UtilityAdmin</stringProp>
-            <stringProp name="Argument.value">sqapicua@picarro.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">2. Picarro - LF: All except LISA Box 1.0</stringProp>
-          </elementProp>
-          <elementProp name="Username_Supervisor" elementType="Argument">
-            <stringProp name="Argument.name">Username_Supervisor</stringProp>
-            <stringProp name="Argument.value">sqapicsu@picarro.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="Username_Driver" elementType="Argument">
             <stringProp name="Argument.name">Username_Driver</stringProp>
-            <stringProp name="Argument.value">sqapicdr@picarro.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Username_SQACusAdmin" elementType="Argument">
-            <stringProp name="Argument.name">Username_SQACusAdmin</stringProp>
-            <stringProp name="Argument.value">sqacusua@email.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">3. SQACus - LF: Assessment</stringProp>
-          </elementProp>
-          <elementProp name="Username_SQACusSupervisor" elementType="Argument">
-            <stringProp name="Argument.name">Username_SQACusSupervisor</stringProp>
-            <stringProp name="Argument.value">sqacussu@email.com</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Username_SQACusDriver" elementType="Argument">
-            <stringProp name="Argument.name">Username_SQACusDriver</stringProp>
-            <stringProp name="Argument.value">sqacusdr1@email.com</stringProp>
+            <stringProp name="Argument.value">sqapgedr@email.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="Password_SQA" elementType="Argument">
             <stringProp name="Argument.name">Password_SQA</stringProp>
-            <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+            <stringProp name="Argument.value">sqaPicarro12#$</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="Analyzer_Picarro_SerialNumber" elementType="Argument">
             <stringProp name="Argument.name">Analyzer_Picarro_SerialNumber</stringProp>
-            <stringProp name="Argument.value">SimAuto-Analyzer1</stringProp>
+            <stringProp name="Argument.value">FEDS2075</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">SimAuto-Analyzer1</stringProp>
           </elementProp>
           <elementProp name="Analyzer_Picarro_Key" elementType="Argument">
             <stringProp name="Argument.name">Analyzer_Picarro_Key</stringProp>
-            <stringProp name="Argument.value">SimAuto-AnalyzerKey1</stringProp>
+            <stringProp name="Argument.value">feds2075-2DEnGyT2</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Analyzer_PGE_SerialNumber" elementType="Argument">
-            <stringProp name="Argument.name">Analyzer_PGE_SerialNumber</stringProp>
-            <stringProp name="Argument.value">FEDS2015</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Analyzer_PGE_Key" elementType="Argument">
-            <stringProp name="Argument.name">Analyzer_PGE_Key</stringProp>
-            <stringProp name="Argument.value">feds2015</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="analyzer_picarro_surveyID" elementType="Argument">
-            <stringProp name="Argument.name">analyzer_picarro_surveyID</stringProp>
-            <stringProp name="Argument.value">f2e9df05-d4d7-bc4b-92c7-39da25d1eae7</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="analyzer_picarro_surveyTag" elementType="Argument">
-            <stringProp name="Argument.name">analyzer_picarro_surveyTag</stringProp>
-            <stringProp name="Argument.value">stnd-sqacudr</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">SimAuto-AnalyzerKey1</stringProp>
           </elementProp>
           <elementProp name="projectHome" elementType="Argument">
             <stringProp name="Argument.name">projectHome</stringProp>
@@ -104,16 +54,6 @@
           <elementProp name="jsonHome" elementType="Argument">
             <stringProp name="Argument.name">jsonHome</stringProp>
             <stringProp name="Argument.value">${projectHome}/json</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Surveyor_Picarro" elementType="Argument">
-            <stringProp name="Argument.name">Surveyor_Picarro</stringProp>
-            <stringProp name="Argument.value">SimAuto-Surveyor1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="Signature_SQACusDriver" elementType="Argument">
-            <stringProp name="Argument.name">Signature_SQACusDriver</stringProp>
-            <stringProp name="Argument.value">nTO8r9nDurtxv1LKildx1OUAe2o4XDEXer1EVmWX2GdR98ZvJ+lGmFrk7GWKOC/l6ZTBZSRMovmovi2f99nC/+T9BnkGKHyt16pkap/I/rHWjPH4g4m5Fd1zoLkTaMAd3IO0YmQfG5w24ggZZY+y9RcO0PuPo71x1NNeFwh/VP+NidwMN6HlSz8B4zbmqEqGzRFWy1PlTT4Zz74y+ykbte+3urHtTDpZZXomhL021mpDjxMcYpPaAbls7mFM9d4scoTYamhcicV+HK+GuDaFMimbBqFqsAhgczr3+6mNFnTEd0jV2HBErXBnQR6GklpY1CMIXXR1IzjrPA579hOZtA==</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PCubed_Version" elementType="Argument">
@@ -133,7 +73,7 @@
         <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
-        <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+        <stringProp name="HTTPSampler.domain">p3scale.picarro.com</stringProp>
         <stringProp name="HTTPSampler.port"></stringProp>
         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
         <stringProp name="HTTPSampler.response_timeout"></stringProp>
@@ -468,22 +408,25 @@
               <message>true</message>
               <threadName>true</threadName>
               <dataType>true</dataType>
-              <encoding>false</encoding>
+              <encoding>true</encoding>
               <assertions>true</assertions>
               <subresults>true</subresults>
               <responseData>true</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
+              <samplerData>true</samplerData>
+              <xml>true</xml>
               <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
+              <responseHeaders>true</responseHeaders>
               <requestHeaders>true</requestHeaders>
               <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
               <assertionsResultsToSave>0</assertionsResultsToSave>
               <bytes>true</bytes>
               <url>true</url>
+              <fileName>true</fileName>
               <hostname>true</hostname>
               <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
             </value>
           </objProp>
           <stringProp name="filename">${projectHome}\..\result\resultTable_AnalyzerAPIPerformance.csv</stringProp>

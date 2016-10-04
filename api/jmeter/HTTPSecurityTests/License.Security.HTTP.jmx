@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="License.Security.HTTP" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Surveyor Constants" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="APISecurityTest_Report001View000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001View000</stringProp>
+            <stringProp name="Argument.value">B53788E5-12BF-C3A6-6A0D-39D9D1302A18</stringProp>
+            <stringProp name="Argument.desc">Test view from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report001Peak000" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001Peak000</stringProp>
+            <stringProp name="Argument.value">07BC4E2B-A080-8AE8-05EA-39D9D13049A6</stringProp>
+            <stringProp name="Argument.desc">Peakid from APISecurityTestReport001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report001</stringProp>
+            <stringProp name="Argument.value">35D6B6EC-F089-90B2-AF69-39DA79CD0410</stringProp>
+            <stringProp name="Argument.desc">Copy from TC1373 in ComplianceReportsPageTest3.java</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Report002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Report002</stringProp>
+            <stringProp name="Argument.value">4D3B364B-7A8E-A948-D25B-39DA84E27212</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Assessment001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Assessment001</stringProp>
+            <stringProp name="Argument.value">6253d473-6fec-75e8-6394-39d9d132d802</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Assessment002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Assessment002</stringProp>
+            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete002</stringProp>
+            <stringProp name="Argument.value">514941cd-ba07-353e-e5f4-39d9db872a76</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportDelete001</stringProp>
+            <stringProp name="Argument.value">5b62d6fc-3b95-47c8-9219-39d9da654eb0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">copy of 001</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete001</stringProp>
+            <stringProp name="Argument.value">7039c1a6-fc1c-dc7a-3480-39d9da68e64e</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentDelete002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentDelete002</stringProp>
+            <stringProp name="Argument.value">c67cefab-3038-83e7-cd5c-39d9db86f2dc</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_EQReport001</stringProp>
+            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.desc">/Reports/CopyEQReport will be added to test after this report ready</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_ReportTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_ReportTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Report002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle001</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment001</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_AssessmentTitle002" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_AssessmentTitle002</stringProp>
+            <stringProp name="Argument.value">APISecurityTest_Assessment002</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Analyzer_Picarro_SerialNumber001" elementType="Argument">
+            <stringProp name="Argument.name">Analyzer_Picarro_SerialNumber001</stringProp>
+            <stringProp name="Argument.value">SimAuto-Analyzer1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Survey001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Survey001</stringProp>
+            <stringProp name="Argument.value">271d9db6-c0bd-eb32-2b48-39d1531dc264</stringProp>
+            <stringProp name="Argument.desc">sqapicdr: simuAuto-Surveyor1-SimAuto-Analyzer1 [name is not fixed]</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="APISecurityTest_Surveyor001" elementType="Argument">
+            <stringProp name="Argument.name">APISecurityTest_Surveyor001</stringProp>
+            <stringProp name="Argument.value">fb4f3579-843a-113e-001c-39d4011393c9</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">SimAuto-Surveyor1 - Picarro</stringProp>
+          </elementProp>
+          <elementProp name="Customer_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Customer_Picarro</stringProp>
+            <stringProp name="Argument.value">b1252204-04fb-4a67-82d4-3f4666fd855c</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Analyzer_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Analyzer_Picarro</stringProp>
+            <stringProp name="Argument.value">00000015-db64-fde7-7e67-39c8ac533d49</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">serialNumber=https://p3sqaauto.picarro.com/Live/Observer?serialNumber=SimAuto-Analyzer1</stringProp>
+          </elementProp>
+          <elementProp name="Location_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Location_Picarro</stringProp>
+            <stringProp name="Argument.value">00000000-0000-0000-0001-000000000000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Driver_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">Driver_Picarro</stringProp>
+            <stringProp name="Argument.value">de734ddf-363e-49fc-8dbc-39c8c221c562</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="DriverName_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">DriverName_Picarro</stringProp>
+            <stringProp name="Argument.value">sqapicdr</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQAAuto_DB" elementType="Argument">
+            <stringProp name="Argument.name">SQAAuto_DB</stringProp>
+            <stringProp name="Argument.value">SurveyorSQAAUTO_blankDB_20160923</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SQA_Password" elementType="Argument">
+            <stringProp name="Argument.name">SQA_Password</stringProp>
+            <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="projectHome" elementType="Argument">
+            <stringProp name="Argument.name">projectHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jmeterHome" elementType="Argument">
+            <stringProp name="Argument.name">jmeterHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;user.dir&quot;);)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jsonHome" elementType="Argument">
+            <stringProp name="Argument.name">jsonHome</stringProp>
+            <stringProp name="Argument.value">${projectHome}/json</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="Surveyor DB Connection Configuration" enabled="true">
+        <boolProp name="autocommit">true</boolProp>
+        <stringProp name="checkQuery">Select 1</stringProp>
+        <stringProp name="connectionAge">5000</stringProp>
+        <stringProp name="dataSource">SQAAuto</stringProp>
+        <stringProp name="dbUrl">jdbc:sqlserver://20.20.130.210:1433;DatabaseName=${SQAAuto_DB}</stringProp>
+        <stringProp name="driver">com.microsoft.sqlserver.jdbc.SQLServerDriver</stringProp>
+        <boolProp name="keepAlive">true</boolProp>
+        <stringProp name="password">3Vf763pSg2</stringProp>
+        <stringProp name="poolMax">10</stringProp>
+        <stringProp name="timeout">10000</stringProp>
+        <stringProp name="transactionIsolation">DEFAULT</stringProp>
+        <stringProp name="trimInterval">60000</stringProp>
+        <stringProp name="username">awssa</stringProp>
+      </JDBCDataSource>
+      <hashTree/>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Picarro Users" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="Username_Admin" elementType="Argument">
+            <stringProp name="Argument.name">Username_Admin</stringProp>
+            <stringProp name="Argument.value">AutomationAdmin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">1. Admin &amp; Support</stringProp>
+          </elementProp>
+          <elementProp name="Username_Support" elementType="Argument">
+            <stringProp name="Argument.name">Username_Support</stringProp>
+            <stringProp name="Argument.value">sqapicsup@picarro.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Username_UtilityAdmin" elementType="Argument">
+            <stringProp name="Argument.name">Username_UtilityAdmin</stringProp>
+            <stringProp name="Argument.value">sqapicua@picarro.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">2. Picarro - LF: All except LISA Box 1.0</stringProp>
+          </elementProp>
+          <elementProp name="Username_Supervisor" elementType="Argument">
+            <stringProp name="Argument.name">Username_Supervisor</stringProp>
+            <stringProp name="Argument.value">sqapicsu@picarro.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Username_Driver" elementType="Argument">
+            <stringProp name="Argument.name">Username_Driver</stringProp>
+            <stringProp name="Argument.value">sqapicdr@picarro.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Username_SQACusAdmin" elementType="Argument">
+            <stringProp name="Argument.name">Username_SQACusAdmin</stringProp>
+            <stringProp name="Argument.value">sqacusua@email.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">3. SQACus - LF: Assessment</stringProp>
+          </elementProp>
+          <elementProp name="Username_SQACusSupervisor" elementType="Argument">
+            <stringProp name="Argument.name">Username_SQACusSupervisor</stringProp>
+            <stringProp name="Argument.value">sqacussu@email.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Username-SQACusDriver" elementType="Argument">
+            <stringProp name="Argument.name">Username-SQACusDriver</stringProp>
+            <stringProp name="Argument.value">sqacusdr1@email.com</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="Password_Driver" elementType="Argument">
+            <stringProp name="Argument.name">Password_Driver</stringProp>
+            <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CustomerID_Picarro" elementType="Argument">
+            <stringProp name="Argument.name">CustomerID_Picarro</stringProp>
+            <stringProp name="Argument.value">b1252204-04fb-4a67-82d4-3f4666fd855c</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="CustomerID_CustomerWithNoLicense" elementType="Argument">
+            <stringProp name="Argument.name">CustomerID_CustomerWithNoLicense</stringProp>
+            <stringProp name="Argument.value">5D073EF1-40E1-9BA0-E7BC-39DA8027337E</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SurveyMode_Standard" elementType="Argument">
+            <stringProp name="Argument.name">SurveyMode_Standard</stringProp>
+            <stringProp name="Argument.value">b310238a-a5ae-4e94-927b-f0f165e24522</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SurveyMode_RR" elementType="Argument">
+            <stringProp name="Argument.name">SurveyMode_RR</stringProp>
+            <stringProp name="Argument.value">4901e67a-4c00-4436-adc0-9cfb277bb310</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="SurveyMode_Manual" elementType="Argument">
+            <stringProp name="Argument.name">SurveyMode_Manual</stringProp>
+            <stringProp name="Argument.value">4901e67a-4c00-4436-adc0-9cfb277bb311</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain">p3sqaauto.picarro.com</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+      </ConfigTestElement>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Licensed User" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;
+and CustomerId like &apos;${LicensedUser_Picarro}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+
+
+//AssessmentReports - 1
+result = vars.getObject(&quot;AssessmentReports001&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
+	}
+}
+
+//AssessmentReports - 2
+result = vars.getObject(&quot;AssessmentReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;picarro-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF licenseList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LicensedUserHTTPGET" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${Controller}/${LicenseFeatures}${__eval(${QueryString})}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">data/licenseList_Get.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String columnName= &quot;XpathOfElements&quot;;
+String response= new String(ResponseData);
+String xpath = vars.get(columnName);
+
+
+if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)) {
+	String errormsg = xpath + &quot;  string isn&apos;t present in response&quot;;
+	log.info(errormsg);
+	Failure = true;
+	}
+	else
+	{
+		String successmsg = xpath + &quot; string is present in response&quot;;
+		log.info(successmsg);
+		Failure = false;
+	}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="false">
+              <boolProp name="XPath.negate">false</boolProp>
+              <stringProp name="XPath.xpath">//*[@id=&quot;fleet-map&quot;]/a</stringProp>
+              <boolProp name="XPath.validate">false</boolProp>
+              <boolProp name="XPath.whitespace">false</boolProp>
+              <boolProp name="XPath.tolerant">true</boolProp>
+              <boolProp name="XPath.namespace">false</boolProp>
+            </XPathAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1524793090">id=&quot;fleet-map&quot;&gt;&lt;a</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion2" enabled="false">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="609816587">bottom_button_curtain_view</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+            <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Assertion Results" enabled="true">
+              <boolProp name="ResultCollector.error_logging">false</boolProp>
+              <objProp>
+                <name>saveConfig</name>
+                <value class="SampleSaveConfiguration">
+                  <time>true</time>
+                  <latency>true</latency>
+                  <timestamp>true</timestamp>
+                  <success>true</success>
+                  <label>true</label>
+                  <code>true</code>
+                  <message>true</message>
+                  <threadName>true</threadName>
+                  <dataType>true</dataType>
+                  <encoding>false</encoding>
+                  <assertions>true</assertions>
+                  <subresults>true</subresults>
+                  <responseData>false</responseData>
+                  <samplerData>false</samplerData>
+                  <xml>false</xml>
+                  <fieldNames>true</fieldNames>
+                  <responseHeaders>false</responseHeaders>
+                  <requestHeaders>false</requestHeaders>
+                  <responseDataOnError>false</responseDataOnError>
+                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                  <assertionsResultsToSave>0</assertionsResultsToSave>
+                  <bytes>true</bytes>
+                  <threadCounts>true</threadCounts>
+                  <idleTime>true</idleTime>
+                </value>
+              </objProp>
+              <stringProp name="filename"></stringProp>
+            </ResultCollector>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="UnLicensed User" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;
+and CustomerId like &apos;${NotLicensedUser_CustomerWithNoLicense}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;
+and CustomerId like &apos;${NotLicensedUser_CustomerWithNoLicense}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_ReportTitle001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportTitle001: &quot; + vars.get(&quot;APISecurityTest_ReportTitle001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">CusAdmUserWithNoLic@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">CusAdmUserWithNoLic@email.com</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;customer-administration-menu&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF licenseList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UnLicensedUserHTTPGET" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${Controller}/${LicenseFeatures}${__eval(${QueryString})}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">data/NonLicenseList_Get.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String columnName= &quot;XpathOfElements&quot;;
+String response= new String(ResponseData);
+String xpath = vars.get(columnName);
+
+if(!response.contains (xpath)){
+	String errormsg = xpath + &quot;  string isn&apos;t present in response&quot;;
+	log.info(errormsg);
+	Failure = false;
+	}
+	else {
+		String successmsg = xpath + &quot; string is present in response&quot;;
+		log.info(successmsg);
+		Failure = true;
+		}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="false">
+              <boolProp name="XPath.negate">true</boolProp>
+              <stringProp name="XPath.xpath">//*[@id=&quot;fleet-map&quot;]/a</stringProp>
+              <boolProp name="XPath.validate">false</boolProp>
+              <boolProp name="XPath.whitespace">false</boolProp>
+              <boolProp name="XPath.tolerant">true</boolProp>
+              <boolProp name="XPath.namespace">false</boolProp>
+            </XPathAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>false</time>
+            <latency>false</latency>
+            <timestamp>false</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>false</code>
+            <message>false</message>
+            <threadName>false</threadName>
+            <dataType>false</dataType>
+            <encoding>false</encoding>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <url>true</url>
+          </value>
+        </objProp>
+        <stringProp name="filename">${projectHome}\result\resultTable_License.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

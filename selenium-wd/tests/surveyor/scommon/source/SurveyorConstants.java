@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -31,7 +31,7 @@ public final class SurveyorConstants {
 	public static final int USERNUM = 5; // Should be set less than 100 otherwise need review the code
 
 	private static final String CUSTOMERS_WITH_ASSETS = "Picarro";     // Comma seperated list of Customers that have assets in Seed script.
-	
+
 	public static final String CUSTOMER_PICARRO = "Picarro";
 	public static final String CUSTOMER_SQACUS = "sqacus";
 	public static final String CUSTOMER_SQATEST = "sqaTest";
@@ -47,10 +47,10 @@ public final class SurveyorConstants {
 
 	public static final String CUSNAMEBASE = CUSTOMER_SQACUS;
 	public static final String CUSNAMEBASELOC = "sqacusloc";
-	
+
 	public static final String SQATESTLOC = "sqaTestloc";
 	public static final String PGESCLOC = "pge_SC";
-	
+
 	public static final String SQACUS = CUSTOMER_SQACUS;
 	public static final String SQACUSLOC = "sqacusloc";
 	public static final String SQAPIC = "sqapic";
@@ -108,14 +108,14 @@ public final class SurveyorConstants {
 	public static final String FEDS2015ANZ = "FEDS2015";
 	public static final String FEDS2050ANZ = "FEDS2050";
 	public static final String FEDS2055ANZ = "FEDS2055";
-	
+
 	public static final String RFADS2004ANZ = "RFADS2004";
 	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
 
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
 	public static final String SQAETHLOC= "PGE-Santa Clara";
-	
+
 	public static final String SQAPICLOCSURANA = "sqapiclocsurana";
 	public static final String SQAPICLOC0SURANA = "sqapicloc0surana";
 	public static final String SQAPICLOC1SURANA = "sqapicloc1surana";
@@ -134,8 +134,8 @@ public final class SurveyorConstants {
 	public static final String SQACUSDRTAG2 = "stnd-sqacudr";
 	public static final String SQACUSRRTAG = "Rapid";
 	public static final String SQACUSMNTAG= "Manual";
-	
-	
+
+
 	public static final String SQAPICADTAG = "dmcs1-sqapicad";
 	public static final String SQAPICUATAG = "dmcs1-sqapicua";
 	public static final String SQAPICSUTAG = "dmcs1-sqapicsu";
@@ -155,7 +155,7 @@ public final class SurveyorConstants {
 	public static final String CUSBOUNDARY = Resources.getResource(ResourceKeys.ComplianceReport_CustomBoundary);
 	public static final String IMGMAPHEIGHT = "8.5";
 	public static final String IMGMAPWIDTH = "11";
-	
+
 	public static final String NELAT = "37.421980615353675";
 	public static final String NELON = "-121.93639755249023";
 	public static final String SWLAT = "37.39566424530531";
@@ -167,7 +167,7 @@ public final class SurveyorConstants {
 	public static final String NELON_SMALL = "-121.97592854325212";
 	public static final String SWLAT_SMALL = "37.4167629940449";
 	public static final String SWLON_SMALL = "-121.98026299302019";
-	
+
 	// Area in the range --> less than 5 sqms
 	public static final String NELAT_XSMALL = "37.420000994238805";
 	public static final String NELON_XSMALL = "-121.97592854325212";
@@ -179,7 +179,7 @@ public final class SurveyorConstants {
 	public static final String NELON_XLARGE = "-121.97592854325212";
 	public static final String SWLAT_XLARGE = "39.4167629940449";
 	public static final String SWLON_XLARGE = "-123.98026299302019";
-	
+
 	public static final int  X_OFFSET = 150;
 	public static final int Y_OFFSET = 150;
 	public static final int RECT_WIDTH = 100;
@@ -234,7 +234,7 @@ public final class SurveyorConstants {
 	public static final String KEYRSBSAMPLRPT= "AutomationTestReport";
 	public static final String KEYCPSAMPLRPT= "test1234";
 	public static final String KEYINDCLR = "Indication Color";
-	
+
 	public static final String KEYINDTB = "Indications Table";
 	public static final String KEYISOANA = "Isotopic Analysis";
 	public static final String KEYGAPTB = "Gap Table";
@@ -253,7 +253,7 @@ public final class SurveyorConstants {
 	public static final String PWDSAMEVALUE = Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain);
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
-	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");	
+	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
 
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 
@@ -271,17 +271,17 @@ public final class SurveyorConstants {
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
 	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
-	
+
 	/*
 	 * Survey View constants
 	 */
-	
+
 	public static final String SURVEY_PASSED = Resources.getResource(ResourceKeys.Survey_Passed);
 	public static final String ISOTOPIC_CAPTURE_NATURAL_GAS = Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_Natural_Gas);
 	public static final String ISOTOPIC_CAPTURE_NOT_NATURAL_GAS = Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_Not_Natural_Gas);
 	public static final String ISOTOPIC_CAPTURE_CANCELLED= Resources.getResource(ResourceKeys.CaptureAnalysisDispositionTypes_User_Cancellation);
-	public static final String REFGAS_CAPTURE_PASSED = Resources.getResource(ResourceKeys.ReferenceGasCaptureDescription_Isotopic_Reference_Pass);	
-	
+	public static final String REFGAS_CAPTURE_PASSED = Resources.getResource(ResourceKeys.ReferenceGasCaptureDescription_Isotopic_Reference_Pass);
+
 	/*
 	 * Driving survey tag for Compliance Reports
 	 */
@@ -311,7 +311,40 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG2 = "stnd-sqacudr";
 	public static final String CUSDRVRRTAG2 = "rr-sqacudr";
 	public static final String CUSDRVOPTAG2 = "op-sqacudr";
-	
+
+	/*
+	 * Long driving surveys.
+	 */
+	public static final String PIC8HR01TAG = "8HourSurvey01";
+	public static final String PIC8HR02TAG = "8HourSurvey02";
+	public static final String PIC8HR03TAG = "8HourSurvey03";
+	public static final String PIC8HR04TAG = "8HourSurvey04";
+	public static final String PIC8HR05TAG = "8HourSurvey05";
+	public static final String PIC8HR06TAG = "8HourSurvey06";
+	public static final String PIC8HR07TAG = "8HourSurvey07";
+	public static final String PIC8HR08TAG = "8HourSurvey08";
+	public static final String PIC8HR09TAG = "8HourSurvey09";
+	public static final String PIC8HR10TAG = "8HourSurvey10";
+	public static final String PIC8HR11TAG = "8HourSurvey11";
+	public static final String PIC8HR12TAG = "8HourSurvey12";
+	public static final String PICLESS4HRTAG = "LessThan4Hour";
+	public static final String PICGREATER4HRTAG = "GreaterThan4Hour";
+
+	public static final String PIC8HR01_DATAFILE = "8HourSurvey-1";
+	public static final String PIC8HR02_DATAFILE = "8HourSurvey-2";
+	public static final String PIC8HR03_DATAFILE = "8HourSurvey-3";
+	public static final String PIC8HR04_DATAFILE = "8HourSurvey-4";
+	public static final String PIC8HR05_DATAFILE = "8HourSurvey-5";
+	public static final String PIC8HR06_DATAFILE = "8HourSurvey-6";
+	public static final String PIC8HR07_DATAFILE = "8HourSurvey-7";
+	public static final String PIC8HR08_DATAFILE = "8HourSurvey-8";
+	public static final String PIC8HR09_DATAFILE = "8HourSurvey-9";
+	public static final String PIC8HR10_DATAFILE = "8HourSurvey-10";
+	public static final String PIC8HR11_DATAFILE = "8HourSurvey-11";
+	public static final String PIC8HR12_DATAFILE = "8HourSurvey-12";
+	public static final String PICLESS4HR_DATAFILE = "LessThan4Hour-1";
+	public static final String PICGREATER4HR_DATAFILE = "GreaterThan4Hour-1";
+
 	/*
 	 * Simulator Analyzers
 	 */
@@ -385,14 +418,14 @@ public final class SurveyorConstants {
 	public static final String RSUVMODEOP = "Operator";
 	public static final String RSUVMODERR = "Rapid Response";
 	public static final String RSUVMODEMANUAL = "Manual";
-	
+
 	public static final String SQACUSSULOC="Santa Clara";
 	public static final String PICARROLOC="Santa Clara";
 	public static final String DEFAULTLOC="Default";
-	
+
 	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
 
-	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";	
+	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";
 
 	/*
 	 * Error messages for compliance report
@@ -413,22 +446,22 @@ public final class SurveyorConstants {
 	public static final String CONSTANT_CUSTOMER = Resources.getResource(ResourceKeys.Constant_Customer);
 	public static final String CONSTANT_SURVEYOR = Resources.getResource(ResourceKeys.Constant_Surveyor);
 	public static final String CONSTANT_LOCATION = Resources.getResource(ResourceKeys.Constant_Location);
-	
+
 	/*
 	 * Num Records for functionality checking
 	 */
 	public static final int NUM_RECORDS_TOBEVERIFIED = 200;
-	
+
 	/*
 	 * Timeout constants
 	 */
 	public static final int SECONDS_10 = 10;
-	
+
 	/*
 	 * Other string constants
 	 */
 	public static final String UNKNOWN_TEXT = "UnknownText";
-	
+
 	/*
 	 * enum for list of constants
 	 */
@@ -440,13 +473,13 @@ public final class SurveyorConstants {
 		Operator ("Operator"),
 		Assessment ("Assessment"),
 		EQ ("EQ");
-		
+
 		private final String name;
 
 		SurveyModeType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -477,17 +510,17 @@ public final class SurveyorConstants {
 		LicensedFeatures(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
 	}
-	
+
 	public static enum TopNavMenuItem {
-		PREFERENCES ("Preferences"), 
-		CHANGEPASSWORD ("Change Password"), 
-		RELEASENOTES ("Release Notes"), 
-		MANUAL ("Manual"), 
+		PREFERENCES ("Preferences"),
+		CHANGEPASSWORD ("Change Password"),
+		RELEASENOTES ("Release Notes"),
+		MANUAL ("Manual"),
 		LOGOUT ("Log out");
 
 		private final String text;
@@ -499,7 +532,7 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
-	
+
 	public static enum UserTimezone {
 		PACIFIC ("Pacific Standard Time"),
 		MOUNTAIN ("Mountain Standard Time"),
@@ -515,12 +548,32 @@ public final class SurveyorConstants {
 			return text;
 		}
 	};
-	
+
+	public static enum ReportColorOption {
+		LIGHTBLUE(0), 
+		BLUE(1), 
+		LIGHTGREEN(2), 
+		GREEN(3), 
+		PINK(4), 
+		RED(5), 
+		YELLOW(6), 
+		ORANGE(7), 
+		LIGHTPURPLE(8), 
+		PURPLE(9);
+		
+		private final int index;
+		ReportColorOption (int index){
+			this.index =  index;
+		}
+		public int toIndex(){
+			return index;
+		}
+	}
 	public enum Environment {
 		SQAAuto ("CI-SQAAuto", 1),
 		Staging ("CI-STG", 2),
 		P3Scale ("CI-P3Scale", 3);
-		
+
 		private final String name;
 		private final Integer index;
 
@@ -540,7 +593,7 @@ public final class SurveyorConstants {
 		public String toString() {
 			return this.name;
 		}
-		
+
 		public static Environment getEnvironment(String environmentName) {
 			Environment environment = Environment.P3Scale;
 			Environment[] values = Environment.values();
@@ -553,7 +606,7 @@ public final class SurveyorConstants {
 			return environment;
 		}
 	}
-	
+
 	public static List<String> getCustomersWithAssets() {
 		return RegexUtility.split(CUSTOMERS_WITH_ASSETS, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
 	}
