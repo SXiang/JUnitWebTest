@@ -849,6 +849,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	@Override
 	public String getReportName(String rptTitle) {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
@@ -896,6 +897,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return reportName;
 	}
 
+	@Override
 	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
 		if (includeExtension) {

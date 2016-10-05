@@ -1391,6 +1391,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
+		String reportNameXPath;
 		String createdByXPath;
 		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
 
@@ -1404,26 +1405,35 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
+		String lastSeenReportNameCellText = "";
 		String lastSeenCreatedByCellText = "";
 
-		reportId = Report.getReport(rptTitle).getId();
+		reportId = getReportId(rptTitle);
 
-		Log.info(String.format("Looking for Report Title='%s', Created By='%s'", rptTitle.trim(), strCreatedBy.trim()));
+		String strReportName = getReportFileName(rptTitle);
+
+		Log.info(String.format("Looking for Report Title='%s', Report Name='%s', Created By='%s'",
+				rptTitle.trim(), strReportName.trim(), strCreatedBy.trim()));
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			reportNameXPath = "tr[" + rowNum + "]/td[2]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String rptNameCellText = getReportTableCellText(reportNameXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
-					rptTitleCellText.trim(), createdByCellText.trim()));
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], rptNameCellText=[%s], createdByCellText=[%s]",
+					rptTitleCellText.trim(), rptNameCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
+					&& rptNameCellText.trim().equalsIgnoreCase(strReportName.trim())
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
+				lastSeenReportNameCellText = rptNameCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
 				Log.info(String.format("Setting reportId to TestContext. ReportId='%s'", reportId));
+				reportId = getReportId(rptTitle);
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1443,19 +1453,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 						} else {
 							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							Log.info("First call -> skipNewlyAddedRows()");
-							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
-									maxRows);
+							int rowNumPostSkip = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, rowNum, maxRows);
 							// At this point we have the rowNum of interest.
-							if (rowNum > maxRows) {
+							if (rowNumPostSkip > maxRows) {
 								break;
 							}
+
+							if (rowNum != rowNumPostSkip) {
+								continue;
+							}
+
 							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
 							// If current rowNum doesn't match the new rowNum continue.
 							Log.info("Second call -> skipNewlyAddedRows()");
-							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
-									maxRows)) {
+							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, rowNum, maxRows)) {
 								continue;
 							}
 
@@ -1564,6 +1580,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
+		String reportNameXPath;
 		String createdByXPath;
 
 		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
@@ -1573,6 +1590,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		// Keep track of the last matching row that we processed.
 		String lastSeenTitleCellText = "";
+		String lastSeenReportNameCellText = "";
 		String lastSeenCreatedByCellText = "";
 
 		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -1580,25 +1598,29 @@ public class ReportsBasePage extends SurveyorBasePage {
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
-		reportId = Report.getReport(rptTitle).getId();
+		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
+		String strReportName = getReportFileName(rptTitle);
+		WebElement reportViewer;
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			reportNameXPath = "tr[" + rowNum + "]/td[2]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			String rptNameCellText = getReportTableCellText(reportNameXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
-					rptTitleCellText.trim(), createdByCellText.trim()));
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], rptNameCellText=[%s], createdByCellText=[%s]",
+					rptTitleCellText.trim(), rptNameCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+					&& rptNameCellText.trim().equalsIgnoreCase(strReportName)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				lastSeenTitleCellText = rptTitleCellText.trim();
+				lastSeenReportNameCellText = rptNameCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
-				// Use API call for environments where direct DB access is not available (eg P3Scale).
-				ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
-				reportId = reportJobsStatObj.Id;
+				reportId = getReportId(rptTitle);
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1607,20 +1629,37 @@ public class ReportsBasePage extends SurveyorBasePage {
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
+							Log.info("RowSize == 1. Getting ReportViewer button element...");
+							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
-							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
-							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
-									maxRows);
-							if (rowNum > maxRows) {
+
+							Log.info("First call -> skipNewlyAddedRows()");
+							int rowNumPostSkip = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, rowNum, maxRows);
+							// At this point we have the rowNum of interest.
+							if (rowNumPostSkip > maxRows) {
 								break;
 							}
-							// * Double check the correctness of the rowNum
-							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
-									maxRows)) {
+
+							if (rowNum != rowNumPostSkip) {
+								continue;
+							}
+
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
+							// Double check if we have the rowNum of interest.
+							// If current rowNum doesn't match the new rowNum continue.
+							Log.info("Second call -> skipNewlyAddedRows()");
+							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, rowNum, maxRows)) {
 								continue;
 							}
 						}
-						return reportId;
+
+						// If element is NOT displayed NoSuchElementException should be thrown.
+						if (reportViewer.isDisplayed()) {
+							return reportId;
+						}
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
@@ -2331,6 +2370,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
+	private String getReportId(String rptTitle) {
+		// Use API call for environments where direct DB access is not available (eg P3Scale).
+		/* Currently we are using DB call first and then API call since API calls is returned the oldest report.
+		 * We want to always get the newest report first. US3605 tracks this issue.
+		 */
+		String reportId = "";
+		try{
+			reportId = Report.getReport(rptTitle).getId();
+		}catch(Exception e){
+			ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+			reportId = reportJobsStatObj.Id;
+		}
+		return reportId;
+	}
+
 	public String getReportName() {
 		return reportName;
 	}
@@ -2605,23 +2659,27 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return reportJobsStatObj;
 	}
 
-	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, int rowNum, int maxRows) {
-		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum, maxRows);
+	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenReportNameCellText,
+			String lastSeenCreatedByCellText, int rowNum, int maxRows) {
+		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenReportNameCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 
 		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+		String reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 		String rptTitleCellText = getReportTableCellText(reportTitleXPath);
+		String rptNameCellText = getReportTableCellText(reportNameXPath);
 		String createByCellText = getReportTableCellText(createdByXPath);
 
 		// If new rows get added in the time that we are waiting on report
 		// processing to complete,
 		// skip and move forward to the row that we were last processing.
 		while (!(rptTitleCellText.trim().equalsIgnoreCase(lastSeenTitleCellText.trim())
+				&& rptNameCellText.trim().equalsIgnoreCase(lastSeenReportNameCellText.trim())
 				&& createByCellText.trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
 			Log.info(String.format(
-					"Found cell (skipping newly added) : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
-					rptTitleCellText.trim(), createByCellText.trim()));
+					"Found cell (skipping newly added) : rptTitleCellText()=[%s], rptNameCellText=[%s], createdByCellText()=[%s]",
+					rptTitleCellText.trim(), rptNameCellText.trim(), createByCellText.trim()));
 
 			rowNum++;
 			if (rowNum > maxRows)
@@ -2630,9 +2688,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			Log.info(String.format("Processing row number - %d", rowNum));
 
 			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
+			reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
 			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
 
 			rptTitleCellText = getReportTableCellText(reportTitleXPath);
+			rptNameCellText = getReportTableCellText(reportNameXPath);
 			createByCellText = getReportTableCellText(createdByXPath);
 		}
 		return rowNum;
@@ -2832,5 +2892,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void setReportEndEpochTime(long reportEndEpochTime) {
 		this.reportEndEpochTime = reportEndEpochTime;
+	}
+
+	public String getReportFileName(String rptTitle) {
+		return getReportPDFFileName(rptTitle, false /*includeExtension*/);
+	}
+
+	public String getReportName(String rptTitle) {
+		// Implementation to be provided by derived type.
+		return null;
+	}
+
+	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
+		// Implementation to be provided by derived type.
+		return null;
 	}
 }
