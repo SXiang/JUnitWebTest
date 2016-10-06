@@ -960,8 +960,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-
 		} else
 			fail("\nTestcase TC212 failed.\n");
 	}
@@ -1154,10 +1152,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
-			if (this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath())) {
-				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, SQACUSSU));
-			} else
-				fail("\nTestcase TC297 failed.\n");
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC297 failed.\n");
 

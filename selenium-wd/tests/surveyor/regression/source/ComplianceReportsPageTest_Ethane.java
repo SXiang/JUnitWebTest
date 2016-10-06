@@ -353,7 +353,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, strCreatedBy));
 			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
 			assertTrue(this.getComplianceReportsPage().verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
