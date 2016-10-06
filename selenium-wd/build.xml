@@ -538,7 +538,6 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ReportJobPerformanceTestMedium.class" />
-					<include name="**/ReportJobPerformanceTestHigh.class" />
 				</fileset>
 			</batchtest>
 		</junit>
