@@ -68,10 +68,6 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 					{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
 					{ "3", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
 					{ "4", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
-					//{ "5", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeVehicleExhaust, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
-					//{ "6", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
-					//{ "7", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
-					//{ "8", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
 					{ "9", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeVehicleExhaust, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
 					{ "10", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
 					{ "11", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
@@ -79,16 +75,6 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 		};
 	}
 
-	/*	
-	public ComplianceReportEthaneManualDataProvider(Class<?> klass) throws InitializationError {
-		super(klass);
-	}
-
-	@Override
-	public void run(RunNotifier notifier) {
-		super.run(notifier);
-	}
-	 */
 	/**********************************************************************
 	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
 	 * password

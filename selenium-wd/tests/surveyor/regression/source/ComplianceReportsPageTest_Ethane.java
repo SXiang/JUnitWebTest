@@ -346,7 +346,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_MANUAL_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneManualReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
-		executeVerifyEthaneManualReportTest(index, strCreatedBy, password, cutomer, timeZone,
+		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
 				exclusionRadius, surveyorUnit, userName, startDate, endDate,
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
@@ -376,65 +376,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
-		rpt.setSurveyInfoList(reportSurveyInfoList);
+		if(!reportMode.equals(ReportModeFilter.Manual) ){
+			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
+			rpt.setSurveyInfoList(reportSurveyInfoList);}
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
-
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, strCreatedBy));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
-			assertTrue(this.getComplianceReportsPage().verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(this.getComplianceReportsPage().verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				if (cutomer.equalsIgnoreCase("Picarro")) {
-					assertTrue(this.getComplianceReportsPage().verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				assertTrue(this.getComplianceReportsPage().verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-				assertTrue(this.getComplianceReportsPage().verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
-				assertTrue(this.getComplianceReportsPage().verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
-				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyEthaneAnalysisTable(testSetup.getDownloadPath(), rptTitle));
-				}
-				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
-				}
-			}
-		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-	}
-
-	private void executeVerifyEthaneManualReportTest(String index, String strCreatedBy, String password,
-			String cutomer, String timeZone, String exclusionRadius,
-			String surveyorUnit, String userName, String startDate,
-			String endDate, String fovOpacity, String lisaOpacity,
-			Boolean geoFilter, ReportModeFilter reportMode,
-			SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter,
-			List<String> listBoundary, List<String> tagList,
-			List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList,
-			List<Map<String, String>> viewLayersList) throws Exception,
-			IOException, InterruptedException {
-		String rptTitle = null;
-		String testCaseName = getTestCaseName(index);
-
-		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
-
-		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-
-		this.getComplianceReportsPage().login(strCreatedBy, CryptoUtility.decrypt(password));
-		this.getComplianceReportsPage().open();
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-/*		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
-		rpt.setSurveyInfoList(reportSurveyInfoList);
-*/		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
