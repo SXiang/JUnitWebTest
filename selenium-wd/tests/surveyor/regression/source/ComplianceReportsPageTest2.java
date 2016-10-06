@@ -206,7 +206,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		} else
 			fail("\nTestcase TC720 failed.\n");
 	}
@@ -270,7 +269,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
@@ -370,7 +368,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		}else{
 			fail("\nTestcase TC1038 failed.\n");
 		}
@@ -382,7 +379,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt4, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		}else
 			fail("\nTestcase TC1038 failed.\n");
 
@@ -450,7 +446,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYGAPTB).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
@@ -963,7 +958,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		}else
 			fail("\nTestcase TC1268 failed.\n");
 
@@ -976,7 +970,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt4, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		}else
 			fail("\nTestcase TC1268 failed.\n");
 
@@ -1043,7 +1036,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1181,7 +1173,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1513,7 +1504,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
 			}
@@ -1590,7 +1580,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1859,7 +1848,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -1878,7 +1866,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID+"_2"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt2, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle2, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle2));
@@ -1896,7 +1883,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID+"_3"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle3, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle3));
