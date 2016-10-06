@@ -68,6 +68,8 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
+	public static final String STRSurveyPaginationMsgPattern = "Showing [10] to \\d+ of \\d+ entries \\(filtered from \\d+ total entries\\)|Showing [10] to \\d+ of \\d+ entries";
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
 	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
@@ -698,7 +700,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, String.format(STRPaginationMsgPattern, numPages));
+				waitForNumberOfRecords(tableInfoBy, String.format(STRSurveyPaginationMsgPattern, numPages));
 				break;
 			}
 		}
@@ -825,6 +827,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+		Log.method("selectSurveysAndAddToReport", selectAll, numSurveysToSelect);
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
@@ -1007,7 +1010,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (startDate.startsWith("0")) {
 				startDate = startDate.replaceFirst("0*", "");
 			}
-			dateSetting.setDay("start", 7, startDate, false);
+			dateSetting.setDay("start", 7, startDate, true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1022,7 +1025,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (endDate.startsWith("0")) {
 				endDate = endDate.replaceFirst("0*", "");
 			}
-			dateSetting.setDay("end", 0, endDate, false);
+			dateSetting.setDay("end", 0, endDate, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1093,8 +1096,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForSurveyTabletoLoad() {
+		Log.method("waitForSurveyTabletoLoad");
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				Log.info(String.format("surveysTable.isDisplayed()=%b", surveysTable.isDisplayed()));
 				return surveysTable.isDisplayed();
 			}
 		});
@@ -1279,47 +1284,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectReportMode(ReportModeFilter mode) throws Exception {
 		throw new Exception("Not implemented");
-	}
-
-	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
-		inputReportTitle(reportsCompliance.getRptTitle());
-
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != CUSTOMER_PICARRO) {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
-					Log.info(String.format("Select Customer - '%s'", option.getText()));
-					option.click();
-					break;
-				}
-			}
-
-			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
-				inputReportTitle(reportsCompliance.getRptTitle());
-			}
-		}
-
-		selectTimeZone(reportsCompliance.getTimeZone());
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
-		}
-
-		for (String tagValue : reportsCompliance.tagList) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				clickOnSearchSurveyButton();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				selectFirstSurveyCheckBox();
-				this.waitForAddSurveyButtonToLoad();
-				clickOnAddSurveysButton();
-			}
-		}
-
-		this.clickOnOKButton();
-
 	}
 
 	public void selectTimeZone(String timeZone) {

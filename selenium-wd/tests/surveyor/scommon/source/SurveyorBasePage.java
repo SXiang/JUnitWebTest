@@ -509,7 +509,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
 		return checkTableSort(dataTableElement, columnHeadings, str, paginationOption, -1);
 	}
-	
+
 
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
@@ -536,7 +536,7 @@ public class SurveyorBasePage extends BasePage {
 						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
 						Log.warn(e.toString());
 					}
-					
+
 					return false;
 				}
 			}
@@ -634,10 +634,12 @@ public class SurveyorBasePage extends BasePage {
 		Log.info(String.format("%s error validation passed", fieldName));
 		return true;
 	}
+
 	public boolean waitForNumberOfRecords(String actualMessage){
 		By tableInfoBy = By.id(DATATABLE_RECORDS_ELEMENT_ID);
 		return waitForNumberOfRecords(tableInfoBy, actualMessage);
 	}
+
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
@@ -645,7 +647,9 @@ public class SurveyorBasePage extends BasePage {
 		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				String text = tableInfoElement.getText().trim();
-				return text.matches(actualMessage);
+				boolean matches = text.matches(actualMessage);
+				Log.info(String.format("MATCH=[%b] -> Text=[%s], MatchPattern=[%s]", matches, text, actualMessage));
+				return matches;
 			}
 		});
 	}
