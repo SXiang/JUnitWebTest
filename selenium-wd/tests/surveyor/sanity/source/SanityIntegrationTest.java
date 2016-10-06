@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.sanity.source;
 
@@ -121,7 +121,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.open();
-	
+
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
 				homePage.checkIfAtHomePage());
 		loginPage = homePage.logout();
@@ -152,8 +152,8 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC739 Test Description: Generate compliance report as
 	 * customer supervisor user by selecting report area using custom boundary
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	@Test
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() throws Exception {
@@ -237,18 +237,19 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		tableMap.put(KEYBOUNDARYDISTRICT, "0");
 		tableMap.put(KEYBOUNDARYDISTRICTPLAT, "0");
 		tablesList.add(tableMap);
-		
+
 		List<String> tagList=new ArrayList<String>();
 		tagList.add(SQACUSDRTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
 				SQACUSLOCSUR,tagList , viewList);
-		
+
 		complianceReportsPage.addNewReport(rpt);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSSU));
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
 					testSetup.getDownloadPath()));
@@ -261,9 +262,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC519 
+	 * Test Case ID: TC519
 	 * Test Description: Check links with the page.
-	 * 
+	 *
 	 */
 	@Test
 	public void TC519_CheckBrokenPages() {
@@ -312,7 +313,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageCustomersPage.waitForEditPageLoad();
 		assertTrue(manageCustomersPage.isLinkBroken());
 		manageCustomersPage.clickOnEditCancelBtn();
-		
+
 		manageCustomersPage.waitForPageToLoad();
 
 		homePage.clickOnManageUsersLink();
@@ -329,13 +330,13 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageUsersPage.waitForPageToLoad();
 		manageUsersPage.getInputSearch().sendKeys(CUSTOMER_PICARRO);
 		manageUsersPage.clickOnFirstEditUserBtn();
-	
+
 		manageUsersPage.waitForEditPageLoad();
 		assertTrue(manageUsersPage.isLinkBroken());
 		manageUsersPage.clickOnCancelEditBtn();
 
 		manageUsersPage.waitForPageToLoad();
-		
+
 		homePage.clickOnManageLocationsLink();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnAddNewLocationBtn();
@@ -347,9 +348,9 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageLocationsPage.waitForEditPageLoad();
 		assertTrue(manageLocationsPage.isLinkBroken());
 		manageLocationsPage.clickOnCancelBtn();
-		
+
 		manageLocationsPage.waitForPageToLoad();
-		
+
 		homePage.clickOnManageSurveyorsLink();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnAddNewSurveyorBtn();
@@ -361,7 +362,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorsPage.waitForEditPageLoad();
 		assertTrue(manageSurveyorsPage.isLinkBroken());
 		manageSurveyorsPage.clickOnEditCancelBtn();
-		
+
 		manageSurveyorsPage.waitForPageToLoad();
 
 		homePage.clickOnManageAnalyzersLink();
@@ -375,7 +376,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageAnalyzersPage.waitForEditPageLoad();
 		assertTrue(manageAnalyzersPage.isLinkBroken());
 		manageAnalyzersPage.clickOnCancelBtn();
-		
+
 		manageAnalyzersPage.waitForPageToLoad();
 
 		homePage.clickOnManageRefGasBottlesLink();
@@ -384,7 +385,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageRefGasBottlesPage.waitForNewPageLoad();
 		assertTrue(manageRefGasBottlesPage.isLinkBroken());
 		manageRefGasBottlesPage.clickOnCancelBtn();
-		
+
 		manageRefGasBottlesPage.waitForPageToLoad();
 
 		homePage.clickOnManageSurveyorHistoriesLink();
@@ -393,7 +394,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.waitForNewPageLoad();
 		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
 		manageSurveyorHistoriesPage.clickOnCancelBtn();
-		
+
 		manageSurveyorHistoriesPage.waitForPageToLoad();
 
 		/* Commenting, while change is being deployed to P3SQA.
@@ -403,7 +404,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(manageReleaseNotesPage.isLinkBroken());
 		manageReleaseNotesPage.clickOnCancelBtn();
 		*/
-		
+
 		homePage.clickOnViewAnalyzerLogsLink(baseURL);
 		assertTrue(homePage.isLinkBroken());
 
