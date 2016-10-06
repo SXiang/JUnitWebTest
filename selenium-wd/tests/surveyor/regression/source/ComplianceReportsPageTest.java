@@ -401,9 +401,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC170 Test Description: Duplicate report
-	 *
 	 * @throws Exception
 	 *
+	 * US3605 - This test currently fails on Assertion since we always get back the oldest report ID from GetReportStat API.
+	 * Opened US3605 to track updating GetReportStat API to return the most recent report when there is more than 1 match for report title.
 	 */
 	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() throws Exception {
@@ -456,7 +457,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
