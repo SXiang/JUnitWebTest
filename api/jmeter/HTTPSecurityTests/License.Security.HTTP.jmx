@@ -72,7 +72,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_EQReport001</stringProp>
-            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.value">5FA068AA-9B0F-34A2-E68E-39DA6B6BAD71</stringProp>
             <stringProp name="Argument.desc">/Reports/CopyEQReport will be added to test after this report ready</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
