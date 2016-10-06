@@ -1641,7 +1641,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return null;
 						}
 						continue;
