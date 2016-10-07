@@ -1462,7 +1462,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
 							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
-							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 								return false;
 							}
 							continue;
@@ -1605,7 +1605,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return null;
 						}
 						continue;
