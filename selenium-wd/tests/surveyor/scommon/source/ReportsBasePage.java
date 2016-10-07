@@ -68,7 +68,7 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
-	public static final String STRSurveyPaginationMsgPattern = "Showing [10] to \\d+ of \\d+ entries \\(filtered from \\d+ total entries\\)|Showing [10] to \\d+ of \\d+ entries";
+	public static final String STRSurveyPaginationMsgPattern = "Showing \\d+ to \\d+ of \\d+ entries \\(filtered from \\d+ total entries\\)|Showing \\d+ to \\d+ of \\d+ entries";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
@@ -700,7 +700,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, String.format(STRSurveyPaginationMsgPattern, numPages));
+				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
