@@ -1409,11 +1409,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
@@ -1453,7 +1457,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return handleFileDownloads(rptTitle, testCaseID);
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return false;
 						}
 						continue;
@@ -1559,11 +1563,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
