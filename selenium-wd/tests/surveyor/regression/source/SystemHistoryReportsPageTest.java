@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -39,7 +39,7 @@ import surveyor.scommon.source.SystemHistoryReportsPage;
 
 /**
  * @author pmahajan
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
@@ -47,7 +47,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage = null;
 
 	private static DateFormat dateFormat = new SimpleDateFormat("dd");
-	
+
 	@BeforeClass
 	public static void setupSystemHistoryReportsPageTest() {
 		systemHistoryReportsPage = new SystemHistoryReportsPage(driver, baseURL, testSetup);
@@ -59,7 +59,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC158 Test Description: Generate system history report as Administrator
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC158_SysHisRpt_PicarroAdmin() {
@@ -113,7 +113,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC161 Test Description: Pagination - 10,25,50 and 100 Reports selection on system history report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC161_SysHisRpt_Pagination() {
@@ -125,8 +125,13 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		String paginationSetting50 = "50";
 
 		assertTrue(systemHistoryReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(!(systemHistoryReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+
 		assertTrue(systemHistoryReportsPage.checkPaginationSetting(paginationSetting25));
+		assertTrue(!(systemHistoryReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+
 		assertTrue(systemHistoryReportsPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(systemHistoryReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();
@@ -134,7 +139,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC178 Test Description: Generate system history report as Customer Administrator
-	 * 
+	 *
 	 */
 	@Test
 	public void TC178_SysHisRpt_CustAdmin() {
@@ -192,7 +197,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC186 Test Description: Click on Cancel button present on system history report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC186_SysHisRpt_CancelBtn() {
@@ -209,7 +214,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC195 Test Description: Generate system history report for single day
-	 * 
+	 *
 	 */
 	@Test
 	public void TC195_SysHisRpt_SingleDay() {
@@ -256,7 +261,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 			assertTrue(systemHistoryReportsPage.verifyStaticTextinPDF(testSetup.getDownloadPath(), rptTitle));
 			assertTrue(systemHistoryReportsPage.verifyUserInputInPDF(testSetup.getDownloadPath(), rptTitle, inputList));
-			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));			
+			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC195 failed.\n");
 
@@ -268,7 +273,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC516 Test Description: Generate system history report as Customer Supervisor
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC516_SysHisRpt_CustSupervisor() {
