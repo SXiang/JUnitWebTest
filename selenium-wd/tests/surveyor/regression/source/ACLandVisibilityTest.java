@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -47,7 +47,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static PreferencesPage preferencesPage;
 	private static FleetMapPage fleetMapPage;
 	private static SurveyorSystemsPage surveyorPage;
-	
+
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
 		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
@@ -69,7 +69,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description:
 	 * Check ACLV for customer user with Driver role
-	 * 
+	 *
 	 */
 	@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole() {
@@ -102,7 +102,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes Test
 	 * Description: Release Notes link is working and can download Release Notes
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes() {
@@ -121,7 +121,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_Preferences Test
 	 * Description: Preferences link is working
-	 * 
+	 *
 	 */
 	@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole_Preferences() {
@@ -151,7 +151,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC36_CheckACLVCustomerUser_SupervisorRole Test Description:
 	 * Check ACLV for customer user with Supervisor role
-	 * 
+	 *
 	 */
 	@Test
 	public void TC36_CheckACLVCustomerUser_SupervisorRole() {
@@ -185,9 +185,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC36_CheckReportLink_SupervisorRole Test Description: Check
 	 * Reports link for customer user with Supervisor role
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 
 	@Test
@@ -284,7 +284,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC36_CheckUserLink_ReleaseNotes Test Description: Release
 	 * Notes link is working and can download Release Notes
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC36_CheckUserLink_ReleaseNotes() {
@@ -303,7 +303,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC36_CheckUserLink_Preferences Test Description:
 	 * Preferences link is working
-	 * 
+	 *
 	 */
 	@Test
 	public void TC36_CheckUserLink_Preferences() {
@@ -332,7 +332,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC37_CheckACLVCustomerUser_UtilityAdminRole Test
 	 * Description: Check ACLV for customer user with Utility Administrator role
-	 * 
+	 *
 	 */
 	@Test
 	public void TC37_CheckACLVCustomerUser_UtilityAdminRole() {
@@ -364,9 +364,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC37_CheckReportLink_UtilityAdminRole Test Description:
 	 * Check ACLV for customer user with Utility Administrator role
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC37_CheckReportLink_UtilityAdminRole() throws Exception {
@@ -430,6 +430,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
 			} else
@@ -462,7 +463,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC37_CheckUserLink_ReleaseNotes Test Description: Release
 	 * Notes link is working and can download Release Notes
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC37_CheckUserLink_ReleaseNotes() {
@@ -481,7 +482,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC37_CheckUserLink_Preferences Test Description:
 	 * Preferences link is working
-	 * 
+	 *
 	 */
 	@Test
 	public void TC37_CheckUserLink_Preferences() {
@@ -513,7 +514,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC38_CheckACLV_PicAdminRole Test Description: Check ACLV
 	 * for Picarro Administrator role, non-default Administrator account
-	 * 
+	 *
 	 */
 	@Test
 	public void TC38_CheckACLV_PicAdminRole() {
@@ -550,9 +551,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC38_CheckReportLink_PicarroAdminRole Test Description:
 	 * Check ACLV for customer user with Utility Administrator role
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC38_CheckReportLink_PicarroAdminRole() throws Exception {
@@ -648,7 +649,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC38_CheckUserLink_ReleaseNotes Test Description: Release
 	 * Notes link is working and can download Release Notes
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC38_CheckUserLink_ReleaseNotes_PicarroAdminRole() {
@@ -670,7 +671,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC38_CheckUserLink_Preferences Test Description:
 	 * Preferences link is working
-	 * 
+	 *
 	 */
 	@Test
 	public void TC38_CheckUserLink_Preferences() {
@@ -708,9 +709,9 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC40_CheckReportLink_PicarroSupportRole Test Description:
 	 * Check ACLV for Picarro Support role
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC40_CheckReportLink_PicarroSupportRole() throws Exception {
@@ -806,7 +807,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC40_CheckUserLink_ReleaseNotes Test Description: Release
 	 * Notes link is working and can download Release Notes
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC40_CheckUserLink_ReleaseNotes_PicarroSupportRole() {
@@ -827,7 +828,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC40_CheckUserLink_Preferences Test Description:
 	 * Preferences link is working
-	 * 
+	 *
 	 */
 	@Test
 	public void TC40_CheckUserLink_Preferences() {
@@ -846,10 +847,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		preferencesPage.waitForPageLoad();
 
-		Log.info(String.format("EXPECTED timezone='%s', Actual timezone='%s'", 
+		Log.info(String.format("EXPECTED timezone='%s', Actual timezone='%s'",
 				TIMEZONE, preferencesPage.getSelectedTimeZone().getText()));
 		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
-		Log.info(String.format("EXPECTED selected location='%s', Actual selected location='%s'", 
+		Log.info(String.format("EXPECTED selected location='%s', Actual selected location='%s'",
 				PICARROLOC, preferencesPage.getSelectedLocation().getText()));
 		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(PICARROLOC));
 		homePage.getLinkFleetMap().click();
@@ -868,7 +869,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC40_CheckACLV_PicSupportRole Test Description: Check ACLV
 	 * for Picarro user with Picarro Support role
-	 * 
+	 *
 	 */
 	@Test
 	public void TC40_CheckACLV_PicSupportRole() {
