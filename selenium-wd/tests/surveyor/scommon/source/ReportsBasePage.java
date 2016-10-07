@@ -149,7 +149,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "report-survey-driver")
 	protected WebElement userName;
 
-	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type'] and @id='All'")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='All']")
 	protected WebElement inputSurModeFilterAll;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Standard']")
@@ -1605,7 +1605,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return null;
 						}
 						continue;

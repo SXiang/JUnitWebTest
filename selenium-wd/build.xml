@@ -523,6 +523,25 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
+	<target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest fork="yes" todir="${reports}/performance/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/ReportJobPerformanceTestMedium.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
