@@ -52,6 +52,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
@@ -90,7 +91,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
-	
+
 	/**
 	 * Test Case ID: TC1634 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available - New Compliance Report
 	 * 
@@ -331,8 +332,39 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
-	public void ComplianceReportTest_VerifyEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
+	public void ComplianceReportTest_VerifyEthaneSTDRRReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
+				exclusionRadius, surveyorUnit, userName, startDate, endDate,
+				fovOpacity, lisaOpacity, geoFilter, reportMode,
+				surveyModeFilter, ethaneFilter, listBoundary, tagList,
+				tablesList, viewList, viewLayersList);
+
+	}
+
+	@Test
+	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_MANUAL_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
+	public void ComplianceReportTest_VerifyEthaneManualReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
+				exclusionRadius, surveyorUnit, userName, startDate, endDate,
+				fovOpacity, lisaOpacity, geoFilter, reportMode,
+				surveyModeFilter, ethaneFilter, listBoundary, tagList,
+				tablesList, viewList, viewLayersList);
+
+	}
+
+	private void executeVerifyEthaneReportTest(String index, String strCreatedBy, String password,
+			String cutomer, String timeZone, String exclusionRadius,
+			String surveyorUnit, String userName, String startDate,
+			String endDate, String fovOpacity, String lisaOpacity,
+			Boolean geoFilter, ReportModeFilter reportMode,
+			SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter,
+			List<String> listBoundary, List<String> tagList,
+			List<Map<String, String>> tablesList,
+			List<Map<String, String>> viewList,
+			List<Map<String, String>> viewLayersList) throws Exception,
+			IOException, InterruptedException {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 
@@ -344,8 +376,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-		List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
-		rpt.setSurveyInfoList(reportSurveyInfoList);
+		if(!reportMode.equals(ReportModeFilter.Manual) ){
+			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
+			rpt.setSurveyInfoList(reportSurveyInfoList);}
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -375,7 +408,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
 	}
 
 	private static String getTestCaseName(String key) {
@@ -493,7 +525,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 
 		this.getComplianceReportsPage().verifyIfInDrivingSurvey(KEYINDCLR);
-		
+
 		/* Need download report and verify */
 
 	}

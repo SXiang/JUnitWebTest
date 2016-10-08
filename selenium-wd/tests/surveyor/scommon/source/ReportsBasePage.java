@@ -149,7 +149,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "report-survey-driver")
 	protected WebElement userName;
 
-	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type'] and @id='All'")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='All']")
 	protected WebElement inputSurModeFilterAll;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Standard']")
