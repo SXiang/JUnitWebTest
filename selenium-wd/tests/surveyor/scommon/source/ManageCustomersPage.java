@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -49,12 +49,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@FindBy(id = "name-error")
 	private WebElement lblNameError;
-	
+
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
 	private WebElement textAreaEula;
-	
+
 	@FindBy(id = "eula-error")
 	private WebElement lblEulaError;
 
@@ -376,7 +376,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 				actionCell.click();
 				this.waitForEditPageLoad();
-				
+
 				Log.info("Set EULA - '"+eulaNew+"'");
 				setEULAText(eulaNew);
 				enabledDisableCustomer(enableCustomer);
@@ -498,7 +498,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		Log.method("getLicensedFeature", licFeatureName);
 		LicensedFeatures licensedFeatures = LicensedFeatures.ASSETBOX;
-		if (licFeatureName.equals("Asset Box")) {
+		if (licFeatureName.equals("Asset Box Highlight")) {
 			licensedFeatures = LicensedFeatures.ASSETBOX;
 		} else if (licFeatureName.equals("Mobile View")) {
 			licensedFeatures = LicensedFeatures.MOBILEVIEW;
@@ -534,6 +534,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			licensedFeatures = LicensedFeatures.SURVEYPROTOCOLFORECAST;
 		} else if (licFeatureName.equals("Report ShapeFile")) {
 			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
+		} else if (licFeatureName.equals("LISA Asset Highlight")) {
+			licensedFeatures = LicensedFeatures.LISAASSETHIGHLIGHT;
 		}
 		return licensedFeatures;
 	}
@@ -605,7 +607,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 		return false;
 	}
-	
+
 	public boolean areTableColumnsSorted(){
 		Log.method("areTableColumnsSorted");
 		if(!isCustomerColumnSorted()){
@@ -617,24 +619,24 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		if(!isStatusColumnSorted()){
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean isCustomerColumnSorted(){
 		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isAddCustomerBtnPresent() {
 		Log.method("isAddCustomerBtnPresent");
 		return isElementPresent(this.btnAddNewCustomerXPath);
