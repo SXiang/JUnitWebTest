@@ -76,191 +76,144 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	private WebElement refBottleMeasButtonDivElement;
 	
 	@FindBy(id = "mode_start_survey")
-	@CacheLookup
 	private WebElement startSurveyButton;
 
 	@FindBy(id = "mode_start_eq_survey")
-	@CacheLookup
 	private WebElement startEQSurveyButton;
 
 	@FindBy(id = "mode_shutdown_analyzer")
-	@CacheLookup
 	private WebElement systemShutdownButton;
 
 	@FindBy(id = "mode_shutdown_confirm")
-	@CacheLookup
 	private WebElement shutdownConfirmButton;
 
 	@FindBy(id = "mode_shutdown_cancel")
-	@CacheLookup
 	private WebElement shutdownCancelButton;
 
 	@FindBy(id = "mode_stop_survey")
-	@CacheLookup
 	private WebElement stopSurveyButton;
 
 	@FindBy(id = "mode_start_isotopic_capture")
-	@CacheLookup
 	private WebElement startIsotopicCaptureButton;
 
 	@FindBy(id = "mode_start_reference")
-	@CacheLookup
 	private WebElement refBottleMeasButton;
 
 	@FindBy(id = "btn_cancel_annotation")
-	@CacheLookup
 	private WebElement fieldNotesCancel;
 	
 	@FindBy(id = "btn_close_annotation")
-	@CacheLookup
 	private WebElement fieldNotesClose;
 
 	@FindBy(css = "a[href='http://openlayers.org/']")
-	@CacheLookup
 	private WebElement imageData;
 
 	@FindBy(id = "survey_wind_calm")
-	@CacheLookup
 	private WebElement calm;
 
 	@FindBy(id = "survey_time_day")
-	@CacheLookup
 	private WebElement day;
 
 	@FindBy(id = "btn_delete_annotation")
-	@CacheLookup
 	private WebElement fieldNotesDelete;
 
 	@FindBy(css = "button[title='Attributions']")
-	@CacheLookup
 	private WebElement i;
 
 	@FindBy(id = "survey_wind_light")
-	@CacheLookup
 	private WebElement light;
 
 	@FindBy(id = "survey_type_manual")
-	@CacheLookup
 	private WebElement manual;
 
 	@FindBy(id = "manual_min_amplitude")
-	@CacheLookup
 	private WebElement manualModeMinAmp;
 
 	@FindBy(id = "survey_radiation_moderate")
-	@CacheLookup
 	private WebElement moderate;
 
 	@FindBy(id = "survey_cloud_cover_lessThan50")
-	@CacheLookup
 	private WebElement cloudCoverLessThan50;
 
 	@FindBy(id = "survey_cloud_cover_moreThan50")
-	@CacheLookup
 	private WebElement cloudCoverMoreThan50;
 
 	@FindBy(id = "survey_time_night")
-	@CacheLookup
 	private WebElement night;
 
 	@FindBy(id = "btn_survey_warning_ok")
-	@CacheLookup
 	private WebElement ok1;
 
 	@FindBy(id = "btn_survey_start_warning_ok")
-	@CacheLookup
 	private WebElement ok2;
 
 	@FindBy(id = "survey_type_operator")
-	@CacheLookup
 	private WebElement operator;
 
 	@FindBy(id = "survey_type_assessment")
-	@CacheLookup
 	private WebElement assessment;
 
 	@FindBy(id = "survey_radiation_overcast")
-	@CacheLookup
 	private WebElement overcast;
 
 	@FindBy(id = "survey_type_rapid_response")
-	@CacheLookup
 	private WebElement rapidResponse;
 
 	@FindBy(id = "btn_save_annotation")
-	@CacheLookup
 	private WebElement fieldNotesSave;
 
 	@FindBy(id = "survey_type_standard")
-	@CacheLookup
 	private WebElement standard;
 
 	@FindBy(id = "survey_start_survey")
-	@CacheLookup
 	private WebElement startSurvey;
 
 	@FindBy(id = "survey_radiation_strong")
-	@CacheLookup
 	private WebElement radiationStrong;
 
 	@FindBy(id = "survey_wind_strong")
-	@CacheLookup
 	private WebElement windStrong;
 
 	@FindBy(css = "a[class='ol-attribution-bing-tos']")
-	@CacheLookup
 	private WebElement termsOfUse;
 
 	@FindBy(id = "anno_input")
-	@CacheLookup
 	private WebElement fieldNotesTextField;
 
 	@FindBy(id = "survey_modal_tag")
-	@CacheLookup
 	private WebElement tagSurvey;
 	
 	@FindBy(id = "annotation_modal")
-	@CacheLookup
 	private WebElement fieldNotesModalDialog;
 	
 	@FindBy(id = "manual_survey_params")
-	@CacheLookup
 	private WebElement manualSurveySection;
 
 	@FindBy(id = "btn_survey_warning_ok")
-	@CacheLookup
 	private WebElement surveyDurationWarningDialogOkButton;
 
 	@FindBy(id = "btn_survey_start_warning_ok")
-	@CacheLookup
 	private WebElement failedToStartSurveyDialogOkButton;
 
 	@FindBy(id = "survey_duration_warning")
-	@CacheLookup
 	protected WebElement divSurveyDurationWarning;
 
 	@FindBy(id = "survey_start_warning")
-	@CacheLookup
 	protected WebElement divSurveyStartWarning;
 	
 	@FindBy(id = "survey_warning_message")
-	@CacheLookup
 	protected WebElement spanSurveyWarningMessage;
 	
 	@FindBy(id = "survey_start_warning_message")
-	@CacheLookup
 	protected WebElement spanSurveyFailedToStartMessage;
 	
 	@FindBy(id = "eq_mode_warning")
-	@CacheLookup
 	protected WebElement eqModeDialog;
 
 	@FindBy(id = "eq_warning_message")
-	@CacheLookup
 	protected WebElement eqModeDialogMessage;
 
 	@FindBy(id = "menu_layer")
-	@CacheLookup
 	protected WebElement modeMenu;
 
 	@FindBy(id = "start_survey_modal")
@@ -297,13 +250,14 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		}
 		return fullUrl;
 	}
-	
+
 	@Override
 	public void open() {
 		// build the page url each time as the Analyzer in use could have changed.
 		driver.get(getPageFullUrl(this.strBaseURL));
 	}
-
+	
+	
 	public boolean checkIfAtDriverViewPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
@@ -688,6 +642,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
+	 * Get Manual Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getOperatorButton() {
+		return operator;
+	}
+	
+	/**
 	 * Click on Operator Button.
 	 *
 	 * @return the DriverViewPage class instance.
@@ -710,6 +673,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
+	 * Get RapidResponse Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getRapidResponseButton() {
+		return rapidResponse;
+	}
+	
+	/**
 	 * Click on Rapid Response Button.
 	 *
 	 * @return the DriverViewPage class instance.
@@ -731,7 +703,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		fieldNotesSave.click();
 		return this;
 	}
-
+	
+	/**
+	 * Get Manual Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getStandardButton() {
+		return standard;
+	}
 	/**
 	 * Click on Standard Button.
 	 *
@@ -743,6 +723,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this;
 	}
 
+	/**
+	 * Get Assessment Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getAssessmentButton() {
+		return assessment;
+	}
+	
 	/**
 	 * Click on Assessment Button.
 	 *

@@ -28,27 +28,21 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
 
 	@FindBy(id = "header_info_box_upper_left")
-	@CacheLookup
 	private WebElement divHeaderInfoBox;
 
 	@FindBy(id = "bottom_button_position_follow")
-	@CacheLookup
 	private WebElement positionButton;
 
 	@FindBy(id = "bottom_button_status")
-	@CacheLookup
 	private WebElement statusButton;
 	
 	@FindBy(id = "no_analyzer")
-	@CacheLookup
 	private WebElement divNoAnalyzer;
 	
 	@FindBy(id = "canvas_rose")
-	@CacheLookup
 	private WebElement windRose;
 	
 	@FindBy(id = "canvas_rose_arrow")
-	@CacheLookup
 	private WebElement windRoseArrow;
 
 	public BaseDrivingViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {

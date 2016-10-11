@@ -15,10 +15,12 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 import surveyor.scommon.source.BaseTest;
@@ -32,6 +34,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final int ANALYZER3_REPLAY_LONG_ROW_ID = 32;
 	protected static final int ANALYZER3_REPLAY_ASSESSMENT_ROW_ID = 14;
 	protected static final int ANALYZER3_REPLAY_OPERATOR_ROW_ID = 17;
+	protected static final int NOLICANA_REPLAY_ROW_ID = 39;
 	protected static final int ONE_SECOND = 5;
 	protected static final int SURVEY_STANDARD1_ROW_ID = 3;
 	protected static final int SURVEY_OPERATOR1_ROW_ID = 5;
@@ -43,6 +46,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final int USER_ROW_ID_PICARRO_SUPERVISOR = 18;
 	protected static final int USER_ROW_ID_PICARRO_SUPPORT = 11;
 	protected static final int USER_ROW_ID_PICARRO_ADMIN = 4;
+	protected static final int USER_ROW_ID_CUSTOMER_ADMIN_NOLIC = 19;
 	
 	protected static final int USER_ROW_ID_SQACUS_DRIVER = 3;
 	protected static final String SAMPLE_FIELD_NOTES1 = "Test Notes";
@@ -203,6 +207,34 @@ public class BaseMapViewTest extends BaseTest{
 		testEnvironmentAction.idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
 	}
 
+	protected void startDrivingSurvey(DriverViewPageActions driverViewPageAction, String analyzerSerialNumber, String analyzerSharedKey, Integer analyzerRowId, Integer surveyRowId,
+			Integer idleTimeInSeconds) throws Exception {
+		// Start Analyzer & replay db3
+		startAnalyzer(analyzerSerialNumber, analyzerSharedKey, analyzerRowId);
+		
+//		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
+				
+		testEnvironmentAction.startReplay(EMPTY, analyzerRowId); 
+		
+		// Start Operator Survey
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);	
+		testEnvironmentAction.idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
+	}
+	
+	protected void startAnalyzer(String analyzerSerialNumber, String analyzerSharedKey, Integer analyzerRowId) throws Exception{
+		//Using analyzer created at runtime for this test
+		TestEnvironmentActions.workingDataRow = testEnvironmentAction.getDataReader().getDataRow(analyzerRowId);
+		TestEnvironmentActions.workingDataRow.analyzerSerialNumber = analyzerSerialNumber;
+		TestEnvironmentActions.workingDataRow.analyzerSharedKey = analyzerSharedKey;
+		TestEnvironmentActions.workingDataRow.analyzerRowID = "";
+
+		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), analyzerSerialNumber, analyzerSharedKey);
+		TestSetup.restartAnalyzer();
+	}
 	protected void startReplay(DriverViewPageActions driverViewPageAction, Integer analyzerRowId) throws Exception {
 		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
 		driverViewPageAction.open(EMPTY,NOTSET);

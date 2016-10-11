@@ -497,47 +497,25 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		Log.method("getLicensedFeature", licFeatureName);
-		LicensedFeatures licensedFeatures = LicensedFeatures.ASSETBOX;
-		if (licFeatureName.equals("Asset Box")) {
-			licensedFeatures = LicensedFeatures.ASSETBOX;
-		} else if (licFeatureName.equals("Mobile View")) {
-			licensedFeatures = LicensedFeatures.MOBILEVIEW;
-		} else if (licFeatureName.equals("Report Metadata")) {
-			licensedFeatures = LicensedFeatures.REPORTMETADATA;
-		} else if (licFeatureName.equals("Rapid Response")) {
-			licensedFeatures = LicensedFeatures.RAPIDRESPONSE;
-		} else if (licFeatureName.equals("Assessment")) {
-			licensedFeatures = LicensedFeatures.ASSESSMENT;
-		} else if (licFeatureName.equals("Manual")) {
-			licensedFeatures = LicensedFeatures.MANUAL;
-		} else if (licFeatureName.equals("Percent Coverage")) {
-			licensedFeatures = LicensedFeatures.PERCENTCOVERAGE;
-		} else if (licFeatureName.equals("FleetMap View")) {
-			licensedFeatures = LicensedFeatures.FLEETMAPVIEW;
-		} else if (licFeatureName.equals("Operator")) {
-			licensedFeatures = LicensedFeatures.OPERATOR;
-		} else if (licFeatureName.equals("EQ")) {
-			licensedFeatures = LicensedFeatures.EQ;
-		} else if (licFeatureName.equals("Custom Colors")) {
-			licensedFeatures = LicensedFeatures.CUSTOMCOLORS;
-		} else if (licFeatureName.equals("Curtain View")) {
-			licensedFeatures = LicensedFeatures.CURTAINVIEW;
-		} else if (licFeatureName.equals("Opacity Fine-Tuning")) {
-			licensedFeatures = LicensedFeatures.OPACITYFINETUNING;
-		} else if (licFeatureName.equals("Observer View")) {
-			licensedFeatures = LicensedFeatures.OBSERVERVIEW;
-		} else if (licFeatureName.equals("GIS Layers")) {
-			licensedFeatures = LicensedFeatures.GISLAYERS;
-		} else if (licFeatureName.equals("LISA Box 1.0")) {
-			licensedFeatures = LicensedFeatures.LISABOX10;
-		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
-			licensedFeatures = LicensedFeatures.SURVEYPROTOCOLFORECAST;
-		} else if (licFeatureName.equals("Report ShapeFile")) {
-			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
+		LicensedFeatures licensedFeature = null;
+		try{
+			licensedFeature = LicensedFeatures.valueOf(licFeatureName);
+		}catch(Exception e){
+			Log.error(e.toString());
 		}
-		return licensedFeatures;
+		return licensedFeature;
 	}
 
+	public boolean verifyCustomerLicensedFeatures(LicensedFeatures[] lfs){
+		for(LicensedFeatures lf:lfs){
+			WebElement checkBox = getInputBoxOfLicensedFeature(lf);
+			if(!checkBox.isSelected()){
+				Log.error(String.format("Licensed Features '%s' is not selected for this customer", lf));
+				return false;
+			}
+		}
+		return true;
+	}
 	public String getEulaText() {
 		Log.method("getEulaText");
 		return this.textAreaEula.getAttribute("value");

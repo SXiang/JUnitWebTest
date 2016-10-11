@@ -129,36 +129,4 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 		
 		TestSetup.stopAnalyzer();
 	}
-
-	/* * Test Case ID: TC2124_PicarroAdminCanSelectAnyModeOnCustomerAnalyzerWithLicense
-	 * Script:
-	 * - Log into the tablet as Picarro Admin
-	 * - Click on the Mode button
-	 * - Click on the Start Survey button
-	 * Results:
-	 * - User will see buttons for "Start Driving Survey", "Start EQ Survey" and "System Shutdown"
-	 * - Survey conditions popup will appear. Standard, Operator, Rapid Response, Assessment and Manual mode buttons are available
-	 */
-	@Ignore /*TBD*/
-	public void TC2124_PicarroAdminCanSelectAnyModeOnCustomerAnalyzerWithLicense(){
-		Log.info("\nTestcase - TC2124_PicarroAdminCanSelectAnyModeOnCustomerAnalyzerWithLicense\n");
-
-	loginPage.open();
-	loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-
-	// Start Driving Survey to get the Surveyor online.
-	TestSetup.replayDB3Script(INSTR_READY_DEFN_FILE);
-	driverViewPage.open();
-	driverViewPage.waitForPageLoad();
-	driverViewPage.waitForConnectionComplete();
-	
-	// Keep the replay running for a few seconds.
-	testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
-	
-	// Run the verifications.
-	homePage.open();
-	assertTrue(homePage.checkDashBoardViewAllSurveyorsLink());
-	
-	TestSetup.stopAnalyzer();
-	}
 }

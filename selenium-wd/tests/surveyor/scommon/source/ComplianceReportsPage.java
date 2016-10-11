@@ -206,7 +206,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
 	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);	
 	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);	
-
+	public static final String ComplianceReport_LicenseMissing = Resources.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
@@ -616,7 +616,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (viewMap.get(KEYBASEMAP) != null) {
+			if (viewMap.get(KEYBASEMAP) != null && !viewMap.get(KEYBASEMAP).trim().equals("")) {
 				if (rowNum == 1) {
 					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'view-basemap')]";
 				} else {

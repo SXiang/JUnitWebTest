@@ -88,7 +88,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement inputReportModeStd;
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > [id='Rapid Response']")
-	protected WebElement inputReportRapidR;
+	protected WebElement inputReportModeRapidR;
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
@@ -817,7 +817,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
-
+			Log.info("Adding all Surveys matching information.");
 			// Select the specified number of surveys and add them to report.
 			selectSurveysAndAddToReport(reportsSurveyInfo.isSelectAllSurveys(),
 					reportsSurveyInfo.getNumberOfSurveysToSelect());
@@ -2117,7 +2117,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
 		this.inputSearchReport.sendKeys(reportTitle);
-
+		waitForTableDataToLoad();
 		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
 			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
 				return true;
@@ -2704,6 +2704,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll);
 	}
 
+	public boolean isStandardReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeStd);
+	}
+
+	public boolean isRapidResponseReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeRapidR);
+	}
+
+	public boolean isManualReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
+	}
+	
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
@@ -2735,7 +2747,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		List<String> validType = new ArrayList<String>();
 		switch (smf) {
 		case All:
-			if (inputReportRapidR.isSelected()) {
+			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());
 				validType.add(SurveyModeFilter.Operator.toString());
 				validType.add(SurveyModeFilter.RapidResponse.toString());
@@ -2757,7 +2769,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			validType.add(SurveyModeFilter.Manual.toString());
 			break;
 		default:
-			if (inputReportRapidR.isSelected()) {
+			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());
 				validType.add(SurveyModeFilter.Operator.toString());
 				validType.add(SurveyModeFilter.RapidResponse.toString());
