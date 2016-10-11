@@ -21,7 +21,7 @@ Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},"id=""Manual
 Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""manual_min_amplitude""",Manual - Manage Location should have field for the Manual option ,Manual - Manage Location should not have field for the Manual option 
 Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_manual""",Manual - Driver View should have Manual survey mode available,Manual - Driver View should not have Manual survey mode available
 Reports,ComplianceReports,,"title=""Investigate""",Mobile view - Customer Utility Admin/ Supervisor should be allowed to access mobile view,Mobile view - Customer Utility Admin/ Supervisor should not be allowed to access mobile view
-Reports,LisaInvestigations,?reportId=${APISecurityTest_Report002},"id=""buttonInvestigate""",Mobile view - Should be accessible directly through URL either,Mobile view - Should not be accessible directly through URL either
+Reports,LisaInvestigations,?reportId=${APISecurityTest_Report002}&type=Indication,"id=""buttonInvestigate""",Mobile view - Should be accessible directly through URL either,Mobile view - Should not be accessible directly through URL either
 Investigation,Investigations,?reportId=${APISecurityTest_Report002},Investigation Markers,Mobile view - Customer driver should access the reports URL from browser,Mobile view - Customer driver should not access the reports URL from browser
 Investigation,Reports,,Reports,Mobile view - Customer driver should be allowed to access mobile view,Mobile view - Customer driver should not be allowed to access mobile view
 Reports,ComplianceReport,,"id=""opacity-fine-tuning-legend"" style=""display: none;""",Opacity Fine-Tuning- New existing Compliance Report should have fields for Opacity Fine-Tuning,Opacity Fine-Tuning- New existing Compliance Report should not have fields for Opacity Fine-Tuning
@@ -47,6 +47,7 @@ Reports,AssessmentReport,,,DE2340,
 Reports,CopyAssessmentReport,?reportId=${APISecurityTest_Assessment002},Assessment Report,,
 Picarro,ManageLocation,,"id=""AssessmentMinimumAmplitude""",,
 Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_assessment""",,
+Home,,,"id=""report-investigation""",,
 Reports,EQReports,,EQ Reports,,
 Reports,EQReport,,,,
 Reports,CopyEQReport,?reportId=${APISecurityTest_EQReport001},EQ Report,don’t have EQ Report in Automation Environment,
@@ -56,8 +57,4 @@ Reports,ComplianceReports,,"id=""liReportMeta"" class=""col-rpmd-15 col-rpsm-3""
 Reports,AssessmentReports,,"id=""liReportMeta"" class=""col-rpmd-15 col-rpsm-3"" style>",,
 Reports,ComplianceReports,,"id=""liShapeFile"" class=""col-rpmd-15 col-rpsm-3"" style>",,
 Reports,AssessmentReports,,"id=""liShapeFile"" class=""col-rpmd-15 col-rpsm-3"" style>",,
-Home,,,"id=""report-investigation""",,
-Reports,EQReports,,EQ Reports,,
-Reports,EQReport,,,,
-Reports,CopyEQReport,?reportId=${APISecurityTest_EQReport001},EQ Report,,
-Picarro,ManageLocation,,"id=""EQMinimumAmplitude""",,
+Reports,ComplianceReport,,Highlight Box Assets,,

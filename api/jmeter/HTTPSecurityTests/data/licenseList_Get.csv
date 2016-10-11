@@ -22,7 +22,7 @@ Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress
 Live,Driver,?serialNumber=${Analyzer_Picarro_SerialNumber001}&address=AnyAddress&port=9999,"id=""survey_type_manual""",Manual - Driver View should have Manual survey mode available,Manual - Driver View should not have Manual survey mode available
 Reports,ComplianceReports,,"title=""Investigate""",Mobile view - Customer Utility Admin/ Supervisor should be allowed to access mobile view,Mobile view - Customer Utility Admin/ Supervisor should not be allowed to access mobile view
 Reports,Investigations,?reportId=${APISecurityTest_Report001},"id=""buttonInvestigate""",Mobile view - Should be accessible directly through URL either,Mobile view - Should not be accessible directly through URL either
-Investigation,Investigations,?reportId=${APISecurityTest_Report001},Investigation Markers,Mobile view - Customer driver should access the reports URL from browser,Mobile view - Customer driver should not access the reports URL from browser
+Investigation,Investigations,?reportId=${APISecurityTest_Report001}&type=Indication,Investigation Markers,Mobile view - Customer driver should access the reports URL from browser,Mobile view - Customer driver should not access the reports URL from browser
 Investigation,Reports,,Reports,Mobile view - Customer driver should be allowed to access mobile view,Mobile view - Customer driver should not be allowed to access mobile view
 Reports,ComplianceReport,,"id=""opacity-fine-tuning-legend""",Opacity Fine-Tuning- New existing Compliance Report should have fields for Opacity Fine-Tuning,Opacity Fine-Tuning- New existing Compliance Report should not have fields for Opacity Fine-Tuning
 Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report001},"id=""opacity-fine-tuning-legend""",Opacity Fine-Tuning- Copy existing Compliance Report should have fields for Opacity Fine-Tuning,Opacity Fine-Tuning- Copy existing Compliance Report should not have fields for Opacity Fine-Tuning
@@ -57,3 +57,4 @@ Reports,ComplianceReports,,"id=""zip-file_reportmeta""",,
 Reports,AssessmentReports,,"id=""zip-file_reportmeta""",,
 Reports,ComplianceReports,,"id=""zip-file_shapefile""",,
 Reports,AssessmentReports,,"id=""zip-file_shapefile""",,
+Reports,ComplianceReport,,Highlight Box Assets,,
