@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -199,13 +199,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
 	public static final String LisaInvestigations_PageTitle = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
-	
+
 	public static final String ComplianceReportSSRS_LISA_Number = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISA_Number);
 	public static final String ComplianceReportSSRS_Amplitude = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Amplitude);
 	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
-	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);	
-	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);	
-	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);	
+	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);
+	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);
+	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);
 	public static final String ComplianceReport_LicenseMissing = Resources.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
@@ -345,20 +345,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@id='datatablePeaks_info']")
 	protected WebElement paginationInvestigationMsg;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks_filter']/label/input")
 	protected WebElement inputInvestigationSearchReport;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
-	
+	@FindBy(id = "report-assethighlighting")
+	protected WebElement highlightLisaAssetDropdown;
+
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -384,7 +386,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private static LatLongSelectionControl latLongSelectionControl = null;
-	
+
 	protected String pagination = "100";
 
 	public enum CustomerBoundaryType {
@@ -589,23 +591,29 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
-				Log.clickElementInfo("Highlight LISA Assets", ElementType.RADIOBUTTON);
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
-			}else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
-				colNum = 12;
-				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+
+				// Select Highlight LISAs in dropdown.
+				selectHighlightLisaAssetDropdown("LISAs");
+			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				colNum = 11;
+				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+
+				// Select Highlight Asset Boxes in dropdown.
+				selectHighlightLisaAssetDropdown("Asset Boxes");
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
-				colNum = 13;
+				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
-			
+
 			if (selectView(viewMap, KEYBOUNDARIES)) {
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
 				if (rowNum == 1) {
@@ -626,6 +634,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String thisMap = viewMap.get(KEYBASEMAP);
 				Log.info(String.format("Select base map - '%s'", thisMap));
 				selectDropdownOption(dropdownBaseMap, thisMap);
+			}
+		}
+	}
+
+	private void selectHighlightLisaAssetDropdown(String value) {
+		Log.method("selectHighlightLisaAssetDropdown", value);
+		List<WebElement> options = highlightLisaAssetDropdown.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (option.getText().trim().equals(value)){
+				Log.info("Select Highlight Lisa Asset - '"+value+"'");
+				option.click();
+				break;
 			}
 		}
 	}
@@ -1010,7 +1030,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param rptTitle
 	 * @param strCreatedBy
 	 * @param buttonType
@@ -1481,7 +1501,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to compare the report creation date with current date & Report creation date format with locale
-	 * 
+	 *
 	 * @param actualPath
 	 *            - actual path to the generated report
 	 * @return boolean - true or false based on whether the report creation date matches the current date and format matches the locale format
@@ -1529,9 +1549,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return done;
 	}
-	
+
 	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
-		
+
 		this.inputInvestigationSearchReport.sendKeys(reportTitle);
 		if (this.tdInvReportTitle.getText().contentEquals(reportTitle)) {
 			if (this.tdInvReportCreatedBy.getText().contentEquals(reportCreatedBy))
@@ -1540,8 +1560,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return false;
 	}
 
-	
-	
+
+
 	public void waitForNumberOfInvestigationRecords(String actualMessage) {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -1552,17 +1572,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 
 	private void waitForInvestigationPageLoad() {
-		
+
 			waitForAJAXCallsToComplete();
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
 					return d.getPageSource().contains(LisaInvestigations_PageTitle);
-					
+
 				}
 			});
 		}
-		
-	
+
+
 
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
@@ -1744,7 +1764,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void selectReportMode(ReportModeFilter mode) {
 		selectReportModeNoConfirm(mode);
 		confirmChangeRptMode();
-		
+
 	}
 
 	public void selectReportModeNoConfirm(ReportModeFilter mode) {
@@ -1954,7 +1974,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the static text
-	 * 
+	 *
 	 * @param reportTitle
 	 * @return
 	 * @throws IOException
@@ -1966,7 +1986,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the static text
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2015,7 +2035,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the static text
-	 * 
+	 *
 	 * @param reportTitle
 	 * @param expectedReportString
 	 * @return
@@ -2042,7 +2062,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Show Coverage Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param userInput
@@ -2094,7 +2114,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the show Coverage Forecast Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2162,7 +2182,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Coverage Values Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2225,7 +2245,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Layers Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param userInput
@@ -2265,7 +2285,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Views Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param userInput
@@ -2329,7 +2349,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2394,7 +2414,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Ethane Capture Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2453,7 +2473,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify Investigation PDF
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2840,7 +2860,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Ethane Analysis Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2908,7 +2928,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Isotopic Analysis Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -2976,7 +2996,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify SSRS PDF has the expected strings.
-	 * 
+	 *
 	 * @param actualPath
 	 *            - path of the SSRS PDF
 	 * @param reportTitle
@@ -3008,7 +3028,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Indication Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -3091,7 +3111,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Gaps Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -3151,7 +3171,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify footer text in SSRS PDF
-	 * 
+	 *
 	 * @param actualPath
 	 *            - Path to PDF
 	 * @param reportTitle
@@ -3237,7 +3257,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the images in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param expectedImage
@@ -3384,7 +3404,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Wrapper to verify the Views Images
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param expectedImage
@@ -3404,7 +3424,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Views Images
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param expectedImage
@@ -3577,7 +3597,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-	
+
 	public void waitForConfirmReportModeChangePopupToClose() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3662,7 +3682,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		});
 	}
-	
+
 	public void waitForCancelChangeReportModeButton() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3738,8 +3758,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 
 		// 1. Report general
-		/* Temp solution to enable lisa table on 3200 - Unselect Exclude Possible Natural Gas by default */
-		unselectEthaneFilter(EthaneFilter.ExcludePossibleNaturalGas);
 		if (reportsCompliance.getEthaneFilter() != null) {
 			selectEthaneFilter(reportsCompliance.getEthaneFilter());
 		}
@@ -3904,7 +3922,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-		
+
 		try{
 			if(radioBox!=null&&!radioBox.isSelected()){
 				js.executeScript("arguments[0].click();", radioBox);
@@ -3946,7 +3964,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
-	
+
 	public boolean areInvestigationTableColumnsSorted(){
 		Log.method("areInvestigationTableColumnsSorted");
 		if(!isAmplitudeColumnSorted()){
@@ -3967,21 +3985,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
-	
+
 	public boolean isAmplitudeColumnSorted(){
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
 		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
 		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isInvestigatorColumnSorted(){
 		Log.method("isInvestigatorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();

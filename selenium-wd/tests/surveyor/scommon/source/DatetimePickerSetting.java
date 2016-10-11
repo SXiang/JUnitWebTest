@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -18,22 +18,22 @@ import common.source.TestSetup;
  * @author zlu
  *
  */
-public class DatetimePickerSetting extends SurveyorBasePage {	
+public class DatetimePickerSetting extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-date-start']")
 	protected WebElement inputStartDT;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-date-end']")
 	protected WebElement inputEndDT;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-start-dt']")
 	protected WebElement inputSurveyStartDT;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-survey-end-dt']")
 	protected WebElement inputSurveyEndDT;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div[2]/img")
 	protected WebElement pcubedLogo;
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -44,7 +44,7 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 			String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
-	
+
 	public boolean setDay(String startOrEnd, int numOfPreMonths, String day, boolean survey) {
 		Log.method("setDay", startOrEnd, numOfPreMonths, day, survey);
 		if (survey)
@@ -57,28 +57,28 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 				this.inputStartDT.click();
 			else
 				this.inputEndDT.click();
-		
+
 		for (int i = 1; i <= numOfPreMonths; i++)
 			driver.findElement(By.className("prev")).click();
-		
+
 		WebElement dateWidget = driver.findElement(By.className("bootstrap-datetimepicker-widget"));
-		
-		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));  
+
+		List<WebElement> columns = dateWidget.findElements(By.tagName("td"));
 
 		Log.info("Matching the day to click...");
-		for (WebElement cell: columns){   
+		for (WebElement cell: columns){
 			Log.info(String.format("Cell : class='%s', value='%s'", cell.getAttribute("class"), cell.getText()));
-			if (cell.getAttribute("class").equals("day") || cell.getAttribute("class").equals("day weekend") || 
+			if (cell.getAttribute("class").equals("day") || cell.getAttribute("class").equals("day weekend") ||
 					cell.getAttribute("class").equals("day today") || cell.getAttribute("class").equals("day active today")) {
 				if (cell.getText().trim().equals(day)){
 					Log.info(String.format("Clicking on day=[%s] cell", day));
 					cell.click();
 					this.pcubedLogo.click();
-					return true;  
+					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

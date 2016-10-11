@@ -565,17 +565,17 @@ public final class SurveyorConstants {
 	};
 
 	public static enum ReportColorOption {
-		LIGHTBLUE(0), 
-		BLUE(1), 
-		LIGHTGREEN(2), 
-		GREEN(3), 
-		PINK(4), 
-		RED(5), 
-		YELLOW(6), 
-		ORANGE(7), 
-		LIGHTPURPLE(8), 
+		LIGHTBLUE(0),
+		BLUE(1),
+		LIGHTGREEN(2),
+		GREEN(3),
+		PINK(4),
+		RED(5),
+		YELLOW(6),
+		ORANGE(7),
+		LIGHTPURPLE(8),
 		PURPLE(9);
-		
+
 		private final int index;
 		ReportColorOption (int index){
 			this.index =  index;
