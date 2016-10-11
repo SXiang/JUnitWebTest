@@ -26,7 +26,7 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 
 
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsWithLicensedFeature extends BaseReportsPageActionTest {
+public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPageActionTest {
 
 
 	private static final String EMPTY = "";
@@ -50,9 +50,9 @@ public class ComplianceReportsWithLicensedFeature extends BaseReportsPageActionT
 	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
 		if(testAccount == null){
-//			testAccount = createTestAccount("LicFeature");
-//			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-//					,testAccount.get("userName"), testAccount.get("userPassword"));		
+			testAccount = createTestAccount("LicFeature");
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+					,testAccount.get("userName"), testAccount.get("userPassword"));		
 		}else{
 			loginPage.open();
 			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -330,7 +330,7 @@ public class ComplianceReportsWithLicensedFeature extends BaseReportsPageActionT
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.CURTAINVIEW);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.CURTAINVIEW);
 		homePage.logout();
 		
 		/* Without License */

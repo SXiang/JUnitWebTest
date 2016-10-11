@@ -735,7 +735,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyCarIconIsNotInCenter", data, dataRowID);
 		return true;
 	}
-	
+
 	/**
 	 * Executes verifyMapViewIsShown action.
 	 * @param data - specifies the input data passed to the action.

@@ -819,7 +819,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
-			Log.info("Adding all Surveys matching information.");
 			// Select the specified number of surveys and add them to report.
 			selectSurveysAndAddToReport(reportsSurveyInfo.isSelectAllSurveys(),
 					reportsSurveyInfo.getNumberOfSurveysToSelect());

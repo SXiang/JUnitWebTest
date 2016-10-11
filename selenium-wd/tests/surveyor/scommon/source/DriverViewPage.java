@@ -256,8 +256,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		// build the page url each time as the Analyzer in use could have changed.
 		driver.get(getPageFullUrl(this.strBaseURL));
 	}
-	
-	
+
 	public boolean checkIfAtDriverViewPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
@@ -642,7 +641,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Get Manual Button.
+	 * Get Operator Button.
 	 *
 	 * @return the WebElement.
 	 */

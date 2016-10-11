@@ -212,7 +212,6 @@ public class BaseMapViewTest extends BaseTest{
 		// Start Analyzer & replay db3
 		startAnalyzer(analyzerSerialNumber, analyzerSharedKey, analyzerRowId);
 		
-//		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);

@@ -263,8 +263,6 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-
 				</fileset>
 			</batchtest>
 		</junit>
@@ -431,6 +429,11 @@
 						<include name="**/DriverViewPageTest.class" />
 						<include name="**/ObserverViewPageTest.class" />
 						<include name="**/ObserverViewPageStressTest.class" />
+						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+						<include name="**/ObserverViewPageTest2.class" />
+						<include name="**/DriverViewPageTest2.class" />
+
 					</fileset>
 				</batchtest>
 			</junit>
@@ -476,6 +479,7 @@
 					<include name="**/ReferenceGasReportsPageTest.class" />
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
+					<include name="**/LicensedFeatureAndVisibilityTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -561,7 +565,10 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+					<include name="**/ObserverViewPageTest2.class" />
+					<include name="**/DriverViewPageTest2.class" />
+					<include name="**/LicensedFeatureAndVisibilityTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

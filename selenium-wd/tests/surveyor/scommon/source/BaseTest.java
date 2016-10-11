@@ -363,9 +363,11 @@ public class BaseTest {
 			testReport.put(sm.toString()+"Title", rpt.rptTitle);
 			
 			complianceReportsPage.addNewReport(rpt, true);
+			
+			/* Enable waitForReportGenerationtoComplete and remove clickComplianceReportButton after DE2382 is done */
+//			complianceReportsPage.waitForReportGenerationtoComplete(rpt.rptTitle, rpt.strCreatedBy);
 			complianceReportsPage.clickComplianceReportButton(rpt.rptTitle, rpt.strCreatedBy, ComplianceReportButtonType.Cancel);
 		}
-
 		return testReport;
 
 	}

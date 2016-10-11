@@ -177,10 +177,8 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
-	public static final String STRPaginationMsgPattern_nextPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
-
-	public static final String STRPaginationMsgFormatPattern = "Showing \\d+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_firstPage = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_anyPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
@@ -319,9 +317,9 @@ public class SurveyorBasePage extends BasePage {
 					option.click();
 					if(firstPage){
 						firstBtn.click();
-						waitForNumberOfRecords(String.format(STRPaginationMsgPattern,str));
+						waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage,str));
 					}else{
-						waitForNumberOfRecords(STRPaginationMsgPattern_nextPage);
+						waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
 					}
 					
 					break;
@@ -614,7 +612,7 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("checkPaginationSetting", numberOfRecords);
 		setPagination(numberOfRecords);
 		this.waitForPageLoad();
-		return this.waitForNumberOfRecords(String.format(STRPaginationMsgFormatPattern, numberOfRecords));
+		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage, numberOfRecords));
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {

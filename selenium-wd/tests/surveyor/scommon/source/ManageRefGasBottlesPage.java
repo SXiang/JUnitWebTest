@@ -61,7 +61,7 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='IsotopicValue']")
 	public WebElement inputIsoValue;
 
-	@FindBy(how = How.XPATH, using = "//select[@id='SurveyorUnitId']")
+	@FindBy(how = How.XPATH, using = "//*[@id='SurveyorUnitId']")
 	private WebElement dropdownSurveyor;
 
 	@FindBy(id = "buttonOk")
