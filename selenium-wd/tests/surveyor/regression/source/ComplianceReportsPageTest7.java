@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 
 import common.source.Log;
 
@@ -96,7 +97,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Indications and Isotopic tables will be empty
 	 *	- - Views will not have any data (except Gaps - if user has selected Gaps while generating report)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1298, location = ComplianceReportDataProvider.class)
 	public void TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -126,7 +127,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - User friendly error messages are displayed: Selected Percent Coverage Forecast, Please select Customer Boundary
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314, location = ComplianceReportDataProvider.class)
 	public void TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -199,7 +200,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Coverage Value should be zero
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1354, location = ComplianceReportDataProvider.class)
 	public void TC1354_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -237,7 +238,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Coverage Value should be zero
 	 *	- - No Coverage Forecast Available message is displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1355, location = ComplianceReportDataProvider.class)
 	public void TC1355_GenerateComplianceReportPicarroSupportIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhenNoFOVPresentTheseSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -276,7 +277,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Coverage Value should be zero
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1356, location = ComplianceReportDataProvider.class)
 	public void TC1356_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2Or3SurveysDifferentTagsWhenSurveysAreNotPartOfSelectedPlat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -315,7 +316,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Reported Coverage should be 0
 	 *	- - No Coverage Forecast Available message should be displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1357, location = ComplianceReportDataProvider.class)
 	public void TC1357_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast4OrMoreThan4SurveysDifferentTagsWhereSurveysAreNotPartOfSelectedPlat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -345,7 +346,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Validation message should be present same as that present on New Report screen, warning user that at least one option in Views section must be selected
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1384, location = ComplianceReportDataProvider.class)
 	public void TC1384_OnCopyComplianceReportScreenValidationPresentIfNoOptionSelectedViewsSection(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -374,7 +375,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1498, location = ComplianceReportDataProvider.class)
 	public void TC1498_ReprocessClassicLISAReportLISABoxReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -422,7 +423,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1499, location = ComplianceReportDataProvider.class)
 	public void TC1499_ReprocessLISABoxReportClassicLISAReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -463,7 +464,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - User is navigated back to Compliance Reports page and after the report has been generated,Compliance Viewer button is present in the Action column for that report- Thumbnails will be present for compliance SSRS PDF, ZIP folders and generated views
 	 *	- - View1 should appear and the thumbnail should accurately reflect the view  - The thumbnails for Views 2 and 3 should accurately reflect their respective views  - The thumbnails should still be present
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC15, location = ComplianceReportDataProvider.class)
 	public void TC15_ReportViewThumbnailsManuallyEnteredLatLongValuesMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -502,7 +503,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1500, location = ComplianceReportDataProvider.class)
 	public void TC1500_CopyClassicLISAReportLISABoxReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -552,7 +553,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1501, location = ComplianceReportDataProvider.class)
 	public void TC1501_CopyLISABoxReportClassicLISAReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -632,7 +633,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - In the report view, any segment of Main not contained within the LISA should not be highlighted unless the segment is within 50 feet of the vertex of the LISA
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1570, location = ComplianceReportDataProvider.class)
 	public void TC1570_ClassicLISASurvey_MainsOutsideLISAAreNotHighlightedUnlessWithin50OfLISAVertex(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -665,7 +666,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - In the report view, any Service assets that are contained in or touch a LISA box should be highlighted along its entire length. The segment of main to which that service is connected should not be highlighted unless it is also within the LISA
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1572, location = ComplianceReportDataProvider.class)
 	public void TC1572_ClassicLISASurvey_ServicesTouchingLISAAreHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -693,7 +694,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Gap table check box should not be present in Optional tabular PDF content section
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1577, location = ComplianceReportDataProvider.class)
 	public void TC1577_GapTableShouldNotPresentNewOrCopyComplianceReportScreenClassicGapsFeatureCustomers(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -718,7 +719,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- - Gap table check box should not be present in Optional tabular PDF content section
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1578, location = ComplianceReportDataProvider.class)
 	public void TC1578_GapTableShouldNotPresentNewOrCopyAssessmentReportScreenClassicGapsFeatureCustomers(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -751,7 +752,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- User cannot enter more than specified characters for fields and user friendly message having limit of characters is displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1611, location = ComplianceReportDataProvider.class)
 	public void TC1611_CheckMaxCharactersAllowedNewComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -782,7 +783,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: - 
 	 *	- User cannot enter more than specified characters for fields and user friendly message having limit of characters is displayed
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1612, location = ComplianceReportDataProvider.class)
 	public void TC1612_CheckMaxCharactersAllowedCopyComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
