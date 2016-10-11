@@ -80,8 +80,8 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 			cleanUp();
 			reportsPage.logout();
 		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: ");
-			Log.warn(ExceptionUtility.getStackTraceString(e));
+			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
+					ExceptionUtility.getStackTraceString(e)));
 		}
 	}
 
