@@ -103,7 +103,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Survey001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Survey001</stringProp>
-            <stringProp name="Argument.value">271d9db6-c0bd-eb32-2b48-39d1531dc264</stringProp>
+            <stringProp name="Argument.value">6486e6d3-4e45-df81-6d86-39dac58bcdc7</stringProp>
             <stringProp name="Argument.desc">sqapicdr: simuAuto-Surveyor1-SimAuto-Analyzer1 [name is not fixed]</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -679,6 +679,12 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
           </objProp>
           <stringProp name="filename"></stringProp>
         </ResultCollector>
+        <hashTree/>
+        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Test Action" enabled="true">
+          <intProp name="ActionProcessor.action">1</intProp>
+          <intProp name="ActionProcessor.target">0</intProp>
+          <stringProp name="ActionProcessor.duration">20</stringProp>
+        </TestAction>
         <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="UnLicensed User" enabled="true">
