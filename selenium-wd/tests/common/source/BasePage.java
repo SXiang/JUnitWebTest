@@ -252,7 +252,7 @@ public class BasePage {
 	}
 
 	public boolean verifyFleetMapLinkIsClickable() {
-		Log.info("Verify if Fleet Map link is clickable");
+		Log.method("Verify if Fleet Map link is clickable");
 		if(WebElementExtender.isElementPresentAndDisplayed(linkFleetMap)){
 			return linkFleetMap.isEnabled();
 		}

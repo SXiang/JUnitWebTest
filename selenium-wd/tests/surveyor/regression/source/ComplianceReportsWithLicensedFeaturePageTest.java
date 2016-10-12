@@ -120,6 +120,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
@@ -141,6 +142,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
@@ -159,6 +161,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
@@ -272,20 +275,14 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	public void TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense() throws Exception {
 		Log.info("\nRunning TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense");
 
-		String userName = "549236@email.com";//testAccount.get("userName");
-		String userPassword = "sqa#Picarro$0";//"testAccount.get("userPassword");
-		String customerName = "regcus549236LicFeature";//testAccount.get("customerName", SurveyModeFilter.Standard);
+		String userName = testAccount.get("userName");
+		String userPassword = testAccount.get("userPassword");
+		String customerName = testAccount.get("customerName");
 		
 		LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
 		SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
-//		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures("regcus549236LicFeature", LicensedFeatures.values());
-		testReport = addTestReport("549236@email.com", "sqa#Picarro$0", surveyModeFilter);
-		
+		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
 		String strCreatedBy = testReport.get("userName");
 		
 		for(int i=0; i<lfs.length; i++){
