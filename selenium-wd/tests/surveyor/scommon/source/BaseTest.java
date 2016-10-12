@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -313,7 +314,7 @@ public class BaseTest {
 		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",lotNum, isoValue, customerName, locationName, surveyorName));
 		}
-		return testAccount;
+		return Collections.synchronizedMap(testAccount);
 	}
 
 	public Map<String, String> addTestReport() throws Exception{
@@ -368,7 +369,7 @@ public class BaseTest {
 //			complianceReportsPage.waitForReportGenerationtoComplete(rpt.rptTitle, rpt.strCreatedBy);
 			complianceReportsPage.clickComplianceReportButton(rpt.rptTitle, rpt.strCreatedBy, ComplianceReportButtonType.Cancel);
 		}
-		return testReport;
+		return Collections.synchronizedMap(testReport);
 
 	}
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
@@ -429,7 +430,7 @@ public class BaseTest {
 			TestSetup.startAnalyzer();
 		}
 
-		return testSurvey;
+		return Collections.synchronizedMap(testSurvey);
 	}
 	/**
 	 * @throws java.lang.Exception
