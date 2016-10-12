@@ -118,15 +118,17 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean selectLicensedFeature(LicensedFeatures lf, boolean enableFeature) {
 		Log.method("selectLicensedFeature", lf, enableFeature);
 		WebElement inputBox = getInputBoxOfLicensedFeature(lf);
-		if (enableFeature) {
-			if (!inputBox.isSelected()){
-				Log.info("Select licensed features - '"+lf+"'");
-				inputBox.click();
-			}
-		} else {
-			if (inputBox.isSelected()){
-				Log.info("Unselect licensed features - '"+lf+"'");
-				inputBox.click();
+		if (inputBox != null) {
+			if (enableFeature) {
+				if (!inputBox.isSelected()){
+					Log.info("Select licensed features - '"+lf+"'");
+					inputBox.click();
+				}
+			} else {
+				if (inputBox.isSelected()){
+					Log.info("Unselect licensed features - '"+lf+"'");
+					inputBox.click();
+				}
 			}
 		}
 		return enableFeature;
@@ -136,7 +138,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("getInputBoxOfLicensedFeature", lf);
 		String elementId = String.format("LicencedFeatureId-%s", lf.toString());
 		Log.info(String.format("Checkbox element id -> %s", elementId));
-		return driver.findElement(By.id(elementId));
+		return WebElementExtender.findElementIfExists(driver, elementId);
 	}
 
 	public boolean addNewCustomer(String customerName, String eula) {

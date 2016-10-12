@@ -594,7 +594,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
-		String allCustomerLicenseRowIDs = "1,2,3,4,5,6,7";
+		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, 6 /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);

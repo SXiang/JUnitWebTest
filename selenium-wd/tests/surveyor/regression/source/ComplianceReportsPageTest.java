@@ -88,6 +88,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest extends BaseReportsPageTest {
+
+	protected static final Integer DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 2400;  // Max timeout= 40 mins for report gen.
+
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
@@ -135,7 +138,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-
+		this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
