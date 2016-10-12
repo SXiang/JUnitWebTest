@@ -599,7 +599,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				selectHighlightLisaAssetDropdown("LISAs");
 			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
 				colNum = 11;
-				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
+				Log.clickElementInfo("Highlight Box Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 
@@ -3101,7 +3101,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf("LISANum");
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		if (!SortHelper.isNumberSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]))) {
-			Log.error("Lisa numberes present in indications table are not in sequentila order");
+			Log.error("Lisa numbers present in indications table are not in sequential order");
 			return false;
 		}
 

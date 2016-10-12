@@ -463,6 +463,11 @@ public final class SurveyorConstants {
 	public static final String UNKNOWN_TEXT = "UnknownText";
 
 	/*
+	 * Other string constants
+	 */
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+
+	/*
 	 * enum for list of constants
 	 */
 

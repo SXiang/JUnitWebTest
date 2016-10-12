@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -71,8 +71,8 @@ import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
@@ -94,9 +94,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1634 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available - New Compliance Report
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1634_Ethane_VerifyCheckBoxes() {
@@ -114,11 +114,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1637 Test Description: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() throws Exception {
@@ -193,11 +193,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Views table
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException {
@@ -213,9 +213,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1636 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception {
@@ -240,11 +240,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1654 Test Description: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException {
@@ -261,11 +261,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1639 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane operator mode surveys are displayed
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1639_Ethane_Verify_Ethane_NONEthane_Survey_Via_Operator_SurveyMode() throws IOException, InterruptedException {
@@ -284,11 +284,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1653 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Rapid response mode surveys are displayed
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1653_Ethane_Verify_Ethane_NONEthane_Survey_Via_RapidResponse_SurveyMode() throws IOException, InterruptedException {
@@ -308,11 +308,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1640 Test Description: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane manual mode surveys are displayed
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1640_Ethane_Verify_Ethane_NONEthane_Survey_Via_Manual_SurveyMode() throws IOException, InterruptedException {
@@ -351,7 +351,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
 				tablesList, viewList, viewLayersList);
-
 	}
 
 	private void executeVerifyEthaneReportTest(String index, String strCreatedBy, String password,
@@ -431,11 +430,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1717 Test Description: Compliance Report Generation : Remove user selection color for Indications
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException {
@@ -459,9 +458,9 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID:TC1719 Test Description: Compliance Report Generation : COPY generated report should show default color only for Indication
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception {

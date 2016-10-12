@@ -30,7 +30,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 
 	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
 
-	protected static final Integer REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
+	protected static final Integer LOAD_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
 
 	@BeforeClass
 	public static void setupComplianceReportsPageTest() {
@@ -89,7 +89,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
-		this.getComplianceReportsPage().setReportGenerationTimeout(REPORT_GENERATION_TIMEOUT_IN_SECONDS);
+		this.getComplianceReportsPage().setReportGenerationTimeout(LOAD_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();

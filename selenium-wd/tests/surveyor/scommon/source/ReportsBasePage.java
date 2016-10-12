@@ -68,7 +68,7 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
-	public static final String STRSurveyPaginationMsgPattern = "Showing [10] to \\d+ of [\\d,]+ entries \\(filtered from \\d+ total entries\\)|Showing [10] to \\d+ of [\\d,]+ entries";
+	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
@@ -700,7 +700,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
-				waitForNumberOfRecords(tableInfoBy, String.format(STRSurveyPaginationMsgPattern, numPages));
+				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
@@ -1409,11 +1409,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
@@ -1453,7 +1457,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return handleFileDownloads(rptTitle, testCaseID);
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return false;
 						}
 						continue;
@@ -1462,7 +1466,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
 							Log.warn(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
-							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 								return false;
 							}
 							continue;
@@ -1559,11 +1563,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			Log.info(String.format("Found cell : rptTitleCell.getText()=[%s], createdByCell.getText()=[%s]",
+			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), createdByCellText.trim()));
 
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
