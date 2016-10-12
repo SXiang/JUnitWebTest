@@ -404,6 +404,7 @@
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest7.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest11.class" />
 					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
@@ -537,7 +538,10 @@
 			<batchtest fork="yes" todir="${reports}/performance/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
+					<include name="**/ReportJobPerformanceTestLight.class" />
 					<include name="**/ReportJobPerformanceTestMedium.class" />
+					<include name="**/ReportJobPerformanceTestHigh.class" />
+					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
 				</fileset>
 			</batchtest>
 		</junit>

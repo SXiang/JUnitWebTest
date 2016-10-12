@@ -463,6 +463,11 @@ public final class SurveyorConstants {
 	public static final String UNKNOWN_TEXT = "UnknownText";
 
 	/*
+	 * Other string constants
+	 */
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+
+	/*
 	 * enum for list of constants
 	 */
 
@@ -486,7 +491,7 @@ public final class SurveyorConstants {
 	}
 
 	public enum LicensedFeatures {
-		ASSETBOX ("Asset Box"),
+		ASSETBOX ("Asset Box Highlight"),
 		MOBILEVIEW ("Mobile View"),
 		REPORTMETADATA ("Report Metadata"),
 		RAPIDRESPONSE ("Rapid Response"),
@@ -503,7 +508,8 @@ public final class SurveyorConstants {
 		GISLAYERS ("GIS Layers"),
 		LISABOX10 ("LISA Box 1.0"),
 		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast"),
-		REPORTSHAPEFILE ("Report ShapeFile");
+		REPORTSHAPEFILE ("Report ShapeFile"),
+		LISAASSETHIGHLIGHT ("LISA Asset Highlight");
 
 		private final String name;
 
@@ -550,17 +556,17 @@ public final class SurveyorConstants {
 	};
 
 	public static enum ReportColorOption {
-		LIGHTBLUE(0), 
-		BLUE(1), 
-		LIGHTGREEN(2), 
-		GREEN(3), 
-		PINK(4), 
-		RED(5), 
-		YELLOW(6), 
-		ORANGE(7), 
-		LIGHTPURPLE(8), 
+		LIGHTBLUE(0),
+		BLUE(1),
+		LIGHTGREEN(2),
+		GREEN(3),
+		PINK(4),
+		RED(5),
+		YELLOW(6),
+		ORANGE(7),
+		LIGHTPURPLE(8),
 		PURPLE(9);
-		
+
 		private final int index;
 		ReportColorOption (int index){
 			this.index =  index;

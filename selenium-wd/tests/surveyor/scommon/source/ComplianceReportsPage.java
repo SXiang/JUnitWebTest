@@ -358,6 +358,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
+	@FindBy(id = "report-assethighlighting")
+	protected WebElement highlightLisaAssetDropdown;
 
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
@@ -589,18 +591,24 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
-				Log.clickElementInfo("Highlight LISA Assets", ElementType.RADIOBUTTON);
+				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
-			}else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
-				colNum = 12;
-				Log.clickElementInfo("Highlight GAP Assets", ElementType.RADIOBUTTON);
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+
+				// Select Highlight LISAs in dropdown.
+				selectHighlightLisaAssetDropdown("LISAs");
+			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				colNum = 11;
+				Log.clickElementInfo("Highlight Box Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='radio']")));
+				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+
+				// Select Highlight Asset Boxes in dropdown.
+				selectHighlightLisaAssetDropdown("Asset Boxes");
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
-				colNum = 13;
+				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
@@ -626,6 +634,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				String thisMap = viewMap.get(KEYBASEMAP);
 				Log.info(String.format("Select base map - '%s'", thisMap));
 				selectDropdownOption(dropdownBaseMap, thisMap);
+			}
+		}
+	}
+
+	private void selectHighlightLisaAssetDropdown(String value) {
+		Log.method("selectHighlightLisaAssetDropdown", value);
+		List<WebElement> options = highlightLisaAssetDropdown.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (option.getText().trim().equals(value)){
+				Log.info("Select Highlight Lisa Asset - '"+value+"'");
+				option.click();
+				break;
 			}
 		}
 	}
@@ -3081,7 +3101,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		LISAIndicationTableColumns tableColumn = LISAIndicationTableColumns.valueOf("LISANum");
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(lisasIndicationTblList, tableColumn.getIndex());
 		if (!SortHelper.isNumberSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]))) {
-			Log.error("Lisa numberes present in indications table are not in sequentila order");
+			Log.error("Lisa numbers present in indications table are not in sequential order");
 			return false;
 		}
 
@@ -3902,7 +3922,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-		
+
 		try{
 			if(radioBox!=null&&!radioBox.isSelected()){
 				js.executeScript("arguments[0].click();", radioBox);
