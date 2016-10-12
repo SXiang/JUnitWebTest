@@ -55,6 +55,9 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
 		testEnvironmentAction = new TestEnvironmentActions();
+
+		// initialize page object for post test processing.
+		initializePageObjects(complianceReportsPageAction.getComplianceReportsPage());
 	}
 
 	public HomePageActions getHomePageAction() {
@@ -161,6 +164,10 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		// Post execution results to automation DB.
 		LocalDateTime endDate = LocalDateTime.now();
 		postRunResultsToAutomationDB(reportDataRowID, startDate, endDate);
+
+		if (!result) {
+			Log.error("Performance baseline comparison failed! Checks error message above for failing baseline comparison.");
+		}
 
 		assertTrue(result);
 	}
