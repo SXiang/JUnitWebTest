@@ -171,7 +171,11 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern = "Showing 1 to %s of [\\d,]+ entries|Showing [10] to ([\\d]+) of \\1 entries";
+
+	public static final String STRPaginationMsgPattern = "Showing \\d+ to \\d+ of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+
+	public static final String STRPaginationMsgFormatPattern = "Showing \\d+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
@@ -300,9 +304,9 @@ public class SurveyorBasePage extends BasePage {
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
-				Log.info(String.format("Select pagination - '%s'",str));
+					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
-					waitForNumberOfRecords(String.format(STRPaginationMsgPattern,str));
+					waitForNumberOfRecords(STRPaginationMsgPattern);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
@@ -509,7 +513,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption){
 		return checkTableSort(dataTableElement, columnHeadings, str, paginationOption, -1);
 	}
-	
+
 
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
@@ -536,7 +540,7 @@ public class SurveyorBasePage extends BasePage {
 						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
 						Log.warn(e.toString());
 					}
-					
+
 					return false;
 				}
 			}
@@ -589,11 +593,11 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
-	public boolean checkPaginationSetting(String numberOfReports) {
-		Log.method("checkPaginationSetting", numberOfReports);
-		setPagination(numberOfReports);
+	public boolean checkPaginationSetting(String numberOfRecords) {
+		Log.method("checkPaginationSetting", numberOfRecords);
+		setPagination(numberOfRecords);
 		this.waitForPageLoad();
-		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern, numberOfReports));
+		return this.waitForNumberOfRecords(String.format(STRPaginationMsgFormatPattern, numberOfRecords));
 	}
 
 	public boolean checkFileExists(String fileName, String downloadPath) {
@@ -634,10 +638,12 @@ public class SurveyorBasePage extends BasePage {
 		Log.info(String.format("%s error validation passed", fieldName));
 		return true;
 	}
+
 	public boolean waitForNumberOfRecords(String actualMessage){
 		By tableInfoBy = By.id(DATATABLE_RECORDS_ELEMENT_ID);
 		return waitForNumberOfRecords(tableInfoBy, actualMessage);
 	}
+
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
@@ -645,7 +651,9 @@ public class SurveyorBasePage extends BasePage {
 		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				String text = tableInfoElement.getText().trim();
-				return text.matches(actualMessage);
+				boolean matches = text.matches(actualMessage);
+				Log.info(String.format("MATCH=[%b] -> Text=[%s], MatchPattern=[%s]", matches, text, actualMessage));
+				return matches;
 			}
 		});
 	}
