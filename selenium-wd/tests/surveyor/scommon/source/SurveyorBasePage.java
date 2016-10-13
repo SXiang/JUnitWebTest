@@ -310,10 +310,10 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str, boolean firstPage){
 		Log.method("setPagination", str);
 
-		String paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
 		if(firstPage){
-			paginationMsg = STRPaginationMsgPattern_anyPage;
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str); 
 			jsClick(firstBtn);
 		}
 
