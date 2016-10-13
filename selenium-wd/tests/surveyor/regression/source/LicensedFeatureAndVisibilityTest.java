@@ -36,7 +36,6 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static DriverViewPage driverViewPage;
 	private static ManageLocationsPage manageLocationsPage;
-	private static HomePage homePage;
 	private static FleetMapPage fleetMapPage;
 	private static Map<String, String> testAccount;
 	

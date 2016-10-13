@@ -304,6 +304,9 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public void waitForConnectionComplete() {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				if(!divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide")){
+					jsClick(divNoAnalyzer);
+				}
 				return divNoAnalyzer.getAttribute("class").equalsIgnoreCase("cssFade ng-hide");
 			}
 		});

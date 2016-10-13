@@ -495,13 +495,13 @@ public final class SurveyorConstants {
 
 	public enum LicensedFeatures {
 		ASSESSMENT ("Assessment"),
-		ASSETBOX ("Asset Box Highlight"),
+		ASSETBOX ("Asset Highlight"),
 		CURTAINVIEW ("Curtain View"),
 		CUSTOMCOLORS ("Custom Colors"),
 		EQ ("EQ"),
 		FLEETMAPVIEW ("FleetMap View"),
+		GAPGRID10 ("GAP Grid 1.0"),
 		GISLAYERS ("GIS Layers"),
-		LISAASSETHIGHLIGHT("LISA Asset Highlight"),
 		LISABOX10 ("LISA Box 1.0"),
 		MANUAL ("Manual"),
 		MOBILEVIEW ("Mobile View"),

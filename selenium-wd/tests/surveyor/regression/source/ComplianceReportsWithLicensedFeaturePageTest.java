@@ -109,10 +109,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		/* Unselect RR and Manual */
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().findCustomerAndOpenEditPage(customerName);
-		assertTrue(manageCustomerPageAction.getManageCustomersPage().verifyCustomerLicensedFeatures(LicensedFeatures.values()));
-		manageCustomerPageAction.getManageCustomersPage().unselectLicensedFeatures(LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
-		manageCustomerPageAction.getManageCustomersPage().clickOnEditOkBtn();
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
 		homePage.logout();
 		
 		loginPage.open();
@@ -144,6 +141,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		homePage.logout();
@@ -163,6 +161,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		homePage.logout();
