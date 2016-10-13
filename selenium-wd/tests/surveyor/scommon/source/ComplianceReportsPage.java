@@ -594,17 +594,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-
-				// Select Highlight LISAs in dropdown.
-				selectHighlightLisaAssetDropdown("LISAs");
-			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
-				colNum = 11;
-				Log.clickElementInfo("Highlight Box Assets", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-
-				// Select Highlight Asset Boxes in dropdown.
-				selectHighlightLisaAssetDropdown("Asset Boxes");
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {

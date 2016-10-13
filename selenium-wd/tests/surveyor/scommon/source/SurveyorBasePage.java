@@ -177,8 +177,8 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern_firstPage = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
-	public static final String STRPaginationMsgPattern_anyPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
+	public static final String STRPaginationMsgPattern_firstPage = "Showing 1 to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_anyPage = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries.*";
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
