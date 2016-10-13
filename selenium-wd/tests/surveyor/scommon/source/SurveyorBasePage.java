@@ -310,18 +310,19 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str, boolean firstPage){
 		Log.method("setPagination", str);
 
+		String paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+
+		if(firstPage){
+			paginationMsg = STRPaginationMsgPattern_anyPage;
+			jsClick(firstBtn);
+		}
+
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
-					if(firstPage){
-						firstBtn.click();
-						waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage,str));
-					}else{
-						waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
-					}
-					
+					waitForNumberOfRecords(paginationMsg);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
