@@ -3,12 +3,15 @@
  */
 package surveyor.scommon.source;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ConstantDataProvider;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
  * @author zlu
@@ -491,25 +494,25 @@ public final class SurveyorConstants {
 	}
 
 	public enum LicensedFeatures {
-		ASSETBOX ("Asset Box Highlight"),
-		MOBILEVIEW ("Mobile View"),
-		REPORTMETADATA ("Report Metadata"),
-		RAPIDRESPONSE ("Rapid Response"),
 		ASSESSMENT ("Assessment"),
-		MANUAL ("Manual"),
-		PERCENTCOVERAGE ("Percent Coverage"),
-		FLEETMAPVIEW ("FleetMap View"),
-		OPERATOR ("Operator"),
-		EQ ("EQ"),
-		CUSTOMCOLORS ("Custom Colors"),
+		ASSETBOX ("Asset Box Highlight"),
 		CURTAINVIEW ("Curtain View"),
-		OPACITYFINETUNING ("Opacity Fine-Tuning"),
-		OBSERVERVIEW ("Observer View"),
+		CUSTOMCOLORS ("Custom Colors"),
+		EQ ("EQ"),
+		FLEETMAPVIEW ("FleetMap View"),
+		PDFUPLOAD ("PDF Upload"),
 		GISLAYERS ("GIS Layers"),
 		LISABOX10 ("LISA Box 1.0"),
-		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast"),
+		MANUAL ("Manual"),
+		MOBILEVIEW ("Mobile View"),
+		OBSERVERVIEW ("Observer View"),
+		OPACITYFINETUNING ("Opacity Fine-Tuning"),
+		OPERATOR ("Operator"),
+		PERCENTCOVERAGE ("Percent Coverage"),
+		RAPIDRESPONSE ("Rapid Response"),
+		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
-		LISAASSETHIGHLIGHT ("LISA Asset Highlight");
+		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
 
 		private final String name;
 
@@ -519,6 +522,17 @@ public final class SurveyorConstants {
 
 		public String toString() {
 			return this.name;
+		}
+		
+		public static LicensedFeatures[] values(LicensedFeatures[] excluds){
+			if(excluds==null||excluds.length==0){
+				return values();
+			}
+			List<LicensedFeatures>  lflist = new LinkedList<LicensedFeatures>(Arrays.asList(LicensedFeatures.values()));
+			lflist.removeAll(Arrays.asList(excluds));
+			LicensedFeatures[] lfs = new LicensedFeatures[lflist.size()];
+			lfs = lflist.toArray(lfs);
+			return lfs;
 		}
 	}
 

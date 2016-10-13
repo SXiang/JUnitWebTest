@@ -5,6 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import common.source.TestSetup;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.ManageCustomersPage;
 
 public class HomePageActions extends BasePageActions {
 	private HomePage homePage = null;
@@ -23,6 +24,7 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("HomePageActions.open", data, dataRowID);
+		homePage.open(data);
 		return true;
 	}
  
@@ -75,6 +77,10 @@ public class HomePageActions extends BasePageActions {
 		return true;
 	}
  
+	public HomePage getHomePage() {
+		return homePage;
+	}
+	
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {

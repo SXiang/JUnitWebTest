@@ -127,21 +127,21 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public void addNewRefGasBottle(String strLotNumber, String strIsoValue,
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue,
 			String strCusName, String strLocName, String strSurveyor) {
-		this.addRefGasBottle(strLotNumber, strIsoValue, "1", strCusName, strLocName, strSurveyor);
+		return this.addRefGasBottle(strLotNumber, strIsoValue, "1", strCusName, strLocName, strSurveyor);
 	}
 
-	public void addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
 			String strCusName, String strLocName, String strSurveyor) {
-		this.addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor);
+		return this.addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor);
 	}
 
-	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+	public boolean addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
 			String strCusName, String strLocName, String strSurveyor) {
-		addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor, true);
+		return addRefGasBottle(strLotNumber, strIsoValue, ethMthRto, strCusName, strLocName, strSurveyor, true);
 	}
-	public void addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
+	public boolean addRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,
 			String strCusName, String strLocName, String strSurveyor, boolean cancelIfError) {
 		Log.clickElementInfo("Add New RefGas Bottle");
 		this.btnAddNewRefGasBottle.click();
@@ -159,27 +159,14 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 			this.inputEthMthRto.sendKeys(ethMthRto);
 		}
 		
-		List<WebElement> options = this.dropdownSurveyor.findElements(By
-				.tagName("option"));
-		for (WebElement option : options) {
-			if (option
-					.getText()
-					.trim()
-					.equalsIgnoreCase(
-							strCusName + " - " + strLocName + " - "
-									+ strSurveyor)){
-				Log.info("Select Surveyor '"+strCusName + " - " + strLocName + " - "
-						+ strSurveyor+"'");
-				option.click();
-				break;
-			}
-		}
+		Log.info("Select surveyor '"+strCusName + " - " + strLocName + " - " + strSurveyor+"'");
+		selectDropdownOption(this.dropdownSurveyor, strCusName + " - " + strLocName + " - " + strSurveyor);
 		
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
 		if(!cancelIfError){
-			return;
+			return true;
 		}
 		
 		if (isElementPresent(this.panelDupRgbErrorXPath)) {
@@ -193,8 +180,10 @@ public class ManageRefGasBottlesPage extends SurveyorBasePage {
 				Log.clickElementInfo("Cancel");
 				this.btnCancel.click();
 				this.waitForPageLoad();
+				return false;
 			}
-		}
+		}		
+		return true;
 	}
 
 	public boolean addNewRefGasBottle(String strLotNumber, String strIsoValue, String ethMthRto,  

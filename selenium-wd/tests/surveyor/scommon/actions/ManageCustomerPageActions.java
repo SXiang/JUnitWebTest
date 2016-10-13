@@ -96,7 +96,7 @@ public class ManageCustomerPageActions extends BasePageActions {
 		return true;
 	}
 	
-	private ManageCustomersPage getManageCustomersPage() {
+	public ManageCustomersPage getManageCustomersPage() {
 		return (ManageCustomersPage)this.getPageObject();
 	}
 
