@@ -566,10 +566,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
 					<include name="**/ObserverViewPageTest2.class" />
-					<include name="**/DriverViewPageTest2.class" />
-					<include name="**/LicensedFeatureAndVisibilityTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
