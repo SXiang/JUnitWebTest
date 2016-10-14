@@ -11,8 +11,8 @@ import common.source.Log;
 public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseEntity {
 	private String reportId;
 	private String analyzerId;
-	private String startDateTimeWithTZ;
-	private String endDateTimeWithTZ;
+	private String preferredPreferredStartDateTimeWithTZ;
+	private String preferredEndDateTimeWithTZ;
 	private String userName;
 	private String tag;
 	private String stabilityClass;
@@ -38,20 +38,20 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		this.analyzerId = analyzerId;
 	}
 
-	public String getStartDateTimeWithTZ() {
-		return startDateTimeWithTZ;
+	public String getPreferredStartDateTimeWithTZ() {
+		return preferredPreferredStartDateTimeWithTZ;
 	}
 
-	public void setStartDateTimeWithTZ(String startDateTimeWithTZ) {
-		this.startDateTimeWithTZ = startDateTimeWithTZ;
+	public void setPreferredStartDateTimeWithTZ(String preferredPreferredStartDateTimeWithTZ) {
+		this.preferredPreferredStartDateTimeWithTZ = preferredPreferredStartDateTimeWithTZ;
 	}
 
-	public String getEndDateTimeWithTZ() {
-		return endDateTimeWithTZ;
+	public String getPreferredEndDateTimeWithTZ() {
+		return preferredEndDateTimeWithTZ;
 	}
 
-	public void setEndDateTimeWithTZ(String endDateTimeWithTZ) {
-		this.endDateTimeWithTZ = endDateTimeWithTZ;
+	public void setPreferredEndDateTimeWithTZ(String preferredEndDateTimeWithTZ) {
+		this.preferredEndDateTimeWithTZ = preferredEndDateTimeWithTZ;
 	}
 
 	public String getUserName() {
@@ -89,13 +89,13 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 	@Override
 	public String toString(){
 		String wsp = " ";
-		long duration = DateUtility.getDuration(getStartDateTimeWithTZ(), getEndDateTimeWithTZ(), true);
-		String text = getStartDateTimeWithTZ() + wsp + getEndDateTimeWithTZ() + wsp + duration + wsp + getUserName()
+		long duration = DateUtility.getDuration(getPreferredStartDateTimeWithTZ(), getPreferredEndDateTimeWithTZ(), true);
+		String text = getPreferredStartDateTimeWithTZ() + wsp + getPreferredEndDateTimeWithTZ() + wsp + duration + wsp + getUserName()
 				+ wsp + getDescription()
 				+ wsp + getAnalyzerId() + wsp + getTag() + wsp+getStabilityClass();
 		return text;
 	}
-	
+
 	public boolean isEquals(StoredProcComplianceAssessmentGetReportDrivingSurveys obj) {
 
 		if (!((this.getAnalyzerId().trim()).equals(obj.getAnalyzerId().trim()))) {
@@ -103,15 +103,15 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 			return false;
 		}
 		String minutesPattern = "(\\d{1,2}:\\d{1,2}):\\d{1,2}";
-		String expectedDate = obj.getStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
-		String actualDate = this.getStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		String expectedDate = obj.getPreferredStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		String actualDate = this.getPreferredStartDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
 
 		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
 			Log.warn(String.format("StartDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
 			return false;
 		}
-		expectedDate = obj.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
-		actualDate = this.getEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		expectedDate = obj.getPreferredEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
+		actualDate = this.getPreferredEndDateTimeWithTZ().trim().replaceFirst(minutesPattern,"$1").replaceAll("\\s+", " ");
 		if(DateUtility.compareDatesWithTZ(expectedDate, false, actualDate, false)!=0){
 			Log.warn(String.format("EndDate is not match, Expect '%s', Actual '%s'", expectedDate, actualDate));
 			return false;
@@ -154,8 +154,8 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		StoredProcComplianceAssessmentGetReportDrivingSurveys objReport = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
 		try {
 			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
-			objReport.setStartDateTimeWithTZ(resultSet.getString("StartDateTimeWithTZ"));
-			objReport.setEndDateTimeWithTZ(resultSet.getString("EndDateTimeWithTZ"));
+			objReport.setPreferredStartDateTimeWithTZ(resultSet.getString("PreferredStartDateTimeWithTZ"));
+			objReport.setPreferredEndDateTimeWithTZ(resultSet.getString("PreferredEndDateTimeWithTZ"));
 			objReport.setUserName(resultSet.getString("UserName"));
 			objReport.setTag(resultSet.getString("Tag"));
 			objReport.setStabilityClass(resultSet.getString("StabilityClass"));
