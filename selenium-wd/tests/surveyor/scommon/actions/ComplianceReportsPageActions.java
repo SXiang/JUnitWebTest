@@ -3088,8 +3088,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportOptViewLayersAssetsDataRow viewLayersAssetsDataRow = viewLayersAssetsDataReader.getDataRow(idx);
 			if (customerRowID == Integer.valueOf(viewLayersAssetsDataRow.customerRowID)) {
 				foundAtleastOne = true;
-				List<WebElement> assetElements = this.getComplianceReportsPage().getViewLayerAssetCheckboxes(viewLayersAssetsDataRow.assetID);
-				if (assetElements.size() <= 0) {
+				WebElement assetElement = this.getComplianceReportsPage().getViewLayerAssetCheckbox(viewLayersAssetsDataRow.assetID);
+				if (assetElement == null) {
 					return false;
 				}
 			}
@@ -3115,8 +3115,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportOptViewLayersBoundaryDataRow viewLayersBoundaryDataRow = viewLayersBoundaryDataReader.getDataRow(idx);
 			if (customerRowID == Integer.valueOf(viewLayersBoundaryDataRow.customerRowID)) {
 				foundAtleastOne = true;
-				List<WebElement> boundaryElements = this.getComplianceReportsPage().getViewLayerBoundaryCheckboxes(viewLayersBoundaryDataRow.boundaryName);
-				if (boundaryElements.size() <= 0) {
+				WebElement boundaryElement = this.getComplianceReportsPage().getViewLayerBoundaryCheckbox(viewLayersBoundaryDataRow.boundaryName);
+				if (boundaryElement == null) {
 					return false;
 				}
 			}

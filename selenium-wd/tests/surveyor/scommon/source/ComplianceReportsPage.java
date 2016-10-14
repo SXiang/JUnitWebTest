@@ -1881,9 +1881,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 												// Asset/Boundary
 			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
 				// Asset key.
-				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
-				if (assetElements.size() > 0) {
-					SelectElement(assetElements.get(0));
+				WebElement assetElement = getViewLayerAssetCheckbox(key);
+				if (assetElement != null) {
+					SelectElement(assetElement);
 				}
 			}
 		}
@@ -1897,24 +1897,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
-				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
-				if (boundaryElements.size() > 0) {
-					SelectElement(boundaryElements.get(0));
+				WebElement boundaryElement = getViewLayerBoundaryCheckbox(value);
+				if (boundaryElement != null) {
+					SelectElement(boundaryElement);
 				}
 			}
 		}
 	}
 
-	public List<WebElement> getViewLayerAssetCheckboxes(String key) {
-		String elementId = String.format("report-asset-layers-%s", key);
-		List<WebElement> assetElements = driver.findElements(By.id(elementId));
-		return assetElements;
+	public WebElement getViewLayerAssetCheckbox(String key) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-asset-layers-%s", key));
 	}
 
-	public List<WebElement> getViewLayerBoundaryCheckboxes(String value) {
-		String elementId = String.format("report-boundry-layers-%s", value);
-		List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
-		return boundaryElements;
+	public WebElement getViewLayerBoundaryCheckbox(String value) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-boundry-layers-%s", value));
 	}
 
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
