@@ -177,8 +177,8 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern_firstPage = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
-	public static final String STRPaginationMsgPattern_anyPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
+	public static final String STRPaginationMsgPattern_firstPage = "Showing 1 to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_anyPage = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries.*";
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
@@ -310,18 +310,19 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str, boolean firstPage){
 		Log.method("setPagination", str);
 
+		String paginationMsg = STRPaginationMsgPattern_anyPage;
+
+		if(firstPage){
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str); 
+			jsClick(firstBtn);
+		}
+
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
-					if(firstPage){
-						firstBtn.click();
-						waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage,str));
-					}else{
-						waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
-					}
-					
+					waitForNumberOfRecords(paginationMsg);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
