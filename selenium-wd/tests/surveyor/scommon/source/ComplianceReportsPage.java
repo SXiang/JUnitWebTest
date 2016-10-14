@@ -1881,9 +1881,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 												// Asset/Boundary
 			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
 				// Asset key.
-				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
-				if (assetElements.size() > 0) {
-					SelectElement(assetElements.get(0));
+				WebElement assetElement = getViewLayerAssetCheckbox(key);
+				if (assetElement != null) {
+					SelectElement(assetElement);
 				}
 			}
 		}
@@ -1897,24 +1897,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
-				List<WebElement> boundaryElements = getViewLayerBoundaryCheckboxes(value);
-				if (boundaryElements.size() > 0) {
-					SelectElement(boundaryElements.get(0));
+				WebElement boundaryElement = getViewLayerBoundaryCheckbox(value);
+				if (boundaryElement != null) {
+					SelectElement(boundaryElement);
 				}
 			}
 		}
 	}
 
-	public List<WebElement> getViewLayerAssetCheckboxes(String key) {
-		String elementId = String.format("report-asset-layers-%s", key);
-		List<WebElement> assetElements = driver.findElements(By.id(elementId));
-		return assetElements;
+	public WebElement getViewLayerAssetCheckbox(String key) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-asset-layers-%s", key));
 	}
 
-	public List<WebElement> getViewLayerBoundaryCheckboxes(String value) {
-		String elementId = String.format("report-boundry-layers-%s", value);
-		List<WebElement> boundaryElements = driver.findElements(By.id(elementId));
-		return boundaryElements;
+	public WebElement getViewLayerBoundaryCheckbox(String value) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-boundry-layers-%s", value));
 	}
 
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
@@ -2387,13 +2383,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			Log.info("Looking for driving survey '" + actualLine + "' in DB");
 			for (StoredProcComplianceAssessmentGetReportDrivingSurveys survey : listFromStoredProc) {
 				expectedLine = survey.toString().replaceAll(" ", "");
+				Log.info("Driving survey line in DB = [" + expectedLine + "]");
 				if (actualLine.equalsIgnoreCase(expectedLine)) {
+					Log.info("Found match for driving survey in DB.");
 					validLine = true;
 					break;
 				}
 			}
 			if (!validLine) {
-				Log.error(String.format("Driving survey in PDF is not found, '%s'", actualLine));
+				Log.error(String.format("Driving survey in PDF is not found in DB, '%s'", actualLine));
 				return false;
 			}
 		}
@@ -2568,8 +2566,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
 				return false;
 			}
-			reportDrivingObj.setStartDateTimeWithTZ(csvRow.get("SurveyStartDateTime").trim());
-			reportDrivingObj.setEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
+			reportDrivingObj.setPreferredStartDateTimeWithTZ(csvRow.get("SurveyStartDateTime").trim());
+			reportDrivingObj.setPreferredEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
 			reportDrivingObj.setUserName(csvRow.get("UserName").trim());
 			reportDrivingObj.setDescription(csvRow.get("Surveyor").trim());
 			reportDrivingObj.setAnalyzerId(csvRow.get("Analyzer").trim());
