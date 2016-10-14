@@ -33,7 +33,8 @@ public class RegexUtility {
 	public static final String REGEX_PATTEN_SPECIAL_CHARACTERS = "[<>:/?*\"|\\\\]";
 	public static final String REGEX_PATTEN_NOT_METHODNAME_CHARACTERS = "[^a-zA-Z0-9_\\.]";
 	public static final String FIELD_NOTE_LINE_REGEX_PATTERN = "^\\d+\\. .*";
-	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^\\? \\d+ .*";
+	public static final String SSRS_PDF_PAGE_FOOTER_PATTERN = "^\\d+ of  \\d+.*";
+	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^(\\? )?\\d+ .*";
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
