@@ -227,7 +227,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -288,7 +288,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findCustomerAndOpenEditPage(String customerName) {
 		Log.method("findCustomerAndOpenEditPage", customerName);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -346,7 +346,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
 		Log.method("editExistingCustomerName", customerName, eulaNew, enableCustomer);
 		Log.info(String.format("Edit customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -436,7 +436,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public String getCustomerStatus(String customerName) {
 		Log.method("getCustomerStatus", customerName);
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -526,7 +526,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public boolean changeCustomerAccountStatus(String customerName, boolean bEnabled) {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
