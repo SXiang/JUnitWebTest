@@ -72,7 +72,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_EQReport001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_EQReport001</stringProp>
-            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.value">651E83D3-0A0D-B480-F6F1-39DAC6BBA9CB</stringProp>
             <stringProp name="Argument.desc">/Reports/CopyEQReport will be added to test after this report ready</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -103,7 +103,7 @@
           </elementProp>
           <elementProp name="APISecurityTest_Survey001" elementType="Argument">
             <stringProp name="Argument.name">APISecurityTest_Survey001</stringProp>
-            <stringProp name="Argument.value">271d9db6-c0bd-eb32-2b48-39d1531dc264</stringProp>
+            <stringProp name="Argument.value">6486e6d3-4e45-df81-6d86-39dac58bcdc7</stringProp>
             <stringProp name="Argument.desc">sqapicdr: simuAuto-Surveyor1-SimAuto-Analyzer1 [name is not fixed]</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -345,6 +345,20 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="resultSetHandler">Store as String</stringProp>
           <stringProp name="resultVariable">AssessmentReports002</stringProp>
           <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetEQReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_EQReport001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
         </JDBCSampler>
         <hashTree/>
         <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
@@ -740,6 +754,20 @@ Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</string
           <stringProp name="variableNames"></stringProp>
         </JDBCSampler>
         <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetEQReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="query">select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_EQReport001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="resultVariable"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+        </JDBCSampler>
+        <hashTree/>
         <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
           <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
 ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
@@ -1006,7 +1034,7 @@ if(!response.contains (xpath)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_License.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_License.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
