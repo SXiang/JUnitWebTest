@@ -680,12 +680,6 @@ if(!response.contains (xpath) || response.contains(&quot;&lt;title&gt;Unauthoriz
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Test Action" enabled="true">
-          <intProp name="ActionProcessor.action">1</intProp>
-          <intProp name="ActionProcessor.target">0</intProp>
-          <stringProp name="ActionProcessor.duration">20</stringProp>
-        </TestAction>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="UnLicensed User" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
