@@ -1034,7 +1034,7 @@ if(!response.contains (xpath)){
             <url>true</url>
           </value>
         </objProp>
-        <stringProp name="filename">${projectHome}\result\resultTable_License.csv</stringProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_License.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
