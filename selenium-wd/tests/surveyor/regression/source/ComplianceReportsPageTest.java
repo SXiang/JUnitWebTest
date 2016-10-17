@@ -88,6 +88,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest extends BaseReportsPageTest {
+
+	protected static final Integer DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 2400;  // Max timeout= 40 mins for report gen.
+
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
@@ -135,7 +138,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-
+		this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
@@ -401,9 +404,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC170 Test Description: Duplicate report
-	 *
 	 * @throws Exception
 	 *
+	 * US3605 - This test currently fails on Assertion since we always get back the oldest report ID from GetReportStat API.
+	 * Opened US3605 to track updating GetReportStat API to return the most recent report when there is more than 1 match for report title.
 	 */
 	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() throws Exception {
@@ -456,7 +460,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -959,8 +963,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-
 		} else
 			fail("\nTestcase TC212 failed.\n");
 	}
@@ -1153,10 +1155,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
-			if (this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath())) {
-				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, SQACUSSU));
-			} else
-				fail("\nTestcase TC297 failed.\n");
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
 		} else
 			fail("\nTestcase TC297 failed.\n");
 

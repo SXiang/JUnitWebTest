@@ -3236,6 +3236,38 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().checkActionStatus(reportsDataRow.title,
 				LoginPageActions.workingDataRow.username, reportsDataRow.tCID);
 	}
+	/**
+	 * Executes verifyStandardReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStandardReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyStandardReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isStandardReportModeShown();
+	}
+
+	/**
+	 * Executes verifyRapidResponseReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRapidResponseReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyRapidResponseReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isRapidResponseReportModeShown();
+	}
+
+	/**
+	 * Executes verifyManualReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyManualReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyManualReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isManualReportModeShown();
+	}
 
 	/**
 	 * Executes verifyStandardSurveyModeIsShownOnPage action.
@@ -3576,6 +3608,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysMatchSelectedMode")) { return this.verifySearchedSurveysMatchSelectedMode(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSpecifiedCustomer")) { return this.verifySearchedSurveysAreForSpecifiedCustomer(data, dataRowID); }
 		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
+		else if (actionName.equals("verifyStandardReportModeIsShownOnPage")) { return this.verifyStandardReportModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyRapidResponseReportModeIsShownOnPage")) { return this.verifyRapidResponseReportModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyManualReportModeIsShownOnPage")) { return this.verifyManualReportModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyStandardSurveyModeIsShownOnPage")) { return this.verifyStandardSurveyModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyRapidResponseSurveyModeIsShownOnPage")) { return this.verifyRapidResponseSurveyModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyManualSurveyModeIsShownOnPage")) { return this.verifyManualSurveyModeIsShownOnPage(data, dataRowID); }

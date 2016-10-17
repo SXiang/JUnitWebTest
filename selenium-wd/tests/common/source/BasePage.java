@@ -107,6 +107,9 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = "#datatable td.dataTables_empty")
 	private WebElement emptyDataTableMessage;
+
+	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
+	private List<WebElement> siteErrorMessage;
 	
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -248,6 +251,14 @@ public class BasePage {
 		driver.get(strBaseURL + "/Picarro/ServerLog");
 	}
 
+	public boolean verifyFleetMapLinkIsClickable() {
+		Log.method("Verify if Fleet Map link is clickable");
+		if(WebElementExtender.isElementPresentAndDisplayed(linkFleetMap)){
+			return linkFleetMap.isEnabled();
+		}
+		return false;
+	}
+	
 	public boolean isLinkBroken() {
 		boolean result = false;
 		waitForPageToLoad();
@@ -383,6 +394,7 @@ public class BasePage {
 			}catch(Exception e){
 				numTry++;
 				Log.error("Failed to select option '"+option+"'");
+				waitForPageToLoad();
 			}
 		}while(!selected&&numTry<5);
 		if(!selected){
@@ -414,5 +426,13 @@ public class BasePage {
     		}
     	}
     	return true;
+    }
+    
+    public String getSiteErrorMsg(){
+    	String errMsg = "";
+    	for(WebElement msg:siteErrorMessage){
+    		errMsg += msg.getText();
+    	}
+    	return errMsg;
     }
 }

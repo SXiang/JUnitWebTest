@@ -71,55 +71,42 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement displaySwitchFovsDivElement;
 
 	@FindBy(id = "display_switch_8hour_history")
-	@CacheLookup
 	protected WebElement displaySwitch8HourHistory;
 
 	@FindBy(id = "display_switch_windrose")
-	@CacheLookup
 	protected WebElement displaySwitchWindrose;
 
 	@FindBy(id = "display_switch_concentration_chart")
-	@CacheLookup
 	protected WebElement displaySwitchConcentrationChart;
 
 	@FindBy(id = "display_switch_notes")
-	@CacheLookup
 	protected WebElement displaySwitchNotes;
 
 	@FindBy(id = "display_switch_isotopic_analysis")
-	@CacheLookup
 	protected WebElement displaySwitchIsotopicAnalysis;
 
 	@FindBy(id = "display_switch_indications")
-	@CacheLookup
 	protected WebElement displaySwitchIndications;
 
 	@FindBy(id = "display_switch_possible_natural_gas")
-	@CacheLookup
 	protected WebElement displaySwitchPossibleNaturalGas;
 	
 	@FindBy(id = "display_switch_not_natural_gas")
-	@CacheLookup
 	protected WebElement displaySwitchNotNaturalGas;
 	
 	@FindBy(id = "display_switch_vehicle_exhaust")
-	@CacheLookup
 	protected WebElement displaySwitchVehicleExhaust;
 	
 	@FindBy(id = "display_switch_lisas")
-	@CacheLookup
 	protected WebElement displaySwitchLisas;
 
 	@FindBy(id = "display_switch_fovs")
-	@CacheLookup
 	protected WebElement displaySwitchFovs;
 
 	@FindBy(id = "map_switch_satellite")
-	@CacheLookup
 	protected WebElement mapSwitchSatellite;
 
 	@FindBy(id = "map_switch_map")
-	@CacheLookup
 	protected WebElement mapSwitchMap;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='gis_left']/li[1]/div")
@@ -153,71 +140,54 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	protected WebElement useAllBoundariesDivElement;
 
 	@FindBy(id = "d08fc87f-f979-4131-92a9-3d82f37f4bba")
-	@CacheLookup
 	private WebElement materialTypeCopper;
 
 	@FindBy(id = "f3955e82-dd13-4842-84f7-502bcda6b57a")
-	@CacheLookup
 	private WebElement materialTypeUnprotectedSteel;
 
 	@FindBy(id = "44353e68-0694-4f05-85cb-84d753ea278c")
-	@CacheLookup
 	private WebElement materialTypeProtectedSteel;
 
 	@FindBy(id = "96caf1f5-d5c5-461d-9ce3-d210c20a1bb0")
-	@CacheLookup
 	private WebElement materialTypeCastIron;
 
 	@FindBy(id = "ad701312-c470-482a-be45-ef37770e2ce6")
-	@CacheLookup
 	private WebElement materialTypeOtherPlastic;
 
 	@FindBy(id = "f14735de-6c9b-4423-8533-f243a7fe4e90")
-	@CacheLookup
 	private WebElement materialTypePEPlastic;
 
 	@FindBy(id = "gis_switch_all_pipes")
-	@CacheLookup
 	private WebElement useAllPipes;
 
 	@FindBy(id = "551cb7c0-005b-4e3e-bfae-d19da0ed7efe")
-	@CacheLookup
 	private WebElement smallBoundary;
 
 	@FindBy(id = "024249ae-374b-4f6f-bd87-e8fdcacb48e1")
-	@CacheLookup
 	private WebElement bigBoundary;
 
 	@FindBy(id = "gis_switch_all_boundaries")
-	@CacheLookup
 	private WebElement useAllBoundaries;
 
 	@FindBy(id = "bottom_button_exit")
-	@CacheLookup
 	private WebElement curtainReturnButton;
 
 	@FindBy(id = "bottom_button_arrow_up")
-	@CacheLookup
 	private WebElement curtainArrowUpButton;
 
 	@FindBy(id = "bottom_button_arrow_down")
-	@CacheLookup
 	private WebElement curtainArrowDownButton;
 
 	@FindBy(id = "bottom_button_arrow_left")
-	@CacheLookup
 	private WebElement curtainArrowLeftButton;
 
 	@FindBy(id = "bottom_button_arrow_right")
-	@CacheLookup
 	private WebElement curtainArrowRightButton;
 
 	@FindBy(id = "bottom_button_zoom_in")
-	@CacheLookup
 	private WebElement curtainZoomInButton;
 
 	@FindBy(id = "bottom_button_zoom_out")
-	@CacheLookup
 	private WebElement curtainZoomOutButton;
 
 	@FindBy(id = "bottom_button_mode")
@@ -227,22 +197,18 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	protected WebElement displayButton;
 
 	@FindBy(id = "bottom_button_map")
-	@CacheLookup
 	private WebElement mapButton;
 
 	@FindBy(id = "bottom_button_gis")
-	@CacheLookup
 	private WebElement gisButton;
 
 	@FindBy(id = "bottom_button_curtain_view")
-	@CacheLookup
 	private WebElement curtainButton;
 
 	@FindBy(id = "bottom_button_status")
 	private WebElement statusButton;
 	
 	@FindBy(id = "bottom_logo")
-	@CacheLookup
 	private WebElement picarroLogoButton;
 
 	@FindBy(css = "#map.map button[title='Zoom in']")
@@ -258,19 +224,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement divBlockedUI;
 	
 	@FindBy(id = "btn_close_annotation")
-	@CacheLookup
 	private WebElement fieldNotesDialogCloseButton;
 
 	@FindBy(id = "display_menu")
-	@CacheLookup
 	private WebElement displayMenu;
 
 	@FindBy(id = "gis_menu")
-	@CacheLookup
 	private WebElement gisMenu;
 	
 	@FindBy(id = "base_map_menu")
-	@CacheLookup
 	protected WebElement mapMenu;
 	
 	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
@@ -442,6 +404,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public WebElement getDivBlockedUI() {
 		return this.divBlockedUI;
+	}
+
+	public boolean isCurtainButtonPresent(){
+		return WebElementExtender.isElementPresentAndDisplayed(curtainButton);
 	}
 	
 	public boolean isModeButtonVisible() {

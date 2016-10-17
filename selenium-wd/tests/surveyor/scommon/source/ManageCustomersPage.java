@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -49,12 +49,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@FindBy(id = "name-error")
 	private WebElement lblNameError;
-	
+
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
 	private WebElement textAreaEula;
-	
+
 	@FindBy(id = "eula-error")
 	private WebElement lblEulaError;
 
@@ -118,15 +118,17 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean selectLicensedFeature(LicensedFeatures lf, boolean enableFeature) {
 		Log.method("selectLicensedFeature", lf, enableFeature);
 		WebElement inputBox = getInputBoxOfLicensedFeature(lf);
-		if (enableFeature) {
-			if (!inputBox.isSelected()){
-				Log.info("Select licensed features - '"+lf+"'");
-				inputBox.click();
-			}
-		} else {
-			if (inputBox.isSelected()){
-				Log.info("Unselect licensed features - '"+lf+"'");
-				inputBox.click();
+		if (inputBox != null) {
+			if (enableFeature) {
+				if (!inputBox.isSelected()){
+					Log.info("Select licensed features - '"+lf+"'");
+					inputBox.click();
+				}
+			} else {
+				if (inputBox.isSelected()){
+					Log.info("Unselect licensed features - '"+lf+"'");
+					inputBox.click();
+				}
 			}
 		}
 		return enableFeature;
@@ -136,7 +138,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("getInputBoxOfLicensedFeature", lf);
 		String elementId = String.format("LicencedFeatureId-%s", lf.toString());
 		Log.info(String.format("Checkbox element id -> %s", elementId));
-		return driver.findElement(By.id(elementId));
+		return WebElementExtender.findElementIfExists(driver, elementId);
 	}
 
 	public boolean addNewCustomer(String customerName, String eula) {
@@ -376,7 +378,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 				actionCell.click();
 				this.waitForEditPageLoad();
-				
+
 				Log.info("Set EULA - '"+eulaNew+"'");
 				setEULAText(eulaNew);
 				enabledDisableCustomer(enableCustomer);
@@ -497,47 +499,26 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public LicensedFeatures getLicensedFeature(String licFeatureName) {
 		Log.method("getLicensedFeature", licFeatureName);
-		LicensedFeatures licensedFeatures = LicensedFeatures.ASSETBOX;
-		if (licFeatureName.equals("Asset Box")) {
-			licensedFeatures = LicensedFeatures.ASSETBOX;
-		} else if (licFeatureName.equals("Mobile View")) {
-			licensedFeatures = LicensedFeatures.MOBILEVIEW;
-		} else if (licFeatureName.equals("Report Metadata")) {
-			licensedFeatures = LicensedFeatures.REPORTMETADATA;
-		} else if (licFeatureName.equals("Rapid Response")) {
-			licensedFeatures = LicensedFeatures.RAPIDRESPONSE;
-		} else if (licFeatureName.equals("Assessment")) {
-			licensedFeatures = LicensedFeatures.ASSESSMENT;
-		} else if (licFeatureName.equals("Manual")) {
-			licensedFeatures = LicensedFeatures.MANUAL;
-		} else if (licFeatureName.equals("Percent Coverage")) {
-			licensedFeatures = LicensedFeatures.PERCENTCOVERAGE;
-		} else if (licFeatureName.equals("FleetMap View")) {
-			licensedFeatures = LicensedFeatures.FLEETMAPVIEW;
-		} else if (licFeatureName.equals("Operator")) {
-			licensedFeatures = LicensedFeatures.OPERATOR;
-		} else if (licFeatureName.equals("EQ")) {
-			licensedFeatures = LicensedFeatures.EQ;
-		} else if (licFeatureName.equals("Custom Colors")) {
-			licensedFeatures = LicensedFeatures.CUSTOMCOLORS;
-		} else if (licFeatureName.equals("Curtain View")) {
-			licensedFeatures = LicensedFeatures.CURTAINVIEW;
-		} else if (licFeatureName.equals("Opacity Fine-Tuning")) {
-			licensedFeatures = LicensedFeatures.OPACITYFINETUNING;
-		} else if (licFeatureName.equals("Observer View")) {
-			licensedFeatures = LicensedFeatures.OBSERVERVIEW;
-		} else if (licFeatureName.equals("GIS Layers")) {
-			licensedFeatures = LicensedFeatures.GISLAYERS;
-		} else if (licFeatureName.equals("LISA Box 1.0")) {
-			licensedFeatures = LicensedFeatures.LISABOX10;
-		} else if (licFeatureName.equals("Survey Protocol Forecast")) {
-			licensedFeatures = LicensedFeatures.SURVEYPROTOCOLFORECAST;
-		} else if (licFeatureName.equals("Report ShapeFile")) {
-			licensedFeatures = LicensedFeatures.REPORTSHAPEFILE;
+		LicensedFeatures licensedFeature = null;
+		try{
+			licensedFeature = LicensedFeatures.valueOf(licFeatureName);
+		}catch(Exception e){
+			Log.error(e.toString());
 		}
-		return licensedFeatures;
+
+		return licensedFeature;
 	}
 
+	public boolean verifyCustomerLicensedFeatures(LicensedFeatures[] lfs){
+		for(LicensedFeatures lf:lfs){
+			WebElement checkBox = getInputBoxOfLicensedFeature(lf);
+			if(!checkBox.isSelected()){
+				Log.error(String.format("Licensed Features '%s' is not selected for this customer", lf));
+				return false;
+			}
+		}
+		return true;
+	}
 	public String getEulaText() {
 		Log.method("getEulaText");
 		return this.textAreaEula.getAttribute("value");
@@ -605,7 +586,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 		return false;
 	}
-	
+
 	public boolean areTableColumnsSorted(){
 		Log.method("areTableColumnsSorted");
 		if(!isCustomerColumnSorted()){
@@ -617,24 +598,24 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		if(!isStatusColumnSorted()){
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean isCustomerColumnSorted(){
 		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
 	public boolean isAddCustomerBtnPresent() {
 		Log.method("isAddCustomerBtnPresent");
 		return isElementPresent(this.btnAddNewCustomerXPath);

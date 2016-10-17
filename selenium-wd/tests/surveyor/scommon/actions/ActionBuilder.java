@@ -52,7 +52,11 @@ public class ActionBuilder {
 	public static ManageUsersPageActions createManageUsersPageAction() {
 		return new ManageUsersPageActions(driver, baseURL, testSetup);
 	}
-
+	
+	public static ComplianceReportsPageActions createComplianceReportsPageAction() {
+		return new ComplianceReportsPageActions(driver, baseURL, testSetup);
+	}
+	
 	public static TestEnvironmentActions createTestEnvironmentAction() {
 		return new TestEnvironmentActions();
 	}

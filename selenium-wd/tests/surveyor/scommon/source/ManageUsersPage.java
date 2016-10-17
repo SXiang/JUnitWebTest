@@ -164,7 +164,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public void addNewPicarroUser(String email, String password, boolean enabled) {
+	public boolean addNewPicarroUser(String email, String password, boolean enabled) {
 		Log.method("addNewPicarroUser", email, password, enabled);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
@@ -188,8 +188,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+				return false;
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -200,13 +202,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	 * @param location - Location in format [Customer - Location]
 	 * @param timeZone - TimeZone for new user.
 	 */
-	public void addNewPicarroUser(String email, String password, String role,
+	public boolean addNewPicarroUser(String email, String password, String role,
 			String location, String timeZone) {
 		Log.method("addNewPicarroUser", email, password, role, location, timeZone);
-		addNewPicarroUser(email,password,password,role,location,timeZone);
+		return addNewPicarroUser(email,password,password,role,location,timeZone);
 	}
 	
-	public void addNewPicarroUser(String email, String password, String passwordConfirm, String role,
+	public boolean addNewPicarroUser(String email, String password, String passwordConfirm, String role,
 			String location, String timeZone) {
 		Log.method("addNewPicarroUser", email, password, passwordConfirm, role, location, timeZone);
 		Log.clickElementInfo("Add New Picarro User");
@@ -253,22 +255,24 @@ public class ManageUsersPage extends SurveyorBasePage {
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+				return false;
 			}
 		}
+		return true;
 	}
 
-	public void addNewCustomerUser(String customerName, String email,
+	public boolean addNewCustomerUser(String customerName, String email,
 			String password, String role, String location) {
 		Log.method("addNewCustomerUser", customerName, email, password, role, location);
-		addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
+		return addNewCustomerUser(customerName, email, password, role, location, true /*enabled*/);
 	}
 
-	public void addNewCustomerUser(String customerName, String email,
+	public boolean addNewCustomerUser(String customerName, String email,
 			String password, String role, String location, boolean enabled) {
 		Log.method("addNewCustomerUser", customerName, email, password, role, location, enabled);
-		addNewCustomerUser(customerName,email,password,password,role,location,enabled);
+		return addNewCustomerUser(customerName,email,password,password,role,location,enabled);
 	}
-	public void addNewCustomerUser(String customerName, String email,
+	public boolean addNewCustomerUser(String customerName, String email,
 			String password, String passwordConfirm, String role, String location, boolean enabled) {
 		Log.method("addNewCustomerUser", customerName, email, password, passwordConfirm, role, location, enabled);
 
@@ -307,10 +311,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
+				return false;
 			}
 		}
 		
 		this.waitForPageLoad();
+		return true;
 	}
 	
 	public void addNewCustomerUser(String customerName, String email, String password, String role, String timeZone, String location) {

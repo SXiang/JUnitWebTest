@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -40,7 +40,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
  * @author pmahajan
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
@@ -60,7 +60,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC159 Test Description: Generate Generate Reference Gas Capture Report as Administrator
-	 * 
+	 *
 	 */
 	@Test
 	public void TC159_GenerateRefGasRpt_PicarroAdmin() {
@@ -71,7 +71,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
-		
+
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
 		inputList.add(SQACUS);
@@ -100,7 +100,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC162 Test Description: Pagination - 10,25,50 and 100 Reports selection on reference gas report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC162_RefGasRpt_Pagination() {
@@ -112,8 +112,13 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String paginationSetting50 = "50";
 
 		assertTrue(referenceGasReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(!(referenceGasReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+
 		assertTrue(referenceGasReportsPage.checkPaginationSetting(paginationSetting25));
+		assertTrue(!(referenceGasReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+
 		assertTrue(referenceGasReportsPage.checkPaginationSetting(paginationSetting50));
+		assertTrue(!(referenceGasReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
 
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
@@ -121,7 +126,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC179 Test Description: Generate Reference Gas Capture Report as customer admin
-	 * 
+	 *
 	 */
 	@Test
 	public void TC179_GenerateRefGasRpt_CustAdmin() {
@@ -132,7 +137,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
-		
+
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
 		inputList.add(SQACUS);
@@ -162,7 +167,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC187 Test Description: Click on Cancel button present on reference gas report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC187_RefGasRptScreen_CancelBtn() {
@@ -178,7 +183,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC196 Test Description: Generate Generate Reference Gas Capture Report for single day
-	 * 
+	 *
 	 */
 	@Test
 	public void TC196_GenerateRefGasRpt_SingleDay() {
@@ -211,7 +216,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor
-	 * 
+	 *
 	 */
 	@Test
 	public void TC515_GenerateRefGasRpt_CustSupervisor() {
@@ -222,7 +227,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
-		
+
 		ArrayList<String> inputList=new ArrayList<String>();
 		inputList.add(rptTitle);
 		inputList.add(SQACUS);
@@ -249,7 +254,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 		referenceGasReportsPage.logout();
 	}
-	
+
 	private String getEndDate() {
 		Date date = new Date();
 		String endDate = dateFormat.format(date);
@@ -263,10 +268,10 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		LocalDate nowDate = LocalDate.now();
 		// Diff in months is computed based on number of days between the 2 dates.
 		// Use the first day of month as the nowDate() to get the number of times the back button on calendar needs to be clicked.
-		return Integer.parseInt(DateUtility.getDateDiff(LocalDate.of(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY), 
+		return Integer.parseInt(DateUtility.getDateDiff(LocalDate.of(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY),
 				LocalDate.of(nowDate.getYear(), nowDate.getMonthValue(), 1 /*first day of month*/), DatePart.Month).toString());
 	}
-	
+
 	private String getStartDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.set(START_DATE_YEAR, START_DATE_MONTH, START_DATE_DAY);
