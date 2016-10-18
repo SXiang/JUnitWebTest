@@ -58,10 +58,10 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
 			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
 			PageFactory.initElements(driver, driverViewPage);
+			manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
+			PageFactory.initElements(driver, manageCustomersPage);
 			if(testAccount == null){
-				testAccount = createTestAccount("TC2123");
-				manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-				PageFactory.initElements(driver, manageCustomersPage);
+				testAccount = createTestAccount("ObserverViewTest2");
 			}else{
 				loginPage.open();
 				loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
