@@ -2889,11 +2889,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			try {
 				ArrayList<String> reportEthaneList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
-					List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ETHANE_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
-					if (matchingGroups != null && matchingGroups.size() > 0) {
-						line = matchingGroups.get(0);
-						line = line.replaceAll(" +", " ").trim();
-						reportEthaneList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ETHANE_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							line = line.replaceAll(" +", " ").trim();
+							reportEthaneList.add(line);
+						}
 					}
 				}
 
