@@ -2881,16 +2881,17 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", ComplianceReportSSRS_EthaneAnalysisTable);
-		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportEthaneList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
+					List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ETHANE_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+					if (matchingGroups != null && matchingGroups.size() > 0) {
+						line = matchingGroups.get(0);
 						line = line.replaceAll(" +", " ").trim();
 						reportEthaneList.add(line);
 					}
