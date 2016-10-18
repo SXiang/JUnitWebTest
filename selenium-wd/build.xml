@@ -434,7 +434,6 @@
 						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
 						<include name="**/ObserverViewPageTest2.class" />
 						<include name="**/DriverViewPageTest2.class" />
-
 					</fileset>
 				</batchtest>
 			</junit>
