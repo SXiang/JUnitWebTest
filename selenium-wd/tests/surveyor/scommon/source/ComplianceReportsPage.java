@@ -112,6 +112,7 @@ import common.source.LogHelper;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
+import common.source.TextUtility;
 import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
@@ -2880,18 +2881,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", ComplianceReportSSRS_EthaneAnalysisTable);
-		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportEthaneList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
-						line = line.replaceAll(" +", " ").trim();
-						reportEthaneList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							line = line.replaceAll(" +", " ").trim();
+							reportEthaneList.add(line);
+						}
 					}
 				}
 
@@ -2948,18 +2952,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
-		Log.info(String.format("Extracted Isotopic Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
+				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
-						line = line.replaceAll(" +", " ").trim();
-						reportIsotopicList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							Log.info("Matched line as a table row!");
+							line = line.replaceAll(" +", " ").trim();
+							reportIsotopicList.add(line);
+						}
 					}
 				}
 
@@ -2984,7 +2993,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		Log.info("Isotopic Analysis table verification passed");
 		return true;
-
 	}
 
 	/**
@@ -3049,11 +3057,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		ArrayList<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String matchStartString = "Disposition Confidence in Disposition";
+		String matchEndString = "Software Version";
+		ArrayList<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, matchStartString, matchEndString);
 		String indicationTable = "";
 		for (String table : indicationTables) {
 			indicationTable += System.lineSeparator() + table;
 		}
+
+		Log.info(String.format("Extracted values between '%s' and '%s' are: %s", matchStartString, matchEndString, indicationTable));
+
 		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -3061,10 +3074,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String extraLines = "";
 		try {
 			while ((line = bufferReader.readLine()) != null) {
+				line = TextUtility.removeNonAsciiSpecialChars(line);
+				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
 				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
-					extraLines = "";
+					if (!line.trim().matches(RegexUtility.SSRS_PDF_PAGE_FOOTER_PATTERN)) {
+						Log.info("Matched line as a table row!");
+						ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+						reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
+						extraLines = "";
+					}
 				} else if (!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
 					extraLines += line.trim();
 				}
