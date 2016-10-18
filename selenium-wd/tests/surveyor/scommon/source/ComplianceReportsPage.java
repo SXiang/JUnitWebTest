@@ -2890,7 +2890,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				ArrayList<String> reportEthaneList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
 					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ETHANE_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
 						if (matchingGroups != null && matchingGroups.size() > 0) {
 							line = matchingGroups.get(0);
 							line = line.replaceAll(" +", " ").trim();
@@ -2953,25 +2953,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
-		if (BaseHelper.isNullOrEmpty(isoTable)) {
-			// If 1st extraction pattern failed, try with 2nd extraction pattern.
-			isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", "Indication Filter");
-		}
-
-		Log.info(String.format("Extracted Isotopic Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
 				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
-						Log.info("Matched line as a table row!");
-						line = line.replaceAll(" +", " ").trim();
-						reportIsotopicList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							Log.info("Matched line as a table row!");
+							line = line.replaceAll(" +", " ").trim();
+							reportIsotopicList.add(line);
+						}
 					}
 				}
 
