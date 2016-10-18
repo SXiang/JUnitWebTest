@@ -107,8 +107,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() throws Exception {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 
 		testEnvironmentAction.startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
 
@@ -209,8 +209,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() throws Exception {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 
 		testEnvironmentAction.startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
 		
@@ -324,11 +324,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 * 7. Stop Driving Survey, Start Isotopic Capture, Reference Bottle Measurement buttons are enabled and System Shutdown button is not present
 	 */
 	@Test
-	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() {
+	public void TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin() throws Exception{
 		Log.info("Running TC1097_SimulatorTest_StartDrivingSurvey_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
@@ -417,13 +417,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 */
 	// Partially automated. Console windows error checking NOT present.
 	@Test
-	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
+	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() throws Exception{
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
@@ -1041,8 +1041,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		
 		Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1050,7 +1050,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		loginPage.open();
+		loginPageAction.open(EMPTY, NOTSET);
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 		
 		testEnvironmentAction.startAnalyzer(EMPTY, 33); 	// start simulator and replay db3 file.
@@ -1131,14 +1131,14 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 *	1. User should be navigated to Home page and not to driver view page
 	 **/
 	@Test
-	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() {
+	public void TC1213_SimulatorTest_NewDriverNavigatedToHomePage() throws Exception{
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUS + " - " + SQACUSLOC;
 		
 		Log.info("\nRunning TC1213_SimulatorTest_NewDriverNavigatedToHomePage - Test Description: Standard Survey as new driver user");
 		
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 		
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(SQACUS, userName, USERPASSWORD, CUSUSERROLEDR,location);
@@ -1146,7 +1146,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		manageCustomersPage.open();
 		manageCustomersPage.logout();
 		
-		loginPage.open();
+		loginPageAction.open(EMPTY, NOTSET);
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 		
 		assertTrue(homePage.checkIfAtHomePage());

@@ -158,8 +158,8 @@ public class DriverViewPageTest2 extends BaseMapViewTest {
 	public void TC1227_SimulatorTest_StartDrivingSurvey_CurtainView() throws Exception {
 		Log.info("\nRunning TC1227_StartDrivingSurvey_CurtainView");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, USER_ROW_ID_PICARRO_ADMIN);   /* Picarro Admin */
 
 		testEnvironmentAction.startAnalyzer(EMPTY, 3); 	// start analyzer. SimAuto-Analyzer1
 		driverViewPageAction.open(EMPTY,NOTSET);
