@@ -25,7 +25,7 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
 	public BoundaryDbSeedBuilder() {
 		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_DATA_FOLDER + File.separator + SEED_FILE_NAME;
 	}
-	
+
 	public DbSeed build(String customerID) throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		boolean customerIDSpecified = false;
@@ -33,14 +33,14 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
 			customerIDSpecified = true;
 			workingCSVFile = createCSVFileWithCustomerData(customerID, PK_COL_NAME, TABLE_NAME);
 		}
-		
+
 		DbSeed seedData = new DbSeed();
 		if (customerIDSpecified) {
 			seedData.addCleanupStatement(String.format("DELETE [dbo].[Boundary] WHERE [CustomerId]='%s'", customerID));
 		}
-		
-        try  
-        {              
+
+        try
+        {
     		CSVUtility csvUtility = new CSVUtility();
     		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
     		for (HashMap<String, String> rowItem : allRows) {
@@ -50,14 +50,14 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
     			if (customerIDSpecified) {
     				custId = customerID;
     			}
-    			
+
     			String customerBoundaryTypeId = rowItem.get("CustomerBoundaryTypeID");
     			// If cache contains a newId replace with new id.
     			String custBoundaryTypeIdFromCache = getDbSeedCache().getIdFromTablePKIdCache(CustomerBoundaryTypeDbSeedBuilder.TABLE_NAME, customerBoundaryTypeId);
     			if (custBoundaryTypeIdFromCache != null) {
     				customerBoundaryTypeId = custBoundaryTypeIdFromCache;
     			}
-    			
+
     			String description = rowItem.get("Description");
     			String level = rowItem.get("Level");
     			String shape = rowItem.get("Shape");
@@ -67,16 +67,27 @@ public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
 
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
-        finally  
-        {  
+        catch (Exception e)
+        {
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
+        finally
+        {
             if (customerIDSpecified) {
             	FileUtility.deleteFile(Paths.get(workingCSVFile));
             }
-        }  
+        }
+		return seedData;
+	}
+
+	public DbSeed cleanup(String customerID) {
+		if (customerID == null || customerID.isEmpty()) {
+			throw new IllegalArgumentException(String.format("Customer ID was not specified. CustomerId=[%s]", customerID));
+		}
+
+		DbSeed seedData = new DbSeed();
+		seedData.addCleanupStatement(String.format("DELETE [dbo].[Boundary] WHERE [CustomerId]='%s'", customerID));
+        seedData.setDestinationTableName(TABLE_NAME);
 		return seedData;
 	}
 }

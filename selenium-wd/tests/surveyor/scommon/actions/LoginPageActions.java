@@ -6,6 +6,7 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.RegexUtility;
 import common.source.TestSetup;
@@ -22,9 +23,9 @@ public class LoginPageActions extends BasePageActions {
 	private LoginPage loginPage = null;
 	private HomePage homePage = null;
 	private UserDataReader dataReader = null;
-	
+
 	public static UserDataRow workingDataRow = null;    // Stores the workingDataRow from login action
-	
+
 	public LoginPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
 		loginPage = new LoginPage(driver, strBaseURL, testSetup);
@@ -41,7 +42,7 @@ public class LoginPageActions extends BasePageActions {
 
 	public UserDataRow getUsernamePassword(String usernameColonPassword, Integer dataRowID) throws Exception {
 		UserDataRow dataRow = null;
-		if (usernameColonPassword != null && !usernameColonPassword.isEmpty()) {		
+		if (!BaseHelper.isNullOrEmpty(usernameColonPassword)) {
 			List<String> userPassList = RegexUtility.split(usernameColonPassword, REGEX_PATTERN_SPLIT_BY_COLON);
 			if (userPassList == null || userPassList.size()!=2) {
 				throw new Exception("Invalid argument value for username/password. Value should be in format [username:password]");
@@ -57,7 +58,7 @@ public class LoginPageActions extends BasePageActions {
 		}
 		return dataRow;
 	}
-	
+
 	public Customer getLoggedInUserCustomer() throws Exception, IOException {
 		Customer customer = null;
     	if (LoginPageActions.workingDataRow != null) {
@@ -81,7 +82,7 @@ public class LoginPageActions extends BasePageActions {
 		loginPage.loginNormalAs(dataRow.username, dataRow.password);
 		homePage.waitForPageLoad();
 		// store the working login datarow
-		workingDataRow = dataRow; 
+		workingDataRow = dataRow;
 		return true;
 	}
 
@@ -89,12 +90,12 @@ public class LoginPageActions extends BasePageActions {
 		logAction("LoginPageActions.verifyAccountEnabled", usernameColonPassword, dataRowID);
 		return !loginPage.isAccountDisabled();
 	}
-	
+
 	public boolean verifyAccountDisabled(String usernameColonPassword, Integer dataRowID) throws Exception {
 		logAction("LoginPageActions.verifyAccountDisabled", usernameColonPassword, dataRowID);
 		return !verifyAccountEnabled(usernameColonPassword, dataRowID);
 	}
-	
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
