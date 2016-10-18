@@ -427,6 +427,7 @@
 					<formatter type="xml" />
 					<fileset dir="${build}">
 						<include name="**/ActionsExecutionDriver.class" />
+						<include name="**/DriverViewPageTest.class" />
 						<include name="**/ObserverViewPageTest.class" />
 						<include name="**/ObserverViewPageStressTest.class" />
 						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
