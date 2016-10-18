@@ -434,7 +434,6 @@
 						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
 						<include name="**/ObserverViewPageTest2.class" />
 						<include name="**/DriverViewPageTest2.class" />
-
 					</fileset>
 				</batchtest>
 			</junit>
@@ -566,7 +565,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ACLandVisibilityTest.class" />
+					<include name="**/DriverViewPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
