@@ -566,7 +566,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ACLandVisibilityTest.class" />
+					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
