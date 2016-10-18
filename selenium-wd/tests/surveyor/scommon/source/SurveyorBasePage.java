@@ -105,10 +105,10 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_first']")
 	protected WebElement firstBtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_last']")
 	protected WebElement lastBtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
 
@@ -306,17 +306,26 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str) {
 		setPagination(str, true);
 	}
-	
+
+	public void setPaginationAny(String str) {
+		Log.method("setPaginationAny", str);
+		setPaginationCheckMessage(str, STRPaginationMsgPattern_anyPage);
+	}
+
 	public void setPagination(String str, boolean firstPage){
-		Log.method("setPagination", str);
+		Log.method("setPagination", str, firstPage);
 
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
 		if(firstPage){
-			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str); 
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			jsClick(firstBtn);
 		}
 
+		setPaginationCheckMessage(str, paginationMsg);
+	}
+
+	private void setPaginationCheckMessage(String str, String paginationMsg) {
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
