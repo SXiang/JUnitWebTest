@@ -1,17 +1,12 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
-import common.source.PDFUtility;
-
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -22,12 +17,9 @@ import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
-import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.UserDataReader;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ManageCustomersPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
@@ -40,7 +32,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static ComplianceReportsPage complianceReportsPage;
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
@@ -50,7 +42,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
 		homePageAction = new HomePageActions(driver, baseURL, testSetup);
@@ -63,7 +55,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 		// Select run mode here.
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -77,14 +69,13 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
         		null);
         complianceReportsPageAction.workingDataRow.title = "TC148 Report639729";
         complianceReportsPageAction.workingDataRow.tCID = "UnitTest-US2774";
-        
-        
+
         complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.title);
 		LoginPageActions.workingDataRow = new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null);
 		LoginPageActions.workingDataRow.username = "sqapicsup@picarro.com";
-		
+
 		//Delete all the download zips before test or change the parameter "0" to the download index of the this zip
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 0);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, 0);
@@ -101,38 +92,38 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 */
 	@Test
 	public void TA862_ComplianceReportTest_VerifySurveyFilters() throws Exception {
-		
+
 		Log.info("\nTA862 - Searched Surveys should be filtered by selected report mode");
-		
+
 		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.openNewReportPage();
-		
+
 		ReportModeFilter rmode = ReportModeFilter.Standard;
 		testReportFilters(rmode);
 		SurveyModeFilter smode = SurveyModeFilter.All;
 		testSurveyFilters(smode);
-		
+
 		smode = SurveyModeFilter.Standard;
 		testSurveyFilters(smode);
-		
+
 		smode = SurveyModeFilter.Operator;
 		testSurveyFilters(smode);
-		
+
 		rmode = ReportModeFilter.RapidResponse;
 		testReportFilters(rmode);
 		smode = SurveyModeFilter.RapidResponse;
 		testSurveyFilters(smode);
-		
+
 		rmode = ReportModeFilter.Manual;
 		testReportFilters(rmode);
 		smode = SurveyModeFilter.Manual;
 		testSurveyFilters(smode);
 	}
-	
+
 	private void testReportFilters(ReportModeFilter rmode){
 		complianceReportsPage.selectReportMode(rmode);
-		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));	
+		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));
 	}
 	private void testSurveyFilters(SurveyModeFilter smode){
 		complianceReportsPage.selectSurveyModeForSurvey(smode);

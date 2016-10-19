@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -22,11 +22,13 @@ public class ReportsCompliance extends Reports {
 
 	public static final String ASSET_PREFIX = "Asset_";
 	public static final String BOUNDARY_PREFIX = "Boundary_";
+	public static final String ASSET_ALL_PREFIX = "AssetAll_";
+	public static final String BOUNDARY_ALL_PREFIX = "BoundaryAll_";
 	public static final String CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
 
 	//Report
 	protected String exclusionRadius;
-	
+
 	//Custom Boundary
 	protected List<String> listBoundary;
 	//Custom Boundary
@@ -34,13 +36,13 @@ public class ReportsCompliance extends Reports {
 	protected String NELong;
 	protected String SWLat;
 	protected String SWLong;
-	
+
 	//Custom Boundary - Lat/Long Map Selector
 	private int latLongXOffset;
 	private int latLongYOffset;
 	private int latLongRectHeight;
 	private int latLongRectWidth;
-	
+
 	//View Size (PDF image output);
 	protected String imageMapHeight;
 	protected String imageMapWidth;
@@ -58,7 +60,7 @@ public class ReportsCompliance extends Reports {
 	protected ReportModeFilter reportModeFilter;
 	protected EthaneFilter ethaneFilter;
 
-	private String customerBoundaryName; 
+	private String customerBoundaryName;
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
 
 	public enum EthaneFilter {
@@ -68,7 +70,7 @@ public class ReportsCompliance extends Reports {
 	public enum CustomerBoundaryFilterType {
 		District ("District"),
 		DistrictPlat ("District Plat"),
-		BigBoundary ("Big Boundary"), 
+		BigBoundary ("Big Boundary"),
 		SmallBoundary ("Small Boundary"),
 		LeakSurveyArea ("Leak Survey Area");
 
@@ -95,7 +97,7 @@ public class ReportsCompliance extends Reports {
 		LISA ("LISA", 8),
 		Analysis ("Analysis", 9),
 		StabilityClass ("StabilityClass", 10);
-		
+
 		private final String name;
 		private final Integer colIndex;
 
@@ -112,7 +114,7 @@ public class ReportsCompliance extends Reports {
 			return colIndex;
 		}
 
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -124,7 +126,7 @@ public class ReportsCompliance extends Reports {
 		Result ("Result", 2),
 		IsotopicValueUncertainty ("IsotopicValueUncertainty", 3),
 		FieldNotes ("FieldNotes", 4);
-		
+
 		private final String name;
 		private final Integer colIndex;
 
@@ -141,7 +143,7 @@ public class ReportsCompliance extends Reports {
 			return colIndex;
 		}
 
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -158,7 +160,7 @@ public class ReportsCompliance extends Reports {
 		Disposition ("Disposition", 7),
 		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7),
 		FIeldNotes ("FIeldNotes", 9);
-		
+
 		private final String name;
 		private final Integer colIndex;
 
@@ -192,7 +194,7 @@ public class ReportsCompliance extends Reports {
 		ShowAssets ("ShowAssets", 8),
 		ShowBoundaries ("ShowBoundaries", 9),
 		BaseMap ("BaseMap", 10);
-		
+
 		private final String name;
 		private final Integer colIndex;
 
@@ -208,13 +210,13 @@ public class ReportsCompliance extends Reports {
 		public Integer getIndex() {
 			return colIndex;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);
 		this.exclusionRadius = exclusionRadius;
@@ -231,7 +233,7 @@ public class ReportsCompliance extends Reports {
 		this.viewList=viewList;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
@@ -240,13 +242,13 @@ public class ReportsCompliance extends Reports {
 		this.tablesList=tablesList;
 		this.tagList=tagList;
 		this.viewList=viewList;
-		this.viewLayersList=viewLayersList;		
+		this.viewLayersList=viewLayersList;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
-		this.exclusionRadius=exclusionRadius;		
+		this.exclusionRadius=exclusionRadius;
         this.setListBoundary(listBoundary);
 
 		this.tablesList = tablesList;
@@ -254,7 +256,7 @@ public class ReportsCompliance extends Reports {
 		this.surveyModeFilter=surveyMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList,
 			String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
@@ -266,8 +268,8 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
-			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate,
 			List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
 		this.exclusionRadius=exclusionRadius;
@@ -279,7 +281,7 @@ public class ReportsCompliance extends Reports {
 	}
 
 	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
-			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, 
+			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList,
 			SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
 		this.exclusionRadius=exclusionRadius;
@@ -291,7 +293,7 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
@@ -302,13 +304,13 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, 
-			String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, 
+	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName,
+			String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter,
 			EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList,
 			List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate,geoFilter, tagList);
 		this.exclusionRadius=exclusionRadius;
-		this.setListBoundary(listBoundary);		
+		this.setListBoundary(listBoundary);
 
 		this.fovOpacity=fovOpacity;
 		this.lisaOpacity=lisaOpacity;
@@ -499,7 +501,7 @@ public class ReportsCompliance extends Reports {
 		}
 		return customerBoundaryFilterType;
 	}
-	
+
 	public int getLatLongXOffset() {
 		return latLongXOffset;
 	}
@@ -523,7 +525,7 @@ public class ReportsCompliance extends Reports {
 		this.latLongRectWidth = latLongRectWidth;
 	}
 
-	
+
 	public String getFovOpacity() {
 		return fovOpacity;
 	}
