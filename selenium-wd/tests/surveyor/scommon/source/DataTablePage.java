@@ -257,7 +257,6 @@ public class DataTablePage extends SurveyorBasePage {
 		return isTableSortedAsc(cloumnMap, str, paginationOption, dataTable, -1);
 	}
 	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable, int numRecords) {
-		Log.method("isTableSortedAsc", "...");
 		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
 			List<String> values = getRecords(entry.getKey().trim(), numRecords ).stream().map(String::toLowerCase).collect(Collectors.toList());

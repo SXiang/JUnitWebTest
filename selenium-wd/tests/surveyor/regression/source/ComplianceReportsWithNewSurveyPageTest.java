@@ -58,11 +58,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  measurementSessionsPage);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomerPageAction);
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 	}
