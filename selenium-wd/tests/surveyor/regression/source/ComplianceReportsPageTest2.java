@@ -1419,32 +1419,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
-	 * Script: -  	
-	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 *  - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: - 
-	 *	- - Percent Coverage Forecast check box is not present on UI
-	 */
-	@Test
-	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
-		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Picarro Customer*/
-
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().getNewComplianceReportBtn().click();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-	}
-
-	/**
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -  	
 	 *	- - Log in to application as picarro admin
