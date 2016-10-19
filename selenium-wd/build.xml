@@ -567,6 +567,7 @@
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest4.class" />
 					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+					<include name="**/DriverViewPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
