@@ -18,11 +18,11 @@ public class BaseEntity {
 
     // Enable this flag when debugging data access classes to print log that we do not want printed in normal run.
     protected static boolean DEBUG_LOG = false;
-    
+
     public BaseEntity() {
     	this.connection = ConnectionFactory.createConnection();
     }
-    
+
     public Connection getConnection() {
 		return connection;
 	}
@@ -43,13 +43,33 @@ public class BaseEntity {
 		try {
 			statement = connection.createStatement();
 			return statement.executeUpdate(SQL);
-			
+
 		} catch (SQLException e) {
 			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
 		}
 		return -1;
 	}
-	
+
+	/**
+	 * Executes a query that return a single row with single column of integer value.
+	 * @param SQL
+	 * @return
+	 */
+	public int executeSingleInt(String SQL) {
+		int intColValue = 0;
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(SQL);
+
+			if (resultSet.next()) {
+				intColValue = resultSet.getInt(1);
+			}
+		} catch (SQLException e) {
+			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
+		}
+		return intColValue;
+	}
+
 	public static String getStringColumnValue(ResultSet resultSet, String columnName) throws SQLException
 	{
 		Object columnValue = resultSet.getString(columnName);
@@ -95,7 +115,7 @@ public class BaseEntity {
 		Object columnValue = resultSet.getDouble(columnName);
 		if (resultSet.wasNull()){
 			return Double.MIN_VALUE;
-		} 
+		}
 		return (Double)columnValue;
 	}
 
@@ -104,7 +124,7 @@ public class BaseEntity {
 		Object columnValue = resultSet.getLong(columnName);
 		if (resultSet.wasNull()){
 			return Long.MIN_VALUE;
-		} 
+		}
 		return (Long)columnValue;
 	}
 
@@ -113,7 +133,7 @@ public class BaseEntity {
 		Object columnValue = resultSet.getShort(columnName);
 		if (resultSet.wasNull()){
 			return Short.MIN_VALUE;
-		} 
+		}
 		return (Short)columnValue;
 	}
 
@@ -122,14 +142,14 @@ public class BaseEntity {
 		Object columnValue = resultSet.getInt(columnName);
 		if (resultSet.wasNull()){
 			return Integer.MIN_VALUE;
-		} 
+		}
 		return (Integer)columnValue;
 	}
-	
+
 	public static String trim(String str){
 		return str==null?"":str.trim();
 	}
-	
+
 	public Integer floatCompare(Float value1, Float value2) {
 		if (Math.abs(value1 - value2) < floatPrecision) {
 			return 0;

@@ -20,7 +20,7 @@ public class CustomerBoundaryTypeDbSeedBuilder extends BaseDbSeedBuilder {
 	public CustomerBoundaryTypeDbSeedBuilder() {
 		SeedDataFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + SEED_DATA_FOLDER + File.separator + SEED_FILE_NAME;
 	}
-	
+
 	public DbSeed build(String customerID) throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		boolean customerIDSpecified = false;
@@ -28,42 +28,53 @@ public class CustomerBoundaryTypeDbSeedBuilder extends BaseDbSeedBuilder {
 			customerIDSpecified = true;
 			workingCSVFile = createCSVFileWithCustomerData(customerID, PK_COL_NAME, TABLE_NAME);
 		}
-		
+
 		DbSeed seedData = new DbSeed();
 		if (customerIDSpecified) {
 			seedData.addCleanupStatement(String.format("DELETE [dbo].[CustomerBoundaryType] WHERE [CustomerId]='%s'", customerID));
 		}
-		
-		SQLServerBulkCSVFileRecord fileRecord = null;  
-        try  
-        {              
-            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.  
-            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.  
-            fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);      
-  
-            // Set the metadata for each column to be copied.  
-            fileRecord.addColumnMetadata(1, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(2, null, java.sql.Types.CHAR, 0, 0);  
-            fileRecord.addColumnMetadata(3, null, java.sql.Types.NVARCHAR, 50, 0);  
-            fileRecord.addColumnMetadata(4, null, java.sql.Types.NVARCHAR, 7, 0);  
-            fileRecord.addColumnMetadata(5, null, java.sql.Types.SMALLINT, 0, 0);  
-            fileRecord.addColumnMetadata(6, null, java.sql.Types.BIT, 0, 0);  
-            fileRecord.addColumnMetadata(7, null, java.sql.Types.SMALLINT, 0, 0);  
-            fileRecord.addColumnMetadata(8, null, java.sql.Types.BIT, 0, 0);  
+
+		SQLServerBulkCSVFileRecord fileRecord = null;
+        try
+        {
+            // Get data from the source file by loading it into a class that implements ISQLServerBulkRecord.
+            // Use the SQLServerBulkCSVFileRecord implementation to import the CSV file.
+            fileRecord = new SQLServerBulkCSVFileRecord(workingCSVFile, true);
+
+            // Set the metadata for each column to be copied.
+            fileRecord.addColumnMetadata(1, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(2, null, java.sql.Types.CHAR, 0, 0);
+            fileRecord.addColumnMetadata(3, null, java.sql.Types.NVARCHAR, 50, 0);
+            fileRecord.addColumnMetadata(4, null, java.sql.Types.NVARCHAR, 7, 0);
+            fileRecord.addColumnMetadata(5, null, java.sql.Types.SMALLINT, 0, 0);
+            fileRecord.addColumnMetadata(6, null, java.sql.Types.BIT, 0, 0);
+            fileRecord.addColumnMetadata(7, null, java.sql.Types.SMALLINT, 0, 0);
+            fileRecord.addColumnMetadata(8, null, java.sql.Types.BIT, 0, 0);
 
             seedData.setSeedData(fileRecord);
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
-        finally  
-        {  
+        catch (Exception e)
+        {
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
+        finally
+        {
             if (customerIDSpecified) {
             	FileUtility.deleteFile(Paths.get(workingCSVFile));
             }
-        }  
+        }
+		return seedData;
+	}
+
+	public DbSeed cleanup(String customerID) {
+		if (customerID == null || customerID.isEmpty()) {
+			throw new IllegalArgumentException(String.format("Customer ID was not specified. CustomerId=[%s]", customerID));
+		}
+
+		DbSeed seedData = new DbSeed();
+		seedData.addCleanupStatement(String.format("DELETE [dbo].[CustomerBoundaryType] WHERE [CustomerId]='%s'", customerID));
+        seedData.setDestinationTableName(TABLE_NAME);
 		return seedData;
 	}
 }

@@ -523,7 +523,7 @@ public final class SurveyorConstants {
 		public String toString() {
 			return this.name;
 		}
-		
+
 		public static LicensedFeatures[] values(LicensedFeatures[] excluds){
 			if(excluds==null||excluds.length==0){
 				return values();

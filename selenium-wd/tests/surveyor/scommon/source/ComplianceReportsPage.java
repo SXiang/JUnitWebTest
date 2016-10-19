@@ -362,6 +362,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "report-assethighlighting")
 	protected WebElement highlightLisaAssetDropdown;
 
+	public static final String REPORT_ASSET_SELECTALL_CHKBX_ID = "report-asset-selectall";
+	public static final String REPORT_BOUNDRY_SELECTALL_CHKBX_ID = "report-boundry-selectall";
+
+	@FindBy(id = REPORT_ASSET_SELECTALL_CHKBX_ID)
+	protected WebElement checkboxViewLayerAllAssets;
+
+	@FindBy(id = REPORT_BOUNDRY_SELECTALL_CHKBX_ID)
+	protected WebElement checkboxViewLayerAllBoundaries;
+
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -1886,6 +1895,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (assetElement != null) {
 					SelectElement(assetElement);
 				}
+			} else if (value.startsWith(ReportsCompliance.ASSET_ALL_PREFIX)) {
+				SelectElement(checkboxViewLayerAllAssets);
 			}
 		}
 	}
@@ -1902,6 +1913,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				if (boundaryElement != null) {
 					SelectElement(boundaryElement);
 				}
+			} else if (value.startsWith(ReportsCompliance.BOUNDARY_ALL_PREFIX)) {
+				SelectElement(checkboxViewLayerAllBoundaries);
 			}
 		}
 	}

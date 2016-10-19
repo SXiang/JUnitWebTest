@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.EnumUtility;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -91,7 +92,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean selectLicensedFeatures(LicensedFeatures... lfs) {
-		Log.method("selectLicensedFeature", Arrays.toString(lfs));
+		Log.method("selectLicensedFeatures", Arrays.toString(lfs));
 		if (lfs != null) {
 			for (LicensedFeatures lf : lfs) {
 				selectLicensedFeature(lf);
@@ -501,7 +502,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("getLicensedFeature", licFeatureName);
 		LicensedFeatures licensedFeature = null;
 		try{
-			licensedFeature = LicensedFeatures.valueOf(licFeatureName);
+			licensedFeature = EnumUtility.fromName(licFeatureName, () -> LicensedFeatures.values());
 		}catch(Exception e){
 			Log.error(e.toString());
 		}

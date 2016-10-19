@@ -228,11 +228,11 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList17.add(PIC8HR01TAG); // 8-hr survey.
 
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", "None"));
 		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
@@ -462,11 +462,11 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList18.add(SQACUSDRTAG);
 
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", "None"));
 		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
