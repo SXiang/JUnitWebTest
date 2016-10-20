@@ -545,32 +545,33 @@ public class SurveyorBasePage extends BasePage {
 		By tableContextBy = By.id(dataTableElement);
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
-		for(WebElement tableHeadingElement:headings){
-			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
-				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
-					tableHeadingElement.click();
-					waitForTableDataToLoad();
-					try{
-						String sortOrderCss = "#"+dataTableElement+" thead > tr > th[aria-sort]";
-						waitUntilPresenceOfElementLocated(By.cssSelector(sortOrderCss));
-						WebElementExtender.isAttributePresent(tableHeadingElement, "aria-sort");
-						boolean isAscending =  tableHeadingElement.getAttribute("aria-sort").equals("ascending");
-						if(isAscending){
-							return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}else{
-							return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}
-					}catch(Exception e){
-						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
-						Log.warn(e.toString());
-					}
+		String headerCss = "thead > tr > th[aria-label^='%s:']";
 
-					return false;
+		for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
+			String headerLabel = entry.getKey().trim();
+			if(!isElementPresent(By.cssSelector(String.format(headerCss, headerLabel)))){
+				continue;
+			}
+			WebElement headerLink = tableContext.findElement(By.cssSelector(String.format(headerCss, headerLabel)));
+			String currentOrder = headerLink.getAttribute("aria-sort");
+			boolean isAscending = true;
+			if(currentOrder!=null){
+				isAscending = !currentOrder.equals("ascending");
+			}
+			headerLink.click();
+			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
+			try{
+				if(isAscending){
+					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
+				}else{
+					return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
 				}
+			}catch(Exception e){
+				Log.warn(String.format("Column '%s' of data table is not sortable?", entry.getKey().trim()));
+				Log.warn(e.toString());
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {

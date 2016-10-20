@@ -1,22 +1,21 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
-
+import java.util.Map;
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.WebElementExtender;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -33,7 +32,9 @@ import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -44,8 +45,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static MeasurementSessionsPage measurementSessionsPage;
-
 	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static Map<String, String> testAccount, testSurvey, testReport;
+
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;
 
@@ -56,10 +58,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();
-
 		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  measurementSessionsPage);
-
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 	}
@@ -67,6 +67,11 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	@Before
 	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
+		if(testAccount == null){
+			testAccount = createTestAccount("CusWithoutAsset");
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);		
+		}
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -95,6 +100,10 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();
 	}
 
+	private ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)getReportsPage();
+	}
+	
 	/**
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
 	 * Test Description: Generate report and try to delete the survey used while generating the report
@@ -244,5 +253,36 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
+	}
+	
+	/**
+	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
+	 * Script: -  	
+	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
+	 *  - - Click on Cancel and navigate to Copy compliance screen
+	 * Results: - 
+	 *	- - Percent Coverage Forecast check box is not present on UI
+	 */
+	@Test
+	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
+		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
+
+		String userName = testAccount.get("userName");
+		String userPassword = testAccount.get("userPassword");
+		
+		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
+
+		loginPage.open();
+		loginPage.loginNormalAs(userName, userPassword);
+
+		this.getComplianceReportsPage().open();
+
+		this.getComplianceReportsPage().getNewComplianceReportBtn().click();
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
+		this.getComplianceReportsPage().clickOnCancelBtn();
+
+		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
+		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 	}
 }
