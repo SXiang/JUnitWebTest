@@ -851,7 +851,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "tr[" + rowNum + "]/td[7]/input[@type='checkbox']";
+				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				Log.info(String.format("Select survey - row %d", rowNum));
 				checkBoxActionCell.click();

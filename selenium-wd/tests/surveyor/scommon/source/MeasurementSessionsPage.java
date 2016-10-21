@@ -85,7 +85,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[6]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[@title='Delete Survey']/img")
 	private WebElement firstSurveyDeleteLink;
 
 	public void clickOnFirstSurveyDeleteLink() {

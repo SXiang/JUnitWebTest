@@ -9,8 +9,12 @@ public class ActionBuilder {
 	private static WebDriver driver = TestContext.INSTANCE.getDriver();
 	private static String baseURL = TestContext.INSTANCE.getBaseUrl();
 	private static TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
-	
+
 	public ActionBuilder() {
+	}
+
+	public static HomePageActions createHomePageAction() {
+		return new HomePageActions(driver, baseURL, testSetup);
 	}
 
 	public static LoginPageActions createLoginPageAction() {
@@ -52,11 +56,11 @@ public class ActionBuilder {
 	public static ManageUsersPageActions createManageUsersPageAction() {
 		return new ManageUsersPageActions(driver, baseURL, testSetup);
 	}
-	
+
 	public static ComplianceReportsPageActions createComplianceReportsPageAction() {
 		return new ComplianceReportsPageActions(driver, baseURL, testSetup);
 	}
-	
+
 	public static TestEnvironmentActions createTestEnvironmentAction() {
 		return new TestEnvironmentActions();
 	}
