@@ -252,6 +252,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSUA, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSUA));
 			} else
@@ -617,6 +618,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
@@ -775,6 +777,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.addNewReport(rpt);
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQAPICSUP, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, SQAPICSUP));
 			} else

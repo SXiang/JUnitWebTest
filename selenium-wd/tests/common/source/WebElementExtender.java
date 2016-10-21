@@ -30,7 +30,11 @@ public class WebElementExtender {
 
 	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript(jsScript, element);
+		try{
+			js.executeScript(jsScript, element);
+		}catch(Exception e){
+			Log.warn("Failed to click on the WebElement: "+e.toString());
+		}
 	}
 
    public static boolean isAttributePresent(WebElement element, String attributeName)

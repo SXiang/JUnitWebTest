@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.EnumUtility;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -91,7 +92,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	}
 
 	public boolean selectLicensedFeatures(LicensedFeatures... lfs) {
-		Log.method("selectLicensedFeature", Arrays.toString(lfs));
+		Log.method("selectLicensedFeatures", Arrays.toString(lfs));
 		if (lfs != null) {
 			for (LicensedFeatures lf : lfs) {
 				selectLicensedFeature(lf);
@@ -227,7 +228,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -288,7 +289,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findCustomerAndOpenEditPage(String customerName) {
 		Log.method("findCustomerAndOpenEditPage", customerName);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -346,7 +347,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean editExistingCustomerName(String customerName, String eulaNew, boolean enableCustomer) {
 		Log.method("editExistingCustomerName", customerName, eulaNew, enableCustomer);
 		Log.info(String.format("Edit customer '%s'",customerName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -436,7 +437,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public String getCustomerStatus(String customerName) {
 		Log.method("getCustomerStatus", customerName);
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -501,7 +502,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("getLicensedFeature", licFeatureName);
 		LicensedFeatures licensedFeature = null;
 		try{
-			licensedFeature = LicensedFeatures.valueOf(licFeatureName);
+			licensedFeature = EnumUtility.fromName(licFeatureName, () -> LicensedFeatures.values());
 		}catch(Exception e){
 			Log.error(e.toString());
 		}
@@ -526,7 +527,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public boolean changeCustomerAccountStatus(String customerName, boolean bEnabled) {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 

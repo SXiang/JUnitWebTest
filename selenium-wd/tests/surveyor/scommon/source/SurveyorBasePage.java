@@ -105,10 +105,10 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_first']")
 	protected WebElement firstBtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_last']")
 	protected WebElement lastBtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
 
@@ -177,8 +177,8 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern_firstPage = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
-	public static final String STRPaginationMsgPattern_anyPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
+	public static final String STRPaginationMsgPattern_firstPage = "Showing 1 to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_anyPage = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries.*";
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
@@ -306,22 +306,32 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str) {
 		setPagination(str, true);
 	}
-	
-	public void setPagination(String str, boolean firstPage){
-		Log.method("setPagination", str);
 
+	public void setPaginationAny(String str) {
+		Log.method("setPaginationAny", str);
+		setPaginationCheckMessage(str, STRPaginationMsgPattern_anyPage);
+	}
+
+	public void setPagination(String str, boolean firstPage){
+		Log.method("setPagination", str, firstPage);
+
+		String paginationMsg = STRPaginationMsgPattern_anyPage;
+
+		if(firstPage){
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+			jsClick(firstBtn);
+		}
+
+		setPaginationCheckMessage(str, paginationMsg);
+	}
+
+	private void setPaginationCheckMessage(String str, String paginationMsg) {
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
-					if(firstPage){
-						firstBtn.click();
-						waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage,str));
-					}else{
-						waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
-					}
-					
+					waitForNumberOfRecords(paginationMsg);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
@@ -535,32 +545,33 @@ public class SurveyorBasePage extends BasePage {
 		By tableContextBy = By.id(dataTableElement);
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
-		for(WebElement tableHeadingElement:headings){
-			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
-				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
-					tableHeadingElement.click();
-					waitForTableDataToLoad();
-					try{
-						String sortOrderCss = "#"+dataTableElement+" thead > tr > th[aria-sort]";
-						waitUntilPresenceOfElementLocated(By.cssSelector(sortOrderCss));
-						WebElementExtender.isAttributePresent(tableHeadingElement, "aria-sort");
-						boolean isAscending =  tableHeadingElement.getAttribute("aria-sort").equals("ascending");
-						if(isAscending){
-							return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}else{
-							return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}
-					}catch(Exception e){
-						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
-						Log.warn(e.toString());
-					}
+		String headerCss = "thead > tr > th[aria-label^='%s:']";
 
-					return false;
+		for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
+			String headerLabel = entry.getKey().trim();
+			if(!isElementPresent(By.cssSelector(String.format(headerCss, headerLabel)))){
+				continue;
+			}
+			WebElement headerLink = tableContext.findElement(By.cssSelector(String.format(headerCss, headerLabel)));
+			String currentOrder = headerLink.getAttribute("aria-sort");
+			boolean isAscending = true;
+			if(currentOrder!=null){
+				isAscending = !currentOrder.equals("ascending");
+			}
+			headerLink.click();
+			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
+			try{
+				if(isAscending){
+					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
+				}else{
+					return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
 				}
+			}catch(Exception e){
+				Log.warn(String.format("Column '%s' of data table is not sortable?", entry.getKey().trim()));
+				Log.warn(e.toString());
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {

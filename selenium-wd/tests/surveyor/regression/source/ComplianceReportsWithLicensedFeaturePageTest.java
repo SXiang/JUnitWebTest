@@ -161,7 +161,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		homePage.logout();

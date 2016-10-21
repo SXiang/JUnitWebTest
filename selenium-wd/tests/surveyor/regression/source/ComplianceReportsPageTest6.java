@@ -6,8 +6,10 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.List;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -17,13 +19,19 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
+import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -34,7 +42,6 @@ import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 
-	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ManageUsersPageActions manageUsersPageAction;
@@ -68,14 +75,13 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
+		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
+		loginPageAction = ActionBuilder.createLoginPageAction();
+		complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
-		testEnvironmentAction = new TestEnvironmentActions();
+		testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 	}
 
 	/**
@@ -568,51 +574,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC689_ShapefileAccessExistingCustomer
-	 * Test Description: Shapefile access for existing customer
-	 * Script: -
-	 *	- Log in as Picarro Admin
-	 *	- On Manage Customers page, select a customer that does not have Shapefile generation enabled and click the "Edit" button
-	 *	- Confirm that the "Account Enabled" box is checked and check the "Shapefile Generation Enabled" button
-	 *	- Click OK
-	 *	- On the Compliance Reports page, select a report for that customer that has LISAs, FOV, Breadcrumb, Gaps and/or Assets and click on the thumbnail preview button
-	 *	- Click on the Shapefile export button
-	 * Results: -
-	 *  - - The thumbnail preview grid should include a button for Shapefile export
-	 *	- - The Shapefile should download
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC689, location = ComplianceReportDataProvider.class)
-	public void TC689_ShapefileAccessExistingCustomer(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC689_ShapefileAccessExistingCustomer ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-
-		// Add a new user customer with Report ShapeFile first disabled and then enable it.
-		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, 6 /*customerRowID*/);
-		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
-
-		manageLocationPageAction.open(EMPTY, NOTSET);
-		manageLocationPageAction.createNewLocation(EMPTY, 9);
-
-		// Create the report with the specified customer.
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 	}
 
 	/**

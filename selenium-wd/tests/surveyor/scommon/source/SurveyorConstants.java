@@ -500,8 +500,9 @@ public final class SurveyorConstants {
 		CUSTOMCOLORS ("Custom Colors"),
 		EQ ("EQ"),
 		FLEETMAPVIEW ("FleetMap View"),
-		PDFUPLOAD ("PDF Upload"),
+		GAPGRID10 ("FTP Upload"),
 		GISLAYERS ("GIS Layers"),
+		LISAASSET("LISA Asset Highlight"),
 		LISABOX10 ("LISA Box 1.0"),
 		MANUAL ("Manual"),
 		MOBILEVIEW ("Mobile View"),
@@ -523,7 +524,7 @@ public final class SurveyorConstants {
 		public String toString() {
 			return this.name;
 		}
-		
+
 		public static LicensedFeatures[] values(LicensedFeatures[] excluds){
 			if(excluds==null||excluds.length==0){
 				return values();
