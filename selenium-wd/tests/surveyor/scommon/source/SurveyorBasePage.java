@@ -97,16 +97,16 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement table;
 	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
+	@FindBy(how = How.CSS, using = ".paginate_button.next")
 	protected WebElement nextBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_previous']")
+	@FindBy(how = How.CSS, using = ".paginate_button.previous")
 	protected WebElement previousBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_first']")
+	@FindBy(how = How.CSS, using = ".paginate_button.first")
 	protected WebElement firstBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_last']")
+	@FindBy(how = How.CSS, using = ".paginate_button.last")
 	protected WebElement lastBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
@@ -542,7 +542,8 @@ public class SurveyorBasePage extends BasePage {
 
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
-		By tableContextBy = By.id(dataTableElement);
+		//By tableContextBy = By.id(dataTableElement);
+		By tableContextBy = By.xpath("//*[@id='"+dataTableElement+"'");
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		String headerCss = "thead > tr > th[aria-label^='%s:']";
