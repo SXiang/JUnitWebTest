@@ -347,16 +347,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='datatablePeaks_info']")
+	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
 	protected WebElement paginationInvestigationMsg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks_filter']/label/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes_filter']/label/input")
 	protected WebElement inputInvestigationSearchReport;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
@@ -1582,7 +1582,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 
 	private void waitForInvestigationPageLoad() {
-
 			waitForAJAXCallsToComplete();
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
@@ -2408,7 +2407,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			boolean validLine = false;
 			String expectedLine = "";
 			String actualLine = lines[i].replaceAll(" ", "");
-			Log.info("Looking for driving survey '" + actualLine + "' in DB");
+//			Log.info("Looking for driving survey '" + actualLine + "' in DB");
 			for (StoredProcComplianceAssessmentGetReportDrivingSurveys survey : listFromStoredProc) {
 				expectedLine = survey.toString().replaceAll(" ", "");
 				Log.info("Driving survey line in DB = [" + expectedLine + "]");

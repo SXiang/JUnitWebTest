@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Date;
 
@@ -165,9 +166,10 @@ public class StoredProcComplianceAssessmentGetReportDrivingSurveys extends BaseE
 		StoredProcComplianceAssessmentGetReportDrivingSurveys objReport = new StoredProcComplianceAssessmentGetReportDrivingSurveys();
 		try {
 			objReport.setAnalyzerId(resultSet.getString("AnalyzerId"));
-			float epochStart = resultSet.getFloat("StartEpoch");
-			float epochEnd = resultSet.getFloat("EndEpoch");
-			objReport.setDuration(""+ Math.round((epochEnd - epochStart)/60));
+			BigDecimal epochStart = resultSet.getBigDecimal("StartEpoch");
+			BigDecimal epochEnd = resultSet.getBigDecimal("EndEpoch");
+
+			objReport.setDuration(""+ Math.round(epochEnd.subtract(epochStart).floatValue()/60));
 			objReport.setPreferredStartDateTimeWithTZ(resultSet.getString("PreferredStartDateTimeWithTZ"));
 			objReport.setPreferredEndDateTimeWithTZ(resultSet.getString("PreferredEndDateTimeWithTZ"));
 			objReport.setUserName(resultSet.getString("UserName"));

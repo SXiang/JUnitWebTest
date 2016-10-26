@@ -164,7 +164,6 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
-
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
 			complianceReportsPage.checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, ComplianceReportButtonType.Investigate, true, true);

@@ -634,7 +634,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 											null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },
 				{ "7", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_0, null, null, null, null, null,
 												null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },};
-								}
+			}
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC231() {
