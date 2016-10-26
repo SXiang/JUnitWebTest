@@ -4025,21 +4025,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isInvestigatorColumnSorted(){
 		Log.method("isInvestigatorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Investigator, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	@Override

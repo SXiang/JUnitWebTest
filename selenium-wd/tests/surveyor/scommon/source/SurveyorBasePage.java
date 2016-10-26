@@ -97,16 +97,16 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement table;
 	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
+	@FindBy(how = How.CSS, using = ".paginate_button.next")
 	protected WebElement nextBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_previous']")
+	@FindBy(how = How.CSS, using = ".paginate_button.previous")
 	protected WebElement previousBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_first']")
+	@FindBy(how = How.CSS, using = ".paginate_button.first")
 	protected WebElement firstBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_last']")
+	@FindBy(how = How.CSS, using = ".paginate_button.last")
 	protected WebElement lastBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
