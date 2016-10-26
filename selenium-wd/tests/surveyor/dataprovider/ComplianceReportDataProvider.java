@@ -690,14 +690,14 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsComplianceReports_TC678() {
 		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, 
 			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 27 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
-				{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	// Repeat the test with FOVs, Breadcrumbs, Assets and Gaps (Assets are selected, asset types must also be selected)
 	// Repeat the test with different combinations such as FOV and Breadcrumb
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC680() {
-		return new Object[][] {// { "TC680" /* TestCaseID */, 6 /* userDataRowID */, 30 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
+		return new Object[][] { { "TC680" /* TestCaseID */, 6 /* userDataRowID */, 30 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC680" /* TestCaseID */, 6 /* userDataRowID */, 31 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC680" /* TestCaseID */, 6 /* userDataRowID */, 32 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC680" /* TestCaseID */, 6 /* userDataRowID */, 33 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
