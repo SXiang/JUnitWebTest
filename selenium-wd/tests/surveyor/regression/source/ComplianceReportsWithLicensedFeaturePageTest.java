@@ -4,14 +4,30 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Before;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import surveyor.dataaccess.source.Customer;
+import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
@@ -19,8 +35,10 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 
@@ -28,6 +46,13 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPageActionTest {
 
+	private static LoginPageActions loginPageAction;
+	private static ManageUsersPageActions manageUsersPageAction;
+	private static ManageLocationPageActions manageLocationPageAction;
+
+	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
+	private static ManageSurveyorPageActions manageSurveyorPageAction;
+	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
 
 	private static final String EMPTY = "";
 	private static ManageCustomerPageActions manageCustomerPageAction;
@@ -45,7 +70,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageCustomerPageAction);
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
@@ -63,7 +88,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -98,12 +123,12 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	@Test
 	public void TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense() throws Exception {
 		Log.info("\nRunning TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense");
-		
+
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
@@ -111,7 +136,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
 		homePage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 
@@ -133,7 +158,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
 		homePage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 
@@ -145,7 +170,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		homePage.logout();
-		
+
 		/* Select Manual */
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -153,7 +178,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
 		homePage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 
@@ -186,11 +211,11 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	@Test
 	public void TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance() throws Exception {
 		Log.info("\nRunning TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance");
-		
+
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
 		String rptTitle = testReport.get(SurveyType.Standard+"Title");
 		String strCreatedBy = testReport.get("userName");
@@ -224,7 +249,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
 		homePage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 
@@ -236,7 +261,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		homePage.logout();
-		
+
 		/* Select Manual */
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -244,7 +269,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
 		homePage.logout();
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 
@@ -277,13 +302,13 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
 		SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
 		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
 		String strCreatedBy = testReport.get("userName");
-		
+
 		for(int i=0; i<lfs.length; i++){
 			loginPage.open();
 			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -303,7 +328,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			homePage.logout();
 		}
 	}
-	
+
 	/* * Test Case ID: TC2134_CurtainViewNotAvailableWithoutLicense
 	 * Script:
 	 * - Log into Driver View
@@ -322,17 +347,145 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 		String surveyTag = testSurvey.get(SurveyType.Standard+"Tag");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.CURTAINVIEW);
 		homePage.logout();
-		
+
 		/* Without License */
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
 		homePage.clickOnFirstMatchingDrivingSurvey(surveyTag);
 		assertFalse(driverViewPage.isCurtainButtonPresent());
 	}
+
+	/* * Test Case ID: TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected
+	 * Description: Verify report view PDF and shapefiles when only LISA, Gaps and Assets are selected and no assets are highlighted
+	 * Script:
+	 * - Log in as Picarro Admin
+	 * - On the Compliance Reports page, click the New Compliance Report" button.
+	 * - Fill out the required fields
+	 * - Select a survey that includes LISA boxes that have Assets running through them
+	 * - In the Views section, select LISAs, Gaps and  Assets and generate the report
+	 * - Click the thumbnail preview button 
+	 * - Download report view PDF
+	 * - Click on the "Compliance.zip (Shape)" button 
+	 * - Extract the individual files from the zipped file 
+	 * - View the Shapefile content in ArcGIS
+	 * Results:
+	 * 	 - SSRS PDF should have Highlight LISA Assets and Highlight Gap Assets are not checked in Views section
+	 * 	 - Report View PDF should have LISA, Gaps and assets are displayed. 
+	 * 	 - Assets Intersecting LISA and Gaps are not highlighted
+	 * 	 - The Shapefile zip should download 
+	 * 	 - The Breadcrumb, LISAs, Indications and FOV should reflect only the data from the selected survey. There should be no data from surveys that were not included in the report
+	 * 	 - There should not be shapefiles for PipeIntersectingLISA and PipeIntersectingGap
+	 * 	 - PipeAll, LISA, Gap shape files should be present
+	 * 	 - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
+	 */
+	
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1960, location = ComplianceReportDataProvider.class)
+	public void TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected ...");
+
+		final int DB3_ANALYZER_ROW_ID = 31;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 53;	 		/* Survey information  */
+
+		final int SURVEY_RUNTIME_IN_SECONDS = 15; /* Number of seconds to run the survey for. */
+
+		final int newCustomerRowID = 6;
+		final int newLocationRowID = 9;
+		final int newCustomerUserRowID = 20;
+		final int newSurveyorRowID = 5;
+		final int newAnalyzerRowID = 4;
+		final int newRefGasBottleRowID = 2;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		// Add a new user customer with Report ShapeFile first disabled and then enable it.
+		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);
+
+		// Create new location.
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID);
+
+		// Create new user.
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
+
+		// Create new surveyor.
+		manageSurveyorPageAction.open(EMPTY, NOTSET);
+		manageSurveyorPageAction.createNewSurveyor(EMPTY, newSurveyorRowID /*surveyorRowID*/);
+
+		// Create new analyzer.
+		manageAnalyzerPageAction.open(EMPTY, NOTSET);
+		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, newAnalyzerRowID /*analyzerRowID*/);
+
+		// Create new ref gas bottle.
+		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
+		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, newRefGasBottleRowID /*refGasBottleRowID*/);
+
+		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
+		// For such cases, use the overload with username and password for generateSurveyForUser().
+		String newUsername = ManageUsersPageActions.workingDataRow.username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.password;
+
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		String customerId = customer.getId();
+
+		try {
+			// Add GIS seed for customer to enable GIS elements in New Compliance reports -> views.
+			DbSeedExecutor.executeGisSeed(customerId);
+
+			// Create a survey for the new user.
+			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
+
+			// Re-login as admin user (with username:password format to enforce specific username/password) and create report.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+			// Create report for the new customer.
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		} finally {
+			// Remove GIS seed from the customer.
+			DbSeedExecutor.cleanUpGisSeed(customerId);
+		}
+	}
+	
+
+	/*@Test
+	public void TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected() throws Exception {
+		Log.info("\nRunning TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected");
+
+		String userName = testAccount.get("userName");
+		String userPassword = testAccount.get("userPassword");
+		String customerName = testAccount.get("customerName");
+
+		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
+		String rptTitle = testReport.get(SurveyType.Standard+"Title");
+		String strCreatedBy = testReport.get("userName");
+		
+		
+	}*/
 }
