@@ -1169,7 +1169,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
 				for (int getcolumnvalue = 1; getcolumnvalue <= Columns.size(); getcolumnvalue++) {
 					String cellValue = driver
-							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
+							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td/a[starts-with(@href,'/Live/Survey')]"))
 							.getText();
 					if (cellValue.contains(tag)) {
 						result = true;

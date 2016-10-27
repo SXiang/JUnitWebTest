@@ -347,16 +347,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='datatablePeaks_info']")
+	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
 	protected WebElement paginationInvestigationMsg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks_filter']/label/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes_filter']/label/input")
 	protected WebElement inputInvestigationSearchReport;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
@@ -1582,7 +1582,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 
 	private void waitForInvestigationPageLoad() {
-
 			waitForAJAXCallsToComplete();
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
@@ -1834,9 +1833,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]")).getText();
 					if (cellValue.contains(" ")) {
 						String str = cellValue.replaceAll("\\s+", "");
 
@@ -2384,7 +2383,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		String surveyTable;
-		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date") != null) {
+		String endWith = "Surveyor Date";
+		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", endWith) != null) {
 			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 			if (surveyTable.contains("Gap Table")) {
 				// TODO: DEFECT in parsing. SKIP check for this case.
@@ -2392,42 +2392,38 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 		} else {
-			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
+			endWith = " Layers";
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", endWith)).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
 
-		// TODO: DE2398 causes driving survey table verification to fail.
-		// Temporarily turn OFF below verification.
+		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
+		String datePattern = RegexUtility.getReportRegexDatePattern(true);
+		String drivingSurveysLinePattern = datePattern + " *" + datePattern;
+		surveyTable = surveyTable.replaceAll("(" + drivingSurveysLinePattern + ")", System.lineSeparator() + "$1");
+		String[] lines = surveyTable.split(System.lineSeparator());
+		Log.info("Driving survey table contains " + (lines.length - 1) + " records");
+		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(reportId);
+		for (int i = 1; i < lines.length; i++) {
+			boolean validLine = false;
+			String expectedLine = "";
+			String actualLine = lines[i].replaceAll(" ", "");
+//			Log.info("Looking for driving survey '" + actualLine + "' in DB");
+			for (StoredProcComplianceAssessmentGetReportDrivingSurveys survey : listFromStoredProc) {
+				expectedLine = survey.toString().replaceAll(" ", "");
+				Log.info("Driving survey line in DB = [" + expectedLine + "]");
+				if (actualLine.startsWith(expectedLine)) {
+					Log.info("Found match for driving survey in DB.");
+					validLine = true;
+					break;
+				}
+			}
+			if (!validLine) {
+				Log.error(String.format("Driving survey in PDF is not found in DB, '%s'", actualLine));
+				return false;
+			}
+		}
 		Log.info("Driving survey table verification passed");
 		return true;
-
-		//		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
-		//		String datePattern = RegexUtility.getReportRegexDatePattern(true);
-		//		String drivingSurveysLinePattern = datePattern + " *" + datePattern;
-		//		surveyTable = surveyTable.replaceAll("(" + drivingSurveysLinePattern + ")", System.lineSeparator() + "$1");
-		//		String[] lines = surveyTable.split(System.lineSeparator());
-		//		Log.info("Driving survey table contains " + (lines.length - 1) + " records");
-		//		ArrayList<StoredProcComplianceAssessmentGetReportDrivingSurveys> listFromStoredProc = StoredProcComplianceAssessmentGetReportDrivingSurveys.getReportDrivingSurveys(reportId);
-		//		for (int i = 1; i < lines.length; i++) {
-		//			boolean validLine = false;
-		//			String expectedLine = "";
-		//			String actualLine = lines[i].replaceAll(" ", "");
-		//			Log.info("Looking for driving survey '" + actualLine + "' in DB");
-		//			for (StoredProcComplianceAssessmentGetReportDrivingSurveys survey : listFromStoredProc) {
-		//				expectedLine = survey.toString().replaceAll(" ", "");
-		//				Log.info("Driving survey line in DB = [" + expectedLine + "]");
-		//				if (actualLine.equalsIgnoreCase(expectedLine)) {
-		//					Log.info("Found match for driving survey in DB.");
-		//					validLine = true;
-		//					break;
-		//				}
-		//			}
-		//			if (!validLine) {
-		//				Log.error(String.format("Driving survey in PDF is not found in DB, '%s'", actualLine));
-		//				return false;
-		//			}
-		//		}
-		//		Log.info("Driving survey table verification passed");
-		//		return true;
 	}
 
 	/**
@@ -4025,21 +4021,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isInvestigatorColumnSorted(){
 		Log.method("isInvestigatorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Investigator, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	@Override
