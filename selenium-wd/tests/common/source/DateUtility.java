@@ -349,7 +349,6 @@ public class DateUtility {
 			LocalDateTime startDateTime = LocalDateTime.parse(inputDateTime1, formatter);
 			LocalDateTime endDateTime = LocalDateTime.parse(inputDateTime2, formatter);
 			diffInMinutes = Duration.between(startDateTime, endDateTime).toMinutes();
-
 		} catch (Exception e) {
 			Log.info(e.toString());
 		}

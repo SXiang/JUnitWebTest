@@ -53,6 +53,7 @@ public class SurveyorBasePage extends BasePage {
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
 	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
+	protected static By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -622,7 +623,6 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkPaginationSetting(String numberOfRecords) {
 		Log.method("checkPaginationSetting", numberOfRecords);
 		setPagination(numberOfRecords);
-		this.waitForPageLoad();
 		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage, numberOfRecords));
 	}
 
@@ -666,8 +666,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean waitForNumberOfRecords(String actualMessage){
-		By tableInfoBy = By.id(DATATABLE_RECORDS_ELEMENT_ID);
-		return waitForNumberOfRecords(tableInfoBy, actualMessage);
+		return waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, actualMessage);
 	}
 
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
