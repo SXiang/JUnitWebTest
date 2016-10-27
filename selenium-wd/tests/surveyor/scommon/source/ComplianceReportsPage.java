@@ -1966,7 +1966,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName, List<String> autocompleteListEntries) {
 		Log.method("ComplianceReportsPage.verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains", boundaryFilterType, customerBoundaryName, LogHelper.listToString(autocompleteListEntries));
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
