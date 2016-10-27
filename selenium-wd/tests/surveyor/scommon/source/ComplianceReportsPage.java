@@ -1833,9 +1833,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]")).getText();
 					if (cellValue.contains(" ")) {
 						String str = cellValue.replaceAll("\\s+", "");
 
