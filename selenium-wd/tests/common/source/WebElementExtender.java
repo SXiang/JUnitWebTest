@@ -173,4 +173,15 @@ public class WebElementExtender {
     //Return the File object containing image data
     return screen;
    }
+
+   public static void sendKeys(WebElement selectByNameTextField, String boundaryName) {
+	try{
+		setFocusOnElement(selectByNameTextField);
+		selectByNameTextField.clear();
+	}catch(Exception e){
+		Log.warn(String.format("Exception with sending key ? '%s', %s", boundaryName, e.toString()));
+	}finally{
+		selectByNameTextField.sendKeys(boundaryName);
+	}
+   }
 }
