@@ -49,7 +49,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String Constant_UserName = Resources.getResource(ResourceKeys.Constant_UserName);
 	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
 	public static final String Constant_Roles = Resources.getResource(ResourceKeys.Constant_Roles);
-//	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
 	public static final String Constant_Name = Resources.getResource(ResourceKeys.Constant_Name);
 	protected String pagination = "100";
 	
