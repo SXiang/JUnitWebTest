@@ -340,7 +340,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				Log.info(STRRefGasReportSSRS_NoRecord);
 				return true;
 			}
-			if (!pdfInText.contains(STRReportTableColumnDate)) { //installation Date/Time?
+			if (!pdfInText.contains(STRReportTableColumnDate)) {
 				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
 				return false;
 			}
