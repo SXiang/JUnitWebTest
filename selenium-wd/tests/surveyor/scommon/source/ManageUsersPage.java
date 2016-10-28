@@ -49,7 +49,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String Constant_UserName = Resources.getResource(ResourceKeys.Constant_UserName);
 	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
 	public static final String Constant_Roles = Resources.getResource(ResourceKeys.Constant_Roles);
-	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+//	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+	public static final String Constant_Name = Resources.getResource(ResourceKeys.Constant_Name);
 	protected String pagination = "100";
 	
 	@FindBy(id = "User.UserName-error")
@@ -77,6 +78,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(id = "User_LocationId")
 	protected WebElement dropDownCustomer;
 
+	@FindBy(how = How.CSS, using = "label[for='UserName']")
+	protected WebElement pageLabel;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName']")
 	protected WebElement inputEmail;
 
@@ -331,9 +335,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+
 		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		sendKeysToElement(inputPassword, password);
+		Log.info("Confirm password - '<HIDDEN>'");
+		sendKeysToElement(inputPasswordConfirm, password);
 
 		List<WebElement> roleOptions = this.dropDownRole.findElements(By
 				.tagName("option"));
@@ -398,14 +404,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
 			}
 		}
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password1);
-		Log.info("Confirm password - '<HIDDEN>'");
-		this.inputPasswordConfirm.sendKeys(password2);
-		Log.clickElementInfo("Ok");
-		this.btnOk.click();
-		waitForPageToLoad();
-		
+		focusOnPage(pageLabel);
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			Log.clickElementInfo("Cancel");
@@ -414,6 +413,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg;
 		}
 		
+		Log.info("Set password - '<HIDDEN>'");
+		sendKeysToElement(inputPassword, password1);
+		
+		focusOnPage(pageLabel);
 		if (isElementPresent(this.labelUserPwdErrorXPath)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
 			Log.clickElementInfo("Cancel");
@@ -422,6 +425,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg; 
 		}
 		
+		Log.info("Confirm password - '<HIDDEN>'");
+		sendKeysToElement(inputPasswordConfirm, password2);
+		Log.clickElementInfo("Ok");
+		this.btnOk.click();
+		
 		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
@@ -429,6 +437,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 			Log.info("User password confirm error: " + rtnMsg);
 			return rtnMsg; 
 		}		
+
+		waitForPageToLoad();
 		
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			// Get error message using javascript. This is to avoid CI failures when using validation webelement. 
@@ -1624,41 +1634,41 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("isUserNameColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_UserName, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isUserColumnSorted(){
 		Log.method("isUserColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_User, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		columnMap.put(Constant_Name, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isCustomerColumnSorted(){
 		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isLocationColumnSorted(){
 		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isRolesColumnSorted(){
 		Log.method("isRolesColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Roles, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 }

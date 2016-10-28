@@ -106,9 +106,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	}
 	
 	public boolean areTableColumnsSorted(){
-		if(!isCustomerColumnSorted()){
-			return false;
-		}
+
 		if(!isLocationColumnSorted()){
 			return false;
 		}
@@ -121,6 +119,14 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		if(!isLotNumberColumnSorted()){
 			return false;
 		}
+		
+		if(!isIsoValueColumnSorted()){
+		return false;
+	}
+		
+		if(!isEToMRatioColumnSorted()){
+		return false;
+	}
 		if(!isDateTimeColumnSorted()){
 			return false;
 		}
@@ -157,7 +163,17 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		columnMap.put(Constant_LotNumber, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
+	public boolean isIsoValueColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_IsotopicValue, TableColumnType.Number);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	public boolean isEToMRatioColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_EthaneToMethaneRatio, TableColumnType.Number);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
 	public boolean isDateTimeColumnSorted(){
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_DateTime, TableColumnType.Date);

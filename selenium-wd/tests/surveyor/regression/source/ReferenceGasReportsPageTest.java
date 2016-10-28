@@ -17,7 +17,7 @@ import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCANZ;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -67,7 +67,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC159 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC159 Test Description: Generate Reference Gas Capture Report as Administrator. Report title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
@@ -133,7 +133,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC179 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC179 Test Description: Generate Reference Gas Capture Report as customer admin. Report title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
@@ -194,7 +194,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 
 		Log.info("\nRunning TC196 Test Description: Generate Reference Gas Capture Report for single day. Report title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
 
 		referenceGasReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		referenceGasReportsPage.open();
@@ -223,7 +223,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC515 Report" + testSetup.getRandomNumber();
 		Log.info("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor. Report Title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQACUSLOCANZ;
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;

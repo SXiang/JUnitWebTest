@@ -277,9 +277,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		else
 			fail("\nTC36__CheckReportLink_SupervisorRole: Delete Report as Customer Supervisor failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -455,10 +452,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQACUSUA)));
 		else
 			fail("\nTC37__CheckReportLink_SupervisorRole: Delete Report as Customer Supervisor failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -643,9 +636,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		else
 			fail("\nTC37__CheckReportLink_PicarroAdminRole: Delete Report as Picarro Admin failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -801,9 +791,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQAPICSUP)));
 		else
 			fail("\nTC40__CheckReportLink_SupervisorRole: Delete Report as Picarro Support failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 
 	}
 

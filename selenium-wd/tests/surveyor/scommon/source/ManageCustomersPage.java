@@ -195,7 +195,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public void setEULAText(String eula) {
 		Log.method("setEULAText", eula);
-		sendKeysToTextArea(this.textAreaEula, eula);
+		sendKeysToElement(this.textAreaEula, eula);
 	}
 
 	public void enabledDisableCustomer(boolean enableCustomer) {

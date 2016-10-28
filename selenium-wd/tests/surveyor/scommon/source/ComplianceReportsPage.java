@@ -241,6 +241,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
 
+	@FindBy(css = "input[name='rdAreaMode'][value='Custom']")
+	private WebElement customBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='Customer']")
+	private WebElement customerBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='FreeForm']")
+	private WebElement freeFormBoundaryRadioButton;
+
 	@FindBy(id = "btn-select-boundary")
 	protected WebElement boundarySelectorBtn;
 
@@ -1762,11 +1771,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectCustomBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+		this.customBoundaryRadioButton.click();
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		jsClick(this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX));
+		jsClick(this.customerBoundaryRadioButton);
 	}
 
 	@Override

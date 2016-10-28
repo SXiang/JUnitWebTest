@@ -133,7 +133,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[11]/legend")
+	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div/legend[text()='Ethane to Methane Ratio %']")
 	protected WebElement ethMthRtioLbl;
 
 	@FindBy(how = How.ID, using = "Min")

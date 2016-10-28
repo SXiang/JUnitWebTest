@@ -337,7 +337,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		manageAnalyzersPage.open();
-		assertTrue(manageAnalyzersPage.areTableColumnsSorted());	
+		assertTrue(manageAnalyzersPage.areTableColumnsSorted());
 	}
 	
 	/**

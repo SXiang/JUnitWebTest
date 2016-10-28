@@ -295,18 +295,18 @@ public class BasePage {
 		return false;
 	}
 
-	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
+	protected void sendKeysToElement(WebElement element, String key) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
 		// Use Actions workaround to send keys instead.
-		if(eula == null){
+		if(key == null){
 			return;
 		}
-		Log.info("Send '"+eula+"' to eula text area");
-		textAreaEula.clear();
+		Log.info("Send '"+key+"' to text element(field/area)");
+		element.clear();
 		Actions actions = new Actions(driver);
-		actions.moveToElement(textAreaEula);
+		actions.moveToElement(element);
 		actions.click();
-		actions.sendKeys(eula);
+		actions.sendKeys(key);
 		actions.build().perform();
 	}
 
@@ -360,7 +360,12 @@ public class BasePage {
 	public void jsClick(WebElement element){
 		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
 	}
-	
+
+	public void focusOnPage(WebElement element){
+		Actions action = new Actions(driver);
+		action.moveToElement(element).click().click().perform();
+		action.moveToElement(element).click().click().perform();
+	}
 	public void minimizeBrowserWindow(){
 		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));

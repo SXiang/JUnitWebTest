@@ -58,6 +58,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRReportTableColumnLotNumber = Resources.getResource(ResourceKeys.RefGasReportSSRS_LotNumber);
 	public static final String STRReportTableColumnIsotopic = Resources.getResource(ResourceKeys.RefGasReportSSRS_IsotopicValueUncertainty);
 	public static final String STRReportTableColumnTestResult = Resources.getResource(ResourceKeys.RefGasReportSSRS_TestResult);
+	public static final String STRRefGasReportSSRS_NoRecord = Resources.getResource(ResourceKeys.RefGasReportSSRS_NoRecord);
 
 	public String LotNumberInReport = null;
 
@@ -335,7 +336,11 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 				Log.error(String.format("Sub-Title not found in pdf - '%s'", STRReportSubTitle));
 				return false;
 			}
-			if (!pdfInText.contains(STRReportTableColumnDate)) {
+			if(pdfInText.contains(STRRefGasReportSSRS_NoRecord)){
+				Log.info(STRRefGasReportSSRS_NoRecord);
+				return true;
+			}
+			if (!pdfInText.contains(STRReportTableColumnDate)) { //installation Date/Time?
 				Log.error(String.format("Date not found in pdf - '%s'", STRReportTableColumnDate));
 				return false;
 			}
@@ -363,8 +368,13 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
+
 		try {
 			String pdfInText = (pdfUtility.extractPDFText(fullDownloadPath));
+			if(pdfInText.contains(STRRefGasReportSSRS_NoRecord)){
+				Log.info(STRRefGasReportSSRS_NoRecord);
+				return true;
+			}
 			Iterator<String> inputIterator = inputs.iterator();
 			while (inputIterator.hasNext()) {
 				String userInput = inputIterator.next();
@@ -387,6 +397,9 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		String fullDownloadPath = Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();
 		ArrayList<StoredProcReferenceGas> notesReturnList = tokenizeSystemHistoryNotesTable(fullDownloadPath);
 		ArrayList<StoredProcReferenceGas> objStoredProcReferenceGas = StoredProcReferenceGas.getReferenceGas(reportId);
+		if(objStoredProcReferenceGas.size()==0 && notesReturnList.size()==0){
+			return true;
+		}
 		String analyzerId = objStoredProcReferenceGas.get(0).getAnalyzerId();
 		Analyzer objAnalyzer = Analyzer.getAnalyzer(analyzerId);
 		ReferenceGasBottle objReferenceGasBottle = ReferenceGasBottle.getReferenceGasBottleBySurveyorId(objAnalyzer.getSurveyorUnitId().toString());
