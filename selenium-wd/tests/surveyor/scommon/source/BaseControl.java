@@ -11,7 +11,7 @@ import common.source.Log;
 
 public class BaseControl {
 	protected WebDriver driver;
-	protected int timeout = 15;
+	protected int timeout = 30;
 	
 	public BaseControl(WebDriver driver) {
 		this.driver = driver;
@@ -32,10 +32,14 @@ public class BaseControl {
 	
 	public void waitForElementToBeEnabled(WebElement element) {
 		Log.method("waitForElementToBeEnabled", element);
+		try{
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return element.isEnabled();
 			}
 		});
+		}catch(Exception e){
+			Log.error(e.toString());
+		}
 	}
 }
