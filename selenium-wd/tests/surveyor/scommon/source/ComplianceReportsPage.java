@@ -3766,9 +3766,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public WebElement getTable() {
-		refreshPageUntilElementFound(DATA_TABLE_XPATH);
-		this.waitForPageLoad();
-		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		try{
+			refreshPageUntilElementFound(DATA_TABLE_XPATH);
+			this.waitForPageLoad();
+			driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		}catch(Exception e){
+			Log.error("Failed to find datatable: "+DATA_TABLE_XPATH);
+		}
 		return super.getTable();
 	}
 

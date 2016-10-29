@@ -50,7 +50,7 @@ import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 public class SurveyorBasePage extends BasePage {
 
 	protected static final String TABLE_BUTTON_CLASS = "btn btn-primary";
-	protected static final String DATA_TABLE_XPATH = "//*[@id='datatable']/tbody";
+	protected static final String DATA_TABLE_XPATH = "//*[starts-with(@id,'datatable')]/tbody";
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
 	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
@@ -97,7 +97,7 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
 	protected WebElement table;
-	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
+	protected String strTRXPath = DATA_TABLE_XPATH+"/tr";
 
 	@FindBy(how = How.CSS, using = ".paginate_button.next")
 	protected WebElement nextBtn;
