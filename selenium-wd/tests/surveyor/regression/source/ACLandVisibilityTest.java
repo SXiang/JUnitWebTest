@@ -76,7 +76,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");

@@ -1201,8 +1201,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image width to '" + imageMapWidth + "'");
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		sendKeysToElement(inputImgMapWidth, imageMapWidth);
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
@@ -1210,8 +1209,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image height to '" + imageMapHeight + "'");
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
+		sendKeysToElement(inputImgMapHeight, imageMapHeight);
 	}
 
 	public void inputExclusionRadius(String exclusionRadius) {

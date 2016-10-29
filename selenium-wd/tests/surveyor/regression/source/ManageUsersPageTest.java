@@ -829,7 +829,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		location = SQACUSLOC;
 		locationDesc = customerName + " - " + location;
 
-		manageUsersPage.addNewCustomerUser(customerName, emailC, USERPASSWORD, CUSUSERROLEDR, locationDesc);
+		manageUsersPage.addNewCustomerUser(customerName, emailC, USERPASSWORD, CUSUSERROLEDR, location);
 		assertEquals(manageUsersPage.getInvalidEmailError(), errorMsg);
 
 		manageUsersPage.clickOnCancelAddBtn();
@@ -868,7 +868,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		location = SQACUSLOC;
 		locationDesc = customerName + " - " + location;
 
-		manageUsersPage.addNewCustomerUser(customerName, email, password, CUSUSERROLEDR, locationDesc);
+		manageUsersPage.addNewCustomerUser(customerName, email, password, CUSUSERROLEDR, location);
 		assertEquals(manageUsersPage.getInvalidEmailError(), errorMsg);
 		assertEquals(manageUsersPage.getPasswordError(), errorMsg);
 		assertEquals(manageUsersPage.getConfirmPasswordError(), errorMsg);

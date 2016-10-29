@@ -229,7 +229,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
 		setPaginationAny(PAGINATIONSETTING_100);
-
+		this.waitForTableDataToLoad();
 		String customerNameXPath;
 		String enabledStatusXPath;
 		WebElement customerNameCell;
@@ -526,7 +526,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean changeCustomerAccountStatus(String customerName, boolean bEnabled) {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
 		setPaginationAny(PAGINATIONSETTING_100);
-
+		this.waitForTableDataToLoad();
 		String customerNameXPath;
 		String actionXPath;
 

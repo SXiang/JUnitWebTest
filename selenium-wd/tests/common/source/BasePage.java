@@ -419,7 +419,16 @@ public class BasePage {
     	}
     	return text;
     }
-    
+ 
+    public String getElementAttribute(WebElement element, String attr) {
+    	String text = "";
+    	try{
+    		text = element.getAttribute(attr);
+    	}catch(Exception e){
+    		Log.error("Failed to get attribute value of element '"+attr+"'");
+    	}
+    	return text;
+    }
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;

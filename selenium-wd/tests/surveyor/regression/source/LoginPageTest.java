@@ -94,7 +94,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 	public void loginTest_TC26_AcceptEUCLA() {
 		String customerName = SQACUS;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		homePage.waitForPageLoad();
@@ -111,7 +111,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 	public void loginTest_TC29_DriverLogin() {
 		String customerName = SQACUS;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 		loginPage.open();
 		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
 		homePage.waitForPageLoad();

@@ -427,16 +427,18 @@ public class ManageUsersPage extends SurveyorBasePage {
 		
 		Log.info("Confirm password - '<HIDDEN>'");
 		sendKeysToElement(inputPasswordConfirm, password2);
-		Log.clickElementInfo("Ok");
-		this.btnOk.click();
 
-		if (isElementPresent(this.labelUserPwdErrorXPath)) {
-			rtnMsg = this.labelUserPwdError.getText().trim();
+		focusOnPage(pageLabel);
+		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
+			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
-			Log.info("User password error: " + rtnMsg);
+			Log.info("User password confirm error: " + rtnMsg);
 			return rtnMsg; 
 		}
+
+		Log.clickElementInfo("Ok");
+		this.btnOk.click();
 		
 		if (isElementPresent(this.labelUserNameErrorXPath)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
@@ -444,6 +446,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 			this.cancelAddBtn.click();
 			Log.info("Username error: " + rtnMsg);
 			return rtnMsg;
+		}
+		
+		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+			rtnMsg = this.labelUserPwdError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("User password error: " + rtnMsg);
+			return rtnMsg; 
 		}
 		
 		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
@@ -1147,7 +1157,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	
 	public boolean findExistingUser(String location, String userName, String roleName, boolean allPages) {
 		Log.method("findExistingUser", location, userName, roleName, allPages);
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		this.waitForTableDataToLoad();
 
@@ -1226,7 +1236,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		String pageSizeStr = String.valueOf(paginationSize);
 		setPagination(pageSizeStr);
-
+		this.waitForTableDataToLoad();
+		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		String userNameXPath;
