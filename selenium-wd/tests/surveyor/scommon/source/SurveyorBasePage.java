@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.io.File;
 import java.util.HashMap;
@@ -337,6 +338,8 @@ public class SurveyorBasePage extends BasePage {
 				}
 			}catch(StaleElementReferenceException e){
 				continue;
+			}catch(Exception e){
+				Log.warn("Failed to go back to the first page: "+e.toString());
 			}
 		}
 	}

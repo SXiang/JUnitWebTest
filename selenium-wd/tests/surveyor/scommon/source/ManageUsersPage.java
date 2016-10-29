@@ -429,6 +429,22 @@ public class ManageUsersPage extends SurveyorBasePage {
 		sendKeysToElement(inputPasswordConfirm, password2);
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
+
+		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+			rtnMsg = this.labelUserPwdError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("User password error: " + rtnMsg);
+			return rtnMsg; 
+		}
+		
+		if (isElementPresent(this.labelUserNameErrorXPath)) {
+			rtnMsg = this.labelUserNameError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("Username error: " + rtnMsg);
+			return rtnMsg;
+		}
 		
 		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
@@ -525,7 +541,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		Log.method("findExistingUser", locationName, userName, isCustomerUser);
 		Log.info(String.format("Find user '%s', locationname = '%s'", userName, locationName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
@@ -1090,12 +1106,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	private void selectCustomerLocationDropdown(String customerName, String location) {
 		Log.method("selectCustomerLocationDropdown", customerName, location);
 		String custLoc = customerName + " - " + location;
-		selectLocationDropdown(custLoc);
+		selectDropdownOption(this.dropDownCustomer, custLoc);
 	}
 
 	private void selectLocationDropdown(String customerLocation) {
 		Log.method("selectLocationDropdown", customerLocation);
-		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option")); 
+		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
 		for	(WebElement option : options) { 
 			if (option.getText().trim().equalsIgnoreCase(customerLocation)){
 				Log.info("Select Customer - '"+customerLocation+"'");

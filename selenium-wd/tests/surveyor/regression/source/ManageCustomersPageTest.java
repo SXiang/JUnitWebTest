@@ -337,6 +337,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 
+
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
 		loginPage.open();

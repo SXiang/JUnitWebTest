@@ -157,7 +157,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC36_CheckACLVCustomerUser_SupervisorRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
@@ -336,7 +336,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC37_CheckACLVCustomerUser_UtilityAdminRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");

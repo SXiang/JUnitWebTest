@@ -230,8 +230,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.info(String.format("Find customer '%s'",customerName));
 		setPaginationAny(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String customerNameXPath;
 		String enabledStatusXPath;
 		WebElement customerNameCell;
@@ -529,8 +527,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
 		setPaginationAny(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String customerNameXPath;
 		String actionXPath;
 
@@ -548,13 +544,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td[1]";
+			customerNameXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td";
 			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
 				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", customerName, rowNum));
 
-				actionXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td[3]";
+				actionXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td/a[text()='Edit']";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 
 				actionCell.click();
