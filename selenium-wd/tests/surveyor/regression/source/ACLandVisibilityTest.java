@@ -615,7 +615,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
-				fail("\nTC37__CheckReportLink_PicarroAdminRole: Generate Report failed.\n");
+				fail("\nTC37__CheckReportLink_PicarroAdminRole: Report is not valid .\n");
 		} else
 			fail("\nTC37__CheckReportLink_PicarroAdminRole: Generate Report failed.\n");
 

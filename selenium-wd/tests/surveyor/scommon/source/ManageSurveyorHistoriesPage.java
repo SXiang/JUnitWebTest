@@ -183,8 +183,6 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				note,customerName,locationName,surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-		
 		// Click on datetime column.
 		this.clickOnColumnHeader(DATETIME_COL_IDX, 2 /*number of times to click*/);
 

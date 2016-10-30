@@ -286,7 +286,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
 		this.waitForAJAXCallsToComplete();
 		
 		WebElement tagCell;

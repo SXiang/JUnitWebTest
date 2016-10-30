@@ -402,11 +402,6 @@ public class BasePage {
 				waitForPageToLoad();
 			}
 		}while(!selected&&numTry<5);
-		if(!selected){
-			WebElement opt =  dropdown.findElement(optBy);
-			opt.click();
-			selected = opt.isSelected();
-		}
 		return selected;
 	}
 

@@ -486,8 +486,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
-
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -555,7 +553,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
-		this.waitForTableDataToLoad();
 
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
@@ -642,7 +639,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -723,8 +719,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info(String.format("Looking for user role of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String userNameXPath;
 		String roleNameXPath;
 
@@ -783,8 +777,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getUserStatus", userName, isCustomerUser);
 		Log.info(String.format("Looking for user status of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String userStatusXPath;
@@ -864,7 +856,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -963,9 +954,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
 		Log.method("resetUserPassword", userName, newPassword, isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
-
+		
 		String userNameXPath;
 		String actionResetPWDXPath;
 
@@ -1038,8 +1027,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName, boolean allPages) {
 		Log.method("findExistingUser", userName, allPages);
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -1159,8 +1146,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("findExistingUser", location, userName, roleName, allPages);
 		setPaginationAny(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String locationXPath;
 		String userNameXPath;
 		String roleNameXPath;
@@ -1236,7 +1221,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		String pageSizeStr = String.valueOf(paginationSize);
 		setPagination(pageSizeStr);
-		this.waitForTableDataToLoad();
 		
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -1291,8 +1275,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String userNameXPath;
 		WebElement userNameCell;
 
@@ -1342,7 +1324,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getLocationList", allPages);
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		WebElement locationCell;
@@ -1392,7 +1373,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getRolesList", allPages);
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String rolesXPath;
 		WebElement rolesCell;
@@ -1441,7 +1421,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getStatusList", allPages);
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String statusXPath;
 		WebElement statusCell;

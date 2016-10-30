@@ -319,7 +319,7 @@ public class SurveyorBasePage extends BasePage {
 
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
-		if(firstPage){
+		if(firstPage){	
 			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			jsClick(firstBtn);
 		}
@@ -461,14 +461,21 @@ public class SurveyorBasePage extends BasePage {
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
 		Log.method("getRecordsShownOnPage", driver);
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
-		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		WebElement pageInfoLabel = null;
+		try{
+			(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(DATATABLE_RECORDS_ELEMENT_BY));
+			pageInfoLabel = driver.findElement(DATATABLE_RECORDS_ELEMENT_BY);
+		}catch(Exception e){
+			Log.error("Failed to get datatable info: "+e.toString());
+			Log.warn("Current URL is: "+driver.getCurrentUrl());
+			return 0;
+		}
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 
 	public Integer getRecordsShownOnPage(WebDriver driver, WebElement tableElement) {
 		Log.method("getRecordsShownOnPage", driver, tableElement);
-		String numTextString = tableElement.getText().trim();
+		String numTextString = getElementText(tableElement);
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 		Integer records = 0;
 		if (strList != null && strList.size() > 3) {
@@ -497,8 +504,13 @@ public class SurveyorBasePage extends BasePage {
 
 	public void clearSearchFieldUsingSpace() {
 		Log.method("clearSearchFieldUsingSpace");
-		this.getInputSearch().sendKeys(" ");
-		this.waitForTableDataToLoad();
+		try{
+			this.getInputSearch().sendKeys(" ");
+			this.waitForTableDataToLoad();
+		}catch(Exception e){
+			Log.error("Failed to clear search field: "+e.toString());
+			Log.warn("Current URL is: " + driver.getCurrentUrl());
+		}
 	}
 
 	private WebElement getTableHeader(Integer columnIndex) {
@@ -714,7 +726,7 @@ public class SurveyorBasePage extends BasePage {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
-					return (getRecordsShownOnPage(d) > 0);
+					return (getRecordsShownOnPage(d) >= 0);
 				}
 			});
 		}catch(Exception e){

@@ -307,8 +307,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String customerXPath;
 		String locationXPath;
 		String surveyorXPath;

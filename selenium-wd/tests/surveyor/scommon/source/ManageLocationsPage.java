@@ -366,7 +366,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
-		this.waitForTableDataToLoad();
 		
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
@@ -469,7 +468,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.

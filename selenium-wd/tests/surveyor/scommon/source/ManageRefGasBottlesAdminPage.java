@@ -49,8 +49,6 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		Log.info(String.format("Find RefGas bottle lot = '%s', surveyor = '%s', location = '%s'",
 				strLotNumber, strSurveyor, location));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 		
 		String locationXPath;
 		String strSurveyorXPath;
