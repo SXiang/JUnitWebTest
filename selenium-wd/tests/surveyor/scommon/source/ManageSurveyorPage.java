@@ -240,8 +240,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			}
 				
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
@@ -331,8 +330,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			}
 				
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				
 				rowSize = newRows.size();
@@ -440,9 +438,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -492,9 +488,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 

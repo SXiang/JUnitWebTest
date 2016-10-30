@@ -308,7 +308,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
+				toNextPage();
 
 				this.waitForTableDataToLoad();
 				this.waitForAJAXCallsToComplete();
@@ -380,7 +380,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
-				this.nextBtn.click();
+				toNextPage();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 

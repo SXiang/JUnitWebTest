@@ -322,6 +322,7 @@ public class SurveyorBasePage extends BasePage {
 		if(firstPage){	
 			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			jsClick(firstBtn);
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		}
 
 		setPaginationCheckMessage(str, paginationMsg);
@@ -463,6 +464,7 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("getRecordsShownOnPage", driver);
 		WebElement pageInfoLabel = null;
 		try{
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 			(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(DATATABLE_RECORDS_ELEMENT_BY));
 			pageInfoLabel = driver.findElement(DATATABLE_RECORDS_ELEMENT_BY);
 		}catch(Exception e){
@@ -477,7 +479,7 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("getRecordsShownOnPage", driver, tableElement);
 		String numTextString = getElementText(tableElement);
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
-		Integer records = 0;
+		Integer records = -1;
 		if (strList != null && strList.size() > 3) {
 			records = Integer.parseInt(strList.get(3).replace(",", ""));
 		}
@@ -686,11 +688,12 @@ public class SurveyorBasePage extends BasePage {
 
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
 		WebElement tableInfoElement = driver.findElement(tableInfoBy);
 		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				String text = tableInfoElement.getText().trim();
+				String text = getElementText(tableInfoElement).trim();
 				boolean matches = text.matches(actualMessage);
 				Log.info(String.format("MATCH=[%b] -> Text=[%s], MatchPattern=[%s]", matches, text, actualMessage));
 				return matches;
@@ -726,7 +729,7 @@ public class SurveyorBasePage extends BasePage {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
-					return (getRecordsShownOnPage(d) >= 0);
+					return waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
 				}
 			});
 		}catch(Exception e){
@@ -737,6 +740,10 @@ public class SurveyorBasePage extends BasePage {
 		return true;
 	}
 
+	public boolean toNextPage(){
+		this.nextBtn.click();
+		return waitForTableDataToLoad();
+	}
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

@@ -84,9 +84,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 			
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				
 				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();

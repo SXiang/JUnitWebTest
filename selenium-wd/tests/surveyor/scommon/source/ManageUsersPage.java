@@ -523,9 +523,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -610,9 +608,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				Log.info("Clicking on next button");
 				Log.info(String.format("rowNum = %d", rowNum));
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -691,9 +687,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -753,9 +747,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -817,9 +809,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -929,9 +919,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1004,9 +992,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1058,9 +1044,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1190,9 +1174,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1249,9 +1231,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1300,9 +1280,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1350,9 +1328,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1398,9 +1374,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1446,9 +1420,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
