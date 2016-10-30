@@ -346,8 +346,10 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		// create customer (not enabled).
 		manageCustomersPage.addNewCustomer(customerName, eula, false);
+		manageCustomersPage.open();
 		manageCustomersPage.changeCustomerAccountStatus(customerName, true);
 
+		manageCustomersPage.open();
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
