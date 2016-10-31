@@ -285,8 +285,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 		}
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForAJAXCallsToComplete();
 		
 		WebElement tagCell;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
@@ -298,21 +296,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			loopCount = rowSize;
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
+			String tagXPath = strTRXPath + "[" + rowNum + "]/td";
 			// Re-fetch the element each time to prevent staleElement exception.
-			tagCell = TestContext.INSTANCE.getDriver().findElement(By.xpath(tagXPath));
-			getTable().findElement(By.xpath(tagXPath));
-			strListTag.add(tagCell.getText().trim());
+			TestContext.INSTANCE.getDriver().findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
+			strListTag.add(getElementText(tagCell).trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				toNextPage();
-
-				this.waitForTableDataToLoad();
-				this.waitForAJAXCallsToComplete();
-
 				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
 

@@ -692,7 +692,7 @@ public class SurveyorBasePage extends BasePage {
 		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
 		WebElement tableInfoElement = driver.findElement(tableInfoBy);
-		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+		boolean tableInfoMatches = (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				String text = getElementText(tableInfoElement).trim();
 				boolean matches = text.matches(actualMessage);
@@ -700,6 +700,8 @@ public class SurveyorBasePage extends BasePage {
 				return matches;
 			}
 		});
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		return tableInfoMatches;
 	}
 
 	/*
