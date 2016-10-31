@@ -318,12 +318,12 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("setPagination", str, firstPage);
 
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
-// Diabled for debugging
-//		if(firstPage){	
-//			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
-//			jsClick(firstBtn);
-//			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-//		}
+
+		if(firstPage){	
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+			jsClick(firstBtn);
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		}
 
 		setPaginationCheckMessage(str, paginationMsg);
 	}
