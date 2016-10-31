@@ -203,9 +203,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.method("findExistingSurveyor", customerName, locationName, surveyorName);
 		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
-		
-		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		
+				
 		String customerNameXPath;
 		String locationNameXPath;
 		String surveyorNameXPath;

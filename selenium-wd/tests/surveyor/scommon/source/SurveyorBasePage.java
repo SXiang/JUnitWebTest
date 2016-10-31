@@ -689,6 +689,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
 		WebElement tableInfoElement = driver.findElement(tableInfoBy);
 		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
