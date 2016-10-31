@@ -4021,7 +4021,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean isAmplitudeColumnSorted(){
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
+		columnMap.put(ComplianceReportSSRS_Amplitude.replaceFirst("\\("," ("), TableColumnType.Number);
 		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 

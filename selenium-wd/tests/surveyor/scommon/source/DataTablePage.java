@@ -127,7 +127,6 @@ public class DataTablePage extends SurveyorBasePage {
 		do{			
 			for(WebElement row: tableRow){
 				List<WebElement> field = row.findElements(By.cssSelector("td"));
-				
 				columnValues.add(field.get(colIdx).getText());
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
