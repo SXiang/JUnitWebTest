@@ -1355,7 +1355,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	// End of ComplianceReportsPageTest3.java
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1960() {
-		return new Object[][] { { "TC1960" /* TestCaseID */, 6 /* userDataRowID */, 37 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC1960" /* TestCaseID */, 6 /* userDataRowID */, 117 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 }
