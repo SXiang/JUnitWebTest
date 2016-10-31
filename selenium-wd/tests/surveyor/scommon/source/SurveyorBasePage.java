@@ -91,7 +91,7 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(css = "[name^='datatable'][name$='_length'] option")
 	protected List<WebElement> paginationOptions;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	@FindBy(how = How.CSS, using = "[id^='datatable'][id$='_filter'] > label > input")
 	protected WebElement inputSearch;
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
