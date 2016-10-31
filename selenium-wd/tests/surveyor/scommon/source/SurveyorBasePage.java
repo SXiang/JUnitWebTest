@@ -318,12 +318,12 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("setPagination", str, firstPage);
 
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
-
-		if(firstPage){	
-			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
-			jsClick(firstBtn);
-			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-		}
+// Diabled for debugging
+//		if(firstPage){	
+//			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+//			jsClick(firstBtn);
+//			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+//		}
 
 		setPaginationCheckMessage(str, paginationMsg);
 	}
@@ -732,7 +732,7 @@ public class SurveyorBasePage extends BasePage {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
-					return waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
+					return getRecordsShownOnPage(d) > 0;
 				}
 			});
 		}catch(Exception e){
