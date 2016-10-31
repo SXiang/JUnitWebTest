@@ -188,8 +188,6 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String actualLong = manageLocationsPage.getLocationLongitudeText();		
 		assertEquals("The location [latitude,longitude] shouldn't be changed after the cancelation of the map editing",
 				expectedLat+","+expectedLong, actualLat+","+actualLong);
-
-		manageLocationsPage.clickOnCancelBtn();
 	}
 
 	/**
