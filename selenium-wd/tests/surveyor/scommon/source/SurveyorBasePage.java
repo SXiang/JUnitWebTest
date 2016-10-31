@@ -335,6 +335,7 @@ public class SurveyorBasePage extends BasePage {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
 					waitForNumberOfRecords(paginationMsg);
+					getRecordsShownOnPage(driver);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
