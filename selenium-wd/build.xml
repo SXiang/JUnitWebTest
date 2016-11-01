@@ -23,10 +23,7 @@
 		<mkdir dir="${dist}" />
 
 		<mkdir dir="${reports}/sanity/xml" />
-<<<<<<< HEAD
 		<mkdir dir="${reports}/gridpoc/xml" />
-=======
->>>>>>> master
 		<mkdir dir="${reports}/regression/xml" />
 		<mkdir dir="${reports}/performance/xml" />
 
@@ -287,18 +284,13 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-
 					<include name="**/SurveyViewPageTest.class" />
 					<include name="**/SurveyViewPageTest1.class" />
 					<include name="**/SurveyViewPageTest2.class" />
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-<<<<<<< HEAD
 					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-
-=======
->>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -441,10 +433,7 @@
 					<include name="**/ComplianceReportsPageTest7.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest11.class" />
-<<<<<<< HEAD
-=======
 					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
->>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -567,9 +556,6 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
-<<<<<<< HEAD
-	<target name="testgridpocdemotests" depends="compileGridPOC" description="Run grid POC demo test suite in parallel">
-=======
 	<target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
@@ -591,29 +577,6 @@
 				</fileset>
 			</batchtest>
 		</junit>
-	</target>
-
-	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
->>>>>>> master
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key="testReportCategory" value="GridPOC" />
-			<sysproperty key="maxParallelTestThreads" value="5" />
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/GridPOCTestSuiteDemoTestClasses.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<echo message="junit build : ${build}" />
 	</target>
 
 	<target name="testgridpoc5tests" depends="compileGridPOC" description="Run grid POC test suite with 5 tests in parallel">
@@ -676,16 +639,9 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-<<<<<<< HEAD
 					<include name="**/ComplianceReportsTestSuite1.class" />
 					<include name="**/ComplianceReportsTestSuite2.class" />
 					<include name="**/ComplianceReportsTestSuite3.class" />
-=======
-					<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
-					<include name="**/ObserverViewPageTest2.class" />
-					<include name="**/DriverViewPageTest2.class" />
-					<include name="**/LicensedFeatureAndVisibilityTest.class" />
->>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -721,10 +677,7 @@
 		</jmeter>
 
 	</target>
-<<<<<<< HEAD
 
-=======
->>>>>>> master
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">
@@ -732,16 +685,6 @@
 				<include name="*TEST-*.xml" />
 			</fileset>
 			<report styledir="./tests" format="noframes" todir="${reports}/sanity">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="gridpocreport_demo" depends="testgridpocdemotests">
-		<junitreport todir="${reports}/gridpoc/xml">
-			<fileset dir="${reports}/gridpoc/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
 			</report>
 		</junitreport>
 	</target>
