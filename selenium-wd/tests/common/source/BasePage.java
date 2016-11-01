@@ -115,6 +115,8 @@ public class BasePage {
 	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
 	
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn")
+	private WebElement licenseMissingModalOKBtn;
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -445,6 +447,9 @@ public class BasePage {
     	for(WebElement p:licenseMissingText){
     		String text = getElementText(p).trim();
     		licenseMissingMsg.add(text);
+    	}
+    	if(licenseMissingMsg.size()>0){
+    		licenseMissingModalOKBtn.click();
     	}
     	return licenseMissingMsg;
     }
