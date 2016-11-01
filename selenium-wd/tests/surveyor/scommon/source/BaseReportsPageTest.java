@@ -24,10 +24,10 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	private boolean isGenerateBaselineSSRSImages;
 	private boolean isGenerateBaselineViewImages;
 	private boolean isGenerateBaselineShapeFiles;
-	
+
 	private static Map<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
 	private static ReportTestRunMode testRunMode = ReportTestRunMode.FullTestRun;
-	
+
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
 		setReportsPage(reportsBasePage);
 		PageFactory.initElements(getDriver(), reportsBasePage);
@@ -53,8 +53,9 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		reportJobProcessingTimeNumberMap.put(ReportJobType.ShapeFile, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.SSRS, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.Zip, new NumberUtility());
+		reportJobProcessingTimeNumberMap.put(ReportJobType.AssetBoxHighlight, new NumberUtility());
 	}
-	
+
 	public static Integer getReportJobRollingProcessingTimeAvg(ReportJobType reportJobType) {
 		NumberUtility numberUtility = reportJobProcessingTimeNumberMap.get(reportJobType);
 		return numberUtility.getMovingAverage();
@@ -74,22 +75,22 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	public static void setReportsPage(ReportsBasePage reportsPage) {
 		reportsPageThreadLocal.set(reportsPage);
 	}
-		
+
 	@Override
 	public void postTestMethodProcessing() {
 		try {
 			cleanUp();
 			getReportsPage().logout();
 		} catch (Exception e) {
-			Log.warn("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message:");
-			Log.warn(ExceptionUtility.getStackTraceString(e));
+			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
+					ExceptionUtility.getStackTraceString(e)));
 		}
 	}
 
 	public static ReportsBasePage getReportsPage() {
 		return reportsPageThreadLocal.get();
 	}
-	
+
 	protected static ReportTestRunMode getTestRunMode() {
 		return testRunMode;
 	}
@@ -97,7 +98,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	protected static void setTestRunMode(ReportTestRunMode testRunModeValue) {
 		testRunMode = testRunModeValue;
 	}
-	
+
 	private void cleanUp() throws Exception {
 		if(getReportsPage()==null||keepTestData()){
 			TestContext.INSTANCE.clearTestReportSet();
@@ -107,15 +108,15 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		//Delete report and related downloads
 		getReportsPage().open();
-		for(String reportId:reportIdSet){	
+		for(String reportId:reportIdSet){
 			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
 			getReportsPage().deleteReportById(reportId);
 		}
 		getReportsPage().open();
 		TestContext.INSTANCE.clearTestReportSet();
-	}	
-	
+	}
+
 	private boolean keepTestData(){
 		if(getTestRunMode() != ReportTestRunMode.FullTestRun){
 			return true;
@@ -123,7 +124,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		int testCleanUpMode = TestContext.INSTANCE.getTestSetup().getTestCleanUpMode();
 		if(testCleanUpMode == 2){//# 2: keep all the test data in place
 			return true;
-		}else if(testCleanUpMode == 0){//# 0: clean up test data after each test			
+		}else if(testCleanUpMode == 0){//# 0: clean up test data after each test
 			return false;
 		}else if(testCleanUpMode == 1){//# 1: clean up test data if test passed
 			String testStatus = TestContext.INSTANCE.getTestStatus();

@@ -248,7 +248,6 @@ public class RegexUtility {
 	}
 
 	public static void main(String[] args) throws IOException {
-
 		Log.info("Running test - testAppVersion_Success() ...");
 		testAppVersion_Success();
 		Log.info("Running test - testAppVersion_FailMatch() ...");

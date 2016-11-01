@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -42,7 +42,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	private static LoginPage loginPage;
-	
+
 	/**
 	 * This method is called by the 'main' thread
 	 */
@@ -53,7 +53,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -75,88 +75,88 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Provide required details and click OK
 	 * Expected Results: User is navigated to Manager Reference Gas Bottles page and its details are displayed in the table
-	 * Current implementation:   
+	 * Current implementation:
 	 * Current Issue:
      * Future Improvement:
-	 */	
+	 */
 	@Test
 	public void TC463_AddRefGasBottle_CustUA() {
 		String lotNum = getTestSetup().getRandomNumber() + "_TC463";
 		String isoValue = "-32.7";
-		
+
 		Log.info("\nRunning TC463_AddRefGasBottle_CustUA - Test Description: Add Reference Gas Bottles");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, SQACUS, SQACUSLOC, SQACUSLOCSUR);
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum, SQACUSLOCSUR, SQACUSLOC));
 	}
-	
+
 	/**
 	 * Test Case ID: TC464_AddRefGasBottleBlankRequiredFields_CustUA
 	 * Test Description: add reference gas bottle - blank required fields
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 					- Keep required fields blank. Click OK
 	 * Expected Results: "Please fill out this field." message should be displayed
-	 * Current implementation:   
-	 * Current Issue: 
+	 * Current implementation:
+	 * Current Issue:
      * Future Improvement: deal with the tooltip text
-	 */	
-	@Test			
+	 */
+	@Test
 	public void TC464_AddRefGasBottleBlankRequiredFields_CustUA() {
 		String lotNum="";
 		String isoValue = "";
 		String ethaneMethaneRatio = "1";
-		
+
 		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
 				+ "blank required fields");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Test Case ID: TC465_AddRefGasBottleLotNumber50CharLimit_CustUA
 	 * Test Description:  	More than 50 characters not allowed in Lot Number field present on Add Reference Gas Bottle screens
 	 * Test Script: - On Home Page, click Administration -> Manage Reference Gas Bottles -> Add New Reference Gas Bottle
 	 * Expected Results: User cannot enter more than ... characters and message having limit of characters displayed
-	 * Current implementation:   
+	 * Current implementation:
 	 * Current Issue:
      * Future Improvement:
-	 */	
+	 */
 	@Test
 	public void TC465_AddRefGasBottleLotNumber50CharLimit_CustUA() {
 		String str34chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcd";
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
-		
+
 		String lotNum50Chars = getTestSetup().getFixedSizeRandomNumber(11) + "TC465" + str34chars;
 		String lotNum51Chars = getTestSetup().getFixedSizeRandomNumber(11) + "TC465" + str35chars;
-		
+
 		String isoValue = "-32";
 		String ethMthRto = "1";
-		
+
 		Log.info("\nRunning TC465_AddRefGasBottleLotNumber50CharLimit_CustUA - Test Description: More than 50 characters not allowed "
 				+ "in Lot Number field present on Add Reference Gas Bottle screens");
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
-		
+
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum50Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum51Chars, isoValue, ethMthRto, SQACUS, SQACUSLOC, SQACUSLOCSUR, true);
-		
+
 		assertTrue(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum50Chars, SQACUSLOCSUR, SQACUSLOC));
 		manageRefGasBottlesAdminPage.open();
 		assertFalse(manageRefGasBottlesAdminPage.findExistingRefGasBottle(lotNum51Chars, SQACUSLOCSUR, SQACUSLOC));
 	}
-	
+
 	/**
 	 * Test Case ID: TC450_ManageRefGasBottlesAdminPagination Test Description:
 	 * Pagination (Manage Ref Gas Bottles Customer Admin) Test Script: 10,25,50
@@ -258,7 +258,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 		manageRefGasBottlesAdminPage.open();
-		
+
 		manageRefGasBottlesAdminPage.getTheadSurveyor().click();
 		list = manageRefGasBottlesAdminPage.getSurveyorList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
@@ -267,7 +267,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		list = manageRefGasBottlesAdminPage.getSurveyorList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
-		
+
 		manageRefGasBottlesAdminPage.getTheadAnalyzer().click();
 		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
@@ -276,7 +276,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		list = manageRefGasBottlesAdminPage.getAnalyzerList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
-		
+
 		manageRefGasBottlesAdminPage.getTheadLotNumber().click();
 		list = manageRefGasBottlesAdminPage.getLotNumberList(false,
 				Integer.valueOf(PAGINATIONSETTING_100));
@@ -286,7 +286,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 				Integer.valueOf(PAGINATIONSETTING_100));
 		assertTrue(BaseHelper.isStringListSortedDes(list));
 	}
-	
+
 	/**
 	 * Test Case ID: TC132_ManageRefGas_SortColumns Script: - Sort records based on attributes present Results: - - User is able to sort the list of records based on specified attribute
 	 */
@@ -295,7 +295,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC132_ManageRefGas_SortColumns");
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		manageRefGasBottlesAdminPage.open();		
+		manageRefGasBottlesAdminPage.open();
 		assertTrue(manageRefGasBottlesAdminPage.areTableColumnsSorted());
 	}
 }

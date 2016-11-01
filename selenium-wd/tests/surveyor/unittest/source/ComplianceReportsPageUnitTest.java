@@ -32,7 +32,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static ComplianceReportsPage complianceReportsPage;
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
@@ -42,7 +42,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
 		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
@@ -55,7 +55,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 		// Select run mode here.
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -69,14 +69,14 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
         		null));
         complianceReportsPageAction.workingDataRow.get().title = "TC148 Report639729";
         complianceReportsPageAction.workingDataRow.get().tCID = "UnitTest-US2774";
-        
-        
+
+
         complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.get().title);
 		LoginPageActions.workingDataRow.set(new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null));
 		LoginPageActions.workingDataRow.get().username = "sqapicsup@picarro.com";
-		
+
 		//Delete all the download zips before test or change the parameter "0" to the download index of the this zip
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 0);
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, 0);
@@ -93,38 +93,38 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 */
 	@Test
 	public void TA862_ComplianceReportTest_VerifySurveyFilters() throws Exception {
-		
+
 		Log.info("\nTA862 - Searched Surveys should be filtered by selected report mode");
-		
+
 		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.openNewReportPage();
-		
+
 		ReportModeFilter rmode = ReportModeFilter.Standard;
 		testReportFilters(rmode);
 		SurveyModeFilter smode = SurveyModeFilter.All;
 		testSurveyFilters(smode);
-		
+
 		smode = SurveyModeFilter.Standard;
 		testSurveyFilters(smode);
-		
+
 		smode = SurveyModeFilter.Operator;
 		testSurveyFilters(smode);
-		
+
 		rmode = ReportModeFilter.RapidResponse;
 		testReportFilters(rmode);
 		smode = SurveyModeFilter.RapidResponse;
 		testSurveyFilters(smode);
-		
+
 		rmode = ReportModeFilter.Manual;
 		testReportFilters(rmode);
 		smode = SurveyModeFilter.Manual;
 		testSurveyFilters(smode);
 	}
-	
+
 	private void testReportFilters(ReportModeFilter rmode){
 		complianceReportsPage.selectReportMode(rmode);
-		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));	
+		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));
 	}
 	private void testSurveyFilters(SurveyModeFilter smode){
 		complianceReportsPage.selectSurveyModeForSurvey(smode);

@@ -65,12 +65,15 @@ import surveyor.scommon.source.Reports.ReportStatusType;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorConstants.Environment;
+import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
 /**
  * @author zlu
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
+	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
+
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
 	protected WebElement btnNewComplianceRpt;
 	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
@@ -91,7 +94,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement inputReportModeStd;
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > [id='Rapid Response']")
-	protected WebElement inputReportRapidR;
+	protected WebElement inputReportModeRapidR;
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
@@ -150,16 +153,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "report-survey-driver")
 	protected WebElement userName;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='All']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='All']")
 	protected WebElement inputSurModeFilterAll;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Standard']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Standard']")
 	protected WebElement inputSurModeFilterStd;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Operator']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Operator']")
 	protected WebElement inputSurModeFilterOperator;
 
-	@FindBy(how = How.XPATH, using = "//*[normalize-space( )='Rapid Response']//input[@name='survey-mode-type']")
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Rapid Response']")
 	protected WebElement inputSurModeFilterRapidResponse;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
@@ -424,6 +427,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = SURVEY_GROUP_DIVS_XPATH)
 	private WebElement surveyGroupDivs;
+
+	@FindBy(how = How.CSS, using = ".surveyGroup > [id^=surveyContent-]:not(#surveyContent-x)")
+	private List<WebElement> selectedSurveys;
 
 	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
@@ -692,11 +698,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void setSurveyRowsPagination(String numPages) {
+		By tableInfoBy = By.id(DATATABLESURVEYS_RECORDS_ELEMENT_ID);
 		List<WebElement> options = this.surveyTableRows.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			if (numPages.equals(option.getText().trim())) {
 				Log.info(String.format("Select Pagination - '%s'", numPages));
 				option.click();
+				waitForNumberOfRecords(tableInfoBy, STRSurveyPaginationMsgPattern);
 				break;
 			}
 		}
@@ -710,6 +718,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
+		fillReport(reports);
+		addReport();
+	}
+
+	public void selectFOVColor(ReportColorOption... colors){
+		By fovPathBy = By.cssSelector(".form-group [id$=-fov-color-picker] > .ColorBlotch");
+		selectColor(fovPathBy, colors);
+	}
+
+	public void selectLISAColor(ReportColorOption... colors){
+		By fovPathBy = By.cssSelector(".form-group [id$=-lisa-color-picker] > .ColorBlotch");
+		selectColor(fovPathBy, colors);
+	}
+
+	public void selectColor(By colorPickerBy, ReportColorOption... colors){
+		for(int i=selectedSurveys.size()-1,j=0; i>-1; i--){
+			WebElement selectedSurvey = selectedSurveys.get(i);
+			List<WebElement> colorPicker = selectedSurvey.findElements(colorPickerBy);
+			ReportColorOption colorOption = colors[j++ % colors.length];
+			int colorIndex = colorOption.toIndex();
+
+			Log.clickElementInfo(String.format("Select color '%s' at index '%d'", colorOption, colorIndex));
+			colorPicker.get(colorIndex).click();
+		}
+	}
+	public void fillReport(Reports reports) throws Exception {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
@@ -733,7 +767,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
 
+	}
+
+	public void addReport(){
 		this.clickOnOKButton();
+	}
+
+	public void cancelReport(){
+		this.clickOnCancelBtn();
 	}
 
 	public void addSurveyInformation(Reports reports) throws Exception {
@@ -759,11 +800,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		selectSurveyInfoGeoFilter(geoFilterOn);
 
 		for (String tagValue : tagList) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				clickOnSearchSurveyButton();
-				selectSurveysAndAddToReport(false /* selectAll */, 1 /* numSurveysToSelect */);
-			}
+			inputSurveyTag(tagValue);
+			clickOnSearchSurveyButton();
+			selectSurveysAndAddToReport(false /*selectAll*/, 1 /*numSurveysToSelect*/);
 		}
 	}
 
@@ -784,7 +823,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
-
 			// Select the specified number of surveys and add them to report.
 			selectSurveysAndAddToReport(reportsSurveyInfo.isSelectAllSurveys(),
 					reportsSurveyInfo.getNumberOfSurveysToSelect());
@@ -792,6 +830,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+		Log.method("selectSurveysAndAddToReport", selectAll, numSurveysToSelect);
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
@@ -974,7 +1013,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (startDate.startsWith("0")) {
 				startDate = startDate.replaceFirst("0*", "");
 			}
-			dateSetting.setDay("start", 7, startDate, false);
+			dateSetting.setDay("start", 7, startDate, true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -989,7 +1028,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (endDate.startsWith("0")) {
 				endDate = endDate.replaceFirst("0*", "");
 			}
-			dateSetting.setDay("end", 0, endDate, false);
+			dateSetting.setDay("end", 0, endDate, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1060,8 +1099,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForSurveyTabletoLoad() {
+		Log.method("waitForSurveyTabletoLoad");
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				Log.info(String.format("surveysTable.isDisplayed()=%b", surveysTable.isDisplayed()));
 				return surveysTable.isDisplayed();
 			}
 		});
@@ -1248,47 +1289,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void addNewReportWithMultipleSurveysIncluded(Reports reportsCompliance) {
-		inputReportTitle(reportsCompliance.getRptTitle());
-
-		if (reportsCompliance.getCustomer() != null && reportsCompliance.getCustomer() != CUSTOMER_PICARRO) {
-			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
-			for (WebElement option : optionsCustomer) {
-				if ((reportsCompliance.getCustomer()).equalsIgnoreCase(option.getText().trim())) {
-					Log.info(String.format("Select Customer - '%s'", option.getText()));
-					option.click();
-					break;
-				}
-			}
-
-			if (getChangeCustomerDialog().confirmInChangeCustomerDialog()) {
-				inputReportTitle(reportsCompliance.getRptTitle());
-			}
-		}
-
-		selectTimeZone(reportsCompliance.getTimeZone());
-
-		if (reportsCompliance.getSurveyorUnit() != "") {
-			selectSurveySurveyor(reportsCompliance.getSurveyorUnit());
-		}
-
-		for (String tagValue : reportsCompliance.tagList) {
-			if (tagValue != "") {
-				inputSurveyTag(tagValue);
-				clickOnSearchSurveyButton();
-				this.waitForSurveyTabletoLoad();
-				this.waitForSurveySelectorCheckBoxToLoad();
-				this.waitForSurveySelectorCheckBoxToBeEnabled();
-				selectFirstSurveyCheckBox();
-				this.waitForAddSurveyButtonToLoad();
-				clickOnAddSurveysButton();
-			}
-		}
-
-		this.clickOnOKButton();
-
-	}
-
 	public void selectTimeZone(String timeZone) {
 		List<WebElement> optionsTZ = this.cBoxTimezone.findElements(By.tagName("option"));
 		for (WebElement option : optionsTZ) {
@@ -1428,6 +1428,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle.trim())
 					&& rptNameCellText.trim().equalsIgnoreCase(strReportName.trim())
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy.trim())) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenReportNameCellText = rptNameCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
@@ -1483,9 +1487,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 						return handleFileDownloads(rptTitle, testCaseID);
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
-							Log.info(String.format(
-									"wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
+							Log.info(String.format("wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
 									elapsedTime));
 							return false;
 						}
@@ -1495,7 +1498,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						if (numRetriesForNullError < MAX_RETRIES_FOR_NULL_ERROR) {
 							Log.info(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
-							if (elapsedTime >= (ACTIONTIMEOUT + 800 * 1000)) {
+							if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 								return false;
 							}
 							continue;
@@ -1616,11 +1619,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& rptNameCellText.trim().equalsIgnoreCase(strReportName)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+
+				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
+						rptTitleCellText.trim(), createdByCellText.trim()));
+
 				lastSeenTitleCellText = rptTitleCellText.trim();
 				lastSeenReportNameCellText = rptNameCellText.trim();
 				lastSeenCreatedByCellText = createdByCellText.trim();
 
-				reportId = getReportId(rptTitle);
+				// Use API call for environments where direct DB access is not available (eg P3Scale).
+				/* DE2331 created: This method is not stable and throwing exceptions - need to be fixed
+				 * The try catch block could be removed after the fix
+				 */
+				try{
+					reportId = Report.getReport(rptTitle).getId();
+				}catch(Exception e){
+					ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+					reportId = reportJobsStatObj.Id;
+				}
+
 				TestContext.INSTANCE.addReportId(reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1662,7 +1679,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						}
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (ACTIONTIMEOUT + 900 * 1000)) {
+						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return null;
 						}
 						continue;
@@ -2148,7 +2165,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
 		this.inputSearchReport.sendKeys(reportTitle);
-
+		waitForTableDataToLoad();
 		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
 			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
 				return true;
@@ -2761,6 +2778,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAll);
 	}
 
+	public boolean isStandardReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeStd);
+	}
+
+	public boolean isRapidResponseReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeRapidR);
+	}
+
+	public boolean isManualReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
+	}
+
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
@@ -2792,7 +2821,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		List<String> validType = new ArrayList<String>();
 		switch (smf) {
 		case All:
-			if (inputReportRapidR.isSelected()) {
+			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());
 				validType.add(SurveyModeFilter.Operator.toString());
 				validType.add(SurveyModeFilter.RapidResponse.toString());
@@ -2814,7 +2843,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			validType.add(SurveyModeFilter.Manual.toString());
 			break;
 		default:
-			if (inputReportRapidR.isSelected()) {
+			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());
 				validType.add(SurveyModeFilter.Operator.toString());
 				validType.add(SurveyModeFilter.RapidResponse.toString());

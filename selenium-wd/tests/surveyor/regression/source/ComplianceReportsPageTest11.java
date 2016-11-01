@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -48,8 +48,8 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
@@ -61,7 +61,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		initializeTestObjects();
 		createTestCaseMap();
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
@@ -76,11 +76,11 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC192, TC202, TC210
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER_SET11, location = ComplianceReportDataProvider.class)
@@ -129,12 +129,12 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-		
+
 		if(testCaseName.equals("TC210")){
 			isSurveyDeleted(tagList);
 		}
 	}
-	
+
 	private void isSurveyDeleted(List<String> tagList) throws Exception{
 		String tagName=tagList.get(0);
 		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getBaseURL(), getTestSetup());
@@ -145,15 +145,15 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		tagList = msp.getTagNameList();
 		assertTrue(tagList.contains(tagName));
 	}
-	
+
 
 	/**
 	 * Test Case ID: TC217, TC223,TC225,TC226
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER_SET11_INVESTIGATION, location = ComplianceReportDataProvider.class)
@@ -181,36 +181,36 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 			assertFalse(complianceReportsPage.getBtnAssignInvestigators().isEnabled());
 			}
 			if(testCaseName.equals("TC223")){
-				checkPagination();				
+				checkPagination();
 			}
 			if(testCaseName.equals("TC225")){
-				searchInvalidLISA();				
+				searchInvalidLISA();
 			}
 			if(testCaseName.equals("TC226")){
-				assertTrue(complianceReportsPage.areInvestigationTableColumnsSorted());	
+				assertTrue(complianceReportsPage.areInvestigationTableColumnsSorted());
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 	}
-	
+
 	private void checkPagination(){
 		assertTrue(complianceReportsPage.checkPaginationSetting(PAGINATIONSETTING));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
 	}
-	
+
 	private void searchInvalidLISA(){
-		
+
 		assertTrue(!complianceReportsPage.searchInvestigationReport("ZZZ", getTestSetup().getLoginUser()));
 		assertEquals(NOMATCHINGSEARCH, complianceReportsPage.getEmptyTableMessage());
 	}
-	
+
 	/**
 	 * Test Case ID: TC207 Test Description: Verify report and survey modes are not modified if user clicks on NO change report mode button
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() {
@@ -224,7 +224,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		complianceReportsPage.waitForAddSurveyButtonToLoad();
 		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Manual, SQACUSMNTAG,ReportModeFilter.Standard ) );
 	}
-	
+
 
 
 	private static String getTestCaseName(String key) {

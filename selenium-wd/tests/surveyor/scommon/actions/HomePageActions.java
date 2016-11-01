@@ -19,6 +19,7 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("HomePageActions.open", data, dataRowID);
+		getHomePage().open(data);
 		return true;
 	}
 

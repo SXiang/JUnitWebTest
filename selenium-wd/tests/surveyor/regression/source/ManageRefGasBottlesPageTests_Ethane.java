@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -22,13 +22,13 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
  *
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
 	private static LoginPage loginPage;
-	
+
 	/**
 	 * This method is called by the 'main' thread
 	 */
@@ -39,13 +39,13 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
 		loginPage = pageObjectFactory.getLoginPage();
@@ -58,7 +58,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1734 Test Description: Ethane - Verify that Ethane To Methane Ratio column added to ReferenceGasBottle Page
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1734_VerifyEthMthClmn_RefGasBottles() {
@@ -75,7 +75,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1735 Test Description: Ethane - Verify that user can add value to Ethane To Methane Ratio column to ReferenceGasBottle Page
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1735_AddValueEthMthClmn_RefGasBottles() {
@@ -96,7 +96,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1738 Test Description: Ethane- Verify min/max value (%) from drop down/up to Ethane To Methane Ratio column to ReferenceGasBottle Page
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1738_MinMAxValueEthMthClmn_RefGasBottles() {
@@ -144,7 +144,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
 
-		if ((ethMthRtoZero != null) && (ethMthRtoZero != "")) { 
+		if ((ethMthRtoZero != null) && (ethMthRtoZero != "")) {
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoZero);
 		}
@@ -163,7 +163,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
 
-		if ((ethMthRtoHund != null) && (ethMthRtoHund != "")) { 
+		if ((ethMthRtoHund != null) && (ethMthRtoHund != "")) {
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoHund);
 		}
@@ -177,7 +177,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1739 Test Description: Ethane - Ethane To Methane Ratio to ReferenceGasBottle Page should not take negative value
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1739_InvalidMinMAxValueEthMthClmn_RefGasBottles() {
@@ -198,7 +198,7 @@ public class ManageRefGasBottlesPageTests_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageRefGasBottlesPage.getEthMethRtoLbl().getText().equals(ETHMTHRTOLABEL));
 
-		if ((ethMthRtoNeg != null) && (ethMthRtoNeg != "")) { 
+		if ((ethMthRtoNeg != null) && (ethMthRtoNeg != "")) {
 			manageRefGasBottlesPage.inputEthMthRto.clear();
 			manageRefGasBottlesPage.inputEthMthRto.sendKeys(ethMthRtoNeg);
 		}

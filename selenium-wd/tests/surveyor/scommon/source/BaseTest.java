@@ -1,5 +1,14 @@
 package surveyor.scommon.source;
 
+import static org.junit.Assert.fail;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEUA;
+import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +23,8 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
@@ -27,7 +38,15 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.TestSetupFactory;
 import surveyor.dataprovider.DataAnnotations;
+import surveyor.scommon.actions.ActionBuilder;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.PageActionsStore;
+import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class BaseTest {
 
@@ -42,6 +61,9 @@ public class BaseTest {
 	public static String screenShotsDir;
 	public static String screenShotsSubFolder = "screenshots/";
 	private static boolean debug;
+
+	private static LoginPage loginPage;
+	private static HomePage homePage;
 
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
@@ -64,6 +86,7 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			BaseTest.reportTestFailed(e, description.getClassName());
+			postTestMethodProcessing();
 		}
 
 		 @Override
@@ -194,6 +217,11 @@ public class BaseTest {
 			return;
 		}
 
+		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
+			getHomePage().open();
+			getHomePage().logout();
+		}
+
 		getDriver().quit();
 		setDriver(null);
 	}
@@ -216,6 +244,215 @@ public class BaseTest {
 			return false;
 		}
 		return true;
+	}
+
+	public Map<String, String> createTestAccount(String testCase){
+		return createTestAccount(testCase, null);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
+		return createTestAccount(testCase, null, addTestSurveyor);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
+		return createTestAccount(testCase, lfsToExclude, true);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
+		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
+		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
+		String userName = uniqueNumber + REGBASEUSERNAME;
+		String userRole = CUSUSERROLEUA;
+		String userPassword = USERPASSWORD;
+		String eula = customerName + ": " + EULASTRING;
+		String cityName = "Santa Clara";
+		String locationName = uniqueNumber + "Loc";
+
+		String surveyorName = uniqueNumber + "Sur";
+		String analyzerName = uniqueNumber + "Ana";
+		String analyzerSharedKey = analyzerName + "Key";
+		String lotNum = getTestSetup().getRandomNumber() + testCase;
+		String isoValue = "-32.7";
+
+		LicensedFeatures[] lfs = LicensedFeatures.values(lfsToExclude);
+
+		HashMap<String, String> testAccount = new HashMap<String, String>();
+		testAccount.put("customerName", customerName);
+		testAccount.put("userName", userName);
+		testAccount.put("locationName", locationName);
+		testAccount.put("cityName", cityName);
+		testAccount.put("userPassword", userPassword);
+		testAccount.put("userRole", userRole);
+		testAccount.put("eula", eula);
+
+		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		manageCustomersPage.open();
+		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
+			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
+		}
+		manageLocationsPage.open();
+		if(!manageLocationsPage.addNewLocation(locationName, customerName, cityName)){
+			fail(String.format("Failed to add a new location %s, %s, %s",locationName, customerName, cityName));
+		}
+
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
+			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
+		}
+
+		if(!addTestSurveyor){
+			return testAccount;
+		}
+
+		testAccount.put("analyzerSharedKey", analyzerSharedKey);
+		testAccount.put("analyzerName", analyzerName);
+		testAccount.put("surveyorName", surveyorName);
+		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);
+		ManageAnalyzersPage manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
+		ManageRefGasBottlesPage manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
+
+		manageSurveyorPage.open();
+		if(!manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName)){
+			fail(String.format("Failed to add a new Surveyor %s, %s, %s",surveyorName, locationName, customerName));
+		}
+
+		manageAnalyzersPage.open();
+		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
+			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
+		}
+
+		manageRefGasBottlesPage.open();
+		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
+			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",lotNum, isoValue, customerName, locationName, surveyorName));
+		}
+		return Collections.synchronizedMap(testAccount);
+	}
+
+	public Map<String, String> addTestReport() throws Exception{
+		return addTestReport(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+	}
+
+	public Map<String, String> addTestReport(String userName, String Password, SurveyModeFilter... surveyModeFilter)throws Exception{
+		int testRowID = 115;
+		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual};
+		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
+		if(surveyModeFilter==null||surveyModeFilter.length==0){
+			surveyModeFilter = SurveyModeFilter.values();
+		}
+
+		HashMap<String, String> testReport = new HashMap<String, String>();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, Password);
+		testReport.put("userName", userName);
+
+		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
+		ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
+
+		for(SurveyModeFilter sm:surveyModeFilter){
+			boolean found = false;
+			ReportModeFilter rm = null;
+			for(int i=0; i<surveyMode.length; i++){
+				if(sm.equals(surveyMode[i])){
+					rm = reportMode[i];
+					found = true;
+					break;
+				}
+			}
+			if(!found){
+				continue;
+			}
+
+			complianceReportsPageAction.open("", -1);
+			ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(testRowID);
+			rpt.rptTitle += rm.toString()+sm.toString();
+			rpt.reportModeFilter = rm;
+			rpt.surveyModeFilter = sm;
+			rpt.strCreatedBy = userName;
+			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
+				if(smf!=null)
+					smf.setSurveyModeFilter(sm);
+			}
+			testReport.put(sm.toString()+"Title", rpt.rptTitle);
+
+			complianceReportsPage.addNewReport(rpt, true);
+			complianceReportsPage.waitForReportGenerationtoComplete(rpt.rptTitle, rpt.strCreatedBy);
+		}
+		return Collections.synchronizedMap(testReport);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
+		return addTestSurvey(analyzerName, analyzerSharedKey, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, SurveyType... surveyTypes) throws Exception{
+		int surveyRuntimeInSeconds = 2;
+		String replayScriptDefnFile = "replay-db3.defn";
+		String replayScriptDB3File = "Surveyor.db3";
+		int[] surveyRowIDs = {3, 5, 9, 31, 30};
+		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual"};
+
+		if(surveyTypes==null||surveyTypes.length==0){
+			surveyTypes = SurveyType.values();
+		}
+
+		HashMap<String, String> testSurvey = new HashMap<String, String>();
+		testSurvey.put("analyzerName", analyzerName);
+		testSurvey.put("analyzerShearedKey", analyzerSharedKey);
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, Password);
+		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
+		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
+		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(3));
+		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
+		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
+		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
+
+		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
+				analyzerName, analyzerSharedKey);
+		TestSetup.restartAnalyzer();
+
+		for(SurveyType st:surveyTypes){
+			driverViewPageAction.open("", -1);
+			driverViewPageAction.waitForConnectionToComplete("", -1);
+
+			int surveyRowID = surveyRowIDs[0];
+			for(int i=0; i<surveyType.length; i++){
+				if(st.toString().equalsIgnoreCase(surveyType[i])){
+					surveyRowID = surveyRowIDs[i];
+					break;
+				}
+			}
+			TestSetup.replayDB3Script(replayScriptDefnFile, replayScriptDB3File);
+			driverViewPageAction.clickOnModeButton("", -1);
+			driverViewPageAction.startDrivingSurvey("", surveyRowID);
+			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
+			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
+			driverViewPageAction.clickOnModeButton("", -1);
+			driverViewPageAction.stopDrivingSurvey("", -1);
+			driverViewPageAction.clickOnModeButton("", -1);
+			driverViewPageAction.clickOnShutdownButton("", -1);
+			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
+			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+			TestSetup.stopAnalyzer();
+			TestSetup.startAnalyzer();
+		}
+
+		return Collections.synchronizedMap(testSurvey);
 	}
 
 	/**
@@ -285,5 +522,21 @@ public class BaseTest {
 
 	public static void setScreenCapture(ScreenShotOnFailure screenCapture) {
 		screenCaptureThreadLocal.set(screenCapture);
+	}
+
+	public static LoginPage getLoginPage() {
+		return loginPage;
+	}
+
+	public static void setLoginPage(LoginPage loginPage) {
+		BaseTest.loginPage = loginPage;
+	}
+
+	public static HomePage getHomePage() {
+		return homePage;
+	}
+
+	public static void setHomePage(HomePage homePage) {
+		BaseTest.homePage = homePage;
 	}
 }

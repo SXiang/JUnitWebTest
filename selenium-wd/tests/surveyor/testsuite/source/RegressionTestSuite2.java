@@ -14,7 +14,7 @@ import surveyor.regression.source.ManageRefGasBottlesPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	ManageLocationsAdminPageTest.class
 	,ManageLocationsPageTest.class
 	,ManageLocationsPageTest_Ethane.class
@@ -22,14 +22,14 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,ManageRefGasBottlesPageTest.class
 })
 public class RegressionTestSuite2 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for RegressionTestSuite2 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for RegressionTestSuite2 executing...");
     }
 }

@@ -11,6 +11,8 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -105,6 +107,9 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = "#datatable td.dataTables_empty")
 	private WebElement emptyDataTableMessage;
+
+	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
+	private List<WebElement> siteErrorMessage;
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -245,6 +250,14 @@ public class BasePage {
 	public void clickOnViewServerlogsLink(String strBaseURL) {
 		Log.info("Navigate to Server Logs page");
 		driver.get(strBaseURL + "/Picarro/ServerLog");
+	}
+
+	public boolean verifyFleetMapLinkIsClickable() {
+		Log.method("Verify if Fleet Map link is clickable");
+		if(WebElementExtender.isElementPresentAndDisplayed(linkFleetMap)){
+			return linkFleetMap.isEnabled();
+		}
+		return false;
 	}
 
 	public boolean isLinkBroken() {
@@ -389,6 +402,7 @@ public class BasePage {
 			}catch(Exception e){
 				numTry++;
 				Log.error("Failed to select option '"+option+"'");
+				waitForPageToLoad();
 			}
 		}while(!selected&&numTry<5);
 
@@ -421,5 +435,13 @@ public class BasePage {
     		}
     	}
     	return true;
+    }
+
+    public String getSiteErrorMsg(){
+    	String errMsg = "";
+    	for(WebElement msg:siteErrorMessage){
+    		errMsg += msg.getText();
+    	}
+    	return errMsg;
     }
 }

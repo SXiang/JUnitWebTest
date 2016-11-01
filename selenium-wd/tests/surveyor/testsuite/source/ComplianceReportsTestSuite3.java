@@ -12,20 +12,20 @@ import surveyor.regression.source.ComplianceReportsWithNewSurveyPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	ComplianceReportsPageTest_CustomBuildRunner.class
 	,ComplianceReportsPageTest_Ethane.class
 	,ComplianceReportsWithNewSurveyPageTest.class
 })
 public class ComplianceReportsTestSuite3 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for ComplianceReportsTestSuite3 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for ComplianceReportsTestSuite3 executing...");
     }
 }

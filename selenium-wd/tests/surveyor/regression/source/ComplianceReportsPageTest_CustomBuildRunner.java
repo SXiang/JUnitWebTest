@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -54,21 +54,22 @@ import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPageTest {
 	private static LoginPage loginPage;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
 	}
-	
+
 	@Before
 	public void beforeTest() {
 		initializeTestObjects();
@@ -79,15 +80,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		initializePageObjects(pageObjectFactory.getComplianceReportsPage());
 	}
-	
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
-	
+
 	/**
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	@Test
 	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() throws Exception {
@@ -110,16 +111,18 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		this.getComplianceReportsPage().addNewPDReport(rptTitle, "Picarro", surUnit, surTag, changeMode, reportMode);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID)))
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
 			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
-		else
+		} else {
 			fail("\nTestcase TC183 failed.\n");
+		}
 	}
 
 	/**
 	 * Test Case ID: TC191 Test Description: Generate report having multiple surveys and verify Gaps for them
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	@Test
 	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
@@ -171,17 +174,19 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		String surUnit = "";
 		String exclusionRadius = "0";
 		String strCustomer = "Picarro";
+
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 		surTag.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
-		
-		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+
+		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
 			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 
 		} else
@@ -190,8 +195,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC192 Test Description: Generate report having multiple surveys and provide exclusion radius
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	@Test
 	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() throws Exception {
@@ -263,11 +268,12 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
-		
-		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+
+		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
+			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
 			if (this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath())) {
 				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 			} else
@@ -278,8 +284,8 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 	/**
 	 * Test Case ID: TC198 Test Description: Verify "Already Added" message is displayed if user tries to add the same survey again using copy functionality
-	 * @throws Exception 
-	 * 
+	 * @throws Exception
+	 *
 	 */
 	@Test
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() throws Exception {
@@ -303,7 +309,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	/**
 	 * Test Case ID: TC1321 Test Description: Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast Note: Need 3 standard mode survey tags, Need to change qacus
 	 * to include Percentage Forecast
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void TC1321_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
@@ -361,11 +367,12 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
-		
-		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+
+		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
+			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
 			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, getTestSetup().getLoginUser()));
 		} else
 			fail("\nTestcase TC1321 failed.\n");
@@ -374,7 +381,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	/**
 	 * Test Case ID: TC1351 Test Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags Note: Need 3 standard mode survey tags,
 	 * Need to change qacus to include Percentage Forecast
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void TC1351_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
@@ -432,11 +439,12 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
-		
-		this.getComplianceReportsPage().addNewReportWithMultipleSurveysIncluded(rpt);
+
+		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
+			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
 			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, getTestSetup().getLoginUser()));
 		} else
 			fail("\nTestcase TC1351 failed.\n");

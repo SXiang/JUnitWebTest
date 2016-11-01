@@ -273,6 +273,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
+			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSSU));
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
 					getTestSetup().getDownloadPath()));

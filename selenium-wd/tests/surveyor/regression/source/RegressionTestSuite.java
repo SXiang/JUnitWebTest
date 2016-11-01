@@ -10,7 +10,7 @@ import com.googlecode.junittoolbox.ParallelSuite;
 import common.source.Log;
 
 @RunWith(ParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	ACLandVisibilityTest.class,
 	HomePageTest.class,
 	LoginPageTest.class,
@@ -26,17 +26,17 @@ import common.source.Log;
 	ManageUsersPageTest.class,
 	ManageUsersAdminPageTest.class,
 	MeasurementSessionsPageTest.class,
-	SystemHistoryReportsPageTest.class,	
+	SystemHistoryReportsPageTest.class,
 	ReferenceGasReportsPageTest.class })
 public class RegressionTestSuite {
-	@BeforeClass 
-    public static void setUpClass() {      
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for RegressionTestSuite executing...");
         // Add initialization that needs to happen once for all the test classes in the suite here.
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for RegressionTestSuite executing...");
     }
 }

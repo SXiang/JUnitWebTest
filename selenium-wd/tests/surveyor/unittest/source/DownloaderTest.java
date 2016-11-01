@@ -14,17 +14,17 @@ import common.source.TestSetup;
 public class DownloaderTest {
 
 	private static TestSetup testSetup = null;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		testSetup = new TestSetup();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 	}
-	
+
 	@Test
 	public void downloadFileTest() {
 		boolean hasError = false;
-		
+
 		String downloadFileRelativeUrl = "Reports/ViewReportPdf?reportId=1FAEFD6E-6F64-94C9-D2FD-39D91D198D2D&ReportType=Compliance";
 		String outputFileFullPath = "C:\\Users\\spulikkal\\Downloads\\CR-1FAEFD.pdf";
 		try {
@@ -33,7 +33,7 @@ public class DownloaderTest {
 			hasError = true;
 			Log.error(ExceptionUtility.getStackTraceString(e));
 		}
-		
+
 		Assert.assertTrue(!hasError);
 	}
 

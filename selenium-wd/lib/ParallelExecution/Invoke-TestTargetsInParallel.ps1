@@ -16,11 +16,13 @@
 
 #--------- MODIFY THIS BEFORE RUNNING SCRIPT -------#
 # Ant Test Targets
-$targetsToRun = 
+$targetsToRun = @("tc_localrun")
+<#
  "performancetestsLight",
  "performancetestsMedium",
  "performancetestsHigh",
  "performancetestsUltraHigh"
+#>
 #---------------------------------------------------#
 
  . C:\Repositories\surveyor-qa\selenium-wd\lib\ParallelExecution\Invoke-Parallel.ps1
@@ -29,6 +31,8 @@ $jobs = New-Object System.Collections.ArrayList
  
 $start = Get-Date 
 Write-Host "Starting parallel test execution of specified targets - [$targetsToRun] ..."
+
+$buildRoot = "C:\Build\work"
 
 # delete all previous directories from build root.
 $childFolders = Get-ChildItem -Path $buildRoot | where {$_.Attributes -eq 'Directory'} 

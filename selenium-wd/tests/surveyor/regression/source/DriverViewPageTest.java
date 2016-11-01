@@ -1424,7 +1424,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		// verify manual button is NOT showing.
 		assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
-
+		assertTrue(driverViewPageAction.getDriverViewPage().getStandardButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getRapidResponseButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getOperatorButton().isDisplayed());
+		
 		// Stop current simulator and start another with a different Analyzer.
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}

@@ -23,7 +23,10 @@
 		<mkdir dir="${dist}" />
 
 		<mkdir dir="${reports}/sanity/xml" />
+<<<<<<< HEAD
 		<mkdir dir="${reports}/gridpoc/xml" />
+=======
+>>>>>>> master
 		<mkdir dir="${reports}/regression/xml" />
 		<mkdir dir="${reports}/performance/xml" />
 
@@ -291,8 +294,11 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
+<<<<<<< HEAD
 					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
 
+=======
+>>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -389,7 +395,7 @@
 		</junit>
 	</target>
 
-	<target name="compliancereportpageactiontests" depends="compileregression" description="Run compliance report page action test cases">
+	<target name="compliancereportpageactiontests" depends="compileregression,compileperformance" description="Run compliance report page action test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -404,14 +410,13 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest.class" />
-					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
 	</target>
 
-	<target name="testcompliancereport" depends="compileregression" description="Run compliance report test cases">
+	<target name="testcompliancereport" depends="compileregression,compileperformance" description="Run compliance report test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -433,8 +438,13 @@
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest7.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest11.class" />
+<<<<<<< HEAD
+=======
+					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
+>>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -459,6 +469,11 @@
 						<include name="**/DriverViewPageTest.class" />
 						<include name="**/ObserverViewPageTest.class" />
 						<include name="**/ObserverViewPageStressTest.class" />
+						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+						<include name="**/ObserverViewPageTest2.class" />
+						<include name="**/DriverViewPageTest2.class" />
+
 					</fileset>
 				</batchtest>
 			</junit>
@@ -504,6 +519,7 @@
 					<include name="**/ReferenceGasReportsPageTest.class" />
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
+					<include name="**/LicensedFeatureAndVisibilityTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -551,7 +567,34 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
+<<<<<<< HEAD
 	<target name="testgridpocdemotests" depends="compileGridPOC" description="Run grid POC demo test suite in parallel">
+=======
+	<target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest fork="yes" todir="${reports}/performance/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/ReportJobPerformanceTestLight.class" />
+					<include name="**/ReportJobPerformanceTestMedium.class" />
+					<include name="**/ReportJobPerformanceTestHigh.class" />
+					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
+>>>>>>> master
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key="testReportCategory" value="GridPOC" />
@@ -633,9 +676,16 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
+<<<<<<< HEAD
 					<include name="**/ComplianceReportsTestSuite1.class" />
 					<include name="**/ComplianceReportsTestSuite2.class" />
 					<include name="**/ComplianceReportsTestSuite3.class" />
+=======
+					<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+					<include name="**/ObserverViewPageTest2.class" />
+					<include name="**/DriverViewPageTest2.class" />
+					<include name="**/LicensedFeatureAndVisibilityTest.class" />
+>>>>>>> master
 				</fileset>
 			</batchtest>
 		</junit>
@@ -646,7 +696,8 @@
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
-																HTTPSecurityTests/Analyzer.Security.HTTP.jmx"/>
+																HTTPSecurityTests/Analyzer.Security.HTTP.jmx,
+																HTTPSecurityTests/License.Security.HTTP.jmx"/>
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 			<property name="runUUID" value="${env.RunUUID}" />
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
@@ -670,7 +721,10 @@
 		</jmeter>
 
 	</target>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 	<!-- JUnit Test Reports -->
 	<target name="sanityreport" depends="testsanity">
 		<junitreport todir="${reports}/sanity/xml">

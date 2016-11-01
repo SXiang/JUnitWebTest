@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -24,7 +24,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
- * 
+ *
  *
  */
 @RunWith(SurveyorTestRunner.class)
@@ -43,7 +43,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -54,7 +54,7 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		loginPage = pageObjectFactory.getLoginPage();
 		PageFactory.initElements(getDriver(), loginPage);
-		
+
 		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
 		PageFactory.initElements(getDriver(), manageLocationsPage);
 
@@ -64,9 +64,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1695 Test Description: Ethane: Verify Manage Locations page appears when logged in as Picarro Admin
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1695_Manage_Locations_Ethane_Methane_Ratio_Column() {
@@ -84,9 +84,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1696 Test Description: Ethane: Verify True Ethane/Methane ratio can be updated and saved
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
@@ -109,9 +109,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1697 Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1697_Manage_Locations_Add_Ethane_Methane_Ratio_Column() {
@@ -130,9 +130,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1698 Test Description: Ethane: Verify Manage Locations page appears when logged in as Customer Admin
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1698_Manage_Locations_Ethane_Methane_Ratio_Column() {

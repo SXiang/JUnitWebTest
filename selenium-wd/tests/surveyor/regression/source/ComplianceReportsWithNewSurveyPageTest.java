@@ -38,11 +38,11 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	public static void beforeClass() {
 		initializeTestObjects();
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		initializePageActions();
 
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());;
@@ -59,7 +59,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -67,7 +67,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
@@ -78,7 +78,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	/**
 	 * Test Case ID: TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport
 	 * Test Description: Generate report and try to delete the survey used while generating the report
-	 * Script: -  	
+	 * Script: -
 	 *	- On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
 	 *	- Provide report title, timezone : PST, Survey Mode: Standard, Exclusion Radius:0
 	 *	- Select Indications and isotopic table
@@ -88,7 +88,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	 *	- Click on OK and click Download icon
 	 *	- Navigate to Driving Surveys page and search the survey used while generating the report
 	 *	- Click on Delete survey button
-	 * Results: - 
+	 * Results: -
 	 *	- - Report should be generated and user can download the report successfully
 	 *	- - Show notification that survey is used in generated report or Delete Survey button itself is unavailable
 	 */
@@ -97,12 +97,12 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	public void TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport ...");
-		
+
 		final int LOGIN_USER_ROW_ID = 6;        /* LoginRowID. AutomationAdmin */
 	    final int DB3_ANALYZER_ROW_ID = 9;      /* Analyzer3/Surveyor3. Replay db3 file rowID */
 	    final int SURVEY_ROW_ID = 51;           /* Survey information rowID */
 	    final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
-	    
+
 		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID, DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 
 		loginPageAction.open(EMPTY, NOTSET);
@@ -122,5 +122,5 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		assertTrue(homePage.getReturnHomePage().isEnabled());
 		assertTrue(homePage.getReturnHomePage().isDisplayed());
 		homePage.getReturnHomePage().click();
-	}	
+	}
 }

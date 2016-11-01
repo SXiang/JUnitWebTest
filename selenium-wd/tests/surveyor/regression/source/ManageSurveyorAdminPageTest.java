@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -62,13 +62,13 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
 		loginPage = pageObjectFactory.getLoginPage();

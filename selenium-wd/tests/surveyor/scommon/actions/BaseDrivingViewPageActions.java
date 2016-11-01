@@ -298,6 +298,34 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		logAction(getRuntimeType() + ".verifySurveyInfoTimeRemainingLabelIsTickingBackward", data, dataRowID);
 		return DateUtility.isTimeTickingBackward(getBaseDrivingViewPage().getTimeRemainingLabel());
 	}
+
+	/**
+	 * Executes verifyRedCursorIsMovingWithCarPosition action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws InterruptedException 
+	 */
+	/*TBD*/
+	public boolean verifyRedCursorIsMovingWithCarPosition(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyRedCursorIsMovingWithCarPosition", data, dataRowID);
+		//return getBaseDrivingViewPage().isRedCursorIsMovingWithCarPosition();
+		return false;
+	}
+	
+	/**
+	 * Executes verifySpikesAreDisplayed action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws InterruptedException 
+	 */
+	/*TBD*/
+	public boolean verifySpikesAreDisplayed(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifySpikesAreDisplayed", data, dataRowID);
+		//return getBaseDrivingViewPage().areSpikesDisplayed();
+		return false;
+	}
 	
 	public BaseDrivingViewPage getBaseDrivingViewPage() {
 		return (BaseDrivingViewPage)this.getPageObject();

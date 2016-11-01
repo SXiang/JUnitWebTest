@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -85,31 +85,34 @@ import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest extends BaseReportsPageTest {
+
+	protected static final Integer DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 2400;  // Max timeout= 40 mins for report gen.
+
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
 	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 	private static LoginPage loginPage;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
 
 		createTestCaseMap();
 	}
-	
+
 	@Before
 	public void beforeTest() {
 		initializeTestObjects();
 
 		initializePageObjects();
-	
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 		loginPage = pageObjectFactory.getLoginPage();
 		PageFactory.initElements(getDriver(), loginPage);
@@ -118,18 +121,18 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private static void initializePageObjects() {
 		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
-	
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
-	
+
 	/**
 	 * Test Case ID: TC517 Test Description: Generate compliance report with all default values/filters selected and download it
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
@@ -137,20 +140,20 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-		
+
 		if (testCaseName.equals("TC203")) {
 			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber() + "#%$,\"<>";
 		} else {
 			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 		}
-		
+
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
 		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-
+		this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
@@ -179,8 +182,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-
-
 	}
 
 	private static String getTestCaseName(String key) {
@@ -216,7 +217,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC157 Test Description: Check that report cannot be generated unless all filters are selected
 	 * On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 * Scripts: - 
+	 * Scripts: -
 	 *	- Don't provide report title, lat long co-ordinates
 	 *	- Don't include any survey
 	 *	- Include Views but dont select any option to display in view
@@ -235,7 +236,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC160 Test Description: Pagination - 10,25,50 and 100 Reports selection on compliance report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC160_ComplianceReportTest_VerifyPagination() {
@@ -259,9 +260,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC163 Test Description: Screen should not refresh while searching an in-progress report, as it completes
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
@@ -327,11 +328,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC164 Test Description: Search invalid reports
-	 * Script: - 
+	 * Script: -
 	 * 	-Provide any invalid report title on compliance or investigation or reference gas or system history report screen
 	 * Result: -
 	 *  Message should be displayed : 'No matching records found'
-	 * 	- 
+	 * 	-
 	 */
 	@Test
 	public void TC164_ComplianceReportTest_VerifySearchInvalidReports() {
@@ -347,9 +348,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC166 Test Description: Picarro Administrator can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC166_ComplianceReportTest_AdminCanDeleteReport() throws Exception {
@@ -417,9 +418,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC170 Test Description: Duplicate report
-	 * 
 	 * @throws Exception
-	 * 
+	 *
+	 * US3605 - This test currently fails on Assertion since we always get back the oldest report ID from GetReportStat API.
+	 * Opened US3605 to track updating GetReportStat API to return the most recent report when there is more than 1 match for report title.
 	 */
 	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() throws Exception {
@@ -472,7 +474,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, RSURSTARTDATE, RSURENDDATE, viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -483,29 +485,28 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
-		
+
 		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
 		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName2);
-		
+
 		assertNotEquals(reportName1, reportName2);
 	}
 
 	/**
 	 * Test Case ID: TC174 Test Description: Generate report for same surveys but in different modes
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC174_ComplianceReportTest_VerifySameReportDifferentModes() throws Exception {
 		String testCaseID = "TC174";
 		String rptTitle = testCaseID + " RR Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Generate report for same surveys but in different modes " + rptTitle);
-		
+
 		ReportModeFilter[] reportModes = {ReportModeFilter.Standard, ReportModeFilter.RapidResponse};
 		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -553,7 +554,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		for(ReportModeFilter reportMode : reportModes){
 			rptTitle = testCaseID + " "+reportMode.toString() + " " + getTestSetup().getRandomNumber();
-			ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", 
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0",
 					listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, reportMode);
 			rpt.setViewLayersList(viewLayerList);
 			this.getComplianceReportsPage().addNewReport(rpt);
@@ -567,9 +568,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC181 Test Description: Generate standard or rapid response report from existing reports having survey of Manual type using copy feature
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC181_ComplianceReportTest_VerifyCopyManualReportAsRapidResponse() throws Exception {
@@ -644,11 +645,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC184 Test Description: Very small or big report area selection not allowed
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
-	@Test 
+	@Test
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC184_: Very small or big report area selection not allowed\n");
 		String rptTitle = "TC184_Report" +" SmallArea "+ getTestSetup().getRandomNumber();
@@ -705,7 +706,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().addNewReport(rpt);
 
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
-		
+
 		// Big Area
 		rptTitle = "TC184_Report" +" BigArea "+ getTestSetup().getRandomNumber();
 		this.getComplianceReportsPage().open();
@@ -715,7 +716,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		listBoundary.add("36.42252593456309");
 		listBoundary.add("-122.83494567871095");
 		listBoundary.add("38.27989023941680");
-		listBoundary.add("-124.05415725708008");		
+		listBoundary.add("-124.05415725708008");
 		rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
@@ -724,7 +725,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC185 Test Description: Click on Cancel button present on compliance report screen
-	 * 
+	 *
 	 */
 	@Test
 	public void TC185_ComplianceReportTest_VerifyCancelButtonFunctionality() {
@@ -738,9 +739,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC197 Test Description: Verify "Add Survey" message is displayed when no Survey added
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() throws Exception {
@@ -771,9 +772,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC167 Test Description: Customer Admin can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC167_ComplianceReportTest_CusAdminCanDeleteReport() throws Exception {
@@ -838,9 +839,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC168 Test Description: Customer Supervisor can delete the specified report
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC168_ComplianceReportTest_CusSupervisorCanDeleteReport() throws Exception {
@@ -905,9 +906,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC212 Test Description: Resubmit compliance report from previously generated reports
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC212_ComplianceReportTest_VerifyResubmitReport() throws Exception {
@@ -968,21 +969,22 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
+
 		this.getComplianceReportsPage().clickComplianceReportButton(rptTitle, getTestSetup().getLoginUser(), ComplianceReportButtonType.Resubmit);
+
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, getTestSetup().getLoginUser()));
 		} else
 			fail("\nTestcase TC212 failed.\n");
 	}
 
 	/**
 	 * Test Case ID: TC797 Test Description: Search compliance reports based on report name
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC797_ComplianceReportTest_SearchReportByReportName() throws Exception {
@@ -1026,7 +1028,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 
-		
+
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
 
 		viewList.add(viewMap);
@@ -1048,9 +1050,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	/**
 	 * Test Case ID: TC1275 Test Description: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional
 	 * view layers section
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1275_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
@@ -1106,9 +1108,9 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 	/**
 	 * Test Case ID: TC1297 Test Description: Software version on UI and reports PDF should match
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1297_ComplianceReportTest_VerifyVersion() throws Exception {
@@ -1165,10 +1167,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
-			if (this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath())) {
-				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, SQACUSSU));
-			} else
-				fail("\nTestcase TC297 failed.\n");
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 		} else
 			fail("\nTestcase TC297 failed.\n");
 	}

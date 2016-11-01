@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -54,17 +54,17 @@ public class HomePageTest extends SurveyorBaseTest {
 	public static void setupHomePageTest() {
 		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
 	}
-	
+
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
 		PageActionsStore.INSTANCE.clearStore();
-		
+
 		initializeTestObjects();
 
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
@@ -73,10 +73,10 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		loginPage = pageObjectFactory.getLoginPage();
 		PageFactory.initElements(getDriver(), loginPage);
-		
+
 		homePage = pageObjectFactory.getHomePage();
 		PageFactory.initElements(getDriver(), homePage);
-		
+
 		fleetMapPage = pageObjectFactory.getFleetMapPage();
 		PageFactory.initElements(getDriver(), fleetMapPage);
 
@@ -88,7 +88,7 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		surveyViewPage = pageObjectFactory.getSurveyViewPage();
 		PageFactory.initElements(getDriver(), surveyViewPage);
-		
+
 		manageUsersPageAction = new ManageUsersPageActions(getDriver(), getBaseURL(), getTestSetup());
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
@@ -222,20 +222,20 @@ public class HomePageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void TC54_VerifyEditUserPreferences() throws Exception {
 		Log.info("\nRunning - TC54_VerifyEditUserPreferences Test Description: Modify timezone of user in Preferences\n");
-		
+
 		/* Login as automation admin and create new Picarro admin user. Do NOT alter existing user. */
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
-		
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, 
+
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username,
 				ManageUsersPageActions.workingDataRow.get().password);
 		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */
@@ -253,7 +253,7 @@ public class HomePageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC55_VerifyEditUserPreferences Test Description: Modify timezone of user from drop-down
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Test
 	public void TC55_VerifyEditUserPreferencesfromDropDown() throws Exception {
@@ -265,8 +265,8 @@ public class HomePageTest extends SurveyorBaseTest {
 
 		manageUsersPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		manageUsersPageAction.createNewPicarroUser(BaseActions.EMPTY, 14 /*userRowID*/);
-		
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, 
+
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username,
 				ManageUsersPageActions.workingDataRow.get().password);
 		loginPageAction.open(BaseActions.EMPTY, BaseActions.NOTSET);
 		loginPageAction.login(usernameColonPassword, BaseActions.NOTSET);   /* login using newly created user */

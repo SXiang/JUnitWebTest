@@ -80,6 +80,16 @@ public class WebElementExtender {
 	   }
    }
 
+   public static WebElement findElementIfExists(WebDriver driver, String elementId) {
+	   WebElement element = null;
+	   try {
+		   element = driver.findElement(By.id(elementId));
+	   } catch (org.openqa.selenium.NoSuchElementException e) {
+		   Log.warn(String.format("Element with ID='%s' was NOT found", elementId));;
+	   }
+	   return element;
+   }
+
    public static String getInnerHtml(WebElement element) {
 	   return element.getAttribute("innerHTML");
    }

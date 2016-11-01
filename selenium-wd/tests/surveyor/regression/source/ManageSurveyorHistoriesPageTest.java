@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -30,7 +30,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
  * @author pmahajan
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
@@ -47,13 +47,13 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
 		loginPage = pageObjectFactory.getLoginPage();
@@ -65,7 +65,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC76 Test Description: Add Surveyor History Note
-	 * 
+	 *
 	 */
 	@Test
 	public void TC76_AddSurveyorHistoryNote_PicarroAdmin() {
@@ -84,7 +84,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC134_TC1254_AddNoteMaxCharLimit More than 1500 characters not allowed in Note field present on Manage Add Surveyor History screen
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = UserDataProvider.USER_ADMIN_SUPPORT_PROVIDER, location = UserDataProvider.class)
@@ -124,7 +124,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1249 Test Description: Add Surveyor History Note
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1249_AddSurveyorHistoryNote_PicarroSupport() {
@@ -143,7 +143,7 @@ public class ManageSurveyorHistoriesPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: Test Case TC501: Manage Surveyor History
-	 * 
+	 *
 	 */
 	@Test
 	public void TC501_Manage_Surveyor_History() {

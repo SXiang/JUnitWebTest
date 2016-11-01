@@ -12,20 +12,20 @@ import surveyor.regression.source.SystemHistoryReportsPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
-@SuiteClasses({ 
+@SuiteClasses({
 	EQReportsPageTest.class
 	,ReferenceGasReportsPageTest.class
 	,SystemHistoryReportsPageTest.class
 })
 public class ReportsTestSuite1 {
-	
-	@BeforeClass 
-    public static void setUpClass() {      
+
+	@BeforeClass
+    public static void setUpClass() {
         Log.info("Setup for ReportsTestSuite1 executing...");
     }
 
-    @AfterClass 
-    public static void tearDownClass() { 
+    @AfterClass
+    public static void tearDownClass() {
     	Log.info("Teardown for ReportsTestSuite1 executing...");
     }
 }
