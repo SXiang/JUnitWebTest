@@ -11,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -110,6 +111,9 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
 	private List<WebElement> siteErrorMessage;
+
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
+	private List<WebElement> licenseMissingText;
 	
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
@@ -434,5 +438,14 @@ public class BasePage {
     		errMsg += msg.getText();
     	}
     	return errMsg;
+    }
+    
+    public List<String> getLicenseMissingText(){
+    	List<String> licenseMissingMsg = new ArrayList<String>();
+    	for(WebElement p:licenseMissingText){
+    		String text = getElementText(p).trim();
+    		licenseMissingMsg.add(text);
+    	}
+    	return licenseMissingMsg;
     }
 }
