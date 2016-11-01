@@ -377,10 +377,11 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 
-					<include name="**/ManageAnalyzersPageTest.class" />
-					<include name="**/ManageSurveyorPageTest.class" />
-					<include name="**/ComplianceReportsPageTest.class" />
-					<include name="**/ComplianceReportsPageTest2.class" />
+					<include name="**/RegressionTestSuite1.class" />
+					<include name="**/RegressionTestSuite2.class" />
+					<include name="**/RegressionTestSuite3.class" />
+					<include name="**/RegressionTestSuite4.class" />
+					<include name="**/RegressionTestSuite5.class" />
 
 				</fileset>
 			</batchtest>
