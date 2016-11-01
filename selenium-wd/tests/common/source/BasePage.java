@@ -147,9 +147,17 @@ public class BasePage {
 	public boolean isElementPresent(By by) {
 		return WebElementExtender.findElementBy(this.driver, by);
 	}
+	
+	public boolean isElementPresent(By by, int timeout) {
+		return WebElementExtender.findElementBy(this.driver, by, timeout);
+	}
 
 	public boolean isElementPresent(String strXPath) {
 		return isElementPresent(By.xpath(strXPath));
+	}
+	
+	public boolean isElementPresent(String strXPath, int timeout) {
+		return isElementPresent(By.xpath(strXPath), timeout);
 	}
 
 	public void clickOnDashboardLink() {

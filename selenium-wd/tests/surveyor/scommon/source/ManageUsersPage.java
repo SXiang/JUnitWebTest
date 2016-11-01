@@ -52,6 +52,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
 	public static final String Constant_Name = Resources.getResource(ResourceKeys.Constant_Name);
 	protected String pagination = "100";
+	public static final int validatationTimeout = 1; 
 	
 	@FindBy(id = "User.UserName-error")
 	private WebElement labelUserNameError;
@@ -173,15 +174,25 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
-		
+		boolean done = false;
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
-		
-		enableDisableUser(enabled);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
+
+		if(!done){	
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
+		}
+		if(!done){
+			this.inputPasswordConfirm.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+			enableDisableUser(enabled);
+		}
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -218,37 +229,51 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
-
+		boolean done = false;
+		
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
 		
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
+		
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
-				.tagName("option"));
-		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Select role - '"+tzOption+"'");
-				tzOption.click();
-				break;
-			}
+		if(!done){
+			this.inputPasswordConfirm.sendKeys(passwordConfirm);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
 		}
 
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By
+					.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
+					.tagName("option"));
+			for (WebElement tzOption : tzOptions) {
+				if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+					Log.info("Select role - '"+tzOption+"'");
+					tzOption.click();
+					break;
+				}
+			}
+		}
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -284,27 +309,41 @@ public class ManageUsersPage extends SurveyorBasePage {
 				email, role, location));
 		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
-		
+		boolean done = false;
 		selectCustomerLocationDropdown(customerName, location);
-		
+
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
-		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		Log.info("Confirm password - '"+passwordConfirm+"'");
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
-		
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		this.inputEmail.sendKeys(email);		
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
+
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		enableDisableUser(enabled);
+		if(!done){
+			Log.info("Confirm password - '"+passwordConfirm+"'");
+			this.inputPasswordConfirm.sendKeys(passwordConfirm);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+		}
+
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			enableDisableUser(enabled);
+		}
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -318,7 +357,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				return false;
 			}
 		}
-		
+
 		this.waitForPageLoad();
 		return true;
 	}
@@ -329,35 +368,47 @@ public class ManageUsersPage extends SurveyorBasePage {
 				customerName, email, role, timeZone, location));
 		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
-
+		boolean done = false;
 		selectCustomerLocationDropdown(customerName, location);
 
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
 
-		Log.info("Set password - '<HIDDEN>'");
-		sendKeysToElement(inputPassword, password);
-		Log.info("Confirm password - '<HIDDEN>'");
-		sendKeysToElement(inputPasswordConfirm, password);
-
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			sendKeysToElement(inputPassword, password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
-				.tagName("option"));
-		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Select Timezone - '"+tzOption+"'");
-				tzOption.click();
-				break;
+		if(!done){
+			Log.info("Confirm password - '<HIDDEN>'");
+			sendKeysToElement(inputPasswordConfirm, password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+		}
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By
+					.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
+					.tagName("option"));
+			for (WebElement tzOption : tzOptions) {
+				if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+					Log.info("Select Timezone - '"+tzOption+"'");
+					tzOption.click();
+					break;
+				}
 			}
 		}
 		Log.clickElementInfo("Ok");
@@ -392,7 +443,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown. 
 		// If not remove chars from beginning to format email to valid MAX length.
 		if (email.length() > ALLOWED_MAX_EMAIL_LENGTH) {
-			if (isElementPresent(this.labelUserNameErrorXPath)) {
+			if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
 				rtnMsg = this.labelUserNameError.getText().trim();
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
@@ -405,7 +456,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 		}
 		focusOnPage(pageLabel);
-		if (isElementPresent(this.labelUserNameErrorXPath)) {
+		if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -417,7 +468,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		sendKeysToElement(inputPassword, password1);
 		
 		focusOnPage(pageLabel);
-		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+		if (isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -429,7 +480,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		sendKeysToElement(inputPasswordConfirm, password2);
 
 		focusOnPage(pageLabel);
-		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
+		if (isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -440,7 +491,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
-		if (isElementPresent(this.labelUserNameErrorXPath)) {
+		if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -448,7 +499,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg;
 		}
 		
-		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+		if (isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -456,7 +507,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg; 
 		}
 		
-		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
+		if (isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -466,7 +517,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		waitForPageToLoad();
 		
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+		if (isElementPresent(this.panelDuplicationErrorXPath, validatationTimeout)) {
 			// Get error message using javascript. This is to avoid CI failures when using validation webelement. 
 			String userErrMsg = getUsernameErrorMessage();
 			if (userErrMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
