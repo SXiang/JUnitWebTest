@@ -524,6 +524,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		
 		manageCustomersPage.open();
+		manageCustomersPage.performSearch(customerName);
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 		assertFalse(manageCustomersPage.isAddCustomerBtnPresent());
 		assertFalse(manageCustomersPage.isEditBtnPresent());
