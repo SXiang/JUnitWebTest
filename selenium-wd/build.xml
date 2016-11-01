@@ -361,10 +361,11 @@
 		</junit>
 	</target>
 
-	<target name="testplaceholdertests" depends="compileregression" description="Run ManageAnalyzer and ManageSurveyor test cases">
+	<target name="testplaceholdertests" depends="compiletestsuite" description="Run ManageAnalyzer and ManageSurveyor test cases">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key="maxParallelTestThreads" value="5" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
