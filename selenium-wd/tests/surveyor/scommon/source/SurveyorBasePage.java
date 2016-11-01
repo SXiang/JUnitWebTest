@@ -85,14 +85,14 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
 
-	@FindBy(name = "datatable_length")
+	@FindBy(css = "[name^='datatable'][name$='_length']")
 	protected WebElement paginationInput;
-	By paginationInputBy = By.name("datatable_length");
+	By paginationInputBy = By.cssSelector("[name^='datatable'][name$='_length']");
 
-	@FindBy(css = "#datatable_length option")
+	@FindBy(css = "[name^='datatable'][name$='_length'] option")
 	protected List<WebElement> paginationOptions;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	@FindBy(how = How.CSS, using = "[id^='datatable'][id$='_filter'] > label > input")
 	protected WebElement inputSearch;
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
@@ -324,7 +324,6 @@ public class SurveyorBasePage extends BasePage {
 			jsClick(firstBtn);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		}
-
 		setPaginationCheckMessage(str, paginationMsg);
 	}
 
@@ -565,7 +564,6 @@ public class SurveyorBasePage extends BasePage {
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		String headerCss = "thead > tr > th[aria-label^='%s:']";
-
 		for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
 			String headerLabel = entry.getKey().trim();
 			if(!isElementPresent(By.cssSelector(String.format(headerCss, headerLabel)))){

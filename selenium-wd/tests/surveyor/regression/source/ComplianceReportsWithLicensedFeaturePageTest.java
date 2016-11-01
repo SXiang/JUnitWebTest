@@ -299,7 +299,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString()); 
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-			assertEquals(errorMsg, homePage.getSiteErrorMsg());
+			assertTrue(homePage.getLicenseMissingText().contains(errorMsg));
 			homePage.logout();
 		}
 	}
