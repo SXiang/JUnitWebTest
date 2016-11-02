@@ -3,7 +3,8 @@
 #   .\Post-AutomationRunResult.ps1 `
 #           -BuildWorkingDir "C:\Repositories\surveyor-qa"
 #           -AutomationReportingAPIBaseUrl "http://localhost:63087" `
-#           -HtmlResultFilePath "C:\Repositories\surveyor-qa\selenium-wd\reports\report-Local-SQAAuto-surveyor.regression.source.DriverViewPageTest.html"
+#           -HtmlResultFilePath "C:\Repositories\surveyor-qa-US3236\selenium-wd\reports\Regression\report-Local-SQAAuto-surveyor.regression.source.ComplianceReportsPageTest7.html"
+#           -RunUUID "5"
 #             
 # ---------------------------------------------------------------
 param
@@ -15,15 +16,17 @@ param
   [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
 
   [Parameter(Mandatory=$true)]
-  [String] $HtmlResultFilePath                     # Path to report HTML file
-)
+  [String] $HtmlResultFilePath,                     # Path to report HTML file
 
+  [Parameter(Mandatory=$true)]
+  [String] $RunUUID
+)
 
 $libFolder = "selenium-wd\lib"
 
 . $BuildWorkingDir\$libFolder\Execute-WithRetry.ps1
 . $BuildWorkingDir\$libFolder\Reporting-CommonFunctions.ps1
-
+    
 [String] $HtmlAgilityDllPath = "$BuildWorkingDir\$libFolder\HtmlAgilityPack.dll"
 
 # ------------------------------------------------------------
@@ -62,6 +65,7 @@ $Body = @{
   EndEpoch = $epochEndTime
   Environment = $environment
   HTMLString = $htmlString
+  RunUUID = [long]$RunUUID
 }
 
 $jsonBody = (ConvertTo-Json $Body)
