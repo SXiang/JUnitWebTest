@@ -1,13 +1,20 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
+import org.junit.Assert;
 import org.junit.Before;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
@@ -22,7 +29,9 @@ import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
@@ -53,7 +62,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -89,7 +98,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC709_ShapefileButtonAvailableComplianceReport_CustomerUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC709_ShapefileButtonAvailableComplianceReport_CustomerUser ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -98,7 +107,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled
 	 * Test Description: Shapefile button not available for Customer user if Customer does not have Shapefile generation option enabled
@@ -113,7 +122,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC710_ShapefileButtonNotAvailableCustomerUserIfCustomerDoesNotShapefileGenerationOptionEnabled ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -122,7 +131,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC711_MetadataExport_CSVFileSingleSurvey_PicarroAdmin_OneLISAOneIsoCapture
 	 * Test Description: MetaData Export -CSV file (Single survey - Picarro admin - one LISA and one Iso capture)
@@ -141,7 +150,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC711_MetadataExport_CSVFileSingleSurvey_PicarroAdmin_OneLISAOneIsoCapture(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC711_MetadataExport_CSVFileSingleSurvey_PicarroAdmin_OneLISAOneIsoCapture ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -156,7 +165,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC713_LISABox10_MainsOutsideLISABoxAreNotHighlighted
 	 * Test Description: LISA Box 1.0 - Mains Outside LISA Box Are Not Highlighted
@@ -177,7 +186,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC713_LISABox10_MainsOutsideLISABoxAreNotHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC713_LISABox10_MainsOutsideLISABoxAreNotHighlighted ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -189,7 +198,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC715_MetadataExport_CSVFileMultipleSurvey_PicarroSupport_MultipleLisasNoIso
 	 * Test Description: MetaData Export -CSV file (multiple survey - Picarro support - multiple LISAs and no Iso)
@@ -207,7 +216,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC715_MetadataExport_CSVFileMultipleSurvey_PicarroSupport_MultipleLisasNoIso(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC715_MetadataExport_CSVFileMultipleSurvey_PicarroSupport_MultipleLisasNoIso ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -222,7 +231,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC716_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO
 	 * Test Description: MetaData Export -CSV file (multiple survey  -multiple LISAs and ISO)
@@ -241,7 +250,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC716_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC716_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -256,7 +265,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC718_MetadataExport_CSVFileSingleSurvey_NoLISAOrISO
 	 * Test Description: MetaData Export -CSV file (single survey -no LISA or ISO)
@@ -273,7 +282,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC718_MetadataExport_CSVFileSingleSurvey_NoLISAOrISO(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC718_MetadataExport_CSVFileSingleSurvey_NoLISAOrISO ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -288,7 +297,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification
 	 * Test Description: Remove shape file and meta data feature permission from existing customer - New Compliance report verification
@@ -308,7 +317,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC721_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_NewComplianceReportVerification ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -326,7 +335,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC723_LISABOX10_AssetsWithinGapAreHighlighted
 	 * Test Description: LISA BOX 1.0 - Assets Within Gap Are Highlighted
@@ -347,7 +356,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC723_LISABOX10_AssetsWithinGapAreHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC723_LISABOX10_AssetsWithinGapAreHighlighted ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -359,7 +368,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC727_GapBoxesUniqueNumbersPrescribedFormat
 	 * Test Description: Gap Boxes have unique numbers in prescribed format
@@ -381,7 +390,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC727_GapBoxesUniqueNumbersPrescribedFormat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC727_GapBoxesUniqueNumbersPrescribedFormat ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -395,7 +404,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC771_VerifyReportNameSpecifiedComplianceReport
 	 * Test Description: Verify report name is as specified for compliance report
@@ -411,7 +420,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC771_VerifyReportNameSpecifiedComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC771_VerifyReportNameSpecifiedComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -432,7 +441,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC779_FlatteningCustomerBoundaryData_NewComplianceReport
 	 * Test Description: Flattening Customer Boundary Data - New Compliance Report
@@ -449,7 +458,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC779_FlatteningCustomerBoundaryData_NewComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC779_FlatteningCustomerBoundaryData_NewComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -459,7 +468,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC781_FlatteningCustomerBoundaryData_CopyComplianceReport
 	 * Test Description: Flattening Customer Boundary Data - Copy Compliance Report
@@ -475,7 +484,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC781_FlatteningCustomerBoundaryData_CopyComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC781_FlatteningCustomerBoundaryData_CopyComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -487,7 +496,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.selectCustomer(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyCustomerSpecificBoundariesAreDisplayed(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration
 	 * Test Description: Shapefile and meta data report feature permission to existing customer - Reprocess Compliance report generation
@@ -508,7 +517,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC787_ShapefileMetaDataReportFeaturePermissionExistingCustomer_ReprocessComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -536,7 +545,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 	}
- 
+
 	/**
 	 * Test Case ID: TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification
 	 * Test Description: Remove shape file and meta data feature permission from existing customer - Copy Compliance report verification
@@ -550,10 +559,10 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		
+
 		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
 		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
@@ -562,11 +571,11 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport
 	 * Test Description: Remove shape file and meta data feature permission from existing customer - Reprocess Compliance report
@@ -580,7 +589,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -596,7 +605,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer
 	 * Test Description: Shapefile and meta data report feature permission to customer and generate Compliance report as picarro admin for specified customer
@@ -614,7 +623,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -634,12 +643,12 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		// TODO: Enable after actions are implemented.
 		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration
 	 * Test Description: Report Shapefile permission to existing customer - New Compliance report generation
@@ -661,7 +670,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC791_ReportShapefilePermissionExistingCustomer_NewComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -687,11 +696,11 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		// TODO: Enable after action is implemented.
 		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration
 	 * Test Description: Report Meta Data permission to existing customer - New Compliance report generation
@@ -713,7 +722,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC792_ReportMetaDataPermissionExistingCustomer_NewComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -739,7 +748,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration
 	 * Test Description: Report Shapefile permission to existing customer - Copy Compliance report generation
@@ -761,7 +770,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC793_ReportShapefilePermissionExistingCustomer_CopyComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -781,7 +790,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		
+
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -791,11 +800,11 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		// TODO: Enable after action is implemented.
 		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport
 	 * Test Description: Report Shapefile permission to existing customer - Reprocess Compliance report
@@ -817,10 +826,10 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC794_ReportShapefilePermissionExistingCustomer_ReprocessComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		
+
 		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
 		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
@@ -845,11 +854,11 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		
+
 		// TODO: Enable after action is implemented.
 		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration
 	 * Test Description: Report Meta Data permission to existing customer - Copy Compliance report generation
@@ -871,7 +880,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC795_ReportMetaDataPermissionExistingCustomer_CopyComplianceReportGeneration ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -899,7 +908,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
- 
+
 	/**
 	 * Test Case ID: TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport
 	 * Test Description: Report Meta Data permission to existing customer - Reprocess Compliance report
@@ -921,7 +930,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	public void TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC796_ReportMetaDataPermissionExistingCustomer_ReprocessComplianceReport ...");
-		
+
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -940,7 +949,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		
+
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -950,4 +959,102 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
+
+	/* * Test Case ID: TC2017_VerifyReportViewPDFandshapefileExportWithHighlightedGapAssetsSelected
+	 * Description: Verify report view PDF and Shapefile export with Highlighted Gap Assets selected
+	 * Script:
+	 * -  Log in as Picarro Admin
+	 * -  On the Compliance Reports page, click the New Compliance Report" button.
+	 * -  Fill out the required fields
+	 * -  Select a survey that includes gaps and Assets running through them
+	 * -  In the Views section, select only Highlight Gap Assets and generate the report
+	 * -  Click the thumbnail preview button 
+	 * -  Download report view PDF
+	 * -  Click on the "Compliance.zip (Shape)" button 
+	 * -  Extract the individual files from the zipped file 
+	 * -  View the Shapefile content in ArcGIS
+	 * Results:
+	 * 	 - SSRS PDF should have Highlight Gap Assets checked in Views section
+	 * 	 - Report View PDF should have assets intersecting Gaps.
+	 * 	 - The Shapefile zip should download 
+	 * 	 - There should be shapefiles for PipeIntersectingGap
+	 * 	 - PipeIntersectingLISA, PipeAll, LISA, etc shape files should not be present
+	 */
+
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2017, location = ComplianceReportDataProvider.class)
+	public void TC2017_VerifyReportViewPDFandshapefileExportWithHighlightedGapAssetsSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2017_VerifyReportViewPDFandshapefileExportWithHighlightedGapAssetsSelected ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+}
+
+/* * Test Case ID: TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected
+ * Description: Verify report view PDF and Shapefile export with Highlighted LISA Assets selected
+ * Script:
+ * -  Log in as Picarro Admin
+ * -  On the Compliance Reports page, click the New Compliance Report" button.
+ * -  Fill out the required fields
+ * -  Select a survey that includes LISA boxes that have Assets running through them
+ * -  In the Views section, select only Highlight LISA Assets and generate the report
+ * -  Click the thumbnail preview button 
+ * -  Download report view PDF
+ * -  Click on the "Compliance.zip (Shape)" button 
+ * -  Extract the individual files from the zipped file 
+ * -  View the Shapefile content in ArcGIS
+ * Results:
+ * 	 - SSRS PDF should have Highlight LISA Assets checked in Views section
+ * 	 - Report View PDF should have assets intersecting LISA
+ * 	 - The Shapefile zip should download 
+ * 	 - There should be shapefiles for PipesIntersectingLisa
+ * 	 - PipeAll, PipeIntersectingGap, LISA, Gap, etc shape files should not be generated
+ */
+
+@Test
+@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018, location = ComplianceReportDataProvider.class)
+public void TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected(
+		String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+	Log.info("\nRunning TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected ...");
+
+	loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+	loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+	complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+	createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+	waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+	assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+	complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+	assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+	assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+	assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+	complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+	complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+	assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+
+}
+
 }

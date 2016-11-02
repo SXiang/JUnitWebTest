@@ -291,6 +291,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 	}
+
 	/* * Test Case ID: TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected
 	 * Description: Verify report view PDF and shapefiles when only LISA, Gaps and Assets are selected and no assets are highlighted
 	 * Script:
@@ -409,6 +410,5 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
 	}
-
 
 }
