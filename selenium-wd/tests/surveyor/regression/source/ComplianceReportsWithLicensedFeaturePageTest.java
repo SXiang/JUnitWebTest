@@ -52,7 +52,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		if(testAccount == null){
 			testAccount = createTestAccount("LicFeature");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"));		
+					,testAccount.get("userName"), testAccount.get("userPassword"));
 		}else{
 			loginPage.open();
 			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
