@@ -238,7 +238,7 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
 		Log.info("Select customer boundary type '"+filterByTypeValue+"'");
 		waitForElementToBeEnabled(filterByTypeDropDown);
-		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
+		selectDropdownOption(filterByTypeDropDown, filterByTypeValue);
 		return this;
 	}
 	
@@ -294,8 +294,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForModalDialogOpen() {
 		Log.info("Wait for map modal dialog to open.");
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		WebElement myModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("myModal")));
+		WebDriverWait wait = new WebDriverWait(driver, timeout * 3);
+		WebElement myModal = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !myModal.getAttribute("style").contains("display:none") && !myModal.getAttribute("style").contains("display: none");
@@ -373,5 +373,22 @@ public class LatLongSelectionControl extends BaseControl {
 			}
 		}
 		return this;
+	}
+	
+	protected boolean selectDropdownOption(WebElement dropdown, String option){
+		boolean selected = false;
+		int numTry = 0;
+		By optBy = By.xpath("option[text()='"+option.trim()+"']");
+		do{
+			try{
+				WebElement opt =  dropdown.findElement(optBy);
+				opt.click();
+				selected = opt.isSelected();
+			}catch(Exception e){
+				numTry++;
+				Log.error("Failed to select option '"+option+"'");
+			}
+		}while(!selected&&numTry<5);
+		return selected;
 	}
 }
