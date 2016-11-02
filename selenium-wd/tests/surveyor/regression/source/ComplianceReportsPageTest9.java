@@ -7,6 +7,7 @@ import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import common.source.ExceptionUtility;
 import common.source.Log;
@@ -1006,55 +1007,55 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-}
+	}
 
-/* * Test Case ID: TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected
- * Description: Verify report view PDF and Shapefile export with Highlighted LISA Assets selected
- * Script:
- * -  Log in as Picarro Admin
- * -  On the Compliance Reports page, click the New Compliance Report" button.
- * -  Fill out the required fields
- * -  Select a survey that includes LISA boxes that have Assets running through them
- * -  In the Views section, select only Highlight LISA Assets and generate the report
- * -  Click the thumbnail preview button 
- * -  Download report view PDF
- * -  Click on the "Compliance.zip (Shape)" button 
- * -  Extract the individual files from the zipped file 
- * -  View the Shapefile content in ArcGIS
- * Results:
- * 	 - SSRS PDF should have Highlight LISA Assets checked in Views section
- * 	 - Report View PDF should have assets intersecting LISA
- * 	 - The Shapefile zip should download 
- * 	 - There should be shapefiles for PipesIntersectingLisa
- * 	 - PipeAll, PipeIntersectingGap, LISA, Gap, etc shape files should not be generated
- */
+	/* * Test Case ID: TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected
+	 * Description: Verify report view PDF and Shapefile export with Highlighted LISA Assets selected
+	 * Script:
+	 * -  Log in as Picarro Admin
+	 * -  On the Compliance Reports page, click the New Compliance Report" button.
+	 * -  Fill out the required fields
+	 * -  Select a survey that includes LISA boxes that have Assets running through them
+	 * -  In the Views section, select only Highlight LISA Assets and generate the report
+	 * -  Click the thumbnail preview button 
+	 * -  Download report view PDF
+	 * -  Click on the "Compliance.zip (Shape)" button 
+	 * -  Extract the individual files from the zipped file 
+	 * -  View the Shapefile content in ArcGIS
+	 * Results:
+	 * 	 - SSRS PDF should have Highlight LISA Assets checked in Views section
+	 * 	 - Report View PDF should have assets intersecting LISA
+	 * 	 - The Shapefile zip should download 
+	 * 	 - There should be shapefiles for PipesIntersectingLisa
+	 * 	 - PipeAll, PipeIntersectingGap, LISA, Gap, etc shape files should not be generated
+	 */
 
-@Test
-@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018, location = ComplianceReportDataProvider.class)
-public void TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected(
-		String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-	Log.info("\nRunning TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected ...");
+	@Ignore  //Need to generate Shape file for verification once DE2462 gets fixed.
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018, location = ComplianceReportDataProvider.class)
+	public void TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected ...");
 
-	loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-	loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-	complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-	createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-	waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-	assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-	complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-	assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-	assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-	assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-	complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-	complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-	assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-}
+	}
 
 }
