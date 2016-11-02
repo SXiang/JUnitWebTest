@@ -147,9 +147,17 @@ public class BasePage {
 	public boolean isElementPresent(By by) {
 		return WebElementExtender.findElementBy(this.driver, by);
 	}
+	
+	public boolean isElementPresent(By by, int timeout) {
+		return WebElementExtender.findElementBy(this.driver, by, timeout);
+	}
 
 	public boolean isElementPresent(String strXPath) {
 		return isElementPresent(By.xpath(strXPath));
+	}
+	
+	public boolean isElementPresent(String strXPath, int timeout) {
+		return isElementPresent(By.xpath(strXPath), timeout);
 	}
 
 	public void clickOnDashboardLink() {
@@ -301,18 +309,18 @@ public class BasePage {
 		return false;
 	}
 
-	protected void sendKeysToTextArea(WebElement textAreaEula, String eula) {
+	protected void sendKeysToElement(WebElement element, String key) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
 		// Use Actions workaround to send keys instead.
-		if(eula == null){
+		if(key == null){
 			return;
 		}
-		Log.info("Send '"+eula+"' to eula text area");
-		textAreaEula.clear();
+		Log.info("Send '"+key+"' to text element(field/area)");
+		element.clear();
 		Actions actions = new Actions(driver);
-		actions.moveToElement(textAreaEula);
+		actions.moveToElement(element);
 		actions.click();
-		actions.sendKeys(eula);
+		actions.sendKeys(key);
 		actions.build().perform();
 	}
 
@@ -366,7 +374,12 @@ public class BasePage {
 	public void jsClick(WebElement element){
 		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
 	}
-	
+
+	public void focusOnPage(WebElement element){
+		Actions action = new Actions(driver);
+		action.moveToElement(element).click().click().perform();
+		action.moveToElement(element).click().click().perform();
+	}
 	public void minimizeBrowserWindow(){
 		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));
@@ -403,11 +416,6 @@ public class BasePage {
 				waitForPageToLoad();
 			}
 		}while(!selected&&numTry<5);
-		if(!selected){
-			WebElement opt =  dropdown.findElement(optBy);
-			opt.click();
-			selected = opt.isSelected();
-		}
 		return selected;
 	}
 
@@ -420,7 +428,16 @@ public class BasePage {
     	}
     	return text;
     }
-    
+ 
+    public String getElementAttribute(WebElement element, String attr) {
+    	String text = "";
+    	try{
+    		text = element.getAttribute(attr);
+    	}catch(Exception e){
+    		Log.error("Failed to get attribute value of element '"+attr+"'");
+    	}
+    	return text;
+    }
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;

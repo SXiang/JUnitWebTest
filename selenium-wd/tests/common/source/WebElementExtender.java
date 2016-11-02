@@ -22,6 +22,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -66,10 +68,18 @@ public class WebElementExtender {
    }
 
    public static boolean findElementBy(WebDriver driver, By by) {
+	  return findElementBy(driver, by, -1);
+   }
+   public static boolean findElementBy(WebDriver driver, By by, int timeout) {
 	   try {
-		   driver.findElement(by);
+		   if(timeout > 0){
+			   (new WebDriverWait(driver, timeout))
+			   .until(ExpectedConditions.presenceOfElementLocated(by));
+		   }else{
+			   driver.findElement(by);
+		   }
 		   return true;
-	   } catch (org.openqa.selenium.NoSuchElementException e) {
+	   } catch (Exception e) {
 		   return false;
 	   }
    }

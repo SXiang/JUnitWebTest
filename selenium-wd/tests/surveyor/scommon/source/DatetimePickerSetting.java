@@ -67,18 +67,21 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 
 		Log.info("Matching the day to click...");
 		for (WebElement cell: columns){
-			Log.info(String.format("Cell : class='%s', value='%s'", cell.getAttribute("class"), cell.getText()));
-			if (cell.getAttribute("class").equals("day") || cell.getAttribute("class").equals("day weekend") ||
-					cell.getAttribute("class").equals("day today") || cell.getAttribute("class").equals("day active today")) {
-				if (cell.getText().trim().equals(day)){
+			String cellClass = getElementAttribute(cell, "class");
+			String cellText = getElementText(cell);
+			Log.info(String.format("Cell : class='%s', value='%s'", cellClass, cellText));
+			if (cellClass.equals("day") || cellClass.equals("day weekend") ||cellClass.equals("day today weekend")
+					||cellClass.equals("day today") || cellClass.equals("day active today")) {
+				if (cellText.trim().equals(day)){
 					Log.info(String.format("Clicking on day=[%s] cell", day));
-					cell.click();
+					jsClick(cell);
+					testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 					this.pcubedLogo.click();
 					return true;
 				}
 			}
 		}
-
+		this.pcubedLogo.click();
 		return false;
 	}
 

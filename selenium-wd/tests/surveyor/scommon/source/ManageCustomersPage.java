@@ -195,7 +195,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	public void setEULAText(String eula) {
 		Log.method("setEULAText", eula);
-		sendKeysToTextArea(this.textAreaEula, eula);
+		sendKeysToElement(this.textAreaEula, eula);
 	}
 
 	public void enabledDisableCustomer(boolean enableCustomer) {
@@ -229,8 +229,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
 		setPaginationAny(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String enabledStatusXPath;
@@ -268,8 +266,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
 
 				rowSize = newRows.size();
@@ -290,8 +287,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("findCustomerAndOpenEditPage", customerName);
 		Log.info(String.format("Find customer '%s'",customerName));
 		setPaginationAny(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String actionXPath;
@@ -326,8 +321,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
 
 				rowSize = newRows.size();
@@ -348,8 +342,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("editExistingCustomerName", customerName, eulaNew, enableCustomer);
 		Log.info(String.format("Edit customer '%s'",customerName));
 		setPaginationAny(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String customerNameXPath;
 		String actionXPath;
@@ -401,8 +393,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
 
 				rowSize = newRows.size();
@@ -439,8 +430,6 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.method("getCustomerStatus", customerName);
 		setPaginationAny(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String customerNameXPath;
 		String statusXPath;
 
@@ -470,8 +459,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
 
 				rowSize = newRows.size();
@@ -528,9 +516,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean changeCustomerAccountStatus(String customerName, boolean bEnabled) {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
 		setPaginationAny(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
-
+	
 		String customerNameXPath;
 		String actionXPath;
 
@@ -548,13 +534,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			customerNameXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td[1]";
+			customerNameXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td";
 			customerNameCell = getTable().findElement(By.xpath(customerNameXPath));
 
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)) {
 				Log.info(String.format("Found existing customer with name - '%s' at row number - %d", customerName, rowNum));
 
-				actionXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td[3]";
+				actionXPath = DATATABLE_TBODY_TR + "[" + rowNum + "]/td/a[text()='Edit']";
 				actionCell = getTable().findElement(By.xpath(actionXPath));
 
 				actionCell.click();
@@ -570,8 +556,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath(DATATABLE_TBODY_TR));
 
 				rowSize = newRows.size();

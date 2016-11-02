@@ -37,6 +37,7 @@ public class RegexUtility {
 	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^(\\? )?\\d+ .*";
 	public static final String ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN = ".* \\d+/\\d+/\\d+ \\d+:\\d+ .* \\-?\\d+.\\d+\\+/\\-\\d+.\\d+.*";
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
+	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
