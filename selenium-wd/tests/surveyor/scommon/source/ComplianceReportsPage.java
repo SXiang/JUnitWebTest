@@ -113,6 +113,7 @@ import common.source.LogHelper;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
+import common.source.TextUtility;
 import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
@@ -249,6 +250,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
 
+	@FindBy(css = "input[name='rdAreaMode'][value='Custom']")
+	private WebElement customBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='Customer']")
+	private WebElement customerBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='FreeForm']")
+	private WebElement freeFormBoundaryRadioButton;
+
 	@FindBy(id = "btn-select-boundary")
 	protected WebElement boundarySelectorBtn;
 
@@ -355,20 +365,29 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='datatablePeaks_info']")
+	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
 	protected WebElement paginationInvestigationMsg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks_filter']/label/input")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes_filter']/label/input")
 	protected WebElement inputInvestigationSearchReport;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatablePeaks']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
 	protected WebElement highlightLisaAssetDropdown;
+
+	public static final String REPORT_ASSET_SELECTALL_CHKBX_ID = "report-asset-selectall";
+	public static final String REPORT_BOUNDRY_SELECTALL_CHKBX_ID = "report-boundry-selectall";
+
+	@FindBy(id = REPORT_ASSET_SELECTALL_CHKBX_ID)
+	protected WebElement checkboxViewLayerAllAssets;
+
+	@FindBy(id = REPORT_BOUNDRY_SELECTALL_CHKBX_ID)
+	protected WebElement checkboxViewLayerAllBoundaries;
 
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
@@ -1230,9 +1249,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
@@ -1253,8 +1270,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image width to '" + imageMapWidth + "'");
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		sendKeysToElement(inputImgMapWidth, imageMapWidth);
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
@@ -1262,8 +1278,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image height to '" + imageMapHeight + "'");
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
+		sendKeysToElement(inputImgMapHeight, imageMapHeight);
 	}
 
 	public void inputExclusionRadius(String exclusionRadius) {
@@ -1396,8 +1411,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1463,8 +1477,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1646,6 +1659,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return d.getPageSource().contains(LisaInvestigations_PageTitle);
+
 			}
 		});
 	}
@@ -1818,11 +1832,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectCustomBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+		this.customBoundaryRadioButton.click();
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		jsClick(this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX));
+		jsClick(this.customerBoundaryRadioButton);
 	}
 
 	@Override
@@ -1889,9 +1903,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
 			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
-				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[5]"));
+				List<WebElement> Columns = Rows.get(getrowvalue).findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
-					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[5]")).getText();
+					String cellValue = driver.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]")).getText();
 					if (cellValue.contains(" ")) {
 						String str = cellValue.replaceAll("\\s+", "");
 
@@ -1957,11 +1971,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 												// Asset/Boundary
 			if (value.startsWith(ReportsCompliance.ASSET_PREFIX)) {
 				// Asset key.
-				List<WebElement> assetElements = getViewLayerAssetCheckboxes(key);
-				Log.info(String.format("AssetElements Size='%s'", assetElements.size()));
-				if (assetElements.size() > 0) {
-					SelectElement(assetElements.get(0));
+				WebElement assetElement = getViewLayerAssetCheckbox(key);
+				if (assetElement != null) {
+					SelectElement(assetElement);
 				}
+			} else if (value.startsWith(ReportsCompliance.ASSET_ALL_PREFIX)) {
+				SelectElement(checkboxViewLayerAllAssets);
 			}
 		}
 	}
@@ -1974,30 +1989,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (value.startsWith(ReportsCompliance.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ReportsCompliance.BOUNDARY_PREFIX, "");
-				WebElement boundaryElement = getViewLayerBoundaryCheckboxes(value);
+				WebElement boundaryElement = getViewLayerBoundaryCheckbox(value);
 				if (boundaryElement != null) {
 					SelectElement(boundaryElement);
 				}
+			} else if (value.startsWith(ReportsCompliance.BOUNDARY_ALL_PREFIX)) {
+				SelectElement(checkboxViewLayerAllBoundaries);
 			}
 		}
 	}
 
-	public List<WebElement> getViewLayerAssetCheckboxes(String key) {
-		Log.method("getViewLayerAssetCheckboxes", key);
-		String elementId = String.format("report-asset-layers-%s", key);
-		Log.info(String.format("Asset-[%s] element id = '%s'", key, elementId));
-		List<WebElement> assetElements = driver.findElements(By.id(elementId));
-		return assetElements;
+	public WebElement getViewLayerAssetCheckbox(String key) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-asset-layers-%s", key));
 	}
 
-	public WebElement getViewLayerBoundaryCheckboxes(String value) {
-		Log.method("getViewLayerBoundaryCheckboxes", value);
-		String elementId = String.format("report-boundry-layers-%s", value);
-		Log.info(String.format("Boundary-[%s] element id = '%s'", value, elementId));
-		// [2016-09-19] NOTE: Boundary checkboxes have '<space>' in element ID.
-		// driver.findElements() is NOT able to detect elements with <space> in ID with latest version of Chrome driver.
-		// Use driver.findElement() instead for detecting BoundaryCheckboxes. Calling code might need to handle element not found exception.
-		return driver.findElement(By.id(elementId));
+	public WebElement getViewLayerBoundaryCheckbox(String value) {
+		return WebElementExtender.findElementIfExists(driver, String.format("report-boundry-layers-%s", value));
 	}
 
 	public void selectAnyCustomerBoundary(CustomerBoundaryType type) {
@@ -2029,7 +2036,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType, String customerBoundaryName, List<String> autocompleteListEntries) {
 		Log.method("ComplianceReportsPage.verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains", boundaryFilterType, customerBoundaryName, LogHelper.listToString(autocompleteListEntries));
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
@@ -2448,9 +2456,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 		String surveyTable;
-		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date") != null) {
-			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date"))
-					.trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
+		String endWith = "Surveyor Date";
+		if (RegexUtility.getStringInBetween(actualReportString, "Indication Table", endWith) != null) {
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Indication Table", "Surveyor Date")).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 			if (surveyTable.contains("Gap Table")) {
 				// TODO: DEFECT in parsing. SKIP check for this case.
 				Log.warn(
@@ -2458,9 +2466,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return true;
 			}
 		} else {
-			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", " Layers"))
-					.trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
+			endWith = " Layers";
+			surveyTable = (RegexUtility.getStringInBetween(actualReportString, "Selected Driving Surveys", endWith)).trim().replaceAll("//s+", "").replace("#", "").replace("LISA ", "");
 		}
+
 		surveyTable = surveyTable.replaceAll(System.lineSeparator(), "");
 		String datePattern = RegexUtility.getReportRegexDatePattern(true);
 		String drivingSurveysLinePattern = datePattern + " *" + datePattern;
@@ -2472,16 +2481,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			boolean validLine = false;
 			String expectedLine = "";
 			String actualLine = lines[i].replaceAll(" ", "");
-			Log.info("Looking for driving survey '" + actualLine + "' in DB");
+//			Log.info("Looking for driving survey '" + actualLine + "' in DB");
 			for (StoredProcComplianceAssessmentGetReportDrivingSurveys survey : listFromStoredProc) {
 				expectedLine = survey.toString().replaceAll(" ", "");
-				if (actualLine.equalsIgnoreCase(expectedLine)) {
+				Log.info("Driving survey line in DB = [" + expectedLine + "]");
+				if (actualLine.startsWith(expectedLine)) {
+					Log.info("Found match for driving survey in DB.");
 					validLine = true;
 					break;
 				}
 			}
 			if (!validLine) {
-				Log.error(String.format("Driving survey in PDF is not found, '%s'", actualLine));
+				Log.error(String.format("Driving survey in PDF is not found in DB, '%s'", actualLine));
 				return false;
 			}
 		}
@@ -2656,8 +2667,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			if (!csvRow.get("ReportName").trim().equals(getReportName().trim().substring(0, 9))) {
 				return false;
 			}
-			reportDrivingObj.setStartDateTimeWithTZ(csvRow.get("SurveyStartDateTime").trim());
-			reportDrivingObj.setEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
+			reportDrivingObj.setPreferredStartDateTimeWithTZ(csvRow.get("SurveyStartDateTime").trim());
+			reportDrivingObj.setPreferredEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
 			reportDrivingObj.setUserName(csvRow.get("UserName").trim());
 			reportDrivingObj.setDescription(csvRow.get("Surveyor").trim());
 			reportDrivingObj.setAnalyzerId(csvRow.get("Analyzer").trim());
@@ -2965,18 +2976,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", ComplianceReportSSRS_EthaneAnalysisTable);
-		Log.info(String.format("Extracted Ethane Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportEthaneList = new ArrayList<String>();
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Ethane/Methane Ratio and Uncertainty")) {
-						line = line.replaceAll(" +", " ").trim();
-						reportEthaneList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							line = line.replaceAll(" +", " ").trim();
+							reportEthaneList.add(line);
+						}
 					}
 				}
 
@@ -3033,18 +3047,23 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		String isoTable = RegexUtility.getStringInBetween(actualReportString, "Surveyor Date/Time Result", " Layers");
-		Log.info(String.format("Extracted Isotopic Analysis Table : %s", isoTable));
-		if (isoTable != null) {
-			InputStream inputStream = new ByteArrayInputStream(isoTable.getBytes());
+
+		if (actualReportString != null) {
+			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
 			try {
 				ArrayList<String> reportIsotopicList = new ArrayList<String>();
+				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
 				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().startsWith("Isotopic Value/ Uncertainty")) {
-						line = line.replaceAll(" +", " ").trim();
-						reportIsotopicList.add(line);
+					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
+						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
+						if (matchingGroups != null && matchingGroups.size() > 0) {
+							line = matchingGroups.get(0);
+							Log.info("Matched line as a table row!");
+							line = line.replaceAll(" +", " ").trim();
+							reportIsotopicList.add(line);
+						}
 					}
 				}
 
@@ -3069,7 +3088,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		Log.info("Isotopic Analysis table verification passed");
 		return true;
-
 	}
 
 	/**
@@ -3134,11 +3152,16 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 		}
 
-		List<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, "Disposition Confidence in Disposition", "Software Version");
+		String matchStartString = "Disposition Confidence in Disposition";
+		String matchEndString = "Software Version";
+		ArrayList<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, matchStartString, matchEndString);
 		String indicationTable = "";
 		for (String table : indicationTables) {
 			indicationTable += System.lineSeparator() + table;
 		}
+
+		Log.info(String.format("Extracted values between '%s' and '%s' are: %s", matchStartString, matchEndString, indicationTable));
+
 		InputStream inputStream = new ByteArrayInputStream(indicationTable.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = null;
@@ -3146,10 +3169,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String extraLines = "";
 		try {
 			while ((line = bufferReader.readLine()) != null) {
+				line = TextUtility.removeNonAsciiSpecialChars(line);
+				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
 				if (line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-					ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
-					reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
-					extraLines = "";
+					if (!line.trim().matches(RegexUtility.SSRS_PDF_PAGE_FOOTER_PATTERN)) {
+						Log.info("Matched line as a table row!");
+						ArrayUtility.appendToLastString(reportIndicationsList, extraLines.replaceAll(" ", ""));
+						reportIndicationsList.add(line.replaceAll("\\?", "").trim().replace("+/-", "").replace("0.0 ", "").trim().replaceAll(" ", "").replace(">=", ""));
+						extraLines = "";
+					}
 				} else if (!reportIndicationsList.isEmpty() && line.trim().matches(RegexUtility.FIELD_NOTE_LINE_REGEX_PATTERN)) {
 					extraLines += line.trim();
 				}
@@ -3816,9 +3844,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public WebElement getTable() {
-		refreshPageUntilElementFound(DATA_TABLE_XPATH);
-		this.waitForPageLoad();
-		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		try{
+			refreshPageUntilElementFound(DATA_TABLE_XPATH);
+			this.waitForPageLoad();
+			driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		}catch(Exception e){
+			Log.error("Failed to find datatable: "+DATA_TABLE_XPATH);
+		}
 		return super.getTable();
 	}
 
@@ -4081,22 +4113,22 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean isAmplitudeColumnSorted(){
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		columnMap.put(ComplianceReportSSRS_Amplitude.replaceFirst("\\("," ("), TableColumnType.Number);
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	public boolean isInvestigatorColumnSorted(){
 		Log.method("isInvestigatorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Investigator, TableColumnType.String);
-		return checkTableSort("datatablePeaks_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
 	@Override

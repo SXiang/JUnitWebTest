@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -42,17 +42,17 @@ public class LoginPageTest extends SurveyorBaseTest {
 	public static void setupACLandVisibilityTest() {
 		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
 	}
-	
+
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
 		PageActionsStore.INSTANCE.clearStore();
-		
+
 		initializeTestObjects();
 
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
@@ -111,8 +111,10 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC26_AcceptEUCLA() {
 		String customerName = SQACUS;
+
 		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
+
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		homePage.waitForPageLoad();
@@ -128,8 +130,10 @@ public class LoginPageTest extends SurveyorBaseTest {
 	@Test
 	public void loginTest_TC29_DriverLogin() {
 		String customerName = SQACUS;
+
 		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
+
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		homePage.waitForPageLoad();

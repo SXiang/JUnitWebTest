@@ -84,6 +84,7 @@ public class TestSetup {
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
+	public static final String TEST_ANALYZER_KEY = "SimAuto-AnalyzerKey1";
 
 	public static final String DATA_FOLDER = "data";
 	public static final String SQL_DATA_FOLDER = "data\\sql";
@@ -968,6 +969,7 @@ public class TestSetup {
 			try {
 				TestSetup.stopAnalyzerIfRunning();
 				TestSetup.setupSimulatorPreReqs();
+				TestSetup.updateAnalyzerConfiguration();
 				TestSetup.startAnalyzer();
 			} catch (IOException e) {
 				Log.error(e.toString());
@@ -1080,6 +1082,10 @@ public class TestSetup {
 		}
 	}
 
+	public static void updateAnalyzerConfiguration() {
+		updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), TEST_ANALYZER_SERIAL_NUMBER, TEST_ANALYZER_KEY);
+	}
+	
 	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber,
 			String analyzerSharedKey) {
 		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);

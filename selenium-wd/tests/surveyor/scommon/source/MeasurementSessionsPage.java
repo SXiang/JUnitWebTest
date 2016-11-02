@@ -86,7 +86,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[6]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[@title='Delete Survey']/img")
 	private WebElement firstSurveyDeleteLink;
 
 	public void clickOnFirstSurveyDeleteLink() {
@@ -286,9 +286,6 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 		}
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
-		this.waitForAJAXCallsToComplete();
 		
 		WebElement tagCell;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
@@ -300,21 +297,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			loopCount = rowSize;
 		else
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			String tagXPath = strTRXPath + "[" + rowNum + "]/td[1]";
+			String tagXPath = strTRXPath + "[" + rowNum + "]/td";
 			// Re-fetch the element each time to prevent staleElement exception.
-			tagCell = TestContext.INSTANCE.getDriver().findElement(By.xpath(tagXPath));
-			getTable().findElement(By.xpath(tagXPath));
-			strListTag.add(tagCell.getText().trim());
+			TestContext.INSTANCE.getDriver().findElement(By.xpath(tagXPath));
+			tagCell = getTable().findElement(By.xpath(tagXPath));
+			strListTag.add(getElementText(tagCell).trim());
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.waitForTableDataToLoad();
-				this.waitForAJAXCallsToComplete();
-
+				toNextPage();
 				List<WebElement> newRows = this.getTable().findElements(By.xpath(this.strTRXPath));
 				rowSize = newRows.size();
 
@@ -382,7 +374,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled") && allPages) {
-				this.nextBtn.click();
+				toNextPage();
 
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 

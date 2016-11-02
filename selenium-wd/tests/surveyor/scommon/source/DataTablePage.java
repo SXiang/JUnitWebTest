@@ -19,14 +19,13 @@ import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import common.source.BasePage;
 import common.source.Log;
 import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 
-public class DataTablePage extends BasePage {
+public class DataTablePage extends SurveyorBasePage {
 
 	protected SearchContext searchContext;
 	protected String pagination = "100";
@@ -128,8 +127,7 @@ public class DataTablePage extends BasePage {
 		do{			
 			for(WebElement row: tableRow){
 				List<WebElement> field = row.findElements(By.cssSelector("td"));
-				
-				columnValues.add(field.get(colIdx).getText());
+				columnValues.add(getElementText(field.get(colIdx)));
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
 					done = true;
@@ -347,22 +345,6 @@ public class DataTablePage extends BasePage {
 		if(!done)
 			Log.error("Page navigation button is disabled/not clickable");
 		return done;
-	}
-
-	/**
-	 * Set pagination for this data table
-	 * 
-	 * @param str
-	 *            - the num string of the pagination option
-	 */
-	public void setPagination(String str) {
-		for (WebElement option : paginationOption) {
-			if (str.equals(option.getText().trim())) {
-				Log.info("Select '"+str+"' for the pagination");
-				option.click();
-				break;
-			}
-		}
 	}
 
 	/**

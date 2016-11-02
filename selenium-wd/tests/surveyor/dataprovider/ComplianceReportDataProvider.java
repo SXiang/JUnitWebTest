@@ -231,11 +231,11 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList17.add(PIC8HR01TAG); // 8-hr survey.
 
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", "None"));
 		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
@@ -466,11 +466,11 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		tagList18.add(SQACUSDRTAG);
 
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", "None"));
 		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
@@ -638,7 +638,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 											null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },
 				{ "7", SQAPICSUP, USERPASSWORDHASH, CUSTOMER_SQACUS, TIMEZONEPT, EXCLUSIONRADIUS_0, null, null, null, null, null,
 												null, null, null, null, null, createMapAndBoundaryList(), tagList5, tablesList5, viewList5, null },};
-								}
+			}
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC231() {
@@ -692,8 +692,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	// Repeat the test, but in the Views section, select all five of the features named above
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC678() {
-		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 27 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
-				{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, 
+			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 27 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
+			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	// Repeat the test with FOVs, Breadcrumbs, Assets and Gaps (Assets are selected, asset types must also be selected)
@@ -852,7 +853,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1353() {
-		return new Object[][] { { "TC1353" /* TestCaseID */, 6 /* userDataRowID*/, 113/* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC1353" /* TestCaseID */, 6 /* userDataRowID*/, 116/* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
 	@DataProvider

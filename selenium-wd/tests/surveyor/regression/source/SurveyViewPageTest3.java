@@ -515,7 +515,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - Click on Display button
 	 * Results: -
 	 *  - - Position button not present in survey view
-	 *	- - Concentration Chart, Wind rose, 8-hour history options are not present in survey view
+	 *	- - Concentration Chart, Wind rose options are not present in survey view
 	 */
 	@Test
 	public void TC931_PositionConcentrationChartWindRose8_HourHistoryOptionsAreNotPresentSurveyView() throws Exception {
@@ -527,7 +527,6 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitch8HourHistoryButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
 	}
@@ -736,7 +735,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - On Home Page, click on Driving Surveys -& View Survey
 	 * Results: -
 	 *	- - Click on Picarro Icon present at bottom
-	 *	- - User is navigated to Survey view page
+	 *	- - User is navigated to home page
 	 */
 	@Test
 	public void TC938_SurveyView_NavigateBackForthBetweenSurveyViewHomePage() throws Exception {
@@ -747,7 +746,6 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().open(TEST_SURVEY_STANDARD1_ID, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET));
 		getSurveyViewPageAction().clickOnPicarroLogoButton(EMPTY, NOTSET);
-		((HomePage)getHomePageAction().getPageObject()).waitForPageLoad();
 		assertTrue(getHomePageAction().verifyPageLoaded(EMPTY, NOTSET));
 	}
 

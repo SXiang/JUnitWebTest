@@ -203,7 +203,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public boolean verifyCustomerBoundaryAutoCompleteListContains(String boundaryName, List<String> autocompleteListEntries) {
 		Log.info("Set boundary name to '"+boundaryName+"'");
-		selectByNameTextField.sendKeys(boundaryName);
+		waitForElementToBeEnabled(selectByNameTextField);
+		WebElementExtender.sendKeys(selectByNameTextField, boundaryName);
 		this.waitForAutoCompleteListToOpen();
 
 		if (!WebElementExtender.checkElementsListContains(driver, "//*[@id='ui-id-1']/li", autocompleteListEntries)) {
@@ -236,6 +237,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
 		Log.info("Select customer boundary type '"+filterByTypeValue+"'");
+		waitForElementToBeEnabled(filterByTypeDropDown);
 		new Select(filterByTypeDropDown).selectByVisibleText(filterByTypeValue);
 		return this;
 	}

@@ -855,7 +855,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Loop through table elements and check selected number of surveys.
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
-				checkBoxXPath = "tr[" + rowNum + "]/td[7]/input[@type='checkbox']";
+				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
 				Log.info(String.format("Select survey - row %d", rowNum));
 				checkBoxActionCell.click();
@@ -1173,7 +1173,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[6]"));
 				for (int getcolumnvalue = 1; getcolumnvalue <= Columns.size(); getcolumnvalue++) {
 					String cellValue = driver
-							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[6]"))
+							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td/a[starts-with(@href,'/Live/Survey')]"))
 							.getText();
 					if (cellValue.contains(tag)) {
 						result = true;
@@ -1514,8 +1514,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.waitForPageLoad();
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -1693,8 +1692,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
@@ -1760,10 +1758,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
-
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -1811,9 +1806,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.waitForPageLoad();
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -1869,7 +1862,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
+				toNextPage();
 				this.waitForPageLoad();
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
@@ -1949,8 +1942,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -2044,8 +2036,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -2101,8 +2092,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && this.nextBtn.isEnabled()) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));

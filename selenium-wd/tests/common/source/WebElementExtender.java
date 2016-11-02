@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -33,7 +34,11 @@ public class WebElementExtender {
 	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
 		Log.method("WebElementExtender.executeScript", element, driver, jsScript);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript(jsScript, element);
+		try{
+			js.executeScript(jsScript, element);
+		}catch(Exception e){
+			Log.warn("Failed to click on the WebElement: "+e.toString());
+		}
 	}
 
 	public static void printAllElementAttributes(WebElement element, WebDriver driver) {
@@ -72,10 +77,18 @@ public class WebElementExtender {
    }
 
    public static boolean findElementBy(WebDriver driver, By by) {
+	  return findElementBy(driver, by, -1);
+   }
+   public static boolean findElementBy(WebDriver driver, By by, int timeout) {
 	   try {
-		   driver.findElement(by);
+		   if(timeout > 0){
+			   (new WebDriverWait(driver, timeout))
+			   .until(ExpectedConditions.presenceOfElementLocated(by));
+		   }else{
+			   driver.findElement(by);
+		   }
 		   return true;
-	   } catch (org.openqa.selenium.NoSuchElementException e) {
+	   } catch (Exception e) {
 		   return false;
 	   }
    }
@@ -186,5 +199,16 @@ public class WebElementExtender {
 
     //Return the File object containing image data
     return screen;
+   }
+
+   public static void sendKeys(WebElement selectByNameTextField, String boundaryName) {
+	try{
+		setFocusOnElement(selectByNameTextField);
+		selectByNameTextField.clear();
+	}catch(Exception e){
+		Log.warn(String.format("Exception with sending key ? '%s', %s", boundaryName, e.toString()));
+	}finally{
+		selectByNameTextField.sendKeys(boundaryName);
+	}
    }
 }

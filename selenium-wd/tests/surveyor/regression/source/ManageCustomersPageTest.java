@@ -364,6 +364,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 
+
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
 		loginPage.open();
@@ -372,8 +373,10 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageCustomersPage.open();
 		// create customer (not enabled).
 		manageCustomersPage.addNewCustomer(customerName, eula, false);
+		manageCustomersPage.open();
 		manageCustomersPage.changeCustomerAccountStatus(customerName, true);
 
+		manageCustomersPage.open();
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
@@ -384,6 +387,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, 
 				CUSUSERROLEUA, locationName);
 
+		manageUsersPage.open();
 		Log.info(String.format("Looking for User: Location-[%s], UserName-[%s]", customerName, userName));
 		assertTrue(manageUsersPage.findExistingUser(locationName, userName, false));
 
@@ -547,6 +551,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		homePage.waitForPageLoad();
 		
 		manageCustomersPage.open();
+		manageCustomersPage.performSearch(customerName);
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 		assertFalse(manageCustomersPage.isAddCustomerBtnPresent());
 		assertFalse(manageCustomersPage.isEditBtnPresent());

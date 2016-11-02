@@ -198,7 +198,6 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 
 		modifyComplianceReport(complianceReportsPageAction, reportDataRowID);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
-
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);

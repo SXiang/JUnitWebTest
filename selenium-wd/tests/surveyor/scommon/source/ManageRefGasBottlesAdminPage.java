@@ -49,8 +49,6 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		Log.info(String.format("Find RefGas bottle lot = '%s', surveyor = '%s', location = '%s'",
 				strLotNumber, strSurveyor, location));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 		
 		String locationXPath;
 		String strSurveyorXPath;
@@ -86,9 +84,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 			
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				
 				List<WebElement> newRows = getTable().findElements(By.xpath(strTRXPath));
 				rowSize = newRows.size();
@@ -106,9 +102,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	}
 	
 	public boolean areTableColumnsSorted(){
-		if(!isCustomerColumnSorted()){
-			return false;
-		}
+
 		if(!isLocationColumnSorted()){
 			return false;
 		}
@@ -121,6 +115,14 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		if(!isLotNumberColumnSorted()){
 			return false;
 		}
+		
+		if(!isIsoValueColumnSorted()){
+		return false;
+	}
+		
+		if(!isEToMRatioColumnSorted()){
+		return false;
+	}
 		if(!isDateTimeColumnSorted()){
 			return false;
 		}
@@ -157,7 +159,17 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 		columnMap.put(Constant_LotNumber, TableColumnType.String);
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
 	}
-	
+
+	public boolean isIsoValueColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_IsotopicValue, TableColumnType.Number);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
+	public boolean isEToMRatioColumnSorted(){
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(Constant_EthaneToMethaneRatio, TableColumnType.Number);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+	}
 	public boolean isDateTimeColumnSorted(){
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_DateTime, TableColumnType.Date);

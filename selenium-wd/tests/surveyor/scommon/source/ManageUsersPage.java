@@ -50,7 +50,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public static final String Constant_Location = Resources.getResource(ResourceKeys.Constant_Location);
 	public static final String Constant_Roles = Resources.getResource(ResourceKeys.Constant_Roles);
 	public static final String Constant_User = Resources.getResource(ResourceKeys.Constant_User);
+	public static final String Constant_Name = Resources.getResource(ResourceKeys.Constant_Name);
 	protected String pagination = "100";
+
+	public static final int validatationTimeout = 1;
 
 	@FindBy(id = "User.UserName-error")
 	private WebElement labelUserNameError;
@@ -76,6 +79,9 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	@FindBy(id = "User_LocationId")
 	protected WebElement dropDownCustomer;
+
+	@FindBy(how = How.CSS, using = "label[for='UserName']")
+	protected WebElement pageLabel;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='User.UserName']")
 	protected WebElement inputEmail;
@@ -170,14 +176,26 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 
+		boolean done = false;
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
 
-		enableDisableUser(enabled);
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
+		}
+		if(!done){
+			this.inputPasswordConfirm.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+			enableDisableUser(enabled);
+		}
+
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -214,6 +232,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
+		boolean done = false;
 
 		Select droplist = new Select(this.dropDownCustomer);
 		droplist.selectByVisibleText(location);
@@ -221,30 +240,43 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
 
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
-				.tagName("option"));
-		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Select role - '"+tzOption+"'");
-				tzOption.click();
-				break;
-			}
+		if(!done){
+			this.inputPasswordConfirm.sendKeys(passwordConfirm);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
 		}
 
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By
+					.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
+					.tagName("option"));
+			for (WebElement tzOption : tzOptions) {
+				if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+					Log.info("Select role - '"+tzOption+"'");
+					tzOption.click();
+					break;
+				}
+			}
+		}
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -281,26 +313,43 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
 
+		boolean done = false;
+
 		selectCustomerLocationDropdown(customerName, location);
 
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
-		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		Log.info("Confirm password - '"+passwordConfirm+"'");
-		this.inputPasswordConfirm.sendKeys(passwordConfirm);
 
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		this.inputEmail.sendKeys(email);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
+
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			this.inputPassword.sendKeys(password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		enableDisableUser(enabled);
+		if(!done){
+			Log.info("Confirm password - '"+passwordConfirm+"'");
+			this.inputPasswordConfirm.sendKeys(passwordConfirm);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+		}
+
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			enableDisableUser(enabled);
+		}
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
@@ -325,33 +374,47 @@ public class ManageUsersPage extends SurveyorBasePage {
 				customerName, email, role, timeZone, location));
 		Log.clickElementInfo("Add New Customer User");
 		this.btnAddNewCustomerUser.click();
-
+		boolean done = false;
 		selectCustomerLocationDropdown(customerName, location);
 
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();
 		this.inputEmail.sendKeys(email);
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password);
-		this.inputPasswordConfirm.sendKeys(password);
+		focusOnPage(pageLabel);
+		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
 
-		List<WebElement> roleOptions = this.dropDownRole.findElements(By
-				.tagName("option"));
-		for (WebElement roleOption : roleOptions) {
-			if (roleOption.getText().trim().equalsIgnoreCase(role)){
-				Log.info("Select role - '"+roleOption+"'");
-				roleOption.click();
-				break;
-			}
+		if(!done){
+			Log.info("Set password - '<HIDDEN>'");
+			sendKeysToElement(inputPassword, password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout);
 		}
 
-		List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
-				.tagName("option"));
-		for (WebElement tzOption : tzOptions) {
-			if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
-				Log.info("Select Timezone - '"+tzOption+"'");
-				tzOption.click();
-				break;
+		if(!done){
+			Log.info("Confirm password - '<HIDDEN>'");
+			sendKeysToElement(inputPasswordConfirm, password);
+			focusOnPage(pageLabel);
+			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
+		}
+		if(!done){
+			List<WebElement> roleOptions = this.dropDownRole.findElements(By
+					.tagName("option"));
+			for (WebElement roleOption : roleOptions) {
+				if (roleOption.getText().trim().equalsIgnoreCase(role)){
+					Log.info("Select role - '"+roleOption+"'");
+					roleOption.click();
+					break;
+				}
+			}
+
+			List<WebElement> tzOptions = this.dropDownTimeZone.findElements(By
+					.tagName("option"));
+			for (WebElement tzOption : tzOptions) {
+				if (tzOption.getText().trim().equalsIgnoreCase(timeZone)){
+					Log.info("Select Timezone - '"+tzOption+"'");
+					tzOption.click();
+					break;
+				}
 			}
 		}
 		Log.clickElementInfo("Ok");
@@ -386,7 +449,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		// If user inputted greater than allowed max characters in Email, then check if 'Max character' message label is shown.
 		// If not remove chars from beginning to format email to valid MAX length.
 		if (email.length() > ALLOWED_MAX_EMAIL_LENGTH) {
-			if (isElementPresent(this.labelUserNameErrorXPath)) {
+			if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
 				rtnMsg = this.labelUserNameError.getText().trim();
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
@@ -398,15 +461,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 				this.inputEmail.sendKeys(email.substring(difflen, email.length()-1));
 			}
 		}
-		Log.info("Set password - '<HIDDEN>'");
-		this.inputPassword.sendKeys(password1);
-		Log.info("Confirm password - '<HIDDEN>'");
-		this.inputPasswordConfirm.sendKeys(password2);
-		Log.clickElementInfo("Ok");
-		this.btnOk.click();
-		waitForPageToLoad();
-
-		if (isElementPresent(this.labelUserNameErrorXPath)) {
+		focusOnPage(pageLabel);
+		if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserNameError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -414,7 +470,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg;
 		}
 
-		if (isElementPresent(this.labelUserPwdErrorXPath)) {
+		Log.info("Set password - '<HIDDEN>'");
+		sendKeysToElement(inputPassword, password1);
+
+		focusOnPage(pageLabel);
+		if (isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelUserPwdError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -422,7 +482,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg;
 		}
 
-		if (isElementPresent(this.labelPwdConfirmErrorXPath)) {
+		Log.info("Confirm password - '<HIDDEN>'");
+		sendKeysToElement(inputPasswordConfirm, password2);
+
+		focusOnPage(pageLabel);
+		if (isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout)) {
 			rtnMsg = this.labelPwdConfirmError.getText().trim();
 			Log.clickElementInfo("Cancel");
 			this.cancelAddBtn.click();
@@ -430,7 +494,37 @@ public class ManageUsersPage extends SurveyorBasePage {
 			return rtnMsg;
 		}
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
+		Log.clickElementInfo("Ok");
+		this.btnOk.click();
+
+		if (isElementPresent(this.labelUserNameErrorXPath, validatationTimeout)) {
+			rtnMsg = this.labelUserNameError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("Username error: " + rtnMsg);
+			return rtnMsg;
+		}
+
+		if (isElementPresent(this.labelUserPwdErrorXPath, validatationTimeout)) {
+			rtnMsg = this.labelUserPwdError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("User password error: " + rtnMsg);
+			return rtnMsg;
+		}
+
+		if (isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout)) {
+			rtnMsg = this.labelPwdConfirmError.getText().trim();
+			Log.clickElementInfo("Cancel");
+			this.cancelAddBtn.click();
+			Log.info("User password confirm error: " + rtnMsg);
+
+			return rtnMsg;
+		}
+
+		waitForPageToLoad();
+
+		if (isElementPresent(this.panelDuplicationErrorXPath, validatationTimeout)) {
 			// Get error message using javascript. This is to avoid CI failures when using validation webelement.
 			String userErrMsg = getUsernameErrorMessage();
 			if (userErrMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
@@ -449,8 +543,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.info(String.format("Find user '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
-
-		this.waitForTableDataToLoad();
 
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
@@ -489,9 +581,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -515,11 +605,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String locationName, String userName, boolean isCustomerUser) {
 		Log.method("findExistingUser", locationName, userName, isCustomerUser);
 		Log.info(String.format("Find user '%s', locationname = '%s'", userName, locationName));
-		setPagination(PAGINATIONSETTING_100);
+		setPaginationAny(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
-		this.waitForTableDataToLoad();
 
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
@@ -577,9 +666,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 				Log.info("Clicking on next button");
 				Log.info(String.format("rowNum = %d", rowNum));
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -606,7 +693,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -659,9 +745,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -686,8 +770,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getUserRole", userName);
 		Log.info(String.format("Looking for user role of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String roleNameXPath;
@@ -723,9 +805,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -747,8 +827,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getUserStatus", userName, isCustomerUser);
 		Log.info(String.format("Looking for user status of '%s'", userName));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String userStatusXPath;
@@ -789,9 +867,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -828,7 +904,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(userName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -902,9 +977,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -927,8 +1000,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean resetUserPassword(String userName, String newPassword, boolean isCustomerUser) {
 		Log.method("resetUserPassword", userName, "<PASSWORD_HIDDEN>", isCustomerUser);
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		String actionResetPWDXPath;
@@ -979,9 +1050,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1002,8 +1071,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 	public boolean findExistingUser(String userName, boolean allPages) {
 		Log.method("findExistingUser", userName, allPages);
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 
@@ -1035,9 +1102,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1080,12 +1145,13 @@ public class ManageUsersPage extends SurveyorBasePage {
 	private void selectCustomerLocationDropdown(String customerName, String location) {
 		Log.method("selectCustomerLocationDropdown", customerName, location);
 		String custLoc = customerName + " - " + location;
-		selectLocationDropdown(custLoc);
+		selectDropdownOption(this.dropDownCustomer, custLoc);
 	}
 
 	private void selectLocationDropdown(String customerLocation) {
 		Log.method("selectLocationDropdown", customerLocation);
 		List<WebElement> options = this.dropDownCustomer.findElements(By.tagName("option"));
+
 		for	(WebElement option : options) {
 			if (option.getText().trim().equalsIgnoreCase(customerLocation)){
 				Log.info("Select Customer - '"+customerLocation+"'");
@@ -1121,9 +1187,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 	public boolean findExistingUser(String location, String userName, String roleName, boolean allPages) {
 		Log.method("findExistingUser", location, userName, roleName, allPages);
-		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
+		setPaginationAny(PAGINATIONSETTING_100);
 
 		String locationXPath;
 		String userNameXPath;
@@ -1169,9 +1233,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1228,9 +1290,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1253,8 +1313,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		List<String> userList = new ArrayList<String>();
 
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String userNameXPath;
 		WebElement userNameCell;
@@ -1281,9 +1339,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1305,7 +1361,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getLocationList", allPages);
 		List<String> locationList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String locationXPath;
 		WebElement locationCell;
@@ -1332,9 +1387,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1355,7 +1408,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getRolesList", allPages);
 		List<String> rolesList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String rolesXPath;
 		WebElement rolesCell;
@@ -1381,9 +1433,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1404,7 +1454,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("getStatusList", allPages);
 		List<String> statusList = new ArrayList<String>();
 		setPagination(PAGINATIONSETTING_100);
-		this.waitForTableDataToLoad();
 
 		String statusXPath;
 		WebElement statusCell;
@@ -1430,9 +1479,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 
@@ -1624,41 +1671,41 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.method("isUserNameColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_UserName, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isUserColumnSorted(){
 		Log.method("isUserColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(Constant_User, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		columnMap.put(Constant_Name, TableColumnType.String);
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isCustomerColumnSorted(){
 		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isLocationColumnSorted(){
 		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isRolesColumnSorted(){
 		Log.method("isRolesColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Roles, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isStatusColumnSorted(){
 		Log.method("isStatusColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Status, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 }

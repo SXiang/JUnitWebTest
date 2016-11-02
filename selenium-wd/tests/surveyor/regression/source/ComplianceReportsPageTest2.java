@@ -292,6 +292,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test Case ID: TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
 	 * Script: -
 	 *	- - On the Compliance Reports page, click the New Compliance Report button
@@ -396,6 +397,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+=======
+>>>>>>> master
 	 * Test Case ID: TC1041_StandardSurvey_GapBoxesUniqueNumbersPrescribedFormat
 	 * Script: -
 	 *  - - Log in as Picarro Admin
@@ -868,6 +871,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test Case ID: TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
 	 * Script: -
 	 *	- - Log in as Picarro Admin
@@ -987,6 +991,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+=======
+>>>>>>> master
 	 * Test Case ID: TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
 	 * Script: -
 	 * 	- -  Log in to application as picarro admin
@@ -1430,6 +1436,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
 	 * Script: -
 	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
@@ -1456,6 +1463,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
+=======
+>>>>>>> master
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -
 	 *	- - Log in to application as picarro admin

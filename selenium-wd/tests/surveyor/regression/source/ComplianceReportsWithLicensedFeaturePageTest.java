@@ -160,7 +160,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 		getHomePage().logout();
@@ -298,7 +298,8 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString());
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-			assertEquals(errorMsg, getHomePage().getSiteErrorMsg());
+
+			assertTrue(getHomePage().getLicenseMissingText().contains(errorMsg));
 			getHomePage().logout();
 		}
 	}

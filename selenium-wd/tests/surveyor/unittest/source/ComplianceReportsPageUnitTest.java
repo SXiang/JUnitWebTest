@@ -70,7 +70,6 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
         complianceReportsPageAction.workingDataRow.get().title = "TC148 Report639729";
         complianceReportsPageAction.workingDataRow.get().tCID = "UnitTest-US2774";
 
-
         complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.get().title);

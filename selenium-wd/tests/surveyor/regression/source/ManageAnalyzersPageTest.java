@@ -223,6 +223,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName51, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 		assertTrue(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51.substring(0, MAX_SIZE)));
+		manageAnalyzersPage.open();
 		assertFalse(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName51));
 	}
 
@@ -286,6 +287,7 @@ public class ManageAnalyzersPageTest extends SurveyorBaseTest {
 		manageAnalyzersPage.open();
 		manageAnalyzersPage.addNewAnalyzer(analyzerName, ANALYZERSHAREDKEY, surveyorName, customerName, locationName);
 
+		manageAnalyzersPage.open();
 		if(manageAnalyzersPage.findExistingAnalyzer(customerName, locationName, surveyorName, analyzerName))
 			manageAnalyzersPage.editExistingAnalyzer(customerName, locationName, surveyorName, analyzerName,
 					ANALYZERSHAREDKEY, customerName + " - " + locationName + " - " + surveyorName, analyzerNameNew);

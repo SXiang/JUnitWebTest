@@ -5,6 +5,7 @@ package surveyor.scommon.source;
 
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 
 import java.io.File;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class SurveyorBasePage extends BasePage {
 	protected static final String DATATABLE_TBODY_TR = "//*[@id='datatable']/tbody/tr";
 	protected static final String DATATABLE_RECORDS_ELEMENT_ID= "datatable_info";
 	protected static final String DATATABLESURVEYS_RECORDS_ELEMENT_ID = "datatableSurveys_info";
+	protected static By DATATABLE_RECORDS_ELEMENT_BY = By.cssSelector(".dataTables_info[id$='_info']");
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/ul/li/a")
 	protected WebElement dropDownAdministrator;
@@ -81,32 +83,32 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
 
-	@FindBy(name = "datatable_length")
+	@FindBy(css = "[name^='datatable'][name$='_length']")
 	protected WebElement paginationInput;
-	By paginationInputBy = By.name("datatable_length");
+	By paginationInputBy = By.cssSelector("[name^='datatable'][name$='_length']");
 
-	@FindBy(css = "#datatable_length option")
+	@FindBy(css = "[name^='datatable'][name$='_length'] option")
 	protected List<WebElement> paginationOptions;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
+	@FindBy(how = How.CSS, using = "[id^='datatable'][id$='_filter'] > label > input")
 	protected WebElement inputSearch;
 
 	@FindBy(how = How.XPATH, using = DATA_TABLE_XPATH)
 	protected WebElement table;
-	protected String strTRXPath = "//*[@id='datatable']/tbody/tr";
+	protected String strTRXPath = DATA_TABLE_XPATH+"/tr";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
+	@FindBy(how = How.CSS, using = ".paginate_button.next")
 	protected WebElement nextBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_previous']")
+	@FindBy(how = How.CSS, using = ".paginate_button.previous")
 	protected WebElement previousBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_first']")
+	@FindBy(how = How.CSS, using = ".paginate_button.first")
 	protected WebElement firstBtn;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable_last']")
+
+	@FindBy(how = How.CSS, using = ".paginate_button.last")
 	protected WebElement lastBtn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOk;
 
@@ -174,8 +176,8 @@ public class SurveyorBasePage extends BasePage {
 	protected WebElement paginationMsg;
 
 	private static String headerColumnBaseXPath = "//*[@id='datatable']/thead/tr/th[%d]";
-	public static final String STRPaginationMsgPattern_firstPage = "Showing 1+ to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
-	public static final String STRPaginationMsgPattern_anyPage = "Showing + [\\d,] to [\\d,] of [\\d,]+ entries.*";
+	public static final String STRPaginationMsgPattern_firstPage = "Showing 1 to %s of [\\d,]+ entries.*|Showing [10] to ([\\d]+) of \\1 entries.*";
+	public static final String STRPaginationMsgPattern_anyPage = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries.*";
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
@@ -303,26 +305,39 @@ public class SurveyorBasePage extends BasePage {
 	public void setPagination(String str) {
 		setPagination(str, true);
 	}
-	
-	public void setPagination(String str, boolean firstPage){
-		Log.method("setPagination", str);
 
+	public void setPaginationAny(String str) {
+		Log.method("setPaginationAny", str);
+		setPaginationCheckMessage(str, STRPaginationMsgPattern_anyPage);
+	}
+
+	public void setPagination(String str, boolean firstPage){
+		Log.method("setPagination", str, firstPage);
+
+		String paginationMsg = STRPaginationMsgPattern_anyPage;
+
+		if(firstPage){	
+			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
+			jsClick(firstBtn);
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		}
+		setPaginationCheckMessage(str, paginationMsg);
+	}
+
+	private void setPaginationCheckMessage(String str, String paginationMsg) {
 		for (WebElement option : paginationOptions) {
 			try{
 				if (str.equals(option.getText().trim())) {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
-					if(firstPage){
-						firstBtn.click();
-						waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage,str));
-					}else{
-						waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
-					}
-					
+					waitForNumberOfRecords(paginationMsg);
+					getRecordsShownOnPage(driver);
 					break;
 				}
 			}catch(StaleElementReferenceException e){
 				continue;
+			}catch(Exception e){
+				Log.warn("Failed to go back to the first page: "+e.toString());
 			}
 		}
 	}
@@ -444,16 +459,24 @@ public class SurveyorBasePage extends BasePage {
 
 	public Integer getRecordsShownOnPage(WebDriver driver) {
 		Log.method("getRecordsShownOnPage", driver);
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
-		WebElement pageInfoLabel = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		WebElement pageInfoLabel = null;
+		try{
+			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(DATATABLE_RECORDS_ELEMENT_BY));
+			pageInfoLabel = driver.findElement(DATATABLE_RECORDS_ELEMENT_BY);
+		}catch(Exception e){
+			Log.error("Failed to get datatable info: "+e.toString());
+			Log.warn("Current URL is: "+driver.getCurrentUrl());
+			return 0;
+		}
 		return getRecordsShownOnPage(driver, pageInfoLabel);
 	}
 
 	public Integer getRecordsShownOnPage(WebDriver driver, WebElement tableElement) {
 		Log.method("getRecordsShownOnPage", driver, tableElement);
-		String numTextString = tableElement.getText().trim();
+		String numTextString = getElementText(tableElement);
 		List<String> strList = RegexUtility.split(numTextString, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
-		Integer records = 0;
+		Integer records = -1;
 		if (strList != null && strList.size() > 3) {
 			records = Integer.parseInt(strList.get(3).replace(",", ""));
 		}
@@ -480,8 +503,13 @@ public class SurveyorBasePage extends BasePage {
 
 	public void clearSearchFieldUsingSpace() {
 		Log.method("clearSearchFieldUsingSpace");
-		this.getInputSearch().sendKeys(" ");
-		this.waitForTableDataToLoad();
+		try{
+			this.getInputSearch().sendKeys(" ");
+			this.waitForTableDataToLoad();
+		}catch(Exception e){
+			Log.error("Failed to clear search field: "+e.toString());
+			Log.warn("Current URL is: " + driver.getCurrentUrl());
+		}
 	}
 
 	private WebElement getTableHeader(Integer columnIndex) {
@@ -532,32 +560,32 @@ public class SurveyorBasePage extends BasePage {
 		By tableContextBy = By.id(dataTableElement);
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
-		List<WebElement> headings=tableContext.findElements(By.cssSelector("thead > tr > th"));
-		for(WebElement tableHeadingElement:headings){
-			for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
-				if(tableHeadingElement.getText().trim().equalsIgnoreCase(entry.getKey().trim())){
-					tableHeadingElement.click();
-					waitForTableDataToLoad();
-					try{
-						String sortOrderCss = "#"+dataTableElement+" thead > tr > th[aria-sort]";
-						waitUntilPresenceOfElementLocated(By.cssSelector(sortOrderCss));
-						WebElementExtender.isAttributePresent(tableHeadingElement, "aria-sort");
-						boolean isAscending =  tableHeadingElement.getAttribute("aria-sort").equals("ascending");
-						if(isAscending){
-							return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}else{
-							return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
-						}
-					}catch(Exception e){
-						Log.warn(String.format("Column '%s' of data table is not sortable!", entry.getKey().trim()));
-						Log.warn(e.toString());
-					}
-
-					return false;
+		String headerCss = "thead > tr > th[aria-label^='%s:']";
+		for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
+			String headerLabel = entry.getKey().trim();
+			if(!isElementPresent(By.cssSelector(String.format(headerCss, headerLabel)))){
+				continue;
+			}
+			WebElement headerLink = tableContext.findElement(By.cssSelector(String.format(headerCss, headerLabel)));
+			String currentOrder = headerLink.getAttribute("aria-sort");
+			boolean isAscending = true;
+			if(currentOrder!=null){
+				isAscending = !currentOrder.equals("ascending");
+			}
+			headerLink.click();
+			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
+			try{
+				if(isAscending){
+					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);
+				}else{
+					return dataTable.isTableSortedDesc(columnHeadings,str,paginationOption,tableContext, numRecords);
 				}
+			}catch(Exception e){
+				Log.warn(String.format("Column '%s' of data table is not sortable?", entry.getKey().trim()));
+				Log.warn(e.toString());
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private TableSortOrder getCurrentColumnSortOrder(WebElement headerElement, Integer columnIndex) {
@@ -608,7 +636,6 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkPaginationSetting(String numberOfRecords) {
 		Log.method("checkPaginationSetting", numberOfRecords);
 		setPagination(numberOfRecords);
-		this.waitForPageLoad();
 		return this.waitForNumberOfRecords(String.format(STRPaginationMsgPattern_firstPage, numberOfRecords));
 	}
 
@@ -652,22 +679,25 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public boolean waitForNumberOfRecords(String actualMessage){
-		By tableInfoBy = By.id(DATATABLE_RECORDS_ELEMENT_ID);
-		return waitForNumberOfRecords(tableInfoBy, actualMessage);
+		return waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, actualMessage);
 	}
 
 	public boolean waitForNumberOfRecords(By tableInfoBy, String actualMessage) {
 		Log.method("waitForNumberOfRecords", actualMessage);
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
 		WebElement tableInfoElement = driver.findElement(tableInfoBy);
-		return (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+		boolean tableInfoMatches = (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				String text = tableInfoElement.getText().trim();
+				String text = getElementText(tableInfoElement).trim();
 				boolean matches = text.matches(actualMessage);
 				Log.info(String.format("MATCH=[%b] -> Text=[%s], MatchPattern=[%s]", matches, text, actualMessage));
 				return matches;
 			}
 		});
+		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+		return tableInfoMatches;
 	}
 
 	/*
@@ -698,16 +728,21 @@ public class SurveyorBasePage extends BasePage {
 		try{
 			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
-					return (getRecordsShownOnPage(d) > 0);
+					return getRecordsShownOnPage(d) > 0;
 				}
 			});
 		}catch(Exception e){
-			Log.warn("Empty data table!");
+			Log.warn("Empty data table!"+e.toString());
+			Log.warn("Current URL = "+ driver.getCurrentUrl());
 			return false;
 		}
 		return true;
 	}
 
+	public boolean toNextPage(){
+		this.nextBtn.click();
+		return waitForTableDataToLoad();
+	}
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

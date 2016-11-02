@@ -42,6 +42,12 @@ public class SortHelper {
 	public static boolean isSortedASC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
+				if(strArray[i-1].trim().equals("")){
+					strArray[i-1] = "0";
+				}
+				if(strArray[i].trim().equals("")){
+					strArray[i] = "0";
+				}
 				if (NumberUtils.createFloat(strArray[i - 1]).compareTo(NumberUtils.createFloat(strArray[i])) > 0) {
 					return false;
 				}
@@ -85,6 +91,12 @@ public class SortHelper {
 	public static boolean isSortedDESC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
+				if(strArray[i-1].trim().equals("")){
+					strArray[i-1] = "0";
+				}
+				if(strArray[i].trim().equals("")){
+					strArray[i] = "0";
+				}
 				if (NumberUtils.createFloat(strArray[i - 1]).compareTo(NumberUtils.createFloat(strArray[i])) < 0) {
 					return false;
 				}

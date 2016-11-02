@@ -133,7 +133,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[11]/legend")
+	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div/legend[text()='Ethane to Methane Ratio %']")
 	protected WebElement ethMthRtioLbl;
 
 	@FindBy(how = How.ID, using = "Min")
@@ -366,8 +366,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
-		this.waitForTableDataToLoad();
-
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -412,8 +410,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -469,7 +466,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -598,8 +594,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -763,8 +758,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(pageSizeStr) && !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -798,11 +792,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean isOperatorMinAmpShowing(){
 		return WebElementExtender.isElementPresentAndDisplayed(opdMinAmp);
 	}
-	
+
 	public boolean isRapidResponseMinAmpShowing(){
 		return WebElementExtender.isElementPresentAndDisplayed(RRMinAmp);
 	}
-	
+
 	@Override
 	public void open(){
 		super.open();
