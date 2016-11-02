@@ -239,6 +239,8 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
 		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 
+		manageSurveyorHistoriesPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		manageSurveyorHistoriesPage.open();
 		systemHistoryReportsPage.open();
 		date = new Date();
 		String endDate = dateFormat.format(date);
@@ -256,6 +258,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate);
 
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		
 		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, PICDFADMIN))) {
 			assertTrue(systemHistoryReportsPage.findExistingReport(rptTitle, PICDFADMIN));
 			assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
@@ -264,8 +267,6 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue(systemHistoryReportsPage.verifyNotesTable(testSetup.getDownloadPath(), rptTitle));
 		} else
 			fail("\nTestcase TC195 failed.\n");
-
-		assertTrue(systemHistoryReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
 
 		systemHistoryReportsPage.open();
 		systemHistoryReportsPage.logout();

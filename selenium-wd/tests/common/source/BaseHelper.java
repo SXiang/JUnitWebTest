@@ -130,14 +130,14 @@ public class BaseHelper {
 		double sizeKB;
 
 		if (pdfFile.exists()) {
-			sizeKB = pdfFile.length() / 1024.2d;
+			sizeKB = pdfFile.length() / 1024.2d + 0.5;
 		} else {
 			Log.info(String.format("\nThe \"%s\" file doesn't exists!\n", pdfFileName));
 			return false;
 		}
 		Log.info(String.format("\nThe \"%s\" size is: %.2f\n", pdfFileName, sizeKB));
 
-		if (sizeKB > SYSTEMHISTPDF_MINSIZE_IN_KB) {
+		if (sizeKB >= SYSTEMHISTPDF_MINSIZE_IN_KB) {
 			Log.info(String.format("\nThe \"%s\" size is %s > min size = %s\n", pdfFileName, sizeKB, SYSTEMHISTPDF_MINSIZE_IN_KB));
 			Log.info("validatePdfFileForSysHis = TRUE");
 			return true;
