@@ -1030,7 +1030,7 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * 	 - PipeAll, PipeIntersectingGap, LISA, Gap, etc shape files should not be generated
 	 */
 
-	@Ignore  //Need to generate Shape file for verification once DE2462 gets fixed.
+	@Test  //Need to generate Shape file for verification once DE2462 gets fixed.
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018, location = ComplianceReportDataProvider.class)
 	public void TC2018_VerifyReportViewPDFandshapefileExportWithHighlightedLISAAssetsSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
