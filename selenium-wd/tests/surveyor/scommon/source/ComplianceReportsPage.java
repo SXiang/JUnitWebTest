@@ -3154,7 +3154,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		String matchStartString = "Disposition Confidence in Disposition";
 		String matchEndString = "Software Version";
-		ArrayList<String> indicationTables = (ArrayList<String>) RegexUtility.getStringsInBetween(actualReportString, matchStartString, matchEndString);
+		List<String> indicationTables = RegexUtility.getStringsInBetween(actualReportString, matchStartString, matchEndString);
 		String indicationTable = "";
 		for (String table : indicationTables) {
 			indicationTable += System.lineSeparator() + table;

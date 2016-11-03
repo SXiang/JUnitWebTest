@@ -1408,8 +1408,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String lastSeenReportNameCellText = "";
 		String lastSeenCreatedByCellText = "";
 
-		reportId = getReportId(rptTitle);
+		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 
+		reportId = getReportId(rptTitle);
 		String strReportName = getReportFileName(rptTitle);
 
 		Log.info(String.format("Looking for Report Title='%s', Report Name='%s', Created By='%s'",
@@ -1455,27 +1456,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						} else {
-							int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 							Log.info("First call -> skipNewlyAddedRows()");
-							int rowNumPostSkip = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, rowNum, maxRows);
-							// At this point we have the rowNum of interest.
-							if (rowNumPostSkip > maxRows) {
+							if (rowNum > maxRows) {
+								Log.info("Block 1: rowNum > maxRows.. Break...");
 								break;
 							}
-
-							if (rowNum != rowNumPostSkip) {
-								continue;
-							}
-
 							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
 							// If current rowNum doesn't match the new rowNum continue.
 							Log.info("Second call -> skipNewlyAddedRows()");
-							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, rowNum, maxRows)) {
+								Log.info("Block 2: rowNum != rowNumPostSkip.. Continue...");
 								continue;
 							}
 
@@ -1484,6 +1480,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
 						}
+
 						return handleFileDownloads(rptTitle, testCaseID);
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
@@ -1648,26 +1645,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info("RowSize == 1. Getting ReportViewer button element...");
 							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
 						} else {
-
 							Log.info("First call -> skipNewlyAddedRows()");
-							int rowNumPostSkip = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, rowNum, maxRows);
-							// At this point we have the rowNum of interest.
-							if (rowNumPostSkip > maxRows) {
+							if (rowNum > maxRows) {
 								break;
 							}
-
-							if (rowNum != rowNumPostSkip) {
-								continue;
-							}
-
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
-							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
-							// Double check if we have the rowNum of interest.
-							// If current rowNum doesn't match the new rowNum continue.
+							reportViewer = getTable().findElement(
+									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							//* Double check the correctness of the rowNum
 							Log.info("Second call -> skipNewlyAddedRows()");
-							if (rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
-									lastSeenCreatedByCellText, rowNum, maxRows)) {
+							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, rowNum, maxRows)){
 								continue;
 							}
 						}
@@ -2681,11 +2670,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// If new rows get added in the time that we are waiting on report
 		// processing to complete,
 		// skip and move forward to the row that we were last processing.
+		Log.info(String.format("Looking for match on last seen values : lastSeenTitleCellText()=[%s], lastSeenReportNameCellText=[%s], lastSeenCreatedByCellText=[%s]",
+				lastSeenTitleCellText.trim(), lastSeenReportNameCellText.trim(), lastSeenCreatedByCellText.trim()));
 		while (!(rptTitleCellText.trim().equalsIgnoreCase(lastSeenTitleCellText.trim())
 				&& rptNameCellText.trim().equalsIgnoreCase(lastSeenReportNameCellText.trim())
 				&& createByCellText.trim().equalsIgnoreCase(lastSeenCreatedByCellText.trim()))) {
-			Log.info(String.format(
-					"Found cell (skipping newly added) : rptTitleCellText()=[%s], rptNameCellText=[%s], createdByCellText()=[%s]",
+			Log.info(String.format("Found cell (skipping newly added) : rptTitleCellText=[%s], rptNameCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), rptNameCellText.trim(), createByCellText.trim()));
 
 			rowNum++;
