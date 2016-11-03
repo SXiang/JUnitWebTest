@@ -33,6 +33,7 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.RegexUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.Location;
@@ -279,15 +280,15 @@ public class SurveyorBasePage extends BasePage {
 			}
 		}
 
-		LoginPage loginPage = new LoginPage(this.driver, this.strBaseURL, this.testSetup);
-		PageFactory.initElements(driver, loginPage);
+		LoginPage loginPage = new LoginPage(TestContext.INSTANCE.getDriver(), this.strBaseURL, TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(TestContext.INSTANCE.getDriver(), loginPage);
 		return loginPage;
 	}
 
 	public void login(String user, String password) {
 		Log.method("login", user, "<HIDDEN>");
-		LoginPage loginPage = new LoginPage(driver, strBaseURL, testSetup);
-		PageFactory.initElements(driver, loginPage);
+		LoginPage loginPage = new LoginPage(TestContext.INSTANCE.getDriver(), this.strBaseURL, TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(TestContext.INSTANCE.getDriver(), loginPage);
 
 		loginPage.open();
 		loginPage.loginNormalAs(user, password);
@@ -316,7 +317,7 @@ public class SurveyorBasePage extends BasePage {
 
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
-		if(firstPage){	
+		if(firstPage){
 			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			jsClick(firstBtn);
 			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
@@ -331,7 +332,7 @@ public class SurveyorBasePage extends BasePage {
 					Log.info(String.format("Select pagination - '%s'",str));
 					option.click();
 					waitForNumberOfRecords(paginationMsg);
-					getRecordsShownOnPage(driver);
+					getRecordsShownOnPage(TestContext.INSTANCE.getDriver());
 					break;
 				}
 			}catch(StaleElementReferenceException e){
@@ -404,7 +405,7 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("getUserTimezone");
 		String text = "";
 
-		text = ( new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>(){
+		text = ( new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<String>(){
 			public String apply(WebDriver d){
 				String value = null;
 				try{
@@ -508,13 +509,13 @@ public class SurveyorBasePage extends BasePage {
 			this.waitForTableDataToLoad();
 		}catch(Exception e){
 			Log.error("Failed to clear search field: "+e.toString());
-			Log.warn("Current URL is: " + driver.getCurrentUrl());
+			Log.warn("Current URL is: " + TestContext.INSTANCE.getDriver().getCurrentUrl());
 		}
 	}
 
 	private WebElement getTableHeader(Integer columnIndex) {
 		Log.method("getTableHeader", columnIndex);
-		WebElement headerElement = driver.findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
+		WebElement headerElement = TestContext.INSTANCE.getDriver().findElement(By.xpath(String.format(headerColumnBaseXPath, columnIndex)));
 		return headerElement;
 	}
 
@@ -558,7 +559,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean checkTableSort(String dataTableElement, HashMap<String, TableColumnType> columnHeadings, String str, List<WebElement> paginationOption, int numRecords){
 		Log.method("checkTableSort", dataTableElement, columnHeadings, paginationOption);
 		By tableContextBy = By.id(dataTableElement);
-		WebElement tableContext = driver.findElement(tableContextBy);
+		WebElement tableContext = TestContext.INSTANCE.getDriver().findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		String headerCss = "thead > tr > th[aria-label^='%s:']";
 		for (Entry<String, TableColumnType> entry : (columnHeadings.entrySet())) {
@@ -686,9 +687,9 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("waitForNumberOfRecords", actualMessage);
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 		waitForAJAXCallsToComplete();
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
-		WebElement tableInfoElement = driver.findElement(tableInfoBy);
-		boolean tableInfoMatches = (new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(tableInfoBy));
+		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(tableInfoBy);
+		boolean tableInfoMatches = (new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				String text = getElementText(tableInfoElement).trim();
 				boolean matches = text.matches(actualMessage);
@@ -705,7 +706,7 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForElementReady(String elementID) {
 		Log.method("waitForElementReady", elementID);
-		(new WebDriverWait(this.driver, this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
 	}
 
 	/**
@@ -713,9 +714,9 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
-		WebElement tableInfoElement = driver.findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
+		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
 				return (splitArgs.size()>0 && splitArgs.get(1)!="0");
@@ -726,14 +727,14 @@ public class SurveyorBasePage extends BasePage {
 	public boolean waitForTableDataToLoad() {
 		Log.method("waitForTableDataToLoad");
 		try{
-			(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
 					return getRecordsShownOnPage(d) > 0;
 				}
 			});
 		}catch(Exception e){
 			Log.warn("Empty data table!"+e.toString());
-			Log.warn("Current URL = "+ driver.getCurrentUrl());
+			Log.warn("Current URL = "+ TestContext.INSTANCE.getDriver().getCurrentUrl());
 			return false;
 		}
 		return true;
@@ -745,7 +746,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !new Select(dropdownElement).getOptions().isEmpty();
 			}
@@ -754,7 +755,7 @@ public class SurveyorBasePage extends BasePage {
 
 	public void waitForTextElementToBeCleared(WebElement element) {
 		Log.method("waitForTextElementToBeCleared", element);
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return element.getText().isEmpty();
 			}

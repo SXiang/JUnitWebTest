@@ -76,6 +76,18 @@ public class WebElementExtender {
 	   return false;
    }
 
+	/**
+	 * Wait for element to be displayed.
+	 */
+	public static boolean verifyElementIsDisplayed(WebDriver driver, WebElement element, Integer timeout) {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return WebElementExtender.isElementPresentAndDisplayed(element);
+			}
+		});
+		return true;
+	}
+
    public static boolean findElementBy(WebDriver driver, By by) {
 	  return findElementBy(driver, by, -1);
    }

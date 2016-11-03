@@ -36,6 +36,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import common.source.Log;
+import common.source.TestContext;
+import common.source.TestSetup;
+import common.source.WebElementExtender;
 
 /**
  * @author zlu
@@ -43,6 +46,7 @@ import common.source.Log;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ACLandVisibilityTest extends SurveyorBaseTest {
+	private static final Integer REPORT_MENU_DISPLAY_TIMEOUT = 60;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ComplianceReportsPage complianceReportsPage;
@@ -288,7 +292,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 
 		complianceReportsPage.login(SQACUSSU, USERPASSWORD);
-		assertTrue(complianceReportsPage.getLinkReportMenu().isDisplayed());
+		assertTrue(WebElementExtender.verifyElementIsDisplayed(getDriver(), complianceReportsPage.getLinkReportMenu(), REPORT_MENU_DISPLAY_TIMEOUT));
 		complianceReportsPage.getLinkReportMenu().click();
 		complianceReportsPage.waitForPageToLoad();
 		assertTrue(complianceReportsPage.getLinkComplianceReportMenu().isDisplayed());
@@ -464,7 +468,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 
 		complianceReportsPage.login(SQACUSUA, USERPASSWORD);
-		assertTrue(complianceReportsPage.getLinkReportMenu().isDisplayed());
+		assertTrue(WebElementExtender.verifyElementIsDisplayed(getDriver(), complianceReportsPage.getLinkReportMenu(), REPORT_MENU_DISPLAY_TIMEOUT));
 		complianceReportsPage.getLinkReportMenu().click();
 		complianceReportsPage.waitForPageToLoad();
 		assertTrue(complianceReportsPage.getLinkComplianceReportMenu().isDisplayed());
@@ -647,7 +651,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 
 		complianceReportsPage.login(PICDFADMIN, PICADMINPSWD);
-		assertTrue(complianceReportsPage.getLinkReportMenu().isDisplayed());
+		assertTrue(WebElementExtender.verifyElementIsDisplayed(getDriver(), complianceReportsPage.getLinkReportMenu(), REPORT_MENU_DISPLAY_TIMEOUT));
 		complianceReportsPage.getLinkReportMenu().click();
 		complianceReportsPage.waitForPageToLoad();
 		assertTrue(complianceReportsPage.getLinkComplianceReportMenu().isDisplayed());
@@ -803,7 +807,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		complianceReportsPage.logout();
 
 		complianceReportsPage.login(SQAPICSUP, USERPASSWORD);
-		assertTrue(complianceReportsPage.getLinkReportMenu().isDisplayed());
+		assertTrue(WebElementExtender.verifyElementIsDisplayed(getDriver(), complianceReportsPage.getLinkReportMenu(), REPORT_MENU_DISPLAY_TIMEOUT));
 		complianceReportsPage.getLinkReportMenu().click();
 		complianceReportsPage.waitForPageToLoad();
 		assertTrue(complianceReportsPage.getLinkComplianceReportMenu().isDisplayed());

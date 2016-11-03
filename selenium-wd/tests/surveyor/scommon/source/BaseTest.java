@@ -217,9 +217,11 @@ public class BaseTest {
 			return;
 		}
 
-		if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
-			getHomePage().open();
-			getHomePage().logout();
+		if (getHomePage() != null) {
+			if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
+				getHomePage().open();
+				getHomePage().logout();
+			}
 		}
 
 		getDriver().quit();
