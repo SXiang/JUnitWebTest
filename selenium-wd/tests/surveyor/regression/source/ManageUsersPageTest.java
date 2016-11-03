@@ -812,8 +812,6 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		// Customer User
 		customerName = SQACUS;
 		location = SQACUSLOC;
-		locationDesc = customerName + " - " + location;
-
 		manageUsersPage.addNewCustomerUser(customerName, email, "_" + USERPASSWORD, USERPASSWORD, CUSUSERROLEDR, location, true);
 		assertEquals(manageUsersPage.getConfirmPasswordError(), errorMsg);
 

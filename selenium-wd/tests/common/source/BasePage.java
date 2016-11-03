@@ -112,10 +112,10 @@ public class BasePage {
 	@FindBy(how = How.CSS, using = "body.login-background div.panel-body > p")
 	private List<WebElement> siteErrorMessage;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-body > p")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
 
-	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'] > .modal-dialog .modal-footer > a.btn")
+	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-footer > a.btn")
 	private WebElement licenseMissingModalOKBtn;
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
