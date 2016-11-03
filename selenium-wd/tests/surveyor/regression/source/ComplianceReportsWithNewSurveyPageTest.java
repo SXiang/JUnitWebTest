@@ -3,25 +3,19 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
-
 import java.util.Map;
-
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.WebElementExtender;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -410,5 +404,4 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
 	}
-
 }
