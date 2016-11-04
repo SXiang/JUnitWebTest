@@ -98,7 +98,7 @@ $Body = @{
   Environment = $environment
   HTMLString = $htmlString
   RunUUID = $lRunUUID
-  ClassName = $className
+  TestClass = $className
   PassCount = $passCount
   FailCount = $failCount
 }
