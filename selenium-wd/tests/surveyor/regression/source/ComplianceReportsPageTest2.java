@@ -397,8 +397,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-=======
->>>>>>> master
 	 * Test Case ID: TC1041_StandardSurvey_GapBoxesUniqueNumbersPrescribedFormat
 	 * Script: -
 	 *  - - Log in as Picarro Admin
@@ -991,8 +989,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-=======
->>>>>>> master
 	 * Test Case ID: TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
 	 * Script: -
 	 * 	- -  Log in to application as picarro admin
@@ -1463,8 +1459,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-=======
->>>>>>> master
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -
 	 *	- - Log in to application as picarro admin
