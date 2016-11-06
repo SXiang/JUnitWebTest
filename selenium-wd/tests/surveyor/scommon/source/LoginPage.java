@@ -96,7 +96,7 @@ public class LoginPage extends BasePage {
 			} 
 			
 			elapsedTime = System.currentTimeMillis() - startTime;
-			if (elapsedTime >= (30 * 1000)) {
+			if (elapsedTime >= (60 * 1000)) {
 				return null;
 			}
 		}
