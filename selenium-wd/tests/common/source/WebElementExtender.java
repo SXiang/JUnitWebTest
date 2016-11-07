@@ -64,13 +64,19 @@ public class WebElementExtender {
     */
    public static boolean isElementPresentAndDisplayed(WebElement element)
    {
+	   Log.method("isElementPresentAndDisplayed", element);
 	   try {
 	       if (element != null) {
 	    	   if (element.isDisplayed()) {
 	    		   return true;
+	    	   } else {
+	    		   Log.warn(String.format("Element [%s] is NOT displayed", element));
 	    	   }
+	       } else {
+	    	   Log.warn(String.format("Element [%s] is NULL", element));
 	       }
 	   } catch (NoSuchElementException e) {
+		   Log.warn(String.format("Element [%s] NOT found. Exception - '%s'", element, ExceptionUtility.getStackTraceString(e)));
 		   return false;
 	   }
 	   return false;

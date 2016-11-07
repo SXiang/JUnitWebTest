@@ -330,7 +330,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -378,7 +378,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -463,7 +463,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -512,7 +512,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -568,7 +568,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}

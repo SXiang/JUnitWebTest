@@ -205,6 +205,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
+		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 		assertTrue(homePage.checkVisibilityForCusSU(userName));
 		homePage.logout();
@@ -382,6 +383,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(userName, USERPASSWORD);
 
 		homePage.open();
+		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
 		assertTrue(homePage.checkVisibilityForCusUA(userName));
 		homePage.logout();
