@@ -93,7 +93,7 @@
 	</target>
 
 	<target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
-		<javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
+		<javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
 					<include name="**/*.jar" />
