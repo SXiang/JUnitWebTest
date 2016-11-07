@@ -190,7 +190,7 @@ public class BaseTest {
 	public static void reportTestFailed(Throwable e, String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		BaseTest.reportTestLogMessage(className);
-		getScreenCapture().takeScreenshot(getDriver());
+		getScreenCapture().takeScreenshot(getDriver(), className);
 		Log.error("_FAIL_ Exception: "+e);
 		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + e.getMessage());

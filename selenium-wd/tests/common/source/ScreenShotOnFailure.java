@@ -21,7 +21,7 @@ import com.relevantcodes.extentreports.LogStatus;
  * -- Screenshots are created in: executionDir/reports/[testCategory]/screenshots/
  * -- A link/thumbnail is inserted in the extent html report in: executionDir/reports/
  * -- Takes browser screen shot if it's a remote browser testing, desktop screen shot otherwise
- * -- junit-noframe.html generated with screenshot links if running a ant junit report task. 
+ * -- junit-noframe.html generated with screenshot links if running a ant junit report task.
  * @author sxiang
  *
  */
@@ -42,11 +42,11 @@ public class ScreenShotOnFailure{
 		this.isRemoteBrowser = isRemoteBrowser;
 	}
 
-	public String takeScreenshot(WebDriver driver) {
+	public String takeScreenshot(WebDriver driver, String className) {
 		this.driver = driver;
 		String imgName = imgPath;
 		try{
-			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest();
+			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest(className);
 			String fname = reportLogger.getTest().getName();
 			String imgFile = fname.split("\\[")[0] + "."+format;
 			imgName += imgFile;
@@ -63,11 +63,11 @@ public class ScreenShotOnFailure{
 	}
 
 
-	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile){	
+	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile){
 		String image = reportLogger.addScreenCapture(imgFile);
 			reportLogger.log(LogStatus.FAIL, "Screenshot", image);
 	}
-	
+
 	public void captureBrowserScreenShot(String fileName){
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -77,18 +77,18 @@ public class ScreenShotOnFailure{
 			Log.warn(e.toString());
 		}
 	}
-	
+
 	public void captureDesktopScreenShot(String fileName){
 		try{
 			Robot robot = new Robot();
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
             ImageIO.write(screenFullImage, format, new File(fileName));
-            Log.info("A full desktop screenshot saved! - '"+fileName+"'");           
-            
+            Log.info("A full desktop screenshot saved! - '"+fileName+"'");
+
 		}catch(Exception e){
 			Log.warn(e.toString());
 		}
 	}
-	
+
 }
