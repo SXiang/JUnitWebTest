@@ -643,6 +643,7 @@
 					<include name="**/ComplianceReportsTestSuite1.class" />
 					<include name="**/ComplianceReportsTestSuite2.class" />
 					<include name="**/ComplianceReportsTestSuite3.class" />
+					<include name="**/ComplianceReportsTestSuite4.class" />
 				</fileset>
 			</batchtest>
 		</junit>

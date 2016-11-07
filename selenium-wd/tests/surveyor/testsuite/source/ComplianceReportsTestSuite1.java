@@ -9,8 +9,6 @@ import common.source.Log;
 import surveyor.regression.source.ComplianceReportsPageTest;
 import surveyor.regression.source.ComplianceReportsPageTest2;
 import surveyor.regression.source.ComplianceReportsPageTest3;
-import surveyor.regression.source.ComplianceReportsPageTest4;
-import surveyor.regression.source.ComplianceReportsPageTest5;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
@@ -18,8 +16,6 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	ComplianceReportsPageTest.class
 	,ComplianceReportsPageTest2.class
 	,ComplianceReportsPageTest3.class
-	,ComplianceReportsPageTest4.class
-	,ComplianceReportsPageTest5.class
 })
 public class ComplianceReportsTestSuite1 {
 

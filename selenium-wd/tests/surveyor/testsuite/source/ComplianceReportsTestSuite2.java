@@ -6,19 +6,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
-import surveyor.regression.source.ComplianceReportsPageTest11;
+import surveyor.regression.source.ComplianceReportsPageTest4;
+import surveyor.regression.source.ComplianceReportsPageTest5;
 import surveyor.regression.source.ComplianceReportsPageTest6;
-import surveyor.regression.source.ComplianceReportsPageTest7;
-import surveyor.regression.source.ComplianceReportsPageTest8;
-import surveyor.regression.source.ComplianceReportsPageTest9;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
-	ComplianceReportsPageTest6.class
-	,ComplianceReportsPageTest7.class
-	,ComplianceReportsPageTest8.class
-	,ComplianceReportsPageTest11.class
+	ComplianceReportsPageTest4.class
+	,ComplianceReportsPageTest5.class
+	,ComplianceReportsPageTest6.class
 })
 public class ComplianceReportsTestSuite2 {
 
