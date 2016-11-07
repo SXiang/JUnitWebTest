@@ -16,6 +16,7 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
 	ComplianceReportsPageTest6.class
+	,ComplianceReportsPageTest7.class
 	,ComplianceReportsPageTest8.class
 	,ComplianceReportsPageTest11.class
 })
