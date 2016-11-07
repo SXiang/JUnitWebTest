@@ -292,7 +292,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Test Case ID: TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
 	 * Script: -
 	 *	- - On the Compliance Reports page, click the New Compliance Report button
@@ -301,7 +300,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *  - - - Message displayed to user: "Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected"
 	 *	- - Report is generated successfully
 	 */
-	@Test
+	@Ignore // Ignored. Removed from MASTER.
 	public void TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
 		Log.info("\nRunning TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport ...");
 
@@ -869,7 +868,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Test Case ID: TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
 	 * Script: -
 	 *	- - Log in as Picarro Admin
@@ -892,7 +890,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
 	 *  - - Report is generated successfully
 	 */
-	@Test
+	@Ignore // Check if this Test Case is still valid. REMOVED in master.
 	public void TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
 		Log.info("\nRunning TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport ...");
 
@@ -1432,7 +1430,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
 	 * Script: -
 	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
@@ -1440,7 +1437,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Percent Coverage Forecast check box is not present on UI
 	 */
-	@Test
+	@Ignore // Ignored. Removed from MASTER.
 	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
 		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
 
