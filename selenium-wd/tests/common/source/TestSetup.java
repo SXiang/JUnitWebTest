@@ -690,7 +690,7 @@ public class TestSetup {
 			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
-			this.testRunCategory = this.testProp.getProperty("testRunCategory");;
+			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
 			setRunUUIDProperty();
 			setLoggingTestProperties();
