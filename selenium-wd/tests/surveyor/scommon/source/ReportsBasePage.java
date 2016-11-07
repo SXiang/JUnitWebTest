@@ -1413,9 +1413,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 		reportId = getReportId(rptTitle);
 		String strReportName = getReportFileName(rptTitle);
 
+		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
+		int pageCounter = 0;
+
 		Log.info(String.format("Looking for Report Title='%s', Report Name='%s', Created By='%s'",
 				rptTitle.trim(), strReportName.trim(), strCreatedBy.trim()));
-		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
+		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			reportNameXPath = "tr[" + rowNum + "]/td[2]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
@@ -1512,6 +1515,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
 				toNextPage();
+				pageCounter++;
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))

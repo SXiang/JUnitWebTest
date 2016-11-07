@@ -1188,7 +1188,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		Log.info(String.format("Looking for rptTitle=[%s], strCreatedBy=[%s]", rptTitle, strCreatedBy));
 
-		for (int rowNum = 1,numRetry = 0; rowNum <= loopCount; rowNum++) {
+		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
+		int pageCounter = 0;
+		for (int rowNum = 1,numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
 			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 
@@ -1250,6 +1252,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				toNextPage();
+				pageCounter++;
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
