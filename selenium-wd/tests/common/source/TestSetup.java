@@ -58,14 +58,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  * configuration
  *
  * 1. Load the testing property for test setup information.
-<<<<<<< HEAD
  * 2. Check and upload DB seed data.
-=======
- *
- * 2. Setting up the drivers.
- *
- * 3. It is ongoing and add more code here later when needed
->>>>>>> master
  *
  * @version 1.0
  * @author zlu
@@ -1085,7 +1078,7 @@ public class TestSetup {
 	public static void updateAnalyzerConfiguration() {
 		updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), TEST_ANALYZER_SERIAL_NUMBER, TEST_ANALYZER_KEY);
 	}
-	
+
 	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber,
 			String analyzerSharedKey) {
 		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);

@@ -208,10 +208,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 
 	/**********************************************************************
-<<<<<<< HEAD
-	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the new CryptoUtility().encrypt() method to encrypt the
-=======
-	 * #NOTES#:
+	 * #NOTE#:
 	 * 1. This data provider is used for Compliance report large data set load tests (eg. 8-hour/100-hour survey reports)
 	 * 2. Tests using this dataprovider are intended to be executed in Perf/Load Environment (P3Scale)
 	 * 3. Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string
@@ -266,8 +263,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 
 	/**********************************************************************
-	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
->>>>>>> master
+	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and
+	 * therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
 	 * password
 	 *
 	 * @throws Exception
@@ -693,7 +690,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	// Repeat the test, but in the Views section, select all five of the features named above
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC678() {
-		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, 
+		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 27 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
