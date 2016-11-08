@@ -70,13 +70,13 @@ public class WebElementExtender {
 	    	   if (element.isDisplayed()) {
 	    		   return true;
 	    	   } else {
-	    		   Log.warn(String.format("Element [%s] is NOT displayed", element));
+	    		   Log.warn("Element is NOT displayed");
 	    	   }
 	       } else {
-	    	   Log.warn(String.format("Element [%s] is NULL", element));
+	    	   Log.warn("Element is NULL");
 	       }
 	   } catch (NoSuchElementException e) {
-		   Log.warn(String.format("Element [%s] NOT found. Exception - '%s'", element, ExceptionUtility.getStackTraceString(e)));
+		   Log.warn("Element NOT found. NoSuchElementException encountered.");
 		   return false;
 	   }
 	   return false;
