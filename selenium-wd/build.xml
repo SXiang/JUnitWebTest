@@ -584,6 +584,17 @@
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
 		</jmeter>
 	</target>
+	
+	<target name="fileAccessPermissiontest" depends="init">
+		<delete dir="${jmeter.result.dir}" />
+		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
+			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.FilePermission.HTTP.jmx" />
+			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+			<property name="runUUID" value="${env.RunUUID}" />
+			<property name="runEnvironment" value="${env.RunEnvironment}" />
+		</jmeter>
+	</target>
 
 	<target name="analyzerapiloadtest" depends="init">
 		<delete dir="${jmeter.result.dir}" />
