@@ -64,7 +64,7 @@ public class WebElementExtender {
     */
    public static boolean isElementPresentAndDisplayed(WebElement element)
    {
-	   Log.method("isElementPresentAndDisplayed", element);
+	   Log.method("isElementPresentAndDisplayed");
 	   try {
 	       if (element != null) {
 	    	   if (element.isDisplayed()) {

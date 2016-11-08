@@ -7,7 +7,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
 import surveyor.regression.source.LicensedFeatureAndVisibilityTest;
-import surveyor.regression.source.ManageUsersPageTest;
 import surveyor.regression.source.MeasurementSessionsPageTest;
 import surveyor.regression.source.SurveyViewPageTest;
 import surveyor.regression.source.SurveyViewPageTest1;
