@@ -561,7 +561,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "20", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList20, tablesList20, viewList20, viewLayerList20 }, // include dates
 				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList21, tablesList21, viewList21, viewLayerList21 },
 				{ "22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList22, tablesList22, viewList22, viewLayerList22 },
-				{ "23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 } };
+				{ "23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23 }
+				};
 	}
 
 	@DataProvider

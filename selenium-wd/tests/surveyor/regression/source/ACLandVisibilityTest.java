@@ -76,7 +76,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		String customerName = SQACUS;
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = customerName + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC35_CheckACLVCustomerUser_DriverRole - Test Description: Check ACLV for customer user with Driver role");
@@ -157,7 +157,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC36_CheckACLVCustomerUser_SupervisorRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC36_CheckACLVCustomerUser_SupervisorRole - Test Description: Check ACLV for customer user with Supervisor role");
@@ -277,9 +277,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		else
 			fail("\nTC36__CheckReportLink_SupervisorRole: Delete Report as Customer Supervisor failed.\n");
 
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -339,7 +336,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	public void TC37_CheckACLVCustomerUser_UtilityAdminRole() {
 		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 
 		Log.info(
 				"\nRunning TC37_CheckACLVCustomerUser_UtilityAdminRole - Test Description: Check ACLV for customer user with Utility Administrator role");
@@ -455,10 +452,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQACUSUA)));
 		else
 			fail("\nTC37__CheckReportLink_SupervisorRole: Delete Report as Customer Supervisor failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
-
 	}
 
 	/**
@@ -622,7 +615,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			if (complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath())) {
 				assertTrue(complianceReportsPage.findReport(rptTitle, PICDFADMIN));
 			} else
-				fail("\nTC37__CheckReportLink_PicarroAdminRole: Generate Report failed.\n");
+				fail("\nTC37__CheckReportLink_PicarroAdminRole: Report is not valid .\n");
 		} else
 			fail("\nTC37__CheckReportLink_PicarroAdminRole: Generate Report failed.\n");
 
@@ -642,9 +635,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, PICDFADMIN)));
 		else
 			fail("\nTC37__CheckReportLink_PicarroAdminRole: Delete Report as Picarro Admin failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 
 	}
 
@@ -801,9 +791,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 			assertTrue(!(complianceReportsPage.findReportbySearch(rptTitle, SQAPICSUP)));
 		else
 			fail("\nTC40__CheckReportLink_SupervisorRole: Delete Report as Picarro Support failed.\n");
-
-		complianceReportsPage.open();
-		complianceReportsPage.logout();
 
 	}
 

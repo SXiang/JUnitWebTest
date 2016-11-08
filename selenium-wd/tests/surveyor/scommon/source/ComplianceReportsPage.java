@@ -241,6 +241,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(name = "rdAreaMode")
 	private List<WebElement> areaBoundaryRadioButtons;
 
+	@FindBy(css = "input[name='rdAreaMode'][value='Custom']")
+	private WebElement customBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='Customer']")
+	private WebElement customerBoundaryRadioButton;
+
+	@FindBy(css = "input[name='rdAreaMode'][value='FreeForm']")
+	private WebElement freeFormBoundaryRadioButton;
+
 	@FindBy(id = "btn-select-boundary")
 	protected WebElement boundarySelectorBtn;
 
@@ -1169,9 +1178,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
 				rowSize = newRows.size();
@@ -1192,8 +1199,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image width to '" + imageMapWidth + "'");
-		this.inputImgMapWidth.clear();
-		this.inputImgMapWidth.sendKeys(imageMapWidth);
+		sendKeysToElement(inputImgMapWidth, imageMapWidth);
 	}
 
 	public void inputImageMapHeight(String imageMapHeight) {
@@ -1201,8 +1207,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			return;
 		}
 		Log.info("Set image height to '" + imageMapHeight + "'");
-		this.inputImgMapHeight.clear();
-		this.inputImgMapHeight.sendKeys(imageMapHeight);
+		sendKeysToElement(inputImgMapHeight, imageMapHeight);
 	}
 
 	public void inputExclusionRadius(String exclusionRadius) {
@@ -1335,8 +1340,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1402,8 +1406,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
+				toNextPage();
 				this.waitForPageLoad();
 
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
@@ -1762,11 +1765,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectCustomBoundaryRadioButton() {
-		this.areaBoundaryRadioButtons.get(CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX).click();
+		this.customBoundaryRadioButton.click();
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		jsClick(this.areaBoundaryRadioButtons.get(CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX));
+		jsClick(this.customerBoundaryRadioButton);
 	}
 
 	@Override
@@ -3757,9 +3760,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@Override
 	public WebElement getTable() {
-		refreshPageUntilElementFound(DATA_TABLE_XPATH);
-		this.waitForPageLoad();
-		this.table = driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		try{
+			refreshPageUntilElementFound(DATA_TABLE_XPATH);
+			this.waitForPageLoad();
+			driver.findElement(By.xpath(DATA_TABLE_XPATH));
+		}catch(Exception e){
+			Log.error("Failed to find datatable: "+DATA_TABLE_XPATH);
+		}
 		return super.getTable();
 	}
 
@@ -4021,7 +4028,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public boolean isAmplitudeColumnSorted(){
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(ComplianceReportSSRS_Amplitude, TableColumnType.String);
+		columnMap.put(ComplianceReportSSRS_Amplitude.replaceFirst("\\("," ("), TableColumnType.Number);
 		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 

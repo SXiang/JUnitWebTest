@@ -77,7 +77,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		if(testAccount == null){
 			testAccount = createTestAccount("LicFeature");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"));		
+					,testAccount.get("userName"), testAccount.get("userPassword"));
 		}else{
 			loginPage.open();
 			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -324,7 +324,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString()); 
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-			assertEquals(errorMsg, homePage.getSiteErrorMsg());
+			assertTrue(homePage.getLicenseMissingText().contains(errorMsg));
 			homePage.logout();
 		}
 	}
