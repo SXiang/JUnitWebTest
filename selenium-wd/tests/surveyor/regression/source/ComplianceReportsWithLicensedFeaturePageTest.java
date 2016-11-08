@@ -7,10 +7,12 @@ import java.util.Map;
 import org.junit.Before;
 
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
+
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
@@ -102,13 +104,13 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 
-
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		/* Unselect RR and Manual */
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
+
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -131,6 +133,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
+
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -143,6 +146,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+
 		getHomePage().logout();
 
 		/* Select Manual */
@@ -151,6 +155,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
+
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -222,6 +227,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
+
 		getHomePage().logout();
 
 		getLoginPage().open();
@@ -234,6 +240,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
+
 		getHomePage().logout();
 
 		/* Select Manual */
@@ -242,6 +249,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
+
 		getHomePage().logout();
 
 		getLoginPage().open();
