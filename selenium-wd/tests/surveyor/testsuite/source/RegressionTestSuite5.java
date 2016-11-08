@@ -7,9 +7,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
 import surveyor.regression.source.ManageUsersPageTest;
-import surveyor.regression.source.SurveyViewPageTest2;
+import surveyor.regression.source.ReferenceGasReportsPageTest;
 import surveyor.regression.source.SurveyViewPageTest3;
 import surveyor.regression.source.SurveyViewPageTest4;
+import surveyor.regression.source.SystemHistoryReportsPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
@@ -17,6 +18,8 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	ManageUsersPageTest.class
 	,SurveyViewPageTest3.class
 	,SurveyViewPageTest4.class
+	,ReferenceGasReportsPageTest.class
+	,SystemHistoryReportsPageTest.class
 })
 public class RegressionTestSuite5 {
 
