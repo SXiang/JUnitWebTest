@@ -215,7 +215,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		selectDropdownOption(this.dropDownCustomer, customer);
 		changeCustomerDialog.confirmInChangeCustomerDialog();
 
+		Log.info("Enter location description - '" + locationDesc + "'");
 		this.inputLocationDesc.sendKeys(locationDesc);
+
+		// wait necessary for clickOnLatLongSelectorBtn to function correctly.
+		this.waitForPageToLoad();
 
 		if (!useLatLongSelector) {
 			inputLatLong(getLatitude(), getLongitude());

@@ -123,7 +123,6 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl selectLatLong(String canvasXPath, int xOffset, int yOffset) {
-		this.waitForElementReady(canvasXPath);
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
 		if (canvas != null && canvas.isDisplayed()) {
 			Log.info("[LatLongSelectionControl]: Found canvas element");
