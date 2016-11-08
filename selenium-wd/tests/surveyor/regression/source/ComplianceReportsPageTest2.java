@@ -206,7 +206,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 		} else
 			fail("\nTestcase TC720 failed.\n");
 	}
@@ -270,7 +269,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
@@ -279,113 +277,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 			}
 		}else
 			fail("\nTestcase TC824 failed.\n");
-	}
-
-	/**
-	 * Test Case ID: TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
-	 * Script: -  	
-	 *	- - On the Compliance Reports page, click the New Compliance Report button
-	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
-	 * Results: - 
-	 *  - - - Message displayed to user: "Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected"
-	 *	- - Report is generated successfully
-	 */
-	@Test
-	public void TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
-		Log.info("\nRunning TC1038_ValidationMessageShouldDisplayedUserAreaSelectionWhenGapsAreSelectedWhileGeneratingReport ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
-		String testCaseID = "TC1038";
-		String rptTitle = testCaseID + " Report1" + testSetup.getRandomNumber();
-
-		this.getComplianceReportsPage().open();
-		List<String> listBoundary1 = new ArrayList<String>();
-		listBoundary1.add(IMGMAPHEIGHT);
-		listBoundary1.add(IMGMAPWIDTH);
-		listBoundary1.add(NELAT);
-		listBoundary1.add(NELON);
-		listBoundary1.add(SWLAT);
-		listBoundary1.add(SWLON);
-
-		List<String> listBoundary2 = new ArrayList<String>();
-		listBoundary2.add(IMGMAPHEIGHT);
-		listBoundary2.add(IMGMAPWIDTH);
-		listBoundary2.add(RNELAT);
-		listBoundary2.add(RNELON);
-		listBoundary2.add(RSWLAT);
-		listBoundary2.add(RSWLON);
-
-		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap1 = new HashMap<String, String>();
-		tableMap1.put(KEYINDTB, "1");
-		tableMap1.put(KEYISOANA, "1");
-		tableMap1.put(KEYGAPTB, "0");
-		tableMap1.put(KEYPCA, "0");
-		tableMap1.put(KEYPCRA, "0");
-		tablesList1.add(tableMap1);
-
-		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap2 = new HashMap<String, String>();
-		tableMap2.put(KEYINDTB, "1");
-		tableMap2.put(KEYISOANA, "1");
-		tableMap2.put(KEYGAPTB, "1");
-		tableMap2.put(KEYPCA, "0");
-		tableMap2.put(KEYPCRA, "0");
-		tablesList2.add(tableMap2);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ReportsCompliance rpt1 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		this.getComplianceReportsPage().addNewReport(rpt1);
-		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		rptTitle = testCaseID + " Report2" + testSetup.getRandomNumber();
-		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary1, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
-		this.getComplianceReportsPage().addNewReport(rpt2);
-		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		rptTitle = testCaseID + " Report3" + testSetup.getRandomNumber();
-		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		this.getComplianceReportsPage().addNewReport(rpt3);
-		this.getComplianceReportsPage().waitForPageLoad();
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		}else{
-			fail("\nTestcase TC1038 failed.\n");
-		}
-		this.getComplianceReportsPage().open();
-		rptTitle = testCaseID + " Report4" + testSetup.getRandomNumber();
-		ReportsCompliance rpt4 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary2, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
-		this.getComplianceReportsPage().addNewReport(rpt4);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt4, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		}else
-			fail("\nTestcase TC1038 failed.\n");
-
 	}
 
 	/**
@@ -450,7 +341,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYGAPTB).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyGapsTable(testSetup.getDownloadPath(), rptTitle));
@@ -862,127 +752,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport
-	 * Script: -  	
-	 *	- - Log in as Picarro Admin
-	 *  - - On the Compliance Reports page, click the New Compliance Report button
-	 *  - - Fill out the required fields
-	 *  - - Select Customer boundary area larger then 1.5 sqkms
-	 *  - - (eg. Picarro Customer - District)
-	 *  - - Select Gaps in Views
-	 *  - - Click on OK
-	 *  - -  Un select Gaps from views section 
-	 *  - - Select Gap Table present in Optional Tabular PDF Content section and click OK
-	 *  - - Select Area smaller then 1.5 sqkms
-	 *  - - (eg. Picarro Customer - DistrictPlat 
-	 *  - - P&E Customer - DistrictPlat)
-	 *  - - Select Gaps in Views
-	 *  - - Click on OK
-	 *  - - Un select Gaps from views section 
-	 *  - - Select Gap Table present in Optional Tabular PDF Content section and click OK
-	 * Results: - 
-	 *	- - Message displayed to user: Please make sure your selected boundary is less than 1.5 sqkms when Gaps are selected
-	 *  - - Report is generated successfully
-	 */
-	@Test
-	public void TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport() throws Exception {
-		Log.info("\nRunning TC1268_ValidationMessageShouldDisplayedUserCustomerBoundaryAreaSelectionWhenGapsAreSelectedWhileGeneratingReport ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
-
-		String testCaseID = "TC1268";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
-		String smallBoundary = "TestPlat-Auto-1.5km";
-		String bigBoundary = "Level 1";
-		
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().open();
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-
-		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap1 = new HashMap<String, String>();
-		tableMap1.put(KEYINDTB, "1");
-		tableMap1.put(KEYISOANA, "1");
-		tableMap1.put(KEYGAPTB, "0");
-		tableMap1.put(KEYPCA, "0");
-		tableMap1.put(KEYPCRA, "0");
-		tableMap1.put(KEYPCF, "0");
-		tablesList1.add(tableMap1);
-
-		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap2 = new HashMap<String, String>();
-		tableMap2.put(KEYINDTB, "1");
-		tableMap2.put(KEYISOANA, "1");
-		tableMap2.put(KEYGAPTB, "1");
-		tableMap2.put(KEYPCA, "0");
-		tableMap2.put(KEYPCRA, "0");
-		tableMap2.put(KEYPCF, "0");
-		tablesList2.add(tableMap2);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-
-		ReportsCompliance rpt1 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt1.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.BigBoundary, bigBoundary);
-
-		this.getComplianceReportsPage().addNewReport(rpt1);
-		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-		this.getComplianceReportsPage().open();
-
-		ReportsCompliance rpt2 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
-		rpt2.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.BigBoundary, bigBoundary);
-		
-		this.getComplianceReportsPage().addNewReport(rpt2);
-		AssertHelper.equals("Please make sure your selected boundary is less than 1.5 sq km when Gaps are selected", this.getComplianceReportsPage().getAssetErrorText().getText());
-
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
-		this.getComplianceReportsPage().clickOnCancelBtn();
-		this.getComplianceReportsPage().open();
-
-		ReportsCompliance rpt3 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList1, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt3.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, smallBoundary);
-		this.getComplianceReportsPage().addNewReport(rpt3);
-		this.getComplianceReportsPage().waitForPageLoad();
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		}else
-			fail("\nTestcase TC1268 failed.\n");
-
-		this.getComplianceReportsPage().open();
-
-		ReportsCompliance rpt4 = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList2, "", tagList, "", "", viewList2, SurveyModeFilter.Standard);
-		rpt4.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, smallBoundary);
-		this.getComplianceReportsPage().addNewReport(rpt4);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt4, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-		}else
-			fail("\nTestcase TC1268 failed.\n");
-
-	}
-
-	/**
 	 * Test Case ID: TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively
 	 * Script: -  	
 	 * 	- -  Log in to application as picarro admin   
@@ -1043,7 +812,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1181,7 +949,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1428,32 +1195,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
-	 * Script: -  	
-	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 *  - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: - 
-	 *	- - Percent Coverage Forecast check box is not present on UI
-	 */
-	@Test
-	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
-		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 1);   /* Picarro Customer*/
-
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().getNewComplianceReportBtn().click();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-	}
-
-	/**
 	 * Test Case ID: TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports
 	 * Script: -  	
 	 *	- - Log in to application as picarro admin
@@ -1513,7 +1254,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser());
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
 			}
@@ -1590,7 +1330,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyReportSurveyMetaDataFile(testSetup.getDownloadPath(), rptTitle));
@@ -1853,13 +1592,12 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
-		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 		this.getComplianceReportsPage().addNewReport(rpt); 
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
@@ -1878,7 +1616,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle2, testSetup.getLoginUser(), testCaseID+"_2"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt2, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle2, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle2));
@@ -1896,7 +1633,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle3, testSetup.getLoginUser(), testCaseID+"_3"))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, testSetup.getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle3, testSetup.getLoginUser()));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle3));

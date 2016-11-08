@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BrowserCommands;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -220,6 +221,12 @@ public class HomePage extends SurveyorBasePage {
 		this.waitForPageLoad();
 	}
 
+	public boolean verifyLinkFirstOnlineSurveyorClickable(){
+		if(WebElementExtender.isElementPresentAndDisplayed(linkFirstOnlineSurveyor)){
+			return linkFirstOnlineSurveyor.isEnabled();
+		}
+		return false;
+	}
 	public WebElement getLinkFirstOnlineSurveyor() {
 		return this.linkFirstOnlineSurveyor;
 	}

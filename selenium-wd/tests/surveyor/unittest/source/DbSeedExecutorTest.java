@@ -22,8 +22,12 @@ import java.util.List;
 
 import org.junit.Assert;
 
+import surveyor.dataaccess.source.Asset;
+import surveyor.dataaccess.source.Boundary;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerBoundaryType;
+import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dbseed.source.AnemometerRawDbSeedBuilder;
 import surveyor.dbseed.source.AssetDbSeedBuilder;
 import surveyor.dbseed.source.BoundaryDbSeedBuilder;
@@ -41,12 +45,21 @@ import surveyor.dbseed.source.SegmentDbSeedBuilder;
 import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
 import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
+import surveyor.scommon.actions.ActionBuilder;
+import surveyor.scommon.actions.BaseActions;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 
 public class DbSeedExecutorTest {
+	private static LoginPageActions loginPageAction;
+	private static ManageCustomerPageActions manageCustomerPageAction;
+
+	private static final String EMPTY = BaseActions.EMPTY;
+	private static final Integer NOTSET = BaseActions.NOTSET;
 
 	@BeforeClass
 	public static void BeforeClass()	{
-		TestSetup testSetup = new TestSetup(false /* skip initialization */);
+		TestSetup testSetup = new TestSetup(true /* initialize */);
 		String rootPath;
 		try {
 			rootPath = TestSetup.getRootPath();
@@ -56,6 +69,9 @@ public class DbSeedExecutorTest {
 		}
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+
+		loginPageAction = ActionBuilder.createLoginPageAction();
+		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
 	}
 
 	@Test
@@ -128,6 +144,35 @@ public class DbSeedExecutorTest {
 		verifyGisSeedDataIsPresent(customerId);
 	}
 
+	@Test
+	public void cleanup01_GisDataSeedTest() throws Exception {
+		Log.info("\nRunning cleanup01_GisDataSeedTest ...");
+
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int newCustomerRowID = 7;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
+
+		// Create new customer.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
+
+		// Add GIS seed for customer.
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		String customerId = customer.getId();
+		DbSeedExecutor.executeGisSeed(customerId);
+
+		// Verify GIS seed was added correctly.
+		verifyGisSeedDataIsPresent(customerId);
+
+		// Remove GIS seed from the customer.
+		DbSeedExecutor.cleanUpGisSeed(customerId);
+
+		// Verify GIS seed data was removed correctly.
+		verifyGisSeedDataIsNotPresent(customerId);
+	}
+
 	private void verifyGenericSeedDataIsPresent() throws Exception, SQLException {
 		// Verify generic seed data is now present in the DB.
 		Connection connection = null;
@@ -165,6 +210,13 @@ public class DbSeedExecutorTest {
 		Assert.assertTrue(isGisSeedPresent);
 	}
 
+	private void verifyGisSeedDataIsNotPresent(String customerId) {
+		Assert.assertTrue(new Asset().getCount(customerId) == 0);
+		Assert.assertTrue(new Boundary().getCount(customerId) == 0);
+		Assert.assertTrue(new CustomerMaterialType().getCount(customerId) == 0);
+		Assert.assertTrue(new CustomerBoundaryType().getCount(customerId) == 0);
+	}
+
 	private void verifySurveySeedDataIsPresent() throws IOException, FileNotFoundException, SQLException {
 		verifySurveySeedDataIsPresent(null);
 	}
@@ -176,7 +228,7 @@ public class DbSeedExecutorTest {
 	private void verifySurveySeedDataIsPresent(String[] surveyTags, boolean isCaptureEventRowsRestamped, boolean isFOVRowsRestamped) throws IOException, FileNotFoundException, SQLException {
 		// Verify seed data pushed correctly for each survey tag.
 		if (surveyTags == null) {
-			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
+			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual","EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
 				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};

@@ -263,8 +263,6 @@
 					<include name="**/SurveyViewPageTest3.class" />
 					<include name="**/SurveyViewPageTest4.class" />
 					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-
 				</fileset>
 			</batchtest>
 		</junit>
@@ -404,6 +402,7 @@
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
 					<include name="**/ComplianceReportsPageTest5.class" />
 					<include name="**/ComplianceReportsPageTest6.class" />
+					<include name="**/ComplianceReportsPageTest7.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 					<include name="**/ComplianceReportsPageTest11.class" />
 					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
@@ -431,6 +430,10 @@
 						<include name="**/DriverViewPageTest.class" />
 						<include name="**/ObserverViewPageTest.class" />
 						<include name="**/ObserverViewPageStressTest.class" />
+						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+						<include name="**/ObserverViewPageTest2.class" />
+						<include name="**/DriverViewPageTest2.class" />
 					</fileset>
 				</batchtest>
 			</junit>
@@ -476,6 +479,7 @@
 					<include name="**/ReferenceGasReportsPageTest.class" />
 					<include name="**/ManageLocationsPageTest_Ethane.class" />
 					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
+					<include name="**/LicensedFeatureAndVisibilityTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -523,6 +527,28 @@
 		<echo message="junit build : ${build}" />
 	</target>
 
+	<target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+				showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Performance" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchtest fork="yes" todir="${reports}/performance/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/ReportJobPerformanceTestLight.class" />
+					<include name="**/ReportJobPerformanceTestMedium.class" />
+					<include name="**/ReportJobPerformanceTestHigh.class" />
+					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 
 	<target name="tc_localrun" depends="compileregression" description="Run regression on TC before merge">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
@@ -539,8 +565,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest3.class" />
-					<include name="**/ComplianceReportsPageTest4.class" />
+					<include name="**/ComplianceReportsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest11.class" />
 				</fileset>
 			</batchtest>
 		</junit>

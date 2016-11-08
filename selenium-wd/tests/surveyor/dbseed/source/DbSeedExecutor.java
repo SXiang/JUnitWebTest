@@ -23,6 +23,17 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
+import surveyor.scommon.actions.ActionBuilder;
+import surveyor.scommon.actions.BaseActions;
+import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageAnalyzerPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -94,7 +105,7 @@ public class DbSeedExecutor {
 		if (surveyTags == null) {
 			// Use default survey tags if NOT specified by caller.
 			// Push 'Ethane-*' survey tags. Tracked by US3279.
-			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
+			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
 				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
@@ -439,6 +450,69 @@ public class DbSeedExecutor {
         }
 	}
 
+	public static void cleanUpGisSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.cleanUpGisSeed", customerId);
+
+		String invalidCustomerName = null;
+
+		Customer picarroCustomer = Customer.getCustomer(CUSTOMER_PICARRO);
+		Customer sqaCusCustomer = Customer.getCustomer(CUSTOMER_SQACUS);
+		Customer pgeCustomer = Customer.getCustomer(CUSTOMER_PGE);
+
+		String picarroCustomerId = picarroCustomer.getId();
+		String sqaCusCustomerId = sqaCusCustomer.getId();
+		String pgeCustomerId = pgeCustomer.getId();
+
+		if (customerId.equals(picarroCustomerId)) {
+			invalidCustomerName = picarroCustomer.getName();
+		} else if (customerId.equals(sqaCusCustomerId)) {
+			invalidCustomerName = sqaCusCustomer.getName();
+		} else if (customerId.equals(pgeCustomerId)) {
+			invalidCustomerName = pgeCustomer.getName();
+		}
+
+		if (invalidCustomerName != null) {
+			throw new IllegalArgumentException(String.format("Cannot cleanup GIS seed data for automation seed Customer. "
+					+ "Specified Invalid CustomerId=[%s], CustomerName=[%s]", customerId, invalidCustomerName));
+		}
+
+		Connection connection = null;
+		AssetDbSeedBuilder assetDbSeedBuilder = null;
+		BoundaryDbSeedBuilder boundaryDbSeedBuilder = null;
+		CustomerMaterialTypeDbSeedBuilder customerMaterialTypeDbSeedBuilder = null;
+		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
+
+		try
+        {
+			connection = ConnectionFactory.createConnection();
+
+        	assetDbSeedBuilder = new AssetDbSeedBuilder();
+        	boundaryDbSeedBuilder = new BoundaryDbSeedBuilder();
+        	customerMaterialTypeDbSeedBuilder = new CustomerMaterialTypeDbSeedBuilder();
+        	customerBoundaryTypeDbSeedBuilder = new CustomerBoundaryTypeDbSeedBuilder();
+
+			DbSeed assetDbSeed = assetDbSeedBuilder.cleanup(customerId);
+			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.cleanup(customerId);
+			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.cleanup(customerId);
+			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.cleanup(customerId);
+
+			executeSeed(connection, assetDbSeed);
+			executeSeed(connection, boundaryDbSeed);
+			executeSeed(connection, custMaterialTypeDbSeed);
+			executeSeed(connection, custBoundaryTypeDbSeed);
+
+        } catch (Exception ex) {
+        	Log.error(String.format("EXCEPTION in cleanUpGisSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
+        } finally {
+            connection.close();
+            // cleanup seed builders.
+            closeDbSeedBuilder(assetDbSeedBuilder);
+            closeDbSeedBuilder(boundaryDbSeedBuilder);
+            closeDbSeedBuilder(customerMaterialTypeDbSeedBuilder);
+            closeDbSeedBuilder(customerBoundaryTypeDbSeedBuilder);
+        }
+	}
+
 	private static void closeDbSeedBuilder(BaseDbSeedBuilder dbSeedBuilder) {
 		if (dbSeedBuilder!=null) {
 			dbSeedBuilder.close();
@@ -493,16 +567,14 @@ public class DbSeedExecutor {
 	                }
                 } else {
                 	List<String> insertStatements = dbSeedData.getInsertStatements();
-					if (insertStatements == null) {
-                		throw new Exception("Either FileRecord or Insert Statements should be specified in a DBSeedBuilder.");
-                	}
-
-                	for (String insertStmt : insertStatements) {
-                		executingInsertStatement = insertStmt;
-                		if (ENABLE_VERBOSE_LOGGING) {
-                			Log.info(String.format("Executing statement -> '%s'", insertStmt));
-                		}
-						stmt.executeUpdate(insertStmt);
+					if (insertStatements != null && insertStatements.size() > 0) {
+	                	for (String insertStmt : insertStatements) {
+	                		executingInsertStatement = insertStmt;
+	                		if (ENABLE_VERBOSE_LOGGING) {
+	                			Log.info(String.format("Executing statement -> '%s'", insertStmt));
+	                		}
+							stmt.executeUpdate(insertStmt);
+						}
 					}
                 }
 

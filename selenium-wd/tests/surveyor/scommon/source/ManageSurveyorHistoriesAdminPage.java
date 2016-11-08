@@ -90,10 +90,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath(strTRXPath));

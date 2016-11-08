@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -23,7 +23,7 @@ import common.source.TestSetup;
  */
 public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	public static final String STRURLPath = "/Admin/ManageSurveyors";
-	public static final String STRPageTitle = String.format("%s - %s", 
+	public static final String STRPageTitle = String.format("%s - %s",
 			Resources.getResource(ResourceKeys.ManageSurveyors_PageTitle), Resources.getResource(ResourceKeys.Constant_Surveyor));
 
 	@FindBy(how = How.XPATH, using = "//*[@class='btn btn-primary' and text()='Add New Calibration Record']")
@@ -46,7 +46,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	public boolean findExistingSurveyor(String locationName, String surveyorName) {
 		Log.info(String.format("Find surveyor %s, location = '%s'",
 				surveyorName, locationName));
-		setPagination(PAGE_PAGINATIONSETTING);
+		setPaginationAny(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -79,8 +79,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -98,12 +97,12 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		return false;
 	}
 
-	
+
 
 	public boolean editExistingSurveyor(String customer, String locationName, String surveyorName, String locationNameNew, String surveyorNameNew, boolean addCalibration) {
 		Log.info(String.format("Edit surveyor %s, customer = '%s', location = '%s'",
 				surveyorName, customer,locationName));
-		setPagination(PAGE_PAGINATIONSETTING);
+		setPaginationAny(PAGE_PAGINATIONSETTING);
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -153,7 +152,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				actionEditCell = getTable().findElement(By.xpath(actionEditXPath));
 
 				Log.info("Found entry at rowNum=" + rowNum);
-				
+
 				Log.clickElementInfo("Edit",ElementType.ICON);
 				actionEditCell.click();
 				this.waitForEditPageLoad();
@@ -190,7 +189,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 					this.btnOK.click();
 					this.waitForEditPageLoad();
 				}
-				
+
 				Log.clickElementInfo("Ok");
 				this.btnOK.click();
 
@@ -205,8 +204,7 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();

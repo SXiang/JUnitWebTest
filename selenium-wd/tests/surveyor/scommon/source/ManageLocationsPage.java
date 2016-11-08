@@ -133,7 +133,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
 	protected List<WebElement> rows;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div[11]/legend")
+	@FindBy(how = How.XPATH, using = "//*[@id='location-form']/fieldset/div/legend[text()='Ethane to Methane Ratio %']")
 	protected WebElement ethMthRtioLbl;
 
 	@FindBy(how = How.ID, using = "Min")
@@ -174,33 +174,33 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
-	public void addNewLocation(String locationDesc, String customer, String newLocationName) {
+	public boolean addNewLocation(String locationDesc, String customer, String newLocationName) {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName);
-		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, "1", "2");
+		return addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, "1", "2");
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
+	public boolean addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName) {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName);
-		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, "1", "2");
+		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, "1", "2");
 	}
 
-	public void addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+	public boolean addNewLocation(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
-		addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
+		return addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public void addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
+	public boolean addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
-		addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
+		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	private void addNewLocation(String locationDesc, String customer, String newLocationName,
+	private boolean addNewLocation(String locationDesc, String customer, String newLocationName,
 			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax);
-	    addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
+		return addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
 	}
 
-	public void addNewLocation(String locationDesc, String customer,
+	public boolean addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
@@ -283,7 +283,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			Log.clickElementInfo("Cancel");
 			this.btnCancel.click();
+			return false;
 		}
+		return true;
 	}
 	
 	public boolean verifyErrorMessage(String errorMsg){
@@ -364,7 +366,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
 
 		this.waitForAJAXCallsToComplete();
-		this.waitForTableDataToLoad();
 		
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
@@ -410,8 +411,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -467,7 +467,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		setPagination(PAGINATIONSETTING_100);
 		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
 
-		this.waitForTableDataToLoad();
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
         	// revert back search field.
@@ -596,8 +595,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -761,8 +759,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(pageSizeStr) && !this.nextBtn.getAttribute("class").contains("disabled")
 					&& allPages) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -789,6 +786,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return getElementText(this.liDuplicateMsg).equals(STRDuplicateLocMsg);
 	}
 
+	public boolean isStandardMinAmpShowing(){
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isOperatorMinAmpShowing(){
+		return WebElementExtender.isElementPresentAndDisplayed(opdMinAmp);
+	}
+	
+	public boolean isRapidResponseMinAmpShowing(){
+		return WebElementExtender.isElementPresentAndDisplayed(RRMinAmp);
+	}
+	
 	@Override
 	public void open(){
 		super.open();

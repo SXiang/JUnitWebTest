@@ -3,12 +3,15 @@
  */
 package surveyor.scommon.source;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ConstantDataProvider;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
  * @author zlu
@@ -463,6 +466,11 @@ public final class SurveyorConstants {
 	public static final String UNKNOWN_TEXT = "UnknownText";
 
 	/*
+	 * Other string constants
+	 */
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+
+	/*
 	 * enum for list of constants
 	 */
 
@@ -486,24 +494,26 @@ public final class SurveyorConstants {
 	}
 
 	public enum LicensedFeatures {
-		ASSETBOX ("Asset Box"),
-		MOBILEVIEW ("Mobile View"),
-		REPORTMETADATA ("Report Metadata"),
-		RAPIDRESPONSE ("Rapid Response"),
 		ASSESSMENT ("Assessment"),
-		MANUAL ("Manual"),
-		PERCENTCOVERAGE ("Percent Coverage"),
-		FLEETMAPVIEW ("FleetMap View"),
-		OPERATOR ("Operator"),
-		EQ ("EQ"),
-		CUSTOMCOLORS ("Custom Colors"),
+		ASSETBOX ("Asset Box Highlight"),
 		CURTAINVIEW ("Curtain View"),
-		OPACITYFINETUNING ("Opacity Fine-Tuning"),
-		OBSERVERVIEW ("Observer View"),
+		CUSTOMCOLORS ("Custom Colors"),
+		EQ ("EQ"),
+		FLEETMAPVIEW ("FleetMap View"),
+		GAPGRID10 ("FTP Upload"),
 		GISLAYERS ("GIS Layers"),
+		LISAASSET("LISA Asset Highlight"),
 		LISABOX10 ("LISA Box 1.0"),
-		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast"),
-		REPORTSHAPEFILE ("Report ShapeFile");
+		MANUAL ("Manual"),
+		MOBILEVIEW ("Mobile View"),
+		OBSERVERVIEW ("Observer View"),
+		OPACITYFINETUNING ("Opacity Fine-Tuning"),
+		OPERATOR ("Operator"),
+		PERCENTCOVERAGE ("Percent Coverage"),
+		RAPIDRESPONSE ("Rapid Response"),
+		REPORTMETADATA ("Report Metadata"),
+		REPORTSHAPEFILE ("Report ShapeFile"),
+		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
 
 		private final String name;
 
@@ -513,6 +523,17 @@ public final class SurveyorConstants {
 
 		public String toString() {
 			return this.name;
+		}
+
+		public static LicensedFeatures[] values(LicensedFeatures[] excluds){
+			if(excluds==null||excluds.length==0){
+				return values();
+			}
+			List<LicensedFeatures>  lflist = new LinkedList<LicensedFeatures>(Arrays.asList(LicensedFeatures.values()));
+			lflist.removeAll(Arrays.asList(excluds));
+			LicensedFeatures[] lfs = new LicensedFeatures[lflist.size()];
+			lfs = lflist.toArray(lfs);
+			return lfs;
 		}
 	}
 
@@ -550,17 +571,17 @@ public final class SurveyorConstants {
 	};
 
 	public static enum ReportColorOption {
-		LIGHTBLUE(0), 
-		BLUE(1), 
-		LIGHTGREEN(2), 
-		GREEN(3), 
-		PINK(4), 
-		RED(5), 
-		YELLOW(6), 
-		ORANGE(7), 
-		LIGHTPURPLE(8), 
+		LIGHTBLUE(0),
+		BLUE(1),
+		LIGHTGREEN(2),
+		GREEN(3),
+		PINK(4),
+		RED(5),
+		YELLOW(6),
+		ORANGE(7),
+		LIGHTPURPLE(8),
 		PURPLE(9);
-		
+
 		private final int index;
 		ReportColorOption (int index){
 			this.index =  index;

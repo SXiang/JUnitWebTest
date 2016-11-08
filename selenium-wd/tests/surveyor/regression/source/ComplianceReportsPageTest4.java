@@ -187,9 +187,9 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		
+
 		int reportDataRowID = 112;
-		
+
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
 		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID);
@@ -197,20 +197,19 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		
 		modifyComplianceReport(complianceReportsPageAction, reportDataRowID);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
-
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, reportDataRowID);
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, reportDataRowID);
-		
+
 		String ASSET_DATA_STRING = complianceReportsPageAction.getSelectedAssetNames(reportDataRowID);
 
 		assertTrue(complianceReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));		
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ASSET_DATA_STRING, NOTSET));
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, reportDataRowID));
 	}
-	
+
 	/**
 	 * Test Case ID: TC183_GenerateReportHavingMultiplesurveysOfStandardOperatorAndRepidResponseTypesInRapidResponseReportMode
 	 * Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode

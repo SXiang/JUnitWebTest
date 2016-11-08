@@ -267,28 +267,44 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
 			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
-		String argValue = reader.getDataRow(dataRowID).assetRowIDs;
-		if (!ActionArguments.isEmpty(argValue)) {
-			List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
-			for (Integer rowID : assetRowIDs) {
-				if(rowID==0){
-					continue;
+		if (dataRowID > 0) {
+			String argValue = reader.getDataRow(dataRowID).assetRowIDs;
+			if (!ActionArguments.isEmpty(argValue)) {
+				List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
+				for (Integer rowID : assetRowIDs) {
+					if(rowID==0){
+						continue;
+					}
+					ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
+					ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
+					viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
 				}
-				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
-				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
 			}
-		}
-		argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
-		if (!ActionArguments.isEmpty(argValue)) {
-			List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
-			for (Integer rowID : boundariesRowIDs) {
-				if(rowID==0){
-					continue;
+			argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
+			if (!ActionArguments.isEmpty(argValue)) {
+				List<Integer> boundariesRowIDs = ActionArguments.getNumericList(argValue);
+				for (Integer rowID : boundariesRowIDs) {
+					if(rowID==0){
+						continue;
+					}
+					ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
+					ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
+					viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
 				}
-				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
-				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+			}
+		} else {
+			// For new customers with newly added GIS assets, we do NOT know AssetIDs beforehand.
+			// Currently if '-1' is specified for 'Report Opt View Layer RowID' we select all Assets ,
+			//              '-2' = all Boundaries, '-4' = all assets & boundaries.
+			// US3653 -> tracks improving this implementation and make it more flexible to select specific Assets/Boundaries
+			//          if test cases require this implementation in future.
+			if (dataRowID == -1) {
+				viewLayerMap.put(ComplianceReportsPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ReportsCompliance.ASSET_ALL_PREFIX);
+			} else if (dataRowID == -2) {
+				viewLayerMap.put(ComplianceReportsPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ReportsCompliance.BOUNDARY_ALL_PREFIX);
+			} else if (dataRowID == -4) {
+				viewLayerMap.put(ComplianceReportsPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ReportsCompliance.ASSET_ALL_PREFIX);
+				viewLayerMap.put(ComplianceReportsPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ReportsCompliance.BOUNDARY_ALL_PREFIX);
 			}
 		}
 	}
@@ -3088,8 +3104,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportOptViewLayersAssetsDataRow viewLayersAssetsDataRow = viewLayersAssetsDataReader.getDataRow(idx);
 			if (customerRowID == Integer.valueOf(viewLayersAssetsDataRow.customerRowID)) {
 				foundAtleastOne = true;
-				List<WebElement> assetElements = this.getComplianceReportsPage().getViewLayerAssetCheckboxes(viewLayersAssetsDataRow.assetID);
-				if (assetElements.size() <= 0) {
+				WebElement assetElement = this.getComplianceReportsPage().getViewLayerAssetCheckbox(viewLayersAssetsDataRow.assetID);
+				if (assetElement == null) {
 					return false;
 				}
 			}
@@ -3115,8 +3131,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportOptViewLayersBoundaryDataRow viewLayersBoundaryDataRow = viewLayersBoundaryDataReader.getDataRow(idx);
 			if (customerRowID == Integer.valueOf(viewLayersBoundaryDataRow.customerRowID)) {
 				foundAtleastOne = true;
-				List<WebElement> boundaryElements = this.getComplianceReportsPage().getViewLayerBoundaryCheckboxes(viewLayersBoundaryDataRow.boundaryName);
-				if (boundaryElements.size() <= 0) {
+				WebElement boundaryElement = this.getComplianceReportsPage().getViewLayerBoundaryCheckbox(viewLayersBoundaryDataRow.boundaryName);
+				if (boundaryElement == null) {
 					return false;
 				}
 			}
@@ -3235,6 +3251,38 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		ComplianceReportsDataRow reportsDataRow = this.getComplianceReportsDataRow(dataRowID);
 		return this.getComplianceReportsPage().checkActionStatus(reportsDataRow.title,
 				LoginPageActions.workingDataRow.username, reportsDataRow.tCID);
+	}
+	/**
+	 * Executes verifyStandardReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyStandardReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyStandardReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isStandardReportModeShown();
+	}
+
+	/**
+	 * Executes verifyRapidResponseReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyRapidResponseReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyRapidResponseReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isRapidResponseReportModeShown();
+	}
+
+	/**
+	 * Executes verifyManualReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyManualReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyManualReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isManualReportModeShown();
 	}
 
 	/**
@@ -3576,6 +3624,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysMatchSelectedMode")) { return this.verifySearchedSurveysMatchSelectedMode(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSpecifiedCustomer")) { return this.verifySearchedSurveysAreForSpecifiedCustomer(data, dataRowID); }
 		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
+		else if (actionName.equals("verifyStandardReportModeIsShownOnPage")) { return this.verifyStandardReportModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyRapidResponseReportModeIsShownOnPage")) { return this.verifyRapidResponseReportModeIsShownOnPage(data, dataRowID); }
+		else if (actionName.equals("verifyManualReportModeIsShownOnPage")) { return this.verifyManualReportModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyStandardSurveyModeIsShownOnPage")) { return this.verifyStandardSurveyModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyRapidResponseSurveyModeIsShownOnPage")) { return this.verifyRapidResponseSurveyModeIsShownOnPage(data, dataRowID); }
 		else if (actionName.equals("verifyManualSurveyModeIsShownOnPage")) { return this.verifyManualSurveyModeIsShownOnPage(data, dataRowID); }

@@ -4,7 +4,10 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICSU;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -90,7 +93,7 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	}
 
 	/**
-	 * Test Case ID: TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole 
+	 * Test Case ID: TC141_SimulatorTest_VerifyAllSurveyorsLink_PicAdminRole
 	 * Test Description: User is able to click on View All Surveyors and Online link present next to online surveyors on Dashboard
 	 * Script:
 	 * - Login as Picarro admin
@@ -98,7 +101,7 @@ public class HomePageTest_AnalyzerTests extends SurveyorBaseTest {
 	 * - Click on Online link present next to online Surveyor in Active Surveyors section
 	 * - Click on Picarro icon present at bottom of the page
 	 * - Click on View All Surveyors link present in Active Surveyors section
-	 *Results:
+	 * Result:
 	 * - Online link will be available for all online surveyors only. Offline surveyor will not have any clickable link
 	 * - User is navigated to Observer view
 	 * - User is navigated back to Home page

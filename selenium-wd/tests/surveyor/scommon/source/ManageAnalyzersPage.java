@@ -178,8 +178,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -283,8 +282,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			}
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -306,8 +304,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.info(String.format("Edit analyzer '%s', customer = '%s', location = '%s', surveyor = '%s'",
 				analyzerName, customerName, locationName, surveyorName));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String customerXPath;
 		String locationXPath;
@@ -388,8 +384,7 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 
 				rowSize = newRows.size();
@@ -421,9 +416,6 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		if(!isAnalyzerColumnSorted()){
 			return false;
 		}
-		if(!isAnalyzerTypeColumnSorted()){
-			return false;
-		}
 		return true;
 	}
 	
@@ -431,35 +423,35 @@ public class ManageAnalyzersPage extends SurveyorBasePage {
 		Log.method("isCustomerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Customer, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isLocationColumnSorted(){
 		Log.method("isLocationColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Location, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isSurveyorColumnSorted(){
 		Log.method("isSurveyorColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Surveyor, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isAnalyzerColumnSorted(){
 		Log.method("isAnalyzerColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Analyzer, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public boolean isAnalyzerTypeColumnSorted(){
 		Log.method("isAnalyzerTypeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_AnalyzerType, TableColumnType.String);
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption());
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(), SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 	
 	public void clickOnAddNewAnalyzerBtn() {

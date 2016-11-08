@@ -1037,7 +1037,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	@Test
 	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() throws Exception {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 		
 		Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
 		
@@ -1406,7 +1406,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		// verify manual button is NOT showing.
 		assertFalse(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
-
+		assertTrue(driverViewPageAction.getDriverViewPage().getStandardButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getRapidResponseButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getOperatorButton().isDisplayed());
+		
 		// Stop current simulator and start another with a different Analyzer.
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
