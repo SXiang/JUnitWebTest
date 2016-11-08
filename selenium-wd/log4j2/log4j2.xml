@@ -5,7 +5,7 @@
 	<RollingRandomAccessFile name="RollingRandomAccessFile" fileName=".\logs\qaauto.log"
 						append="true" filePattern=".\logs\$${date:yyyy-MM}\qaauto-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
-			<Pattern>%t    -    %p     -     %m%n</Pattern>
+			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - %p %m%n</Pattern>
 		</PatternLayout>
 		<Policies>
 			<TimeBasedTriggeringPolicy />
@@ -18,7 +18,7 @@
 
 	<Console name="STDOUT" target="SYSTEM_OUT">
 		<PatternLayout header="JAVA_HOME:- ${env:JAVA_HOME}; PATH:- ${env:Path}; JAVA_TOOL_OPTIONS:- ${env:JAVA_TOOL_OPTIONS}; Java Runtime:- ${java:runtime}; Java VM:- ${java:vm}; OS:- ${java:os}; Locale:- ${java:locale}; ${sys:line.separator}">
-			<Pattern>%t - %p - %m%n</Pattern>
+			<Pattern>%p %m%n</Pattern>
 		</PatternLayout>
 	</Console>
 
