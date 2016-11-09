@@ -39,11 +39,13 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		initializePageActions();
+		initializeTestObjects();
 	}
 
 	@Before
 	public void beforeTestMethod() throws Exception {
+		initializePageActions();
+
 		initializeProperties();
 	}
 

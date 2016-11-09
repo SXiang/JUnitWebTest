@@ -30,6 +30,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
 import common.source.Log;
 import common.source.RegexUtility;
@@ -191,9 +192,9 @@ public class BaseTest {
 		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshot(getDriver(), className);
-		Log.error("_FAIL_ Exception: "+e);
+		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
-		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + e.getMessage());
+		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
 	}
 
 	public static void reportTestSucceeded(String className) {
