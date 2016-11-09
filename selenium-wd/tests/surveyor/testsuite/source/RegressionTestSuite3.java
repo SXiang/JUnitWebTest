@@ -6,20 +6,20 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
-import surveyor.regression.source.ManageRefGasBottlesPageTests_Ethane;
-import surveyor.regression.source.ManageSurveyorAdminPageTest;
-import surveyor.regression.source.ManageSurveyorHistoriesPageTest;
-import surveyor.regression.source.ManageSurveyorPageTest;
-import surveyor.regression.source.ManageUsersAdminPageTest;
+import surveyor.regression.source.ACLandVisibilityTest;
+import surveyor.regression.source.HomePageTest;
+import surveyor.regression.source.LoginPageTest;
+import surveyor.regression.source.ManageAnalyzersPageTest;
+import surveyor.regression.source.ManageCustomersPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
-	ManageRefGasBottlesPageTests_Ethane.class
-	,ManageSurveyorAdminPageTest.class
-	,ManageSurveyorHistoriesPageTest.class
-	,ManageSurveyorPageTest.class
-	,ManageUsersAdminPageTest.class
+	ACLandVisibilityTest.class
+	,HomePageTest.class
+	,LoginPageTest.class
+	,ManageAnalyzersPageTest.class
+	,ManageCustomersPageTest.class
 })
 public class RegressionTestSuite3 {
 
