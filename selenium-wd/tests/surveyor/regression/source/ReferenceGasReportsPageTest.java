@@ -29,6 +29,8 @@ import java.util.Date;
 import common.source.DateUtility;
 import common.source.DateUtility.DatePart;
 import common.source.Log;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,8 +55,23 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	private static final int START_DATE_MONTH = 12;
 	private static final int START_DATE_YEAR = 2015;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupReferenceGasReportsPageTest() {
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
 		PageFactory.initElements(getDriver(), referenceGasReportsPage);

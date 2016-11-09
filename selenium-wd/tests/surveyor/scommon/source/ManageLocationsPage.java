@@ -4,11 +4,7 @@
 package surveyor.scommon.source;
 
 import static org.junit.Assert.assertTrue;
-import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSULOC;
-import static surveyor.scommon.source.SurveyorConstants.ETHRNELAT;
-import static surveyor.scommon.source.SurveyorConstants.ETHRNELON;
 import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
 
@@ -17,7 +13,6 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,9 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import common.source.BaseHelper;
 import common.source.Log;
-import common.source.RegexUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 

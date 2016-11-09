@@ -81,8 +81,12 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		initializePageActions();
 
-		measurementSessionsPage = new MeasurementSessionsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(),  measurementSessionsPage);
+
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 	}
