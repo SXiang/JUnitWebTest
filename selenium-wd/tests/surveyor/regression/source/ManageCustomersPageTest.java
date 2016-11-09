@@ -6,15 +6,19 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import common.source.Log;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -30,17 +34,41 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageUsersPage manageUsersPage;
 	private static ManageLocationsPage manageLocationsPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 	
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
 
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
+		PageActionsStore.INSTANCE.clearStore();
+		
+		initializeTestObjects();
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	/**
@@ -54,7 +82,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC1243_DisableExistingCustomer_PicAdmin(){
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC1243";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC1243";
 		String eula = customerName + ": " + EULASTRING;
 		String userName = customerName + REGBASEPICUSERNAME;
 		String location = "Santa Clara";
@@ -65,7 +93,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		
 		// *** Add a new user/customer for this test ***
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
@@ -75,13 +103,12 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();
 		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, TIMEZONECT, locationDesc);
 		
-		
-		loginPage = manageCustomersPage.logout();;
+		loginPage = manageCustomersPage.logout();
 		
 		// *** Start test ***
        
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
@@ -94,7 +121,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(loginPage.loginNormalAs(userName, USERPASSWORD) == null);
 				
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
@@ -118,14 +145,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC77_addCustomerBlankRequiredFields_PicAdmin(){
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC77";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC77";
 		String eula = customerName + ": " + EULASTRING;
 		
 		Log.info("\nRunning TC77_addCustomerBlankRequiredFields_PicAdmin - "+
 		         "Test Description: add customer - blank required fields");
 		
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// add customer with an empty Eula
@@ -154,14 +181,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC78_editCustomerBlankRequiredFields_PicAdmin(){
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC78";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC78";
 		String eula = customerName + ": " + EULASTRING;
 		Log.info("\nRunning TC78_editCustomerBlankRequiredFields_PicAdmin - "+
 		         "Test Description: edit customer - blank required fields");
 		
 		// *** Add a new customer for this test ***
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);	
 		loginPage = manageUsersPage.logout();
@@ -169,7 +196,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		// *** Start test ***
 		
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		
@@ -198,13 +225,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC58_AddNewCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC58";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC58";
 		String eula = customerName + ": " + EULASTRING;
 
 		Log.info("\nRunning TC58_AddNewCustomer_PicAdmin - Test Description: Adding Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
@@ -223,13 +250,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC59_EditCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC59";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC59";
 		String eula = customerName + ": " + EULASTRING;
 
 		Log.info("\nRunning TC59_EditCustomer_PicAdmin - Test Description: Editing Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();		
 
@@ -256,13 +283,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC88";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");
 
 		String eula = customerName + ": " + EULASTRING;
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);		
@@ -285,15 +312,15 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test  
 	public void TC92_DisabledCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC93";
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC93";
+		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
 		String locationName = customerName + "loc";
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// create disabled customer.
@@ -330,8 +357,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC93_ReenableCustomer_PicAdmin() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC93";
-		String userName = customerName + testSetup.getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC93";
+		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(12) + REGBASEUSERNAME;
 		String eula = customerName + ": " + EULASTRING;
 
 		String cityName = "Santa Clara";
@@ -341,7 +368,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC93_ReenableCustomer_PicAdmin - Test Description: Re-Enable Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		// create customer (not enabled).
@@ -383,7 +410,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	// DEFECT: Sending 100K characters to TextArea is causing Chrome browser to NOT respond correct. Look for workaround.
 	public void TC96_Max100KCharsInEULA_PicAdmin() {
 		final int HUNDRED_K = 100000;
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "TC96";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC96";
 		Log.info("\nRunning TC96_Max100KCharsInEULA_PicAdmin - Test Description: More than 100,000 characters not allowed in EULA field");
 
 		String eula100K = DataGenerator.getRandomWords(HUNDRED_K);
@@ -391,7 +418,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(eula100K.length() == HUNDRED_K);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// Add customer with 100K characters in EULA.
@@ -420,8 +447,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC97_CustomerNameMax255Chars_PicAdmin() {
 		final int MAX_CHARS = 255;
-		String customerName255 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97";
-		String customerName256 = CUSTOMERNAMEPREFIX + testSetup.getFixedSizePseudoRandomString(245) + "TC97" + "A";
+		String customerName255 = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizePseudoRandomString(245) + "TC97";
+		String customerName256 = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizePseudoRandomString(245) + "TC97" + "A";
 		String eula = customerName255 + ": " + EULASTRING;
 
 		Log.info("\nRunning TC97_CustomerNameMax255Chars_PicAdmin - Test Description: More than 255 characters not allowed in Name field");
@@ -429,7 +456,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		assertTrue(customerName255.length() == MAX_CHARS);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 		// Add customer with 255 characters Customer name.
@@ -451,13 +478,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore
 	public void MCP000B() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000B";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "MCP000B";
 		String eula = customerName + ": " + EULASTRING;
 
 		Log.info("\nRunning MCP000B - Test Description: Checking Customer Account Status");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 
@@ -473,13 +500,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Ignore
 	public void MCP000C() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber() + "MCP000C";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "MCP000C";
 		String eula = customerName + ": " + EULASTRING;
 
 		Log.info("\nRunning MCP000C - Test Description: Changing Customer Account Status");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
 
@@ -501,15 +528,15 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC469_ManageCustomer_PicSupport() {
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getRandomNumber()
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber()
 				+ "TC469";
 		String eula = customerName + ": " + EULASTRING;
 
 		Log.info("\nRunning TC469_ManageCustomer_PicSupport - Test Description: View Customer");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(),
-				testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(),
+				getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
@@ -541,7 +568,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	public void TC132_ManageCustomer_SortColumns() {
 		Log.info("\nRunning TC132_ManageCustomer_SortColumns");
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());		
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 		manageCustomersPage.open();
 		assertTrue(manageCustomersPage.areTableColumnsSorted());		
 	}

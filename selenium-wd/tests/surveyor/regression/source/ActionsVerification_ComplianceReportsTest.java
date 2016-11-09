@@ -2,15 +2,10 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import common.source.Log;
-import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -38,10 +33,10 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 	 * @throws Exception 
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.

@@ -3,10 +3,8 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.sql.CallableStatement;
 
-import common.source.DateUtility;
 import common.source.Log;
 
 public class StoredProcSystemHistory extends BaseEntity {

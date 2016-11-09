@@ -139,7 +139,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 			
-			String surveyTag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+			String surveyTag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 			String surveyArg = String.format("%s,%s,%s,%s,%s,%s,%s", 
 					surveyTag, "Day", "Overcast", "Calm", "LessThan50", "Standard", "");
 			driverViewPageAction.startDrivingSurvey(surveyArg, surveyDataRowID);
@@ -216,7 +216,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyStartSurveyButtonIsEnabled(EMPTY,NOTSET));
 			assertTrue(driverViewPageAction.verifySystemShutdownButtonIsEnabled(EMPTY,NOTSET));
 
-			String surveyTag = testSetup.getFixedSizePseudoRandomString(13) + "_TEST";
+			String surveyTag = getTestSetup().getFixedSizePseudoRandomString(13) + "_TEST";
 			String surveyArg = String.format("%s,%s,%s,%s,%s,%s", 
 					surveyTag, "Night", "Overcast", "Calm", "MoreThan50", "Standard");
 
@@ -287,8 +287,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			assertTrue(driverViewPageAction.verifyFOVIsNotShownOnMap(EMPTY,NOTSET));
 			
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
-			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag,NOTSET));
-			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + DriverViewPageActions.workingDataRow.surveyType,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag,NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: " + DriverViewPageActions.workingDataRow.get().surveyType,NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoTimeElapsedLabelStartsWith("Elapsed: 00:",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoDriverLabelEquals("Driver: " + SurveyorConstants.PICDFADMIN,NOTSET));
@@ -374,8 +374,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 
 		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
 		// For such cases, use the overload with username and password for generateSurveyForUser().
-		String newUsername = ManageUsersPageActions.workingDataRow.username;
-		String newUserPass = ManageUsersPageActions.workingDataRow.password;
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass, 
 				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
@@ -405,8 +405,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 
 		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
 		// For such cases, use the overload with username and password for generateSurveyForUser().
-		String newUsername = ManageUsersPageActions.workingDataRow.username;
-		String newUserPass = ManageUsersPageActions.workingDataRow.password;
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass, 
 				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 	}
@@ -429,6 +429,6 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
 		DbSeedExecutor.executeGisSeed(customer.getId());
 	}}

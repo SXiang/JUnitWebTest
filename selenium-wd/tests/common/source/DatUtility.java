@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DatUtility {
 	 */
 
 	public  List<String> getHeadings() {
-		List<String> listOfHeading = new ArrayList<String>();
+		List<String> listOfHeading = Collections.synchronizedList(new ArrayList<String>());
 		try {
 			listOfHeading = csv.getHeadings(csvPath);
 		} catch (IOException e) {
@@ -52,8 +53,8 @@ public class DatUtility {
 	 */
 
 
-	public List<HashMap<String,String>> getAllRows() throws FileNotFoundException, IOException {
-		List<HashMap<String,String>> rowsList=new ArrayList<HashMap<String,String>>();
+	public List<Map<String,String>> getAllRows() throws FileNotFoundException, IOException {
+		List<Map<String,String>> rowsList= Collections.synchronizedList(new ArrayList<Map<String,String>>());
 
 		try{
 			rowsList = csv.getAllRows(csvPath);
@@ -106,8 +107,8 @@ public class DatUtility {
 		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\PeakExport.dat");
 		List<String> headings1 = dUtil.getHeadings();
 		for (String heading1:headings1){
-			List<HashMap<String,String>> rows1=dUtil.getAllRows();
-			HashMap<String, String> map1 = new HashMap<String, String>();
+			List<Map<String,String>> rows1=dUtil.getAllRows();
+			Map<String, String> map1 = Collections.synchronizedMap(new HashMap<String, String>());
 			for(int i=0; i<rows1.size(); i++){
 				map1 =rows1.get(i);
 				for(Map.Entry<String,String> entry:map1.entrySet()){
@@ -124,8 +125,8 @@ public class DatUtility {
 		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\AnalysisExport.dat");
 		List<String> headings3 = dUtil.getHeadings();
 		for (String heading3:headings3){
-			List<HashMap<String,String>> rows3=dUtil.getAllRows();
-			HashMap<String, String> map3 = new HashMap<String, String>();
+			List<Map<String,String>> rows3=dUtil.getAllRows();
+			Map<String, String> map3 = Collections.synchronizedMap(new HashMap<String, String>());
 			for(int i=0; i<rows3.size(); i++){
 				map3 =rows3.get(i);
 				for(Map.Entry<String,String> entry:map3.entrySet()){
@@ -142,8 +143,8 @@ public class DatUtility {
 		dUtil.convertDATtoCSV(TestSetup.getExecutionPath(TestSetup.getRootPath())+ "data\\test-data\\datUtility-tests\\SurveyExport.dat");
 		List<String> headings2 = dUtil.getHeadings();
 		for (String heading2:headings2){
-			List<HashMap<String,String>> rows2=dUtil.getAllRows();
-			HashMap<String, String> map2 = new HashMap<String, String>();
+			List<Map<String,String>> rows2=dUtil.getAllRows();
+			Map<String, String> map2 = Collections.synchronizedMap(new HashMap<String, String>());
 			for(int i=0; i<rows2.size(); i++){
 				map2 =rows2.get(i);
 				for(Map.Entry<String,String> entry:map2.entrySet()){

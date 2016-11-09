@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import common.source.Log;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
-import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.ObserverViewPageActions;
@@ -51,13 +48,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
 			initializePageActionsList();
-			initializePageActions();
+			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-			PageFactory.initElements(driver, driverViewPage);
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
+			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+			PageFactory.initElements(getDriver(), driverViewPage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,8 +66,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		for(int i = observerViewPageActionList.size(); i < driverList.size(); i++){
 			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
 			// Initialize page objects.
-			observerViewPageList.add(new ObserverViewPage(driverList.get(i), testSetupList.get(i), baseURLList.get(i)));
-			PageFactory.initElements(driver, observerViewPageList.get(i));
+			observerViewPageList.add(new ObserverViewPage(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
+			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
@@ -98,9 +96,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.workingDataRow = null;
-		loginPageAction.login(EMPTY, userRowID); /* Picarro Admin */
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().workingDataRow = null;
+		getLoginPageAction().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	/**
@@ -303,8 +301,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 
 		observerViewPageActionList.get(0).clickOnHeaderInfoBox(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
 
 		// TODO: CHECK: Driver label is showing EMPTY
 		// assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
@@ -445,9 +443,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -543,9 +541,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -605,9 +603,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -641,7 +639,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_OPERATOR1_ROW_ID, ONE_SECOND * 15);
 		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
 		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
 		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
 		stopSurvey();
@@ -756,7 +754,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(60), NOTSET);
 		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
 
 		// TODO: Verifications for curtain view currently not present.
@@ -894,12 +892,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnAllAssets(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllBoundaries(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(60), NOTSET);
 		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -940,14 +938,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnGisButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllAssets(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnAllBoundaries(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
 		observerViewPageActionList.get(0).refreshPage(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyPageLoaded(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -1059,9 +1057,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyStatusButtonIsGreen(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -1125,9 +1123,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));
@@ -1177,9 +1175,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// TODO: Specific asset check (Currently no mechanism to detect from client-side). Might need some server-side product changes.
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.surveyTag, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.surveyType, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.username, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + LoginPageActions.workingDataRow.get().username, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeLabelStartsWith(SURVEY_INFO_TIME_PREFIX + String.valueOf(getHourOfDay()), NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeElapsedLabelStartsWith(SURVEY_INFO_ELAPSED_TIME_00, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelStartsWith(SURVEY_INFO_REMAINING_TIME_07, NOTSET));

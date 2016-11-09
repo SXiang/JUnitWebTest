@@ -3,6 +3,8 @@ package common.source;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,18 +27,19 @@ public enum TestContext {
 	private String userCulture = null;
 	private String loggedInUserName;
 	private ExtentReports report;
-	private ExtentTest extentTest;
+	private Map<String, ExtentTest> extentTestMap;
 	private Map<String,Object> testMap;
-	private ArrayList<String> testMessage;
+	private List<String> testMessage;
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
 
 	private TestContext() {
-		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
-		this.testReportIdSet = new HashSet<String>();
-		this.testMap = new HashMap<String, Object>();
-		testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
+		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
+		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
+		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
+		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
+		this.extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
 	}
 
 	public String getTestStatus() {
@@ -67,8 +70,8 @@ public enum TestContext {
 	}
 
 
-	public ExtentTest getExtentTest() {
-		return extentTest;
+	public ExtentTest getExtentTest(String className) {
+		return extentTestMap.get(className);
 	}
 
 	public void updateTestMessage(String message){
@@ -81,9 +84,10 @@ public enum TestContext {
 		testMessage.add(new java.util.Date() + ": " + message);
 	}
 
-	public ArrayList<String> getTestMessage(){
+	public List<String> getTestMessage(){
 		return testMessage;
 	}
+
 	public void setExtentTest(ExtentTest extentTest, String className) {
 		ITest test = extentTest.getTest();
 	    String methodReplacePattern = "[\\s]*\\[[\\s]*([\\d]*)[\\s]*:[\\s]*([\\d]*).+";
@@ -95,7 +99,7 @@ public enum TestContext {
 	    }
 		this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
 		this.testMap.put(LogField.TEST_CLASS.toString(), className);
-		this.extentTest = extentTest;
+		this.extentTestMap.put(className, extentTest);
 	}
 
 	public String getDbIpAddress() {
@@ -140,9 +144,11 @@ public enum TestContext {
 
 	public void setTestSetup(TestSetup testSetup) {
 		this.testSetup = testSetup;
-	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
-	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
-	    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
+		if (this.testSetup != null) {
+		    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
+		    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
+		    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
+		}
 	}
 
 	public String getLoggedInUser() {
@@ -177,7 +183,7 @@ public enum TestContext {
 	}
 
 	public void stayIdle(int seconds) {
-		this.testSetup.slowdownInSeconds(seconds);
+		TestSetup.idleForSeconds(seconds);
 	}
 
 	public String getExecutionPath() {

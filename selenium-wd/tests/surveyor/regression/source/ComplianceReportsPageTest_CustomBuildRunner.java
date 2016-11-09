@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +50,8 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsSurveyInfo;
@@ -60,15 +63,28 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPageTest {
+	private static LoginPage loginPage;
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects(new ComplianceReportsPage(driver, baseURL, testSetup));
-
+	public static void beforeClass() {
+		initializeTestObjects();
 	}
+
+	@Before
+	public void beforeTest() {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		initializePageObjects(pageObjectFactory.getComplianceReportsPage());
+	}
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
+
 	/**
 	 * Test Case ID: TC183 Test Description: Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode
 	 * @throws Exception
@@ -77,11 +93,11 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	@Test
 	public void TC183_ComplianceReportTest_VerifyReportwithMultipleSurveys() throws Exception {
 		String testCaseID = "TC183";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate report having multiple surveys of Standard, Operator and Rapid Response types in Rapid Response report mode, %s\n", rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		String surUnit = "";
@@ -111,11 +127,11 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	@Test
 	public void TC191_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
 		String testCaseID = "TC191";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and verify Gaps for them, %s\n", rptTitle);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -185,11 +201,11 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	@Test
 	public void TC192_ComplianceReportTest_VerifyMultipleSurveyExclusionRadius() throws Exception {
 		String testCaseID = "TC192";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID + ": Generate report having multiple surveys and provide exclusion radius, %s\n", rptTitle);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -258,7 +274,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, PICDFADMIN, testCaseID))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
-			if (this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath())) {
+			if (this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath())) {
 				assertTrue(this.getComplianceReportsPage().findReport(rptTitle, PICDFADMIN));
 			} else
 				fail("\nTestcase TC192 failed.\n");
@@ -275,15 +291,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	public void TC198_ComplianceReportTest_VerifyAlreadyAddedMessageforCopy() throws Exception {
 		System.out.format("\nRunning TC198: Verify 'Already Added' message is displayed if user tries to add the same survey again using copy functionality\n");
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
-		String rptTitle = "TC198 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC198 Report" + getTestSetup().getRandomNumber();
 		String surUnit = "";
 
 		this.getComplianceReportsPage().addNewPDReport(rptTitle, surUnit, PICADMNSTDTAG);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
 
 		this.getComplianceReportsPage().clickOnCopyReport(rptTitle, PICDFADMIN);
 
@@ -298,12 +314,12 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	@Test
 	public void TC1321_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
 		String testCaseID = "TC1321";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate Compliance Report as Customer Supervisor user and include Percent Coverage Forecast, %s\n", rptTitle);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -349,16 +365,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, getTestSetup().getLoginUser()));
 		} else
 			fail("\nTestcase TC1321 failed.\n");
 	}
@@ -371,12 +386,12 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 	@Test
 	public void TC1351_ComplianceReportTest_VerifyMultipleSurveyGaps() throws Exception {
 		String testCaseID = "TC1321";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		System.out.format("\nRunning " + testCaseID
 				+ ": Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 3 surveys with different tags, %s\n", rptTitle);
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -422,16 +437,15 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
-			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, testSetup.getLoginUser()));
-
+			assertTrue(this.getComplianceReportsPage().findReport(rptTitle, getTestSetup().getLoginUser()));
 		} else
 			fail("\nTestcase TC1351 failed.\n");
 	}

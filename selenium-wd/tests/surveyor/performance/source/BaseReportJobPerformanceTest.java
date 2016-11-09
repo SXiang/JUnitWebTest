@@ -39,11 +39,13 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		initializePageActions();
+		initializeTestObjects();
 	}
 
 	@Before
 	public void beforeTestMethod() throws Exception {
+		initializePageActions();
+
 		initializeProperties();
 	}
 
@@ -51,9 +53,9 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	 * Initializes the page action objects.
 	 */
 	protected static void initializePageActions() {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// initialize page object for post test processing.
@@ -87,8 +89,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	 */
 	@Ignore
 	public void UnitTest_compareReportJobPerfBaseline() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 
 		String testCaseID = "PerfTest3";
 		String reportTitle = "9a231d51baa34934986b";
@@ -131,7 +133,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected void checkAndGenerateReportJobBaselineCsv() throws IOException {
 		Log.method("checkAndGenerateReportJobBaselineCsv");
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
-			generateReportJobBaselineRunExecutionCsv(ComplianceReportsPageActions.workingDataRow.tCID);
+			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.get().tCID);
 		}
 	}
 

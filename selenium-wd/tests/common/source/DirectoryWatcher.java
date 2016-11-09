@@ -53,42 +53,44 @@ public class DirectoryWatcher {
 			
 		    for (;;) {
 			    WatchKey key = watcherSvc.poll(timeoutInSeconds, TimeUnit.SECONDS);
-			    for (WatchEvent<?> event: key.pollEvents()) {
-			        WatchEvent.Kind<?> kind = event.kind();
-	
-			        // This key is registered only for ENTRY_CREATE events,
-			        // but an OVERFLOW event can occur regardless if events are lost or discarded.
-			        if (kind == OVERFLOW) {
-			            continue;
-			        }
-	
-			        // The filename is the context of the event.
-			        WatchEvent<Path> ev = (WatchEvent<Path>)event;
-			        Path filename = ev.context();
-	
-			        // Verify that the new file matches the specified file prefix and file extension.
-		            Path newFile = dirToWatch.resolve(filename);
-		            String newFileName = FileUtility.getFileName(newFile.toString());
-		            String extension = FileUtility.getFileExtension(newFile.toString());
-		            if (!extension.equalsIgnoreCase(fileExtension)) {
-		                Log.info(String.format("New file '%s' is NOT of specified extension - '%s' .%n", filename, fileExtension));
-		                continue;
-		            }
-		            if (!newFileName.startsWith(filePrefix)) {
-		                Log.info(String.format("New file '%s' does NOT start with - '%s' .%n", filename, filePrefix));
-		                continue;
-		            }
-	
-			        // Found matching file. Return file.
-		            Log.info(String.format("Found file - '%s'", filename)); 
-		            return filename;
-			    }
-	
-			    // Reset the key -- this step is critical if you want to receive further watch events.  
-			    // If the key is no longer valid, the directory is inaccessible so exit the loop.
-			    boolean valid = key.reset();
-			    if (!valid) {
-			        break;
+			    if (key != null) {
+				    for (WatchEvent<?> event: key.pollEvents()) {
+				        WatchEvent.Kind<?> kind = event.kind();
+		
+				        // This key is registered only for ENTRY_CREATE events,
+				        // but an OVERFLOW event can occur regardless if events are lost or discarded.
+				        if (kind == OVERFLOW) {
+				            continue;
+				        }
+		
+				        // The filename is the context of the event.
+				        WatchEvent<Path> ev = (WatchEvent<Path>)event;
+				        Path filename = ev.context();
+		
+				        // Verify that the new file matches the specified file prefix and file extension.
+			            Path newFile = dirToWatch.resolve(filename);
+			            String newFileName = FileUtility.getFileName(newFile.toString());
+			            String extension = FileUtility.getFileExtension(newFile.toString());
+			            if (!extension.equalsIgnoreCase(fileExtension)) {
+			                Log.info(String.format("New file '%s' is NOT of specified extension - '%s' .%n", filename, fileExtension));
+			                continue;
+			            }
+			            if (!newFileName.startsWith(filePrefix)) {
+			                Log.info(String.format("New file '%s' does NOT start with - '%s' .%n", filename, filePrefix));
+			                continue;
+			            }
+		
+				        // Found matching file. Return file.
+			            Log.info(String.format("Found file - '%s'", filename)); 
+			            return filename;
+				    }
+		
+				    // Reset the key -- this step is critical if you want to receive further watch events.  
+				    // If the key is no longer valid, the directory is inaccessible so exit the loop.
+				    boolean valid = key.reset();
+				    if (!valid) {
+				        break;
+				    }
 			    }
 			    
 			    // If executing for more than specified timeout, break out of the loop.

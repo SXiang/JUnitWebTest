@@ -1,56 +1,72 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
-import common.source.CryptoUtility;
 import common.source.Log;
 import common.source.WebElementExtender;
-import surveyor.dataprovider.UserDataProvider;
-import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
- * 
+ *
  *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static ManageCustomersPage manageCustomersPage;
+	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageLocationsPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
+	/**
+	 * This method is called by the 'worker' thread
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 	}
 
 	/**
 	 * Test Case ID: TC1695 Test Description: Ethane: Verify Manage Locations page appears when logged in as Picarro Admin
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1695_Manage_Locations_Ethane_Methane_Ratio_Column() {
@@ -68,13 +84,13 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1696 Test Description: Ethane: Verify True Ethane/Methane ratio can be updated and saved
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1696_Manage_Locations_Edit_Ethane_Methane_Ratio_Column() {
-		String locationName = "TC1696 Ethane "+ testSetup.getRandomNumber();
+		String locationName = "TC1696 Ethane "+ getTestSetup().getRandomNumber();
 		String locationNewName= locationName + "_New";
 		Log.info("\nRunning - TC1696 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
 
@@ -93,13 +109,13 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1697 Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1697_Manage_Locations_Add_Ethane_Methane_Ratio_Column() {
-		String locationName = "TC1697 Ethane "+ testSetup.getRandomNumber();
+		String locationName = "TC1697 Ethane "+ getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC1697 - Test Description: Ethane: Verify setting the Ethane/Methane ratio for the first time");
 
 		loginPage.open();
@@ -114,9 +130,9 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC1698 Test Description: Ethane: Verify Manage Locations page appears when logged in as Customer Admin
-	 * 
+	 *
 	 * @throws IOException
-	 * 
+	 *
 	 */
 	@Test
 	public void TC1698_Manage_Locations_Ethane_Methane_Ratio_Column() {
@@ -132,7 +148,4 @@ public class ManageLocationsPageTest_Ethane extends SurveyorBaseTest {
 
 		assertTrue(manageLocationsPage.getEthMthRtoLbl().isDisplayed());
 	}
-
-
 }
-

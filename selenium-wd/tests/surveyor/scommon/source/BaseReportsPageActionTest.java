@@ -1,15 +1,7 @@
 package surveyor.scommon.source;
 
 import surveyor.scommon.actions.BaseActions;
-import java.util.HashMap;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.*;
-
-import common.source.ExceptionUtility;
-import common.source.Log;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.actions.LoginPageActions;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
@@ -42,6 +34,8 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 			return this.name;
 		}
 	}
+
+	private boolean cleanUpPerformed = false;
 
 	public BaseReportsPageActionTest() {
 		super();
@@ -104,5 +98,13 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
 	protected static Integer getUnitTestUserRowID() {
 		return testDataRowID1_User1;
+	}
+
+	public boolean isCleanUpPerformed() {
+		return cleanUpPerformed;
+	}
+	
+	public void setCleanUpPerformed(boolean cleanUpPerformed) {
+		this.cleanUpPerformed = cleanUpPerformed;
 	}
 }

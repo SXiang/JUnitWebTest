@@ -1284,7 +1284,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
  
 	public BaseMapViewPage getBaseMapViewPageObject() {
-		return (BaseMapViewPage)pageObject;
+		return (BaseMapViewPage)getPageObject();
 	}
 
 	protected String getRuntimeType() {

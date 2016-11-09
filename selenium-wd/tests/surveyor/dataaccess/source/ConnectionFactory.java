@@ -1,7 +1,10 @@
 package surveyor.dataaccess.source;
 
 import java.sql.*;
-import java.util.Hashtable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 
@@ -14,7 +17,7 @@ public class ConnectionFactory {
 	private static final String JDBC_SQLSERVER_CONNECTION_STRING = "jdbc:sqlserver://%s:%s;databaseName=%s;";
 	private static final String MICROSOFT_SQLSERVER_JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	
-	private static Hashtable<String, Connection> connectionCache = new Hashtable<String, Connection>();
+	private static Map<String, Connection> connectionCache = Collections.synchronizedMap(new HashMap<String, Connection>());
 
 	@Rule
 	public ExternalResource resource= new ExternalResource() {

@@ -52,7 +52,7 @@ public class ObserverViewPage extends BaseDrivingViewPage {
 	 * @param baseURL
 	 * @param testSetup
 	 */
-	public ObserverViewPage(WebDriver driver, TestSetup testSetup, String baseURL) {
+	public ObserverViewPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe ObserverView Page URL is: " + this.strPageURL);

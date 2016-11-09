@@ -27,7 +27,7 @@ import surveyor.scommon.source.ReportsCompliance;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
-	
+
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 
@@ -45,7 +45,7 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -53,23 +53,23 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-	
+
 	/**
 	 * Copied from Test Case ID: TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea
 	 * Test Description: - Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area
-	 * Script: -  	
+	 * Script: -
 	 *	- -  Log in as Picarro Admin
 	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
 	 *	- - Time Zone : PST, Survey Mode: Standard, Exclusion Radius: 0
 	 *	- - Add 2 or 3 surveys with different tag values
-	 *	- - Select Customer boundary and select any Plat 
+	 *	- - Select Customer boundary and select any Plat
 	 *	- - Select Indication table, Isotopic Analysis table
 	 *	- - Select Percent Coverage Assets, Report Area and Forecast check box
 	 *	- - Add View with base map value: map
@@ -82,25 +82,24 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea ..." +
 			 "\nTest Description: Generate Compliance Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
 		String[] titles = {"APISecurityTest_Report001","APISecurityTest_Report002",
 				"APISecurityTest_ReportDelete001","APISecurityTest_ReportDelete002"};
 		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
-		
+
 		for(String rptTitle:titles){
 			Report report = Report.getReport(rptTitle);
 			if(report==null||report.getId()==null||report.getId().isEmpty()){
 				rpt.setRptTitle(rptTitle);
-				ComplianceReportsPageActions.workingDataRow.title = rptTitle;
+				ComplianceReportsPageActions.workingDataRow.get().title = rptTitle;
 				getComplianceReportsPage().addNewReport(rpt, true);
 				waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			}
 		}
-
 	}
 
 	/**
@@ -113,14 +112,14 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 //			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 //		Log.info("\nRunning TC1373_GenerateAssessmentReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea ..." +
 //			 "\nTest Description: Generate Assessment Report as Picarro Admin and include Percent Coverage Forecast, Assets and Report Area");
-//		
+//
 //		loginPageAction.open(EMPTY, NOTSET);
-//		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  
+//		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 //		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 //
 //		String[] titles = {"APISecurityTest_Assessment001","APISecurityTest_Assessment002"};
 //		ReportsAssessment rpt = AssessmentReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
-//		
+//
 //		for(String rptTitle:titles){
 //			rpt.setRptTitle(rptTitle);
 //			AssessmentReportsPageActions.workingDataRow.title = rptTitle;
@@ -129,6 +128,7 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 //		}
 //
 //	}
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}

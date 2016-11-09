@@ -39,7 +39,7 @@ public class ManageRefGasBottlesAdminPage extends ManageRefGasBottlesPage {
 	 * @param testSetup
 	 * @param strBaseURL
 	 */
-	public ManageRefGasBottlesAdminPage(WebDriver driver, TestSetup testSetup, String strBaseURL) {
+	public ManageRefGasBottlesAdminPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, testSetup, strBaseURL, STRURLPATH);
 		
 		Log.info("\nThe Manage Reference Gas Bottles Admin Page URL is: %s\n" + strBaseURL + STRURLPATH);

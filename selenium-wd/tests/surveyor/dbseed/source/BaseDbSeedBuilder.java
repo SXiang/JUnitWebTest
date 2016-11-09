@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCSVFileRecord;
@@ -68,7 +68,7 @@ public class BaseDbSeedBuilder {
 		String customerCSVFile = null;
 		CSVUtility csvUtility = new CSVUtility();
 		List<String> headings = csvUtility.getHeadings(SeedDataFilePath);
-		List<HashMap<String, String>> allRows = csvUtility.getAllRows(SeedDataFilePath);
+		List<Map<String, String>> allRows = csvUtility.getAllRows(SeedDataFilePath);
 		String custSeedFilePath = TestContext.INSTANCE.getExecutionPath() + TestSetup.SQL_DATA_FOLDER + File.separator + 
 				String.format("%s-%s.csv", TestContext.INSTANCE.getTestSetup().getFixedSizePseudoRandomString(10), customerID);
 		

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -23,15 +23,18 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageLocationsAdminPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
@@ -47,20 +50,41 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	private static ManageLocationsAdminPage manageLocationsAdminPage;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
+	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageSurveyorAdminPageTest() {
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageLocationsAdminPage);
+	/**
+	 * This method is called by the 'worker' thread
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
 
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageSurveyorPage);
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageSurveyorAdminPage);
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
+
+		manageLocationsAdminPage = pageObjectFactory.getManageLocationsAdminPage();
+		PageFactory.initElements(getDriver(), manageLocationsAdminPage);
+
+		manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
+		PageFactory.initElements(getDriver(), manageSurveyorPage);
+
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
+		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
 	}
 
 	/**
@@ -71,13 +95,13 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC455_EditSurveyor_CustUA() {
 		String locationName = SQACUSLOC;
-		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC455";
+		String surveyorName = SQACUSLOCSUR + getTestSetup().getRandomNumber() + "TC455";
 		String surveyorNameNew = surveyorName + "New";
 
 		Log.info("\nRunning - TC455_EditSurveyor_CustUA - Test Description: edit surveyor\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, SQACUS + " - " + SQACUSLOC);
@@ -100,15 +124,15 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC456_EditSurveyorAssignLoc_CustUA() {
 		String locationName1 = SQACUSLOC;
-		String locationName2 = SQACUSLOC + testSetup.getRandomNumber();
+		String locationName2 = SQACUSLOC + getTestSetup().getRandomNumber();
 		String locationName3 = SQAPICLOC;
-		String surveyorName = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC456";
+		String surveyorName = SQACUSLOCSUR + getTestSetup().getRandomNumber() + "TC456";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC456_EditSurveyorAssignLoc_CustUA - Test Description: Administrator is allowed to associate and " + "disassociate Surveyor Units within Locations associated only to his customer\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		// Add Surveyor with Location1
 		manageSurveyorPage.open();
@@ -144,13 +168,13 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 		String str14chars = "AbcdefghI-Abcd";
 		String str15chars = "AbcdefghI-Abcde";
 
-		String surveyorName400Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str14chars;
-		String surveyorName401Chars = testSetup.getFixedSizePseudoRandomString(381) + "TC457" + str15chars;
+		String surveyorName400Chars = getTestSetup().getFixedSizePseudoRandomString(381) + "TC457" + str14chars;
+		String surveyorName401Chars = getTestSetup().getFixedSizePseudoRandomString(381) + "TC457" + str15chars;
 
 		Log.info("\nRunning - TC457_EditSurveyorDesc50CharLimit_CustUA - Test Description: More than 400 characters not allowed " + "in Surveyor Description field\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, SQACUSLOC, SQACUS);
@@ -183,12 +207,12 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC458_EditSurveyorBlankRequiredFields_CustUA() {
-		String surveyorName = testSetup.getRandomNumber() + "TC458";
+		String surveyorName = getTestSetup().getRandomNumber() + "TC458";
 
 		Log.info("\nRunning - TC458_EditSurveyorBlankRequiredFields_CustUA - Test Description: edit surveyor - blank required fields\n");
 
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageSurveyorPage.open();
 		manageSurveyorPage.addNewSurveyor(surveyorName, SQACUSLOC, SQACUS);
@@ -207,9 +231,9 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC467_DuplicateSurveyorNotAllowed_CustUA() {
-		String locationName = testSetup.getRandomNumber() + "TC467";
-		String surveyorName1 = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC467_1";
-		String surveyorName2 = SQACUSLOCSUR + testSetup.getRandomNumber() + "TC467_2";
+		String locationName = getTestSetup().getRandomNumber() + "TC467";
+		String surveyorName1 = SQACUSLOCSUR + getTestSetup().getRandomNumber() + "TC467_1";
+		String surveyorName2 = SQACUSLOCSUR + getTestSetup().getRandomNumber() + "TC467_2";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC467_DuplicateSurveyorNotAllowed_CustUA - Test Description: Edit surveyor name with an existing name asociated to same location\n");
@@ -285,8 +309,8 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC451_SearchValidSurveyor() {
-		String locationName = "TC451Location" + testSetup.getRandomNumber();
-		String surveyorName = "TC451_" + SQACUSSURVEYOR + testSetup.getRandomNumber();
+		String locationName = "TC451Location" + getTestSetup().getRandomNumber();
+		String surveyorName = "TC451_" + SQACUSSURVEYOR + getTestSetup().getRandomNumber();
 		String cityName = "Santa Clara";
 		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
@@ -311,7 +335,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC452_SearchInvalidSurveyor() {
-		String surveyorName = "TC452_" + SQACUSSURVEYOR + testSetup.getRandomNumber();
+		String surveyorName = "TC452_" + SQACUSSURVEYOR + getTestSetup().getRandomNumber();
 		Log.info("\nRunning - TC451 - Test Description: Search valid surveyor record\n");
 
 		loginPage.open();

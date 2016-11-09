@@ -53,7 +53,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 	}
 
 	private static void initializePageObjects() {
-		initializePageObjects(new ComplianceReportsPage(driver, baseURL, testSetup));
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
 	private ComplianceReportsPage getComplianceReportsPage() {
@@ -77,10 +77,10 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 			EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
 		String testCaseName = getTestCaseName(index);
-		String rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
-		this.getComplianceReportsPage().login(strCreatedBy, CryptoUtility.decrypt(password));
+		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit,

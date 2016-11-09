@@ -59,10 +59,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "eula-error")
 	private WebElement lblEulaError;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[5]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[6]/div[2]/a")
 	private WebElement cancelAddBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[4]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-form']/fieldset/div[5]/div[2]/a")
 	private WebElement cancelEditBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='active']")
@@ -516,7 +516,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean changeCustomerAccountStatus(String customerName, boolean bEnabled) {
 		Log.method("changeCustomerAccountStatus", customerName, bEnabled);
 		setPaginationAny(PAGINATIONSETTING_100);
-	
+
 		String customerNameXPath;
 		String actionXPath;
 

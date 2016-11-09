@@ -1,19 +1,14 @@
 package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
 import common.source.TestSetup;
 import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.ManageCustomersPage;
 
 public class HomePageActions extends BasePageActions {
-	private HomePage homePage = null;
-	
+
 	public HomePageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		homePage = new HomePage(driver, strBaseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+		initializePageObject(driver, new HomePage(driver, strBaseURL, testSetup));
 	}
 
 	/**
@@ -24,10 +19,10 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("HomePageActions.open", data, dataRowID);
-		homePage.open(data);
+		getHomePage().open(data);
 		return true;
 	}
- 
+
 	/**
 	 * Executes verifyPageLoaded action.
 	 * @param data - specifies the input data passed to the action.
@@ -36,10 +31,10 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean verifyPageLoaded(String data, Integer dataRowID) {
 		logAction("HomePageActions.verifyPageLoaded", data, dataRowID);
-		homePage.waitForPageLoad();
+		getHomePage().waitForPageLoad();
 		return true;
 	}
-	
+
 	/**
 	 * Executes clickOnViewAllDrivingSurveysLink action.
 	 * @param data - specifies the input data passed to the action.
@@ -48,10 +43,10 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean clickOnViewAllDrivingSurveysLink(String data, Integer dataRowID) {
 		logAction("HomePageActions.clickOnViewAllDrivingSurveysLink", data, dataRowID);
-		homePage.clickOnViewAllDrivingSurveysLink();
+		getHomePage().clickOnViewAllDrivingSurveysLink();
 		return true;
 	}
- 
+
 	/**
 	 * Executes clickOnFirstMatchingDrivingSurvey action.
 	 * @param data - specifies the input data passed to the action.
@@ -60,8 +55,8 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean clickOnFirstMatchingDrivingSurvey(String data, Integer dataRowID) {
 		logAction("HomePageActions.clickOnFirstMatchingDrivingSurvey", data, dataRowID);
-		homePage.waitForFirstDrivingSurveyToBeCompleted();
-		homePage.clickOnFirstMatchingDrivingSurvey(data);
+		getHomePage().waitForFirstDrivingSurveyToBeCompleted();
+		getHomePage().clickOnFirstMatchingDrivingSurvey(data);
 		return true;
 	}
 
@@ -73,14 +68,10 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean clickOnFirstOnlineSurveyorLink(String data, Integer dataRowID) {
 		logAction("HomePageActions.clickOnFirstOnlineSurveyorLink", data, dataRowID);
-		homePage.clickOnFirstOnlineSurveyorLink();
+		getHomePage().clickOnFirstOnlineSurveyorLink();
 		return true;
 	}
- 
-	public HomePage getHomePage() {
-		return homePage;
-	}
-	
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -102,5 +93,9 @@ public class HomePageActions extends BasePageActions {
 		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
 
 		return false;
+	}
+
+	public HomePage getHomePage() {
+		return (HomePage)this.getPageObject();
 	}
 }

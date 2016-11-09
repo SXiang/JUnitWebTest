@@ -9,6 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,10 @@ import common.source.Log;
 import common.source.BaseHelper;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -29,12 +33,36 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersAdminPage manageUsersAdminPage;
-
+	private static HomePage homePage;
+	private static LoginPage loginPage;
+	
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageUsersAdminPageTest() {
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageUsersAdminPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		manageUsersAdminPage = pageObjectFactory.getManageUsersAdminPage();
+		PageFactory.initElements(getDriver(), manageUsersAdminPage);
 	}
 
 	/**
@@ -42,7 +70,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC438_CustAdmin_AddNewUser() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm001"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm001"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC438 - Customer Admin - add new user\n");
 
@@ -51,7 +79,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -74,7 +102,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC439_CustAdmin_EditUser() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm002"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm002"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC439 - Customer Admin - edit user\n");
 
@@ -83,7 +111,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -110,7 +138,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC440_CustAdmin_ChangePwd() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm003"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm003"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC440 - Customer specific user can change its password\n");
 
@@ -146,7 +174,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC441_CustAdmin_DisableUser() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm004"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm004"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC441 - Test Description: Customer Admin - Disabled User\n");
 
@@ -155,7 +183,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -182,7 +210,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC443_DuplicateUserCreationNotAllowed() {
-		String userName = SQACUS + testSetup.getFixedSizePseudoRandomString(12)
+		String userName = SQACUS + getTestSetup().getFixedSizePseudoRandomString(12)
 				+ "TC443" + REGBASEUSERNAME;
 
 		Log.info("\nRunning - TC443 - Customer admin not allowed to create duplicate User\n");
@@ -192,7 +220,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -211,7 +239,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC444_PwdValuesDiffNotAllowed() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm007"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm007"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC444 - Test Description: Add User - Password and Confirm Password values different\n");
 
@@ -220,7 +248,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -243,7 +271,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -261,7 +289,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC446_BlankRequiredFields() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm009"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm009"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC446 - Test Description: add user - blank required fields\n");
 
@@ -270,7 +298,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -293,7 +321,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC447_EditUserRoleTimezone() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm010"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm010"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC447 - Test Description: Admin can change role, timezone and location of existing user\n");
 
@@ -302,7 +330,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -327,7 +355,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC448_LimitOnEmailAddress() {
 		String userName = "_TC448_"
-				+ testSetup.getFixedSizePseudoRandomString(34) + "@email.com";
+				+ getTestSetup().getFixedSizePseudoRandomString(34) + "@email.com";
 		Log.info("\nRunning - TC448 - Test Description: More than 50 characters not allowed in email address field\n");
 
 		loginPage.open();
@@ -335,7 +363,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.waitForNewPageLoad();
@@ -418,7 +446,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC452_SearchInvalidUser() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm015"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC452 - Test Description: Search invalid user record\n");
 
@@ -427,7 +455,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 
@@ -453,7 +481,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 
 		homePage.waitForPageLoad();
 		homePage.getLinkCusAdmin().click();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		homePage.getLinkAdminManageUsers().click();
 		manageUsersAdminPage.getTheadUserName().click();
@@ -495,7 +523,7 @@ public class ManageUsersAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC468_CustAdmin_ResetPwd() {
-		String userName = SQACUS + testSetup.getRandomNumber() + "custadm015"
+		String userName = SQACUS + getTestSetup().getRandomNumber() + "custadm015"
 				+ REGBASEUSERNAME;
 		Log.info("\nRunning - TC468 - Reset customer user password as customer admin\n");
 

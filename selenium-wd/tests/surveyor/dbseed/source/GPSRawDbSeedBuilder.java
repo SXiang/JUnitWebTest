@@ -2,8 +2,8 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.DateUtility;
@@ -38,9 +38,9 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {
     		CSVUtility csvUtility = new CSVUtility();
-    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
     		Redater redater = null;
-    		for (HashMap<String, String> rowItem : allRows) {
+    		for (Map<String, String> rowItem : allRows) {
     			String analyzerId = rowItem.get("AnalyzerId");
     			
     			// Initialize the redater once.
@@ -74,7 +74,7 @@ public class GPSRawDbSeedBuilder extends BaseDbSeedBuilder {
 		return seedData;
 	}
 
-	private Redater checkAndInitializeRedater(List<HashMap<String, String>> allRows, Redater redater, String analyzerId) {
+	private Redater checkAndInitializeRedater(List<Map<String, String>> allRows, Redater redater, String analyzerId) {
 		GPSRaw firstGPSRaw;
 		if (redater == null) {
 			GPSRaw gpsRaw = new GPSRaw();

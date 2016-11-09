@@ -24,11 +24,11 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 /*
  * **** NOTES ****:
  *  1. Action based tests that work on MapView (Survey, Observer, Driver) can derive from BaseMapViewTest.
- *  2. If any of the tests do NOT use TestEnvironment actions for starting Analyzer and simulator then 
+ *  2. If any of the tests do NOT use TestEnvironment actions for starting Analyzer and simulator then
  *  they should follow this convention to start simulator:
  *    Mark the test as TC*_SimulatorTest_* and it will be detected as Simulator based test and will trigger
  *    installation of Simulator pre-requisites before running the test.
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest2 extends BaseMapViewTest {
@@ -43,28 +43,28 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 
 	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
-	
+
 	private static ManageCustomersPage manageCustomersPage;
 	private static Map<String, String> testAccount;
-	
+
 
 	@Before
 	public void beforeTestMethod() {
 		try {
 			initializePageActionsList();
-			initializePageActions();
+			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-			PageFactory.initElements(driver, driverViewPage);
-			manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-			PageFactory.initElements(driver, manageCustomersPage);
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
+			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+			PageFactory.initElements(getDriver(), driverViewPage);
+			manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+			PageFactory.initElements(getDriver(), manageCustomersPage);
 			if(testAccount == null){
 				testAccount = createTestAccount("ObserverViewTest2");
 			}else{
-				loginPage.open();
-				loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+				getLoginPage().open();
+				getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 				manageCustomersPage.open();
 				manageCustomersPage.editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 			}
@@ -77,8 +77,8 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		for(int i = observerViewPageActionList.size(); i < driverList.size(); i++){
 			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
 			// Initialize page objects.
-			observerViewPageList.add(new ObserverViewPage(driverList.get(i), testSetupList.get(i), baseURLList.get(i)));
-			PageFactory.initElements(driver, observerViewPageList.get(i));
+			observerViewPageList.add(new ObserverViewPage(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
+			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
@@ -102,9 +102,9 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
-		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.get().open(EMPTY, NOTSET);
 		LoginPageActions.workingDataRow = null;
-		loginPageAction.login(EMPTY, userRowID); /* Picarro Admin */
+		loginPageAction.get().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 	private void loginAsObserver(String usernameColonPassword, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
@@ -113,9 +113,9 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	}
 
 	private void loginAsDriver(String usernameColonPassword) throws Exception {
-		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.get().open(EMPTY, NOTSET);
 		LoginPageActions.workingDataRow = null;
-		loginPageAction.login(usernameColonPassword,NOTSET) ;
+		loginPageAction.get().login(usernameColonPassword,NOTSET) ;
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		
+
 		stopSurveyAndAnalyzer();
 	}
 
@@ -153,7 +153,7 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	 * Test Description:Observer View - Curtain View is displayed and user is able to Follow the vehicle
 	 * - Script:
 	 * -  On Home Page, click on Picarro Surveyors -> Online -> Curtain
-	 * - Click on Return. 
+	 * - Click on Return.
 	 * - Turn Position OFF and click on Curtain
 	 * - Click on Return
 	 * Result:
@@ -186,7 +186,7 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
 		stopSurveyAndAnalyzer();
 	}
-	
+
 	/**
 	 * Test Case ID: TC2133_CurtainViewIsNotAvailableWithoutLicense
 	 * Test Description:Observer View - Curtain View is displayed and user is able to Follow the vehicle
@@ -207,11 +207,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		loginAsDriver(USER_ROW_ID_AUTOMATION_ADMIN);
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.CURTAINVIEW);
-		
+
 		loginAsDriver(userName+":"+userPassword);
 		loginAsObserver(userName+":"+userPassword, 0);
 
@@ -223,13 +223,13 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 
 		stopSurveyAndAnalyzer();
 	}
-	
+
 	/* * Test Case ID: TC2079_UserNotAbleToNavigateToObserverViewOnFleetMapScreenWithoutLicense
 	 * Script:
 	 * - Log in as utility admin or supervisor
 	 * - On home page, click on Fleet map
 	 * Results:
-	 * - Fleet map link is present 
+	 * - Fleet map link is present
 	 * - Fleet Map page showing locations of customer's surveyor vehicles.
 	 * - Online status is present for surveyor but it's not clickable (i.e. Suveyor name link is not click able). User can't navigate to observer view
 	 */
@@ -242,11 +242,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		loginAsDriver(USER_ROW_ID_AUTOMATION_ADMIN);
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.FLEETMAPVIEW);
-		
+
 		loginAsDriver(userName+":"+userPassword);
 		loginAsObserver(userName+":"+userPassword, 0);
 
@@ -282,11 +282,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		loginAsDriver(USER_ROW_ID_AUTOMATION_ADMIN);
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.OBSERVERVIEW);
-		
+
 		loginAsDriver(userName+":"+userPassword);
 		loginAsObserver(userName+":"+userPassword, 0);
 

@@ -1,6 +1,8 @@
 package surveyor.scommon.source;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.support.PageFactory;
@@ -16,19 +18,19 @@ import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 
 public class BaseReportsPageTest extends SurveyorBaseTest {
 
-	private static ReportsBasePage reportsPage = null;
+	private static ThreadLocal<ReportsBasePage> reportsPageThreadLocal = new ThreadLocal<ReportsBasePage>();
 
 	private boolean isCollectReportJobPerfMetric;
 	private boolean isGenerateBaselineSSRSImages;
 	private boolean isGenerateBaselineViewImages;
 	private boolean isGenerateBaselineShapeFiles;
 
-	private static HashMap<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
+	private static Map<ReportJobType, NumberUtility> reportJobProcessingTimeNumberMap;
 	private static ReportTestRunMode testRunMode = ReportTestRunMode.FullTestRun;
 
 	protected static void initializePageObjects(ReportsBasePage reportsBasePage) {
 		setReportsPage(reportsBasePage);
-		PageFactory.initElements(driver, reportsBasePage);
+		PageFactory.initElements(getDriver(), reportsBasePage);
 	}
 
 	public BaseReportsPageTest() {
@@ -40,7 +42,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	public static void initializeProperties() {
-		reportJobProcessingTimeNumberMap = new HashMap<ReportJobType, NumberUtility>();
+		reportJobProcessingTimeNumberMap = Collections.synchronizedMap(new HashMap<ReportJobType, NumberUtility>());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.DataGeneration, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.EQDataGeneration, new NumberUtility());
 		reportJobProcessingTimeNumberMap.put(ReportJobType.EQMap, new NumberUtility());
@@ -66,19 +68,19 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		reportJobProcessingTimeNumberMap.put(reportJobType, numberUtility);
 	}
 
-	protected static HashMap<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
+	protected static Map<ReportJobType, NumberUtility> getReportJobProcessingTimeNumberMap() {
 		return reportJobProcessingTimeNumberMap;
 	}
 
 	public static void setReportsPage(ReportsBasePage reportsPage) {
-		BaseReportsPageTest.reportsPage = reportsPage;
+		reportsPageThreadLocal.set(reportsPage);
 	}
 
 	@Override
 	public void postTestMethodProcessing() {
 		try {
 			cleanUp();
-			reportsPage.logout();
+			getReportsPage().logout();
 		} catch (Exception e) {
 			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
 					ExceptionUtility.getStackTraceString(e)));
@@ -86,7 +88,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	public static ReportsBasePage getReportsPage() {
-		return reportsPage;
+		return reportsPageThreadLocal.get();
 	}
 
 	protected static ReportTestRunMode getTestRunMode() {
@@ -98,20 +100,20 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	private void cleanUp() throws Exception {
-		if(reportsPage==null||keepTestData()){
+		if(getReportsPage()==null||keepTestData()){
 			TestContext.INSTANCE.clearTestReportSet();
 			return;
 		}
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		//Delete report and related downloads
-		reportsPage.open();
+		getReportsPage().open();
 		for(String reportId:reportIdSet){
 			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
-			reportsPage.deleteReportById(reportId);
+			getReportsPage().deleteReportById(reportId);
 		}
-		reportsPage.open();
+		getReportsPage().open();
 		TestContext.INSTANCE.clearTestReportSet();
 	}
 

@@ -22,6 +22,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
@@ -35,18 +36,26 @@ public class WebElementExtender {
 		try{
 			js.executeScript(jsScript, element);
 		}catch(Exception e){
+			Log.method("WebElementExtender.executeScript", element, driver, jsScript);
 			Log.warn("Failed to click on the WebElement: "+e.toString());
 		}
 	}
 
-   public static boolean isAttributePresent(WebElement element, String attributeName)
-   {
+	public static void printAllElementAttributes(WebElement element, WebDriver driver) {
+		Log.method("WebElementExtender.printAllElementAttributes", element, driver);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Object output = js.executeScript("var items={}; for(index=0;index<arguments[0].attributes.length;++index){items[arguments[0].attributes[index].name]=arguments[0].attributes[index].value};return items;", element);
+		Log.info(output.toString());
+	}
+
+	public static boolean isAttributePresent(WebElement element, String attributeName)
+	{
 	   try {
 	       String attrValue = element.getAttribute(attributeName);
 	       return (attrValue != null);
 	   } catch (Exception e) {}
 	   return false;
-   }
+	}
 
    /**
     * Use this method for elements detected using PageFactory and you want to confirm
@@ -55,17 +64,35 @@ public class WebElementExtender {
     */
    public static boolean isElementPresentAndDisplayed(WebElement element)
    {
+	   Log.method("isElementPresentAndDisplayed");
 	   try {
 	       if (element != null) {
 	    	   if (element.isDisplayed()) {
 	    		   return true;
+	    	   } else {
+	    		   Log.warn("Element is NOT displayed");
 	    	   }
+	       } else {
+	    	   Log.warn("Element is NULL");
 	       }
 	   } catch (NoSuchElementException e) {
+		   Log.warn("Element NOT found. NoSuchElementException encountered.");
 		   return false;
 	   }
 	   return false;
    }
+
+	/**
+	 * Wait for element to be displayed.
+	 */
+	public static boolean verifyElementIsDisplayed(WebDriver driver, WebElement element, Integer timeout) {
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return WebElementExtender.isElementPresentAndDisplayed(element);
+			}
+		});
+		return true;
+	}
 
    public static boolean findElementBy(WebDriver driver, By by) {
 	  return findElementBy(driver, by, -1);
@@ -144,6 +171,14 @@ public class WebElementExtender {
 		}
 
 		return true;
+	}
+
+	public static void waitForPageLoad(final String pageText, final Integer timeout, WebDriver webDriver) {
+		(new WebDriverWait(webDriver, timeout)).until(new ExpectedCondition<Boolean>() {
+		    public Boolean apply(WebDriver d) {
+		        return d.getPageSource().contains(pageText);
+		    }
+		});
 	}
 
    /*

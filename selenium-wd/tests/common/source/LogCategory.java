@@ -3,7 +3,8 @@ package common.source;
 public enum LogCategory {
 	SSRSPdfContent ("SSRSPdfContent"),
 	ComplianceReportActions ("ComplianceReportActions"),
-	ClickWebElement ("ClickWebElement");
+	ClickWebElement ("ClickWebElement"),
+	VerboseLogging ("VerboseLogging");
 	
 	private final String name;
 

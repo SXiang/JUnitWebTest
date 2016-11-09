@@ -1,22 +1,21 @@
 package surveyor.regression.source;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.DateUtility;
-import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.TestSetupFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -47,7 +46,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final int USER_ROW_ID_PICARRO_SUPPORT = 11;
 	protected static final int USER_ROW_ID_PICARRO_ADMIN = 4;
 	protected static final int USER_ROW_ID_CUSTOMER_ADMIN_NOLIC = 19;
-	
+
 	protected static final int USER_ROW_ID_SQACUS_DRIVER = 3;
 	protected static final String SAMPLE_FIELD_NOTES1 = "Test Notes";
 	protected static final String SURVEY_INFO_SURVEYOR1_ANALYZER1 = "Surveyor: SimAuto-Surveyor1 - SimAuto-Analyzer1";
@@ -95,42 +94,44 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final String COLOR_GRAY = "Gray";
 	protected static final String COLOR_WHITE = "White";
 	protected static final String Live_Obvserver_Pattern = "/Live/Observer?serialNumber=%s";
-	
+
 	// Instance 1 actions and page objects.
-	protected static HomePageActions homePageAction;
-	protected static LoginPageActions loginPageAction;
-	protected static TestEnvironmentActions testEnvironmentAction;
+	private static ThreadLocal<HomePageActions> homePageAction = new ThreadLocal<HomePageActions>();
+	protected static ThreadLocal<LoginPageActions> loginPageAction = new ThreadLocal<LoginPageActions>();
+	protected static ThreadLocal<TestEnvironmentActions> testEnvironmentAction = new ThreadLocal<TestEnvironmentActions>();
 
-	// Extra instance actions and page objects. 
-	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows). 
-	protected ArrayList<HomePageActions> homePageActionList = new ArrayList<HomePageActions>();
-	protected ArrayList<LoginPageActions> loginPageActionList = new ArrayList<LoginPageActions>();
+	// Extra instance actions and page objects.
+	// Extra instance can be used for tests running on multiple windows (for eg. DriverView and ObserverView windows).
+	protected List<HomePageActions> homePageActionList = Collections.synchronizedList(new ArrayList<HomePageActions>());
+	protected List<LoginPageActions> loginPageActionList = Collections.synchronizedList(new ArrayList<LoginPageActions>());
 
-	protected ArrayList<HomePage> homePageList = new ArrayList<HomePage>();
-	protected ArrayList<LoginPage> loginPageList = new ArrayList<LoginPage>();
+	protected List<HomePage> homePageList = Collections.synchronizedList(new ArrayList<HomePage>());
+	protected List<LoginPage> loginPageList = Collections.synchronizedList(new ArrayList<LoginPage>());
 
-	protected ArrayList<TestSetup> testSetupList = new ArrayList<TestSetup>();
-	protected ArrayList<WebDriver> driverList = new ArrayList<WebDriver>();
-	protected ArrayList<String> baseURLList = new ArrayList<String>(); 
-
-	protected static DateUtility dateUtility = new DateUtility();
+	protected List<TestSetup> testSetupList = Collections.synchronizedList(new ArrayList<TestSetup>());
+	protected List<WebDriver> driverList = Collections.synchronizedList(new ArrayList<WebDriver>());
+	protected List<String> baseURLList = Collections.synchronizedList(new ArrayList<String>());
 
 	public BaseMapViewTest() {
-		initializePageActions();
+		initializeBasePageActions();
 	}
-	
+
 	/**
 	 * Initializes the page action objects.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	protected static void initializePageActions(){
-		if(testSetup == null || testSetup.getDriver() == null){
-			testSetup = new TestSetup();
-		}
-		BaseTest.initializeTestObjects();
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		testEnvironmentAction = new TestEnvironmentActions();
+	protected static void initializeBasePageActions(){
+		// NOTE: 2016/09/16:
+		//  Specific implementations of this class should have called initializeTestObjects() in BeforeTest
+		//  and initialized testSetup before call to this method
+		// TODO: REMOVE THIS COMMENTED CODE DURING CODE REVIEW.
+		//if(getTestSetup() == null || getTestSetup().getDriver() == null){
+		//	setTestSetup(TestSetupFactory.getTestSetup());
+		//}
+
+		setLoginPageAction(new LoginPageActions(getDriver(), getBaseURL(), getTestSetup()));
+		setHomePageAction(new HomePageActions(getDriver(), getBaseURL(), getTestSetup()));
+		setTestEnvironmentAction(new TestEnvironmentActions());
 	}
 
 	/**
@@ -139,6 +140,7 @@ public class BaseMapViewTest extends BaseTest{
 	protected void initializePageActionsList() {
 		addPageActionsForNewDrivers(1);
 	}
+
 	protected void addPageActionsForNewDrivers(int num) {
 		int currentSize = testSetupList.size();
 		for(int index = currentSize; index < num + currentSize; index++ ){
@@ -150,7 +152,7 @@ public class BaseMapViewTest extends BaseTest{
 			setup.getDriver().manage().deleteAllCookies();
 			loginPageActionList.add(new LoginPageActions(setup.getDriver(), setup.getBaseUrl(), setup));
 			homePageActionList.add(new HomePageActions(setup.getDriver(), setup.getBaseUrl(), setup));
-			
+
 			loginPageList.add(new LoginPage(setup.getDriver(), setup.getBaseUrl(), setup));
 			PageFactory.initElements(setup.getDriver(), loginPageList.get(index));
 
@@ -158,99 +160,93 @@ public class BaseMapViewTest extends BaseTest{
 			PageFactory.initElements(setup.getDriver(), homePageList.get(index));
 		}
 	}
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		disposeProcesses();
 	}
 
 	@After
-    public void afterTestMethod() {
-		try {
-			afterTest();			
-			disposeProcesses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}	
-	
-	protected void afterTest() {
-		logoutQuitDriver();
-		testSetup = null;
-		// clean up - extra web drivers 
+	public void afterTest() {
+		//setTestSetup(null);
+
+		// clean up - extra web drivers
 		for(int index=0;index<testSetupList.size(); index++){
 			homePageList.get(index).open();
 			if (!driverList.get(index).getTitle().equalsIgnoreCase("Login"))
 				homePageList.get(index).logout();
-			
+
 			driverList.get(index).quit();
 		}
 	}
 
 	protected static void disposeProcesses() {
-		TestSetup.stopChromeProcesses();
-		TestSetup.stopAnalyzer();
+		if (!TestSetup.isParallelBuildEnabled()) {
+				TestSetup.stopChromeProcesses();
+				TestSetup.stopAnalyzer();
+		}
 	}
 
 	protected void startDrivingSurvey(DriverViewPageActions driverViewPageAction, Integer analyzerRowId, Integer surveyRowId,
 			Integer idleTimeInSeconds) throws Exception {
 		// Start Analyzer & replay db3
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerRowId);
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
-		
-		TestEnvironmentDataRow environmentDataRow = testEnvironmentAction.getDataReader().getDataRow(analyzerRowId);
-		testEnvironmentAction.startReplay(environmentDataRow.replayScriptDB3File, analyzerRowId); 	
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(5), NOTSET);
+
+		TestEnvironmentDataRow environmentDataRow = getTestEnvironmentAction().getDataReader().getDataRow(analyzerRowId);
+		getTestEnvironmentAction().startReplay(environmentDataRow.replayScriptDB3File, analyzerRowId);
 		// Start Operator Survey
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);	
-		testEnvironmentAction.idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
 	}
 
 	protected void startDrivingSurvey(DriverViewPageActions driverViewPageAction, String analyzerSerialNumber, String analyzerSharedKey, Integer analyzerRowId, Integer surveyRowId,
 			Integer idleTimeInSeconds) throws Exception {
 		// Start Analyzer & replay db3
 		startAnalyzer(analyzerSerialNumber, analyzerSharedKey, analyzerRowId);
-		
+
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(5), NOTSET);
-				
-		testEnvironmentAction.startReplay(EMPTY, analyzerRowId); 
-		
+		testEnvironmentAction.get().idleForSeconds(String.valueOf(5), NOTSET);
+
+		testEnvironmentAction.get().startReplay(EMPTY, analyzerRowId);
+
 		// Start Operator Survey
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);	
-		testEnvironmentAction.idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowId);
+		testEnvironmentAction.get().idleForSeconds(String.valueOf(idleTimeInSeconds), NOTSET);
 	}
-	
+
 	protected void startAnalyzer(String analyzerSerialNumber, String analyzerSharedKey, Integer analyzerRowId) throws Exception{
 		//Using analyzer created at runtime for this test
-		TestEnvironmentActions.workingDataRow = testEnvironmentAction.getDataReader().getDataRow(analyzerRowId);
-		TestEnvironmentActions.workingDataRow.analyzerSerialNumber = analyzerSerialNumber;
-		TestEnvironmentActions.workingDataRow.analyzerSharedKey = analyzerSharedKey;
-		TestEnvironmentActions.workingDataRow.analyzerRowID = "";
+		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.get().getDataReader().getDataRow(analyzerRowId));
+		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerSerialNumber;
+		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
+		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
 
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), analyzerSerialNumber, analyzerSharedKey);
 		TestSetup.restartAnalyzer();
 	}
 	protected void startReplay(DriverViewPageActions driverViewPageAction, Integer analyzerRowId) throws Exception {
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerRowId); 	
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerRowId);
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, analyzerRowId);
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerRowId);
 	}
 
 	protected void stopSurvey(DriverViewPageActions driverViewPageAction) {
 		// Stop Survey
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);	
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 	}
-	
+
 	protected void stopSurveyAndAnalyzer(DriverViewPageActions driverViewPageAction) {
-		stopSurvey(driverViewPageAction);	
+		stopSurvey(driverViewPageAction);
 		// Stop Analyzer
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	protected int getHourOfDay() {
@@ -260,10 +256,34 @@ public class BaseMapViewTest extends BaseTest{
 		}
 		return hourOfDay;
 	}
-	
+
 	protected String getLiveObservePath(){
-		String serialNumber = TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+		String serialNumber = TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber;
 		String path = String.format(Live_Obvserver_Pattern, serialNumber);
 		return path;
+	}
+
+	protected static LoginPageActions getLoginPageAction() {
+		return loginPageAction.get();
+	}
+
+	private static void setLoginPageAction(LoginPageActions loginPgAction) {
+		loginPageAction.set(loginPgAction);
+	}
+
+	protected static HomePageActions getHomePageAction() {
+		return homePageAction.get();
+	}
+
+	private static void setHomePageAction(HomePageActions homePgAction) {
+		homePageAction.set(homePgAction);
+	}
+
+	protected static TestEnvironmentActions getTestEnvironmentAction() {
+		return testEnvironmentAction.get();
+	}
+
+	private static void setTestEnvironmentAction(TestEnvironmentActions testEnvAction) {
+		testEnvironmentAction.set(testEnvAction);
 	}
 }

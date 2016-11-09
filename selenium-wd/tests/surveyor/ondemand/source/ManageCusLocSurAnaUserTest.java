@@ -3,17 +3,9 @@
  */
 package surveyor.ondemand.source;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -21,7 +13,6 @@ import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import common.source.Log;
-import common.source.TestSetup;
 
 /**
  * @author zlu
@@ -60,20 +51,20 @@ public class ManageCusLocSurAnaUserTest extends SurveyorBaseTest {
 	private static ManageUsersPage manageUsersPage;
 	
 	public ManageCusLocSurAnaUserTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
 		
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorPage);		
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);		
 		
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageAnalyzersPage);
+		manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
 		
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageUsersPage);		
+		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageUsersPage);		
 	}
 
 	/**

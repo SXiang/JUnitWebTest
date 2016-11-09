@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -19,10 +19,12 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
 import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,39 +41,46 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	private static ComplianceReportsPage complianceReportsPage = null;
-	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
+	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects();
+	public static void beforeClass() {
+		initializeTestObjects();
 		createTestCaseMap();
+	}
 
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		initializePageObjects();
 	}
 
 	private static void initializePageObjects() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	/**
 	 * Test Case ID: TC192, TC202, TC210
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER_SET11, location = ComplianceReportDataProvider.class)
@@ -82,9 +91,9 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
-		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 
-		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
@@ -94,57 +103,57 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
-			assertTrue(complianceReportsPage.validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(complianceReportsPage.validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
-			assertTrue(complianceReportsPage.verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
+			assertTrue(complianceReportsPage.verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
 			if (!testCaseName.equals("TC192")) {
 				if (tablesList != null) {
 					if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-						assertTrue(complianceReportsPage.verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-						assertTrue(complianceReportsPage.verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+						assertTrue(complianceReportsPage.verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
+						assertTrue(complianceReportsPage.verifyCoverageValuesTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 					}
 					if (cutomer.equalsIgnoreCase("Picarro")) {
-						assertTrue(complianceReportsPage.verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+						assertTrue(complianceReportsPage.verifyLayersTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 					}
-					assertTrue(complianceReportsPage.verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-					assertTrue(complianceReportsPage.verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(complianceReportsPage.verifyViewsTable(getTestSetup().getDownloadPath(), rptTitle, viewList));
+					assertTrue(complianceReportsPage.verifyDrivingSurveysTable(getTestSetup().getDownloadPath(), rptTitle));
 					if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-						assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+						assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(getTestSetup().getDownloadPath(), rptTitle));
 					}
 					if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-						assertTrue(complianceReportsPage.verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+						assertTrue(complianceReportsPage.verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
 					}
 				}
 			}
-			assertTrue(complianceReportsPage.verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName, viewList.size()));
+			assertTrue(complianceReportsPage.verifyAllViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName, viewList.size()));
 
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
-		
+
 		if(testCaseName.equals("TC210")){
 			isSurveyDeleted(tagList);
 		}
 	}
-	
+
 	private void isSurveyDeleted(List<String> tagList) throws Exception{
 		String tagName=tagList.get(0);
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new MeasurementSessionsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), msp);
 		msp.open();
 		assertTrue(msp.actionOnDrivingSurvey(tagName, null, null, null, DrivingSurveyButtonType.DeleteSurvey));
 		msp.open();
 		tagList = msp.getTagNameList();
 		assertTrue(tagList.contains(tagName));
 	}
-	
+
 
 	/**
 	 * Test Case ID: TC217, TC223,TC225,TC226
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER_SET11_INVESTIGATION, location = ComplianceReportDataProvider.class)
@@ -155,9 +164,9 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
-		rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 
-		complianceReportsPage.login(strCreatedBy, CryptoUtility.decrypt(password));
+		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
@@ -171,50 +180,50 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 			assertFalse(complianceReportsPage.getBtnAssignInvestigators().isEnabled());
 			}
 			if(testCaseName.equals("TC223")){
-				checkPagination();				
+				checkPagination();
 			}
 			if(testCaseName.equals("TC225")){
-				searchInvalidLISA();				
+				searchInvalidLISA();
 			}
 			if(testCaseName.equals("TC226")){
-				assertTrue(complianceReportsPage.areInvestigationTableColumnsSorted());	
+				assertTrue(complianceReportsPage.areInvestigationTableColumnsSorted());
 			}
 		} else
 			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
 	}
-	
+
 	private void checkPagination(){
 		assertTrue(complianceReportsPage.checkPaginationSetting(PAGINATIONSETTING));
 		assertTrue(!(complianceReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
 	}
-	
+
 	private void searchInvalidLISA(){
-		
-		assertTrue(!complianceReportsPage.searchInvestigationReport("ZZZ", testSetup.getLoginUser()));
+
+		assertTrue(!complianceReportsPage.searchInvestigationReport("ZZZ", getTestSetup().getLoginUser()));
 		assertEquals(NOMATCHINGSEARCH, complianceReportsPage.getEmptyTableMessage());
 	}
-	
+
 	/**
 	 * Test Case ID: TC207 Test Description: Verify report and survey modes are not modified if user clicks on NO change report mode button
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Ignore
 	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() {
 		String testCaseName	="TC207";
-		String rptTitle = testCaseName+" Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseName+" Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.clickOnNewComplianceReportBtn();
 		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Standard, SQACUSDRTAG, ReportModeFilter.Manual) );
 		complianceReportsPage.waitForAddSurveyButtonToLoad();
 		assertTrue(complianceReportsPage.checkSurveyModeDidNotChange(ReportModeFilter.Manual, SQACUSMNTAG,ReportModeFilter.Standard ) );
 	}
-	
+
 
 
 	private static String getTestCaseName(String key) {

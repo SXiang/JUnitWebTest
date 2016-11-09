@@ -6,15 +6,15 @@ import common.source.DateUtility;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 
 public class ReportJobPerfDBStat {
-	private String reportJobTypeId; 
+	private String reportJobTypeId;
 	private String reportJobTypeName;
-	private LocalDateTime reportJobStartTime; 
-	private LocalDateTime reportJobEndTime; 
-	private LocalDateTime testExecutionStartDate; 
+	private LocalDateTime reportJobStartTime;
+	private LocalDateTime reportJobEndTime;
+	private LocalDateTime testExecutionStartDate;
 	private LocalDateTime testExecutionEndDate;
-	private String buildNumber; 
+	private String buildNumber;
 	private Environment environment;
-	
+
 	public String getReportJobTypeId() {
 		return reportJobTypeId;
 	}
@@ -63,15 +63,15 @@ public class ReportJobPerfDBStat {
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
-	
+
 	public String toString() {
 		return String.format("ReportJobPerfDBStat=[reportJobTypeId=%s, reportJobTypeName=%s, reportJobStartTime=%s, reportJobEndTime=%s, "
-				+ "testExecutionStartDate=%s, testExecutionEndDate=%s, buildNumber=%s, environment=%s]", 
-					reportJobTypeId, reportJobTypeName, 
-					reportJobStartTime != null ? DateUtility.getLongDateString(reportJobStartTime) : "", 
-					reportJobEndTime != null ? DateUtility.getLongDateString(reportJobEndTime) : "", 
-					testExecutionStartDate != null ? DateUtility.getLongDateString(testExecutionStartDate) : "", 
-					testExecutionEndDate!= null ? DateUtility.getLongDateString(testExecutionEndDate) : "", 
+				+ "testExecutionStartDate=%s, testExecutionEndDate=%s, buildNumber=%s, environment=%s]",
+					reportJobTypeId, reportJobTypeName,
+					reportJobStartTime != null ? DateUtility.getLongDateString(reportJobStartTime) : "",
+					reportJobEndTime != null ? DateUtility.getLongDateString(reportJobEndTime) : "",
+					testExecutionStartDate != null ? DateUtility.getLongDateString(testExecutionStartDate) : "",
+					testExecutionEndDate!= null ? DateUtility.getLongDateString(testExecutionEndDate) : "",
 					buildNumber, environment.toString());
 	}
 }

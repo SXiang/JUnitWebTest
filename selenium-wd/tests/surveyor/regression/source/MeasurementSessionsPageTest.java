@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -8,14 +8,17 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
@@ -31,14 +34,40 @@ import static surveyor.scommon.source.SurveyorP3URLs.*;
 @RunWith(SurveyorTestRunner.class)
 public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	private static MeasurementSessionsPage measurementSessionsPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
+
 	private static List<String> strListTagCus = null;
 	private static List<String> strListTagPic = null;
 	private static List<String> strListTagCusDr = null;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupMeasurementSessionsPageTest() {
-		measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, measurementSessionsPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
+
+	/**
+	 * This method is called by the 'worker' thread
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
@@ -59,7 +88,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC35_CheckVisibilityDriverRole Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Driver role Notes: This test case is dependent on
 	 * upload of survey tags. This test case can be fixed post Simulator Integration in Automation framework. Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -78,7 +107,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC36_CheckVisibilityCustomerSupervisorRole Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Supervisor role Notes: This test case
 	 * is dependent on upload of survey tags. This test case can be fixed post Simulator Integration in Automation framework. Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -97,7 +126,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC37_CheckVisibilityUtilityAdminRole Test Description: Visibility check of Driving Surveys Measurement Sessions for customer user with Utility Administrator role Notes: This test
 	 * case is dependent on upload of survey tags. This test case can be fixed post Simulator Integration in Automation framework. Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -116,7 +145,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	/**
 	 * Test Case ID: TC38_CheckVisibilityPicarroAdminRole Test Description: Visibility check of Driving Surveys Measurement Sessions for Picarro user with Administrator role Notes: This test case is
 	 * dependent on upload of survey tags. This test case can be fixed post Simulator Integration in Automation framework. Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -147,15 +176,15 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new PageObjectFactory().getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(), msp);
 
 		homePage.getLinkDrivingSurveys().click();
 		measurementSessionsPage.waitForPageLoad();
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(testSetup.getBaseUrl() + DRIVINGSURVEYS));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(getTestSetup().getBaseUrl() + DRIVINGSURVEYS));
 
-		assertTrue(driver.getCurrentUrl().equalsIgnoreCase(msp.getStrPageURL()));
+		assertTrue(getDriver().getCurrentUrl().equalsIgnoreCase(msp.getStrPageURL()));
 
 		assertTrue(msp.getTagNameList(SQACUSDR).containsAll(strListTagCusDr));
 	}
@@ -166,7 +195,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 * same for deleting surveys with different types 2. Delete surveys generated by different users with different roles 3. Delete surveys by different login users with different roles Notes: This
 	 * test case takes 10+ mins to run on P3SQA environment because of large number of rows in DB. Better approach for automation is to use a clean DB for automation test execution. Use of clean DB in
 	 * automation, Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	// @Test /* Disabled for now. Refer Notes section*/
@@ -183,8 +212,8 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
 
-		MeasurementSessionsPage msp = new MeasurementSessionsPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, msp);
+		MeasurementSessionsPage msp = new PageObjectFactory().getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(), msp);
 
 		msp.open();
 
@@ -201,7 +230,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	 * Export Analysis Expected Results: - Customer Administrator should be allowed to export raw data and it should be .dat text file Current implementation: Raw Data is available to Picarro
 	 * Administrator only now Current Issue: Future Improvement: Notes: This test case takes 10+ mins to run on P3SQA environment because of large number of rows in DB. Better approach for automation
 	 * is to use a clean DB for automation test execution. Use of clean DB in automation, Work tracked by US1210
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -214,18 +243,18 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		homePage.getLinkDrivingSurveys().click();
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportSurvey);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTSURVEY, PICADMNSTDTAG2, SQAPICLOC4SURANA, getTestSetup().getDownloadPath(), DRIVINGSURVEYSSTNDMODE,
 				PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON, PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportPeaks);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTPEAKS, PICADMNSTDTAG2, SQAPICLOC4SURANA, getTestSetup().getDownloadPath(), DRIVINGSURVEYSSTNDMODE,
 				PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON, PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON, true));
 
 		measurementSessionsPage.actionOnDrivingSurvey(PICADMNSTDTAG2, ADMINISTRATORUSER, SQAPICLOC4SUR, SQAPICLOC4SURANA, DrivingSurveyButtonType.ExportAnalysis);
-		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, testSetup.getDownloadPath(), DRIVINGSURVEYSSTNDMODE, 
+		assertTrue(measurementSessionsPage.validateDatFiles(DRIVINGSURVEYSEXPORTANALYSIS, PICADMNSTDTAG2, SQAPICLOC4SURANA, getTestSetup().getDownloadPath(), DRIVINGSURVEYSSTNDMODE,
 				PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON, PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON, true));
 	}
-	
+
 	/**
 	 * Test Case ID: TC144_MeasurementSessions_VerifyPagination: - Verify pagination settings
 	 */
@@ -233,7 +262,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	public void TC144_MeasurementSessions_VerifyPagination() {
 		Log.info("\nRunning Pagination - 10,25,50 and 100 Pagination MeasurementSessions");
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		measurementSessionsPage.open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";
