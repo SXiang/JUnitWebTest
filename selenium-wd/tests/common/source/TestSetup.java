@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -170,6 +169,7 @@ public class TestSetup {
 
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
+	private Long runUUID;
 
 	private static boolean parallelBuildEnabled;
 
@@ -692,6 +692,7 @@ public class TestSetup {
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
+			setRunUUIDProperty();
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();
 			setPerformanceExecutionTestProperties();
@@ -758,6 +759,13 @@ public class TestSetup {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	private void setRunUUIDProperty() {
+		String runUUID = this.testProp.getProperty("runUUID");
+		if (runUUID != null && runUUID != "") {
+			this.setRunUUID(Long.valueOf(runUUID));
 		}
 	}
 
@@ -1091,7 +1099,7 @@ public class TestSetup {
 	public static void updateAnalyzerConfiguration() {
 		updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), TEST_ANALYZER_SERIAL_NUMBER, TEST_ANALYZER_KEY);
 	}
-	
+
 	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber,
 			String analyzerSharedKey) {
 		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);
@@ -1135,7 +1143,8 @@ public class TestSetup {
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
 			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath +
-					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath,
+							TestContext.INSTANCE.getRunUniqueId().toString());
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1430,5 +1439,13 @@ public class TestSetup {
 
 	public void setSoftwareVersion(String softwareVersion) {
 		this.softwareVersion = softwareVersion;
+	}
+
+	public Long getRunUUID() {
+		return runUUID;
+	}
+
+	public void setRunUUID(Long runUUID) {
+		this.runUUID = runUUID;
 	}
 }

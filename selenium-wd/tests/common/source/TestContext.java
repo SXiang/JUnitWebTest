@@ -20,12 +20,10 @@ import common.source.Log.LogField;
 
 public enum TestContext {
 	INSTANCE;
-	
+
 	private TestSetup testSetup;
 	private String userCulture = null;
 	private String loggedInUserName;
-	private String runUniqueId;
-
 	private ExtentReports report;
 	private ExtentTest extentTest;
 	private Map<String,Object> testMap;
@@ -33,10 +31,8 @@ public enum TestContext {
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
-	
+
 	private TestContext() {
-		// Every time a context is created set a unique run ID.
-		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = new ArrayList<String>(numTestMessagesToRetain);
 		this.testReportIdSet = new HashSet<String>();
 		this.testMap = new HashMap<String, Object>();
@@ -80,11 +76,11 @@ public enum TestContext {
 			return;
 		}
 		while(testMessage.size()>=numTestMessagesToRetain){
-			testMessage.remove(0);	
+			testMessage.remove(0);
 		}
 		testMessage.add(new java.util.Date() + ": " + message);
 	}
-	
+
 	public ArrayList<String> getTestMessage(){
 		return testMessage;
 	}
@@ -106,43 +102,43 @@ public enum TestContext {
 		String dbIPAddress = null;
 		if (testSetup != null) {
 			dbIPAddress = testSetup.getDbIpAddress();
-		}		
+		}
 		return dbIPAddress;
 	}
-	
+
 	public String getDbPortNo() {
 		String dbPortNo = null;
 		if (testSetup != null) {
 			dbPortNo = testSetup.getDbPortNo();
-		}		
+		}
 		return dbPortNo;
 	}
-	
+
 	public String getDbName() {
 		String dbName = null;
 		if (testSetup != null) {
 			dbName = testSetup.getDbName();
-		}		
+		}
 		return dbName;
 	}
-	
+
 	public String getDbUser() {
 		String dbUser = null;
 		if (testSetup != null) {
 			dbUser = testSetup.getDbUser();
-		}		
+		}
 		return dbUser;
 	}
-	
+
 	public String getDbPassword() {
 		String dbPassword = null;
 		if (testSetup != null) {
 			dbPassword = testSetup.getDbPassword();
-		}		
+		}
 		return dbPassword;
 	}
 
-	public void setTestSetup(TestSetup testSetup) {		
+	public void setTestSetup(TestSetup testSetup) {
 		this.testSetup = testSetup;
 	    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
 	    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
@@ -161,7 +157,7 @@ public enum TestContext {
 		String loggedInUserPassword = null;
 		if (testSetup != null) {
 			loggedInUserPassword = testSetup.getLoginPwd();
-		}		
+		}
 		return loggedInUserPassword;
 	}
 
@@ -171,7 +167,7 @@ public enum TestContext {
 		}
 		return userCulture;
 	}
-	
+
 	public void setUserCulture(String userCulture) {
 		this.userCulture = userCulture;
 	}
@@ -179,7 +175,7 @@ public enum TestContext {
 	public TestSetup getTestSetup() {
 		return this.testSetup;
 	}
-	
+
 	public void stayIdle(int seconds) {
 		this.testSetup.slowdownInSeconds(seconds);
 	}
@@ -198,15 +194,15 @@ public enum TestContext {
 		WebDriver driver = null;
 		if (testSetup != null) {
 			driver = testSetup.getDriver();
-		}		
+		}
 		return driver;
 	}
-	
+
 	public String getBaseUrl() {
 		String baseUrl = null;
 		if (testSetup != null) {
 			baseUrl = testSetup.getBaseUrl();
-		}		
+		}
 		return baseUrl;
 	}
 
@@ -214,7 +210,7 @@ public enum TestContext {
 		String environment = null;
 		if (testSetup != null) {
 			environment = testSetup.getRunEnvironment();
-		}		
+		}
 		return environment;
 	}
 
@@ -222,23 +218,23 @@ public enum TestContext {
 		String testRunCategory = null;
 		if (testSetup != null) {
 			testRunCategory = testSetup.getTestRunCategory();
-		}		
+		}
 		return testRunCategory;
 	}
+
 	public String getTestReportCategory() {
 		String testReportCategory = null;
 		if (testSetup != null) {
 			testReportCategory = testSetup.getTestReportCategory();
-		}		
+		}
 		return testReportCategory;
 	}
 
-	public String getRunUniqueId() {
-		return runUniqueId;
-	}
-
-	private void setRunUniqueId(String runUniqueId) {
-		this.runUniqueId = runUniqueId;
+	public Long getRunUniqueId() {
+		if (testSetup != null) {
+			return testSetup.getRunUUID();
+		}
+		return 0L;
 	}
 
 	public ExtentReports getReport() {
@@ -248,7 +244,7 @@ public enum TestContext {
 	public void setReport(ExtentReports report) {
 		this.report = report;
 	}
-	
+
 	public static String getIndexIdForTestRun(){
 		String indexId = System.getProperty("test_run_id");
 		if(indexId != null){
@@ -259,5 +255,4 @@ public enum TestContext {
 		indexId = formater.format(new Date());
 		return indexId;
 	}
-	
 }

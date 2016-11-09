@@ -224,7 +224,7 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase){
 		return createTestAccount(testCase, null);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
 		return createTestAccount(testCase, null, addTestSurveyor);
 	}
@@ -232,7 +232,7 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
 		return createTestAccount(testCase, lfsToExclude, true);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
 		String uniqueNumber = testSetup.getFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
@@ -242,15 +242,15 @@ public class BaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
 		String locationName = uniqueNumber + "Loc";
-		
+
 		String surveyorName = uniqueNumber + "Sur";
 		String analyzerName = uniqueNumber + "Ana";
 		String analyzerSharedKey = analyzerName + "Key";
 		String lotNum = testSetup.getRandomNumber() + testCase;
 		String isoValue = "-32.7";
-		
+
 		LicensedFeatures[] lfs = LicensedFeatures.values(lfsToExclude);
-		
+
 		HashMap<String, String> testAccount = new HashMap<String, String>();
 		testAccount.put("customerName", customerName);
 		testAccount.put("userName", userName);
@@ -259,16 +259,14 @@ public class BaseTest {
 		testAccount.put("userPassword", userPassword);
 		testAccount.put("userRole", userRole);
 		testAccount.put("eula", eula);
-		
 
-		
 		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageCustomersPage);
 		ManageUsersPage	manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);		
+		PageFactory.initElements(driver, manageUsersPage);
 		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver, manageLocationsPage);
-		
+
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
@@ -285,31 +283,31 @@ public class BaseTest {
 		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
-		
+
 		if(!addTestSurveyor){
 			return testAccount;
 		}
-		
+
 		testAccount.put("analyzerSharedKey", analyzerSharedKey);
 		testAccount.put("analyzerName", analyzerName);
 		testAccount.put("surveyorName", surveyorName);
 		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
 		PageFactory.initElements(driver,  manageSurveyorPage);
 		ManageAnalyzersPage manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageAnalyzersPage);	
+		PageFactory.initElements(driver,  manageAnalyzersPage);
 		ManageRefGasBottlesPage manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver, testSetup, baseURL);
 		PageFactory.initElements(driver,  manageRefGasBottlesPage);
-		
+
 		manageSurveyorPage.open();
 		if(!manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName)){
 			fail(String.format("Failed to add a new Surveyor %s, %s, %s",surveyorName, locationName, customerName));
 		}
-		
+
 		manageAnalyzersPage.open();
 		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
 		}
-		
+
 		manageRefGasBottlesPage.open();
 		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",lotNum, isoValue, customerName, locationName, surveyorName));
@@ -327,16 +325,16 @@ public class BaseTest {
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
 			surveyModeFilter = SurveyModeFilter.values();
 		}
-		
+
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, Password);
 		testReport.put("userName", userName);
-		
+
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
 		ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
-		
+
 		for(SurveyModeFilter sm:surveyModeFilter){
 			boolean found = false;
 			ReportModeFilter rm = null;
@@ -350,7 +348,7 @@ public class BaseTest {
 			if(!found){
 				continue;
 			}
-			
+
 			complianceReportsPageAction.open("", -1);
 			ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(testRowID);
 			rpt.rptTitle += rm.toString()+sm.toString();
@@ -382,7 +380,7 @@ public class BaseTest {
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = SurveyType.values();
 		}
-		
+
 		HashMap<String, String> testSurvey = new HashMap<String, String>();
 		testSurvey.put("analyzerName", analyzerName);
 		testSurvey.put("analyzerShearedKey", analyzerSharedKey);
@@ -396,15 +394,15 @@ public class BaseTest {
 		TestEnvironmentActions.workingDataRow.analyzerSerialNumber = analyzerName;
 		TestEnvironmentActions.workingDataRow.analyzerSharedKey = analyzerSharedKey;
 		TestEnvironmentActions.workingDataRow.analyzerRowID = "";
-		
-		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), 
+
+		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 				analyzerName, analyzerSharedKey);
 		TestSetup.restartAnalyzer();
 
 		for(SurveyType st:surveyTypes){
 			driverViewPageAction.open("", -1);
 			driverViewPageAction.waitForConnectionToComplete("", -1);
-			
+
 			int surveyRowID = surveyRowIDs[0];
 			for(int i=0; i<surveyType.length; i++){
 				if(st.toString().equalsIgnoreCase(surveyType[i])){
