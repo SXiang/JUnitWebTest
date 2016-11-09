@@ -9,7 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
-import static common.source.RegexUtility.REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS;
+import static common.source.RegexUtility.REGEX_PATTERN_DATE;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -122,8 +122,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-
 		String reportTitleXPath;
 		String createdByXPath;
 
@@ -170,10 +168,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -190,8 +185,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public boolean findExistingReport(String rptTitle, String strCreatedBy) {
 		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		setPagination(PAGINATIONSETTING_100);
-
-		this.waitForTableDataToLoad();
 
 		String reportTitleXPath;
 		String createdByXPath;
@@ -222,10 +215,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100) && !this.nextBtn.getAttribute("class").contains("disabled")) {
 				Log.clickElementInfo("Next");
-				this.nextBtn.click();
-
-				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
-
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By.xpath("//*[@id='datatable']/tbody/tr"));
 				rowSize = newRows.size();
 				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
@@ -362,28 +352,42 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			pdfInText = (pdfUtility.extractPDFText(fullPathtoPdf));
 			InputStream inputStream = new ByteArrayInputStream(pdfInText.getBytes());
 			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-
+			String line = bufferReader.readLine();
+			Log.warn("Exception when getting notes on PDF: ");
 			try {
-				while ((line = bufferReader.readLine()) != null) {
-					if (line.matches(REGEX_PATTERN_EXTRACT_LINES_STARTING_WITH_DIGITS)) {
-						if (!line.contains("Date Printed")) {
-							if (line.length() > 20) {
-								StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();
-								String parts[] = line.split("\\s");
-								String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
-								String dateCreated = String.join(" ", firstPart);
-								storedProcObj.setDateCreated(dateCreated);
-								String remaining = line.replace(dateCreated, "").trim();
-								storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
-								storedProcObj.setNote(remaining.substring(remaining.indexOf(" ")).trim());
-								notesList.add(storedProcObj);
-	
-							}
+				while (line != null){
+					if(line.matches(REGEX_PATTERN_DATE +".*") && !line.contains("Date Printed") && line.length() > 20) {
+						StoredProcSystemHistory storedProcObj = new StoredProcSystemHistory();
+						String parts[] = line.split("\\s");
+						String firstPart[] = Arrays.copyOfRange(parts, 0, 4);
+						String dateCreated = String.join(" ", firstPart);
+						storedProcObj.setDateCreated(dateCreated);
+						String remaining = line.replace(dateCreated, "").trim();
+						int indexOfUserName = remaining.indexOf(" ");
+						String notes = "";
+						if(indexOfUserName >= 0 ){
+							storedProcObj.setUserName(remaining.substring(0, remaining.indexOf(" ")).trim());
+							notes += remaining.substring(indexOfUserName).trim();
+						}else{
+							storedProcObj.setUserName(remaining.trim());
 						}
+						try{
+							line = bufferReader.readLine();
+							while(line != null && !line.matches(REGEX_PATTERN_DATE +".*") && !line.contains("Date Printed") && !line.startsWith("Date Range ")){
+								notes += line;
+								line = bufferReader.readLine();
+							}
+						}finally{
+							storedProcObj.setNote(notes.trim());
+							notesList.add(storedProcObj);
+						}
+					}else{
+						line = bufferReader.readLine();
 					}
 				}
-			} finally {
+			}catch(Exception e){
+				Log.warn("Exception when getting notes on PDF: "+e.toString());
+			}finally {
 				bufferReader.close();
 			}
 		} catch (IOException e) {

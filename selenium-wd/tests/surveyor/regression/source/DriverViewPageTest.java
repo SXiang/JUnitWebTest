@@ -1037,7 +1037,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	@Test
 	public void TC1212_ActionTest_DriverViewStandardSurveyNewDriver() throws Exception {
 		String userName = SQACUS + testSetup.getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUS + " - " + SQACUSLOC;
+		String location = SQACUSLOC;
 		
 		Log.info("\nRunning TC1212_SimulatorTest_DriverViewStandardSurveyNewDriver - Test Description: Standard Survey as new driver user");
 		

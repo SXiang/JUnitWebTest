@@ -183,8 +183,6 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 				note,customerName,locationName,surveyorName));
 		setPagination(PAGINATIONSETTING_100);
 
-		this.waitForTableDataToLoad();
-		
 		// Click on datetime column.
 		this.clickOnColumnHeader(DATETIME_COL_IDX, 2 /*number of times to click*/);
 
@@ -237,9 +235,7 @@ public class ManageSurveyorHistoriesPage extends SurveyorBasePage {
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING_100)
 					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				this.nextBtn.click();
-				this.testSetup.slowdownInSeconds(this.testSetup
-						.getSlowdownInSeconds());
+				toNextPage();
 				List<WebElement> newRows = getTable().findElements(By
 						.xpath("//*[@id='datatable']/tbody/tr"));
 

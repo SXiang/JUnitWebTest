@@ -565,8 +565,30 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/LoginPageTest.class" />
-					<include name="**/HomePageTest.class" />
+					<include name="**/ComplianceReportsPageTest_Ethane.class" />
+					<include name="**/ComplianceReportsPageTest9.class" />
+					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "Regression" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/ComplianceReportsForAPITest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

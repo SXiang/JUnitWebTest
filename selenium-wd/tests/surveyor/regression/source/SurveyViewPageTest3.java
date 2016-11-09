@@ -514,7 +514,7 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 	 *	- - Click on Display button
 	 * Results: -
 	 *  - - Position button not present in survey view
-	 *	- - Concentration Chart, Wind rose, 8-hour history options are not present in survey view
+	 *	- - Concentration Chart, Wind rose options are not present in survey view
 	 */
 	@Test
 	public void TC931_PositionConcentrationChartWindRose8_HourHistoryOptionsAreNotPresentSurveyView() throws Exception {
@@ -526,7 +526,6 @@ public class SurveyViewPageTest3 extends BaseSurveyViewPageTest {
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
-		assertTrue(surveyViewPageAction.verifyDisplaySwitch8HourHistoryButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
 	}
