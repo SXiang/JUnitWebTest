@@ -218,15 +218,19 @@ public class BaseTest {
 			return;
 		}
 
+		logout();
+
+		getDriver().quit();
+		setDriver(null);
+	}
+
+	public static void logout() {
 		if (getHomePage() != null) {
 			if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
 				getHomePage().open();
 				getHomePage().logout();
 			}
 		}
-
-		getDriver().quit();
-		setDriver(null);
 	}
 
 	public static void postResultsToAutomationAPI() {

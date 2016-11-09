@@ -15,7 +15,7 @@ import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorBaseTest;
 
 /**
- * 
+ *
  * @author spulikkal
  */
 public class ActionsExecutionEngine implements IMethodObserver{
@@ -23,15 +23,15 @@ public class ActionsExecutionEngine implements IMethodObserver{
 	private static final String DATA_FOLDER = "data";
 	private static final String TEST_CASES_XLSX = "TestCases.xlsx";
 	public Properties OR;
-	
-	private String testCaseID;	
+
+	private String testCaseID;
 	private String testCaseRallyID;
 	private String testCaseName;
 	private String testCaseUserRowIDs;
 	private String testCaseEnabled;
 	private String testCaseRunResult;
-	
-	private String testStepID;	
+
+	private String testStepID;
 	private String testStepStep;
 	private String testStepPageObject;
 	private String testStepAction;
@@ -39,14 +39,14 @@ public class ActionsExecutionEngine implements IMethodObserver{
 	private String testStepTestData;
 	private String testStepTestDataRowIDs;
 	private String testStepResult;
-	
+
 	private int testCaseStep;
 	private int testCaseLastStep;
-	
+
 	private String[] testGroupsToExecute;
 
 	private boolean bResult;
-	
+
 	private ExcelUtility excelUtility = null;
 	private IMethodInvoker methodInvoker = null;
 
@@ -62,7 +62,7 @@ public class ActionsExecutionEngine implements IMethodObserver{
 		Boolean foundMatchingTestCase = false;
     	for (String testCaseSheetName : Constants.Excel_Sheets_TestCases) {
     		if (testCaseSheetName.equalsIgnoreCase(sheetName)) {  // Found match.
-	    		if (isExecutableTestGroup(testCaseSheetName)) {    		
+	    		if (isExecutableTestGroup(testCaseSheetName)) {
 		    		Log.info("Reading test case sheet: " + testCaseSheetName);
 		    		int iTotalTestCases = excelUtility.getRowCount(testCaseSheetName);
 		    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
@@ -74,11 +74,11 @@ public class ActionsExecutionEngine implements IMethodObserver{
 		    			testCaseUserRowIDs = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_UserRowIDs, testCaseSheetName);
 		    			testCaseEnabled = excelUtility.getBooleanCellData(iTestcase, Constants.Excel_TestCases_Col_Enabled, testCaseSheetName);
 		    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
-		    			testCaseName = RegexUtility.getValidFileName(testCaseName);		    			
-		    			Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
+		    			testCaseName = RegexUtility.getValidFileName(testCaseName);
+		    			Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]",
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
 		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
-		    			
+
 		    			if (testID == Integer.valueOf(testCaseID)) {	// found match.
 		    				foundMatchingTestCase = true;
 		    				Log.info(String.format("Found matching test case: [TestSheetName=%s], [TestCaseID=%d]", sheetName, testID ));
@@ -91,7 +91,7 @@ public class ActionsExecutionEngine implements IMethodObserver{
 				}
     		}
     	}
-    	
+
     	if (!foundMatchingTestCase) {
     		Log.warn(String.format("NOT found matching test case: [TestSheetName=%s], [TestCaseID=%d]", sheetName, testID ));
     	}
@@ -104,7 +104,7 @@ public class ActionsExecutionEngine implements IMethodObserver{
 	private void beforeTestSetup(String testCaseID, String testCaseRallyID, String testCaseUserRowIDs,
 			String testCaseName) throws Exception {
 		PageActionsStore.INSTANCE.clearStore();
-		TestSetup.stopChromeProcesses();
+		//TestSetup.stopChromeProcesses();
 		TestSetup.deleteAnalyzerLocalDB3();
 		SurveyorBaseTest.initializeTestObjects();
 		BaseTest.reportTestStarting(CLASS_NAME, testCaseRallyID + "_" + testCaseName, testCaseID + " : " + testCaseName);
@@ -112,16 +112,17 @@ public class ActionsExecutionEngine implements IMethodObserver{
 
 	private void afterTestTearDown() throws Exception {
 		BaseTest.reportTestFinished(CLASS_NAME);
-		BaseTest.logoutQuitDriver();
+		BaseTest.logout();
 	}
 
 	private void afterTestClassTearDown() throws Exception {
+		BaseTest.logoutQuitDriver();
 		BaseTest.postResultsToAutomationAPI();
 	}
-	
+
 	private void executeTestCaseAction(String testCaseSheetName, String testStepsSheetName, int iTestcase) throws Exception {
 		Log.info(String.format("START Executing Test Case ID = %s", testCaseID));
-		
+
 		testCaseStep = excelUtility.getRowContains(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testStepsSheetName);
 		testCaseLastStep = excelUtility.getTestStepsCount(testCaseID, Constants.Excel_TestCaseSteps_Col_ID, testCaseStep, testStepsSheetName);
 
@@ -137,44 +138,46 @@ public class ActionsExecutionEngine implements IMethodObserver{
 			testStepTestData = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestData, testStepsSheetName);
 			testStepTestDataRowIDs = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_TestDataRowIDs, testStepsSheetName);
 			testStepResult = excelUtility.getCellData(testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testStepsSheetName);
-			
+
 			Log.info(String.format("RUNNING Test Step[ID=%s]-'%s'", testStepID, testStepStep));
-			Log.info(String.format("START Executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+			Log.info(String.format("START Executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'",
 					testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
-			
+
 			try {
 				bResult = executeAction(testCaseStep, testStepPageObject, testStepAction, testStepWebElement, testStepTestData, testStepTestDataRowIDs, testStepsSheetName);
 			} catch (Exception e) {
+				Log.error(String.format("FAILED action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'",
+						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
 				BaseTest.reportTestFailed(e, CLASS_NAME);
 			}
-			
+
 			if (bResult==false) {
-				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+				String failureMessage = String.format("FAILURE while executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'",
 						testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs);
 				excelUtility.setCellData(Constants.KEYWORD_FAIL + " : " + failureMessage, testCaseStep, Constants.Excel_TestCaseSteps_Col_Result, testCaseSheetName);
 				BaseTest.reportTestFailed(new Exception(failureMessage), CLASS_NAME);
 				break;
-			}						
+			}
 
-			Log.info(String.format("FINISHED executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'", 
+			Log.info(String.format("FINISHED executing action-'%s' on page-'%s' with test data-'%s' for rowIDs-'%s'",
 					testStepAction, testStepPageObject, testStepTestData, testStepTestDataRowIDs));
 		}
-		
+
 		if (bResult==true) {
 			excelUtility.setCellData(Constants.KEYWORD_PASS, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 			Log.info(String.format("FINISHED Executing Test Case ID = %s", testCaseID));
-		} else {					
+		} else {
 			excelUtility.setCellData(Constants.KEYWORD_FAIL, iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 			Log.info(String.format("FAILURE while Executing Test Case ID = %s", testCaseID));
 		}
-	}	
+	}
 
 	public void startExecution() throws Exception {
 		String testCaseExcelPath = TestContext.INSTANCE.getExecutionPath() + DATA_FOLDER + File.separator + TEST_CASES_XLSX;
 		excelUtility.setExcelFile(testCaseExcelPath);
-		
+
     	for (String testCaseSheetName : Constants.Excel_Sheets_TestCases) {
-    		if (isExecutableTestGroup(testCaseSheetName)) {    		
+    		if (isExecutableTestGroup(testCaseSheetName)) {
 	    		Log.info("Reading test case sheet: " + testCaseSheetName);
 	    		int iTotalTestCases = excelUtility.getRowCount(testCaseSheetName);
 	    		String testStepsSheetName = testCaseSheetName + "-TestSteps";
@@ -190,7 +193,7 @@ public class ActionsExecutionEngine implements IMethodObserver{
 	    			testCaseRunResult = excelUtility.getCellData(iTestcase, Constants.Excel_TestCases_Col_RunResult, testCaseSheetName);
 	    			testCaseName = RegexUtility.getValidFileName(testCaseName);
 	    			if (testCaseEnabled.equalsIgnoreCase("true")) {
-	    				Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]", 
+	    				Log.info(String.format("testCaseID=[%s], testCaseRallyID=[%s], testCaseUserRowIDs=[%s], testCaseName=[%s]",
 		    					testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName));
 		    			beforeTestSetup(testCaseID, testCaseRallyID, testCaseUserRowIDs, testCaseName);
 	    				executeTestCaseAction(testCaseSheetName, testStepsSheetName, iTestcase);
@@ -216,17 +219,17 @@ public class ActionsExecutionEngine implements IMethodObserver{
 		return false;
 	}
 
-	private boolean executeAction(int testStep, String pageObjectName, String actionName, String webElement, String testData, 
+	private boolean executeAction(int testStep, String pageObjectName, String actionName, String webElement, String testData,
 			 String testDataRowIDs, String testStepsSheetName) throws Exception {
 		// If WebElement info is provided use that as testData.
 		if (!ActionArguments.isEmpty(webElement)) {
 			testData = webElement;
 		}
-		 
-		List<Integer> dataRowIDList = parseDataRowsIDs(testDataRowIDs);		 
+
+		List<Integer> dataRowIDList = parseDataRowsIDs(testDataRowIDs);
 		IActions pageActions = PageActionsFactory.getAction(pageObjectName);
 		Log.info("Executing Action Type = " + pageActions.getClass().getName());
-		
+
 		// Invoke method using MethodInvoker. Results are printed for each run in updateResult(..).
 		MethodParams methodParam = new MethodParams(testStepsSheetName, testStep, testData, dataRowIDList);
 		return methodInvoker.invokeMethod(pageActions, actionName, methodParam);
@@ -251,16 +254,16 @@ public class ActionsExecutionEngine implements IMethodObserver{
 						intList.add(i);
 					}
 				}
-			} else {	
+			} else {
 				// Case 2: CSV values (for eg. 1,4,58,132)
 				// Case 3: Single value (for eg. 4)
 				parts = testDataRowIDs.split(",");
 				for (String part : parts) {
 					intList.add(Integer.valueOf(part));
-				}	
+				}
 			}
 		}
-		
+
 		return intList;
 	}
 

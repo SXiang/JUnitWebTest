@@ -11,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +63,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 	public DriverViewPageTest() throws IOException {
 		super();
+	}
+
+	@BeforeClass
+	public static void beforeTestClass() {
+			initializeTestObjects();
 	}
 
 	@Before

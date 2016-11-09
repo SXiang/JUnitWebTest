@@ -32,11 +32,11 @@ import org.openqa.selenium.NoSuchElementException;
 public class WebElementExtender {
 
 	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
-		Log.method("WebElementExtender.executeScript", element, driver, jsScript);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try{
 			js.executeScript(jsScript, element);
 		}catch(Exception e){
+			Log.method("WebElementExtender.executeScript", element, driver, jsScript);
 			Log.warn("Failed to click on the WebElement: "+e.toString());
 		}
 	}
