@@ -26,8 +26,6 @@ public enum TestContext {
 	private TestSetup testSetup;
 	private String userCulture = null;
 	private String loggedInUserName;
-	private String runUniqueId;
-
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
 	private Map<String,Object> testMap;
@@ -37,8 +35,6 @@ public enum TestContext {
 	private int numTestMessagesToRetain = 5;
 
 	private TestContext() {
-		// Every time a context is created set a unique run ID.
-		this.setRunUniqueId(TestSetup.getUUIDString());
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
 		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
@@ -231,6 +227,7 @@ public enum TestContext {
 		}
 		return testRunCategory;
 	}
+
 	public String getTestReportCategory() {
 		String testReportCategory = null;
 		if (testSetup != null) {
@@ -239,12 +236,11 @@ public enum TestContext {
 		return testReportCategory;
 	}
 
-	public String getRunUniqueId() {
-		return runUniqueId;
-	}
-
-	private void setRunUniqueId(String runUniqueId) {
-		this.runUniqueId = runUniqueId;
+	public Long getRunUniqueId() {
+		if (testSetup != null) {
+			return testSetup.getRunUUID();
+		}
+		return 0L;
 	}
 
 	public ExtentReports getReport() {
@@ -265,5 +261,4 @@ public enum TestContext {
 		indexId = formater.format(new Date());
 		return indexId;
 	}
-
 }

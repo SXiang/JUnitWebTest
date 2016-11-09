@@ -318,6 +318,7 @@ public class BaseTest {
 		testAccount.put("analyzerSharedKey", analyzerSharedKey);
 		testAccount.put("analyzerName", analyzerName);
 		testAccount.put("surveyorName", surveyorName);
+
 		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(),  manageSurveyorPage);
 		ManageAnalyzersPage manageAnalyzersPage = new ManageAnalyzersPage(getDriver(), getBaseURL(), getTestSetup());
@@ -419,6 +420,7 @@ public class BaseTest {
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
+
 		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(3));
 		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
 		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;

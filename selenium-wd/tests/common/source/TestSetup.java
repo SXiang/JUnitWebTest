@@ -165,6 +165,7 @@ public class TestSetup {
 
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
+	private Long runUUID;
 
 	private static boolean parallelBuildEnabled;
 
@@ -583,6 +584,7 @@ public class TestSetup {
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
+			setRunUUIDProperty();
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();
 			setPerformanceExecutionTestProperties();
@@ -731,6 +733,13 @@ public class TestSetup {
 			} catch (Exception e) {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
+		}
+	}
+
+	private void setRunUUIDProperty() {
+		String runUUID = this.testProp.getProperty("runUUID");
+		if (runUUID != null && runUUID != "") {
+			this.setRunUUID(Long.valueOf(runUUID));
 		}
 	}
 
@@ -1122,7 +1131,8 @@ public class TestSetup {
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
 			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath +
-					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath,
+							TestContext.INSTANCE.getRunUniqueId().toString());
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1505,5 +1515,13 @@ public class TestSetup {
 
 	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
 		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
+	}
+
+	public Long getRunUUID() {
+		return runUUID;
+	}
+
+	public void setRunUUID(Long runUUID) {
+		this.runUUID = runUUID;
 	}
 }
