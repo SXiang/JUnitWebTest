@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import common.source.Log;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -30,15 +31,20 @@ import surveyor.scommon.source.ObserverViewPage;
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageStressTest extends BaseMapViewTest {
 
-	public ObserverViewPageStressTest() throws IOException {
-		super();
-	}
-
 	private static DriverViewPageActions driverViewPageAction;
 	private static ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
 
 	private static DriverViewPage driverViewPage;
 	private static ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
+
+	public ObserverViewPageStressTest() throws IOException {
+		super();
+	}
+
+	@BeforeClass
+	public static void beforeTestClass() {
+		initializeTestObjects();
+	}
 
 	@Before
 	public void beforeTestMethod() {
@@ -65,10 +71,10 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
+
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
-
 
 	private void stopSurveyAndAnalyzer() {
 		stopSurveyAndAnalyzer(driverViewPageAction);

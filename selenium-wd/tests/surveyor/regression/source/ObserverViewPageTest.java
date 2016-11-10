@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import common.source.Log;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
@@ -31,10 +32,6 @@ import surveyor.scommon.source.ObserverViewPage;
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest extends BaseMapViewTest {
 
-	public ObserverViewPageTest() throws IOException {
-		super();
-	}
-
 	// Change this: When test defaulted to Analyzer 1.
 	private static String SURVEY_INFO_SURVEYOR_ANALYZER_FOR_TEST = SURVEY_INFO_SURVEYOR3_ANALYZER3;
 
@@ -44,6 +41,14 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 
+	public ObserverViewPageTest() throws IOException {
+		super();
+	}
+
+	@BeforeClass
+	public static void beforeTestClass() {
+		initializeTestObjects();
+	}
 
 	@Before
 	public void beforeTestMethod() {

@@ -54,12 +54,12 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest extends BaseMapViewTest {
 
-	protected DriverViewPageActions driverViewPageAction;
-	protected static DriverViewPage driverViewPage;
-	protected static ManageCustomersPage manageCustomersPage = null;
-	protected static ManageUsersPage manageUsersPage = null;
-	protected static HomePage homePage;
-	protected static LoginPage loginPage;
+	private DriverViewPageActions driverViewPageAction;
+	private static DriverViewPage driverViewPage;
+	private static ManageCustomersPage manageCustomersPage = null;
+	private static ManageUsersPage manageUsersPage = null;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
 	public DriverViewPageTest() throws IOException {
 		super();
