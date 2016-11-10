@@ -13,7 +13,7 @@ public class TestEnvironmentActions extends BaseActions {
 	private static final String FN_IDLE_FOR_SECONDS = "idleForSeconds";
 	private static final String FN_START_SIMULATOR = "startAnalyzer";
 	private static final String FN_START_REPLAY = "startReplay";
-	
+
 	private TestEnvironmentDataReader dataReader;
 	public static ThreadLocal<TestEnvironmentDataRow> workingDataRow = new ThreadLocal<TestEnvironmentDataRow>();
 
@@ -27,7 +27,7 @@ public class TestEnvironmentActions extends BaseActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean startAnalyzer(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.startAnalyzer", data, dataRowID);
@@ -50,24 +50,31 @@ public class TestEnvironmentActions extends BaseActions {
 				analyzerSerialNumber = dataRow.analyzerSerialNumber;
 				analyzerSharedKey = dataRow.analyzerSharedKey;
 			}
-			TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), 
+			Log.info("[startAnalyzer] -> Updating Analyzer configuration");
+			TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 					analyzerSerialNumber, analyzerSharedKey);
+			Log.info("[startAnalyzer] -> Restarting Analyzer");
 			TestSetup.restartAnalyzer();
+			Log.info("[startAnalyzer] -> Restarted Analyzer");
 			// When the Analyzer is started store the working data row.
 			workingDataRow.set(dataRow);
+			Log.info("[startAnalyzer] -> Set working dataRow");
 		} catch (Exception e) {
 			Log.error(e.toString());
+			Log.info("[startAnalyzer] -> Encountered error. Returning FALSE.");
 			return false;
 		}
+
+		Log.info("[startAnalyzer] -> Successful!");
 		return true;
 	}
- 
+
 	/**
 	 * Executes startReplay action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean startReplay(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.startReplay", data, dataRowID);
@@ -86,7 +93,7 @@ public class TestEnvironmentActions extends BaseActions {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Executes stopAnalyzer action.
 	 * @param data - specifies the input data passed to the action.
@@ -98,14 +105,14 @@ public class TestEnvironmentActions extends BaseActions {
 		try {
 			TestSetup.stopAnalyzer();
 			// When the Analyzer is stopped clear off the working data row.
-			workingDataRow = null;
+			workingDataRow.set(null);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Executes verifyAnalyzerIsRunning action.
 	 * @param data - specifies the input data passed to the action.
@@ -116,7 +123,7 @@ public class TestEnvironmentActions extends BaseActions {
 		logAction("TestEnvironmentActions.verifyAnalyzerIsRunning", data, dataRowID);
 		return TestSetup.isAnalyzerRunning();
 	}
- 
+
 	/**
 	 * Executes verifyAnalyzerIsShutdown action.
 	 * @param data - specifies the input data passed to the action.
@@ -127,7 +134,7 @@ public class TestEnvironmentActions extends BaseActions {
 		logAction("TestEnvironmentActions.verifyAnalyzerIsShutdown", data, dataRowID);
 		return TestSetup.isAnalyzerShutdown();
 	}
-	
+
 	/**
 	 * Executes verifyBrowserIsShutdown action.
 	 * @param data - specifies the input data passed to the action.
@@ -144,7 +151,7 @@ public class TestEnvironmentActions extends BaseActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean idleForSeconds(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.idleForSeconds", data, dataRowID);
@@ -159,7 +166,7 @@ public class TestEnvironmentActions extends BaseActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean startNetworkProxy(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.startNetworkProxy", data, dataRowID);
@@ -172,14 +179,14 @@ public class TestEnvironmentActions extends BaseActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean stopNetworkProxy(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.stopNetworkProxy", data, dataRowID);
 		TestContext.INSTANCE.getTestSetup().stopNetworkProxy();
 		return true;
 	}
-	
+
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
@@ -193,7 +200,7 @@ public class TestEnvironmentActions extends BaseActions {
 		else if (actionName.equals("idleForSeconds")) { return this.idleForSeconds(data, dataRowID); }
 		return false;
 	}
-	
+
 	public TestEnvironmentDataReader getDataReader() {
 		if (dataReader == null) {
 			setDataReader(new TestEnvironmentDataReader(this.excelUtility));
@@ -204,7 +211,7 @@ public class TestEnvironmentActions extends BaseActions {
 	public void setDataReader(TestEnvironmentDataReader dataReader) {
 		this.dataReader = dataReader;
 	}
-	
+
 	public String getWorkingAnalyzerSerialNumber() throws NumberFormatException, Exception {
 		if (TestEnvironmentActions.workingDataRow.get() != null) {
 			if (!ActionArguments.isEmpty(TestEnvironmentActions.workingDataRow.get().analyzerRowID)) {
@@ -240,9 +247,9 @@ public class TestEnvironmentActions extends BaseActions {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 
 		LoginPageActions.clearStoredObjects();
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, loginUserRowID);  
+		loginPageAction.login(EMPTY, loginUserRowID);
 
 		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
 	}
@@ -267,19 +274,19 @@ public class TestEnvironmentActions extends BaseActions {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", username, "<password_hidden>"), NOTSET);  
+		loginPageAction.login(String.format("%s:%s", username, "<password_hidden>"), NOTSET);
 
 		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
 	}
 
 	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
 			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction) throws Exception {
-		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID); 	
+		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID); 		
+		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);	
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);

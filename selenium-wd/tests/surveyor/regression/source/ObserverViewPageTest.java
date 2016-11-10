@@ -22,11 +22,11 @@ import surveyor.scommon.source.ObserverViewPage;
 /*
  * **** NOTES ****:
  *  1. Action based tests that work on MapView (Survey, Observer, Driver) can derive from BaseMapViewTest.
- *  2. If any of the tests do NOT use TestEnvironment actions for starting Analyzer and simulator then 
+ *  2. If any of the tests do NOT use TestEnvironment actions for starting Analyzer and simulator then
  *  they should follow this convention to start simulator:
  *    Mark the test as TC*_SimulatorTest_* and it will be detected as Simulator based test and will trigger
  *    installation of Simulator pre-requisites before running the test.
- * 
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest extends BaseMapViewTest {
@@ -43,7 +43,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
-	
+
 
 	@Before
 	public void beforeTestMethod() {
@@ -91,13 +91,13 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 	private void loginAsObserver(int userRowID, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
-		loginPageActionList.get(index).workingDataRow = null;
+		loginPageActionList.get(index).workingDataRow.set(null);
 		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
 		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().workingDataRow = null;
+		getLoginPageAction().workingDataRow.set(null);
 		getLoginPageAction().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
@@ -761,12 +761,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 
 	/**
-	 * Test Case ID: TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle Script: 
-	 * - - - On Home Page, click on Picarro Surveyors -& Online -& Curtain 
-	 * - - Click on Return. 
-	 * - - Turn Position OFF and click on Curtain 
-	 * - - Click on Return Results: 
-	 * 		- - Red color cursor will move along with car position and blue spikes are displayed 
+	 * Test Case ID: TC1411_ObserverView_AssessmentSurvey_CurtainViewDisplayedUserAbleFollowVehicle Script:
+	 * - - - On Home Page, click on Picarro Surveyors -& Online -& Curtain
+	 * - - Click on Return.
+	 * - - Turn Position OFF and click on Curtain
+	 * - - Click on Return Results:
+	 * 		- - Red color cursor will move along with car position and blue spikes are displayed
 	 * 		- Cursor will stop moving but blue
 	 * spikes will be displayed - User will be returned to Observer View page
 	 */
@@ -785,7 +785,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		
+
 		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
@@ -1252,5 +1252,5 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		stopSurveyAndAnalyzer();
 	}
-	
+
 }
