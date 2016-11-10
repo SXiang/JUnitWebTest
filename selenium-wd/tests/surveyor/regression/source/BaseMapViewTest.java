@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -16,6 +17,7 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.TestSetupFactory;
+import common.source.WebDriverFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -146,18 +148,20 @@ public class BaseMapViewTest extends BaseTest{
 		for(int index = currentSize; index < num + currentSize; index++ ){
 			TestSetup setup= new TestSetup();
 			testSetupList.add(setup);
-			driverList.add(setup.getDriver());
+			// Index 0 is default web driver. Start from 1 for additional web drivers.
+			WebDriver driver = setup.getDriver(index+1);
+			driverList.add(driver);
 			baseURLList.add(setup.getBaseUrl());
-			Log.info("Deleting all cookies...***:" + setup.getDriver());
-			setup.getDriver().manage().deleteAllCookies();
-			loginPageActionList.add(new LoginPageActions(setup.getDriver(), setup.getBaseUrl(), setup));
-			homePageActionList.add(new HomePageActions(setup.getDriver(), setup.getBaseUrl(), setup));
+			Log.info("Deleting all cookies...***:" + driver);
+			driver.manage().deleteAllCookies();
+			loginPageActionList.add(new LoginPageActions(driver, setup.getBaseUrl(), setup));
+			homePageActionList.add(new HomePageActions(driver, setup.getBaseUrl(), setup));
 
-			loginPageList.add(new LoginPage(setup.getDriver(), setup.getBaseUrl(), setup));
-			PageFactory.initElements(setup.getDriver(), loginPageList.get(index));
+			loginPageList.add(new LoginPage(driver, setup.getBaseUrl(), setup));
+			PageFactory.initElements(driver, loginPageList.get(index));
 
-			homePageList.add(new HomePage(setup.getDriver(), setup.getBaseUrl(), setup));
-			PageFactory.initElements(setup.getDriver(), homePageList.get(index));
+			homePageList.add(new HomePage(driver, setup.getBaseUrl(), setup));
+			PageFactory.initElements(driver, homePageList.get(index));
 		}
 	}
 
@@ -166,24 +170,31 @@ public class BaseMapViewTest extends BaseTest{
 		disposeProcesses();
 	}
 
+	@AfterClass
+	public static void afterTestClass() {
+		// dispose all web drivers
+		WebDriverFactory.quitDrivers();
+	}
+
 	@After
 	public void afterTest() {
 		//setTestSetup(null);
 
-		// clean up - extra web drivers
+		// logout from page for extra web drivers.
 		for(int index=0;index<testSetupList.size(); index++){
 			homePageList.get(index).open();
 			if (!driverList.get(index).getTitle().equalsIgnoreCase("Login"))
 				homePageList.get(index).logout();
-
-			driverList.get(index).quit();
 		}
+
+		// dispose extra web drivers
+		WebDriverFactory.quitDrivers(false /*quitDefaultDriver*/);
 	}
 
 	protected static void disposeProcesses() {
 		if (!TestSetup.isParallelBuildEnabled()) {
-				TestSetup.stopChromeProcesses();
-				TestSetup.stopAnalyzer();
+			TestSetup.stopChromeProcesses();
+			TestSetup.stopAnalyzer();
 		}
 	}
 
@@ -230,6 +241,7 @@ public class BaseMapViewTest extends BaseTest{
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), analyzerSerialNumber, analyzerSharedKey);
 		TestSetup.restartAnalyzer();
 	}
+
 	protected void startReplay(DriverViewPageActions driverViewPageAction, Integer analyzerRowId) throws Exception {
 		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerRowId);
 		driverViewPageAction.open(EMPTY,NOTSET);
