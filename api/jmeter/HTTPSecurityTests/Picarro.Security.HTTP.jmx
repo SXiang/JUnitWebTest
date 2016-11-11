@@ -822,14 +822,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;Admin&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -1208,14 +1210,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;Support&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -1594,14 +1598,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;PicarroAdmin&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -1980,14 +1986,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;PicarroSupervisor&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -2366,14 +2374,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;PicarroDriver&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -2752,14 +2762,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;CustomerSupervisor&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -3123,14 +3135,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;CustomerDriver&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
@@ -3494,14 +3508,16 @@ for(int i=0; i&lt;size; i++){
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String role= &quot;CustomerAdmin&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;))){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
 		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
 		Failure = true;
 		}else{
 			Failure = false;
 		}
 }else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)){
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
 		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
 		Failure = true;
 	}else{
