@@ -30,13 +30,14 @@ import static surveyor.scommon.source.SurveyorConstants.USERROLEADMIN;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsAdminPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -44,6 +45,7 @@ import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -64,38 +66,52 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	private static ManageUsersAdminPage manageUsersAdminPage;
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
+	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void setupManageLocationsAdminPageTest() {
-		homePage = new HomePage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, homePage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
+	/**
+	 * This method is called by the 'worker' thread
+	 * 
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
 
-		manageLocationsAdminPage = new ManageLocationsAdminPage(driver,
-				baseURL, testSetup);
-		PageFactory.initElements(driver, manageLocationsAdminPage);
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
+		manageLocationsAdminPage = pageObjectFactory.getManageLocationsAdminPage();
+		PageFactory.initElements(getDriver(), manageLocationsAdminPage);
 
-		manageUsersAdminPage = new ManageUsersAdminPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageUsersAdminPage);
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageRefGasBottlesAdminPage = new ManageRefGasBottlesAdminPage(driver,
-				testSetup, baseURL);
-		PageFactory.initElements(driver, manageRefGasBottlesAdminPage);
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 
-		manageSurveyorAdminPage = new ManageSurveyorAdminPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageSurveyorAdminPage);
+		manageUsersAdminPage = pageObjectFactory.getManageUsersAdminPage();
+		PageFactory.initElements(getDriver(), manageUsersAdminPage);
+
+		manageRefGasBottlesAdminPage = pageObjectFactory.getManageRefGasBottlesAdminPage();
+		PageFactory.initElements(getDriver(), manageRefGasBottlesAdminPage);
+
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
+		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
 	}
 
 	/**
@@ -154,7 +170,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		final int xOffset = 101;
 		final int yOffset = 111;
 
-		String customerName = CUSTOMERNAMEPREFIX + testSetup.getFixedSizeRandomNumber(12) + "TC22";
+		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC22";
 		String eula = customerName + ": " + EULASTRING;
 		String location = "Santa Clara";
 		
@@ -163,7 +179,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		
 		// *** Add a new location/customer for this test ***
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 		
@@ -286,7 +302,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 	@Test
 	public void TC1236_CheckTimeZone_PicAdmin(){
-		String userName = PICNAMEPREFIX + "ad" + testSetup.getRandomNumber() + REGBASEPICUSERNAME;
+		String userName = PICNAMEPREFIX + "ad" + getTestSetup().getRandomNumber() + REGBASEPICUSERNAME;
 		String customer = "Picarro";
 		String location = "Santa Clara";
 		String locationDesc = customer + " - " + location;
@@ -296,7 +312,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 
 		// *** Add a new admin user for this test ***
 		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageUsersPage.open();
 		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, USERROLEADMIN, locationDesc, TIMEZONECT);
 		manageUsersAdminPage.logout();
@@ -336,8 +352,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC459_EditLocation_CustUA() {
-		String locationName = testSetup.getRandomNumber() + "TC459";
-		String locationNameNew = testSetup.getRandomNumber() + "TC459" + "_New";
+		String locationName = getTestSetup().getRandomNumber() + "TC459";
+		String locationNameNew = getTestSetup().getRandomNumber() + "TC459" + "_New";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC459_EditLocation_CustUA - Test Description: Edit existing location\n");
@@ -370,8 +386,8 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC460_DuplicateLocationNotAllowed_CustUA() {
-		String locationName1 = testSetup.getRandomNumber() + "TC460_1";
-		String locationName2 = testSetup.getRandomNumber() + "TC460_2";
+		String locationName1 = getTestSetup().getRandomNumber() + "TC460_1";
+		String locationName2 = getTestSetup().getRandomNumber() + "TC460_2";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC460_DuplicateLocationNotAllowed_CustUA - Test Description: Customer Admin not allowed to edit location name same as existing one\n");
@@ -405,7 +421,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC461_EditLocBlankRequiredFields_CustUA() {
-		String locationName = testSetup.getRandomNumber() + "TC461";
+		String locationName = getTestSetup().getRandomNumber() + "TC461";
 		String cityName = "Santa Clara";
 
 		Log.info("\nRunning - TC461_EditLocBlankRequiredFields_CustUA - Test Description: edit location- blank required fields\n");
@@ -442,9 +458,9 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String str35chars = "AbcdefghI-AbcdefghI-AbcdefghI-Abcde";
 		String cityName = "Santa Clara";
 
-		String locationName50Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName50Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ "TC462" + str34chars;
-		String locationName51Chars = testSetup.getFixedSizeRandomNumber(11)
+		String locationName51Chars = getTestSetup().getFixedSizeRandomNumber(11)
 				+ "TC462" + str35chars;
 
 		Log.info("\nRunning - TC462_EditLoc50CharLimit_CustUA - Test Description: More than 50 characters not allowed in Location Description field\n");
@@ -491,7 +507,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageSurveyorAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageSurveyorAdminPage.clickOnCustomerFirstEditSurveyorBtn();
 		manageSurveyorAdminPage.waitForEditPageLoad();
 		manageSurveyorAdminPage.getBtnCancel().click();
@@ -499,7 +515,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				curURL));
 
 		manageUsersAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageUsersAdminPage.getBtnAddNewUser().click();
 		manageUsersAdminPage.waitForNewPageLoad();
 		manageUsersAdminPage.getBtnCancel().click();
@@ -512,7 +528,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				.equalsIgnoreCase(curURL));
 
 		manageLocationsAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageLocationsAdminPage.clickOnFirstEditLocationBtn();
 		manageLocationsAdminPage.waitForEditPageLoad();
 		manageLocationsAdminPage.getBtnCancel().click();
@@ -520,7 +536,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 				curURL));
 
 		manageRefGasBottlesAdminPage.open();
-		curURL = driver.getCurrentUrl();
+		curURL = getDriver().getCurrentUrl();
 		manageRefGasBottlesAdminPage.getBtnAddNewRefGasBottle().click();
 		manageRefGasBottlesAdminPage.waitForNewPageLoad();
 		manageRefGasBottlesAdminPage.getBtnCancel().click();
@@ -600,7 +616,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC452_SearchInvalidLocation() {
-		String location = SQACUSLOC + testSetup.getRandomNumber();
+		String location = SQACUSLOC + getTestSetup().getRandomNumber();
 
 		Log.info("\nRunning - TC452 - Test Description: Search invalid location record\n");
 

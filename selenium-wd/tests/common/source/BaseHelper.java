@@ -10,9 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -237,9 +239,9 @@ public class BaseHelper {
 	 * @return HashMap<String, Boolean> a map with the string and whether it's
 	 *         matched
 	 */
-	public static HashMap<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
+	public static Map<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
 		Log.method("matchSinglePattern", actualReportString, LogHelper.strListToString(inputList));
-		HashMap<String, Boolean> stringsToMatch = new HashMap<String, Boolean>();
+		Map<String, Boolean> stringsToMatch = Collections.synchronizedMap(new HashMap<String, Boolean>());
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
 		while (listIterator.hasNext()) {
@@ -269,9 +271,9 @@ public class BaseHelper {
 	 * @param inputList
 	 * @return HashMap<String, String> a map with the string and whether it's matched
 	 */
-	public static HashMap<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
+	public static Map<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
 		Log.method("matchPatternforPairs", actualReportString, LogHelper.strListToString(inputList));
-		HashMap<String, String> stringMatch = new HashMap<String, String>();
+		Map<String, String> stringMatch = Collections.synchronizedMap(new HashMap<String, String>());
 		String[] lines = actualReportString.split("\\n");
 		Iterator<String> listIterator = inputList.iterator();
 		while (listIterator.hasNext()) {

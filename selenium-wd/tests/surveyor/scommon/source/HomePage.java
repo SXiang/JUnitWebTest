@@ -330,7 +330,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -378,7 +378,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -463,7 +463,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -512,7 +512,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -568,7 +568,7 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
-		if (!this.linkReports.isDisplayed()){
+		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
 		}
@@ -629,8 +629,9 @@ public class HomePage extends SurveyorBasePage {
 
 		// 2. Verify user is navigated to Observer view
 		// Wait for Observer view page to load.
-		ObserverViewPage observerViewPage = new ObserverViewPage(driver, testSetup, ObserverViewPage.STRURLPath);
+		ObserverViewPage observerViewPage = new ObserverViewPage(driver, ObserverViewPage.STRURLPath, testSetup);
 		PageFactory.initElements(driver, observerViewPage);
+
 		observerViewPage.waitForPageLoad();
 		observerViewPage.waitForConnectionComplete();
 
@@ -647,8 +648,9 @@ public class HomePage extends SurveyorBasePage {
 
 		// 4. Verify User is navigated to Surveyors Page
 		// Wait for Surveyor Systems page to load.
-		SurveyorSystemsPage surveyorSystemsPage = new SurveyorSystemsPage(driver, testSetup, SurveyorSystemsPage.STRURLPath);
+		SurveyorSystemsPage surveyorSystemsPage = new SurveyorSystemsPage(driver, SurveyorSystemsPage.STRURLPath, testSetup);
 		PageFactory.initElements(driver, surveyorSystemsPage);
+
 		surveyorSystemsPage.waitForPageLoad();
 
 		Log.info(String.format("\nThe current URL is: %s\n", this.driver.getCurrentUrl()));
@@ -669,8 +671,9 @@ public class HomePage extends SurveyorBasePage {
 		this.linkViewAllDrivingSurveys.click();
 
 		// Wait for driving survey page to load.
-		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, testSetup, MeasurementSessionsPage.STRURLPath);
+		MeasurementSessionsPage measurementSessionsPage = new MeasurementSessionsPage(driver, MeasurementSessionsPage.STRURLPath, testSetup);
 		PageFactory.initElements(driver, measurementSessionsPage);
+
 		measurementSessionsPage.waitForPageLoad();
 
 		if (!this.driver.getCurrentUrl().contains("MeasurementSessions"))
@@ -687,8 +690,9 @@ public class HomePage extends SurveyorBasePage {
 
 		// 1. Verify User is navigated to Survey view
 		// Wait for Survey view to load.
-		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, testSetup, SurveyViewPage.STRURLPath);
+		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, SurveyViewPage.STRURLPath, testSetup);
 		PageFactory.initElements(driver, surveyViewPage);
+
 		surveyViewPage.waitForPageLoad();
 		surveyViewPage.checkIfAtSurveyViewPage();
 

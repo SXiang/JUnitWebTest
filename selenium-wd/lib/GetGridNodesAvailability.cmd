@@ -1,0 +1,1 @@
+Powershell -command "& {Set-ExecutionPolicy Unrestricted -Force;Unblock-File -Path %~1\selenium-wd\lib\GetGridNodesAvailability.v2.ps1;%~1\selenium-wd\lib\GetGridNodesAvailability.v2.ps1 -gridHost '%~2' -gridPort '%~3' -testRunUUID '%~4' -requestedThreadCount '%~5' -browser '%~6' -os '%~7'; exit;}"

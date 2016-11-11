@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
@@ -159,7 +160,7 @@ public class DbSeedExecutorTest {
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 
 		// Add GIS seed for customer.
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.name);
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
 		String customerId = customer.getId();
 		DbSeedExecutor.executeGisSeed(customerId);
 
@@ -270,8 +271,8 @@ public class DbSeedExecutorTest {
 				final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
 				final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
+				final List<Map<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 
-				final List<HashMap<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
 				final String surveyId = firstSurveyRow.get(0).get("Id");
 				final String analyzerId = firstSurveyRow.get(0).get("AnalyzerId");
 

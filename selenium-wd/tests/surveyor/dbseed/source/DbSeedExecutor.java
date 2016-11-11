@@ -5,9 +5,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
@@ -160,7 +159,8 @@ public class DbSeedExecutor {
 					Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
 
-					final List<HashMap<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
+					final List<Map<String, String>> firstSurveyRow = new CSVUtility().getTopRows(surveyCsvFilePath, 1);
+
 					final String surveyId = firstSurveyRow.get(0).get("Id");
 					final String analyzerId = firstSurveyRow.get(0).get("AnalyzerId");
 
@@ -340,7 +340,7 @@ public class DbSeedExecutor {
 			if (key.startsWith(filePrefix)) {
 				BaseDbSeedBuilder dbSeedBuilder = dbSeedBuilderCache.getDbSeedBuilder(key);
 				final String seedFilePath = dbSeedBuilder.getSeedFilePath();
-				final List<HashMap<String, String>> firstRow = new CSVUtility().getTopRows(seedFilePath, 1);
+				final List<Map<String, String>> firstRow = new CSVUtility().getTopRows(seedFilePath, 1);
 				if (firstRow != null && firstRow.size() > 0) {
 					if (firstRow.get(0).get("AnalyzerId").equals(analyzerId)) {
 						rowCount += FileUtility.getLineCountInFile(Paths.get(seedFilePath)) - 2;

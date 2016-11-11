@@ -16,11 +16,11 @@ import surveyor.scommon.source.ManageRefGasBottlesPage;
 public class ManageRefGasBottlesPageActions extends BasePageActions {
 
 	private RefGasBottleDataReader dataReader = null;
-	public static RefGasBottleDataRow workingDataRow = null;    // Stores the workingDataRow from createNewRefGasBottle action
+	public static ThreadLocal<RefGasBottleDataRow> workingDataRow = new ThreadLocal<RefGasBottleDataRow>();    // Stores the workingDataRow from createNewRefGasBottle action
 
 	public ManageRefGasBottlesPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
-		initializePageObject(driver, new ManageRefGasBottlesPage(driver, testSetup, strBaseURL));
+		initializePageObject(driver, new ManageRefGasBottlesPage(driver, strBaseURL, testSetup));
 		setDataReader(new RefGasBottleDataReader(this.excelUtility));
 	}
 	
@@ -30,7 +30,7 @@ public class ManageRefGasBottlesPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	/**
@@ -61,10 +61,10 @@ public class ManageRefGasBottlesPageActions extends BasePageActions {
 		String ethMthRto = refGasBottleDataRow.ethaneMethaneRatio;
 
 		String customerName = null;
-		if (ManageCustomerPageActions.workingDataRow != null) {
-			customerName = ManageCustomerPageActions.workingDataRow.name;
+		if (ManageCustomerPageActions.workingDataRow.get() != null) {
+			customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		} else {	
-			if (ManageSurveyorPageActions.workingDataRow != null) {
+			if (ManageSurveyorPageActions.workingDataRow.get() != null) {
 				SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
 				SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(Integer.valueOf(refGasBottleDataRow.surveyorRowID));
 				CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
@@ -76,8 +76,8 @@ public class ManageRefGasBottlesPageActions extends BasePageActions {
 		}
 		
 		String surveyor = null;
-		if (ManageSurveyorPageActions.workingDataRow != null) {
-			surveyor = ManageSurveyorPageActions.workingDataRow.description;
+		if (ManageSurveyorPageActions.workingDataRow.get() != null) {
+			surveyor = ManageSurveyorPageActions.workingDataRow.get().description;
 		} else {
 			SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
 			SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(Integer.valueOf(refGasBottleDataRow.surveyorRowID));
@@ -85,8 +85,8 @@ public class ManageRefGasBottlesPageActions extends BasePageActions {
 		}
 
 		String locationName = null;
-		if (ManageLocationPageActions.workingDataRow != null) {
-			locationName = ManageLocationPageActions.workingDataRow.name;
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			locationName = ManageLocationPageActions.workingDataRow.get().name;
 		} else {
 			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
 			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(refGasBottleDataRow.locationRowID));
@@ -95,7 +95,7 @@ public class ManageRefGasBottlesPageActions extends BasePageActions {
 		
 		this.getManageRefGasBottlesPage().addNewRefGasBottle(strLotNumber, strIsoValue, ethMthRto, customerName, locationName, surveyor);
 		
-		workingDataRow = refGasBottleDataRow;
+		workingDataRow.set(refGasBottleDataRow);
 		
 		return true;
 	}

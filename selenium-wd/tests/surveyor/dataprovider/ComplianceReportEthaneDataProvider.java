@@ -38,7 +38,7 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 	}
 
 	/**********************************************************************
-	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
+	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the new CryptoUtility().encrypt() method to encrypt the
 	 * password
 	 * @throws Exception 
 	 **********************************************************************/

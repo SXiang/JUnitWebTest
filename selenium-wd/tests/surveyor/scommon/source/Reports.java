@@ -3,8 +3,10 @@
  */
 package surveyor.scommon.source;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -20,10 +22,10 @@ public class Reports {
 		populateGuidMaps();
 	}
 
-	public static HashMap<String, SurveyModeFilter> SurveyModeFilterGuids;
-	public static HashMap<String, ReportModeFilter> ReportSurveyModeFilterGuids;
-	public static HashMap<String, ReportJobType> ReportJobTypeGuids;
-	public static HashMap<ReportJobType, String> ReportJobTypeReverseGuids;
+	public static Map<String, SurveyModeFilter> SurveyModeFilterGuids;
+	public static Map<String, ReportModeFilter> ReportSurveyModeFilterGuids;
+	public static Map<String, ReportJobType> ReportJobTypeGuids;
+	public static Map<ReportJobType, String> ReportJobTypeReverseGuids;
 
 	protected String rptTitle;
 	protected String strCreatedBy;
@@ -300,10 +302,10 @@ public class Reports {
 	 * NOTE: These guids need to be in sync with Ids used in [SurveyModeType] table.
 	 */
 	private static void populateGuidMaps() {
-		SurveyModeFilterGuids = new HashMap<String, SurveyModeFilter>();
-		ReportSurveyModeFilterGuids = new HashMap<String, ReportModeFilter>();
-		ReportJobTypeGuids = new HashMap<String, ReportJobType>();
-		ReportJobTypeReverseGuids = new HashMap<ReportJobType, String>();
+		SurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, SurveyModeFilter>());
+		ReportSurveyModeFilterGuids = Collections.synchronizedMap(new HashMap<String, ReportModeFilter>());
+		ReportJobTypeGuids = Collections.synchronizedMap(new HashMap<String, ReportJobType>());
+		ReportJobTypeReverseGuids = Collections.synchronizedMap(new HashMap<ReportJobType, String>());
 
 		SurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", SurveyModeFilter.Assessment);
 		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", SurveyModeFilter.RapidResponse);

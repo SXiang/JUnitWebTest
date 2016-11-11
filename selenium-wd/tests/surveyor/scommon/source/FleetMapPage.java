@@ -34,7 +34,7 @@ public class FleetMapPage extends BasePage {
 	 * @param testSetup
 	 * @param baseURL
 	 */
-	public FleetMapPage(WebDriver driver, TestSetup testSetup, String baseURL) {
+	public FleetMapPage(WebDriver driver, String baseURL, TestSetup testSetup) {
 		super(driver, testSetup, baseURL, baseURL + STRURLPath);
 
 		Log.info("\nThe FleetMap Page URL is: "

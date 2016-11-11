@@ -2,13 +2,13 @@ package surveyor.regression.source;
 
 import java.io.IOException;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyViewPage;
 
 public class BaseSurveyViewPageTest extends BaseMapViewTest {
@@ -62,31 +62,59 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 	
-	protected static DriverViewPageActions driverViewPageAction;
-	protected static SurveyViewPageActions surveyViewPageAction;
-	protected static SurveyViewPage surveyViewPage;
+	private static ThreadLocal<DriverViewPageActions> driverViewPageAction = new ThreadLocal<DriverViewPageActions>();
+	private static ThreadLocal<SurveyViewPageActions> surveyViewPageAction = new ThreadLocal<SurveyViewPageActions>();
+	private static ThreadLocal<SurveyViewPage> surveyViewPage = new ThreadLocal<SurveyViewPage>();
 	
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
+		initializeTestObjects();
+		
 		// Initialization needed at class level for automation reports.
-		initializePageActions();
+		initializeBasePageActions();
 	}
 
 	@Before
 	public void beforeTestMethod() {
 		try {
-			initializePageActions();
+			initializeTestObjects();
 			
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			surveyViewPageAction = new SurveyViewPageActions(driver, baseURL,testSetup);
+			initializeBasePageActions();
+			
+			setDriverViewPageAction(new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup()));
+			setSurveyViewPageAction(new SurveyViewPageActions(getDriver(), getBaseURL(),getTestSetup()));
 
 			// Initialize page objects.
-			surveyViewPage = new SurveyViewPage(driver, testSetup, baseURL);
-			PageFactory.initElements(driver, surveyViewPage);
+			PageObjectFactory pageObjectFactory = new PageObjectFactory();
+			setSurveyViewPage(pageObjectFactory.getSurveyViewPage());
+			PageFactory.initElements(getDriver(), getSurveyViewPage());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 	}
-	
+
+	protected static DriverViewPageActions getDriverViewPageAction() {
+		return driverViewPageAction.get();
+	}
+
+	private static void setDriverViewPageAction(DriverViewPageActions driverViewPgAction) {
+		driverViewPageAction.set(driverViewPgAction);
+	}
+
+	protected static SurveyViewPageActions getSurveyViewPageAction() {
+		return surveyViewPageAction.get();
+	}
+
+	private static void setSurveyViewPageAction(SurveyViewPageActions surveyViewPgAction) {
+		surveyViewPageAction.set(surveyViewPgAction);
+	}
+
+	protected static SurveyViewPage getSurveyViewPage() {
+		return surveyViewPage.get();
+	}
+
+	private static void setSurveyViewPage(SurveyViewPage surveyViewPg) {
+		surveyViewPage.set(surveyViewPg);
+	}	
 }

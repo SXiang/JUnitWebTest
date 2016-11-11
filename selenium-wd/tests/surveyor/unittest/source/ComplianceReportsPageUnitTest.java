@@ -35,8 +35,8 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  complianceReportsPage);
+		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  complianceReportsPage);
 		initializePageActions();
 	}
 
@@ -45,12 +45,12 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		homePageAction = new HomePageActions(driver, baseURL, testSetup);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		manageUsersPageAction = new ManageUsersPageActions(driver, baseURL, testSetup);
-		manageLocationPageAction = new ManageLocationPageActions(driver, baseURL, testSetup);
-		loginPageAction = new LoginPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPageAction = new ManageUsersPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationPageAction = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		testEnvironmentAction = new TestEnvironmentActions();
 
 		// Select run mode here.
@@ -64,17 +64,17 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	@Test
 	public void US2774_EnableBaselineShapeFilesForComplianceReports() throws Exception {
         Log.info("\nUS2774_EnableBaselineShapeFilesForComplianceReports");
-        complianceReportsPageAction.workingDataRow = new ComplianceReportDataReader(null).new ComplianceReportsDataRow(null,null,
+        complianceReportsPageAction.workingDataRow.set(new ComplianceReportDataReader(null).new ComplianceReportsDataRow(null,null,
         		null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-        		null);
-        complianceReportsPageAction.workingDataRow.title = "TC148 Report639729";
-        complianceReportsPageAction.workingDataRow.tCID = "UnitTest-US2774";
+        		null));
+        complianceReportsPageAction.workingDataRow.get().title = "TC148 Report639729";
+        complianceReportsPageAction.workingDataRow.get().tCID = "UnitTest-US2774";
 
-        complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+        complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
-		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.title);
-		LoginPageActions.workingDataRow = new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null);
-		LoginPageActions.workingDataRow.username = "sqapicsup@picarro.com";
+		complianceReportsPage.performSearch(complianceReportsPageAction.workingDataRow.get().title);
+		LoginPageActions.workingDataRow.set(new UserDataReader(null).new UserDataRow(null,null,null,null,null,null,null,null,null,null,null,null));
+		LoginPageActions.workingDataRow.get().username = "sqapicsup@picarro.com";
 
 		//Delete all the download zips before test or change the parameter "0" to the download index of the this zip
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, 0);
@@ -95,7 +95,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 		Log.info("\nTA862 - Searched Surveys should be filtered by selected report mode");
 
-		complianceReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		complianceReportsPage.open();
 		complianceReportsPage.openNewReportPage();
 

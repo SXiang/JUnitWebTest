@@ -12,7 +12,7 @@ import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 public class ManageLocationPageActions extends BasePageActions {
 
 	private LocationDataReader dataReader = null;
-	public static LocationDataRow workingDataRow = null;    // Stores the workingDataRow from createNewLocation action
+	public static ThreadLocal<LocationDataRow> workingDataRow = new ThreadLocal<LocationDataRow>();    // Stores the workingDataRow from createNewLocation action
 
 	public ManageLocationPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -26,7 +26,7 @@ public class ManageLocationPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class ManageLocationPageActions extends BasePageActions {
 		LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
 
 		String customer = "";
-		if (ManageCustomerPageActions.workingDataRow != null) {
-			customer = ManageCustomerPageActions.workingDataRow.name;
+		if (ManageCustomerPageActions.workingDataRow.get() != null) {
+			customer = ManageCustomerPageActions.workingDataRow.get().name;
 		} else {	
 			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
 			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.valueOf(locationDataRow.customerDataRowID));
@@ -73,7 +73,7 @@ public class ManageLocationPageActions extends BasePageActions {
 		this.getManageLocationsPage().addNewLocation(locationDesc, customer, newLocationName, 
 				useLatLongSelector, ethMthMin, ethMthMax, checkForError);
 		
-		workingDataRow = locationDataRow;
+		workingDataRow.set(locationDataRow);
 		
 		return true;
 	}

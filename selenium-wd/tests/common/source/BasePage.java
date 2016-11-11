@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package common.source;
 
@@ -28,9 +28,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author zlu
- * 
+ *
  *         Add more general code later for pages
- * 
+ *
  */
 public class BasePage {
 	protected String strBaseURL;
@@ -38,7 +38,7 @@ public class BasePage {
 	protected WebDriver driver;
 	protected TestSetup testSetup;
 
-	protected int timeout = 30;   // Intermittent test failures seen with 15 seconds. Increasing timeout to 30 seconds.
+	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;
@@ -114,11 +114,13 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-body > p")
 	private List<WebElement> licenseMissingText;
-	
+
 	@FindBy(how = How.CSS, using = "[id='licenseMissingModal'][style='display: block;'] > .modal-dialog .modal-footer > a.btn")
 	private WebElement licenseMissingModalOKBtn;
+
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
+
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
 		this.testSetup = testSetup;
@@ -130,7 +132,7 @@ public class BasePage {
 		open(strPageURL);
 		this.waitForPageToLoad();
 	}
-	
+
 	public void open(String path) {
 		String url = path;
 		if(url.startsWith("/")){
@@ -139,7 +141,7 @@ public class BasePage {
 		Log.info("Get URL: '"+url+"'");
 		driver.get(url);
 	}
-	
+
 	public String getStrPageURL() {
 		return this.strPageURL;
 	}
@@ -147,7 +149,7 @@ public class BasePage {
 	public boolean isElementPresent(By by) {
 		return WebElementExtender.findElementBy(this.driver, by);
 	}
-	
+
 	public boolean isElementPresent(By by, int timeout) {
 		return WebElementExtender.findElementBy(this.driver, by, timeout);
 	}
@@ -155,7 +157,7 @@ public class BasePage {
 	public boolean isElementPresent(String strXPath) {
 		return isElementPresent(By.xpath(strXPath));
 	}
-	
+
 	public boolean isElementPresent(String strXPath, int timeout) {
 		return isElementPresent(By.xpath(strXPath), timeout);
 	}
@@ -272,7 +274,7 @@ public class BasePage {
 		}
 		return false;
 	}
-	
+
 	public boolean isLinkBroken() {
 		boolean result = false;
 		waitForPageToLoad();
@@ -310,7 +312,7 @@ public class BasePage {
 	}
 
 	protected void sendKeysToElement(WebElement element, String key) {
-		// Chromedriver does NOT send keys correctly to TextArea for some controls. 
+		// Chromedriver does NOT send keys correctly to TextArea for some controls.
 		// Use Actions workaround to send keys instead.
 		if(key == null){
 			return;
@@ -335,6 +337,7 @@ public class BasePage {
 	protected String waitForPresenceOfElementText(By locator){
 		return waitForPresenceOfElementText(locator, UNKNOWN_TEXT);
 	}
+
 	protected String waitForPresenceOfElementText(By locator, String expectedText){
 		String actualText = null;
 		try {
@@ -357,10 +360,11 @@ public class BasePage {
 		}
 		return actualText;
 	}
+
 	public void waitForPageToLoad(){
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 	}
-	
+
 	/*
 	 * Default implementation of this method makes a call to waitForPageToLoad(). Inherited Page classes can provide a page specific implementation of this method.
 	 */
@@ -380,23 +384,29 @@ public class BasePage {
 		action.moveToElement(element).click().click().perform();
 		action.moveToElement(element).click().click().perform();
 	}
+
 	public void minimizeBrowserWindow(){
 		Log.info("Minimize browser window");
 		driver.manage().window().setSize(new Dimension(0,0));
 	}
+
     public void maxmizeBrowserWindow(){
     	Log.info("Maximize browser window");
     	driver.manage().window().maximize();
 	}
 
     public void SelectElement(WebElement checkbox) {
+    	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){
+    		Log.info("Element is NOT selected. Selecting element with JSClick");
     		jsClick(checkbox);
     	}
     }
 
     public void UnselectCheckbox(WebElement checkbox) {
+    	Log.method("UnselectCheckbox", checkbox);
     	if (checkbox.isSelected()){
+    		Log.info("Element is selected. Un-selecting element with JSClick");
     		jsClick(checkbox);
     	}
     }
@@ -416,6 +426,7 @@ public class BasePage {
 				waitForPageToLoad();
 			}
 		}while(!selected&&numTry<5);
+
 		return selected;
 	}
 
@@ -428,7 +439,7 @@ public class BasePage {
     	}
     	return text;
     }
- 
+
     public String getElementAttribute(WebElement element, String attr) {
     	String text = "";
     	try{
@@ -438,6 +449,7 @@ public class BasePage {
     	}
     	return text;
     }
+
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;
@@ -450,7 +462,7 @@ public class BasePage {
     	}
     	return true;
     }
-    
+
     public String getSiteErrorMsg(){
     	String errMsg = "";
     	for(WebElement msg:siteErrorMessage){
@@ -458,7 +470,7 @@ public class BasePage {
     	}
     	return errMsg;
     }
-    
+
     public List<String> getLicenseMissingText(){
     	List<String> licenseMissingMsg = new ArrayList<String>();
     	for(WebElement p:licenseMissingText){

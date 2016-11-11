@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -38,17 +38,17 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static FleetMapPage fleetMapPage;
 	private static Map<String, String> testAccount;
-	
+
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageLocationsPage);
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, driverViewPage);
-		fleetMapPage = new FleetMapPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, fleetMapPage);
+		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
+		driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), driverViewPage);
+		fleetMapPage = new FleetMapPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), fleetMapPage);
 	}
 
 	@Before
@@ -56,8 +56,8 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		if(testAccount == null){
 			testAccount = createTestAccount("LicFeature");
 		}else{
-			loginPage.open();
-			loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 			manageCustomersPage.open();
 			manageCustomersPage.editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 		}
@@ -72,7 +72,7 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 	 * - Log in as utility admin or supervisor
 	 * - Provide Fleet map URL directly
 	 * Results:
-	 *- Fleet map link is present 
+	 *- Fleet map link is present
 	 * - Fleet Map page showing locations of customer's surveyor vehicles. If customer has no vehicles, Fleet Map should show default map
 	 * - Fleet Map link is not present
 	 * - User is navigated to Home page and not navigated to Fleet Map page
@@ -84,28 +84,28 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		/* With License */
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
-		homePage.clickOnFleetMapLink();
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		getHomePage().clickOnFleetMapLink();
 		fleetMapPage.waitForFleetMaptoLoad();
-		homePage.logout();
-		
+		getHomePage().logout();
+
 		/* Disable FleetMapViw */
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.FLEETMAPVIEW);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		fleetMapPage.open();
-		homePage.waitForPageLoad();
-		homePage.logout();
+		getHomePage().waitForPageLoad();
+		getHomePage().logout();
 	}
 
 	/* * Test Case ID: TC2109_CustomerHasMinAmpValuesForOperatorRRManualSurveyModesWithLicense
@@ -130,32 +130,32 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		String customerName = testAccount.get("customerName");
 		String locationName = testAccount.get("locationName");
 
-		loginPage.open();
-		loginPage.loginNormalAs(testSetup.getLoginUser(), testSetup.getLoginPwd());
-		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE);
-		
+
 		/* Without License */
 		manageLocationsPage.open();
 		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
 		assertTrue(manageLocationsPage.isStandardMinAmpShowing());
 		assertFalse(manageLocationsPage.isOperatorMinAmpShowing());
 		assertFalse(manageLocationsPage.isRapidResponseMinAmpShowing());
-		
+
 		manageCustomersPage.open();
 		manageCustomersPage.editAndSelectLicensedFeatures(customerName, LicensedFeatures.OPERATOR);
-		
+
 		/* With Operator License */
 		manageLocationsPage.open();
 		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
 		assertTrue(manageLocationsPage.isStandardMinAmpShowing());
 		assertTrue(manageLocationsPage.isOperatorMinAmpShowing());
 		assertFalse(manageLocationsPage.isRapidResponseMinAmpShowing());
-		
+
 		manageCustomersPage.open();
 		manageCustomersPage.editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
-		
+
 		/* With RapidResponse License */
 		manageLocationsPage.open();
 		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);

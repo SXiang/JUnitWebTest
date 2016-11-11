@@ -16,7 +16,7 @@ import surveyor.scommon.source.ManageAnalyzersPage;
 public class ManageAnalyzerPageActions extends BasePageActions {
 
 	private AnalyzerDataReader dataReader = null;
-	public static AnalyzerDataRow workingDataRow = null;    // Stores the workingDataRow from createNewAnalyzer action
+	public static ThreadLocal<AnalyzerDataRow> workingDataRow = new ThreadLocal<AnalyzerDataRow>();    // Stores the workingDataRow from createNewAnalyzer action
 
 	public ManageAnalyzerPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL);
@@ -30,7 +30,7 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
-		workingDataRow = null;
+		workingDataRow.set(null);
 	}
 
 	/**
@@ -61,10 +61,10 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		String sharedKey = analyzerDataRow.sharedKey;
 
 		String customerName = null;
-		if (ManageCustomerPageActions.workingDataRow != null) {
-			customerName = ManageCustomerPageActions.workingDataRow.name;
+		if (ManageCustomerPageActions.workingDataRow.get() != null) {
+			customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		} else {	
-			if (ManageSurveyorPageActions.workingDataRow != null) {
+			if (ManageSurveyorPageActions.workingDataRow.get() != null) {
 				SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
 				SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(Integer.valueOf(analyzerDataRow.surveyorRowID));
 				CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
@@ -76,8 +76,8 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		}
 		
 		String surveyor = null;
-		if (ManageSurveyorPageActions.workingDataRow != null) {
-			surveyor = ManageSurveyorPageActions.workingDataRow.description;
+		if (ManageSurveyorPageActions.workingDataRow.get() != null) {
+			surveyor = ManageSurveyorPageActions.workingDataRow.get().description;
 		} else {
 			SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
 			SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(Integer.valueOf(analyzerDataRow.surveyorRowID));
@@ -85,8 +85,8 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		}
 
 		String locationName = null;
-		if (ManageLocationPageActions.workingDataRow != null) {
-			locationName = ManageLocationPageActions.workingDataRow.name;
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			locationName = ManageLocationPageActions.workingDataRow.get().name;
 		} else {
 			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
 			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(analyzerDataRow.locationRowID));
@@ -95,7 +95,7 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		
 		this.getManageAnalyzersPage().addNewAnalyzer(serialNumber, sharedKey, surveyor, customerName, locationName);
 		
-		workingDataRow = analyzerDataRow;
+		workingDataRow.set(analyzerDataRow);
 		
 		return true;
 	}

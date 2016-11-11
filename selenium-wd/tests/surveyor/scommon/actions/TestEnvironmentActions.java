@@ -13,8 +13,9 @@ public class TestEnvironmentActions extends BaseActions {
 	private static final String FN_IDLE_FOR_SECONDS = "idleForSeconds";
 	private static final String FN_START_SIMULATOR = "startAnalyzer";
 	private static final String FN_START_REPLAY = "startReplay";
+	
 	private TestEnvironmentDataReader dataReader;
-	public static TestEnvironmentDataRow workingDataRow;
+	public static ThreadLocal<TestEnvironmentDataRow> workingDataRow = new ThreadLocal<TestEnvironmentDataRow>();
 
 	public TestEnvironmentActions() {
 		super();
@@ -36,9 +37,9 @@ public class TestEnvironmentActions extends BaseActions {
 			String analyzerSerialNumber = null;
 			String analyzerSharedKey = null;
 			if (!ActionArguments.isEmpty(dataRow.analyzerRowID)) {
-				if (ManageAnalyzerPageActions.workingDataRow != null) {
-					analyzerSerialNumber = ManageAnalyzerPageActions.workingDataRow.serialNumber;
-					analyzerSharedKey = ManageAnalyzerPageActions.workingDataRow.sharedKey;
+				if (ManageAnalyzerPageActions.workingDataRow.get() != null) {
+					analyzerSerialNumber = ManageAnalyzerPageActions.workingDataRow.get().serialNumber;
+					analyzerSharedKey = ManageAnalyzerPageActions.workingDataRow.get().sharedKey;
 				} else {
 					AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(this.excelUtility);
 					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(dataRow.analyzerRowID));
@@ -53,7 +54,7 @@ public class TestEnvironmentActions extends BaseActions {
 					analyzerSerialNumber, analyzerSharedKey);
 			TestSetup.restartAnalyzer();
 			// When the Analyzer is started store the working data row.
-			workingDataRow = dataRow;
+			workingDataRow.set(dataRow);
 		} catch (Exception e) {
 			Log.error(e.toString());
 			return false;
@@ -205,17 +206,17 @@ public class TestEnvironmentActions extends BaseActions {
 	}
 	
 	public String getWorkingAnalyzerSerialNumber() throws NumberFormatException, Exception {
-		if (TestEnvironmentActions.workingDataRow != null) {
-			if (!ActionArguments.isEmpty(TestEnvironmentActions.workingDataRow.analyzerRowID)) {
-				if (ManageAnalyzerPageActions.workingDataRow != null) {
-					return ManageAnalyzerPageActions.workingDataRow.serialNumber;
+		if (TestEnvironmentActions.workingDataRow.get() != null) {
+			if (!ActionArguments.isEmpty(TestEnvironmentActions.workingDataRow.get().analyzerRowID)) {
+				if (ManageAnalyzerPageActions.workingDataRow.get() != null) {
+					return ManageAnalyzerPageActions.workingDataRow.get().serialNumber;
 				} else {
 					AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(excelUtility);
-					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(TestEnvironmentActions.workingDataRow.analyzerRowID));
+					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(TestEnvironmentActions.workingDataRow.get().analyzerRowID));
 					return analyzerDataRow.serialNumber;
 				}
 			} else {
-				return TestEnvironmentActions.workingDataRow.analyzerSerialNumber;
+				return TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber;
 			}
 		}
 		return TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
@@ -266,7 +267,7 @@ public class TestEnvironmentActions extends BaseActions {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);  
+		loginPageAction.login(String.format("%s:%s", username, "<password_hidden>"), NOTSET);  
 
 		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
 	}

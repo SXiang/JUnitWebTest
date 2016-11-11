@@ -197,6 +197,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC795 = "dataProviderPageActionsComplianceReports_TC795";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC796 = "dataProviderPageActionsComplianceReports_TC796";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC799 = "dataProviderPageActionsComplianceReports_TC799";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1960 = "dataProviderPageActionsComplianceReports_TC1960";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2017 = "dataProviderPageActionsComplianceReports_TC2017";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018 = "dataProviderPageActionsComplianceReports_TC2018";
 
 	public ComplianceReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -208,7 +211,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 
 	/**********************************************************************
-	 * #NOTES#:
+	 * #NOTE#:
 	 * 1. This data provider is used for Compliance report large data set load tests (eg. 8-hour/100-hour survey reports)
 	 * 2. Tests using this dataprovider are intended to be executed in Perf/Load Environment (P3Scale)
 	 * 3. Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string
@@ -263,7 +266,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 
 	/**********************************************************************
-	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
+	 * #NOTE#: Password provided in the data provider will get printed in teamcity UI (run result) and
+	 * therefore needs to be an encrypted string Use the CryptoUtility.encrypt() method to encrypt the
 	 * password
 	 *
 	 * @throws Exception
@@ -689,7 +693,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	// Repeat the test, but in the Views section, select all five of the features named above
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC678() {
-		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, 
+		return new Object[][] { { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 24 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 25 /* reportDataRowID1 */, -1/* reportDataRowID2 */ }, { "TC678" /* TestCaseID */, 6 /* userDataRowID */, 26 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 27 /* reportDataRowID1 */, -1/* reportDataRowID2 */ },
 			{ "TC678" /* TestCaseID */, 6 /* userDataRowID */, 29 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
@@ -1353,4 +1357,19 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 		return new Object[][] { { "TC1497" /* TestCaseID */, 4 /* userDataRowID */, 57 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 	// End of ComplianceReportsPageTest3.java
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC1960() {
+		return new Object[][] { { "TC1960" /* TestCaseID */, 6 /* userDataRowID */, 117 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2017() {
+		return new Object[][] { { "TC2017" /* TestCaseID */, 6 /* userDataRowID */, 118 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderPageActionsComplianceReports_TC2018() {
+		return new Object[][] { { "TC2018" /* TestCaseID */, 6 /* userDataRowID */, 119 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
 }

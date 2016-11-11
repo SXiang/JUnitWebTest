@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -19,8 +19,8 @@ import surveyor.scommon.source.ReportsEQ;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
- * 
- * 
+ *
+ *
  */
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsPageTest extends BaseReportsPageTest {
@@ -34,20 +34,20 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 	}
 
 	private static void initializePageObjects() {
-		eqReportsPage = new EqReportsPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, eqReportsPage);
-		latLongSelectionControl = new LatLongSelectionControl(driver);
-		PageFactory.initElements(driver, latLongSelectionControl);
+		eqReportsPage = new EqReportsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), eqReportsPage);
+		latLongSelectionControl = new LatLongSelectionControl(getDriver());
+		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
 
 	/**
 	 * Unit Test
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@Test
 	public void ComplianceReportTest_VerifyNonEthaneReport() throws Exception {
-		eqReportsPage.login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		eqReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		eqReportsPage.open();
 		String testCaseName = "EQUnitTest";
 
@@ -63,21 +63,21 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 		coordList.add(listOfCords);
 		coordList.add(listOfCords1);
 
-		String rptTitle = "Report" + testSetup.getRandomNumber();
+		String rptTitle = "Report" + getTestSetup().getRandomNumber();
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add("EQGPSoffset");
 
-		ReportsEQ eqRpt = new ReportsEQ(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "", tagList, coordList);
+		ReportsEQ eqRpt = new ReportsEQ(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "", tagList, coordList);
 
 		eqReportsPage.addNewReport(eqRpt);
 
-		if ((eqReportsPage.checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseName))) {
-			assertTrue(eqReportsPage.validatePdfFiles(rptTitle, testSetup.getDownloadPath()));
+		if ((eqReportsPage.checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseName))) {
+			assertTrue(eqReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
 		}
-		assertTrue(eqReportsPage.verifyDrivingSurveysTable(rptTitle, testSetup.getDownloadPath()));
-		assertTrue(eqReportsPage.verifyEmissionQuantificationDataTable(rptTitle, testSetup.getDownloadPath()));
-		assertTrue(eqReportsPage.verifyViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName, testCaseName));
+		assertTrue(eqReportsPage.verifyDrivingSurveysTable(rptTitle, getTestSetup().getDownloadPath()));
+		assertTrue(eqReportsPage.verifyEmissionQuantificationDataTable(rptTitle, getTestSetup().getDownloadPath()));
+		assertTrue(eqReportsPage.verifyViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName, testCaseName));
 
 	}
 

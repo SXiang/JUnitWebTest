@@ -3,22 +3,12 @@
  */
 package surveyor.ondemand.source;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import common.source.Log;
-import common.source.TestSetup;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 /**
@@ -29,8 +19,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorPage;	
 
 	public ManageSurveyorPageTest() {
-		manageSurveyorPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver,  manageSurveyorPage);		
+		manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorPage);		
 	}
 
 	/**
@@ -43,8 +33,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		try {
 			manageSurveyorPage.open();
 			
-			if (debug)
-				testSetup.slowdownInSeconds(3);
+			if (isDebug())
+				getTestSetup().slowdownInSeconds(3);
 			
 			String strSurveyorDesc = "";
 			String strCustomerName = "";

@@ -32,12 +32,12 @@ public class LatLongSelectionControl extends BaseControl {
 
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
 
-	@FindBy(id = "boundary-feature-class")	
+	@FindBy(id = "boundary-feature-class")
 	private WebElement filterByTypeDropDown;
 	private String filterByTypeId = "boundary-feature-class";
-	
-	@FindBy(id = "boundary-search-text")	
-	private WebElement selectByNameTextField;    
+
+	@FindBy(id = "boundary-search-text")
+	private WebElement selectByNameTextField;
 
 	@FindBy(id = "button-map-dialog-ok")
 	private WebElement okButton;
@@ -45,21 +45,21 @@ public class LatLongSelectionControl extends BaseControl {
 	@FindBy(id = "button-map-dialog-cancel")
 	private WebElement cancelButton;
 
-	@FindBy(id = "latitude")	
+	@FindBy(id = "latitude")
 	private WebElement latitude;
 
-	@FindBy(id = "longitude")	
+	@FindBy(id = "longitude")
 	private WebElement longitude;
 
-	@FindBy(id = "zoom-level")	
+	@FindBy(id = "zoom-level")
 	private WebElement zoomLevel;
 
-	@FindBy(id = "info")	
+	@FindBy(id = "info")
 	private WebElement selectionInfo;
 
-	@FindBy(id = "myModal")	
+	@FindBy(id = "myModal")
 	private WebElement mapModalDialog;
-	
+
 	public LatLongSelectionControl(WebDriver driver) {
 		super(driver);
 	}
@@ -144,8 +144,8 @@ public class LatLongSelectionControl extends BaseControl {
 
 	/**
 	 * Switches between interactions on web elements on the map iframe vs interaction on the web elements in container page.
-	 * 
-	 * REMARKS: 
+	 *
+	 * REMARKS:
 	 * We need the 2 modes since this control has elements from both an iframe (which has the map) as well as container document.
 	 * When interacting with map use the MapInteraction mode.
 	 * When interacting with web elements other than the Map (for eg. OK/Cancel buttons) use the default mode.
@@ -166,7 +166,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 		return this;
 	}
-	
+
 	/**
 	 * Returns the Customer Boundary text field web element.
 	 */
@@ -210,7 +210,7 @@ public class LatLongSelectionControl extends BaseControl {
 		if (!WebElementExtender.checkElementsListContains(driver, "//*[@id='ui-id-1']/li", autocompleteListEntries)) {
 			return false;
 		}
-		
+
 		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
 		this.waitForAutoCompleteListToClose();
 		return true;
@@ -241,7 +241,7 @@ public class LatLongSelectionControl extends BaseControl {
 		selectDropdownOption(filterByTypeDropDown, filterByTypeValue);
 		return this;
 	}
-	
+
 	/**
 	 * Clicks on the specified entry in the autocomplete list box.
 	 * @param entryIdx - 1-based index in the list.
@@ -250,7 +250,7 @@ public class LatLongSelectionControl extends BaseControl {
 		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='ui-id-1']/li[%d]", entryIdx)));
 		element.click();
 	}
-	
+
 	/**
 	 * Waits for the autocomplete list box to be opened.
 	 *
@@ -263,7 +263,7 @@ public class LatLongSelectionControl extends BaseControl {
 			public Boolean apply(WebDriver d) {
 				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
 				String elementStyle = autoCompleteList.getAttribute("style");
-				return !elementStyle.contains("display:none") && 
+				return !elementStyle.contains("display:none") &&
 						!elementStyle.contains("display: none");
 			}
 		});
@@ -280,7 +280,7 @@ public class LatLongSelectionControl extends BaseControl {
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
-				return !autoCompleteList.getAttribute("style").contains("display:block") && 
+				return !autoCompleteList.getAttribute("style").contains("display:block") &&
 						!autoCompleteList.getAttribute("style").contains("display: block");
 			}
 		});
@@ -328,9 +328,9 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForMapImageLoad() {
 		// Wait for image data on the canvas to be present.
-		Log.info("Wait for map image to load.");		
-		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {		
-			String jScript = GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION + 
+		Log.info("Wait for map image to load.");
+		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
+			String jScript = GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION +
 					GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL;
 			public Boolean apply(WebDriver d) {
 				Object imageData = ((JavascriptExecutor)d).executeScript(jScript);
@@ -342,13 +342,13 @@ public class LatLongSelectionControl extends BaseControl {
 
 
 	/**
-	 * 
+	 *
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl selectSegment(String canvasXPath, List<Coordinates> coordinates) {
 		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
-		if (canvas != null && canvas.isDisplayed()) 
+		if (canvas != null && canvas.isDisplayed())
 		{
 			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
@@ -374,7 +374,7 @@ public class LatLongSelectionControl extends BaseControl {
 		}
 		return this;
 	}
-	
+
 	protected boolean selectDropdownOption(WebElement dropdown, String option){
 		boolean selected = false;
 		int numTry = 0;

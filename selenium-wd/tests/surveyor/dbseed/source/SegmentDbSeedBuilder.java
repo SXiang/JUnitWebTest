@@ -2,8 +2,8 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
@@ -32,7 +32,7 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {              
     		CSVUtility csvUtility = new CSVUtility();
-    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
     		
     		boolean geomFileExists = false;
     		String geomSeedFilePath = workingCSVFile.replace(SEGMENT_SEED_FILE_PREFIX, SEGMENT_GEOM_SEED_FILE_PREFIX);
@@ -42,7 +42,7 @@ public class SegmentDbSeedBuilder extends BaseDbSeedBuilder {
     		}
 
     		int rowIdx = 0;
-    		for (HashMap<String, String> rowItem : allRows) {
+    		for (Map<String, String> rowItem : allRows) {
     			String surveyId = rowItem.get("SurveyId");
     			String order = rowItem.get("Order");
     			String mode = rowItem.get("Mode");

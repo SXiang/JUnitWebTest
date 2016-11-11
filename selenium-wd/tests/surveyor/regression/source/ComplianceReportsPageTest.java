@@ -42,9 +42,7 @@ import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
-import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
@@ -54,10 +52,12 @@ import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,6 +76,8 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
@@ -94,17 +96,30 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	private String STRReportAreaTooLargeMsg = "Please make sure your selected boundary is more than 0.5kms and less than 25kms";
 	private String STRReportAssetNotSelectedMsg = "View(s) with Assets, Please select at least one Asset Layer";
 	private String STRReportBoundaryNotSelectedMsg = "View(s) with Boundaries, Please select at least one Boundary Layer";
-	private static HashMap<String, String> testCaseMap = new HashMap<String, String>();
+	private static Map<String, String> testCaseMap = Collections.synchronizedMap(new HashMap<String, String>());
+
+	private static LoginPage loginPage;
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects();
-		createTestCaseMap();
+	public static void beforeClass() {
+		initializeTestObjects();
 
+		createTestCaseMap();
+	}
+
+	@Before
+	public void beforeTest() {
+		initializeTestObjects();
+
+		initializePageObjects();
+
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	private static void initializePageObjects() {
-		initializePageObjects(new ComplianceReportsPage(driver, baseURL, testSetup));
+		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
 	private ComplianceReportsPage getComplianceReportsPage() {
@@ -127,14 +142,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String testCaseName = getTestCaseName(index);
 
 		if (testCaseName.equals("TC203")) {
-			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber() + "#%$,\"<>";
+			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber() + "#%$,\"<>";
 		} else {
-			rptTitle = testCaseName + " " + "Report" + testSetup.getRandomNumber();
+			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 		}
 
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
 
-		this.getComplianceReportsPage().login(strCreatedBy, CryptoUtility.decrypt(password));
+		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
@@ -144,25 +159,25 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
-			assertTrue(this.getComplianceReportsPage().verifySSRSImages(testSetup.getDownloadPath(), rptTitle, testCaseName));
+			assertTrue(this.getComplianceReportsPage().verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(testSetup.getDownloadPath(), rptTitle));
-					assertTrue(this.getComplianceReportsPage().verifyCoverageValuesTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
+					assertTrue(this.getComplianceReportsPage().verifyCoverageValuesTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 				}
 				if (cutomer.equalsIgnoreCase("Picarro")) {
-					assertTrue(this.getComplianceReportsPage().verifyLayersTable(testSetup.getDownloadPath(), rptTitle, tablesList.get(0)));
+					assertTrue(this.getComplianceReportsPage().verifyLayersTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
 				}
-				assertTrue(this.getComplianceReportsPage().verifyViewsTable(testSetup.getDownloadPath(), rptTitle, viewList));
-				assertTrue(this.getComplianceReportsPage().verifyDrivingSurveysTable(testSetup.getDownloadPath(), rptTitle));
-				assertTrue(this.getComplianceReportsPage().verifyAllViewsImages(testSetup.getDownloadPath(), rptTitle, testCaseName,viewList.size()));
+				assertTrue(this.getComplianceReportsPage().verifyViewsTable(getTestSetup().getDownloadPath(), rptTitle, viewList));
+				assertTrue(this.getComplianceReportsPage().verifyDrivingSurveysTable(getTestSetup().getDownloadPath(), rptTitle));
+				assertTrue(this.getComplianceReportsPage().verifyAllViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName,viewList.size()));
 				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyIsotopicAnalysisTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(this.getComplianceReportsPage().verifyIsotopicAnalysisTable(getTestSetup().getDownloadPath(), rptTitle));
 				}
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(testSetup.getDownloadPath(), rptTitle));
+					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
 				}
 			}
 		} else
@@ -214,7 +229,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	public void TC157_ComplianceReportTest_VerifyReportCannotbeGeneratedUnlessAllFiltersarePresent() {
 		Log.info("\nRunning TC157: Check that report cannot be generated unless all filters are selected");
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 		assertTrue(this.getComplianceReportsPage().checkBlankReportErrorTextPresentAndRequiredFieldsHighlighted());
 	}
@@ -227,7 +242,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	public void TC160_ComplianceReportTest_VerifyPagination() {
 		Log.info("\nRunning RPT015: Pagination - 10,25,50 and 100 Reports selection on compliance report screen");
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 		String paginationSetting25 = "25";
 		String paginationSetting50 = "50";
@@ -251,11 +266,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC163_ComplianceReportTest_VerifyScreendoesntRefreshwhileSearchingInprogressReport() throws Exception {
-		String rptTitle = "TC163 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC163 Report" + getTestSetup().getRandomNumber();
 
 		Log.info("Running TC163: Screen should not refresh while searching an in-progress report, as it completes " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -301,14 +316,13 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
-
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
 		assertTrue(this.getComplianceReportsPage().searchReport(rptTitle, PICDFADMIN));
 	}
 
@@ -325,10 +339,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = "TC164 Report Not Exists";
 		Log.info("Running TC164: Search invalid reports " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
-		assertTrue(!this.getComplianceReportsPage().searchReport(rptTitle, testSetup.getLoginUser()));
+		assertTrue(!this.getComplianceReportsPage().searchReport(rptTitle, getTestSetup().getLoginUser()));
 		assertEquals(NOMATCHINGSEARCH, this.getComplianceReportsPage().getEmptyTableMessage());
 	}
 
@@ -340,10 +354,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC166_ComplianceReportTest_AdminCanDeleteReport() throws Exception {
-		String rptTitle = "TC166 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC166 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC166: User can delete the specified report " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -388,16 +402,16 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
 
-		if (this.getComplianceReportsPage().deleteReport(rptTitle, testSetup.getLoginUser()))
-			assertTrue(!(this.getComplianceReportsPage().findReportbySearch(rptTitle, testSetup.getLoginUser())));
+		if (this.getComplianceReportsPage().deleteReport(rptTitle, getTestSetup().getLoginUser()))
+			assertTrue(!(this.getComplianceReportsPage().findReportbySearch(rptTitle, getTestSetup().getLoginUser())));
 		else
 			fail("\nTestcase TC166 failed.\n");
 	}
@@ -412,10 +426,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC170_ComplianceReportTest_VerifyReportDuplicate() throws Exception {
 		String testCaseID = "TC170";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Duplicate report, " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -460,20 +474,20 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
+		String reportName1 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName1);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		DBCache.INSTANCE.remove(Report.CACHE_KEY+rptTitle);
-		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, testSetup.getLoginUser());
+		String reportName2 = this.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(rptTitle, getTestSetup().getLoginUser());
 		assertNotNull(reportName2);
 
 		assertNotEquals(reportName1, reportName2);
@@ -488,12 +502,11 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC174_ComplianceReportTest_VerifySameReportDifferentModes() throws Exception {
 		String testCaseID = "TC174";
-		String rptTitle = testCaseID + " RR Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " RR Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Generate report for same surveys but in different modes " + rptTitle);
 
 		ReportModeFilter[] reportModes = {ReportModeFilter.Standard, ReportModeFilter.RapidResponse};
-
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -540,14 +553,14 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 
 		for(ReportModeFilter reportMode : reportModes){
-			rptTitle = testCaseID + " "+reportMode.toString() + " " + testSetup.getRandomNumber();
-			ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEMT, "0",
+			rptTitle = testCaseID + " "+reportMode.toString() + " " + getTestSetup().getRandomNumber();
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0",
 					listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, reportMode);
 			rpt.setViewLayersList(viewLayerList);
 			this.getComplianceReportsPage().addNewReport(rpt);
 			this.getComplianceReportsPage().waitForPageLoad();
 
-			if (!this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID)){
+			if (!this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID)){
 				fail("\n report "+rptTitle+" creation failed.\n");
 			}
 		}
@@ -562,10 +575,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC181_ComplianceReportTest_VerifyCopyManualReportAsRapidResponse() throws Exception {
 		String testCaseID = "TC181";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Generate  standard or rapid response report from existing reports having survey of Manual type using copy feature, " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -611,13 +624,13 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNMANTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
 
 		String newRptTitle = rptTitle + "COPY";
 		List<String> surTag = new ArrayList<String>();
@@ -627,7 +640,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().modifyReportDetails(newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(newRptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(newRptTitle, getTestSetup().getLoginUser()));
 	}
 
 	/**
@@ -639,8 +652,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC184_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC184_: Very small or big report area selection not allowed\n");
-		String rptTitle = "TC184_Report" +" SmallArea "+ testSetup.getRandomNumber();
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		String rptTitle = "TC184_Report" +" SmallArea "+ getTestSetup().getRandomNumber();
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		//Small Area
@@ -687,7 +700,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -695,7 +708,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
 
 		// Big Area
-		rptTitle = "TC184_Report" +" BigArea "+ testSetup.getRandomNumber();
+		rptTitle = "TC184_Report" +" BigArea "+ getTestSetup().getRandomNumber();
 		this.getComplianceReportsPage().open();
 		listBoundary.clear();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -704,7 +717,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		listBoundary.add("-122.83494567871095");
 		listBoundary.add("38.27989023941680");
 		listBoundary.add("-124.05415725708008");
-		rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
+		rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		Assert.assertEquals(this.getComplianceReportsPage().getAreaErrorText(), STRReportAreaTooLargeMsg);
 
@@ -718,7 +731,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	public void TC185_ComplianceReportTest_VerifyCancelButtonFunctionality() {
 		Log.info("\nRunning TC185: Click on Cancel button present on compliance report screen\n");
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		assertTrue(this.getComplianceReportsPage().verifyCancelButtonFunctionality());
@@ -733,7 +746,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC197_ComplianceReportTest_VerifyAddSurveyErrorMessages() throws Exception {
 		Log.info("\nRunning TC197: Verify 'Add Survey' message is displayed when no Survey added\n");
-		String rptTitle = "TC197 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC197 Report" + getTestSetup().getRandomNumber();
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
 		Map<String, String> viewMap1 = new HashMap<String, String>();
 		viewMap1.put(KEYVIEWNAME, "First View");
@@ -752,7 +765,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
 		viewList.add(viewMap1);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 		assertTrue(this.getComplianceReportsPage().verifySurveyNotAdded(rptTitle, "Picarro", RNELAT, RNELON, RSWLAT, RSWLON, viewList));
 	}
@@ -765,7 +778,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC167_ComplianceReportTest_CusAdminCanDeleteReport() throws Exception {
-		String rptTitle = "TC167 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC167 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC167: User can delete the specified report, " + rptTitle);
 
 		loginPage.open();
@@ -832,7 +845,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC168_ComplianceReportTest_CusSupervisorCanDeleteReport() throws Exception {
-		String rptTitle = "TC168 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC168 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC168: User can delete the specified report, " + rptTitle);
 
 		loginPage.open();
@@ -900,10 +913,10 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC212_ComplianceReportTest_VerifyResubmitReport() throws Exception {
 		String testCaseID = "TC212";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseID + ": Resubmit compliance report from previously generated reports, " + rptTitle);
 
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -949,20 +962,20 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNMANTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, testSetup.getLoginUser()));
+		assertTrue(this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser()));
 
-		this.getComplianceReportsPage().clickComplianceReportButton(rptTitle, testSetup.getLoginUser(), ComplianceReportButtonType.Resubmit);
+		this.getComplianceReportsPage().clickComplianceReportButton(rptTitle, getTestSetup().getLoginUser(), ComplianceReportButtonType.Resubmit);
 
 		this.getComplianceReportsPage().waitForPageLoad();
 
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, testSetup.getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
+		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 		} else
 			fail("\nTestcase TC212 failed.\n");
 	}
@@ -975,7 +988,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	 */
 	@Test
 	public void TC797_ComplianceReportTest_SearchReportByReportName() throws Exception {
-		String rptTitle = "TC797 Report" + testSetup.getRandomNumber();
+		String rptTitle = "TC797 Report" + getTestSetup().getRandomNumber();
 		Log.info("Running TC797: Search compliance reports based on report name, " + rptTitle);
 
 		loginPage.open();
@@ -1044,8 +1057,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC1275_ComplianceReportTest_VerifyAreaErrorMessage() throws Exception {
 		Log.info("\nRunning TC1275_: User friendly message should be displayed if user has include assets and boundaries in views but not selected any asset and boundaries layers in optional view layers section\n");
-		String rptTitle = "TC1275_Report" + testSetup.getRandomNumber();
-		this.getComplianceReportsPage().login(testSetup.getLoginUser(), testSetup.getLoginPwd());
+		String rptTitle = "TC1275_Report" + getTestSetup().getRandomNumber();
+		this.getComplianceReportsPage().login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		this.getComplianceReportsPage().open();
 
 		List<String> listBoundary = new ArrayList<String>();
@@ -1087,9 +1100,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, testSetup.getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
+		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
 		this.getComplianceReportsPage().addNewReport(rpt);
-
 		Assert.assertEquals(this.getComplianceReportsPage().getAssetErrorText().getText(), STRReportAssetNotSelectedMsg);
 		Assert.assertEquals(this.getComplianceReportsPage().getBoundaryErrorText().getText(), STRReportBoundaryNotSelectedMsg);
 	}
@@ -1103,7 +1115,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	public void TC1297_ComplianceReportTest_VerifyVersion() throws Exception {
 		String testCaseID = "TC1297";
-		String rptTitle = testCaseID + " Report" + testSetup.getRandomNumber();
+		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Software version on UI and reports PDF should match, " + rptTitle);
 
 		loginPage.open();
@@ -1155,9 +1167,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, testSetup.getDownloadPath()));
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
 		} else
 			fail("\nTestcase TC297 failed.\n");
-
 	}
 }

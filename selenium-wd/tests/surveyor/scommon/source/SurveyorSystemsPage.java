@@ -49,8 +49,7 @@ public class SurveyorSystemsPage extends SurveyorBasePage {
 	 * @param testSetup
 	 * @param strBaseURL
 	 */
-	public SurveyorSystemsPage(WebDriver driver, TestSetup testSetup,
-			String strBaseURL) {
+	public SurveyorSystemsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 	}
 	

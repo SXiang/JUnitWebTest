@@ -98,7 +98,7 @@ public class UserDataReader extends BaseDataReader {
 				+ "customerRowID=[%s]", rowID, username, password, enabled, role, firstName, lastName, cellNumber, timezone, 
 				language, locationRowID, customerRowID));
 		
-		password = CryptoUtility.decrypt(password);
+		password = new CryptoUtility().decrypt(password);
 		return new UserDataRow(rowID, username, password, enabled, role, firstName, lastName, cellNumber, timezone, language, 
 				locationRowID, customerRowID);
 	}

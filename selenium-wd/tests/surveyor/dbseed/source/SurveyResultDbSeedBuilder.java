@@ -2,8 +2,8 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
@@ -33,7 +33,7 @@ public class SurveyResultDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {              
     		CSVUtility csvUtility = new CSVUtility();
-    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
 
     		boolean geomFileExists = false;
     		String geomSeedFilePath = workingCSVFile.replace(SURVEY_RESULT_SEED_FILE_PREFIX, SURVEY_RESULT_GEOM_SEED_FILE_PREFIX);
@@ -43,7 +43,7 @@ public class SurveyResultDbSeedBuilder extends BaseDbSeedBuilder {
     		}
     		
     		int rowIdx = 0;
-    		for (HashMap<String, String> rowItem : allRows) {
+    		for (Map<String, String> rowItem : allRows) {
     			String surveyId = rowItem.get("SurveyId");
     			String fieldOfView = rowItem.get("FieldOfView");
     			String breadcrumb = rowItem.get("Breadcrumb");

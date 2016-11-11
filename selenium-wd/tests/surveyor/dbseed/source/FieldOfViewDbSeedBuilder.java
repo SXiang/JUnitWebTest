@@ -2,8 +2,8 @@ package surveyor.dbseed.source;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
@@ -30,8 +30,8 @@ public class FieldOfViewDbSeedBuilder extends BaseDbSeedBuilder {
         try  
         {              
     		CSVUtility csvUtility = new CSVUtility();
-    		List<HashMap<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
-    		for (HashMap<String, String> rowItem : allRows) {
+    		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
+    		for (Map<String, String> rowItem : allRows) {
     			String analyzerId = rowItem.get("AnalyzerId");
     			String epochTime = rowItem.get("EpochTime");
     			String surveyModeTypeId = rowItem.get("SurveyModeTypeId");

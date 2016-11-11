@@ -6,17 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import common.source.Log;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
-import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.ObserverViewPageActions;
@@ -47,13 +43,14 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
 			initializePageActionsList();
-			initializePageActions();
+			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 
-			driverViewPageAction = new DriverViewPageActions(driver, baseURL, testSetup);
-			driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-			PageFactory.initElements(driver, driverViewPage);
+			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
+			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+			PageFactory.initElements(getDriver(), driverViewPage);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,8 +61,8 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 		for(int i = observerViewPageActionList.size(); i < driverList.size(); i++){
 			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
 			// Initialize page objects.
-			observerViewPageList.add(new ObserverViewPage(driverList.get(i), testSetupList.get(i), baseURLList.get(i)));
-			PageFactory.initElements(driver, observerViewPageList.get(i));
+			observerViewPageList.add(new ObserverViewPage(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
+			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
@@ -84,9 +81,9 @@ public class ObserverViewPageStressTest extends BaseMapViewTest {
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
-		loginPageAction.open(EMPTY, NOTSET);
+		getLoginPageAction().open(EMPTY, NOTSET);
 		LoginPageActions.workingDataRow = null;
-		loginPageAction.login(EMPTY, userRowID); /* Picarro Admin */
+		getLoginPageAction().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	/**

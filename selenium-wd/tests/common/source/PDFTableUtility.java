@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
-		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(Å"+wordSeparator+"Field Notes",1,"",true,-1),
+		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(ï¿½"+wordSeparator+"Field Notes",1,"",true,-1),
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
@@ -137,8 +138,10 @@ public class PDFTableUtility extends PDFUtility{
 		}
 		int maxWordNumLine = 2;
 		String header = "";
+
 		int numLines = 0;
-		List<String[]> pdfTable = new ArrayList<String[]>();
+		List<String[]> pdfTable = Collections.synchronizedList(new ArrayList<String[]>());
+
 		for(int i=0,j=0; i<pdfLines.length; i++){
 			String line = trimTableRow(pdfLines[i]);
 			int numWords = line.split(wordSeparatorPattern).length;

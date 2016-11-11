@@ -28,8 +28,7 @@ public class ManageSurveyorHistoriesAdminPage extends
 	 * @param testSetup
 	 * @param strBaseURL
 	 */
-	public ManageSurveyorHistoriesAdminPage(WebDriver driver,
-			TestSetup testSetup, String strBaseURL) {
+	public ManageSurveyorHistoriesAdminPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, STRURLPATH);
 
 		System.out.format(

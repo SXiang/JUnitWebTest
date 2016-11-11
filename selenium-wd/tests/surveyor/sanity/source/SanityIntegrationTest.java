@@ -47,14 +47,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
@@ -63,6 +67,7 @@ import surveyor.scommon.source.ManageReleaseNotesPage;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -78,42 +83,61 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
 	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
+	/**
+	 * This method is called by the 'main' thread
+	 */
 	@BeforeClass
-	public static void SetupSanityIntegrationTest() {
-		complianceReportsPage = new ComplianceReportsPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, complianceReportsPage);
+	public static void beforeClass() {
+		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
+	}
 
-		manageCustomersPage = new ManageCustomersPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageCustomersPage);
+	/**
+	 * This method is called by the 'worker' thread
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void beforeTest() throws Exception {
+		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
 
-		manageUsersPage = new ManageUsersPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageUsersPage);
+		initializeTestObjects();
 
-		manageLocationsPage = new ManageLocationsPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageLocationsPage);
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 
-		manageSurveyorsPage = new ManageSurveyorPage(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageSurveyorsPage);
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
 
-		manageAnalyzersPage = new ManageAnalyzersPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageAnalyzersPage);
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
 
-		manageRefGasBottlesPage = new ManageRefGasBottlesPage(driver,
-				testSetup, baseURL);
-		PageFactory.initElements(driver, manageRefGasBottlesPage);
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver,
-				baseURL, testSetup);
-		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
+		manageSurveyorsPage = pageObjectFactory.getManageSurveyorPage();
+		PageFactory.initElements(getDriver(), manageSurveyorsPage);
 
-		manageReleaseNotesPage = new ManageReleaseNotesPage(driver, baseURL,
-				testSetup);
-		PageFactory.initElements(driver, manageReleaseNotesPage);
+		manageAnalyzersPage = pageObjectFactory.getManageAnalyzersPage();
+		PageFactory.initElements(getDriver(), manageAnalyzersPage);
+
+		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
+		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
+
+		manageSurveyorHistoriesPage = pageObjectFactory.getManageSurveyorHistoriesPage();
+		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
+
+		manageReleaseNotesPage = pageObjectFactory.getManageReleaseNotesPage();
+		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	@Test
@@ -159,7 +183,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	public void TC739_GenerateComplianceReport_CustomerSupervisor() throws Exception {
 		String testCaseID = "TC739";
 		String rptTitle = "Customer Supervisor Report " + testCaseID + " "
-				+ testSetup.getRandomNumber();
+				+ getTestSetup().getRandomNumber();
 		System.out
 				.format("\nRunning " + testCaseID
 						+ ": Generate compliance report as customer supervisor user by selecting report area using custom boundary, %s\n",
@@ -247,12 +271,12 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		complianceReportsPage.addNewReport(rpt);
 
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		if ((complianceReportsPage.checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.findReport(rptTitle, SQACUSSU));
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt,
-					testSetup.getDownloadPath()));
+					getTestSetup().getDownloadPath()));
 		} else
 			fail("\nTestcase TC739 failed." + rptTitle
 					+ " report failed to generate by " + SQACUSSU + " user!!\n");
@@ -284,7 +308,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnReportsLink();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		homePage.clickOnComplianceReportLink();
 		assertTrue(complianceReportsPage.isLinkBroken());
 
@@ -298,7 +322,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		assertTrue(homePage.isLinkBroken());
 
 		homePage.clickOnPicarroAdminLink();
-		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		homePage.clickOnCalibrationLink();
 		assertTrue(homePage.isLinkBroken());
 
@@ -405,10 +429,10 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageReleaseNotesPage.clickOnCancelBtn();
 		*/
 
-		homePage.clickOnViewAnalyzerLogsLink(baseURL);
+		homePage.clickOnViewAnalyzerLogsLink(getBaseURL());
 		assertTrue(homePage.isLinkBroken());
 
-		homePage.clickOnViewServerlogsLink(baseURL);
+		homePage.clickOnViewServerlogsLink(getBaseURL());
 		assertTrue(homePage.isLinkBroken());
 	}
 }

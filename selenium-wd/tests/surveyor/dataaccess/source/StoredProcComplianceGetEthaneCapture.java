@@ -9,7 +9,6 @@ import static surveyor.dataaccess.source.ResourceKeys.CaptureAnalysisDisposition
 import java.sql.CallableStatement;
 
 import common.source.Log;
-import common.source.NumberUtility;
 
 public class StoredProcComplianceGetEthaneCapture extends BaseEntity {
 	private String dateTime;

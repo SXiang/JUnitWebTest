@@ -15,13 +15,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.testng.Assert;
 
 public class CryptoUtility {
-	private static final String key = "SeKretSalt321654"; // 128 bit key
+	private final String key = "SeKretSalt321654"; // 128 bit key
 	// Create key and cipher
-	private static Key aesKey = null;
-	private static Cipher cipher = null;
+	private Key aesKey = null;
+	private Cipher cipher = null;
 
 	
-	public static String encrypt(String text) throws NoSuchAlgorithmException, NoSuchPaddingException, 
+	public String encrypt(String text) throws NoSuchAlgorithmException, NoSuchPaddingException, 
 			InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		String encryptedString = null;
 		createCipherKey();
@@ -34,13 +34,13 @@ public class CryptoUtility {
 		return encryptedString;
 	}
 
-	private static void createCipherKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	private void createCipherKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
 		// Create key and cipher
 		aesKey = new SecretKeySpec(key.getBytes(), "AES");
 		cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 	}
 	
-	public static String decrypt(String encryptedText)  {
+	public String decrypt(String encryptedText)  {
 		// Decode to get the encrypted bytes first.
 		String decryptedString = null;
 		try {
@@ -81,56 +81,56 @@ public class CryptoUtility {
 
 	private static void testEncrypt_ValidString1_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String encrypt = CryptoUtility.encrypt("sqa#Picarro$0");
+		String encrypt = new CryptoUtility().encrypt("sqa#Picarro$0");
 		Log.info(encrypt);
 		Assert.assertTrue(encrypt.equals("oeHwHqmv621dZ1MRE2BSdw=="));
 	}
 
 	private static void testDecrypt_ValidString1_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String decrypt = CryptoUtility.decrypt("oeHwHqmv621dZ1MRE2BSdw==");
+		String decrypt = new CryptoUtility().decrypt("oeHwHqmv621dZ1MRE2BSdw==");
 		Log.info(decrypt);
 		Assert.assertTrue(decrypt.equals("sqa#Picarro$0"));
 	}
 	
 	private static void testEncrypt_ValidString2_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String encrypt = CryptoUtility.encrypt("FastLane!911");
+		String encrypt = new CryptoUtility().encrypt("FastLane!911");
 		Log.info(encrypt);
 		Assert.assertTrue(encrypt.equals("6NZYEwkq24lm9xBekD04sg=="));
 	}
 
 	private static void testDecrypt_ValidString2_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String decrypt = CryptoUtility.decrypt("6NZYEwkq24lm9xBekD04sg==");
+		String decrypt = new CryptoUtility().decrypt("6NZYEwkq24lm9xBekD04sg==");
 		Log.info(decrypt);
 		Assert.assertTrue(decrypt.equals("FastLane!911"));
 	}
 
 	private static void testEncrypt_EmptyString_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String encrypt = CryptoUtility.encrypt("");
+		String encrypt = new CryptoUtility().encrypt("");
 		Log.info(encrypt);
 		Assert.assertTrue(encrypt.length() > 0);
 	}
 
 	private static void testDecrypt_EmptyStringDecrypted_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String decrypt = CryptoUtility.decrypt("wOxFBd7IUOnydO7jfvSdLA==");
+		String decrypt = new CryptoUtility().decrypt("wOxFBd7IUOnydO7jfvSdLA==");
 		Log.info(decrypt);
 		Assert.assertTrue(decrypt.equals(""));
 	}
 
 	private static void testEncrypt_1CharString_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String encrypt = CryptoUtility.encrypt("1");
+		String encrypt = new CryptoUtility().encrypt("1");
 		Log.info(encrypt);
-		Assert.assertTrue(encrypt.equals("jNhT9691OQ8dJHYlxhMag=="));
+		Assert.assertTrue(encrypt.equals("jNhT9691OQ8+dJHYlxhMag=="));
 	}
 
 	private static void testDecrypt_1CharStringDecrypted_Success() throws InvalidKeyException, NoSuchAlgorithmException, 
 			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		String decrypt = CryptoUtility.decrypt("jNhT9691OQ8dJHYlxhMag==");
+		String decrypt = new CryptoUtility().decrypt("jNhT9691OQ8+dJHYlxhMag==");
 		Log.info(decrypt);
 		Assert.assertTrue(decrypt.equals("1"));
 	}

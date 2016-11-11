@@ -7,7 +7,7 @@ import common.source.Log;
 import common.source.SystemUtility;
 
 public class SystemUtilityUnitTest {
-	
+
 	@Test
 	public void AppDataFolderPathTest() {
 		String appDataFolder = SystemUtility.getAppDataFolder();

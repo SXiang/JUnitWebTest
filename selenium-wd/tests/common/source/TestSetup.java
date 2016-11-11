@@ -12,37 +12,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.runner.Description;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.relevantcodes.extentreports.DisplayOrder;
@@ -54,6 +48,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import surveyor.dataaccess.source.Survey;
+import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorConstants.Environment;
@@ -63,10 +58,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  * configuration
  *
  * 1. Load the testing property for test setup information.
- *
- * 2. Setting up the drivers.
- *
- * 3. It is ongoing and add more code here later when needed
+ * 2. Check and upload DB seed data.
  *
  * @version 1.0
  * @author zlu
@@ -92,7 +84,6 @@ public class TestSetup {
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	private static Process analyzerProcess;
-	private DesiredCapabilities capabilities = null;
 	private BrowserMobProxy networkProxy;
 
 	private Properties testProp;
@@ -101,14 +92,16 @@ public class TestSetup {
 	private String runningOnRemoteServer;
 	private String remoteServerHost;
 	private String remoteServerPort;
+	private String isLocalGridRun;
 
 	private String loginUser;
 	private String loginPwd;
 
+	private String firstTimeLoginUser;
+	private String firstTimeLoginPwd;
+
 	private String loginUser0000;
 	private String loginPwd0000;
-	private String loginUser0001;
-	private String loginPwd0001;
 	private String loginUserDisplayName;
 
 	private String browser;
@@ -130,11 +123,11 @@ public class TestSetup {
 	private Calendar calendar;
 	private String randomNumber;
 
-	private WebDriver driver;
 	private String slowdownInSeconds; // For debugging the code and not
 										// recommended to use in real test case
 	private String testCleanUpMode;
 	public boolean isRemoteBrowser;
+
 	public static String reportDir = "reports/";
 
 	private String downloadPath;
@@ -146,6 +139,7 @@ public class TestSetup {
 	private String dbPassword;
 	private String computerName;
 	private String softwareVersion;
+	private String platform;
 
 	private boolean collectReportJobPerfMetric;
 	private boolean generateBaselineSSRSImages;
@@ -160,6 +154,7 @@ public class TestSetup {
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
 	private boolean logCategoryWebElementEnabled;
+	private boolean logCategoryVerboseLoggingEnabled;
 
 	private String surveysToUpload;
 	private boolean uploadSurveyEnabled;
@@ -170,8 +165,15 @@ public class TestSetup {
 
 	private String automationReportingApiEndpoint;
 	private boolean automationReportingApiEnabled;
+	private Long runUUID;
 
 	private static boolean parallelBuildEnabled;
+
+	private String parallelBuildRunUUID;
+	private Integer parallelBuildRequiredNodes;
+
+	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
+	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
 
 	public TestSetup() {
 		initialize();
@@ -181,136 +183,6 @@ public class TestSetup {
 		if (initialize) {
 			initialize();
 		}
-	}
-
-	public static ExtentReports createExtentReport(String reportClassName, StringBuilder outReportFilePath) {
-		String executionPath = null;
-		try {
-			executionPath = TestSetup.getExecutionPath(TestSetup.getRootPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String runEnvironment = TestContext.INSTANCE.getRunEnvironment();
-		String reportFilePath = executionPath + reportDir + TestContext.INSTANCE.getTestReportCategory()+File.separator
-				+ String.format("report-%s-%s.html", runEnvironment, reportClassName);
-		outReportFilePath.append(reportFilePath);
-		String configFilePath = executionPath + "tests" + File.separator + "extent-config.xml";
-
-		ExtentReports extent = new ExtentReports(reportFilePath, true /* replaceExisting */, DisplayOrder.NEWEST_FIRST,
-				NetworkMode.ONLINE, Locale.US);
-		extent.addSystemInfo("ChromeDriver Version", "2.20");
-		extent.addSystemInfo("Environment", runEnvironment);
-		extent.loadConfig(new File(configFilePath));
-		return extent;
-	}
-
-	private void driverSetup() {
-		try {
-			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("Yes")
-					&& this.browser != null) {
-				switch (this.browser.trim()) {
-				case "chrome":
-					Log.info("-----Chrome it is ----");
-					setChromeBrowserCapabilitiesForGrid();
-					break;
-				case "ie":
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"),
-							DesiredCapabilities.internetExplorer());
-					break;
-				case "ff":
-
-					this.capabilities = DesiredCapabilities.firefox();
-					this.capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-					driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"),
-							this.capabilities);
-					break;
-				}
-				isRemoteBrowser = true;
-				Log.info("\nRunning Selenium Server for use with RemoteDrivers and the server is running on: "
-						+ this.remoteServerHost + "\n");
-			} else if (this.browser != null && (this.ieDriverPath != null || this.getChromeDriverPath() != null)) {
-				switch (this.browser.trim()) {
-				case "chrome":
-					setChromeBrowserCapabilities();
-					break;
-				case "ie":
-					System.setProperty("webdriver.ie.driver", this.ieDriverPath);
-					System.out.println("\nThe System Propery 'webdriver.ie.driver' is: "
-							+ System.getProperty("webdriver.ie.driver").toString() + "\n");
-					driver = new InternetExplorerDriver();
-					break;
-				case "ff":
-					driver = new FirefoxDriver();
-					break;
-				}
-				Log.info("\nRunning WebDriver API\n");
-			} else {
-				Log.info("\nWebDriver setup failed, please check the config setting in test.properites file.\n");
-				System.exit(1);
-			}
-
-			driver.manage().timeouts().implicitlyWait(Long.parseLong(this.implicitlyWaitTimeOutInSeconds.trim()),
-					TimeUnit.SECONDS);
-			System.out.println("\nThe default implicitlyWaitTimeOut has been set to "
-					+ this.implicitlyWaitTimeOutInSeconds.trim() + " seconds" + "\n");
-
-		} catch (Exception e) {
-
-			Log.error(e.toString());
-			System.exit(1);
-
-		}
-	}
-
-	private void setChromeBrowserCapabilities() {
-		setChromeBrowserCapabilities(null);
-	}
-
-	private void setChromeBrowserCapabilities(Proxy proxy) {
-		Log.info("-----Chrome it is ----");
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("download.default_directory", this.downloadPath);
-		prefs.put("profile.default_content_settings.popups", 0);
-		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
-		this.capabilities = DesiredCapabilities.chrome();
-		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("start-maximized");
-		options.addArguments(Arrays.asList("--incognito", "test-type"));
-		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOption("prefs", prefs);
-		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-		if (proxy != null) {
-			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
-		}
-		System.setProperty("webdriver.chrome.driver", this.getChromeDriverPath());
-		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
-				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
-		driver = new ChromeDriver(this.capabilities);
-	}
-
-	private void setChromeBrowserCapabilitiesForGrid() throws MalformedURLException {
-		setChromeBrowserCapabilitiesForGrid(null);
-	}
-
-	private void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("download.default_directory", this.downloadPath);
-		prefs.put("profile.default_content_settings.popups", 0);
-		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
-		this.capabilities = DesiredCapabilities.chrome();
-		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("start-maximized");
-		options.addArguments(Arrays.asList("--incognito", "test-type"));
-		options.addArguments("chrome.switches", "--disable-extensions");
-		options.setExperimentalOption("prefs", prefs);
-		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-		if (proxy != null) {
-			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
-		}
-		driver = new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":4444/wd/hub/"), this.capabilities);
 	}
 
 	/* NETWORK PROXY related methods */
@@ -331,13 +203,13 @@ public class TestSetup {
 
 		// when we start the network proxy we are recycling the driver object.
 		// Quit the driver if present.
-		if (this.driver != null) {
-			this.driver.quit();
+		if (WebDriverFactory.getDriver() != null) {
+			WebDriverFactory.getDriver().quit();
 		}
 
 		// get the selenium proxy object
 		Proxy seleniumProxy = ClientUtil.createSeleniumProxy(networkProxy);
-		setChromeBrowserCapabilities(seleniumProxy);
+		WebDriverFactory.setChromeBrowserCapabilities(seleniumProxy);
 
 		if (createHarFile) {
 			// create new Har file.
@@ -391,11 +263,11 @@ public class TestSetup {
 		if (networkProxy != null) {
 			// when we stop the network proxy we should recycling the driver
 			// object to remove the Proxy capability.
-			if (this.driver != null) {
-				this.driver.quit();
+			if (WebDriverFactory.getDriver() != null) {
+				WebDriverFactory.getDriver().quit();
 			}
 
-			setChromeBrowserCapabilities(); // No proxy.
+			WebDriverFactory.setChromeBrowserCapabilities(); // No proxy.
 			this.stopNetworkProxy();
 		}
 	}
@@ -447,7 +319,7 @@ public class TestSetup {
 		return Integer.parseInt(this.testCleanUpMode);
 	}
 	public WebDriver getDriver() {
-		return this.driver;
+		return WebDriverFactory.getDriver();
 	}
 
 	public String getCulture() {
@@ -468,6 +340,14 @@ public class TestSetup {
 
 	public String getLoginUserDisplayName() {
 		return this.loginUserDisplayName;
+	}
+
+	public String getFirstTimeLoginUser() {
+		return this.firstTimeLoginUser;
+	}
+
+	public String getFirstTimeLoginPwd() {
+		return this.firstTimeLoginPwd;
 	}
 
 	public String getRandomNumber() {
@@ -647,6 +527,14 @@ public class TestSetup {
 		this.logCategoryWebElementEnabled = logCategoryWebElementEnabled;
 	}
 
+	public boolean isLogCategoryVerboseLoggingEnabled() {
+		return logCategoryVerboseLoggingEnabled;
+	}
+
+	public void setLogCategoryVerboseLoggingEnabled(boolean logCategoryVerboseEnabled) {
+		this.logCategoryVerboseLoggingEnabled = logCategoryVerboseEnabled;
+	}
+
 	public String getSoftwareVersion() {
 		return this.softwareVersion;
 	}
@@ -667,31 +555,36 @@ public class TestSetup {
 			this.baseURL = this.testProp.getProperty("baseURL");
 			Log.info("\nThe baseURL is: " + this.baseURL + "\n");
 
-			this.runningOnRemoteServer = this.testProp.getProperty("runningOnRemoteServer");
-			this.remoteServerHost = this.testProp.getProperty("remoteServerHost");
-			this.remoteServerPort = this.testProp.getProperty("remoteServerPort");
+			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
+			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
+			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
+			this.setIsLocalGridRun(this.testProp.getProperty("isLocalGridRun"));
 			this.loginUser = this.testProp.getProperty("loginUser");
 			this.loginPwd = this.testProp.getProperty("loginPwd");
 			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
 			this.loginPwd0000 = this.testProp.getProperty("loginPwd0000");
 			this.loginUserDisplayName = this.testProp.getProperty("loginUserDisplayName");
 
+			this.firstTimeLoginUser = this.testProp.getProperty("firstTimeLoginUser");
+			this.firstTimeLoginPwd = this.testProp.getProperty("firstTimeLoginPwd");
+
 			initializeDBProperties();
 
-			this.browser = this.testProp.getProperty("browser");
-			Log.info("\nThe browser is: " + this.browser + "\n");
+			this.setBrowser(this.testProp.getProperty("browser"));
+			Log.info("\nThe browser is: " + this.getBrowser() + "\n");
 
-			this.ieDriverPath = this.testProp.getProperty("ieDriverPath");
+			this.setIeDriverPath(this.testProp.getProperty("ieDriverPath"));
 
 			this.setChromeDriverPath(getExecutionPath(rootPath) + "lib" + File.separator + "chromedriver.exe");
 			this.implicitlyWaitTimeOutInSeconds = this.testProp.getProperty("implicitlyWaitTimeOutInSeconds");
 			this.implicitlyWaitSpecialTimeOutInSeconds = this.testProp
 					.getProperty("implicitlyWaitSpecialTimeOutInSeconds");
-			this.implicitlyWaitSpecialTimeOutInMS = this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS");
+			this.setImplicitlyWaitSpecialTimeOutInMS(this.testProp.getProperty("implicitlyWaitSpecialTimeOutInMS"));
 
 			this.runEnvironment = this.testProp.getProperty("runEnvironment");
 			this.testRunCategory = this.testProp.getProperty("testRunCategory");
 
+			setRunUUIDProperty();
 			setLoggingTestProperties();
 			setComplianceReportBaselineGenerationTestProperties();
 			setPerformanceExecutionTestProperties();
@@ -701,7 +594,8 @@ public class TestSetup {
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
-			this.setSoftwareVersion(this.testProp.getProperty("softwareVersion"));
+			this.softwareVersion = this.testProp.getProperty("softwareVersion");
+			this.setPlatform(this.testProp.getProperty("platform"));
 
 			this.setAutomationReportingApiEndpoint(this.testProp.getProperty("automationReporting.ApiEndPoint"));
 			String automationReportingApiEnabledValue = this.testProp.getProperty("automationReporting.APIEnabled");
@@ -726,46 +620,139 @@ public class TestSetup {
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
 
-			driverSetup();
 			inputStream.close();
 
 			TestContext.INSTANCE.setTestSetup(this);
 
-			// If survey upload is enabled, upload the specified surveys to
-			// environment.
-			// We have a 2nd level of check (ie matching base url provided) to
-			// prevent accidental upload to unintended environment.
-			if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
-				try {
-					uploadSurveys();
-				} catch (Exception e) {
-					Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
-				}
-			}
-
-			// If pushDBSeed is enabled, push DB seed data to environment.
-			// We have a 2nd level of check (ie matching base url provided) to
-			// prevent accidental upload to unintended environment.
-			if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
-				try {
-					DbSeedExecutor.executeAllDataSeed();
-				} catch (Exception e) {
-					Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
-				}
+			// process the single execution method only once for all threads of execution.
+			if (singleExecutionUnitProcessed.compareAndSet(false, true)) {
+				Log.info(String.format("[Thread - '%s'] Processing Single execution unit method...",
+						Thread.currentThread().getName()));
+				processSingleExecutionUnit();
+				singleExecutionCountDown.countDown();
+			} else {
+				Log.info(String.format("[Thread - '%s'] Waiting for Single execution unit method processing to complete",
+						Thread.currentThread().getName()));
+				singleExecutionCountDown.await();
 			}
 
 		} catch (FileNotFoundException e) {
 			Log.error(e.toString());
 		} catch (IOException e) {
 			Log.error(e.toString());
+		} catch (InterruptedException e) {
+			Log.error(e.toString());
+		}
+	}
+
+	// Perform login with Administrator user. Not using page object intentionally to avoid cyclic dependency amongst packages.
+	private void initiateFirstTimeLogin() {
+		Log.method("initiateFirstTimeLogin");
+		// Check if 'AutomationAdmin' user is present in database. If NOT initiate first time login.
+		User user = null;
+		try {
+			user = User.getUser(this.getLoginUser());
+		} catch (Exception ex) {
+			Log.warn(String.format("Did NOT find '%s' user", this.getLoginUser()));
+		}
+		if (user == null) {
+			Log.info("Initiating first time login...");
+			final String loginPageText = "Login";
+			final String homePageText = "Home - Surveyor";
+			final Integer timeout = 30;
+			String loginPageUrl = String.format("%s/Account/Login", this.getBaseUrl());
+			WebDriver webDriver = this.getDriver();
+			webDriver.get(loginPageUrl);
+			WebElementExtender.waitForPageLoad(loginPageText, timeout, webDriver);
+			WebElement tbUserName = webDriver.findElement(By.id("Username"));
+			WebElement tbPassword = webDriver.findElement(By.id("Password"));
+			WebElement btnLogin = webDriver.findElement(By.cssSelector("[type='submit']"));
+			Log.info("Input username as '" + this.getFirstTimeLoginUser() + "'");
+			tbUserName.sendKeys(this.getFirstTimeLoginUser());
+			Log.info("Input password as '<HIDDEN>'");
+			tbPassword.sendKeys(this.getFirstTimeLoginPwd());
+			Log.clickElementInfo("Login");
+			btnLogin.click();
+			WebElementExtender.waitForPageLoad(homePageText, timeout, webDriver);
+		}
+	}
+
+	private void processSingleExecutionUnit() throws IOException {
+		// cleanup processes once for all tests.
+		TestSetup.stopChromeProcesses();
+
+		// If running against GRID wait for nodes to become available. If necessary spin up more nodes.
+		boolean isRunningOnGrid = this.getRunningOnRemoteServer() != null && this.getRunningOnRemoteServer().trim().equalsIgnoreCase("true");
+		if (isRunningOnGrid) {
+			// If parallel is not specified run on Single node. Else get specified number of nodes.
+			Integer parallelNodes = 1;
+			if (isParallelBuildEnabled()) {
+				parallelNodes = getParallelBuildRequiredNodes();
+			}
+
+			// Final local variable as in-arg to PollManager PollCondition.
+			final Integer requiredNodes = parallelNodes;
+			Log.info("Automation Run Triggered on Grid. Checking for available grid nodes");
+			Integer availableNodes = GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform());
+			Log.info(String.format("%d nodes are required for test run. Available nodes = %d", requiredNodes, availableNodes));
+			if (availableNodes < requiredNodes) {
+				Integer nodesToSpin = requiredNodes - availableNodes;
+				Log.info(String.format("Short of %d grid nodes. Spinning %d EXTRA grid nodes...", nodesToSpin, nodesToSpin));
+				GridNodesManager.requestGridNodes(nodesToSpin, getParallelBuildRunUUID(), getBrowser(), getPlatform());
+				Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
+
+				PollManager.poll(() -> (GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform()) < requiredNodes),
+						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES);
+
+			} else {
+				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
+			}
+		}
+
+		// Verify and invoke first time login with 'Administrator' user if necessary.
+		initiateFirstTimeLogin();
+
+		// If survey upload is enabled, upload the specified surveys to
+		// environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isUploadSurveyEnabled() && this.getSurveyUploadBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				uploadSurveys();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when uploading survey. EXCEPTION: %s", e.toString()));
+			}
+		}
+
+		// If pushDBSeed is enabled, push DB seed data to environment.
+		// We have a 2nd level of check (ie matching base url provided) to
+		// prevent accidental upload to unintended environment.
+		if (isPushDBSeedEnabled() && this.getPushDBSeedBaseUrl().equalsIgnoreCase(this.baseURL)) {
+			try {
+				DbSeedExecutor.executeAllDataSeed();
+			} catch (Exception e) {
+				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
+			}
+		}
+	}
+
+	private void setRunUUIDProperty() {
+		String runUUID = this.testProp.getProperty("runUUID");
+		if (runUUID != null && runUUID != "") {
+			this.setRunUUID(Long.valueOf(runUUID));
 		}
 	}
 
 	private void setParallelBuildTestProperties() {
 		String parallelBuildEnabledValue = this.testProp.getProperty("parallelBuild.Enabled");
 		if (parallelBuildEnabledValue != null && !parallelBuildEnabledValue.isEmpty()) {
-			this.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
+			TestSetup.setParallelBuildEnabled(Boolean.valueOf(parallelBuildEnabledValue));
 		}
+		String requiredNodes = this.testProp.getProperty("parallelBuild.RequiredNodes");
+		if (requiredNodes != null && requiredNodes != "") {
+			this.setParallelBuildRequiredNodes(Integer.valueOf(requiredNodes));
+		}
+		this.setParallelBuildRunUUID(this.testProp.getProperty("parallelBuild.UUID"));
 	}
 
 	private void setComplianceReportBaselineGenerationTestProperties() {
@@ -848,6 +835,11 @@ public class TestSetup {
 				.getProperty("logCategory.ClickWebElement.Enabled");
 		if (logCategoryClickWebElement != null && logCategoryClickWebElement != "") {
 			this.setLogCategoryClickWebElementEnabled(Boolean.valueOf(logCategoryClickWebElement));
+		}
+		String logCategoryVerboseLogging = this.testProp
+				.getProperty("logCategory.VerboseLogging.Enabled");
+		if (logCategoryVerboseLogging != null && logCategoryVerboseLogging != "") {
+			this.setLogCategoryVerboseLoggingEnabled(Boolean.valueOf(logCategoryVerboseLogging));
 		}
 	}
 
@@ -1024,6 +1016,10 @@ public class TestSetup {
 
 	// for testing code debug only
 	public void slowdownInSeconds(int seconds) {
+		idleForSeconds(seconds);
+	}
+
+	public static void idleForSeconds(int seconds) {
 		try {
 			Thread.sleep(seconds * 1000);
 		} catch (Exception e) {
@@ -1091,7 +1087,7 @@ public class TestSetup {
 	public static void updateAnalyzerConfiguration() {
 		updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(), TEST_ANALYZER_SERIAL_NUMBER, TEST_ANALYZER_KEY);
 	}
-	
+
 	public static void updateAnalyzerConfiguration(String p3Url, String analyzerSerialNumber,
 			String analyzerSharedKey) {
 		updateAnalyzerConfiguration(p3Url, analyzerSerialNumber, analyzerSharedKey, 0);
@@ -1135,7 +1131,8 @@ public class TestSetup {
 			String postResultCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postResultCmdFullPath = postResultCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
 			String command = "cd \"" + postResultCmdFolder + "\" && " + postResultCmdFullPath +
-					String.format(" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath);
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\"", workingFolder, getAutomationReportingApiEndpoint(), htmlResultFilePath,
+							TestContext.INSTANCE.getRunUniqueId().toString());
 			Log.info("Posting automation run result. Command -> " + command);
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
@@ -1404,20 +1401,87 @@ public class TestSetup {
 		return propValue;
 	}
 
+	public String getRunningOnRemoteServer() {
+		return runningOnRemoteServer;
+	}
+
+	private void setRunningOnRemoteServer(String runningOnRemoteServer) {
+		this.runningOnRemoteServer = runningOnRemoteServer;
+	}
+
+	public boolean isLocalGridRun() {
+		if (!BaseHelper.isNullOrEmpty(this.isLocalGridRun) && this.isLocalGridRun.trim().equalsIgnoreCase("true"))
+			return true;
+
+		return false;
+	}
+
+	public void setIsLocalGridRun(String isLocalGridRun) {
+		this.isLocalGridRun = isLocalGridRun;
+	}
+
+	public String getRemoteServerHost() {
+		return remoteServerHost;
+	}
+
+	private void setRemoteServerHost(String remoteServerHost) {
+		this.remoteServerHost = remoteServerHost;
+	}
+
+	public String getRemoteServerPort() {
+		return remoteServerPort;
+	}
+
+	private void setRemoteServerPort(String remoteServerPort) {
+		this.remoteServerPort = remoteServerPort;
+	}
+
 	public String getChromeDriverPath() {
 		return chromeDriverPath;
 	}
 
-	public void setChromeDriverPath(String chromeDriverPath) {
+	private void setChromeDriverPath(String chromeDriverPath) {
 		this.chromeDriverPath = chromeDriverPath;
 	}
 
-	public String getAutomationReportingApiEndpoint() {
-		return automationReportingApiEndpoint;
+	public String getIeDriverPath() {
+		return ieDriverPath;
 	}
 
-	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
-		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
+	private void setIeDriverPath(String ieDriverPath) {
+		this.ieDriverPath = ieDriverPath;
+	}
+
+	public String getImplicitlyWaitSpecialTimeOutInMS() {
+		return implicitlyWaitSpecialTimeOutInMS;
+	}
+
+	private void setImplicitlyWaitSpecialTimeOutInMS(String implicitlyWaitSpecialTimeOutInMS) {
+		this.implicitlyWaitSpecialTimeOutInMS = implicitlyWaitSpecialTimeOutInMS;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	private void setPlatform(String platform) {
+		this.platform = platform;
+	}
+
+	public String getBrowser() {
+		return browser;
+	}
+
+	private void setBrowser(String browser) {
+		this.browser = browser;
+	}
+
+	public boolean isRemoteBrowser() {
+		return isRemoteBrowser;
+	}
+
+	private void setRemoteBrowser(boolean isRemoteBrowser) {
+		this.isRemoteBrowser = isRemoteBrowser;
 	}
 
 	public static boolean isParallelBuildEnabled() {
@@ -1428,7 +1492,36 @@ public class TestSetup {
 		parallelBuildEnabled = parallelBldEnabled;
 	}
 
-	public void setSoftwareVersion(String softwareVersion) {
-		this.softwareVersion = softwareVersion;
+	public String getParallelBuildRunUUID() {
+		return parallelBuildRunUUID;
+	}
+
+	public void setParallelBuildRunUUID(String parallelBuildRunUUID) {
+		this.parallelBuildRunUUID = parallelBuildRunUUID;
+	}
+
+	public Integer getParallelBuildRequiredNodes() {
+		return parallelBuildRequiredNodes;
+	}
+
+	public void setParallelBuildRequiredNodes(Integer parallelBuildRequiredNodes) {
+		this.parallelBuildRequiredNodes = parallelBuildRequiredNodes;
+	}
+
+
+	public String getAutomationReportingApiEndpoint() {
+		return automationReportingApiEndpoint;
+	}
+
+	public void setAutomationReportingApiEndpoint(String automationReportingApiEndpoint) {
+		this.automationReportingApiEndpoint = automationReportingApiEndpoint;
+	}
+
+	public Long getRunUUID() {
+		return runUUID;
+	}
+
+	public void setRunUUID(Long runUUID) {
+		this.runUUID = runUUID;
 	}
 }

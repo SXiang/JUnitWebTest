@@ -194,7 +194,7 @@ public final class SurveyorConstants {
 	public static final String STARTDATE = "01/01/2014";
 	public static final String ENDDATE = "08/14/2014";
 
-	public static final int ACTIONTIMEOUT = 300; // in seconds
+	public static final int ACTIONTIMEOUT = 700; // Increase timeout for POC.
 
 	public static final String PAGINATIONSETTING = "10"; // Selenium WebDriver issues so set it to 10 only for now
 	public static final String PAGINATIONSETTING_25 = "25";
@@ -469,6 +469,11 @@ public final class SurveyorConstants {
 	 * Other string constants
 	 */
 	public static final String ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,17,18,19";
+
+	/*
+	 * Other string constants
+	 */
+	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
 	/*
 	 * enum for list of constants

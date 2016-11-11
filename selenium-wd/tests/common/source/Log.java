@@ -2,9 +2,8 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,8 @@ public class Log {
 			e.printStackTrace();
 		}
 	}
-//	%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\: 
+
+	//	%d{dd MMM yyyy HH\:mm\:ss,SSS} - %t - %p - %F [%C -> %M, Line\: %L]\:
 	public enum LogField{
 		INDEX_ID ("index-id"),
 		TEST_ENVIROMENT ("test-enviroment"),
@@ -43,26 +43,26 @@ public class Log {
 		MSG_METHOD ("msg-meghod"),
 		MSG_LINE ("msg-line"),
 		MSG ("msg");
-		
+
 		private final String field;
-		
+
 		LogField(String field){
 			this.field = field;
 		}
-		
+
 		@Override
 		public String toString(){
 			return field;
 		}
-		
-		
+
+
 	}
 	public static void info(String message) {
 		log.info(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
 		stashLog.info(formatLogstashMessage(message));
 	}
-	
+
 	public static void warn(String message) {
 		log.warn(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
@@ -104,10 +104,8 @@ public class Log {
 			error(message);
 		}
 	}
-	
 
-
-	// Extension to logs for page objects	
+	// Extension to logs for page objects
 	public static void clickElementInfo(String name) {
 		clickElementInfo(name,ElementType.BUTTON);
 	}
@@ -115,7 +113,7 @@ public class Log {
 	public static void clickElementInfo(String name, ElementType type){
 		info(String.format("Click on '%s' %s",name,type), LogCategory.ClickWebElement);
 	}
-	
+
 	public static void clickElementInfo(String name, String info) {
 		clickElementInfo(name,ElementType.BUTTON);
 	}
@@ -123,6 +121,7 @@ public class Log {
 	public static void clickElementInfo(String name, String info, ElementType type){
 		info(String.format("Click on '%s' %s - %s",name,type, info), LogCategory.ClickWebElement);
 	}
+
 	public static void error(String name, Throwable e){
 		error("Failed to perform '"+name+"': "+ExceptionUtility.getStackTraceString(e));
 	}
@@ -134,8 +133,8 @@ public class Log {
 	public static String formatLogMessage(String msg){
 		StackTraceElement caller = getStackTraceElement();
 		String logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
-				", Line: "+caller.getLineNumber() +"]: "
-				+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
+		", Line: "+caller.getLineNumber() +"]: "
+		+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
 		return logMessage;
 	}
 
@@ -150,24 +149,24 @@ public class Log {
 			+ fieldSep + msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
 		return logstashMessage;
 	}
-	
+
 	public static String getJSONMessage(String msg){
-		Map<String, ?> msgMap = getMessageMap(msg);		
+		Map<String, ?> msgMap = getMessageMap(msg);
 		String jsonString = new JSONObject(msgMap).toString();
 		jsonString = new JSONObject(msgMap).toString();
 		return jsonString;
 	}
-	
-	   private static Map<String, ?> getMessageMap(String msg) {
-	        Map<String, Object> map = new HashMap<>();
-		    StackTraceElement caller = getStackTraceElement();
-	        map.put(LogField.MSG_CLASS.toString(), caller.getClassName());
-	        map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
-	        map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());
-	        map.put(LogField.MSG.toString(), msg);
-	        map.putAll(TestContext.INSTANCE.getTestMap());
-	        return map;
-	    }
+
+	private static Map<String, ?> getMessageMap(String msg) {
+		Map<String, Object> map = Collections.synchronizedMap(new HashMap<>());
+		StackTraceElement caller = getStackTraceElement();
+		map.put(LogField.MSG_CLASS.toString(), caller.getClassName());
+		map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
+		map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());
+		map.put(LogField.MSG.toString(), msg);
+		map.putAll(TestContext.INSTANCE.getTestMap());
+		return map;
+    }
 
 	public static StackTraceElement getStackTraceElement(){
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
@@ -189,10 +188,11 @@ public class Log {
 		}
 		return elements[0];
 	}
+
 	/* Unit test */
 	public static void main(String[] args) throws IOException {
 		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";
-		
+
 		test_LogInfo_WithMessage();
 		test_LogWarn_WithMessage();
 		test_LogDebug_WithMessage();

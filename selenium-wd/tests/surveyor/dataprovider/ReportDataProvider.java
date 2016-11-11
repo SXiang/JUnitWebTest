@@ -30,8 +30,10 @@ import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
@@ -62,9 +64,9 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		super.run(notifier);
 	}
 
-	public static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset,
+	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset,
 			String boundary, String lisaAsset, String boxAsset, String lisaBoundary, String map) {
-		HashMap<String, String> viewMap = new HashMap<String, String>();
+		Map<String, String> viewMap = Collections.synchronizedMap(new HashMap<String, String>());
 		viewMap.put(KEYVIEWNAME, viewName);
 		viewMap.put(KEYLISA, lisa);
 		viewMap.put(KEYFOV, fov);
@@ -87,7 +89,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 	}
 
 	public static List<String> createMapAndBoundaryList(boolean includeCustomBoundary) {
-		List<String> listBoundary = new ArrayList<String>();
+		List<String> listBoundary = Collections.synchronizedList(new ArrayList<String>());
 		listBoundary.add(IMGMAPHEIGHT);
 		listBoundary.add(IMGMAPWIDTH);
 		if (includeCustomBoundary) {
@@ -107,7 +109,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return listBoundary;
 	}
 
-	public static HashMap<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
+	public static Map<String, String> createOptionalTabularPDFContent(String indication, String isotopic, String gaptable, String pca, String pcra, String pcf) {
 		HashMap<String, String> tableMap = new HashMap<String, String>();
 		tableMap.put(KEYINDTB, indication);
 		tableMap.put(KEYISOANA, isotopic);
@@ -118,8 +120,8 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return tableMap;
 	}
 
-	public static HashMap<String, String> getAllViewLayerAssetsAndBoundariesForCustomer(String customerName) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+	public static Map<String, String> getAllViewLayerAssetsAndBoundariesForCustomer(String customerName) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		int customerRowID = getCustomerRowID(customerName, excelUtility);
 		if (customerRowID != -1) {
@@ -131,8 +133,8 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return viewLayerMap;
 	}
 
-	public static HashMap<String, String> getAllViewLayerAssetsForCustomer(String customerName) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+	public static Map<String, String> getAllViewLayerAssetsForCustomer(String customerName) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		int customerRowID = getCustomerRowID(customerName, excelUtility);
 		if (customerRowID != -1) {
@@ -143,8 +145,8 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return viewLayerMap;
 	}
 
-	public static HashMap<String, String> getAllViewLayerBoundariesForCustomer(String customerName) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+	public static Map<String, String> getAllViewLayerBoundariesForCustomer(String customerName) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		int customerRowID = getCustomerRowID(customerName, excelUtility);
 		if (customerRowID != -1) {
@@ -155,24 +157,24 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return viewLayerMap;
 	}
 
-	public static HashMap<String, String> createOptionalViewLayersContent(List<Integer> assetRowIDs,
+	public static Map<String, String> createOptionalViewLayersContent(List<Integer> assetRowIDs,
 			List<Integer> boundaryRowIDs) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		addAssetsToMap(assetRowIDs, viewLayerMap, excelUtility);
 		addBoundariesToMap(boundaryRowIDs, viewLayerMap, excelUtility);
 		return viewLayerMap;
 	}
 
-	public static HashMap<String, String> createViewLayerAssetsContent(List<Integer> assetRowIDs) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+	public static Map<String, String> createViewLayerAssetsContent(List<Integer> assetRowIDs) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		addAssetsToMap(assetRowIDs, viewLayerMap, excelUtility);
 		return viewLayerMap;
 	}
 
-	public static HashMap<String, String> createViewLayerBoundariesContent(List<Integer> boundaryRowIDs) throws Exception {
-		HashMap<String, String> viewLayerMap = new HashMap<String, String>();
+	public static Map<String, String> createViewLayerBoundariesContent(List<Integer> boundaryRowIDs) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		addBoundariesToMap(boundaryRowIDs, viewLayerMap, excelUtility);
 		return viewLayerMap;
@@ -212,7 +214,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		return customerRowID;
 	}
 
-	private static void addAssetsToMap(List<Integer> assetRowIDs, HashMap<String, String> viewLayerMap,
+	private static void addAssetsToMap(List<Integer> assetRowIDs, Map<String, String> viewLayerMap,
 			ExcelUtility excelUtility) throws Exception {
 		if (assetRowIDs != null && assetRowIDs.size()>0) {
 			for (Integer rowID : assetRowIDs) {
@@ -223,7 +225,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		}
 	}
 
-	private static void addBoundariesToMap(List<Integer> boundaryRowIDs, HashMap<String, String> viewLayerMap,
+	private static void addBoundariesToMap(List<Integer> boundaryRowIDs, Map<String, String> viewLayerMap,
 			ExcelUtility excelUtility) throws Exception {
 		if (boundaryRowIDs != null && boundaryRowIDs.size()>0) {
 			for (Integer rowID : boundaryRowIDs) {
@@ -234,7 +236,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		}
 	}
 
-	private static void addAllViewLayersAssetsForCustomer(HashMap<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
+	private static void addAllViewLayersAssetsForCustomer(Map<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
 			throws Exception {
 		int assetsRowCount = excelUtility.getRowCount(ReportOptViewLayersAssetsDataReader.TESTDATA_SHEET_NAME);
 		ReportOptViewLayersAssetsDataReader assetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
@@ -246,7 +248,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		}
 	}
 
-	private static void addAllViewLayerBoundariesForCustomer(HashMap<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
+	private static void addAllViewLayerBoundariesForCustomer(Map<String, String> viewLayerMap, ExcelUtility excelUtility, int customerRowID)
 			throws Exception {
 		int boundaryRowCount = excelUtility.getRowCount(ReportOptViewLayersBoundaryDataReader.TESTDATA_SHEET_NAME);
 		ReportOptViewLayersBoundaryDataReader boundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);

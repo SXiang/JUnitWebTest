@@ -7,10 +7,12 @@ import java.util.Map;
 import org.junit.Before;
 
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
+
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
@@ -28,7 +30,6 @@ import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPageActionTest {
 
-
 	private static final String EMPTY = "";
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
@@ -40,12 +41,12 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-		driverViewPage = new DriverViewPage(driver, testSetup, baseURL);
-		PageFactory.initElements(driver, driverViewPage);
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		PageFactory.initElements(driver, manageCustomerPageAction);
+		driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), driverViewPage);
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageCustomerPageAction);
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception{
 		setPropertiesForTestRunMode();
@@ -54,8 +55,8 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
 					,testAccount.get("userName"), testAccount.get("userPassword"));
 		}else{
-			loginPage.open();
-			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 			manageCustomerPageAction.open(EMPTY, NOTSET);
 			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 		}
@@ -63,7 +64,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
-		
+
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
@@ -71,11 +72,11 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 	/**
 	 * Initializes the page action objects.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		manageCustomerPageAction = new ManageCustomerPageActions(driver, baseURL, testSetup);
-		complianceReportsPageAction = new ComplianceReportsPageActions(driver, baseURL, testSetup);
+		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
@@ -98,22 +99,22 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	@Test
 	public void TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense() throws Exception {
 		Log.info("\nRunning TC2100_CustomerCanSelectOperatorRROrManulReportModesWithLicense");
-		
+
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 
-		
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		/* Unselect RR and Manual */
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
@@ -124,18 +125,19 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
+		getHomePage().logout();
 
 		/* Select RR */
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
@@ -144,18 +146,20 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
-		
+
+		getHomePage().logout();
+
 		/* Select Manual */
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
@@ -164,7 +168,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
+		getHomePage().logout();
 	}
 
 	/* * Test Case ID: TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance
@@ -186,25 +190,25 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	@Test
 	public void TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance() throws Exception {
 		Log.info("\nRunning TC2102_CustomerCanSelectOperatorRROrManulReportModesWithLicense_CopyCompliance");
-		
+
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
 		String rptTitle = testReport.get(SurveyType.Standard+"Title");
 		String strCreatedBy = testReport.get("userName");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		/* Unselect RR and Manual */
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL);
-		homePage.logout();
+		getHomePage().logout();
 
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
@@ -215,18 +219,19 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		assertTrue(complianceReportsPageAction.verifyStandardSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyOperatorSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
+		getHomePage().logout();
 
 		/* Select RR */
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.RAPIDRESPONSE);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
@@ -235,18 +240,20 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
-		
+
+		getHomePage().logout();
+
 		/* Select Manual */
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.MANUAL);
-		homePage.logout();
-		
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
@@ -254,7 +261,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
-		homePage.logout();
+		getHomePage().logout();
 	}
 
 	/* * Test Case ID: TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense
@@ -268,7 +275,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	 * Results:
 	 * 	 * - User will see a list of customers
 	 * - User will see customer details
-	 * - Customer user will get an error message “The original report was created with the following survey mode licenses: {0}. Your account currently does not have access to these modes." {0} will contain a list of modes that were available at the time the report was generated
+	 * - Customer user will get an error message ï¿½The original report was created with the following survey mode licenses: {0}. Your account currently does not have access to these modes." {0} will contain a list of modes that were available at the time the report was generated
 	 */
 	@Test
 	public void TC2112_CustomerCanNotCopyRROperatorManualReportWithoutSurveyModeLicense() throws Exception {
@@ -277,33 +284,34 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		
+
 		LicensedFeatures[] lfs = {LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE, LicensedFeatures.MANUAL};
 		SurveyModeFilter[] surveyModeFilter = {SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		String errorPattern = ComplianceReportsPage.ComplianceReport_LicenseMissing;
 		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
 		String strCreatedBy = testReport.get("userName");
-		
+
 		for(int i=0; i<lfs.length; i++){
-			loginPage.open();
-			loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
 			manageCustomerPageAction.open(EMPTY, NOTSET);
 			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, lfs[i]);
-			homePage.logout();
+			getHomePage().logout();
 
-			loginPage.open();
-			loginPage.loginNormalAs(userName, userPassword);
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
 			String rptTitle = testReport.get(surveyModeFilter[i].toString()+"Title");
-			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString()); 
+			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString());
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
-			assertTrue(homePage.getLicenseMissingText().contains(errorMsg));
-			homePage.logout();
+
+			assertTrue(getHomePage().getLicenseMissingText().contains(errorMsg));
+			getHomePage().logout();
 		}
 	}
-	
+
 	/* * Test Case ID: TC2134_CurtainViewNotAvailableWithoutLicense
 	 * Script:
 	 * - Log into Driver View
@@ -322,17 +330,17 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
 		String surveyTag = testSurvey.get(SurveyType.Standard+"Tag");
-		
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.CURTAINVIEW);
-		homePage.logout();
-		
+		getHomePage().logout();
+
 		/* Without License */
-		loginPage.open();
-		loginPage.loginNormalAs(userName, userPassword);
-		homePage.clickOnFirstMatchingDrivingSurvey(surveyTag);
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		getHomePage().clickOnFirstMatchingDrivingSurvey(surveyTag);
 		assertFalse(driverViewPage.isCurtainButtonPresent());
 	}
 }

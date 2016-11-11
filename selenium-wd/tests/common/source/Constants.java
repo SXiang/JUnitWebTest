@@ -30,4 +30,10 @@ public class Constants {
 	public static final String Path_OR = "OR.txt";
 	public static final String KEYWORD_FAIL = "FAIL";
 	public static final String KEYWORD_PASS = "PASS";
+	
+	// Default poll time constants.
+	public static final Integer MILLISECONDS_IN_ONE_SECOND = 1000;
+	public static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 6000;
+	public static final Integer DEFAULT_MAX_RETRIES = 100;   // timeout = 600 seconds = 10 mins.
+
 }

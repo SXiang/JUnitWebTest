@@ -2,7 +2,6 @@ package surveyor.dataaccess.source;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.sql.CallableStatement;
 
 import common.source.Log;
