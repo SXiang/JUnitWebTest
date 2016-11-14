@@ -44,7 +44,7 @@ public class WebDriverWrapper {
 		this.platform = TestContext.INSTANCE.getTestSetup().getPlatform();
 		this.isRemoteBrowser = TestContext.INSTANCE.getTestSetup().isRemoteBrowser();
 	}
-	
+
 	public void driverSetup() {
 		try {
 			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("true")
@@ -111,6 +111,8 @@ public class WebDriverWrapper {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("download.prompt_for_download", false);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
@@ -135,14 +137,16 @@ public class WebDriverWrapper {
 	public void setChromeBrowserCapabilitiesForGrid(Proxy proxy) throws MalformedURLException {
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
+		prefs.put("download.prompt_for_download", false);
+		prefs.put("profile.default_content_setting_values.automatic_downloads", 1);
 		this.capabilities = DesiredCapabilities.chrome();
-		
+
 		if (this.platform.equalsIgnoreCase("windows")) {
 			this.capabilities.setPlatform(Platform.WINDOWS);
 		} else if (this.platform.equalsIgnoreCase("linux")) {
 			this.capabilities.setPlatform(Platform.LINUX);
 		}
-		
+
 		this.capabilities.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("start-maximized");
