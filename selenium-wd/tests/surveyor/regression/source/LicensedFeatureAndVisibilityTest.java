@@ -7,22 +7,19 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
-import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.PreferencesPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.SurveyorBaseTest;
-import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import java.util.Map;
 import common.source.Log;
@@ -37,31 +34,55 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 	private static DriverViewPage driverViewPage;
 	private static ManageLocationsPage manageLocationsPage;
 	private static FleetMapPage fleetMapPage;
+	private static LoginPage loginPage;
+	private static HomePage homePage;
+
 	private static Map<String, String> testAccount;
 
 	@BeforeClass
-	public static void setupACLandVisibilityTest() {
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageCustomersPage);
-		manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageLocationsPage);
-		driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), driverViewPage);
-		fleetMapPage = new FleetMapPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), fleetMapPage);
+	public static void beforeClass() {
+		initializeTestObjects();
 	}
 
 	@Before
-	public void beforeTest() throws Exception{
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		initializePageObjects();
+
 		if(testAccount == null){
 			testAccount = createTestAccount("LicFeature");
 		}else{
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+			loginPage.open();
+			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 			manageCustomersPage.open();
 			manageCustomersPage.editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 		}
 	}
+
+	private static void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+
+		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
+		PageFactory.initElements(getDriver(),  manageLocationsPage);
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
+		PageFactory.initElements(getDriver(), driverViewPage);
+
+		fleetMapPage = pageObjectFactory.getFleetMapPage();
+		PageFactory.initElements(getDriver(), fleetMapPage);
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+		setLoginPage(loginPage);
+
+		homePage = pageObjectFactory.getHomePage();
+		PageFactory.initElements(getDriver(), homePage);
+		setHomePage(homePage);
+	}
+
 	/* * Test Case ID: TC2078_FleetMapLinkNotPresentWithoutLicense
 	 * Script:
 	 * - Log in as utility admin or supervisor
@@ -86,26 +107,26 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		String customerName = testAccount.get("customerName");
 
 		/* With License */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		getHomePage().clickOnFleetMapLink();
+		loginPage.open();
+		loginPage.loginNormalAs(userName, userPassword);
+		homePage.clickOnFleetMapLink();
 		fleetMapPage.waitForFleetMaptoLoad();
-		getHomePage().logout();
+		homePage.logout();
 
 		/* Disable FleetMapViw */
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.FLEETMAPVIEW);
-		getHomePage().logout();
+		homePage.logout();
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		loginPage.open();
+		loginPage.loginNormalAs(userName, userPassword);
 
 		fleetMapPage.open();
-		getHomePage().waitForPageLoad();
-		getHomePage().logout();
+		homePage.waitForPageLoad();
+		homePage.logout();
 	}
 
 	/* * Test Case ID: TC2109_CustomerHasMinAmpValuesForOperatorRRManualSurveyModesWithLicense
@@ -130,8 +151,8 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		String customerName = testAccount.get("customerName");
 		String locationName = testAccount.get("locationName");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		manageCustomersPage.open();
 		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.OPERATOR, LicensedFeatures.RAPIDRESPONSE);
