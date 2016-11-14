@@ -31,8 +31,6 @@
 		<mkdir dir="${basedir}/tests/common/dist" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
 		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
-
-		<mkdir dir="${jmeter.result.dir}" />
 	</target>
 
 	<target name="clean" description="Clean up">
