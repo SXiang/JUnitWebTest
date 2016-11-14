@@ -7,18 +7,20 @@ import java.util.Map;
 
 import common.source.Log;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.ObserverViewPageActions;
 import surveyor.scommon.source.ObserverViewPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /*
@@ -33,36 +35,40 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest2 extends BaseMapViewTest {
 
-	public ObserverViewPageTest2() throws IOException {
-		super();
-	}
-
 	// Change this: When test defaulted to Analyzer 1.
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
 
-	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
+	private DriverViewPage driverViewPage;
 
 	private static ManageCustomersPage manageCustomersPage;
+
 	private static Map<String, String> testAccount;
 
+	public ObserverViewPageTest2() throws IOException {
+		super();
+	}
+
+	@BeforeClass
+	public static void beforeTestClass() {
+		initializeTestObjects();
+	}
 
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
+			initializePageObjects();
 			initializePageActionsList();
 			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
-			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
-			PageFactory.initElements(getDriver(), driverViewPage);
-			manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-			PageFactory.initElements(getDriver(), manageCustomersPage);
+
 			if(testAccount == null){
 				testAccount = createTestAccount("ObserverViewTest2");
-			}else{
+			} else {
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 				manageCustomersPage.open();
@@ -73,6 +79,20 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 		}
 	}
 
+	private void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
+		PageFactory.initElements(getDriver(), driverViewPage);
+
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+	}
+
 	private void initializeObserverViewPageActionList(){
 		for(int i = observerViewPageActionList.size(); i < driverList.size(); i++){
 			observerViewPageActionList.add(new ObserverViewPageActions(driverList.get(i), baseURLList.get(i), testSetupList.get(i)));
@@ -81,9 +101,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
+
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
+
 	private void startDrivingSurvey(String analyzerSerialNumber, String analyzerSharedkey, Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction,analyzerSerialNumber, analyzerSharedkey, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
@@ -95,26 +117,28 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	private void loginAsObserver(int userRowID) throws Exception {
 		loginAsObserver(userRowID, 0);
 	}
+
 	private void loginAsObserver(int userRowID, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
-		LoginPageActions.workingDataRow = null;
+		LoginPageActions.workingDataRow.set(null);
 		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
+	}
+
+	private void loginAsObserver(String usernameColonPassword, int index) throws Exception {
+		loginPageActionList.get(index).open(EMPTY, NOTSET);
+		LoginPageActions.workingDataRow.set(null);
+		loginPageActionList.get(index).login(usernameColonPassword,NOTSET) ;
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
 		loginPageAction.get().open(EMPTY, NOTSET);
-		LoginPageActions.workingDataRow = null;
+		LoginPageActions.workingDataRow.set(null);
 		loginPageAction.get().login(EMPTY, userRowID); /* Picarro Admin */
-	}
-	private void loginAsObserver(String usernameColonPassword, int index) throws Exception {
-		loginPageActionList.get(index).open(EMPTY, NOTSET);
-		LoginPageActions.workingDataRow = null;
-		loginPageActionList.get(index).login(usernameColonPassword,NOTSET) ;
 	}
 
 	private void loginAsDriver(String usernameColonPassword) throws Exception {
 		loginPageAction.get().open(EMPTY, NOTSET);
-		LoginPageActions.workingDataRow = null;
+		LoginPageActions.workingDataRow.set(null);
 		loginPageAction.get().login(usernameColonPassword,NOTSET) ;
 	}
 

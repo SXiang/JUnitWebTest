@@ -28,7 +28,7 @@ import com.relevantcodes.extentreports.LogStatus;
 public class ScreenShotOnFailure{
 
 	private WebDriver driver;
-	private boolean isRemoteBrowser;
+	private boolean isBrowserScreenshot;
 	private String imgPath;
 	private String imgLink;
 	private String format = "jpg";
@@ -36,13 +36,19 @@ public class ScreenShotOnFailure{
 	public ScreenShotOnFailure(String imgPath){
 		this("screenshots/", imgPath, true);
 	}
-	public ScreenShotOnFailure(String screenshotFolder, String imgPath, boolean isRemoteBrowser){
+
+	public ScreenShotOnFailure(String screenshotFolder, String imgPath, boolean isBrowserScreenshot){
 		this.imgLink = "./"+screenshotFolder;
 		this.imgPath = imgPath + "/"+screenshotFolder;
-		this.isRemoteBrowser = isRemoteBrowser;
+		this.isBrowserScreenshot = isBrowserScreenshot;
 	}
 
 	public String takeScreenshot(WebDriver driver, String className) {
+		// By default log failure. Take browser screenshot if specified.
+		return takeScreenshot(driver, className, isBrowserScreenshot, LogStatus.FAIL);
+	}
+
+	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
 		this.driver = driver;
 		String imgName = imgPath;
 		try{
@@ -50,25 +56,24 @@ public class ScreenShotOnFailure{
 			String fname = reportLogger.getTest().getName();
 			String imgFile = fname.split("\\[")[0] + "."+format;
 			imgName += imgFile;
-			if(isRemoteBrowser && driver!=null){
+			if(takeBrowserScreenShot && driver!=null){
 				captureBrowserScreenShot(imgName);
 			}else{
 				captureDesktopScreenShot(imgName);
 			}
-			logReportScreenShot(reportLogger, fname, imgLink+imgFile);
+			logReportScreenShot(reportLogger, fname, imgLink+imgFile, logStatus);
 		}catch(Exception e){
 			Log.warn("Failed to take screenshot: "+e);
 		}
 		return imgName;
 	}
 
-
-	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile){
+	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile, LogStatus logStatus) {
 		String image = reportLogger.addScreenCapture(imgFile);
-			reportLogger.log(LogStatus.FAIL, "Screenshot", image);
+			reportLogger.log(logStatus, "Screenshot", image);
 	}
 
-	public void captureBrowserScreenShot(String fileName){
+	public void captureBrowserScreenShot(String fileName) {
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File(fileName));
@@ -78,7 +83,7 @@ public class ScreenShotOnFailure{
 		}
 	}
 
-	public void captureDesktopScreenShot(String fileName){
+	public void captureDesktopScreenShot(String fileName) {
 		try{
 			Robot robot = new Robot();
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
@@ -90,5 +95,4 @@ public class ScreenShotOnFailure{
 			Log.warn(e.toString());
 		}
 	}
-
 }
