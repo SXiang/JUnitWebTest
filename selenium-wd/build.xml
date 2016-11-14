@@ -713,7 +713,7 @@
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 			<property name="runUUID" value="${env.RunUUID}" />
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
-			<property name="serverName" value="${env.serverName}" />
+			<property name="serverName" value="${env.ServerName}" />
 		</jmeter>
 	</target>
 

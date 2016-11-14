@@ -28,9 +28,9 @@
             <stringProp name="Argument.value">${projectHome}/json</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="baseURL" elementType="Argument">
-            <stringProp name="Argument.name">baseURL</stringProp>
-            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;baseURL&quot;);)}</stringProp>
+          <elementProp name="serverName" elementType="Argument">
+            <stringProp name="Argument.name">serverName</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;serverName&quot;);)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -126,7 +126,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-            <stringProp name="HTTPSampler.path">${baseURL}/${Folder}${FileName}</stringProp>
+            <stringProp name="HTTPSampler.path">${serverName}/${Folder}${FileName}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -224,7 +224,7 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
         <hashTree/>
       </hashTree>
       <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
-        <boolProp name="ResultCollector.error_logging">true</boolProp>
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
