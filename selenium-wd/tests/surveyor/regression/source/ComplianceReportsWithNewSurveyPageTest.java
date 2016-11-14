@@ -39,6 +39,7 @@ import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 
@@ -56,8 +57,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static MeasurementSessionsPage measurementSessionsPage;
-
-	private static HomePage homePage;
 
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static Map<String, String> testAccount, testSurvey, testReport;
@@ -81,14 +80,31 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		initializePageActions();
 
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-		homePage = pageObjectFactory.getHomePage();
-		PageFactory.initElements(getDriver(), homePage);
-		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
-		PageFactory.initElements(getDriver(),  measurementSessionsPage);
+		initializePageObjects();
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
+
+		if(testAccount == null){
+			testAccount = createTestAccount("CusWithoutAsset");
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+		}
+	}
+
+	private void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(),  measurementSessionsPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -166,9 +182,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		measurementSessionsPage.open();
 		measurementSessionsPage.performSearch(PICADMNSTDTAG2);
 		measurementSessionsPage.clickOnFirstSurveyDeleteLink();
-		assertTrue(homePage.getReturnHomePage().isEnabled());
-		assertTrue(homePage.getReturnHomePage().isDisplayed());
-		homePage.getReturnHomePage().click();
+		assertTrue(getHomePage().getReturnHomePage().isEnabled());
+		assertTrue(getHomePage().getReturnHomePage().isDisplayed());
+		getHomePage().getReturnHomePage().click();
 	}
 
 	/**

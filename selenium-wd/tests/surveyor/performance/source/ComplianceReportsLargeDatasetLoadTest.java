@@ -10,6 +10,8 @@ import java.util.Map;
 import common.source.CryptoUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
+
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
@@ -33,12 +35,19 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 	protected static final Integer LOAD_REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
 
 	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
+	public static void beforeClass() {
+		initializeTestObjects();
 		initializePageObjects();
 		createTestCaseMap();
 
 		// Ensure surveys required for the test cases are present in DB.
 		ensureTestSurveysArePresent();
+	}
+
+	@Before
+	public void beforeTest() {
+		initializeTestObjects();
+		initializePageObjects();
 	}
 
 	private static void ensureTestSurveysArePresent() {
