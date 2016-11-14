@@ -8,7 +8,6 @@ import java.util.Map;
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -40,11 +39,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
 
-	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
+	private DriverViewPage driverViewPage;
 
 	private static ManageCustomersPage manageCustomersPage;
-	private static LoginPage loginPage;
+
 	private static Map<String, String> testAccount;
 
 	public ObserverViewPageTest2() throws IOException {
@@ -69,9 +68,9 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 
 			if(testAccount == null){
 				testAccount = createTestAccount("ObserverViewTest2");
-			}else{
-				loginPage.open();
-				loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+			} else {
+				getLoginPage().open();
+				getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 				manageCustomersPage.open();
 				manageCustomersPage.editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 			}
@@ -83,14 +82,15 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	private void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
-		loginPage = pageObjectFactory.getLoginPage();
-		PageFactory.initElements(getDriver(), loginPage);
-
 		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);
 
 		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
 	}
 
 	private void initializeObserverViewPageActionList(){
@@ -101,9 +101,11 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
+
 	private void startDrivingSurvey(Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
+
 	private void startDrivingSurvey(String analyzerSerialNumber, String analyzerSharedkey, Integer analyzerRowId, Integer surveyRowId, Integer idleTimeInSeconds) throws Exception {
 		startDrivingSurvey(driverViewPageAction,analyzerSerialNumber, analyzerSharedkey, analyzerRowId, surveyRowId, idleTimeInSeconds);
 	}
@@ -115,21 +117,23 @@ public class ObserverViewPageTest2 extends BaseMapViewTest {
 	private void loginAsObserver(int userRowID) throws Exception {
 		loginAsObserver(userRowID, 0);
 	}
+
 	private void loginAsObserver(int userRowID, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
 		LoginPageActions.workingDataRow.set(null);
 		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
-	private void loginAsDriver(int userRowID) throws Exception {
-		loginPageAction.get().open(EMPTY, NOTSET);
-		LoginPageActions.workingDataRow.set(null);
-		loginPageAction.get().login(EMPTY, userRowID); /* Picarro Admin */
-	}
 	private void loginAsObserver(String usernameColonPassword, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
 		LoginPageActions.workingDataRow.set(null);
 		loginPageActionList.get(index).login(usernameColonPassword,NOTSET) ;
+	}
+
+	private void loginAsDriver(int userRowID) throws Exception {
+		loginPageAction.get().open(EMPTY, NOTSET);
+		LoginPageActions.workingDataRow.set(null);
+		loginPageAction.get().login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	private void loginAsDriver(String usernameColonPassword) throws Exception {
