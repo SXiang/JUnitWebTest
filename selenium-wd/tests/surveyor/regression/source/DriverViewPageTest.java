@@ -1195,6 +1195,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPage.open();
 
+		getScreenCapture().takeScreenshot(getDriver(), CLASS_NAME, true, LogStatus.PASS);
+
 		loginPage.waitForPageLoad();
 
 		getScreenCapture().takeScreenshot(getDriver(), CLASS_NAME, true, LogStatus.PASS);
