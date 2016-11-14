@@ -715,6 +715,7 @@
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
 			<property name="runUUID" value="${env.RunUUID}" />
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
+			<property name="baseURL" value="${env.BaseURL}" />
 		</jmeter>
 	</target>
 
