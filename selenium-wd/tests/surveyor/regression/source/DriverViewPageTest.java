@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.relevantcodes.extentreports.LogStatus;
+
 import common.source.BrowserCommands;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
@@ -53,6 +55,8 @@ import surveyor.scommon.source.SurveyorTestRunner;
  */
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest extends BaseMapViewTest {
+
+	private static final String CLASS_NAME = "surveyor.regression.source.DriverViewPageTest";
 
 	private DriverViewPageActions driverViewPageAction;
 	private static DriverViewPage driverViewPage;
@@ -1192,6 +1196,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPage.open();
 
 		loginPage.waitForPageLoad();
+
+		getScreenCapture().takeScreenshot(getDriver(), CLASS_NAME, true, LogStatus.PASS);
+
 		assertTrue(loginPage.checkIfAtLoginPage());
 	}
 
