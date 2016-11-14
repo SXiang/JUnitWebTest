@@ -320,10 +320,12 @@ public class BasePage {
 		}
 
 		try {
+			Log.info("[sendKeysToElement] -> Wait for element to be clickable");
+			waitForElementToBeClickable(element);
 			Log.info("[sendKeysToElement] -> Clear element");
 			element.clear();
 		} catch (Exception ex) {
-			Log.warn("Caught exception when clearing element. Exception message -> " + ex.getMessage());
+			Log.warn("Caught exception while waiting for element to be clickable/clearing element. Exception message -> " + ex.getMessage());
 		}
 
 		try {
@@ -340,9 +342,15 @@ public class BasePage {
 		}
 	}
 
+	protected WebElement waitForElementToBeClickable(WebElement element){
+		return (new WebDriverWait(driver, timeout)).until(
+				ExpectedConditions.elementToBeClickable(element));
+	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
 		return waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(By locator){
 		return (new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
