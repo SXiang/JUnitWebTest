@@ -711,9 +711,8 @@
 		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
 			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.FilePermission.HTTP.jmx" />
 			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
-			<property name="runUUID" value="${env.RunUUID}" />
-			<property name="runEnvironment" value="${env.RunEnvironment}" />
 			<property name="serverName" value="${env.ServerName}" />
+			<property name="runEnvironment" value="${env.RunEnvironment}" />
 		</jmeter>
 	</target>
 
