@@ -122,20 +122,19 @@
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
           <hashTree/>
-        </hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-          <stringProp name="filename">data/filePermission_Get.csv</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames"></stringProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">true</boolProp>
-          <boolProp name="recycle">false</boolProp>
-          <boolProp name="stopThread">true</boolProp>
-          <stringProp name="shareMode">shareMode.thread</stringProp>
-        </CSVDataSet>
-        <hashTree/>
-        <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-          <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
+          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+            <stringProp name="filename">data/filePermission_Get.csv</stringProp>
+            <stringProp name="fileEncoding"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="delimiter">,</stringProp>
+            <boolProp name="quotedData">true</boolProp>
+            <boolProp name="recycle">false</boolProp>
+            <boolProp name="stopThread">true</boolProp>
+            <stringProp name="shareMode">shareMode.thread</stringProp>
+          </CSVDataSet>
+          <hashTree/>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String folder= vars.get(&quot;Folder&quot;);
 String fileName = vars.get(&quot;FileName&quot;);
 String failCode=&quot;404&quot;;
@@ -165,16 +164,12 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
 		Failure = false;
 	}
 }</stringProp>
-          <stringProp name="BeanShellAssertion.filename"></stringProp>
-          <stringProp name="BeanShellAssertion.parameters"></stringProp>
-          <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
-        </BeanShellAssertion>
-        <hashTree/>
-        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
-          <collectionProp name="CookieManager.cookies"/>
-          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
-        </CookieManager>
-        <hashTree/>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+          </BeanShellAssertion>
+          <hashTree/>
+        </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
@@ -240,14 +235,6 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
         </objProp>
         <stringProp name="filename">${projectHome}\..\result\resultTable_FilePermission.csv</stringProp>
       </ResultCollector>
-      <hashTree/>
-      <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-        <stringProp name="filename"></stringProp>
-        <stringProp name="parameters"></stringProp>
-        <boolProp name="resetInterpreter">false</boolProp>
-        <stringProp name="script">print(&quot;Actual serverName: ${serverName}&quot;);
-print(&quot;Actual property: ${__P(serverName)}&quot;);</stringProp>
-      </BeanShellPostProcessor>
       <hashTree/>
     </hashTree>
   </hashTree>
