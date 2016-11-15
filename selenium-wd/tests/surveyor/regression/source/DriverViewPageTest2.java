@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +40,10 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -55,18 +58,25 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest2 extends BaseMapViewTest {
 
-	protected DriverViewPageActions driverViewPageAction;
-	protected static DriverViewPage driverViewPage;
-	protected static ManageCustomersPage manageCustomersPage = null;
-	protected static ManageUsersPage manageUsersPage = null;
+	private DriverViewPageActions driverViewPageAction;
+	private static DriverViewPage driverViewPage;
+	private static ManageCustomersPage manageCustomersPage = null;
+	private static ManageUsersPage manageUsersPage = null;
+	private static LoginPage loginPage;
 
 	public DriverViewPageTest2() throws IOException {
 		super();
 	}
 
+	@BeforeClass
+	public static void beforeTestClass() {
+		initializeTestObjects();
+	}
+
 	@Before
 	public void beforeTestMethod() {
 		try {
+			initializeTestObjects();
 			initializePageObjects();
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
 			TestSetup.restartAnalyzer();
@@ -78,14 +88,19 @@ public class DriverViewPageTest2 extends BaseMapViewTest {
 	}
 
 	private void initializePageObjects() {
-		driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		loginPage = pageObjectFactory.getLoginPage();
+		PageFactory.initElements(getDriver(), loginPage);
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);
 
 		// Additional page objects.
-		manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 
-		manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
 		PageFactory.initElements(getDriver(),  manageUsersPage);
 	}
 
@@ -102,33 +117,33 @@ public class DriverViewPageTest2 extends BaseMapViewTest {
 	public void TC2124_SimulatorTest_PicarroAdminCanSelectAnyModeOnCustomerAnalyzerWithLicense() throws Exception{
 		Log.info("\nTestcase - TC2124_SimulatorTest_PicarroAdminCanSelectAnyModeOnCustomerAnalyzerWithLicense\n");
 
-	getLoginPage().open();
-	getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-	testEnvironmentAction.get().startAnalyzer(EMPTY, 30); 	// start analyzer. SimAuto-Analyzer1
-	driverViewPageAction.open(EMPTY,NOTSET);
-	driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-	testEnvironmentAction.get().startReplay(EMPTY, 3); 	// start replay db3 file.
+		testEnvironmentAction.get().startAnalyzer(EMPTY, 30); 	// start analyzer. SimAuto-Analyzer1
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		testEnvironmentAction.get().startReplay(EMPTY, 3); 	// start replay db3 file.
 
-	// start survey and verify menu items
-	driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-//	assertTrue(driverViewPageAction.getDriverViewPage().getStartEQSurveyButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getStartSurveyButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getSystemShutdownButton().isDisplayed());
+		// start survey and verify menu items
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		//	assertTrue(driverViewPageAction.getDriverViewPage().getStartEQSurveyButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getStartSurveyButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getSystemShutdownButton().isDisplayed());
 
-	// click Start Survey button.
-	driverViewPageAction.getDriverViewPage().clickStartSurveyButton();
-	driverViewPageAction.getDriverViewPage().waitForStartSurveyModalDialogToShow();
+		// click Start Survey button.
+		driverViewPageAction.getDriverViewPage().clickStartSurveyButton();
+		driverViewPageAction.getDriverViewPage().waitForStartSurveyModalDialogToShow();
 
-	// verify survey options.
-	assertTrue(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getOperatorButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getStandardButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getRapidResponseButton().isDisplayed());
-	assertTrue(driverViewPageAction.getDriverViewPage().getAssessmentButton().isDisplayed());
+		// verify survey options.
+		assertTrue(driverViewPageAction.getDriverViewPage().getManualButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getOperatorButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getStandardButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getRapidResponseButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getAssessmentButton().isDisplayed());
 
-	// Stop current simulator and start another with a different Analyzer.
-	testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
+		// Stop current simulator and start another with a different Analyzer.
+		testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/* * Test Case ID: TC1227_SimulatorTest_StartDrivingSurvey_CurtainView
@@ -158,8 +173,8 @@ public class DriverViewPageTest2 extends BaseMapViewTest {
 	public void TC1227_SimulatorTest_StartDrivingSurvey_CurtainView() throws Exception {
 		Log.info("\nRunning TC1227_StartDrivingSurvey_CurtainView");
 
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 		testEnvironmentAction.get().startAnalyzer(EMPTY, 3); 	// start analyzer. SimAuto-Analyzer1
 		driverViewPageAction.open(EMPTY,NOTSET);

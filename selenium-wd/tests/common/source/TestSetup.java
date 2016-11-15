@@ -318,8 +318,13 @@ public class TestSetup {
 	public int getTestCleanUpMode() {
 		return Integer.parseInt(this.testCleanUpMode);
 	}
+
 	public WebDriver getDriver() {
 		return WebDriverFactory.getDriver();
+	}
+
+	public WebDriver getDriver(int index) {
+		return WebDriverFactory.getDriver(index);
 	}
 
 	public String getCulture() {
