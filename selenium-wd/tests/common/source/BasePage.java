@@ -343,8 +343,7 @@ public class BasePage {
 	}
 
 	protected WebElement waitForElementToBeClickable(WebElement element){
-		return (new WebDriverWait(driver, timeout)).until(
-				ExpectedConditions.elementToBeClickable(element));
+		return WebElementExtender.waitForElementToBeClickable(timeout, driver, element);
 	}
 
 	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
