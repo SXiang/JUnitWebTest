@@ -181,6 +181,11 @@ public class WebElementExtender {
 		});
 	}
 
+	public static WebElement waitForElementToBeClickable(final Integer timeout, WebDriver webDriver, WebElement element) {
+		return (new WebDriverWait(webDriver, timeout)).until(
+				ExpectedConditions.elementToBeClickable(element));
+	}
+
    /*
     * Captures Screenshot of the element and saves to a file.
     * NOTES: This method is useful for cases where test wants to capture bitmap of image shown in Canvas element for example.

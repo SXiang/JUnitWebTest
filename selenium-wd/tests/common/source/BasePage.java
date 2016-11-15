@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -317,18 +318,38 @@ public class BasePage {
 		if(key == null){
 			return;
 		}
-		Log.info("Send '"+key+"' to text element(field/area)");
-		element.clear();
-		Actions actions = new Actions(driver);
-		actions.moveToElement(element);
-		actions.click();
-		actions.sendKeys(key);
-		actions.build().perform();
+
+		try {
+			Log.info("[sendKeysToElement] -> Wait for element to be clickable");
+			waitForElementToBeClickable(element);
+			Log.info("[sendKeysToElement] -> Clear element");
+			element.clear();
+		} catch (Exception ex) {
+			Log.warn("Caught exception while waiting for element to be clickable/clearing element. Exception message -> " + ex.getMessage());
+		}
+
+		try {
+			Log.info("Send '"+key+"' to text element(field/area) using Actions");
+			Actions actions = new Actions(driver);
+			actions.moveToElement(element);
+			actions.click();
+			actions.sendKeys(key);
+			actions.build().perform();
+		} catch (InvalidElementStateException ex) {
+			Log.warn("Caught exception when sending keys to element using Actions. Exception message -> " + ex.getMessage());
+			Log.info("Send '"+key+"' to text element(field/area) using element.sendKeys()");
+			element.sendKeys(key);
+		}
+	}
+
+	protected WebElement waitForElementToBeClickable(WebElement element){
+		return WebElementExtender.waitForElementToBeClickable(timeout, driver, element);
 	}
 
 	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
 		return waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(By locator){
 		return (new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));

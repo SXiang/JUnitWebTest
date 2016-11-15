@@ -664,8 +664,8 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest_Ethane.class" />
-					<include name="**/ComplianceReportsPageTest9.class" />
-					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+					<include name="**/ComplianceReportsPageTest3.class" />
+					<include name="**/ComplianceReportsPageTest6.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -704,7 +704,7 @@
 			<property name="runEnvironment" value="${env.RunEnvironment}" />
 		</jmeter>
 	</target>
-	
+
 	<target name="fileAccessPermissiontest" depends="init">
 		<delete dir="${jmeter.result.dir}" />
 		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>

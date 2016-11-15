@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -222,6 +221,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl setCustomerBoundaryName(String name) {
+		Log.info("Wait for boundary name text field to be clickable");
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, selectByNameTextField);
 		Log.info("Set customer boundary name '"+name+"'");
 		selectByNameTextField.sendKeys(name);
 		this.waitForAutoCompleteListToOpen();
