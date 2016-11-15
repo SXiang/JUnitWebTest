@@ -30,7 +30,7 @@
           </elementProp>
           <elementProp name="serverName" elementType="Argument">
             <stringProp name="Argument.name">serverName</stringProp>
-            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;serverName&quot;);)}</stringProp>
+            <stringProp name="Argument.value">${__P(serverName, p3sqaauto.picarro.com)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -65,6 +65,16 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="false">
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <boolProp name="resetInterpreter">false</boolProp>
+          <stringProp name="script">if(${__P(serverName)}.length &lt; 3 ){
+	vars.put(&quot;serverName&quot;, &quot;p3sqaauto.picarro.com&quot;);
+}
+</stringProp>
+        </BeanShellPreProcessor>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
@@ -231,8 +241,8 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
             <time>false</time>
             <latency>false</latency>
             <timestamp>false</timestamp>
-            <success>true</success>
-            <label>true</label>
+            <success>false</success>
+            <label>false</label>
             <code>false</code>
             <message>false</message>
             <threadName>false</threadName>
@@ -254,16 +264,6 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
         </objProp>
         <stringProp name="filename">${projectHome}\..\result\resultTable_FilePermission.csv</stringProp>
       </ResultCollector>
-      <hashTree/>
-      <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-        <stringProp name="filename"></stringProp>
-        <stringProp name="parameters"></stringProp>
-        <boolProp name="resetInterpreter">false</boolProp>
-        <stringProp name="script">if(&quot;${serverName}&quot;.equals(&quot;&quot;) == true){
-	vars.put(&quot;serverName&quot;, &quot;p3sqaauto.picarro.com&quot;);
-}
-</stringProp>
-      </BeanShellPreProcessor>
       <hashTree/>
     </hashTree>
   </hashTree>
