@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.Security.HTTP" enabled="true">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.FilePermission.HTTP" enabled="true">
       <stringProp name="TestPlan.comments">Controller HTTP Call Security Testing</stringProp>
       <boolProp name="TestPlan.functional_mode">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
@@ -121,25 +121,25 @@
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
-          <hashTree>
-            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">data/filePermission_Get.csv</stringProp>
-              <stringProp name="fileEncoding"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="delimiter">,</stringProp>
-              <boolProp name="quotedData">true</boolProp>
-              <boolProp name="recycle">false</boolProp>
-              <boolProp name="stopThread">true</boolProp>
-              <stringProp name="shareMode">shareMode.thread</stringProp>
-            </CSVDataSet>
-            <hashTree/>
-          </hashTree>
+          <hashTree/>
         </hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+          <stringProp name="filename">data/filePermission_Get.csv</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="variableNames"></stringProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">true</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="shareMode">shareMode.thread</stringProp>
+        </CSVDataSet>
+        <hashTree/>
         <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
           <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
 String folder= vars.get(&quot;Folder&quot;);
 String fileName = vars.get(&quot;FileName&quot;);
 String failCode=&quot;404&quot;;
+
 if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
 	if (ResponseCode.equals(failCode) == true ) {
 		SampleResult.setResponseOK();
@@ -240,6 +240,14 @@ if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
         </objProp>
         <stringProp name="filename">${projectHome}\..\result\resultTable_FilePermission.csv</stringProp>
       </ResultCollector>
+      <hashTree/>
+      <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+        <stringProp name="filename"></stringProp>
+        <stringProp name="parameters"></stringProp>
+        <boolProp name="resetInterpreter">false</boolProp>
+        <stringProp name="script">print(&quot;Actual serverName: ${serverName}&quot;);
+print(&quot;Actual property: ${__P(serverName)}&quot;);</stringProp>
+      </BeanShellPostProcessor>
       <hashTree/>
     </hashTree>
   </hashTree>
