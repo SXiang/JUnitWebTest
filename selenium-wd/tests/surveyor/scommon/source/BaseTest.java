@@ -140,7 +140,9 @@ public class BaseTest {
 		}
 
 		if (getScreenCapture() == null) {
-			setScreenCapture(TestSetupFactory.getScreenShotOnFailure());
+			ScreenShotOnFailure screenShotOnFailure = TestSetupFactory.getScreenShotOnFailure();
+			setScreenCapture(screenShotOnFailure);
+			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
 	}
@@ -169,6 +171,7 @@ public class BaseTest {
 		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 				DateUtility.getCurrentDate()));
+		TestContext.INSTANCE.setTestClassName(className);
 	}
 
 	public static void reportTestFinished(String className) {
@@ -306,6 +309,7 @@ public class BaseTest {
 		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
 			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
 		}
+
 		manageLocationsPage.open();
 		if(!manageLocationsPage.addNewLocation(locationName, customerName, cityName)){
 			fail(String.format("Failed to add a new location %s, %s, %s",locationName, customerName, cityName));
