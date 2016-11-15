@@ -1,30 +1,246 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
   <hashTree>
-    <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Surveyor Constants" enabled="true">
-      <collectionProp name="Arguments.arguments">
-        <elementProp name="projectHome" elementType="Argument">
-          <stringProp name="Argument.name">projectHome</stringProp>
-          <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}</stringProp>
-          <stringProp name="Argument.metadata">=</stringProp>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Picarro.Security.HTTP" enabled="true">
+      <stringProp name="TestPlan.comments">Controller HTTP Call Security Testing</stringProp>
+      <boolProp name="TestPlan.functional_mode">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="Surveyor Constants" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="projectHome" elementType="Argument">
+            <stringProp name="Argument.name">projectHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(import org.apache.jmeter.services.FileServer; FileServer.getFileServer().getBaseDir();)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jmeterHome" elementType="Argument">
+            <stringProp name="Argument.name">jmeterHome</stringProp>
+            <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;user.dir&quot;);)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jsonHome" elementType="Argument">
+            <stringProp name="Argument.name">jsonHome</stringProp>
+            <stringProp name="Argument.value">${projectHome}/json</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="serverName" elementType="Argument">
+            <stringProp name="Argument.name">serverName</stringProp>
+            <stringProp name="Argument.value">${__P(serverName,p3dev.picarro.com)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Picarro.Surveyor.Web" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <elementProp name="jmeterHome" elementType="Argument">
-          <stringProp name="Argument.name">jmeterHome</stringProp>
-          <stringProp name="Argument.value">${__BeanShell(System.getProperty(&quot;user.dir&quot;);)}</stringProp>
-          <stringProp name="Argument.metadata">=</stringProp>
-        </elementProp>
-        <elementProp name="jsonHome" elementType="Argument">
-          <stringProp name="Argument.name">jsonHome</stringProp>
-          <stringProp name="Argument.value">${projectHome}/json</stringProp>
-          <stringProp name="Argument.metadata">=</stringProp>
-        </elementProp>
-        <elementProp name="serverName" elementType="Argument">
-          <stringProp name="Argument.name">serverName</stringProp>
-          <stringProp name="Argument.value">${__P(serverName, p3dev.picarro.com)}</stringProp>
-          <stringProp name="Argument.metadata">=</stringProp>
-        </elementProp>
-      </collectionProp>
-    </Arguments>
-    <hashTree/>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="false">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="Username" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Username</stringProp>
+              </elementProp>
+              <elementProp name="Password" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">Password</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="PicarroAnonymousHttpGets" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${serverName}</stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${Folder}${FileName}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">data/filePermission_Get.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+          <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
+String folder= vars.get(&quot;Folder&quot;);
+String fileName = vars.get(&quot;FileName&quot;);
+String failCode=&quot;404&quot;;
+if (vars.get(&quot;Permission&quot;).equals(&quot;NO&quot;)){
+	if (ResponseCode.equals(failCode) == true ) {
+		SampleResult.setResponseOK();
+		Failure = false;
+	}else if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+			|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
+		FailureMessage = &quot;file &quot;+folder+fileName+&quot; should not be allowed to read directly from this physical address&quot;;
+		Failure = true;
+		}else{
+			SampleResult.setResponseCodeOK();
+			Failure = false;
+		}
+}else{
+	if (ResponseCode.equals(failCode) == true ) {
+		FailureMessage = &quot;file &quot;+folder+fileName+&quot; should be allowed to read directly from this physical address&quot;;
+		Failure = true;
+	}else if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
+		FailureMessage = &quot;file &quot;+folder+fileName+&quot; should be allowed to read directly from this physical address&quot;;
+		Failure = true;
+	}else{
+		SampleResult.setResponseCodeOK();
+		Failure = false;
+	}
+}</stringProp>
+          <stringProp name="BeanShellAssertion.filename"></stringProp>
+          <stringProp name="BeanShellAssertion.parameters"></stringProp>
+          <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+        </BeanShellAssertion>
+        <hashTree/>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>false</time>
+            <latency>false</latency>
+            <timestamp>false</timestamp>
+            <success>false</success>
+            <label>false</label>
+            <code>false</code>
+            <message>false</message>
+            <threadName>false</threadName>
+            <dataType>false</dataType>
+            <encoding>false</encoding>
+            <assertions>false</assertions>
+            <subresults>false</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <url>true</url>
+          </value>
+        </objProp>
+        <stringProp name="filename">${projectHome}\..\result\resultTable_FilePermission.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
   </hashTree>
 </jmeterTestPlan>
