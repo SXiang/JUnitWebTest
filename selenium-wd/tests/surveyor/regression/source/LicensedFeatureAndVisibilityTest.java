@@ -59,14 +59,14 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		}
 	}
 
-	private static void initializePageObjects() {
+	private void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
 		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(), manageCustomersPage);
 
 		manageLocationsPage = pageObjectFactory.getManageLocationsPage();
-		PageFactory.initElements(getDriver(),  manageLocationsPage);
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 
 		driverViewPage = pageObjectFactory.getDriverViewPage();
 		PageFactory.initElements(getDriver(), driverViewPage);

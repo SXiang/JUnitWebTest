@@ -326,9 +326,21 @@ public class BasePage {
 		actions.build().perform();
 	}
 
+	protected void waitAndClickElement(WebElement element) {
+		Log.method("waitAndClickElement", element);
+		waitForElementToBeClickable(element);
+		element.click();
+	}
+
+	protected WebElement waitForElementToBeClickable(WebElement element){
+		return (new WebDriverWait(driver, timeout)).until(
+				ExpectedConditions.elementToBeClickable(element));
+	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
 		return waitUntilPresenceOfElementLocated(By.id(elementID));
 	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(By locator){
 		return (new WebDriverWait(driver, timeout)).until(
 				ExpectedConditions.presenceOfElementLocated(locator));
