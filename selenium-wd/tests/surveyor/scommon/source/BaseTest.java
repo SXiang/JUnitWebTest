@@ -345,6 +345,7 @@ public class BaseTest {
 		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",lotNum, isoValue, customerName, locationName, surveyorName));
 		}
+
 		return Collections.synchronizedMap(testAccount);
 	}
 
@@ -398,6 +399,7 @@ public class BaseTest {
 			complianceReportsPage.addNewReport(rpt, true);
 			complianceReportsPage.waitForReportGenerationtoComplete(rpt.rptTitle, rpt.strCreatedBy);
 		}
+
 		return Collections.synchronizedMap(testReport);
 	}
 

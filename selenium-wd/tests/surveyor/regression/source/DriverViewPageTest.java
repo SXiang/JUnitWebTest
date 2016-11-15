@@ -17,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.relevantcodes.extentreports.LogStatus;
+
 import common.source.BrowserCommands;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
@@ -54,12 +56,14 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest extends BaseMapViewTest {
 
-	protected DriverViewPageActions driverViewPageAction;
-	protected static DriverViewPage driverViewPage;
-	protected static ManageCustomersPage manageCustomersPage = null;
-	protected static ManageUsersPage manageUsersPage = null;
-	protected static HomePage homePage;
-	protected static LoginPage loginPage;
+	private static final String CLASS_NAME = "surveyor.regression.source.DriverViewPageTest";
+
+	private DriverViewPageActions driverViewPageAction;
+	private static DriverViewPage driverViewPage;
+	private static ManageCustomersPage manageCustomersPage = null;
+	private static ManageUsersPage manageUsersPage = null;
+	private static HomePage homePage;
+	private static LoginPage loginPage;
 
 	public DriverViewPageTest() throws IOException {
 		super();
@@ -1191,7 +1195,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPage.open();
 
+		getScreenCapture().takeScreenshot(getDriver(), CLASS_NAME, true, LogStatus.PASS);
+
 		loginPage.waitForPageLoad();
+
+		getScreenCapture().takeScreenshot(getDriver(), CLASS_NAME, true, LogStatus.PASS);
+
 		assertTrue(loginPage.checkIfAtLoginPage());
 	}
 

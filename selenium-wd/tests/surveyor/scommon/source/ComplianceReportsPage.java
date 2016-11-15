@@ -523,7 +523,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public ComplianceReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
-		Log.info("\nThe Compliance Reports Page URL is: %s\n" + this.strPageURL);
+		Log.info(String.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL));
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
