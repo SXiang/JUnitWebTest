@@ -172,6 +172,8 @@ public class TestSetup {
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
 
+	private ScreenShotOnFailure screenCapture;
+
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
 
@@ -707,7 +709,7 @@ public class TestSetup {
 				Log.info(String.format("Waiting for %d grid nodes to become available..", requiredNodes));
 
 				PollManager.poll(() -> (GridNodesManager.getAvailableNodes(requiredNodes, getParallelBuildRunUUID(), getBrowser(), getPlatform()) < requiredNodes),
-						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES);
+						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES_IN_POLL);
 
 			} else {
 				Log.info(String.format("%d grid nodes are available for running the tests!", requiredNodes));
@@ -1528,5 +1530,13 @@ public class TestSetup {
 
 	public void setRunUUID(Long runUUID) {
 		this.runUUID = runUUID;
+	}
+
+	public ScreenShotOnFailure getScreenCapture() {
+		return screenCapture;
+	}
+
+	public void setScreenCapture(ScreenShotOnFailure screenCapture) {
+		this.screenCapture = screenCapture;
 	}
 }

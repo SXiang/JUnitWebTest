@@ -1561,7 +1561,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.warn(String.format("Polling -> getReportTableCellText(). Exception warning-> {0}", e.getMessage()));
 			}
 			return true;
-		}, Constants.MILLISECONDS_IN_ONE_SECOND, Constants.DEFAULT_MAX_RETRIES);
+		}, Constants.MILLISECONDS_IN_ONE_SECOND, Constants.DEFAULT_MAX_RETRIES_IN_POLL);
 		return cellText;
 	}
 

@@ -5,14 +5,14 @@ public class Constants {
 	public static final String COMPLIANCE_REPORTS_TEST_CASES = "TestCases-CmpReports";
 
 	// Test Execution Excel Sheet Column Numbers
-	public static final int Excel_TestCases_Col_ID = 0;	
+	public static final int Excel_TestCases_Col_ID = 0;
 	public static final int Excel_TestCases_Col_RallyID = 1;
 	public static final int Excel_TestCases_Col_Name = 2;
 	public static final int Excel_TestCases_Col_UserRowIDs = 3;
 	public static final int Excel_TestCases_Col_Enabled = 4;
 	public static final int Excel_TestCases_Col_RunResult = 5;
-	
-	public static final int Excel_TestCaseSteps_Col_ID = 0;	
+
+	public static final int Excel_TestCaseSteps_Col_ID = 0;
 	public static final int Excel_TestCaseSteps_Col_TestCaseStep = 1;
 	public static final int Excel_TestCaseSteps_Col_PageObject = 2;
 	public static final int Excel_TestCaseSteps_Col_Action = 3;
@@ -20,20 +20,23 @@ public class Constants {
 	public static final int Excel_TestCaseSteps_Col_TestData = 5;
 	public static final int Excel_TestCaseSteps_Col_TestDataRowIDs = 6;
 	public static final int Excel_TestCaseSteps_Col_Result = 7;
-		
+
 	// Test Execution Excel Sheets
 	public static final String[] Excel_Sheets_TestCases = {DRIVER_VIEW_TEST_CASES, COMPLIANCE_REPORTS_TEST_CASES};
-	
+
 	public static final String TestCasesExcelFile = "TestCases.xlsx";
 	public static final String TestCaseDataExcelFile = "TestCaseData.xlsx";
 
 	public static final String Path_OR = "OR.txt";
 	public static final String KEYWORD_FAIL = "FAIL";
 	public static final String KEYWORD_PASS = "PASS";
-	
+
 	// Default poll time constants.
 	public static final Integer MILLISECONDS_IN_ONE_SECOND = 1000;
 	public static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 6000;
-	public static final Integer DEFAULT_MAX_RETRIES = 100;   // timeout = 600 seconds = 10 mins.
+	public static final Integer DEFAULT_MAX_RETRIES_IN_POLL = 100;   // timeout = 600 seconds = 10 mins.
 
+	// Default retries time constants.
+	public static final Integer DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC = 0;   // by default on exception we retry without wait.
+	public static final Integer DEFAULT_MAX_RETRIES = 3;
 }

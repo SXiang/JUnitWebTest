@@ -17,8 +17,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.relevantcodes.extentreports.LogStatus;
+
 import common.source.BrowserCommands;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -463,6 +466,12 @@ public class HomePage extends SurveyorBasePage {
 			return false;
 		}
 
+		// Added for debugging in parallel run.
+		TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
+				TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
+
+		waitAndClickElement(this.linkReports);
+
 		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
 			return false;
@@ -511,6 +520,12 @@ public class HomePage extends SurveyorBasePage {
 			Log.error("Not found - link to Fleet Map");
 			return false;
 		}
+
+		// Added for debugging in parallel run.
+		TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
+				TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
+
+		waitAndClickElement(this.linkReports);
 
 		if (!WebElementExtender.isElementPresentAndDisplayed(this.linkReports)){
 			Log.error("Not found - link to Reports");
