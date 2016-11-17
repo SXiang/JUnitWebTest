@@ -210,6 +210,16 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 		Log.info(String.format("Find surveyor '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		setPagination(PAGE_PAGINATIONSETTING);
 
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
+
+		this.waitForAJAXCallsToComplete();
+		this.searchTable(surveyorName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
+
 		String customerNameXPath;
 		String locationNameXPath;
 		String surveyorNameXPath;
@@ -240,6 +250,8 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName) && (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)
 					&& (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
 				Log.info("Found entry at row=" + rowNum);
+            	// revert back search field.
+            	this.clearSearchField();
 				return true;
 			}
 
@@ -257,7 +269,10 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-		Log.error(String.format("Surveyor not found: '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
+
+    	// revert back search field.
+    	this.clearSearchField();
+    	Log.error(String.format("Surveyor not found: '%s', location = '%s', customer = '%s'", surveyorName, locationName, customerName));
 		return false;
 	}
 
@@ -265,6 +280,14 @@ public class ManageSurveyorPage extends SurveyorBasePage {
     	Log.method("editExistingSurveyor", customerName, locationName, surveyorName, surveyorNameNew);
 		Log.info(String.format("Edit surveyor '%s'", surveyorName));
 		setPagination(PAGE_PAGINATIONSETTING);
+		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
+
+		this.searchTable(locationName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -330,6 +353,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 					}
 				}
 
+            	this.clearSearchField();
 				return true;
 			}
 
@@ -347,7 +371,9 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-		Log.error(String.format("Surveyor not found: '%s'", surveyorName));
+
+    	this.clearSearchField();
+    	Log.error(String.format("Surveyor not found: '%s'", surveyorName));
 		return false;
 	}
 

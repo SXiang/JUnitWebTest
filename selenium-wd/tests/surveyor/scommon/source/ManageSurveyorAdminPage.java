@@ -47,6 +47,15 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 		Log.info(String.format("Find surveyor %s, location = '%s'",
 				surveyorName, locationName));
 		setPaginationAny(PAGE_PAGINATIONSETTING);
+		this.clearSearchFieldUsingSpace();   // clear any previous entries in search.
+
+		this.waitForAJAXCallsToComplete();
+		this.searchTable(surveyorName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -75,6 +84,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 
 			if ((locationNameCell.getText().trim()).equalsIgnoreCase(locationName) && (surveyorNameCell.getText().trim()).equalsIgnoreCase(surveyorName)) {
 				Log.info("Found entry at row=" + rowNum);
+            	// revert back search field.
+            	this.clearSearchField();
 				return true;
 			}
 
@@ -92,17 +103,26 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-		Log.info(String.format("Surveyor not found: %s, location = '%s'",
+
+    	// revert back search field.
+    	this.clearSearchField();
+    	Log.info(String.format("Surveyor not found: %s, location = '%s'",
 				surveyorName, locationName));
 		return false;
 	}
-
-
 
 	public boolean editExistingSurveyor(String customer, String locationName, String surveyorName, String locationNameNew, String surveyorNameNew, boolean addCalibration) {
 		Log.info(String.format("Edit surveyor %s, customer = '%s', location = '%s'",
 				surveyorName, customer,locationName));
 		setPaginationAny(PAGE_PAGINATIONSETTING);
+		this.clearSearchFieldUsingSpace();		// clear any previous entries in search.
+
+		this.searchTable(surveyorName);
+		if (this.searchHasNoMatchingRecords()) {
+        	// revert back search field.
+        	this.clearSearchField();
+        	return false;
+		}
 
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -199,7 +219,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 						return false;
 					}
 				}
-				return true;
+
+            	// revert back search field.
+            	this.clearSearchField();
+            	return true;
 			}
 
 			if (rowNum == Integer.parseInt(PAGE_PAGINATIONSETTING) && !this.nextBtn.getAttribute("class").contains("disabled")) {
@@ -217,7 +240,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				rowNum = 0;
 			}
 		}
-		Log.error(String.format("Surveyor not found: %s, customer = '%s', location = '%s'",
+
+    	// revert back search field.
+    	this.clearSearchField();
+    	Log.error(String.format("Surveyor not found: %s, customer = '%s', location = '%s'",
 				surveyorName, customer,locationName));
 		return false;
 	}
