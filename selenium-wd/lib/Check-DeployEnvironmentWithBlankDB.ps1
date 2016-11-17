@@ -52,7 +52,6 @@ $Headers = @{
     Token = $authToken
 }
 
-$nowDate = (get-date).ToString()
 $Body = @{
     Id = 0       # sample ID. Ignored on server-side 
     EnvironmentId = $EnvironmentId
