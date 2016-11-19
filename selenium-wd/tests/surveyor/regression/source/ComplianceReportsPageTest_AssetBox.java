@@ -20,6 +20,8 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTest {
@@ -77,7 +79,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 
 	 */
 	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC927, location = ComplianceReportDataProvider.class)
 	public void TC927_InvestigationReportWithGaptable(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC927_InvestigationReportWithGaptable" +
@@ -91,10 +93,11 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifyLISAInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(complianceReportsPageAction.verifyGAPInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 
@@ -112,8 +115,8 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the colors for the square bubbles pointing to Asset Boxes should match the colors of the corresponding LISA indication bubbles in the view and their dispositions in the SSRS PDF
 	 */
-	@Ignore @Test /* Same as TC except login user *//* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320, location = ComplianceReportDataProvider.class)
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2197, location = ComplianceReportDataProvider.class)
 	public void TC2197_P3300AssetBoxNumberBubblesHaveSameColorAsLISABubbles(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2197_P3300AssetBoxNumberBubblesHaveSameColorAsLISABubbles ..." +
@@ -122,15 +125,16 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		rpt.setEthaneFilter(EthaneFilter.None);
+		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
 
@@ -150,33 +154,28 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the square bubbles pointing to Asset Boxes should match the blue color of the corresponding LISA indication bubbles in the view
 	 */
-	@Ignore @Test  /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2198, location = ComplianceReportDataProvider.class)
 	public void TC2198_P3200AssetBoxNumberBubblesHaveSameColorAsLISABubbles(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2198_P3200AssetBoxNumberBubblesHaveSameColorAsLISABubbles ..." +
 			 "\nTest Description: Asset Box Number Bubbles should be rendered with same color as LISA bubbles");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		rpt.setEthaneFilter(EthaneFilter.None);
+		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
-		//Add 1 survey
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-        complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
-		//Add 2 surveys, same tag
-        complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
-		//Add 2 surveys, different tags
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-
-
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
+	
 	/**
 	 * Test Case ID: TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF
 	 * Test Description: - All indication and asset box bubbles should be contained within the border of the Report View PDF
@@ -194,32 +193,26 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * Results: -
 	 * - All indications, analysis results and field notes should be contained within the map and visible (if the density is very high, some may be obscured by others). None should be off of the map
 	 */
-	@Ignore @Test  /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2199, location = ComplianceReportDataProvider.class)
 	public void TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF ..." +
 			 "\nTest Description: All indication and asset box bubbles should be contained within the border of the Report View PDF");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		rpt.setEthaneFilter(EthaneFilter.None);
+		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
-		//Add 1 survey
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-        complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
-		//Add 2 surveys, same tag
-        complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
-		//Add 2 surveys, different tags
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-
-
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 	
 	/**
@@ -237,32 +230,26 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the square bubbles pointing to Gap Boxes should match red color of the Gap Box itself
 	 */
-	@Ignore @Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2200, location = ComplianceReportDataProvider.class)
 	public void TC2200_GapBoxNumberBubblesHasSameColorAsGap(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2200_GapBoxNumberBubblesHasSameColorAsGap ..." +
 			 "\nTest Description: Gap Box Number Bubbles should be rendered with same color as Gap");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		rpt.setEthaneFilter(EthaneFilter.None);
+		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
-		//Add 1 survey
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-        complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
-		//Add 2 surveys, same tag
-        complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
-		//Add 2 surveys, different tags
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-
-
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
+		
+		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
 }
