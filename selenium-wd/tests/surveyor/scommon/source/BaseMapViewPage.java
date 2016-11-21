@@ -1163,17 +1163,26 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean setZoomLevelForAssets() {
-		OLMapUtility mapUtility = new OLMapUtility(driver);
-		int currentZoomlevel = mapUtility.getMapZoomLevel();
-		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
-			return true;
-		}
-		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
+		int newZoomlevel = 0;
+		try
+		{
+			OLMapUtility mapUtility = new OLMapUtility(driver);
+			int currentZoomlevel = mapUtility.getMapZoomLevel();
+			if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
+				return true;
+			}
+			int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
 
-		for(int i=0;i<numClicks;i++){
-			  clickZoomInButton();
+			for(int i=0;i<numClicks;i++){
+				  clickZoomInButton();
+			}
+			newZoomlevel = mapUtility.getMapZoomLevel();
+		} catch (Exception ex) {
+			Log.info("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
+			Log.info("[DEBUG LOG]: Returning [surveyormap] js object...");
+			((JavascriptExecutor)driver).executeScript("return surveyormap;");
 		}
-		int newZoomlevel = mapUtility.getMapZoomLevel();
+
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
 	}
 
