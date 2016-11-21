@@ -13,6 +13,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.relevantcodes.extentreports.LogStatus;
+
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
@@ -1178,9 +1180,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			}
 			newZoomlevel = mapUtility.getMapZoomLevel();
 		} catch (Exception ex) {
-			Log.info("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
-			Log.info("[DEBUG LOG]: Returning [surveyormap] js object...");
-			((JavascriptExecutor)driver).executeScript("return surveyormap;");
+			Log.warn("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
+			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
+					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
+			Log.warn("[DEBUG LOG]: Returning [surveyormap] js object...");
+			Object executeScript = ((JavascriptExecutor)driver).executeScript("return surveyormap;");
+			Log.info("Returned [surveyormap] object = " + (executeScript != null ? executeScript.toString() : "<null>"));
 		}
 
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
