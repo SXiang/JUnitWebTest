@@ -115,7 +115,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the colors for the square bubbles pointing to Asset Boxes should match the colors of the corresponding LISA indication bubbles in the view and their dispositions in the SSRS PDF
 	 */
-	@Test
+	@Test /* Need to update baseline with more suitable survey for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2197, location = ComplianceReportDataProvider.class)
 	public void TC2197_P3300AssetBoxNumberBubblesHaveSameColorAsLISABubbles(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -154,7 +154,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the square bubbles pointing to Asset Boxes should match the blue color of the corresponding LISA indication bubbles in the view
 	 */
-	@Test
+	@Test /* Need to update baseline with more suitable survey for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2198, location = ComplianceReportDataProvider.class)
 	public void TC2198_P3200AssetBoxNumberBubblesHaveSameColorAsLISABubbles(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -193,7 +193,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * Results: -
 	 * - All indications, analysis results and field notes should be contained within the map and visible (if the density is very high, some may be obscured by others). None should be off of the map
 	 */
-	@Test
+	@Test /* Need to update baseline with more suitable survey for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2199, location = ComplianceReportDataProvider.class)
 	public void TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -230,7 +230,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the square bubbles pointing to Gap Boxes should match red color of the Gap Box itself
 	 */
-	@Test
+	@Test /* Need to update baseline with more suitable survey for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2200, location = ComplianceReportDataProvider.class)
 	public void TC2200_GapBoxNumberBubblesHasSameColorAsGap(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
