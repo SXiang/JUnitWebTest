@@ -11,26 +11,26 @@
 
 param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $BuildWorkingDir="C:\Repositories\surveyor-qa",                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
+  [Parameter(Mandatory=$true)]
+  [String] $BuildWorkingDir,                       # Path to working directory (for eg. C:\Repositories\surveyor-qa)
 
-  [Parameter(Mandatory=$false)]
-  [String] $AutomationReportingAPIBaseUrl="http://localhost:63087",         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
+  [Parameter(Mandatory=$true)]
+  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
 
-  [Parameter(Mandatory=$false)]
-  [String] $DeployIntervalInDays=7,
+  [Parameter(Mandatory=$true)]
+  [String] $DeployIntervalInDays,
 
-  [Parameter(Mandatory=$false)]
-  [String] $EnvironmentTeamCityBuildConfigId="Surveyor_2_SqaautoDevelop",      # Provide environmentTeamCityBuildConfigId of the environment along with EnvironmentId to ensure incorrect environment does not get deployed.
+  [Parameter(Mandatory=$true)]
+  [String] $EnvironmentTeamCityBuildConfigId,      # Provide environmentTeamCityBuildConfigId of the environment along with EnvironmentId to ensure incorrect environment does not get deployed.
 
-  [Parameter(Mandatory=$false)]
-  [int] $EnvironmentId=1,
+  [Parameter(Mandatory=$true)]
+  [int] $EnvironmentId,
 
-  [Parameter(Mandatory=$false)]
-  [String] $CurrentTeamCityBuildConfigId="Surveyor_2_SqaSeleniumTestExecutionRunComplianceReportsSurveyorQaMaster",      
+  [Parameter(Mandatory=$true)]
+  [String] $CurrentTeamCityBuildConfigId,      
 
-  [Parameter(Mandatory=$false)]
-  [int] $WaitTimeInMinutesForDeployment=20
+  [Parameter(Mandatory=$true)]
+  [int] $WaitTimeInMinutesForDeployment
 ) 
 
 $libFolder = "selenium-wd\lib"
