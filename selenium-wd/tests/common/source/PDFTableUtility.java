@@ -22,6 +22,8 @@ public class PDFTableUtility extends PDFUtility{
 	// All the pdf tables should be defined in this enum
 	public static enum PDFTable {
 		LISAINVESTIGATIONTABLE ("Lisa Investigation Table",2),
+		LISAINVESTIGATIONPDFTABLE ("LISA#"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Investigation Marker Results",true,-1,5),
+		GAPINVESTIGATIONPDFTABLE ("Gap #"+wordSeparator+"Status"+wordSeparator+"Investigation Date/Time"+wordSeparator+"Investigator"+wordSeparator+"Duration",0,"Date Printed:",true,-1,5),
 		LISAINDICATIONTABLE ("Disposition"+wordSeparator+"Confidence in Disposition (%)"+wordSeparator+"Field Notes",0,"",true,-1,10),
 		COMPLIANCEREPORTSUMMARYTABLE ("Map Height & Width:.*",0,"",false,6),
 		COVERAGEFORECAST(".*Percent Service Coverage with LISAs.*",0,"",false,1),
@@ -33,7 +35,7 @@ public class PDFTableUtility extends PDFUtility{
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
 		private final String tableEndLinePattern; //3. tableEndLinePattern, indicator of end of a table, optional, default to ""
-		private final boolean hasTableHeader;     //4. With table header or without table header
+		private final boolean hasTableHeader;     //4. With table header or without table header, optional, default to true
 		private final int numRows;                //5. num of rows within the table if it's positive, otherwise the size of table is unknown.
 		private final int numFields;              //6. num of fields within a table row if it's positive, otherwise it's is unknown.
 
@@ -157,7 +159,13 @@ public class PDFTableUtility extends PDFUtility{
 				line += trimTableRow(pdfLines[i+combinedLine]);
 				numWords = line.split(wordSeparatorPattern).length;
 			}
-			if(RegexUtility.equalsOrMatches(line,tableID)){
+			/* Ignore spaces on header search */
+			String _line = line.replaceAll("[ "+wordSeparator+"]", "");
+			String _tableID = tableID.replaceAll("[ "+wordSeparator+"]", "");
+			if(RegexUtility.equalsOrMatches(_line,_tableID)){
+				if(_line.equals(_tableID)){
+					line = tableID;
+				}
 				i += combinedLine;
 				for(j=i+startLine; j<pdfLines.length ; j++){
 					if(maxNumLines>0&&numLines>=maxNumLines){

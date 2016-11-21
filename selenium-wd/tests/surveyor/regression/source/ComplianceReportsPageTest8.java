@@ -427,7 +427,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Please make sure your selected boundary is more than 0.5kms and less than 25kms
 	 */
-	@Test /*Input Lat/Lon manually,  Implementation of selecting area from the Map Selector is not available yet*/
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC236, location = ComplianceReportDataProvider.class)
 	public void TC236_VerySmallOrBigReportAreaSelectionNotAllowedNewComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

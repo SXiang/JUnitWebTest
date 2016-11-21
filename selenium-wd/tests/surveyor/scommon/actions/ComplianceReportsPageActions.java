@@ -6,6 +6,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -230,6 +231,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String highlightLisaAssets = reportViewsDataRow.highlightLisa.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightBoxAssets = reportViewsDataRow.highlightBox.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightGapAssets = reportViewsDataRow.highlightGap.equalsIgnoreCase("TRUE") ? "1" : "0";
+		String assetBoxNumber = reportViewsDataRow.assetBoxNumber.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String baseMapType = reportViewsDataRow.baseMap;
 		viewMap.put(KEYVIEWNAME, viewName);
@@ -244,6 +246,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (highlightLisaAssets != "") viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAssets);
 		if (highlightBoxAssets != "") viewMap.put(KEYHIGHLIGHTBOXASSETS, highlightBoxAssets);
 		if (highlightGapAssets != "") viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAssets);
+		if (assetBoxNumber != "") viewMap.put(KEYASSETBOXNUMBER, assetBoxNumber);
 		if (showBoundaries != "") viewMap.put(KEYBOUNDARIES, showBoundaries);
 		viewMap.put(KEYBASEMAP, baseMapType);
 	}
@@ -520,6 +523,14 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		case PDF:
 			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
 			this.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+			break;
+		case InvestigationPDF:
+			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForInvestigationPDFFileDownload(reportName);
+			break;
+		case InvestigationCSV:
+			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForInvestigationCSVFileDownload(reportName);
 			break;
 		case ZIP:
 			// get the report name without extension.
@@ -2433,6 +2444,34 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes clickOnComplianceViewerPDFZIP action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean clickOnComplianceViewerInvestigationPDF(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.clickOnComplianceViewerInvestigationPDF", data, dataRowID);
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokeInvestigationPDFFileDownload(reportsDataRow.title);
+		return true;
+	}
+
+	/**
+	 * Executes clickOnComplianceViewerMetaZIP action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean clickOnComplianceViewerInvestigationData(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.clickOnComplianceViewerInvestigationData", data, dataRowID);
+		ComplianceReportsDataRow reportsDataRow = getComplianceReportsDataRow(dataRowID);
+		this.getComplianceReportsPage().invokeInvestigationDataFileDownload(reportsDataRow.title);
+		return true;
+	}
+	
+	/**
 	 * Executes clickOnComplianceViewerShapeZIP action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2529,6 +2568,31 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return true;
 	}
 
+	/**
+	 * Executes waitForInvestigationPDFDownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForInvestigationPDFDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForInvestigationPDFDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.InvestigationPDF, -1);
+		return true;
+	}
+	
+	/**
+	 * Executes waitForInvestigationCSVFileDownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForInvestigationCSVFileDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.waitForInvestigationCSVFileDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.InvestigationCSV, -1);
+		return true;
+	}
 	/**
 	 * Executes waitForPDFZIPDownloadToComplete action.
 	 * @param data - specifies the input data passed to the action.
@@ -2865,6 +2929,34 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		return this.getComplianceReportsPage().verifyLISASMetaDataFile(downloadPath, workingDataRow.get().title);
 	}
 
+	/**
+	 * Executes verifyLISASMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	public boolean verifyLISAInvestigationTable(String data, Integer dataRowID) throws FileNotFoundException, IOException {
+		logAction("ComplianceReportsPageActions.verifyLISAInvestigationTable", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.InvestigationPDF);
+		return this.getComplianceReportsPage().verifyLISAInvestigationTable(downloadPath, workingDataRow.get().title);
+	}
+	
+	/**
+	 * Executes verifyLISASMetaDataFile action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	public boolean verifyGAPInvestigationTable(String data, Integer dataRowID) throws FileNotFoundException, IOException {
+		logAction("ComplianceReportsPageActions.verifyGAPInvestigationTable", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.InvestigationCSV);
+		return this.getComplianceReportsPage().verifyGAPInvestigationTable(downloadPath, workingDataRow.get().title);
+	}
+	
 	/**
 	 * Executes verifyReportDeletedSuccessfully action.
 	 * @param data - specifies the input data passed to the action.
@@ -3468,6 +3560,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("clickOnComplianceViewerMetaZIP")) { return this.clickOnComplianceViewerMetaZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerPDF")) { return this.clickOnComplianceViewerPDF(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerPDFZIP")) { return this.clickOnComplianceViewerPDFZIP(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerInvestigationPDF")) { return this.clickOnComplianceViewerInvestigationPDF(data, dataRowID); }
+		else if (actionName.equals("clickOnComplianceViewerInvestigationData")) { return this.clickOnComplianceViewerInvestigationData(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerShapeZIP")) { return this.clickOnComplianceViewerShapeZIP(data, dataRowID); }
 		else if (actionName.equals("clickOnComplianceViewerViewByIndex")) { return this.clickOnComplianceViewerViewByIndex(data, dataRowID); }
 		else if (actionName.equals("clickOnCloseReportViewer")) { return this.clickOnCloseReportViewer(data, dataRowID); }
@@ -3556,6 +3650,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyLISAsIndicationTableRowCountEquals")) { return this.verifyLISAsIndicationTableRowCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyLISAsIndicationTableSortedAscByColumn")) { return this.verifyLISAsIndicationTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyLISAsIndicationTableSortedDescByColumn")) { return this.verifyLISAsIndicationTableSortedDescByColumn(data, dataRowID); }
+		else if (actionName.equals("verifyLISAInvestigationTable")) { return this.verifyLISAInvestigationTable(data, dataRowID); }
+		else if (actionName.equals("verifyGAPInvestigationTable")) { return this.verifyGAPInvestigationTable(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
@@ -3628,6 +3724,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForMetaZIPDownloadToComplete")) { return this.waitForMetaZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }

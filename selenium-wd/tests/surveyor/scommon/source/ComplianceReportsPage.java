@@ -19,6 +19,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
@@ -693,6 +694,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				// Select Highlight Asset Boxes in dropdown.
 				selectHighlightLisaAssetDropdown("Asset Boxes");
+				
+				// Check Asset Box Number
+				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
+					colNum = 13;
+					Log.clickElementInfo("Asset Box Number", ElementType.CHECKBOX);
+					strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
@@ -815,11 +824,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.MetaDataZIP);
 	}
 
+	public void invokeInvestigationPDFFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeInvestigationPDFFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.InvestigationPDF);
+	}
+
+	public void invokeInvestigationDataFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeInvestigationDataFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.InvestigationCSV);
+	}
+
 	public void invokeShapeZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokeShapeZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
 	}
-
 	private void invokeFileDownload(String rptTitle, ReportFileType fileType) throws Exception {
 		Log.method("invokePDFFileDownload", rptTitle, fileType);
 		String reportId = Report.getReport(rptTitle).getId();
@@ -2931,6 +2949,51 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return true;
 	}
 
+	public boolean verifyLISAInvestigationTable(String actualPath, String reportTitle)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyLISAInvestigationTable", actualPath, reportTitle);
+		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.LISAINVESTIGATIONPDFTABLE);
+	}
+	
+	public boolean verifyGAPInvestigationTable(String actualPath, String reportTitle)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyGAPInvestigationTable", actualPath, reportTitle);
+		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.GAPINVESTIGATIONPDFTABLE);
+	}
+	
+	public boolean verifyInvestigationTable(String actualPath, String reportTitle, String reportId, PDFTable pdfTable)
+			throws FileNotFoundException, IOException {
+		Log.method("ComplianceReportsPage.verifyInvestigationTable", actualPath, reportTitle, reportId, pdfTable);
+		boolean validTable = true;
+		String tableType = "LISA#";
+		if(pdfTable.equals(PDFTable.GAPINVESTIGATIONPDFTABLE)){
+			tableType = "Gap #";
+		}
+		String[] investigationTableHeader = {tableType, "Status", "Investigation Date/Time", "Investigator", "Duration"};
+		String pdfFilename = this.getInvestigationPDFFileName(reportTitle, true /* includeExtension */);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
+		Log.info("Checking if Investigation table has the header expected");
+		String[] actualTableHeader = pdfTableList.get(0);
+		
+		if(actualTableHeader.length != investigationTableHeader.length){
+			Log.error(String.format("Actual table header is: %s, Expected table header is: %s", actualTableHeader.toString(), investigationTableHeader.toString()));
+			validTable = false;
+		}else{
+			for(int i=0; i<actualTableHeader.length; i++){
+				String actualHeader = actualTableHeader[i];
+				String expectedHeader = investigationTableHeader[i];
+				if(!expectedHeader.equalsIgnoreCase(actualHeader)){
+					Log.error(String.format("Actual table header is: %s, Expected table header is: %s", actualHeader, expectedHeader));
+					validTable = false;
+				}
+			}
+		}
+		
+		return validTable;
+	}
+	
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle);
@@ -3978,6 +4041,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 	}
 
+	public void waitForInvestigationPDFFileDownload(String reportName) {
+		waitForFileDownload(reportName + "-Investigation.pdf", testSetup.getDownloadPath());
+	}
+	
+	public void waitForInvestigationCSVFileDownload(String reportName) {
+		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
+	}
+	
 	public void waitForReportZIPFileDownload(String reportName) {
 		waitForReportZIPFileDownload(reportName, 0);
 	}
