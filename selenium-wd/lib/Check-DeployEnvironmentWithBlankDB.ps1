@@ -6,6 +6,7 @@
 #        -DeployIntervalInDays 7 `
 #        -EnvironmentTeamCityBuildConfigId "Surveyor_2_SqaautoDevelop" `
 #        -EnvironmentId 1  `
+#        -CurrentTeamCityBuildConfigId "Surveyor_2_SqaSeleniumTestExecutionRunComplianceReportsSurveyorQaMaster" `
 #        -WaitTimeInMinutesForDeployment 20
 
 param
@@ -24,6 +25,9 @@ param
 
   [Parameter(Mandatory=$true)]
   [int] $EnvironmentId,
+
+  [Parameter(Mandatory=$true)]
+  [String] $CurrentTeamCityBuildConfigId,      
 
   [Parameter(Mandatory=$true)]
   [int] $WaitTimeInMinutesForDeployment
@@ -55,7 +59,8 @@ $Headers = @{
 $Body = @{
     Id = 0       # sample ID. Ignored on server-side 
     EnvironmentId = $EnvironmentId
-    TeamCityBuildConfigId = $EnvironmentTeamCityBuildConfigId
+    EnvironmentToTriggerBuildConfigId = $EnvironmentTeamCityBuildConfigId
+    CurrentBuildConfigId = $CurrentTeamCityBuildConfigId
     DeployIntervalInDays = $DeployIntervalInDays
     DeployWithBlankDB = "true"
 }
@@ -64,18 +69,19 @@ $jsonBody = (ConvertTo-Json $Body)
 Write-Host "Triggering $EnvironmentTeamCityBuildConfigId deployment - $AutomationReportingAPIBaseUrl/$triggerDeploymentApiUrl ..." 
 $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$triggerDeploymentApiUrl" -Headers $Headers -Method POST -Body $jsonBody -ContentType $postContentType
 $json = $response.Content | ConvertFrom-Json
-Write-Host "Triggering $EnvironmentTeamCityBuildConfigId deployment successful!"
+Write-Host "Triggering $EnvironmentTeamCityBuildConfigId deployment successful! Response = $json"
 
 # ----------------------------------------------------------------------------------------------
-# Wait for deployment to complete.
+# Wait for deployment to complete if blank DB deployment was triggered.
 # ----------------------------------------------------------------------------------------------
-
-$iteration = 1
-while ($WaitTimeInMinutesForDeployment -gt 0) {
-    Write-Host "[Iteration-$iteration] Waiting for deployment to complete... Remaining wait time = $WaitTimeInMinutesForDeployment minutes ..."
-    Start-Sleep -Seconds 60
-    $WaitTimeInMinutesForDeployment--
-    $iteration++
+if ($json.DeployWithBlankDB) {
+    $iteration = 1
+    while ($WaitTimeInMinutesForDeployment -gt 0) {
+        Write-Host "[Iteration-$iteration] Waiting for deployment to complete... Remaining wait time = $WaitTimeInMinutesForDeployment minutes ..."
+        Start-Sleep -Seconds 60
+        $WaitTimeInMinutesForDeployment--
+        $iteration++
+    }
 }
 
 Write-Host "Done with script execution!"
