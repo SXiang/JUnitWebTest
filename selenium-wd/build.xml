@@ -666,6 +666,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/ComplianceReportsPageTest10.class" />
+					<include name="**/ComplianceReportsPageTest8.class" />
 				</fileset>
 			</batchtest>
 		</junit>

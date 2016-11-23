@@ -1272,7 +1272,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1352() {
-		return new Object[][] {
+		return new Object[][] { // UA needed, 1,7
 				{ "TC1352" /* TestCaseID */, 4 /* userDataRowID */, 62 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 
