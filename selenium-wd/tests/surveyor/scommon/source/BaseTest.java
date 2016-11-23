@@ -92,7 +92,7 @@ public class BaseTest {
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 BaseTest.reportTestSucceeded(description.getClassName());
+			BaseTest.reportTestSucceeded(description.getClassName());
 		}
 	};
 
@@ -175,7 +175,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFinished(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
 		ExtentReports report = getExtentReport(className);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
@@ -184,7 +183,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestLogMessage(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestLogMessage()");
 		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
 			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
@@ -192,7 +190,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshot(getDriver(), className);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
@@ -201,7 +198,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestSucceeded()");
 		Log.info("_PASS_ ");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
 	}
