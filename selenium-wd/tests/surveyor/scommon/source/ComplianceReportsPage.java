@@ -1963,8 +1963,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		default:
 			break;
 		}
-//			jsScrollToView(pcubedLogo);
-//			jsClick(pcubedLogo);
 		jsClick(radioButton);
 	}
 
@@ -4178,7 +4176,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void fillReportSpecific(Reports reports){
+	public void fillReportSpecific(Reports reports) {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
 
 		// 1. Report general
@@ -4246,12 +4244,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	}
 
-	private void fillCustomerBoundary(ReportsCompliance reportsCompliance){
+	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
 		fillCustomerBoundary(reportsCompliance.getCustomerBoundaryFilterType().toString(),
 				reportsCompliance.getCustomerBoundaryName());
 	}
 
-	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName){
+	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
