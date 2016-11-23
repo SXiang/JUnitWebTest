@@ -87,12 +87,12 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			BaseTest.reportTestFailed(e, description.getClassName());
+			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
 			BaseTest.reportTestSucceeded(description.getClassName());
-			postTestMethodProcessing();
 		}
 	};
 
