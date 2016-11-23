@@ -2509,15 +2509,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *
 	 * @param actualPath
 	 * @param reportTitle
-	 * @param userInput
+	 * @param viewsList
 	 * @return
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput)
+	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> viewsList)
 			throws IOException {
 		Log.method("ComplianceReportsPage.verifyViewsTable", actualPath, reportTitle,
-				LogHelper.mapListToString(userInput));
+				LogHelper.mapListToString(viewsList));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2538,9 +2538,20 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightGAPAssets);
-		expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
 		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
 		expectedReportString.add(ComplianceReportSSRS_BaseMap);
+
+		// Look for AssetBoxNumber static string if there is a view with AssetBox.
+		boolean assetBxNumViewPresent = false;
+		for (Map<String, String> viewMap : viewsList) {
+			if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				assetBxNumViewPresent = true;
+				break;
+			}
+		}
+		if (assetBxNumViewPresent) {
+			expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
+		}
 
 		String textWithoutLineEndings = actualReportString.replace("\r\n", "");
 		Map<String, Boolean> patternMatches = matchSinglePattern(textWithoutLineEndings, expectedReportString);
