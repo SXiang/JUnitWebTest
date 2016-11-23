@@ -78,7 +78,7 @@ public class GridNodesManager {
 				String invokeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 				Path triggerFilePath = Paths.get(invokeCmdFolder, "availableGridNodes.txt");
 				PollManager.poll(() -> !FileUtility.fileExists(triggerFilePath.toString()), 
-						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES);
+						Constants.DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, Constants.DEFAULT_MAX_RETRIES_IN_POLL);
 				try (Stream<String> lines = Files.lines(triggerFilePath)) {
 					nodesCount = Integer.parseInt(lines.findFirst().orElse("0"));
 				} catch (Exception e) {

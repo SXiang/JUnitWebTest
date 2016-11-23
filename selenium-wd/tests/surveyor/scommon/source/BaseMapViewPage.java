@@ -8,11 +8,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.Log;
 import common.source.OLMapUtility;
@@ -653,12 +654,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getBigBoundary().click();
+					waitAndClickElement(this.getBigBoundary());
 				}
 			} else if (this.getBigBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getBigBoundary().click();
+					waitAndClickElement(this.getBigBoundary());
 				}
 			}
 			break;
@@ -666,12 +667,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getSmallBoundary().click();
+					waitAndClickElement(this.getSmallBoundary());
 				}
 			} else if (this.getSmallBoundary().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getSmallBoundary().click();
+					waitAndClickElement(this.getSmallBoundary());
 				}
 			}
 			break;
@@ -679,12 +680,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getMaterialTypeCopper().click();
+					waitAndClickElement(this.getMaterialTypeCopper());
 				}
 			} else if (this.getMaterialTypeCopper().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypeCopper().click();
+					waitAndClickElement(this.getMaterialTypeCopper());
 				}
 			}
 			break;
@@ -692,12 +693,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString());
-					this.getMaterialTypeCastIron().click();
+					waitAndClickElement(this.getMaterialTypeCastIron());
 				}
 			} else if (this.getMaterialTypeCastIron().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypeCastIron().click();
+					waitAndClickElement(this.getMaterialTypeCastIron());
 				}
 			}
 			break;
@@ -705,13 +706,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getMaterialTypeOtherPlastic().click();
+					waitAndClickElement(this.getMaterialTypeOtherPlastic());
 				}
 			} else
 				if (this.getMaterialTypeOtherPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypeOtherPlastic().click();
+					waitAndClickElement(this.getMaterialTypeOtherPlastic());
 				}
 			}
 			break;
@@ -719,12 +720,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getMaterialTypePEPlastic().click();
+					waitAndClickElement(this.getMaterialTypePEPlastic());
 				}
 			} else if (this.getMaterialTypePEPlastic().getAttribute("class").equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypePEPlastic().click();
+					waitAndClickElement(this.getMaterialTypePEPlastic());
 				}
 			}
 			break;
@@ -732,13 +733,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypeProtectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getMaterialTypeProtectedSteel().click();
+					waitAndClickElement(this.getMaterialTypeProtectedSteel());
 				}
 			} else if (this.getMaterialTypeProtectedSteel().getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypeProtectedSteel().click();
+					waitAndClickElement(this.getMaterialTypeProtectedSteel());
 				}
 			}
 			break;
@@ -746,13 +747,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getMaterialTypeUnprotectedSteel().getAttribute("class").equalsIgnoreCase("switch material_radio")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getMaterialTypeUnprotectedSteel().click();
+					waitAndClickElement(this.getMaterialTypeUnprotectedSteel());
 				}
 			} else if (this.getMaterialTypeUnprotectedSteel().getAttribute("class")
 					.equalsIgnoreCase("switch material_radio on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getMaterialTypeUnprotectedSteel().click();
+					waitAndClickElement(this.getMaterialTypeUnprotectedSteel());
 				}
 			}
 			break;
@@ -760,12 +761,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getUseAllBoundaries().click();
+					waitAndClickElement(this.getUseAllBoundaries());
 				}
 			} else if (this.getUseAllBoundaries().getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getUseAllBoundaries().click();
+					waitAndClickElement(this.getUseAllBoundaries());
 				}
 			}
 			break;
@@ -773,12 +774,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.getUseAllPipes().click();
+					waitAndClickElement(this.getUseAllPipes());
 				}
 			} else if (this.getUseAllPipes().getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.getUseAllPipes().click();
+					waitAndClickElement(this.getUseAllPipes());
 				}
 			}
 			break;
@@ -866,12 +867,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.mapSwitchSatellite.click();
+					waitAndClickElement(this.mapSwitchSatellite);
 				}
 			} else if (this.mapSwitchSatellite.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.mapSwitchSatellite.click();
+					waitAndClickElement(this.mapSwitchSatellite);
 				}
 			}
 			break;
@@ -879,12 +880,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.mapSwitchMap.click();
+					waitAndClickElement(this.mapSwitchMap);
 				}
 			} else if (this.mapSwitchMap.getAttribute("class").equalsIgnoreCase("switch radio_switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.mapSwitchMap.click();
+					waitAndClickElement(this.mapSwitchMap);
 				}
 			}
 			break;
@@ -989,12 +990,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitch8HourHistory.click();
+					waitAndClickElement(this.displaySwitch8HourHistory);
 				}
 			} else if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitch8HourHistory.click();
+					waitAndClickElement(this.displaySwitch8HourHistory);
 				}
 			}
 			break;
@@ -1002,12 +1003,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchConcentrationChart.click();
+					waitAndClickElement(this.displaySwitchConcentrationChart);
 				}
 			} else if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchConcentrationChart.click();
+					waitAndClickElement(this.displaySwitchConcentrationChart);
 				}
 			}
 			break;
@@ -1015,12 +1016,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchFovs.click();
+					waitAndClickElement(this.displaySwitchFovs);
 				}
 			} else if (this.displaySwitchFovs.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchFovs.click();
+					waitAndClickElement(this.displaySwitchFovs);
 				}
 			}
 			break;
@@ -1028,13 +1029,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchIndications.click();
+					waitAndClickElement(this.displaySwitchIndications);
 					TestContext.INSTANCE.stayIdle(2);
 				}
 			} else if (this.displaySwitchIndications.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchIndications.click();
+					waitAndClickElement(this.displaySwitchIndications);
 					TestContext.INSTANCE.stayIdle(2);
 				}
 			}
@@ -1042,33 +1043,33 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case PossibleNaturalGas:
 			if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
 				if (turnOn) {
-					this.displaySwitchPossibleNaturalGas.click();
+					waitAndClickElement(this.displaySwitchPossibleNaturalGas);
 				}
 			} else if (this.displaySwitchPossibleNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					this.displaySwitchPossibleNaturalGas.click();
+					waitAndClickElement(this.displaySwitchPossibleNaturalGas);
 				}
 			}
 			break;
 		case NotNaturalGas:
 			if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
 				if (turnOn) {
-					this.displaySwitchNotNaturalGas.click();
+					waitAndClickElement(this.displaySwitchNotNaturalGas);
 				}
 			} else if (this.displaySwitchNotNaturalGas.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					this.displaySwitchNotNaturalGas.click();
+					waitAndClickElement(this.displaySwitchNotNaturalGas);
 				}
 			}
 			break;
 		case VehicleExhaust:
 			if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch subswitch")) {
 				if (turnOn) {
-					this.displaySwitchVehicleExhaust.click();
+					waitAndClickElement(this.displaySwitchVehicleExhaust);
 				}
 			} else if (this.displaySwitchVehicleExhaust.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
-					this.displaySwitchVehicleExhaust.click();
+					waitAndClickElement(this.displaySwitchVehicleExhaust);
 				}
 			}
 			break;
@@ -1076,12 +1077,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchIsotopicAnalysis.click();
+					waitAndClickElement(this.displaySwitchIsotopicAnalysis);
 				}
 			} else if (this.displaySwitchIsotopicAnalysis.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchIsotopicAnalysis.click();
+					waitAndClickElement(this.displaySwitchIsotopicAnalysis);
 				}
 			}
 			break;
@@ -1089,12 +1090,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchLisas.click();
+					waitAndClickElement(this.displaySwitchLisas);
 				}
 			} else if (this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchLisas.click();
+					waitAndClickElement(this.displaySwitchLisas);
 				}
 			}
 			break;
@@ -1102,12 +1103,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString());
-					this.displaySwitchNotes.click();
+					waitAndClickElement(this.displaySwitchNotes);
 				}
 			} else if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchNotes.click();
+					waitAndClickElement(this.displaySwitchNotes);
 				}
 			}
 			break;
@@ -1115,12 +1116,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					this.displaySwitchWindrose.click();
+					waitAndClickElement(this.displaySwitchWindrose);
 				}
 			} else if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					this.displaySwitchWindrose.click();
+					waitAndClickElement(this.displaySwitchWindrose);
 				}
 			}
 			break;
@@ -1164,17 +1165,29 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean setZoomLevelForAssets() {
-		OLMapUtility mapUtility = new OLMapUtility(driver);
-		int currentZoomlevel = mapUtility.getMapZoomLevel();
-		if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
-			return true;
-		}
-		int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
+		int newZoomlevel = 0;
+		try
+		{
+			OLMapUtility mapUtility = new OLMapUtility(driver);
+			int currentZoomlevel = mapUtility.getMapZoomLevel();
+			if(currentZoomlevel >= ASSETS_ZOOM_LEVEL_LOWER_BOUND){
+				return true;
+			}
+			int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
 
-		for(int i=0;i<numClicks;i++){
-			  clickZoomInButton();
+			for(int i=0;i<numClicks;i++){
+				  clickZoomInButton();
+			}
+			newZoomlevel = mapUtility.getMapZoomLevel();
+		} catch (Exception ex) {
+			Log.warn("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
+			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
+					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
+			Log.warn("[DEBUG LOG]: Returning [surveyormap] js object...");
+			Object executeScript = ((JavascriptExecutor)driver).executeScript("return surveyormap;");
+			Log.info("Returned [surveyormap] object = " + (executeScript != null ? executeScript.toString() : "<null>"));
 		}
-		int newZoomlevel = mapUtility.getMapZoomLevel();
+
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
 	}
 

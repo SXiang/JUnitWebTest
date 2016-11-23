@@ -123,14 +123,6 @@ public class BaseMapViewTest extends BaseTest{
 	 * @throws IOException
 	 */
 	protected static void initializeBasePageActions(){
-		// NOTE: 2016/09/16:
-		//  Specific implementations of this class should have called initializeTestObjects() in BeforeTest
-		//  and initialized testSetup before call to this method
-		// TODO: REMOVE THIS COMMENTED CODE DURING CODE REVIEW.
-		//if(getTestSetup() == null || getTestSetup().getDriver() == null){
-		//	setTestSetup(TestSetupFactory.getTestSetup());
-		//}
-
 		setLoginPageAction(new LoginPageActions(getDriver(), getBaseURL(), getTestSetup()));
 		setHomePageAction(new HomePageActions(getDriver(), getBaseURL(), getTestSetup()));
 		setTestEnvironmentAction(new TestEnvironmentActions());
@@ -172,8 +164,12 @@ public class BaseMapViewTest extends BaseTest{
 
 	@AfterClass
 	public static void afterTestClass() {
-		// dispose all web drivers
-		WebDriverFactory.quitDrivers();
+		// This implementation is to support quit all drivers for tests that spin up multiple web drivers (for eg. Observer view)
+		// Currently we do NOT support running multiple web driver tests (eg. Observer view tests) in parallel and hence disabled in parallel tests.
+		if (!TestSetup.isParallelBuildEnabled()) {
+			// dispose all web drivers
+			WebDriverFactory.quitDrivers();
+		}
 	}
 
 	@After
@@ -187,8 +183,12 @@ public class BaseMapViewTest extends BaseTest{
 				homePageList.get(index).logout();
 		}
 
-		// dispose extra web drivers
-		WebDriverFactory.quitDrivers(false /*quitDefaultDriver*/);
+		// This implementation is to support quit all extra drivers for tests that spin up multiple web drivers (for eg. Observer view)
+		// Currently we do NOT support running multiple web driver tests (eg. Observer view tests) in parallel and hence disabled in parallel tests.
+		if (!TestSetup.isParallelBuildEnabled()) {
+			// dispose extra web drivers
+			WebDriverFactory.quitDrivers(false /*quitDefaultDriver*/);
+		}
 	}
 
 	protected static void disposeProcesses() {

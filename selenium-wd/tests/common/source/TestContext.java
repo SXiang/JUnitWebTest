@@ -33,6 +33,7 @@ public enum TestContext {
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
+	private String testClassName;
 
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
@@ -260,5 +261,13 @@ public enum TestContext {
 		SimpleDateFormat formater = new SimpleDateFormat(pattern,Locale.getDefault());
 		indexId = formater.format(new Date());
 		return indexId;
+	}
+
+	public String getTestClassName() {
+		return testClassName;
+	}
+
+	public void setTestClassName(String testClassName) {
+		this.testClassName = testClassName;
 	}
 }

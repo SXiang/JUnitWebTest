@@ -16,8 +16,10 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.FindBy;
 
+import common.source.Constants;
 import common.source.EnumUtility;
 import common.source.Log;
+import common.source.RetryOnException;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -645,11 +647,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
-			}
-		});
+		RetryOnException.retry(
+			() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+					public Boolean apply(WebDriver d) {
+						return d.getPageSource().contains(STRPageContentText);
+					}
+				}); return true;
+			}, () -> { super.open(); return true;}, Constants.DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC,
+			Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 	}
 
 	public void waitForNewPageLoad() {

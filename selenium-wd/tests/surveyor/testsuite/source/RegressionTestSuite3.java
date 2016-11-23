@@ -6,16 +6,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
-import surveyor.regression.source.ACLandVisibilityTest;
 import surveyor.regression.source.HomePageTest;
 import surveyor.regression.source.LoginPageTest;
 import surveyor.regression.source.ManageAnalyzersPageTest;
 import surveyor.regression.source.ManageCustomersPageTest;
+import surveyor.regression.source.SurveyViewPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
-	ACLandVisibilityTest.class
+	SurveyViewPageTest.class
 	,HomePageTest.class
 	,LoginPageTest.class
 	,ManageAnalyzersPageTest.class
