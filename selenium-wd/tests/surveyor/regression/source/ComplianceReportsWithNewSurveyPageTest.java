@@ -44,7 +44,6 @@ import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 
@@ -284,6 +283,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 
 		} finally {
+			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
@@ -434,6 +435,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 
 		} finally {
+			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
