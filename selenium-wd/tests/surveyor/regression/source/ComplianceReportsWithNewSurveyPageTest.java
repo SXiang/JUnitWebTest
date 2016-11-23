@@ -284,6 +284,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		} finally {
 			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
@@ -436,6 +437,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		} finally {
 			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
