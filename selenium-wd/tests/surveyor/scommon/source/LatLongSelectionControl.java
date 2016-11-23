@@ -220,7 +220,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl setCustomerBoundaryName(String name) {
+	public LatLongSelectionControl setCustomerBoundaryName(String name){
 		Log.info("Wait for boundary name text field to be clickable");
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, selectByNameTextField);
 		Log.info("Set customer boundary name '"+name+"'");
@@ -249,7 +249,9 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public void clickOnAutoCompleteListEntry(Integer entryIdx) {
 		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='ui-id-1']/li[%d]", entryIdx)));
-		element.click();
+		if(WebElementExtender.isElementPresentAndDisplayed(element)){
+			element.click();
+		}
 	}
 
 	/**

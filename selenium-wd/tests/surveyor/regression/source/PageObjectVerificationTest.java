@@ -135,7 +135,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	 *  Actual automation tests that use LatLongSelector can use this method as a reference.
 	 */
 	@Test
-	public void ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest() {
+	public void ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest() throws Exception{
 		System.out.format("\nRunning ReferenceOnly_LatLongSelectorControl_CustomerLatLongSelectorTest... \n");
 
 		complianceReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());

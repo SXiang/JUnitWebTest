@@ -7,6 +7,7 @@ import org.junit.Before;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -18,8 +19,12 @@ import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LatLongSelectionControl;
+import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 
@@ -222,7 +227,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Ignore
+	@Ignore /*Need survey over 100 ours */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -246,7 +251,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Customer Boundaries are present on map
 	 *	- - Invalid boundary name is not present and user is notified that no such boundary exists
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC238, location = ComplianceReportDataProvider.class)
 	public void TC238_SearchInvalidCustomerBoundaryBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -256,9 +261,12 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyErrorMessages("<ERROR_MESSAGE>", NOTSET));
+		try{
+			complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
+		}catch(Exception e){
+			Log.warn("Exception when selecting an invalid customer boundary name: "+e);
+		}
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().noBoundarySearchResultByName());
 	}
 
 	/**
@@ -411,20 +419,20 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 
 	/**
 	 * Test Case ID: TC207_VerifyReportSurveyModesAreNotModififedIfUserClicksNOChangeReportModeButton
-	 * Test Description: Verify report and survey modes are not modififed if user clicks on NO change report mode button
+	 * Test Description: Verify report and survey modes are not modified if user clicks on NO change report mode button
 	 * Script: -
 	 *	- - Login as Picarro Admin
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
-	 *	- - Select Rapid Response report mode and include rapid reponse survey
+	 *	- - Select Rapid Response report mode and include rapid response survey
 	 *	- - Select Manual or Standard report mode
 	 *	- - Click on NO button present on change report mode dialog pop up
 	 *	- - Change the report mode to manual mode and include manual survey
 	 *	- - Select Rapid response or Standard report mode
 	 *	- - Click on NO button present on change report mode dialog pop up
 	 * Results: -
-	 *	- - Report Mode and Survey modes should presists and is not modified to other
+	 *	- - Report Mode and Survey modes should persists and is not modified to other
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC207, location = ComplianceReportDataProvider.class)
 	public void TC207_VerifyReportSurveyModesAreNotModififedIfUserClicksNOChangeReportModeButton(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -433,7 +441,30 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
+		
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.getComplianceReportsPage().fillReport(rpt);
+		
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Manual);
+		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
+		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.RapidResponse));
+		
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
+		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.RapidResponse));
+
+		rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID2);
+		complianceReportsPageAction.getComplianceReportsPage().fillReport(rpt);
+		
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.RapidResponse);
+		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.Manual));
+		
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
+		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.Manual));
 	}
 
 	/**
