@@ -10,7 +10,7 @@ import surveyor.regression.source.ManageRefGasBottlesPageTests_Ethane;
 import surveyor.regression.source.ManageSurveyorAdminPageTest;
 import surveyor.regression.source.ManageSurveyorHistoriesPageTest;
 import surveyor.regression.source.ManageSurveyorPageTest;
-import surveyor.regression.source.ManageUsersAdminPageTest;
+import surveyor.regression.source.SurveyViewPageTest3;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
@@ -19,7 +19,7 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,ManageSurveyorAdminPageTest.class
 	,ManageSurveyorHistoriesPageTest.class
 	,ManageSurveyorPageTest.class
-	,ManageUsersAdminPageTest.class
+	,SurveyViewPageTest3.class
 })
 public class RegressionTestSuite1 {
 

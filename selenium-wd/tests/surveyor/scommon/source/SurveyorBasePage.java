@@ -27,6 +27,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.BasePage;
 import common.source.ExceptionUtility;
@@ -290,8 +291,14 @@ public class SurveyorBasePage extends BasePage {
 		LoginPage loginPage = new LoginPage(TestContext.INSTANCE.getDriver(), this.strBaseURL, TestContext.INSTANCE.getTestSetup());
 		PageFactory.initElements(TestContext.INSTANCE.getDriver(), loginPage);
 
-		loginPage.open();
-		loginPage.loginNormalAs(user, password);
+		try {
+			loginPage.open();
+			loginPage.loginNormalAs(user, password);
+		} catch (Exception ex) {
+			Log.warn(String.format("[DEBUG LOG]: Exception on loginPage.loginNormalAs(user='%s', password='%s')", user, password));
+			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
+					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
+		}
 
 		// Post login Code first will revert back the default location entry.
 		// This is a workaround to fix the Default location if lat/long is NULL.

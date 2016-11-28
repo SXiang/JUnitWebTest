@@ -352,6 +352,12 @@ public class BasePage {
 		return WebElementExtender.waitForElementToBeClickable(timeout, driver, element);
 	}
 
+	protected void waitAndClickElement(WebElement element) {
+		Log.method("waitAndClickElement", element);
+		waitForElementToBeClickable(element);
+		element.click();
+	}
+
 	protected WebElement waitUntilPresenceOfElementLocated(String elementID) {
 		return waitUntilPresenceOfElementLocated(By.id(elementID));
 	}

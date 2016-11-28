@@ -92,7 +92,7 @@ public class BaseTest {
 
 		 @Override
 		 protected void succeeded(Description description) {
-			 BaseTest.reportTestSucceeded(description.getClassName());
+			BaseTest.reportTestSucceeded(description.getClassName());
 		}
 	};
 
@@ -140,7 +140,9 @@ public class BaseTest {
 		}
 
 		if (getScreenCapture() == null) {
-			setScreenCapture(TestSetupFactory.getScreenShotOnFailure());
+			ScreenShotOnFailure screenShotOnFailure = TestSetupFactory.getScreenShotOnFailure();
+			setScreenCapture(screenShotOnFailure);
+			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
 	}
@@ -169,10 +171,10 @@ public class BaseTest {
 		getExtentTest(className).log(LogStatus.INFO, firstLogLine);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 				DateUtility.getCurrentDate()));
+		TestContext.INSTANCE.setTestClassName(className);
 	}
 
 	public static void reportTestFinished(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
 		ExtentReports report = getExtentReport(className);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
@@ -181,7 +183,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestLogMessage(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestLogMessage()");
 		List<String> testMessage = TestContext.INSTANCE.getTestMessage();
 		for(String message:testMessage){
 			getExtentTest(className).log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
@@ -189,7 +190,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshot(getDriver(), className);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
@@ -198,7 +198,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(String className) {
-		Log.info("[THREAD Debug Log] - calling reportTestSucceeded()");
 		Log.info("_PASS_ ");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
 	}
@@ -306,6 +305,7 @@ public class BaseTest {
 		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
 			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
 		}
+
 		manageLocationsPage.open();
 		if(!manageLocationsPage.addNewLocation(locationName, customerName, cityName)){
 			fail(String.format("Failed to add a new location %s, %s, %s",locationName, customerName, cityName));

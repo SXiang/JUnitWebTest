@@ -46,29 +46,25 @@ BEGIN
 	UPDATE [dbo].[Customer] SET [Name]=N'sqacus',[Eula]=N'Accept the agreement',[Active]=1 WHERE [Id]='00000000-0000-0000-0000-000000000002' 
 	IF @@ROWCOUNT=0
 		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (N'00000000-0000-0000-0000-000000000002',N'sqacus' ,N'Accept the agreement',1)
-	ELSE
-		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (NEWID(), N'sqacus' ,N'Accept the agreement',1)		
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Customer] WHERE Name='sqaTest')
 BEGIN
 	UPDATE [dbo].[Customer] SET [Name]=N'sqaTest',[Eula]=N'Accept the agreement',[Active]=1 WHERE [Id]='00000000-0000-0000-0000-000000000003' 
 	IF @@ROWCOUNT=0
 		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (N'00000000-0000-0000-0000-000000000003',N'sqaTest' ,N'Accept the agreement',1)
-	ELSE
-		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (NEWID(), N'sqaTest' ,N'Accept the agreement',1)		
 END
 IF NOT EXISTS (SELECT * FROM [dbo].[Customer] WHERE Name='PG&E')
 BEGIN
 	UPDATE [dbo].[Customer] SET [Name]=N'PG&E',[Eula]=N'Accept the agreement',[Active]=1 WHERE [Id]='E871C797-B62D-EF28-0EA7-39CAE44E5C19' 
 	IF @@ROWCOUNT=0
 		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (N'E871C797-B62D-EF28-0EA7-39CAE44E5C19',N'PG&E' ,N'Accept the agreement',1)
-	ELSE
-		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (NEWID(), N'PG&E' ,N'Accept the agreement',1)		
 END
+IF NOT EXISTS (SELECT * FROM [dbo].[Customer] WHERE Name='CustomerWithNoLicense')
 BEGIN
 	UPDATE [dbo].[Customer] SET [Name]=N'CustomerWithNoLicense',[Eula]=N'Accept the agreement',[Active]=1 WHERE [Id]='5D073EF1-40E1-9BA0-E7BC-39DA8027337E' 
 	IF @@ROWCOUNT=0
 		INSERT INTO [dbo].[Customer]([Id],[Name],[Eula],[Active]) VALUES (N'5D073EF1-40E1-9BA0-E7BC-39DA8027337E',N'CustomerWithNoLicense' ,N'Accept the agreement',1)
+END		
 
 -- Assigned Licensed Features to Customers
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
