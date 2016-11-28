@@ -1,6 +1,7 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -35,6 +36,8 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
+		initializeTestObjects();
+
 		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(),  complianceReportsPage);
 		initializePageActions();
