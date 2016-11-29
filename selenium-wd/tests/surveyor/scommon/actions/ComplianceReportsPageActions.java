@@ -373,7 +373,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
         rpt.setCustomerBoundaryInfo(workingDataRow.get().customerBoundaryType, workingDataRow.get().customerBoundaryName);
         String reportMode = workingDataRow.get().reportMode;
-        if(reportMode!=null){
+        if(!BaseHelper.isNullOrEmpty(reportMode)){
              rpt.setReportModeFilter(ReportModeFilter.valueOf(reportMode.replaceAll(" ", "")));
         }
 		workingReportsComp.set(rpt);		// Store the working report properties.

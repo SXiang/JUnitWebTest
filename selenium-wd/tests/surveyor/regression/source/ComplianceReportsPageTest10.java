@@ -448,7 +448,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		
 		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Manual);
 		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
-		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.RapidResponse));
 		
 		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
