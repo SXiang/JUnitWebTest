@@ -10,8 +10,6 @@ import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.testng.Assert;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
@@ -82,43 +80,6 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected
-	 * Test Description: Generate report when partial or no survey is covered by report area and breadcrumb, Fov, etc is selected
-	 * Script: -
-	 *	- - Log in to application and navigate to Reports-& Compliance Report -& New Compliance Report
-	 *	- - Select report area and make sure surveys included while generating report are not part of that area
-	 *	- - In views - select all (especially breadcrumb and FOV)
-	 *	- - Select indications, isotopic and percent calc tables
-	 *	- - Click OK
-	 *	- - Click on Compliance Viewer
-	 *	- - Download the report
-	 * Results: -
-	 *	- - Report is generated and downloaded successfully
-	 *	- - Indications and Isotopic tables will be empty
-	 *	- - Views will not have any data (except Gaps - if user has selected Gaps while generating report)
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1298, location = ComplianceReportDataProvider.class)
-	public void TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyIndicationsTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyIsotopicTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary
 	 * Test Description: Check error message is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens along with Custom boundary
 	 * Script: -
@@ -127,7 +88,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - User friendly error messages are displayed: Selected Percent Coverage Forecast, Please select Customer Boundary
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314, location = ComplianceReportDataProvider.class)
 	public void TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -180,6 +141,43 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
 		assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, NOTSET));
+	}
+
+	/**
+	 * Test Case ID: TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected
+	 * Test Description: Generate report when partial or no survey is covered by report area and breadcrumb, Fov, etc is selected
+	 * Script: -
+	 *	- - Log in to application and navigate to Reports-& Compliance Report -& New Compliance Report
+	 *	- - Select report area and make sure surveys included while generating report are not part of that area
+	 *	- - In views - select all (especially breadcrumb and FOV)
+	 *	- - Select indications, isotopic and percent calc tables
+	 *	- - Click OK
+	 *	- - Click on Compliance Viewer
+	 *	- - Download the report
+	 * Results: -
+	 *	- - Report is generated and downloaded successfully
+	 *	- - Indications and Isotopic tables will be empty
+	 *	- - Views will not have any data (except Gaps - if user has selected Gaps while generating report)
+	 */
+	@Ignore
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1298, location = ComplianceReportDataProvider.class)
+	public void TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1298_GenerateReportWhenPartialOrNoSurveyCoveredByReportAreaBreadcrumbFovEtcSelected ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyPDFZipFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyIndicationsTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyIsotopicTableIsEmpty(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

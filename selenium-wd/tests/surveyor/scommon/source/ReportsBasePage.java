@@ -177,6 +177,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected List<WebElement> checkboxSurveys;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
+	protected WebElement firstSurveyLink;
+
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -857,6 +860,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
 				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
+				Log.info("Wait for survey checkbox to be clickable");
+				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -888,6 +893,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private void selectFirstSurveyCheckBox() {
 		Log.info(String.format("Select the first survey in the table"));
 		this.checkboxSurFirst.click();
+	}
+
+	public void clickOnFirstSurveyLink() {
+		Log.clickElementInfo("First Survey Link");
+		this.firstSurveyLink.click();
 	}
 
 	public void clickOnAddSurveysButton() {

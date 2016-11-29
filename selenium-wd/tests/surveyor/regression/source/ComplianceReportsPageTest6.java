@@ -1023,62 +1023,6 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration
-	 * Test Description: Shapefile and meta data report feature permission to existing customer - Copy Compliance report generation
-	 * Script: -
-	 *	- Log in as Picarro Admin
-	 *	- On Manage Customers page, select a customer that does not have Report Shapefile and Report Meta Data permission enabled and click the "Edit" button
-	 *	- Confirm that the "Account Enabled" box is checked and check the Report Shape File and Report Meta data button
-	 *	- Click OK
-	 *	- Login as Customer User
-	 *	- On the Compliance Reports page, click on Copy button of above generated report  (For eg. Report tile: US895  Test Report 1) and click OK
-	 *	- Click on Compliance Viewer button
-	 *	- Click on the Shape file and meta file export button
-	 * Results: -
-	 *	- - Compliance Viewer dialog has Shape (ZIP) and Meta data (ZIP) export buttons
-	 *	- - User can download the Shape files and meta data files successfully
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC786, location = ComplianceReportDataProvider.class)
-	public void TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC786_ShapefileMetaDataReportFeaturePermissionExistingCustomer_CopyComplianceReportGeneration ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-
-		// Create new customer with Report ShapeFile and Metadata feature and login as new customer user.
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, 8 /*customerRowID*/);
-
-		manageLocationPageAction.open(EMPTY, NOTSET);
-		manageLocationPageAction.createNewLocation(EMPTY, 5 /*locationRowID*/);
-
-		manageUsersPageAction.open(EMPTY, NOTSET);
-		manageUsersPageAction.createNewCustomerUser(EMPTY, 13 /*userRowID*/);
-
-		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC798_CheckPaginationSortingComplianceReportsPage
 	 * Test Description: Check Pagination and Sorting on compliance reports page
 	 * Script: -
@@ -1091,7 +1035,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *  - - Reports list is sorted based on attribute selected
 	 *	- - Pagination and sorting should be working on all available pages
 	 */
-	@Ignore    // Add more verifications in verifyPaginationAndSortingOnAllColumns()
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798, location = ComplianceReportDataProvider.class)
 	public void TC798_CheckPaginationSortingComplianceReportsPage(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -1113,5 +1057,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.selectPaginationRows(PAGINATIONSETTING, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(PAGINATIONSETTING, NOTSET));
+
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Report Title","String"));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Created By","String"));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Date","Date"));
+		// NOTE: Sorting by ReportName is NOT allowed. Refer TC165.
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Report Name","String"));
 	}
 }

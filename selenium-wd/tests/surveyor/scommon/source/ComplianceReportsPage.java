@@ -435,6 +435,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = REPORT_BOUNDRY_SELECTALL_CHKBX_ID)
 	protected WebElement checkboxViewLayerAllBoundaries;
 
+	@FindBy(id = "boundary-selected-text")
+	protected WebElement boundarySelectedText;
+
+	public WebElement getBoundarySelectedText() {
+		return this.boundarySelectedText;
+	}
+
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -694,7 +701,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				// Select Highlight Asset Boxes in dropdown.
 				selectHighlightLisaAssetDropdown("Asset Boxes");
-				
+
 				// Check Asset Box Number
 				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 					colNum = 13;
@@ -2954,13 +2961,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.method("ComplianceReportsPage.verifyLISAInvestigationTable", actualPath, reportTitle);
 		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.LISAINVESTIGATIONPDFTABLE);
 	}
-	
+
 	public boolean verifyGAPInvestigationTable(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyGAPInvestigationTable", actualPath, reportTitle);
 		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.GAPINVESTIGATIONPDFTABLE);
 	}
-	
+
 	public boolean verifyInvestigationTable(String actualPath, String reportTitle, String reportId, PDFTable pdfTable)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyInvestigationTable", actualPath, reportTitle, reportId, pdfTable);
@@ -2976,7 +2983,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
 		Log.info("Checking if Investigation table has the header expected");
 		String[] actualTableHeader = pdfTableList.get(0);
-		
+
 		if(actualTableHeader.length != investigationTableHeader.length){
 			Log.error(String.format("Actual table header is: %s, Expected table header is: %s", actualTableHeader.toString(), investigationTableHeader.toString()));
 			validTable = false;
@@ -2990,10 +2997,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 		}
-		
+
 		return validTable;
 	}
-	
+
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle);
@@ -4044,11 +4051,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void waitForInvestigationPDFFileDownload(String reportName) {
 		waitForFileDownload(reportName + "-Investigation.pdf", testSetup.getDownloadPath());
 	}
-	
+
 	public void waitForInvestigationCSVFileDownload(String reportName) {
 		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
 	}
-	
+
 	public void waitForReportZIPFileDownload(String reportName) {
 		waitForReportZIPFileDownload(reportName, 0);
 	}
