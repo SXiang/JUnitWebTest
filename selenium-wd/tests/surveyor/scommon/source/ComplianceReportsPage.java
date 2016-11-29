@@ -222,8 +222,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
 	public static final String ComplianceReportSSRS_ShowGaps = Resources
 			.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
+	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = Resources
+			.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightLISAAssets);
+	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = Resources
+			.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightGAPAssets);
 	public static final String ComplianceReportSSRS_ShowAssets = Resources
 			.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssets);
+	public static final String ComplianceReportSSRS_ShowAssetBoxNumber = Resources
+			.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssetBoxNumber);
 	public static final String ComplianceReportSSRS_ShowBoundaries = Resources
 			.getResource(ResourceKeys.ComplianceReportSSRS_ShowBoundaries);
 	public static final String ComplianceReportSSRS_BaseMap = Resources
@@ -697,7 +703,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 				// Select Highlight Asset Boxes in dropdown.
 				selectHighlightLisaAssetDropdown("Asset Boxes");
-				
+
 				// Check Asset Box Number
 				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 					colNum = 13;
@@ -2514,15 +2520,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	 *
 	 * @param actualPath
 	 * @param reportTitle
-	 * @param userInput
+	 * @param viewsList
 	 * @return
 	 * @throws IOException
 	 */
 
-	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> userInput)
+	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> viewsList)
 			throws IOException {
 		Log.method("ComplianceReportsPage.verifyViewsTable", actualPath, reportTitle,
-				LogHelper.mapListToString(userInput));
+				LogHelper.mapListToString(viewsList));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2541,16 +2547,44 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
+		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
+		expectedReportString.add(ComplianceReportSSRS_ShowHighlightGAPAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
 		expectedReportString.add(ComplianceReportSSRS_BaseMap);
-		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
-		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
+
+		// Look for AssetBoxNumber static string if there is a view with AssetBox.
+		boolean assetBxNumViewPresent = false;
+		for (Map<String, String> viewMap : viewsList) {
+			if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+				assetBxNumViewPresent = true;
+				break;
+			}
+		}
+		if (assetBxNumViewPresent) {
+			expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
+		}
+
+		String textWithoutLineEndings = actualReportString.replace("\r\n", "");
+		Map<String, Boolean> patternMatches = matchSinglePattern(textWithoutLineEndings, expectedReportString);
+		for (Boolean value : patternMatches.values()) {
+			if (!value) {
+				Log.info("Views Table static text verification failed");
+				return false;
+			}
+		}
+
+		InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+
 		String line = null;
 		ArrayList<ReportView> viewListInReport = new ArrayList<ReportView>();
+		Log.info("Matching lines to check if it is a Views table row.");
 		try {
 			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
+				List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(), RegexUtility.VIEWS_TABLE_LINE_REGEX_PATTERN);
+				if (matchingGroups != null && matchingGroups.size() > 0) {
+					line = matchingGroups.get(0);
+					Log.info(String.format("Matched line as a table row! Line = [%s]", line));
 					ReportView viewObj = new ReportView();
 					String[] split = line.split("\\s+");
 					viewObj.setBaseMapId(BaseMapType.getBaseMapTypeId(split[split.length - 1].trim()));
@@ -2558,7 +2592,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 					viewListInReport.add(viewObj);
 				}
 			}
-
 		} finally {
 			bufferReader.close();
 		}
@@ -2571,6 +2604,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			}
 
 		}
+
 		Log.info("Views Table data verification passed");
 		return true;
 	}
@@ -2965,13 +2999,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		Log.method("ComplianceReportsPage.verifyLISAInvestigationTable", actualPath, reportTitle);
 		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.LISAINVESTIGATIONPDFTABLE);
 	}
-	
+
 	public boolean verifyGAPInvestigationTable(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyGAPInvestigationTable", actualPath, reportTitle);
 		return verifyInvestigationTable(actualPath, reportTitle, Report.getReport(reportTitle).getId(), PDFTable.GAPINVESTIGATIONPDFTABLE);
 	}
-	
+
 	public boolean verifyInvestigationTable(String actualPath, String reportTitle, String reportId, PDFTable pdfTable)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyInvestigationTable", actualPath, reportTitle, reportId, pdfTable);
@@ -2987,7 +3021,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
 		Log.info("Checking if Investigation table has the header expected");
 		String[] actualTableHeader = pdfTableList.get(0);
-		
+
 		if(actualTableHeader.length != investigationTableHeader.length){
 			Log.error(String.format("Actual table header is: %s, Expected table header is: %s", actualTableHeader.toString(), investigationTableHeader.toString()));
 			validTable = false;
@@ -3001,10 +3035,10 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				}
 			}
 		}
-		
+
 		return validTable;
 	}
-	
+
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle);
@@ -4055,11 +4089,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public void waitForInvestigationPDFFileDownload(String reportName) {
 		waitForFileDownload(reportName + "-Investigation.pdf", testSetup.getDownloadPath());
 	}
-	
+
 	public void waitForInvestigationCSVFileDownload(String reportName) {
 		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
 	}
-	
+
 	public void waitForReportZIPFileDownload(String reportName) {
 		waitForReportZIPFileDownload(reportName, 0);
 	}

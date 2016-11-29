@@ -53,6 +53,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_Result = "ComplianceReportSSRS_Result";
 	public static final String ComplianceReportSSRS_SelectedViews = "ComplianceReportSSRS_SelectedViews";
 	public static final String ComplianceReportSSRS_ShowAssets = "ComplianceReportSSRS_ShowAssets";
+	public static final String ComplianceReportSSRS_ShowAssetBoxNumber = "ComplianceReportSSRS_ShowAssetBoxNumber";
 	public static final String ComplianceReportSSRS_ShowBoundaries = "ComplianceReportSSRS_ShowBoundaries";
 	public static final String ComplianceReportSSRS_ShowBreadcrumb = "ComplianceReportSSRS_ShowBreadcrumb";
 	public static final String ComplianceReportSSRS_ShowCoverage = "ComplianceReportSSRS_ShowCoverage";
@@ -62,6 +63,8 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ShowIndications = "ComplianceReportSSRS_ShowIndications";
 	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = "ComplianceReportSSRS_ShowIsotopicAnalyses";
 	public static final String ComplianceReportSSRS_ShowLISAs = "ComplianceReportSSRS_ShowLISAs";
+	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = "ComplianceReportSSRS_ShowHighlightLISAAssets";
+	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = "ComplianceReportSSRS_ShowHighlightGAPAssets";
 	public static final String ComplianceReportSSRS_SWLatSWLong = "ComplianceReportSSRS_SWLat&SWLong";
 	public static final String ComplianceReportSSRS_TimeZone = "ComplianceReportSSRS_TimeZone";
 	public static final String ComplianceReportSSRS_TotalLinearAssetCoverage = "ComplianceReportSSRS_TotalLinearAssetCoverage";
@@ -94,14 +97,14 @@ public class ResourceKeys {
 	public static final String Constant_Type = "Constant_Type";
 	public static final String Surveys_MinAmplitude = "Surveys_MinAmplitude";
 	public static final String Surveys_Duration = "Surveys_Duration";
-	public static final String Constant_Action = "Constant_Action";	
+	public static final String Constant_Action = "Constant_Action";
 	public static final String Constant_Analyzer = "Constant_Analyzer";
 	public static final String Constant_Surveyor = "Constant_Surveyor";
 	public static final String Constant_Surveyors = "Constant_Surveyors";
 	public static final String Constant_Status = "Constant_Status";
-	public static final String Constant_Customer = "Constant_Customer";	
-	public static final String Constant_UserName = "Constant_UserName";	
-	public static final String Constant_Location = "Constant_Location";	
+	public static final String Constant_Customer = "Constant_Customer";
+	public static final String Constant_UserName = "Constant_UserName";
+	public static final String Constant_Location = "Constant_Location";
 	public static final String Constant_Roles = "Constant_Roles";
 	public static final String Constant_Latitude = "Constant_Latitude";
 	public static final String Constant_Longitude = "Constant_Longitude";
@@ -111,7 +114,7 @@ public class ResourceKeys {
 	public static final String Constant_DateTime = "Constant_DateTime";
 	public static final String Constant_Investigator="Constant_Investigator";
 	public static final String Constant_Date="Constant_Date";
-	
+
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
@@ -185,16 +188,16 @@ public class ResourceKeys {
 
 	public static final String Constant_Offline = "Constant_Offline";
 
-	
+
 	// Constants for Capture results.
-	public static final String Survey_Rerun = "Survey_Rerun"; 
-	public static final String Survey_IsotopicCanceled = "Survey_IsotopicCanceled"; 
-	public static final String Survey_Passed = "Survey_Passed"; 
-	public static final String Survey_Unknown = "Survey_Unknown"; 
+	public static final String Survey_Rerun = "Survey_Rerun";
+	public static final String Survey_IsotopicCanceled = "Survey_IsotopicCanceled";
+	public static final String Survey_Passed = "Survey_Passed";
+	public static final String Survey_Unknown = "Survey_Unknown";
 	public static final String Survey_SampleSizeTooSmall = "Survey_SampleSizeTooSmall";
-	public static final String Survey_UncertaintyOutOfRange = "Survey_UncertaintyOutOfRange"; 
-	public static final String Survey_DeltaOutOfRange = "Survey_DeltaOutOfRange"; 
-	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas"; 
+	public static final String Survey_UncertaintyOutOfRange = "Survey_UncertaintyOutOfRange";
+	public static final String Survey_DeltaOutOfRange = "Survey_DeltaOutOfRange";
+	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas";
 	public static final String Survey_NaturalGas = "Survey_NaturalGas";
 
 	// Peak info popup constants.
@@ -203,7 +206,7 @@ public class ResourceKeys {
 	public static final String Survey_CH4 = "Survey_CH4";
 	public static final String Survey_EthaneRatio = "Survey_EthaneRatio";
 	public static final String Survey_amplitude = "Survey_amplitude";
-	
+
 	public static final String SystemHistoryReport_PageTitle = "SystemHistoryReport_PageTitle";
 	public static final String SystemHistoryReports_PageTitle = "SystemHistoryReports_PageTitle";
 	public static final String SystemHistoryReports_ReportTitle = "SysHistoryReportSSRS_SystemHistoryReport";
@@ -231,7 +234,7 @@ public class ResourceKeys {
 	public static final String Validation_EnterValueGreaterThanOrEqual = "Validation_EnterValueGreaterThanOrEqual";
 	public static final String Dialog_LineSelected = "Dialog_LineSelected";
 	public static final String Constant_EthaneToMethaneRatio = "Constant_EthaneToMethaneRatio";
-	
+
 	// Constants for EQ
 	public static final String ComplianceReport_EQLinesMessage = "ComplianceReport_EQLinesMessage";
 	public static final String Dialog_EQModeActive = "Dialog_EQModeActive";
@@ -245,7 +248,7 @@ public class ResourceKeys {
 	public static final String Reports_EQViewer = "Reports_EQViewer";
 	public static final String EQReportSSRS_EmissionsQuantificationReport = "EQReportSSRS_EmissionsQuantificationReport";
 	public static final String EQReportSSRS_EmissionsQuantificationData = "EQReportSSRS_EmissionsQuantificationData";
-	
+
 
     // Constants for Compliance Report
     public static final String ComplianceReport_CoverageForecastAreaInvalidMessage = "ComplianceReport_CoverageForecastAreaInvalidMessage";
@@ -253,7 +256,7 @@ public class ResourceKeys {
 	public static final String ComplianceReport_CoverageForecastBoundaryInvalidMessage = "ComplianceReport_CoverageForecastBoundaryInvalidMessage";
 	public static final String Dialog_SelectedArealsTooLarge = "Dialog_SelectedArealsTooLarge";
 	public static final String Dialog_SelectedArealsTooSmall = "Dialog_SelectedArealsTooSmall";
-	
+
 	// Constants for report SSRS
 	public static final String ReportSSRS_DatePrinted = "ReportSSRS_DatePrinted";
 	public static final String ReportSSRS_ReportAuthor = "ReportSSRS_ReportAuthor";
@@ -261,7 +264,7 @@ public class ResourceKeys {
 
 	// Constants for Data table
 	public static final String Constant_FilteredFromMaxTotalEntries = "Constant_FilteredFromMaxTotalEntries";
-	
+
 	// Capture Analysis Disposition types.
 	public static final String CaptureAnalysisDispositionTypesPrefix = "CaptureAnalysisDispositionTypes";
 	public static final String CaptureAnalysisDispositionTypes_Delta_Out_Of_Range = "CaptureAnalysisDispositionTypes_Delta_Out_Of_Range";
@@ -278,10 +281,10 @@ public class ResourceKeys {
 	public static final String CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range = "CaptureAnalysisDispositionTypes_Uncertainty_Out_Of_Range";
 	public static final String CaptureAnalysisDispositionTypes_Unknown = "CaptureAnalysisDispositionTypes_Unknown";
 	public static final String CaptureAnalysisDispositionTypes_User_Cancellation = "CaptureAnalysisDispositionTypes_User_Cancellation";
-	
+
 	// Ref Gas Capture description types.
 	public static final String ReferenceGasCaptureDescription_Isotopic_Reference_Pass = "ReferenceGasCaptureDescription_Isotopic_Reference_Pass";
-	
+
 	// Constants for Licensed Features
 	public static final String ComplianceReport_LicenseMissing = "ComplianceReport_LicenseMissing";
 }
