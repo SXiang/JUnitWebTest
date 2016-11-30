@@ -8,7 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import common.source.Log;
 import surveyor.performance.source.ComplianceReportsLargeDatasetLoadTest;
 import surveyor.regression.source.ComplianceReportsPageTest10;
-import surveyor.regression.source.ComplianceReportsPageTest_AssetBox;
 import surveyor.regression.source.ComplianceReportsPageTest_Ethane;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
@@ -17,7 +16,6 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	ComplianceReportsPageTest_Ethane.class
 	,ComplianceReportsLargeDatasetLoadTest.class
 	,ComplianceReportsPageTest10.class
-	,ComplianceReportsPageTest_AssetBox.class
 })
 public class ComplianceReportsTestSuite4 {
 
