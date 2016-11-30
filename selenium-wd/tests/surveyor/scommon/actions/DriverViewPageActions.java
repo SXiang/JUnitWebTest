@@ -23,7 +23,7 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 
 public class DriverViewPageActions extends BaseDrivingViewPageActions {
-	
+
 	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
@@ -34,7 +34,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
 	private static final String FN_START_DRIVING_SURVEY = "startDrivingSurvey";
 	private static final String CLS_DRIVER_VIEW_PAGE_ACTIONS = "DriverViewPageActions::";
-	
+
 	private DriverViewDataReader dataReader = null;
 	public static ThreadLocal<DriverViewDataRow> workingDataRow = new ThreadLocal<DriverViewDataRow>();    // Stores the workingDataRow from startSurvey action
 
@@ -50,15 +50,15 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	}
 
 	private DriverViewPage createNewPageObject() {
-		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(), 
+		DriverViewPage driverViewPage = new DriverViewPage(TestContext.INSTANCE.getDriver(),
 				TestContext.INSTANCE.getBaseUrl(),
 				TestContext.INSTANCE.getTestSetup());
 		return driverViewPage;
 	}
-	
+
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnCurtainArrowDownButton", data, dataRowID);
-		getDriverViewPage().clickCurtainArrowDownButton();		
+		getDriverViewPage().clickCurtainArrowDownButton();
 		return true;
 	}
 
@@ -115,7 +115,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		getDriverViewPage().waitForFieldNotesDialogToOpen();
 		return true;
 	}
-	
+
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnModeButton", data, dataRowID);
 		this.waitForSignalRCallsToComplete();
@@ -172,7 +172,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		getDriverViewPage().clickZoomInButton();
 		return true;
 	}
- 
+
 	/**
 	 * Executes clickOnZoomOutButton action.
 	 * @param data - specifies the input data passed to the action.
@@ -204,12 +204,12 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		return true;
 	}
-	
+
 	/**
 	 * Verifies the survey tag in Start Survey modal dialog.
 	 *
-	 * @return 
-	 * @throws Exception 
+	 * @return
+	 * @throws Exception
 	 */
 	public boolean verifySurveyTagInStartSurveyDialogEquals(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifySurveyTagInStartSurveyDialogEquals", data, dataRowID);
@@ -222,7 +222,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	/**
 	 * Opens the Start Survey modal dialog.
 	 *
-	 * @return 
+	 * @return
 	 */
 	public boolean openStartSurveyModalDialog(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.openStartSurveyModalDialog", data, dataRowID);
@@ -231,12 +231,12 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param commaSeperatedValues - colon seperated values in this format:
 	 * 		[Survey Tag]:[Survey Time]:[Solar Radiation]:[Wind]:[CloudCover]:[Survey Type]
 	 * @param dataRowID (Required) - RowID in Survey test data sheet from where data for starting survey will be read.
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean startDrivingSurvey(String commaSeperatedValues, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.startDrivingSurvey", commaSeperatedValues, dataRowID);
@@ -258,7 +258,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			if (listValues.size() > 6 && listValues.get(6) != "") {
 				minAmplitude = Float.valueOf(listValues.get(6));
 			}
-			
+
 		} else {
 			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
 			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
@@ -271,7 +271,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
 				minAmplitude = Float.valueOf(dataRow.minAmplitude);
 			}
-			
+
 			// store the working datarow.
 			workingDataRow.set(dataRow);
 			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
@@ -283,6 +283,13 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			return false;
 		}
 		return true;
+	}
+
+	public static String getCurrentSurveyCSVValues() {
+		DriverViewDataRow driverViewDataRow = DriverViewPageActions.workingDataRow.get();
+		return String.format("%s,%s,%s,%s,%s,%s", driverViewDataRow.surveyTag,
+				driverViewDataRow.surveyTime, driverViewDataRow.solarRadiation, driverViewDataRow.wind,
+				driverViewDataRow.cloudCover, driverViewDataRow.surveyType, driverViewDataRow.minAmplitude);
 	}
 
 	private SurveyType getSurveyType(String surveyType) {
@@ -337,14 +344,14 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 
 	private SurveyTime getSurveyTime(String surveyTime) {
 		SurveyTime time = SurveyTime.Day;
-		if (surveyTime.equalsIgnoreCase("Day")) {			
+		if (surveyTime.equalsIgnoreCase("Day")) {
 			time = SurveyTime.Day;
 		} else {
 			time = SurveyTime.Night;
 		}
 		return time;
 	}
-	
+
 	public boolean stopDrivingSurvey(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.stopDrivingSurvey", data, dataRowID);
 		getDriverViewPage().stopDrivingSurvey();
@@ -353,7 +360,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 
 		return true;
 	}
-	
+
 	/**
 	 * Executes refreshPage action.
 	 * @param data - specifies the input data passed to the action.
@@ -369,7 +376,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	}
 
 	/* GIS Switch - Enable/Disable methods */
-	
+
 	public boolean turnOnMapView(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.turnOnMapView", data, dataRowID);
 		getDriverViewPage().toggleMapSwitch(MapSwitchType.Map, true);
@@ -380,7 +387,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		getDriverViewPage().toggleMapSwitch(MapSwitchType.Satellite, true);
 		return true;
 	}
-	
+
 	public boolean verifyMapSwitchOn(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyMapSwitchOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_MAP_SWITCH_ON, ARG_DATA, data);
@@ -392,15 +399,15 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		}
 		return getDriverViewPage().isMapSwitchOn(switchType);
 	}
-	
+
 	public boolean verifyMapSwitchOff(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyMapSwitchOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_MAP_SWITCH_OFF, ARG_DATA, data);
 		return !verifyMapSwitchOn(data, dataRowID);
 	}
-	
+
 	/* Button state verification methods */
-	
+
 	public boolean verifyDisplaySwitchIsOn(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_DISPLAY_SWITCH_IS_ON, ARG_DATA, data);
@@ -474,7 +481,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		log(String.format("Looking for class attribute-[%s], Found class attribute-[%s]", expectedClassAttr, foundClassAttr));
 		return foundClassAttr.equalsIgnoreCase(expectedClassAttr);
 	}
-	
+
 	public boolean verifyGisSwitchIsOff(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyGisSwitchIsOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_GIS_SWITCH_IS_OFF, ARG_DATA, data);
@@ -597,7 +604,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsEnabled", data, dataRowID);
 		return getDriverViewPage().isSystemShutdownButtonEnabled();
 	}
-	
+
 	public boolean verifySystemShutdownButtonIsDisplayed(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsDisplayed", data, dataRowID);
 		return getDriverViewPage().getSystemShutdownButton().isDisplayed();
@@ -650,7 +657,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyEQModeDialogMessageEquals", data, dataRowID);
 		return getDriverViewPage().verifyEQModeDialogMessageEquals(data);
 	}
- 
+
 	/**
 	 * Executes verifyEQModeDialogIsShown action.
 	 * @param data - specifies the input data passed to the action.
@@ -661,7 +668,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyEQModeDialogIsShown", data, dataRowID);
 		return getDriverViewPage().isEQModeDialogShown();
 	}
- 
+
 	/**
 	 * Executes verifyEQModeDialogIsNotShown action.
 	 * @param data - specifies the input data passed to the action.
@@ -672,18 +679,18 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyEQModeDialogIsNotShown", data, dataRowID);
 		return getDriverViewPage().isEQModeDialogHidden();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.
 	 * @param dataRowID
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifyCrossHairIconIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyCrossHairIconIsShownOnMap", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP, ARG_DATA, data);
-		IconColor color = IconColor.Gray;		
+		IconColor color = IconColor.Gray;
 		if (data.equalsIgnoreCase("Gray")) {
 			color = IconColor.Gray;
 		} else if (data.equalsIgnoreCase("White")) {
@@ -691,7 +698,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		} else if (data.equalsIgnoreCase("Red")) {
 			color = IconColor.Red;
 		}
-		
+
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isCrossHairIconShownOnMap(color);
 	}
@@ -724,11 +731,11 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return !verifyBoundariesIsShownOnMap(data, dataRowID);
 	}
 	/**
-	 * 
+	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.
 	 * @param dataRowID
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifyCrossHairIconIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.verifyCrossHairIconIsNotShownOnMap", data, dataRowID);
@@ -753,7 +760,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean enterFieldNotes(String data, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.enterFieldNotes", data, dataRowID);
@@ -762,7 +769,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		this.getDriverViewPage().clickFieldNotesSaveButton();
 		return true;
 	}
- 
+
 	/**
 	 * Executes verifyMapViewIsShown action.
 	 * @param data - specifies the input data passed to the action.
@@ -774,7 +781,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isMapViewShown();
 	}
- 
+
 	/**
 	 * Executes verifySatelliteViewIsShown action.
 	 * @param data - specifies the input data passed to the action.
@@ -786,7 +793,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isSatelliteViewShown();
 	}
-	
+
 	/**
 	 * Executes verifyDriverViewPageIsOpened action.
 	 * @param data - specifies the input data passed to the action.
@@ -808,7 +815,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitch8HourHistoryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchWindroseButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -819,7 +826,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchWindroseButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchConcentrationChartButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -830,7 +837,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchNotesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -841,7 +848,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -852,7 +859,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIndicationsButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -863,7 +870,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchIndicationsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchLisasButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -874,7 +881,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchLisasButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchFovsButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -885,7 +892,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isDisplaySwitchFovsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCastIronButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -896,7 +903,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypeCastIronButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCopperButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -907,7 +914,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypeCopperButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -918,7 +925,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypePEPlasticButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -929,7 +936,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypePEPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -940,7 +947,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -951,7 +958,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllPipesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -962,7 +969,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisUseAllPipesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundaryBigBoundaryButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -973,7 +980,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisBoundaryBigBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundarySmallBoundaryButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -984,7 +991,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisBoundarySmallBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -995,7 +1002,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isGisUseAllBoundariesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartSurveyButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1006,7 +1013,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartSurveyButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isStartSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartEQSurveyButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1017,7 +1024,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isStartEQSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifySystemShutdownButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1028,7 +1035,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isSystemShutdownButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStopDrivingSurveyButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1039,7 +1046,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartIsotopicCaptureButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1050,7 +1057,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isStartIsotopicCaptureButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyRefBottleMeasButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1061,7 +1068,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsVisible", data, dataRowID);
 		return getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitch8HourHistoryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1072,7 +1079,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitch8HourHistoryButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitch8HourHistoryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchWindroseButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1083,7 +1090,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchWindroseButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchWindroseButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchConcentrationChartButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1094,7 +1101,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchConcentrationChartButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchConcentrationChartButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchNotesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1105,7 +1112,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchNotesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1116,7 +1123,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIndicationsButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1127,7 +1134,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchIndicationsButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchIndicationsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchLisasButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1138,7 +1145,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchLisasButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchLisasButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchFovsButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1149,7 +1156,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyDisplaySwitchFovsButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isDisplaySwitchFovsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCastIronButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1160,7 +1167,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCastIronButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypeCastIronButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCopperButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1171,7 +1178,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeCopperButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypeCopperButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1182,7 +1189,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeOtherPlasticButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypePEPlasticButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1193,7 +1200,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypePEPlasticButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypePEPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1204,7 +1211,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeProtectedSteelButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1215,7 +1222,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllPipesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1226,7 +1233,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisUseAllPipesButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisUseAllPipesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundaryBigBoundaryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1237,7 +1244,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisBoundaryBigBoundaryButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisBoundaryBigBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundarySmallBoundaryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1248,7 +1255,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisBoundarySmallBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1259,7 +1266,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyGisUseAllBoundariesButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isGisUseAllBoundariesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartSurveyButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1270,7 +1277,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartSurveyButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isStartSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartEQSurveyButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1281,7 +1288,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartEQSurveyButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isStartEQSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifySystemShutdownButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1292,7 +1299,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifySystemShutdownButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isSystemShutdownButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStopDrivingSurveyButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1303,7 +1310,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStopDrivingSurveyButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isStopDrivingSurveyButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStartIsotopicCaptureButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1314,7 +1321,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyStartIsotopicCaptureButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isStartIsotopicCaptureButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyRefBottleMeasButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1325,7 +1332,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		logAction("DriverViewPageActions.verifyRefBottleMeasButtonIsNotVisible", data, dataRowID);
 		return !getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
- 
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -1557,7 +1564,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
-		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
+		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }
 		return false;
 	}
 

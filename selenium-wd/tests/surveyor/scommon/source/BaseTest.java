@@ -355,6 +355,14 @@ public class BaseTest {
 
 	public Map<String, String> addTestReport(String userName, String Password, SurveyModeFilter... surveyModeFilter)throws Exception{
 		int testRowID = 115;
+		return addTestReport(userName, Password, testRowID, surveyModeFilter);
+	}
+
+	public Map<String, String> addTestReport(String userName, String Password, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
+		return addTestReport(userName, Password, null /*surveyTag*/, testRowID, surveyModeFilter);
+	}
+
+	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
@@ -390,9 +398,14 @@ public class BaseTest {
 			rpt.reportModeFilter = rm;
 			rpt.surveyModeFilter = sm;
 			rpt.strCreatedBy = userName;
+
 			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
-				if(smf!=null)
+				if(smf!=null) {
 					smf.setSurveyModeFilter(sm);
+					if (surveyTag != null && surveyTag != "") {
+						smf.setTag(surveyTag);
+					}
+				}
 			}
 			testReport.put(sm.toString()+"Title", rpt.rptTitle);
 
@@ -409,6 +422,10 @@ public class BaseTest {
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, SurveyType... surveyTypes) throws Exception{
 		int surveyRuntimeInSeconds = 2;
+		return addTestSurvey(analyzerName, analyzerSharedKey, userName, Password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30};
@@ -455,6 +472,7 @@ public class BaseTest {
 			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.stopDrivingSurvey("", -1);
+
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.clickOnShutdownButton("", -1);
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);

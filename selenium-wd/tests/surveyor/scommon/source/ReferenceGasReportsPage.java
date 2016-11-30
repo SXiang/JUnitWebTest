@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -45,7 +45,7 @@ import surveyor.dataaccess.source.StoredProcSystemHistory;
 
 /**
  * @author pmahajan
- * 
+ *
  */
 public class ReferenceGasReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/ReferenceGasReports";
@@ -170,7 +170,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		Log.method("checkActionStatus", rptTitle, strCreatedBy);
-		
+
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
 		setPagination(PAGINATIONSETTING_100);
@@ -238,7 +238,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 	public boolean findReport(String rptTitle, String strCreatedBy) {
 		Log.method("findReport", rptTitle, strCreatedBy);
-		
+
 		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
@@ -286,9 +286,14 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		return false;
 	}
 
+	public String getSoftwareVersionFromPDF(String reportTitle, String downloadPath) {
+		String reportId = Report.getReport(reportTitle).getId();
+		return getSoftwareVersionFromPDF(() -> {return Paths.get(downloadPath, "RG-" + reportId.substring(0, 6) + ".pdf").toString();});
+	}
+
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
 		Log.method("validatePdfFiles", reportTitle, downloadPath);
-		
+
 		String reportId;
 		String reportName;
 		DBConnection objDbConn = new DBConnection();
@@ -452,7 +457,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 
 	public boolean verifyCancelButtonFunctionality() {
 		Log.method("verifyCancelButtonFunctionality");
-				
+
 		Log.clickElementInfo("New RefGas Report");
 		this.btnNewRefGasRpt.click();
 		this.waitForNewPageLoad();
@@ -463,7 +468,7 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 			return true;
 		return false;
 	}
-	
+
     @Override
 	public void waitForPageLoad() {
         (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {

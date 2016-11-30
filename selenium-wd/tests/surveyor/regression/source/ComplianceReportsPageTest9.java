@@ -548,36 +548,6 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification
-	 * Test Description: Remove shape file and meta data feature permission from existing customer - Copy Compliance report verification
-	 * Script: -
-	 *	- - Log in as Picarro Admin- On Manage Customers page, select a customer that has Shape file and Meta data permission options enabled and click the Edit button (eg. PG&amp;E's)- Confirm that the Account Enabled box is checked and uncheck the Report Shape file and meta data buttons- Click OK - Log in as Customer user- Go to compliance report page- Click on Copy button of above generated report and click OK- Click on Compliance Viewer button
-	 * Results: -
-	 *	- - Compliance Viewer dialog does not have Shape (ZIP) and Meta data (ZIP) export buttons
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC788, location = ComplianceReportDataProvider.class)
-	public void TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
-		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC789_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_ReprocessComplianceReport
 	 * Test Description: Remove shape file and meta data feature permission from existing customer - Reprocess Compliance report
 	 * Script: -
@@ -605,49 +575,6 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer
-	 * Test Description: Shapefile and meta data report feature permission to customer and generate Compliance report as picarro admin for specified customer
-	 * Script: -
-	 *	- - Log in as Picarro Admin
-	 *	- - On the Compliance Reports page, generate a new report for survey having Indications, LISA, FOV, breadcrumb, isotopic analysis. Add View having Indications, LISA, FOV, breadcrumb, isotopic analysis selected
-	 *	- - Click on Compliance Viewer button
-	 *	- - Click on Compliance ZIP (Shape) and Compliance ZIP (Meta) download buttons
-	 * Results: -
-	 *	- - Compliance Viewer dialog hasCompliance ZIP (Shape) and Compliance ZIP (Meta)export buttons
-	 *	- - Picarro Admin can download the Shape files and meta data files successfully
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC790, location = ComplianceReportDataProvider.class)
-	public void TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1)));
-
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-
-		// TODO: Enable after actions are implemented.
-		//assertTrue(complianceReportsPageAction.verifyShapeZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-		//assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -969,15 +896,15 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * -  Fill out the required fields
 	 * -  Select a survey that includes gaps and Assets running through them
 	 * -  In the Views section, select only Highlight Gap Assets and generate the report
-	 * -  Click the thumbnail preview button 
+	 * -  Click the thumbnail preview button
 	 * -  Download report view PDF
-	 * -  Click on the "Compliance.zip (Shape)" button 
-	 * -  Extract the individual files from the zipped file 
+	 * -  Click on the "Compliance.zip (Shape)" button
+	 * -  Extract the individual files from the zipped file
 	 * -  View the Shapefile content in ArcGIS
 	 * Results:
 	 * 	 - SSRS PDF should have Highlight Gap Assets checked in Views section
 	 * 	 - Report View PDF should have assets intersecting Gaps.
-	 * 	 - The Shapefile zip should download 
+	 * 	 - The Shapefile zip should download
 	 * 	 - There should be shapefiles for PipeIntersectingGap
 	 * 	 - PipeIntersectingLISA, PipeAll, LISA, etc shape files should not be present
 	 */
@@ -1017,15 +944,15 @@ public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
 	 * -  Fill out the required fields
 	 * -  Select a survey that includes LISA boxes that have Assets running through them
 	 * -  In the Views section, select only Highlight LISA Assets and generate the report
-	 * -  Click the thumbnail preview button 
+	 * -  Click the thumbnail preview button
 	 * -  Download report view PDF
-	 * -  Click on the "Compliance.zip (Shape)" button 
-	 * -  Extract the individual files from the zipped file 
+	 * -  Click on the "Compliance.zip (Shape)" button
+	 * -  Extract the individual files from the zipped file
 	 * -  View the Shapefile content in ArcGIS
 	 * Results:
 	 * 	 - SSRS PDF should have Highlight LISA Assets checked in Views section
 	 * 	 - Report View PDF should have assets intersecting LISA
-	 * 	 - The Shapefile zip should download 
+	 * 	 - The Shapefile zip should download
 	 * 	 - There should be shapefiles for PipesIntersectingLisa
 	 * 	 - PipeAll, PipeIntersectingGap, LISA, Gap, etc shape files should not be generated
 	 */

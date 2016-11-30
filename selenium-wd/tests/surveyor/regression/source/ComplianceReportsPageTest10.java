@@ -1,13 +1,19 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
 
 import org.junit.Before;
 
+import common.source.BasePage;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.support.PageFactory;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
@@ -18,14 +24,19 @@ import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.SystemHistoryReportsPage;
+import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LatLongSelectionControl;
+import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.ReferenceGasReportsPage;
+import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
-
 
 	private static final String EMPTY = "";
 	private static final Integer NOTSET = -1;
@@ -39,6 +50,10 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	private static TestEnvironmentActions testEnvironmentAction;
 	private static SurveyViewPageActions surveyViewPageAction;
 
+	private static ReferenceGasReportsPage referenceGasReportsPage = null;
+	private static SystemHistoryReportsPage systemHistoryReportsPage = null;
+	private static LatLongSelectionControl latLongSelectionControl = null;
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -50,8 +65,23 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 
 		initializePageActions();
 
+		initializeTestPageObjects();
+
 		// Select run mode here.
 		setPropertiesForTestRunMode();
+	}
+
+	private void initializeTestPageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
+		PageFactory.initElements(getDriver(), referenceGasReportsPage);
+
+		systemHistoryReportsPage = pageObjectFactory.getSystemHistoryReportsPage();
+		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
+
+		latLongSelectionControl = new LatLongSelectionControl(getDriver());
+		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -79,6 +109,43 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
+	 * Test Case ID: TC799_SearchReportsNon_ExistingOrInvalidReportName
+	 * Test Description: Search reports for non-existing or invalid report name
+	 * Script: -
+	 *	- - Log in to application and navigate to compliance report page
+	 *	- - Search non-existing or invalid compliance report with report name
+	 *	- - Navigate to Ref Gas Report page
+	 *	- - Searchnon-existing or invalidRef Gas report with report name
+	 *	- - Navigate to System History Report page
+	 *	- - Searchnon-existing or invalidSystem History report with report name
+	 * Results: -
+	 *	- - Reports page should display message as No matching records found
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC799, location = ComplianceReportDataProvider.class)
+	public void TC799_SearchReportsNon_ExistingOrInvalidReportName(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC799_SearchReportsNon_ExistingOrInvalidReportName ...");
+
+		String nonExistentReportTitle = "ThisIsANonExistentReportTitle_ZXCVBNM";
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().getEmptyTableMessage().equals(NOMATCHINGSEARCH));
+
+		referenceGasReportsPage.open();
+		assertFalse(referenceGasReportsPage.searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
+		assertTrue(referenceGasReportsPage.getEmptyTableMessage().equals(NOMATCHINGSEARCH));
+
+		systemHistoryReportsPage.open();
+		assertFalse(systemHistoryReportsPage.searchReport(nonExistentReportTitle, LoginPageActions.workingDataRow.get().username));
+		assertTrue(systemHistoryReportsPage.getEmptyTableMessage().equals(NOMATCHINGSEARCH));
+	}
+
+	/**
 	 * Test Case ID: TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen
 	 * Test Description: Customer boundary area selection persist on Customer Boundary Selector screen
 	 * Script: -
@@ -91,7 +158,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Selected boundary areashould persist
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255, location = ComplianceReportDataProvider.class)
 	public void TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -99,7 +166,57 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.getComplianceReportsPage().openCustomerBoundarySelector();
+
+		String boundaryName = "Level 2-AA";
+		latLongSelectionControl.waitForModalDialogOpen()
+			.switchMode(ControlMode.MapInteraction)
+			.waitForMapImageLoad()
+			.selectCustomerBoundaryType(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary.toString())
+			.setCustomerBoundaryName(boundaryName)
+			.switchMode(ControlMode.Default)
+			.clickOkButton()
+			.waitForModalDialogToClose();
+
+		String actualValue = complianceReportsPageAction.getComplianceReportsPage().getBoundarySelectedText().getAttribute("value");
+		Log.info(String.format("Expected Boundary Selected TextField value = '%s'. Actual value = '%s'", boundaryName, actualValue));
+		assertTrue(actualValue.equals(boundaryName));
+	}
+
+	/**
+	 * Test Case ID: TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking
+	 * Test Description: Survey tag link present in search grid on compliance report is working
+	 * Script: -
+	 *	- - Log in to application and navigate to new compliance report screen
+	 *	- - Click on Search button to search the surveys
+	 *	- - Click on survey tag link present in survey grid
+	 * Results: -
+	 *	- - User is navigated to survey view
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1274, location = ComplianceReportDataProvider.class)
+	public void TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+
+		complianceReportsPageAction.getComplianceReportsPage().inputSurveyTag(PICADMNSTDTAG);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
+		complianceReportsPageAction.getComplianceReportsPage().waitForSurveyTabletoLoad();
+		complianceReportsPageAction.getComplianceReportsPage().clickOnFirstSurveyLink();
+
+		// Verify clicking on first survey opens the survey page in new window.
+		BasePage.verifyPageLoadedInNewTab(getDriver(), () -> surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET));
 	}
 
 	/**
@@ -123,71 +240,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-	}
-
-	/**
-	 * Test Case ID: TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking
-	 * Test Description: Survey tag link present in search grid on compliance report is working
-	 * Script: -
-	 *	- - Log in to application and navigate to new compliance report screen
-	 *	- - Click on Search button to search the surveys
-	 *	- - Click on survey tag link present in survey grid
-	 * Results: -
-	 *	- - User is navigated to survey view
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1274, location = ComplianceReportDataProvider.class)
-	public void TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		surveyViewPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
-	}
-
-	/**
-	 * Test Case ID: TC1297_SoftwareVersionUIReportsPDFShouldMatch
-	 * Test Description: Software version on UI and reports PDF should match
-	 * Script: -
-	 *	- - Log in to application
-	 *	- - Generate compliance, investigation, ref gas, system history reports
-	 * Results: -
-	 *	- - Software version present at bottom of the page should be same as team city version- Software version present onr eport PDF should match with UI software version
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1297, location = ComplianceReportDataProvider.class)
-	public void TC1297_SoftwareVersionUIReportsPDFShouldMatch(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1297_SoftwareVersionUIReportsPDFShouldMatch ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
-	 * Test Case ID: TC799_SearchReportsNon_ExistingOrInvalidReportName
-	 * Test Description: Search reports for non-existing or invalid report name
-	 * Script: -
-	 *	- - Log in to application and navigate to compliance report page
-	 *	- - Search non-existing or invalid compliance report with report name
-	 *	- - Navigate to Ref Gas Report page
-	 *	- - Searchnon-existing or invalidRef Gas report with report name
-	 *	- - Navigate to System History Report page
-	 *	- - Searchnon-existing or invalidSystem History report with report name
-	 * Results: -
-	 *	- - Reports page should display message as No matching records found
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC799, location = ComplianceReportDataProvider.class)
-	public void TC799_SearchReportsNon_ExistingOrInvalidReportName(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC799_SearchReportsNon_ExistingOrInvalidReportName ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 	}
 
 	/**

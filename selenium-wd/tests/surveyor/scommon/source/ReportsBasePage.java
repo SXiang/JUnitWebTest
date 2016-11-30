@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -49,6 +50,7 @@ import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
 import common.source.Log;
+import common.source.PDFUtility;
 import common.source.PollManager;
 import common.source.RegexUtility;
 import common.source.TestContext;
@@ -176,6 +178,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/input[@type='checkbox']")
 	protected List<WebElement> checkboxSurveys;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
+	protected WebElement firstSurveyLink;
 
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
@@ -525,6 +530,34 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return this.inputExclusionRadius.getText();
 	}
 
+	protected String getSoftwareVersionFromPDF(Supplier<String> downloadPath) {
+		String softwareVersion = "";
+		PDFUtility pdfUtility = new PDFUtility();
+		try {
+			String pdfText = (pdfUtility.extractPDFText(downloadPath.get()));
+			softwareVersion = getSoftwareVersionFromPDFText(pdfText);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return softwareVersion;
+	}
+
+	private String getSoftwareVersionFromPDFText(String inputString) {
+		String softwareVersion = "";
+		List<String> lines = RegexUtility.split(inputString, RegexUtility.NEWLINE_SPLIT_REGEX_PATTERN);
+		for (String lineText : lines) {
+			if (lineText.contains("Software Version")) {
+				List<String> matchingGroups = RegexUtility.getMatchingGroups(lineText, RegexUtility.APP_VERSION_PATTERN);
+				if (matchingGroups != null && matchingGroups.size() > 0) {
+					softwareVersion = matchingGroups.get(0);
+					break;
+				}
+			}
+		}
+
+		return softwareVersion;
+	}
+
 	/**
 	 * Get the selected Report Mode.
 	 */
@@ -857,6 +890,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			for (int rowNum = 1; rowNum <= loopCount && selectedSurveysCount < numSurveysToSelect; rowNum++) {
 				checkBoxXPath = "tr[" + rowNum + "]/td/input[@type='checkbox']";
 				checkBoxActionCell = surveyTable.findElement(By.xpath(checkBoxXPath));
+				Log.info("Wait for survey checkbox to be clickable");
+				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
 				checkBoxActionCell.click();
 				selectedSurveysCount++;
@@ -888,6 +923,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	private void selectFirstSurveyCheckBox() {
 		Log.info(String.format("Select the first survey in the table"));
 		this.checkboxSurFirst.click();
+	}
+
+	public void clickOnFirstSurveyLink() {
+		Log.clickElementInfo("First Survey Link");
+		this.firstSurveyLink.click();
 	}
 
 	public void clickOnAddSurveysButton() {
