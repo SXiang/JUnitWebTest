@@ -129,7 +129,7 @@ public class DbSeedExecutorTest {
 	@Test
 	public void execute05_pushAssetBoundariesForSpecificCustomerTest() throws Exception {
 		// By default if no customerId is specified the GIS data is pushed for Picarro customer.
-		String customerId = "00000000-0000-0000-0000-000000000002";
+		String customerId = "D0DE3902-B726-7CA8-6FE1-39DBC4D817EB";
 		DbSeedExecutor.executeGisSeed(customerId);
 		verifyGisSeedDataIsPresent(customerId);
 	}

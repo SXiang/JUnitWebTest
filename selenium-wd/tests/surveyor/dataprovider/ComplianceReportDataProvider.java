@@ -120,7 +120,6 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255 = "dataProviderPageActionsComplianceReports_TC1255";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1256 = "dataProviderPageActionsComplianceReports_TC1256";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1274 = "dataProviderPageActionsComplianceReports_TC1274";
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1297 = "dataProviderPageActionsComplianceReports_TC1297";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1298 = "dataProviderPageActionsComplianceReports_TC1298";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314 = "dataProviderPageActionsComplianceReports_TC1314";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1353 = "dataProviderPageActionsComplianceReports_TC1353";
@@ -856,18 +855,13 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	}
 
 	@DataProvider
-	public static Object[][] dataProviderPageActionsComplianceReports_TC1297() {
-		return new Object[][] { { "TC1297" /* TestCaseID */, 0 /* userDataRowID - [TODO:CHANGE THIS] */, 0 /* reportDataRowID1 - [TODO:CHANGE THIS] */, -1/* reportDataRowID2 */ } };
-	}
-
-	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1298() {
 		return new Object[][] { { "TC1298" /* TestCaseID */, 0 /* userDataRowID - [TODO:CHANGE THIS] */, 0 /* reportDataRowID1 - [TODO:CHANGE THIS] */, -1/* reportDataRowID2 */ } };
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsComplianceReports_TC1314() {
-		return new Object[][] { { "TC1314" /* TestCaseID */, 0 /* userDataRowID - [TODO:CHANGE THIS] */, 0 /* reportDataRowID1 - [TODO:CHANGE THIS] */, -1/* reportDataRowID2 */ } };
+		return new Object[][] { { "TC1314" /* TestCaseID */, 4 /* userDataRowID */, 130 /* reportDataRowID1 */, 131 /* reportDataRowID2 */ } };
 	}
 
 	@DataProvider

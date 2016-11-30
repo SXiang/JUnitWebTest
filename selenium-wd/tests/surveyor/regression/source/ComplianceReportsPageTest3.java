@@ -169,8 +169,6 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-
-
 	}
 
 	/**

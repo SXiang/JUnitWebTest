@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.CR_CF_FORECASTBOUNDARYINVALID_MESSAGE;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -94,13 +95,17 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary ...");
 
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(EMPTY, getReportRowID(reportDataRowID1));
+		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
+
+		// Copy report, select Custom boundary and Percent Coverage Forecast.
+        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
 		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
-		assertTrue(complianceReportsPageAction.verifyErrorMessages(EMPTY, getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_FORECASTBOUNDARYINVALID_MESSAGE));
 	}
 
 	/**

@@ -185,6 +185,50 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC1297 Test Description:
+	 * Software version present on report PDF should match with UI software version
+	 *
+	 */
+	@Test
+	public void TC1297_RefGasRpt_VerifyWebAppAndPDFVersion() {
+		String rptTitle = "TC1297 Report" + getTestSetup().getRandomNumber();
+		Log.info("\nRunning TC1297 Test Description: Software version present on report PDF should match with UI software version. Report title - " + rptTitle);
+
+		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
+		String startDate = getStartDate();
+		String endDate = getEndDate();
+		Integer monthDiff = getNumberOfPreMonths() + 1;
+
+		ArrayList<String> inputList=new ArrayList<String>();
+		inputList.add(rptTitle);
+		inputList.add(SQACUS);
+		inputList.add(SQACUSLOCSUR);
+		inputList.add(startDate);
+		inputList.add(endDate);
+
+		referenceGasReportsPage.login(SQACUSUA, USERPASSWORD);
+		referenceGasReportsPage.open();
+
+		String webAppVersionNumber = referenceGasReportsPage.getWebAppVersion();
+
+		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, monthDiff, 0);
+
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+
+		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+			String pdfSoftwareVersion = referenceGasReportsPage.getSoftwareVersionFromPDF(rptTitle, getTestSetup().getDownloadPath());
+			Log.info(String.format("Comparing web app version and PDF software version. WebAppVersion = '%s', PDFSoftwareVersion = '%s'",
+					webAppVersionNumber, pdfSoftwareVersion));
+			assertTrue(webAppVersionNumber.equals(pdfSoftwareVersion));
+
+		} else
+			fail("\nTestcase TC1297 failed. Report not downloaded successfully!\n");
+
+		referenceGasReportsPage.open();
+		referenceGasReportsPage.logout();
+	}
+
+	/**
 	 * Test Case ID: TC187 Test Description: Click on Cancel button present on reference gas report screen
 	 *
 	 */

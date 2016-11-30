@@ -220,27 +220,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1297_SoftwareVersionUIReportsPDFShouldMatch
-	 * Test Description: Software version on UI and reports PDF should match
-	 * Script: -
-	 *	- - Log in to application
-	 *	- - Generate compliance, investigation, ref gas, system history reports
-	 * Results: -
-	 *	- - Software version present at bottom of the page should be same as team city version- Software version present onr eport PDF should match with UI software version
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1297, location = ComplianceReportDataProvider.class)
-	public void TC1297_SoftwareVersionUIReportsPDFShouldMatch(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1297_SoftwareVersionUIReportsPDFShouldMatch ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC1256_DisplayErrorMessageThumbnailDownloadMapPdfOldReportsPrior21Build
 	 * Test Description: Display error message for thumbnail/download map pdf for old reports (prior to 2.1 build)
 	 * Script: -

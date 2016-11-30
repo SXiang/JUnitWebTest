@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Before;
 
+import common.source.ExceptionUtility;
 import common.source.Log;
 
 import org.junit.BeforeClass;
@@ -28,8 +30,11 @@ import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
@@ -66,7 +71,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		if(testAccount == null){
 			testAccount = createTestAccount("CusWithoutAsset");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 45 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
 		}
 	}
 
@@ -98,6 +103,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
@@ -127,30 +133,51 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
-
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
-
-		String rptTitle = testReport.get(SurveyType.Standard+"Title");
-		String strCreatedBy = testReport.get("userName");
-
-		// Ensure customer has Report metadata and Report ShapeFile license features.
 		String customerName = testAccount.get("customerName");
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
-		getHomePage().logout();
 
-		// Login as new customer user.
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", userName, userPassword), NOTSET);   /* login using newly created user */
+		Customer customer = Customer.getCustomer(customerName);
+		String customerId = customer.getId();
+		String rptTitle = "";
+		String strCreatedBy = "";
 
-		// Copy report as new customer user.
-		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+		try {
+			// Push GIS seed for newly created customer
+			DbSeedExecutor.executeGisSeed(customerId);
 
-		// Verify report meta and report shape files are generated successfully.
-		clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
-		verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
+			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
+					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
+
+			rptTitle = testReport.get(SurveyType.Standard+"Title");
+			strCreatedBy = testReport.get("userName");
+
+			// Ensure customer has Report metadata and Report ShapeFile license features.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
+			getHomePage().logout();
+
+			// Login as new customer user.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", userName, userPassword), NOTSET);   /* login using newly created user */
+
+			// Copy report as new customer user.
+			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+
+			// Verify report meta and report shape files are generated successfully.
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		} finally {
+			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().deleteReport(rptTitle, strCreatedBy);
+			// Remove GIS seed from the customer.
+			DbSeedExecutor.cleanUpGisSeed(customerId);
+		}
 	}
 
 	/**
