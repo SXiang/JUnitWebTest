@@ -372,7 +372,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
         rpt.setCustomerBoundaryInfo(workingDataRow.get().customerBoundaryType, workingDataRow.get().customerBoundaryName);
-
+        String reportMode = workingDataRow.get().reportMode;
+        if(!BaseHelper.isNullOrEmpty(reportMode)){
+             rpt.setReportModeFilter(ReportModeFilter.valueOf(reportMode.replaceAll(" ", "")));
+        }
 		workingReportsComp.set(rpt);		// Store the working report properties.
 		return rpt;
 	}

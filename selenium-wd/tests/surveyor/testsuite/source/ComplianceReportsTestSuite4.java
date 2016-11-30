@@ -7,6 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
 import surveyor.performance.source.ComplianceReportsLargeDatasetLoadTest;
+import surveyor.regression.source.ComplianceReportsPageTest10;
 import surveyor.regression.source.ComplianceReportsPageTest_Ethane;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
@@ -14,6 +15,7 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 @SuiteClasses({
 	ComplianceReportsPageTest_Ethane.class
 	,ComplianceReportsLargeDatasetLoadTest.class
+	,ComplianceReportsPageTest10.class
 })
 public class ComplianceReportsTestSuite4 {
 

@@ -41,6 +41,12 @@ public class BasePage {
 
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
+	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
+	public WebElement siteLogo;
+
+	@FindBy(how = How.CSS, using = ".pcubed > img")
+	public WebElement pcubedLogo;
+	
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;
 
@@ -406,6 +412,14 @@ public class BasePage {
 		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
 	}
 
+	/**
+	 * Javascript Scroll
+	 * @param element - element to be clicked
+	 */
+	public void jsScrollToView(WebElement element){
+		WebElementExtender.executeScript(element, driver, "arguments[0].scrollIntoView();");
+	}
+	
 	public void focusOnPage(WebElement element){
 		Actions action = new Actions(driver);
 		action.moveToElement(element).click().click().perform();
