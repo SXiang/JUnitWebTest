@@ -360,6 +360,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeRptMode;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[2]")
+	protected WebElement btnCancelRptMode;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
 
@@ -1442,7 +1445,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = ReportModeFilter.Operator;
 		} else if (reportMode.equalsIgnoreCase("manual")) {
 			mode = ReportModeFilter.Manual;
-		} else if (reportMode.equalsIgnoreCase("rr") || reportMode.equalsIgnoreCase("RapidResponse")) {
+		} else if (reportMode.equalsIgnoreCase("rr") || reportMode.replaceAll(" ", "").equalsIgnoreCase("RapidResponse")) {
 			mode = ReportModeFilter.RapidResponse;
 		}
 		return mode;
@@ -1456,7 +1459,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			mode = SurveyModeFilter.Operator;
 		} else if (surveyMode.equalsIgnoreCase("manual")) {
 			mode = SurveyModeFilter.Manual;
-		} else if (surveyMode.equalsIgnoreCase("rr")) {
+		} else if (surveyMode.equalsIgnoreCase("rr") || surveyMode.replaceAll(" ", "").equalsIgnoreCase("RapidResponse")) {
 			mode = SurveyModeFilter.RapidResponse;
 		} else if (surveyMode.equalsIgnoreCase("all")) {
 			mode = SurveyModeFilter.All;
@@ -1959,21 +1962,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void selectReportModeNoConfirm(ReportModeFilter mode) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement radioButton = checkBoxStndRptMode;
 		switch (mode) {
 		case Standard:
-			js.executeScript("arguments[0].click();", checkBoxStndRptMode);
+			radioButton = checkBoxStndRptMode;
 			break;
 		case RapidResponse:
-			js.executeScript("arguments[0].click();", checkBoxRRRptMode);
+			radioButton = checkBoxRRRptMode;
 			break;
 		case Manual:
-			js.executeScript("arguments[0].click();", checkBoxManualRptMode);
+			radioButton = checkBoxManualRptMode;
 			break;
 		default:
 			break;
 		}
-
+		jsClick(radioButton);
 	}
 
 	public boolean isReportModeSelected(ReportModeFilter mode) {
@@ -1998,6 +2001,14 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
+	public void cancelChangeRptMode() {
+		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+		if (this.btnCancelRptMode.isDisplayed()) {
+			this.btnCancelRptMode.click();
+			this.waitForConfirmReportModeChangePopupToClose();
+		}
+	}
+	
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
 			SurveyModeFilter surveyModeFilter) throws IOException {
 		Log.method("ComplianceReportsPage.verifySurveysTableViaSurveyMode", changeMode, strReportMode.name(),
@@ -4297,6 +4308,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		latLongSelectionControl.waitForModalDialogToClose();
 	}
 
+
+	public boolean noBoundarySearchResultByName(){
+		By noResultBy = By.xpath("//ul[@id='ui-id-1']//div[text()='no results...']");
+		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
+		return noResult;
+	}
+	
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
 		return reportsCompliance.getLatLongXOffset() > 0 && reportsCompliance.getLatLongYOffset() > 0
 				&& reportsCompliance.getLatLongRectWidth() > 0 && reportsCompliance.getLatLongRectHeight() > 0;

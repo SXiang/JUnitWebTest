@@ -155,7 +155,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Report is generated successfully
 	 *	- - Both View PDFs should have Report Title, Report View, Date Generated, Report Mode, Report Author and Report Name details displayed in footer are as expected
 	 */
-	@Test /* Using Picarro Admin */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1798, location = ComplianceReportDataProvider.class)
 	public void TC1798_ValidateInformationPresentReportViewsPDFComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

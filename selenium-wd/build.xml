@@ -406,6 +406,7 @@
 					<include name="**/ComplianceReportsPageTest11.class" />
 					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
 					<include name="**/ComplianceReportsPageTest_AssetBox.class" />
+					<include name="**/ComplianceReportsPageTest10.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -640,6 +641,7 @@
 						<include name="**/ComplianceReportsTestSuite2.class" />
 						<include name="**/ComplianceReportsTestSuite3.class" />
 						<include name="**/ComplianceReportsTestSuite4.class" />
+						<include name="**/ComplianceReportsTestSuite5.class" />
 					</fileset>
 				</batchtest>
 			</junit>
@@ -661,7 +663,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+					<include name="**/ComplianceReportsPageTest10.class" />
+					<include name="**/ComplianceReportsPageTest8.class" />
 				</fileset>
 			</batchtest>
 		</junit>

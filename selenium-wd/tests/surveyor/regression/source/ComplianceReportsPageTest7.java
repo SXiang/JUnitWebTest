@@ -203,7 +203,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Coverage Value should be zero
 	 */
-	@Ignore
+	@Ignore /* Need surveys available for this test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1354, location = ComplianceReportDataProvider.class)
 	public void TC1354_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecast2SurveysDifferentTagsWhenNoFOVPresentThese2Surveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
