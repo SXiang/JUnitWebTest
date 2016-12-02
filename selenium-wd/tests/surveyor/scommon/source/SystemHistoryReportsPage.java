@@ -90,6 +90,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
 					Log.info("Select Survey Unit - '"+surUnit+"'");
 					option.click();
+					
 					break;
 				}
 			}

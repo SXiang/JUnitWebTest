@@ -57,7 +57,7 @@ public class DatetimePickerSetting extends SurveyorBasePage {
 				this.inputStartDT.click();
 			else
 				this.inputEndDT.click();
-		numOfPreMonths =1;
+
 		for (int i = 1; i <= numOfPreMonths; i++)
 			driver.findElement(By.className("prev")).click();
 
