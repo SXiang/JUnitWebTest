@@ -106,8 +106,8 @@ public class DbSeedExecutor {
 			// Push 'Ethane-*' survey tags. Tracked by US3279.
 			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
+				"standard-test-1", "standard-test-2", "standard-test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
+				"StandardWithLeak", "No fov 1", "No fov 2", "No fov "};
 			surveyTags = surveyTagsTemp;
 		}
 
