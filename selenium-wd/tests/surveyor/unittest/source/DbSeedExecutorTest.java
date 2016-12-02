@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import common.source.CSVUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
@@ -17,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -116,6 +116,15 @@ public class DbSeedExecutorTest {
 		execute03_SurveyDataSeedTest();
 		execute03_SurveyDataSeedTest_SpecificSurveys();
 		execute03_SurveyDataSeedTest_GeneratedSurveys();
+	}
+
+	@Test
+	public void execute03_LoadTestSurveyDataSeedTest() throws Exception {
+		final String[] surveyTags = {PICGREATER4HR_DATAFILE, PICLESS4HR_DATAFILE
+				,PIC8HR01_DATAFILE, PIC8HR02_DATAFILE, PIC8HR03_DATAFILE, PIC8HR04_DATAFILE, PIC8HR05_DATAFILE, PIC8HR06_DATAFILE
+				,PIC8HR07_DATAFILE, PIC8HR08_DATAFILE, PIC8HR09_DATAFILE, PIC8HR10_DATAFILE, PIC8HR11_DATAFILE, PIC8HR12_DATAFILE};
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags, true, true);
 	}
 
 	@Test

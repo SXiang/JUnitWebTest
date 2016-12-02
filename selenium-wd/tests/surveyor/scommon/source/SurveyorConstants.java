@@ -308,7 +308,7 @@ public final class SurveyorConstants {
 	public static final String PICADMNSTDTAG2_STARTEPOCH_MINUS_EPSILON = "1450134967.878";
 	public static final String PICADMNSTDTAG2_ENDEPOCH = "1450136588.925";
 	public static final String PICADMNSTDTAG2_ENDEPOCH_PLUS_EPSILON = "1450136588.975";
-	public static final double EPSILON = 0.05;
+	public static final double EPSILON = 0.5;
 	public static final String PICADMNRRTAG2 = "rr-pic";
 	public static final String PICADMNOPTAG2 = "op-pic";
 	public static final String PICADMNMANTAG2 = "man-pic";
