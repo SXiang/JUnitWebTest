@@ -294,7 +294,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	 * Test Case ID: TC516 Test Description: Generate system history report as Customer Supervisor
 	 *
 	 */
-	@Ignore
+	@Test
 	public void TC516_SysHisRpt_CustSupervisor() {
 		String rptTitle = "TC516 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC516 Test Description: Generate system history report as Customer Supervisor, %s\n" + rptTitle);
@@ -305,7 +305,12 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		DateFormat dateFormat = new SimpleDateFormat("dd");
 		Date date = new Date();
 		Calendar cal = Calendar.getInstance();
+		int currentMonth = cal.get(Calendar.MONTH);
 		cal.add(Calendar.DATE, -10);
+		int startMonth = cal.get(Calendar.MONTH);
+		
+		int startNumOfPreMonths = currentMonth - startMonth;
+		int endNumOfPreMonths = 0;
 		String startDate = dateFormat.format(cal.getTime());
 		if (startDate.startsWith("0")) {
 			startDate = startDate.replaceFirst("0*", "");
@@ -332,7 +337,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		inputList.add(startDate);
 		inputList.add(endDate);
 
-		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONECT, surveyorUnit, startDate, endDate);
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONECT, surveyorUnit, startNumOfPreMonths, endNumOfPreMonths, startDate, endDate);
 
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 

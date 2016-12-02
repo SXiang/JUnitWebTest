@@ -65,7 +65,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
-
+		addNewReport(title, timeZone, surUnit, 0, 0, startDate, endDate);
+	}
+	private void addNewReport(String title, String timeZone, String surUnit, int startNumOfPreMonths, int endNumOfPreMonths, String startDate, String endDate) {
 		testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 		Log.clickElementInfo("Add New SysHistory Report");
 		this.btnNewSysHistoryRpt.click();
@@ -88,6 +90,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
 					Log.info("Select Survey Unit - '"+surUnit+"'");
 					option.click();
+					
 					break;
 				}
 			}
@@ -96,8 +99,8 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL, strBaseURL + STRURLPath);
 		PageFactory.initElements(driver, dateSetting);
 
-		dateSetting.setDay("start", 0, startDate, false);
-		dateSetting.setDay("end", 0, endDate, false);
+		dateSetting.setDay("start", startNumOfPreMonths, startDate, false);
+		dateSetting.setDay("end", endNumOfPreMonths, endDate, false);
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
@@ -113,6 +116,10 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		this.addNewReport(reportTitle, timezone, surveyor, startDate, endDate);
 	}
 
+	public void addNewPDReport(String reportTitle, String timezone, String surveyor, int startNumOfPreMonths, int endNumOfPreMonths, String startDate, String endDate) {
+		this.addNewReport(reportTitle, timezone, surveyor, startNumOfPreMonths, endNumOfPreMonths, startDate, endDate);
+	}
+	
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
