@@ -734,7 +734,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean waitForTableDataToLoad() {
 		Log.method("waitForTableDataToLoad");
 		try{
-			(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
+			(new WebDriverWait(TestContext.INSTANCE.getDriver(), 30)).until(new ExpectedCondition<Boolean>() {
 				public Boolean apply(WebDriver d) {
 					return getRecordsShownOnPage(d) > 0;
 				}
@@ -751,6 +751,7 @@ public class SurveyorBasePage extends BasePage {
 		this.nextBtn.click();
 		return waitForTableDataToLoad();
 	}
+
 	public void waitForDropdownToBePopulated(WebElement dropdownElement) {
 		Log.method("waitForDropdownToBePopulated", dropdownElement);
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {

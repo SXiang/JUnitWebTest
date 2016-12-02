@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -41,7 +41,7 @@ import surveyor.dataaccess.source.StoredProcSystemHistory;
 
 /**
  * @author pmahajan
- * 
+ *
  */
 public class SystemHistoryReportsPage extends ReportsBasePage {
 	public static final String STRURLPath = "/Reports/SystemHistoryReports";
@@ -231,6 +231,11 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		}
 		Log.info(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy ));
 		return false;
+	}
+
+	public String getSoftwareVersionFromPDF(String reportTitle, String downloadPath) {
+		String reportId = Report.getReport(reportTitle).getId();
+		return getSoftwareVersionFromPDF(() -> {return Paths.get(downloadPath, "SH-" + reportId.substring(0, 6) + ".pdf").toString();});
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {

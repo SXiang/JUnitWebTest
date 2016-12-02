@@ -13,8 +13,10 @@ import surveyor.scommon.source.SurveyorConstants;
 public class ApiUtility {
 
 	public static final String REPORTS_GET_REPORT_STAT_API_RELATIVE_URL = "Reports/GetReportStat?reportTitle=%s";
+	public static final String ENVIRONMENT_BUILD_API_RELATIVE_URL = "api/EnvironmentBuilds?environmentName=%s";
 	private static final String GET_API_RESPONSE_CMD = "GetAPIResponse.cmd";
-	
+	private static final String GET_AUTOMATION_API_RESPONSE_CMD = "Get-ReportingAPIResponse.cmd";
+
 	public ApiUtility() {
 	}
 
@@ -23,7 +25,7 @@ public class ApiUtility {
 		String loginPwd = TestContext.INSTANCE.getLoggedInUserPassword();
 		return getApiResponse(apiRelativePath, loginUser, loginPwd);
 	}
-		
+
 	public static String getApiResponse(String apiRelativePath, String loginUser, String loginPwd) {
 		String responseText = "";
 		try {
@@ -49,20 +51,41 @@ public class ApiUtility {
 
 			// Execute update config cmd.
 			responseText = executeGetApiResponseCmd(workingApiCmdFile);
-			
+
 			// Delete the working copy of the update config cmd file.
 			Files.delete(Paths.get(workingApiCmdFullPath));
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
-		
+
 		return responseText;
 	}
-	
+
+	/**
+	 * Executes GET request on specified automation API and returns the response.
+	 *
+	 * @param apiRelativePath - API relative url
+	 * @return - API response
+	 */
+	public static String getAutomationApiResponse(String apiRelativePath) {
+		String responseText = "";
+		try {
+			String workingFolder = TestSetup.getRootPath();
+			String automationApiUrl = TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint();
+			String command = GET_AUTOMATION_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\"",
+							workingFolder, automationApiUrl, apiRelativePath);
+			responseText = executeGetApiResponseCmd(command);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		}
+
+		return responseText;
+	}
+
 	/**
 	 * Executes the specified api and returns the response string.
 	 * If invalid API is provided returns NULL.
-	 * 
+	 *
 	 * @param workingApiCmdFile
 	 * @return
 	 */
@@ -86,14 +109,14 @@ public class ApiUtility {
 	private static String extractApiResponse(String responseText) {
 		String response = null;
 		int openBracketIdx = responseText.indexOf("{");
-		int openBracketIdx2 = -1; 
+		int openBracketIdx2 = -1;
 		int closeBracketIdx = -1;
 		if (openBracketIdx > 0) {
 			if (responseText.length() > openBracketIdx+1) {
-				openBracketIdx2 = responseText.indexOf("{", openBracketIdx+1); 
+				openBracketIdx2 = responseText.indexOf("{", openBracketIdx+1);
 				closeBracketIdx = responseText.lastIndexOf("}");
 			}
-		}		
+		}
 		if (openBracketIdx2 != -1) {
 			if (closeBracketIdx > openBracketIdx2 && (responseText.length() > closeBracketIdx+1)) {
 				response = responseText.substring(openBracketIdx2, closeBracketIdx+1);
@@ -101,7 +124,7 @@ public class ApiUtility {
 		}
 		return response;
 	}
-	
+
 	public static void main(String[] args) {
 		// Initialize TestSetup to instantiate the TestContext.
 		TestSetup testSetup = new TestSetup(false /* skip initialization */);
@@ -115,12 +138,12 @@ public class ApiUtility {
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
-		// NOTE: Before running the tests replace this constant with a valid report title on the environment 
+		// NOTE: Before running the tests replace this constant with a valid report title on the environment
 		String VALID_REPORT_TITLE = "cc17066cba3d4f77b654";
 		String INVALID_REPORT_TITLE = "InvalidReportTitle";
 		String VALID_API_URL_FORMAT = REPORTS_GET_REPORT_STAT_API_RELATIVE_URL;
 		String INVALID_API_URL_FORMAT = "Reports/InvalidApi?invalidQS=%s";
-		
+
 		try {
 			Log.info("Running test - testGetApiResponse_ValidApiSuccessCase_ReturnsResponse() ...");
 			testGetApiResponse_ValidApi_ReturnsResponse(VALID_API_URL_FORMAT, VALID_REPORT_TITLE);
@@ -130,7 +153,7 @@ public class ApiUtility {
 			testGetApiResponse_InvalidApi_ReturnsError(INVALID_API_URL_FORMAT, INVALID_REPORT_TITLE);
 		} finally {
 			testSetup.getDriver().quit();
-		}		
+		}
 	}
 
 	private static void testGetApiResponse_ValidApi_ReturnsResponse(String apiUrl, String reportTitle) {

@@ -39,6 +39,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.relevantcodes.extentreports.DisplayOrder;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.NetworkMode;
@@ -47,6 +49,7 @@ import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
+import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.Survey;
 import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -335,6 +338,23 @@ public class TestSetup {
 
 	public String getBaseUrl() {
 		return this.baseURL;
+	}
+
+	public Environment getEnvironment() {
+		return Environment.getEnvironmentFromUrl(getBaseUrl());
+	}
+
+	public String getCIEnvironmentBuildNumber() {
+		String environmentName = getEnvironment().getAutoDbName();
+		String apiResponse = ApiUtility.getAutomationApiResponse(String.format(ApiUtility.ENVIRONMENT_BUILD_API_RELATIVE_URL, environmentName));
+		Log.info(String.format("API Response -> %s", apiResponse));
+		Log.info("Creating gson Builder...");
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		Gson gson = gsonBuilder.create();
+		Log.info("Getting EnvironmentBuild from gson.fromJson()...");
+		EnvironmentBuild environmentBuild = gson.fromJson(apiResponse, EnvironmentBuild.class);
+		Log.info(String.format("Successfully returned EnvironmentBuild object -> %s", environmentBuild.toString()));
+		return environmentBuild.BuildNumber;
 	}
 
 	public String getLoginUser() {

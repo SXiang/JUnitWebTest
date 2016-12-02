@@ -35,6 +35,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
 	private static Map<String, String> testAccount, testSurvey, testReport;
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializePageActions();

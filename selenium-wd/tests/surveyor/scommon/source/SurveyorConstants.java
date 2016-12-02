@@ -597,19 +597,17 @@ public final class SurveyorConstants {
 		}
 	}
 	public enum Environment {
-		SQAAuto ("CI-SQAAuto", 1),
-		Staging ("CI-STG", 2),
-		P3Scale ("CI-P3Scale", 3);
+		SQAAuto ("CI-SQAAuto", "SQAAuto", 1),
+		Staging ("CI-STG", "Staging", 2),
+		P3Scale ("CI-P3Scale", "P3Scale", 3);
 
-		private final String name;
+		private final String ciName;
+		private final String autoDbName;
 		private final Integer index;
 
-		Environment(String nm) {
-			this(nm, -1);
-		}
-
-		Environment(String nm, Integer idx) {
-			name = nm;
+		Environment(String ciname, String dbName, Integer idx) {
+			ciName = ciname;
+			autoDbName = dbName;
 			index = idx;
 		}
 
@@ -617,18 +615,35 @@ public final class SurveyorConstants {
 			return index;
 		}
 
-		public String toString() {
-			return this.name;
+		public String getCIName() {
+			return ciName;
+		}
+
+		public String getAutoDbName() {
+			return autoDbName;
 		}
 
 		public static Environment getEnvironment(String environmentName) {
 			Environment environment = Environment.P3Scale;
 			Environment[] values = Environment.values();
 			for (Environment env : values) {
-				if (env.toString().equals(environmentName)) {
+				if (env.getCIName().equals(environmentName)) {
 					environment = env;
 					break;
 				}
+			}
+			return environment;
+		}
+
+		public static Environment getEnvironmentFromUrl(String url) {
+			Environment environment = Environment.SQAAuto;
+			url = url.toLowerCase();
+			if (url.contains("p3sqaauto.picarro.com")) {
+				environment = Environment.SQAAuto;
+			} else if (url.contains("p3stg.picarro.com")) {
+				environment = Environment.Staging;
+			} else if (url.contains("p3scale.picarro.com")) {
+				environment = Environment.P3Scale;
 			}
 			return environment;
 		}

@@ -444,6 +444,13 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	@FindBy(id = REPORT_BOUNDRY_SELECTALL_CHKBX_ID)
 	protected WebElement checkboxViewLayerAllBoundaries;
 
+	@FindBy(id = "boundary-selected-text")
+	protected WebElement boundarySelectedText;
+
+	public WebElement getBoundarySelectedText() {
+		return this.boundarySelectedText;
+	}
+
 	public WebElement getNewComplianceReportBtn() {
 		return this.newComplianceReportBtn;
 	}
@@ -4209,6 +4216,11 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return pdfTableList;
 	}
 
+	public String getSoftwareVersionFromInvestigationPDF(String reportTitle, String downloadPath) {
+		String pdfFilename = this.getInvestigationPDFFileName(reportTitle, true /* includeExtension */);
+		return getSoftwareVersionFromPDF(() -> {return Paths.get(downloadPath, pdfFilename).toString();});
+	}
+
 	@Override
 	public void fillReportSpecific(Reports reports) {
 		ReportsCompliance reportsCompliance = (ReportsCompliance) reports;
@@ -4228,6 +4240,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		// 2. Area Selector
 		if (isCustomBoundarySpecified(reportsCompliance)) {
+			selectCustomBoundaryRadioButton();
 			if (useCustomBoundaryLatLongSelector(reportsCompliance)) {
 				fillCustomBoundaryUsingLatLongSelector(reportsCompliance);
 			} else {

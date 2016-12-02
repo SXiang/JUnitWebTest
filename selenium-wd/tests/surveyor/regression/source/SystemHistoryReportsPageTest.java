@@ -214,6 +214,63 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Test Case ID: TC1297 Test Description:
+	 * Software version present on report PDF should match with UI software version
+	 *
+	 */
+	@Test
+	public void TC1297_SysHisRpt_VerifyWebAppAndPDFVersion() {
+		String rptTitle = "TC1297 Report" + getTestSetup().getRandomNumber();
+		Log.info("\nRunning TC1297 Test Description: Software version present on report PDF should match with UI software version, %s\n" + rptTitle);
+
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 0);
+		String startDate = dateFormat.format(cal.getTime());
+		if (startDate.startsWith("0")) {
+			startDate = startDate.replaceFirst("0*", "");
+		}
+
+		manageSurveyorHistoriesPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		manageSurveyorHistoriesPage.open();
+
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
+		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
+
+		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
+		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
+		systemHistoryReportsPage.open();
+
+		String webAppVersionNumber = systemHistoryReportsPage.getWebAppVersion();
+
+		date = new Date();
+		String endDate = dateFormat.format(date);
+		if (endDate.startsWith("0")) {
+			endDate = endDate.replaceFirst("0*", "");
+		}
+
+		ArrayList<String> inputList = new ArrayList<String>();
+		inputList.add(rptTitle);
+		inputList.add(SQACUSLOC);
+		inputList.add(SQACUSLOCSUR);
+		inputList.add(startDate);
+		inputList.add(endDate);
+
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate);
+
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+
+		if ((systemHistoryReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
+			String pdfSoftwareVersion = systemHistoryReportsPage.getSoftwareVersionFromPDF(rptTitle, getTestSetup().getDownloadPath());
+			Log.info(String.format("Comparing web app version and PDF software version. WebAppVersion = '%s', PDFSoftwareVersion = '%s'",
+					webAppVersionNumber, pdfSoftwareVersion));
+			assertTrue(webAppVersionNumber.equals(pdfSoftwareVersion));
+		}
+		else
+			fail("\nTestcase TC1297 failed.\n");
+	}
+
+	/**
 	 * Test Case ID: TC186 Test Description: Click on Cancel button present on system history report screen
 	 *
 	 */

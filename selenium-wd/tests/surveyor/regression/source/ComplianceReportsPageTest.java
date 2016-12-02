@@ -69,17 +69,20 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
@@ -1118,13 +1121,36 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	}
 
 	/**
-	 * Test Case ID: TC1297 Test Description: Software version on UI and reports PDF should match
-	 *
+	 * Test Case ID: TC1297 Test Description:
+	 * Software version present at bottom of the page should be same as team city version
 	 * @throws Exception
 	 *
 	 */
 	@Test
-	public void TC1297_ComplianceReportTest_VerifyVersion() throws Exception {
+	public void TC1297_ComplianceReportTest_VerifyWebAppAndCIVersion() throws Exception {
+		Log.info("Running TC1297-1: Software version present at bottom of the page should be same as team city version");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
+		this.getComplianceReportsPage().open();
+
+		String webAppVersionNumber = this.getComplianceReportsPage().getWebAppVersion();
+
+		// 1. Verify web app version matches the CI build version.
+		String ciVersionNumber = getTestSetup().getCIEnvironmentBuildNumber();
+		Log.info(String.format("Verifying web app version matches CI version. WebAppVersion='%s', CIVersion='%s'",
+			webAppVersionNumber, ciVersionNumber));
+		assertTrue(webAppVersionNumber.equals(ciVersionNumber));
+	}
+
+	/**
+	 * Test Case ID: TC1297 Test Description:
+	 * Software version present on report PDF should match with UI software version
+	 * @throws Exception
+	 *
+	 */
+	@Test
+	public void TC1297_ComplianceReportTest_VerifyWebAppAndPDFVersion() throws Exception {
 		String testCaseID = "TC1297";
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
 		Log.info("Running " + testCaseID + ": Software version on UI and reports PDF should match, " + rptTitle);
@@ -1132,6 +1158,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQACUSSU, USERPASSWORD);
 		this.getComplianceReportsPage().open();
+
+		String webAppVersionNumber = this.getComplianceReportsPage().getWebAppVersion();
 
 		List<String> listBoundary = new ArrayList<String>();
 		listBoundary.add(IMGMAPHEIGHT);
@@ -1179,8 +1207,22 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, SQACUSSU, testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
+			// 1. Verify PDF footer version number and web app version numbers match.
+			String downloadPath = getTestSetup().getDownloadPath();
+			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, downloadPath));
+			assertTrue(this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath, rptTitle, webAppVersionNumber , SQACUSSU));
+
+			// 2. Verify version number in Investigation PDF.
+			String reportName = this.getComplianceReportsPage().getReportPDFFileName(rptTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().invokeInvestigationPDFFileDownload(rptTitle);
+			this.getComplianceReportsPage().waitForInvestigationPDFFileDownload(reportName);
+
+			String pdfSoftwareVersion = this.getComplianceReportsPage().getSoftwareVersionFromInvestigationPDF(rptTitle, downloadPath);
+			Log.info(String.format("Comparing web app version and PDF software version. WebAppVersion = '%s', PDFSoftwareVersion = '%s'",
+					webAppVersionNumber, pdfSoftwareVersion));
+			assertTrue(webAppVersionNumber.equals(pdfSoftwareVersion));
+
 		} else
-			fail("\nTestcase TC297 failed.\n");
+			fail("\nTestcase TC1297 failed.\n");
 	}
 }

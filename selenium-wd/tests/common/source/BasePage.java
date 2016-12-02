@@ -13,6 +13,8 @@ import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -523,4 +525,20 @@ public class BasePage {
     	}
     	return licenseMissingMsg;
     }
+
+	public static void verifyPageLoadedInNewTab(WebDriver webDriver, BooleanSupplier pageLoadedMethod) {
+		String parentWindow = webDriver.getWindowHandle();
+		try {
+			Set<String> handles = webDriver.getWindowHandles();
+			for (String windowHandle : handles) {
+				if (!windowHandle.equals(parentWindow)) {
+					webDriver.switchTo().window(windowHandle);
+					pageLoadedMethod.getAsBoolean();
+					break;
+				}
+			}
+		} finally {
+			webDriver.switchTo().window(parentWindow);
+		}
+	}
 }

@@ -22,6 +22,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -1849,9 +1852,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().sortTableByColumn(4, TableSortOrder.ASC);
 		this.getComplianceReportsPage().sortTableByColumn(4, TableSortOrder.DESC);
 
-		retVal = retVal && (!(this.getComplianceReportsPage().getNumberofRecords() > Integer.parseInt(paginationSetting)));
-
-		return false;
+		return retVal && (!(this.getComplianceReportsPage().getNumberofRecords() > Integer.parseInt(paginationSetting)));
 	}
 
 	/**
@@ -2473,7 +2474,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		this.getComplianceReportsPage().invokeInvestigationDataFileDownload(reportsDataRow.title);
 		return true;
 	}
-	
+
 	/**
 	 * Executes clickOnComplianceViewerShapeZIP action.
 	 * @param data - specifies the input data passed to the action.
@@ -2583,7 +2584,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		waitForReportFileDownload(dataRowID, ReportFileType.InvestigationPDF, -1);
 		return true;
 	}
-	
+
 	/**
 	 * Executes waitForInvestigationCSVFileDownloadToComplete action.
 	 * @param data - specifies the input data passed to the action.
@@ -2945,7 +2946,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String downloadPath = getDownloadPath(ReportFileType.InvestigationPDF);
 		return this.getComplianceReportsPage().verifyLISAInvestigationTable(downloadPath, workingDataRow.get().title);
 	}
-	
+
 	/**
 	 * Executes verifyLISASMetaDataFile action.
 	 * @param data - specifies the input data passed to the action.
@@ -2959,7 +2960,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String downloadPath = getDownloadPath(ReportFileType.InvestigationCSV);
 		return this.getComplianceReportsPage().verifyGAPInvestigationTable(downloadPath, workingDataRow.get().title);
 	}
-	
+
 	/**
 	 * Executes verifyReportDeletedSuccessfully action.
 	 * @param data - specifies the input data passed to the action.
