@@ -223,6 +223,8 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl setCustomerBoundaryName(String name) {
 		Log.info("Wait for boundary name text field to be clickable");
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, selectByNameTextField);
+		Log.info("Wait for boundary name text field to be enabled");
+		this.waitForElementToBeEnabled(selectByNameTextField);
 		Log.info("Set customer boundary name '"+name+"'");
 		selectByNameTextField.sendKeys(name);
 		this.waitForAutoCompleteListToOpen();
