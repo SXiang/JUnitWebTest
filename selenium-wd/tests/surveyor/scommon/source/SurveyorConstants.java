@@ -107,6 +107,7 @@ public final class SurveyorConstants {
 	public static final String SQACUSLOC1SUR = "sqacusloc1sur";
 	public static final String SQACUSLOC2SUR = "sqacusloc2sur";
 	public static final String SQACUSLOC3SUR = "sqacusloc3sur";
+	public static final String SQACUS20161 = "SQACUS2016-1";
 
 	public static final String FEDS2015ANZ = "FEDS2015";
 	public static final String FEDS2050ANZ = "FEDS2050";
@@ -379,7 +380,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_LIGHTBLUEESC = "Light Blue Escape";
 	public static final String SURVEYOR_BLACKDODGE3300 = "BlackDodgeP3300";
 	public static final String SURVEYOR_IGPSCAR = "iGPS car";
-
+	public static final String SURVEYOR_SQACUSUNIT1 = "SQACusSrvUnit-1";
 
 	/*
 	 * Compliance Report Surveyor Units
