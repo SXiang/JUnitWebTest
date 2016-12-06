@@ -9,33 +9,33 @@ import java.io.OutputStreamWriter;
 import org.testng.Assert;
 
 public class ProcessUtility {
-	
-	private static boolean DEBUG_ANALYZER = false;
+
+	private static boolean DEBUG_ANALYZER = true;
 	private static String AnalyzerDebugLogPath = "C:\\temp\\AnalyzerDebugLog.log";
-	
+
 	public static ProcessOutputInfo executeProcess(String command, boolean isShellCommand, boolean waitForExit) throws IOException {
 		Process process = null;
 		String output = "";
 		String error = "";
 		try {
 			String execCommand = command;
-			
+
 			if (isShellCommand) {
 				if (DEBUG_ANALYZER && command.toLowerCase().contains("picarro.surveyor.analyzer.exe")) {
-					execCommand = String.format("cmd.exe /C \"%s > %s\"", command, AnalyzerDebugLogPath); 
+					execCommand = String.format("cmd.exe /C \"%s > %s\"", command, AnalyzerDebugLogPath);
 				} else {
 					execCommand = "cmd.exe /C " + command;
 				}
-			} 
-			
+			}
+
 			process = Runtime.getRuntime().exec(execCommand);
-			Thread.sleep(1000); 
-			
+			Thread.sleep(1000);
+
 			if (isShellCommand) {
 				// Flush the output stream.
 				process.getOutputStream().close();
 			}
-			
+
 			if (waitForExit) {
 				// Flush input stream.
 				output = processInputStream(process.getInputStream());
@@ -54,10 +54,10 @@ public class ProcessUtility {
 				}
 			}
 		}
-		
+
 		if (!waitForExit)
 			return new ProcessOutputInfo(process, output, error);
-		
+
 		return new ProcessOutputInfo(null, output, error);
 	}
 
@@ -91,7 +91,7 @@ public class ProcessUtility {
 			processInputStream(process.getErrorStream());
 
 			int exit = process.waitFor();
-			Log.info("Process Exit Code: " + exit);	
+			Log.info("Process Exit Code: " + exit);
 		} catch (IOException | InterruptedException e) {
 			Log.error(e.toString());
 		}
@@ -102,13 +102,13 @@ public class ProcessUtility {
 		try {
 			Process process = Runtime.getRuntime().exec("wmic.exe");
 			InputStreamReader streamReader = new InputStreamReader(process.getInputStream());
-			
+
 			// Query for the process.
 			OutputStreamWriter oStreamWriter = new OutputStreamWriter(process.getOutputStream());
 			oStreamWriter.write(String.format("process where name='%s'", processName));
 			oStreamWriter.flush();
 			oStreamWriter.close();
-			
+
 			// Read the input stream and check if process string was found in the input text.
 			BufferedReader bufferedReader = new BufferedReader(streamReader);
 			String lineText;
@@ -128,11 +128,11 @@ public class ProcessUtility {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
-		
+
 		Log.info(String.format("Did NOT find process - %s", processName));
 		return false;
 	}
-	
+
 	public static void main(String[] args) {
 		Log.info("Running test - testIsProcessRunning_RunningProcess_ReturnTrue() ...");
 		testIsProcessRunning_RunningProcess_ReturnTrue();

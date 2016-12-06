@@ -362,7 +362,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[2]")
 	protected WebElement btnCancelRptMode;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
 
@@ -2008,7 +2008,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.waitForConfirmReportModeChangePopupToClose();
 		}
 	}
-	
+
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
 			SurveyModeFilter surveyModeFilter) throws IOException {
 		Log.method("ComplianceReportsPage.verifySurveysTableViaSurveyMode", changeMode, strReportMode.name(),
@@ -4076,59 +4076,48 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForViewFileDownload(String reportName, String viewName) {
-		waitForFileDownload(reportName + "_" + viewName + ".pdf", testSetup.getDownloadPath());
+	public void waitForViewFileDownload(String rptTitle, String viewName) {
+		waitForFileDownload(getReportPDFFileName(rptTitle, false /* includeExtension */) + "_" + viewName + ".pdf", testSetup.getDownloadPath());
 	}
 
-	public void waitForMetadataZIPFileDownload(String reportName) {
-		waitForMetadataZIPFileDownload(reportName, 0);
+	public void waitForMetadataZIPFileDownload(String rptTitle) {
+		waitForMetadataZIPFileDownload(rptTitle, 0);
 	}
 
-	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
-		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + "-Meta.zip", testSetup.getDownloadPath());
+	public void waitForMetadataZIPFileDownload(String rptTitle, int zipIndex) {
+		waitForFileDownload(getReportMetaZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
-	public void waitForPDFFileDownload(String reportName) {
-		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
+	public void waitForPDFFileDownload(String rptTitle) {
+		waitForFileDownload(getReportPDFFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
-	public void waitForInvestigationPDFFileDownload(String reportName) {
-		waitForFileDownload(reportName + "-Investigation.pdf", testSetup.getDownloadPath());
+	public void waitForInvestigationPDFFileDownload(String rptTitle) {
+		waitForFileDownload(getInvestigationPDFFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
-	public void waitForInvestigationCSVFileDownload(String reportName) {
-		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
+	public void waitForInvestigationCSVFileDownload(String rptTitle) {
+		waitForFileDownload(getInvestigationCSVFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
-	public void waitForReportZIPFileDownload(String reportName) {
-		waitForReportZIPFileDownload(reportName, 0);
+	public void waitForReportZIPFileDownload(String rptTitle) {
+		waitForReportZIPFileDownload(rptTitle, 0);
 	}
 
-	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
-		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + "-PDF.zip", testSetup.getDownloadPath());
+	public void waitForReportZIPFileDownload(String rptTitle, int zipIndex) {
+		waitForFileDownload(getReportPDFZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
-	public void waitForShapeZIPFileDownload(String reportName) {
-		waitForShapeZIPFileDownload(reportName, 0);
+	public void waitForShapeZIPFileDownload(String rptTitle) {
+		waitForShapeZIPFileDownload(rptTitle, 0);
 	}
 
-	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
-		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
+	public void waitForShapeZIPFileDownload(String rptTitle, int zipIndex) {
+		waitForFileDownload(getReportShapeZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
 	}
 
 	private String getZipFileNameWithIndex(String name, int zipIndex) {
 		return zipIndex == 0 ? name : name + " (" + zipIndex + ")";
-	}
-
-	public void waitForShapeZipFileDownload() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void waitForResubmitButton() {
@@ -4314,7 +4303,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
 		return noResult;
 	}
-	
+
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
 		return reportsCompliance.getLatLongXOffset() > 0 && reportsCompliance.getLatLongYOffset() > 0
 				&& reportsCompliance.getLatLongRectWidth() > 0 && reportsCompliance.getLatLongRectHeight() > 0;

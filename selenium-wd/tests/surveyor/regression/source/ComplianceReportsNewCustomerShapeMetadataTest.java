@@ -9,11 +9,13 @@ import org.junit.Before;
 
 import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.TestContext;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.relevantcodes.extentreports.LogStatus;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
@@ -31,6 +33,7 @@ import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.Report;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -71,7 +74,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		if(testAccount == null){
 			testAccount = createTestAccount("CusWithoutAsset");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), 45 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 30 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
 		}
 	}
 
@@ -143,8 +146,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		try {
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
-
 			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
 
@@ -172,9 +175,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 
 		} finally {
-			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
-			complianceReportsPageAction.open(EMPTY, NOTSET);
-			complianceReportsPageAction.getComplianceReportsPage().deleteReport(rptTitle, strCreatedBy);
+			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.
 			DbSeedExecutor.cleanUpGisSeed(customerId);
 		}
@@ -196,33 +197,51 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
-
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
-
-		String rptTitle = testReport.get(SurveyType.Standard+"Title");
-		String strCreatedBy = testReport.get("userName");
-
-		// Unselect Report metadata and Report ShapeFile license features for the new customer.
 		String customerName = testAccount.get("customerName");
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+		Customer customer = Customer.getCustomer(customerName);
+		String customerId = customer.getId();
+		String rptTitle = "";
+		String strCreatedBy = "";
 
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
-		getHomePage().logout();
+		try {
+			// Push GIS seed for newly created customer
+			DbSeedExecutor.executeGisSeed(customerId);
+			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
+					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
 
-		// Login as new customer user.
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", userName, userPassword), NOTSET);   /* login using newly created user */
+			rptTitle = testReport.get(SurveyType.Standard+"Title");
+			strCreatedBy = testReport.get("userName");
 
-		// Copy report as new customer user.
-		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+			// Unselect Report metadata and Report ShapeFile license features for the new customer.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-		// Verify report meta and report shape files are NOT shown in Compliance Viewer.
-		clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
-		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
-		assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
+			getHomePage().logout();
+
+			// Login as new customer user.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", userName, userPassword), NOTSET);   /* login using newly created user */
+
+			// Copy report as new customer user.
+			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+
+			// Verify report meta and report shape files are NOT shown in Compliance Viewer.
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
+			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		} finally {
+			cleanupReports(rptTitle, strCreatedBy);
+			// Remove GIS seed from the customer.
+			DbSeedExecutor.cleanUpGisSeed(customerId);
+		}
 	}
 
 	/**
@@ -246,28 +265,47 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		// Unselect Report metadata and Report ShapeFile license features for the new customer.
 		String customerName = testAccount.get("customerName");
 
+		Customer customer = Customer.getCustomer(customerName);
+		String customerId = customer.getId();
+		String rptTitle = "";
+		String strCreatedBy = "";
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
+		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, getReportMetaReportShapeLicFeatures());
 		getHomePage().logout();
 
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
+		try {
+			// Push GIS seed for newly created customer
+			DbSeedExecutor.executeGisSeed(customerId);
+			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
+					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
 
-		String rptTitle = testReport.get(SurveyType.Standard+"Title");
-		String strCreatedBy = testReport.get("userName");
+			rptTitle = testReport.get(SurveyType.Standard+"Title");
+			strCreatedBy = testReport.get("userName");
 
-		// Login as Picarro admin.
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+			// Login as Picarro admin.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-		// Copy report as Picarro admin.
-		copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
+			// Copy report as Picarro admin.
+			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
 
-		// Verify report meta and report shape files are generated successfully.
-		clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
-		verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
+			// Verify report meta and report shape files are generated successfully.
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		} finally {
+			cleanupReports(rptTitle, strCreatedBy);
+			// Remove GIS seed from the customer.
+			DbSeedExecutor.cleanUpGisSeed(customerId);
+		}
 	}
 
 	private LicensedFeatures[] getReportMetaReportShapeLicFeatures() {
@@ -275,6 +313,15 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		lfs[0] = LicensedFeatures.REPORTMETADATA;
 		lfs[1] = LicensedFeatures.REPORTSHAPEFILE;
 		return lfs;
+	}
+
+	private void cleanupReports(String rptTitle, String strCreatedBy) throws Exception {
+		// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+		// Delete both the original report and the copy compliance report.
+		for (int i = 0; i < 2; i++) {
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().deleteReport(rptTitle, strCreatedBy);
+		}
 	}
 
 	private void clickOnComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType reportButtonType) throws Exception {
@@ -289,6 +336,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		complianceReportsPageAction.getComplianceReportsPage().waitForCopyReportPagetoLoad();
 		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, strCreatedBy);
+		// Purge DB cache to look for new copied report.
+		new Report().purgeCache();
 	}
 
 	private void verifyShapeAndMetaZipFilesAreGeneratedCorrectly(String rptTitle) throws Exception {
@@ -299,6 +348,6 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		complianceReportsPageAction.getComplianceReportsPage().invokeShapeZipFileDownload(rptTitle);
 
 		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(rptTitle, 0 /*zipIndex*/);
-		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(rptTitle, 0 /*zipIndex*/);
+		complianceReportsPageAction.getComplianceReportsPage().waitForShapeZIPFileDownload(rptTitle, 0 /*zipIndex*/);
 	}
 }

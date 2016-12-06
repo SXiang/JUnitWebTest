@@ -473,6 +473,9 @@ public class BaseTest {
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.stopDrivingSurvey("", -1);
 
+			// wait for a while before shutting down Analyzer.
+			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.clickOnShutdownButton("", -1);
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);

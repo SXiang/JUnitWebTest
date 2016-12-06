@@ -1032,7 +1032,7 @@ public class TestSetup {
 
 		// Start the Analyzer process.
 		ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(ANALYZER_EXE_PATH,
-				/* isShellCommand */ false, /* waitForExit */ false);
+				/* isShellCommand */ true, /* waitForExit */ false);
 		analyzerProcess = processOutputInfo.getProcess();
 		if (analyzerProcess.isAlive()) {
 			Log.info("Analyzer EXE started Successfully!");
