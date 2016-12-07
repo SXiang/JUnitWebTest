@@ -143,7 +143,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		try {
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
-			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
 
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
@@ -205,7 +205,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
-			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
 
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
@@ -279,7 +279,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		try {
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
-			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+			String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
 
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
