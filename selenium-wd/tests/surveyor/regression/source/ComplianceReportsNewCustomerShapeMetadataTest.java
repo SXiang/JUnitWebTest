@@ -319,6 +319,9 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
 		// Delete both the original report and the copy compliance report.
 		for (int i = 0; i < 2; i++) {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().searchAndDeleteReport(rptTitle, strCreatedBy);
 		}
