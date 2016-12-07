@@ -1534,7 +1534,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 							// rowNum matches. Try to click on ReportViewer button.
 							Log.clickElementInfo("Report Viewer");
-							reportViewer.click();
+							jsClick(reportViewer);
 							this.waitForPdfReportIcontoAppear();
 						}
 
@@ -1920,15 +1920,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchAndDeleteReport(String reportTitle, String reportCreatedBy) throws Exception {
+		Log.method("searchAndDeleteReport", reportTitle, reportCreatedBy);
 		boolean searchSuccess = searchReport(reportTitle, reportCreatedBy);
 		boolean deleteSuccess = !searchSuccess;
-		if (searchSuccess) {
-			deleteSuccess = deleteReport(reportTitle, reportCreatedBy);
+		String exceptionMsg = null;
+		try {
+			if (searchSuccess) {
+				Log.info("Found report to be deleted in Search.");
+				deleteSuccess = deleteReport(reportTitle, reportCreatedBy);
+			}
+		} catch (Exception ex) {
+			exceptionMsg = ExceptionUtility.getStackTraceString(ex);
+		} finally {
+			this.clearSearchFieldUsingSpace();
 		}
+
+		if (!BaseHelper.isNullOrEmpty(exceptionMsg)) {
+			Log.info(String.format("Exception when deleting report. Exception message -> %s", exceptionMsg));
+			throw new Exception("Delete report failed!");
+		}
+
 		return deleteSuccess;
 	}
 
 	public boolean deleteReport(String rptTitle, String strCreatedBy) throws Exception {
+		Log.method("deleteReport", rptTitle, strCreatedBy);
+
 		setPagination(PAGINATIONSETTING);
 
 		this.waitForPageLoad();
@@ -1966,18 +1983,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 				waitForDeletePopupLoad();
 
 				if (this.isElementPresent(getBtnDeleteConfirmXpath())) {
+					Log.info("Found confirm Delete popup");
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("arguments[0].click();", getBtnDeleteConfirm());
 					this.waitForPageLoad();
 
 					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
-						Log.clickElementInfo("Return to home page");
+						Log.clickElementInfo("Error message shown on Delete. Return to home page.");
 						this.btnReturnToHomePage.click();
 						return false;
-					} else
+					} else {
+						Log.info("Delete report was successful!");
 						return true;
-				} else
+					}
+				} else {
 					return false;
+				}
 			}
 
 			if (rowNum == Integer.parseInt(PAGINATIONSETTING)
@@ -2360,6 +2381,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean waitForDeletePopupLoad() {
+		Log.method("waitForDeletePopupLoad");
 		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean isDisplayed = false;
@@ -2368,6 +2390,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				Log.info(String.format("Confirm delete button -> isDisplayed=[%b]", isDisplayed));
 				return isDisplayed;
 			}
 		});

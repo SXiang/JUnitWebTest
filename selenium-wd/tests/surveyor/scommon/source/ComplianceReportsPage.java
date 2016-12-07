@@ -4076,44 +4076,47 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		});
 	}
 
-	public void waitForViewFileDownload(String rptTitle, String viewName) {
-		waitForFileDownload(getReportPDFFileName(rptTitle, false /* includeExtension */) + "_" + viewName + ".pdf", testSetup.getDownloadPath());
+	public void waitForViewFileDownload(String reportName, String viewName) {
+		waitForFileDownload(reportName + "_" + viewName + ".pdf", testSetup.getDownloadPath());
 	}
 
-	public void waitForMetadataZIPFileDownload(String rptTitle) {
-		waitForMetadataZIPFileDownload(rptTitle, 0);
+	public void waitForMetadataZIPFileDownload(String reportName) {
+		waitForMetadataZIPFileDownload(reportName, 0);
 	}
 
-	public void waitForMetadataZIPFileDownload(String rptTitle, int zipIndex) {
-		waitForFileDownload(getReportMetaZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForMetadataZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-Meta.zip", testSetup.getDownloadPath());
 	}
 
-	public void waitForPDFFileDownload(String rptTitle) {
-		waitForFileDownload(getReportPDFFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForPDFFileDownload(String reportName) {
+		waitForFileDownload(reportName + ".pdf", testSetup.getDownloadPath());
 	}
 
-	public void waitForInvestigationPDFFileDownload(String rptTitle) {
-		waitForFileDownload(getInvestigationPDFFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForInvestigationPDFFileDownload(String reportName) {
+		waitForFileDownload(reportName + "-Investigation.pdf", testSetup.getDownloadPath());
 	}
 
-	public void waitForInvestigationCSVFileDownload(String rptTitle) {
-		waitForFileDownload(getInvestigationCSVFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForInvestigationCSVFileDownload(String reportName) {
+		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
 	}
 
-	public void waitForReportZIPFileDownload(String rptTitle) {
-		waitForReportZIPFileDownload(rptTitle, 0);
+	public void waitForReportZIPFileDownload(String reportName) {
+		waitForReportZIPFileDownload(reportName, 0);
 	}
 
-	public void waitForReportZIPFileDownload(String rptTitle, int zipIndex) {
-		waitForFileDownload(getReportPDFZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForReportZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-PDF.zip", testSetup.getDownloadPath());
 	}
 
-	public void waitForShapeZIPFileDownload(String rptTitle) {
-		waitForShapeZIPFileDownload(rptTitle, 0);
+	public void waitForShapeZIPFileDownload(String reportName) {
+		waitForShapeZIPFileDownload(reportName, 0);
 	}
 
-	public void waitForShapeZIPFileDownload(String rptTitle, int zipIndex) {
-		waitForFileDownload(getReportShapeZipFileName(rptTitle, true /* includeExtension */), testSetup.getDownloadPath());
+	public void waitForShapeZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
 	}
 
 	private String getZipFileNameWithIndex(String name, int zipIndex) {

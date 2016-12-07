@@ -9,13 +9,10 @@ import org.junit.Before;
 
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestContext;
-
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import com.relevantcodes.extentreports.LogStatus;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
@@ -74,7 +71,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		if(testAccount == null){
 			testAccount = createTestAccount("CusWithoutAsset");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), 30 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 20 /*surveyRuntimeInSeconds*/, SurveyType.Standard);
 		}
 	}
 
@@ -205,9 +202,11 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		String strCreatedBy = "";
 
 		try {
+
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
 			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
 
@@ -281,6 +280,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			// Push GIS seed for newly created customer
 			DbSeedExecutor.executeGisSeed(customerId);
 			String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+
 			testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), surveyTag,
 					132 /*reportDataRowID*/, SurveyModeFilter.Standard);
 
@@ -320,7 +320,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		// Delete both the original report and the copy compliance report.
 		for (int i = 0; i < 2; i++) {
 			complianceReportsPageAction.open(EMPTY, NOTSET);
-			complianceReportsPageAction.getComplianceReportsPage().deleteReport(rptTitle, strCreatedBy);
+			complianceReportsPageAction.getComplianceReportsPage().searchAndDeleteReport(rptTitle, strCreatedBy);
 		}
 	}
 
@@ -347,7 +347,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(rptTitle);
 		complianceReportsPageAction.getComplianceReportsPage().invokeShapeZipFileDownload(rptTitle);
 
-		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(rptTitle, 0 /*zipIndex*/);
-		complianceReportsPageAction.getComplianceReportsPage().waitForShapeZIPFileDownload(rptTitle, 0 /*zipIndex*/);
+		String reportName = "CR-" + complianceReportsPageAction.getComplianceReportsPage().getReportName(rptTitle);
+		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName, 0 /*zipIndex*/);
+		complianceReportsPageAction.getComplianceReportsPage().waitForShapeZIPFileDownload(reportName, 0 /*zipIndex*/);
 	}
 }
