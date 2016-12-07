@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import common.source.CSVUtility;
-import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
@@ -97,6 +96,13 @@ public class DbSeedExecutorTest {
 	}
 
 	@Test
+	public void execute03_SurveyDataSeed_SqacusCustomer_Test() throws Exception {
+		final String[] surveyTags = DbSeedExecutor.SQACUS_CUSTOMER_SURVEYS;
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags);
+	}
+
+	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
 		final String[] surveyTags = {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
@@ -129,10 +135,19 @@ public class DbSeedExecutorTest {
 
 	@Test
 	public void execute04_executeAllSeedTest() throws Exception {
-		DbSeedExecutor.executeAllDataSeed();
-		verifySurveySeedDataIsPresent();
+		DbSeedExecutor.executeGenericDataSeed();
 		verifyGenericSeedDataIsPresent();
+
+		DbSeedExecutor.executeGisSeed();
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PICARRO).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
+
+		DbSeedExecutor.executeSurveyDataSeed();
+		verifySurveySeedDataIsPresent();
+
+		DbSeedExecutor.executeSurveyDataSeed(DbSeedExecutor.SQACUS_CUSTOMER_SURVEYS);
+		verifySurveySeedDataIsPresent(DbSeedExecutor.SQACUS_CUSTOMER_SURVEYS);
 	}
 
 	@Test
@@ -238,11 +253,7 @@ public class DbSeedExecutorTest {
 	private void verifySurveySeedDataIsPresent(String[] surveyTags, boolean isCaptureEventRowsRestamped, boolean isFOVRowsRestamped) throws IOException, FileNotFoundException, SQLException {
 		// Verify seed data pushed correctly for each survey tag.
 		if (surveyTags == null) {
-			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual","EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
-				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
-			surveyTags = surveyTagsTemp;
+			surveyTags = DbSeedExecutor.PICARRO_CUSTOMER_SURVEYS;
 		}
 
 		boolean isRedate = false;

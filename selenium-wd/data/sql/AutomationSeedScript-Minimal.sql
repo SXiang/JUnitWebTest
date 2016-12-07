@@ -362,6 +362,12 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'B432D533-83DB-4EC2-8A39-38DF4125B609', @locationID, N'SimAuto-Surveyor5')
 END
+-- sqacus SurveyorUnit - SQACusSrvUnit-1
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', @locationID, N'SQACusSrvUnit-1')
+END
 -- White Dodge
 IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A')
 BEGIN
@@ -389,6 +395,14 @@ END
 
 -- Analyzer
 -- NOTE: [SerialNumber] AND [SharedKey] are UNIQUE for Analyzer. 
+
+-- sqacus Analyzer - sqacus2016
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SQACUS2016-1' AND [SharedKey]=N'sqacus2016-1')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', [SerialNumber]=N'SQACUS2016-1', [SharedKey]=N'sqacus2016-1' WHERE [Id]='43A34021-8814-8A01-9183-39D4B4DE03EB'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', N'SQACUS2016-1', N'sqacus2016-1')
+END
 
 -- RFADS2004 - BlackDodgeP3300
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004' AND [SharedKey]=N'rfads2004')
@@ -522,6 +536,10 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='B432D533-83DB-4EC2-8A39-38DF4125B609', [BatchId]='Sim-RefGasBottle5', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-09-14 00:00:00.000' AS DateTime) WHERE [Id]='B65CFDB0-7964-4E1E-80CE-F0DA93A6140E'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'B65CFDB0-7964-4E1E-80CE-F0DA93A6140E', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'Sim-RefGasBottle5', -32.7 ,CAST(N'2016-09-14 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SQACusSrvUnit-1'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', [BatchId]='SQACusSrvUnit1-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='FA197B16-C53F-FF50-8056-39CEC9EA1F32'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'FA197B16-C53F-FF50-8056-39CEC9EA1F32', N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', N'SQACusSrvUnit1-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
 -- RefGasBottle for 'White Dodge'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', [BatchId]='WhiteDodge-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='AF197B16-C53F-FF50-8056-39CEC9EA1F23'
 IF @@ROWCOUNT=0

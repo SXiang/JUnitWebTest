@@ -22,18 +22,6 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
-import surveyor.scommon.actions.ActionBuilder;
-import surveyor.scommon.actions.BaseActions;
-import surveyor.scommon.actions.DriverViewPageActions;
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageAnalyzerPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
@@ -45,12 +33,23 @@ public class DbSeedExecutor {
 	private static final String ANEMOMETERRAW_PREFIX = "AnemometerRaw-";
 	private static DbSeedBuilderCache surveySeedBuilderCache;
 
+	public static final String[] PICARRO_CUSTOMER_SURVEYS = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
+			"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
+			"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
+			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
+
+	public static final String[] SQACUS_CUSTOMER_SURVEYS = {"assessment-1-sqacus", "assessment-2-sqacus", "EthaneManual-sqacus","EthaneStnd3-sqacus","EthaneStnd2-sqacus","EthaneStnd-sqacus","EthaneRR-sqacus","EthaneOpertor2-sqacus",
+			"EthaneOpertor1-sqacus","Ethane1MinSurvey-sqacus", "iso-cap-1-sqacus", "iso-cap-2-sqacus", "man-pic-1-sqacus","man-pic-2-sqacus","op-pic-sqacus","op-sqacudr-sqacus","rr-pic-sqacus",
+			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
+			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus"};
+
 	/* Method to push all the seed data required for automation. */
 
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
+		DbSeedExecutor.executeSurveyDataSeed(SQACUS_CUSTOMER_SURVEYS);
 	}
 
 	/* Method for pushing generic automation seed data (Users, Customers, Locations, Analyzers, etc.) */
@@ -103,12 +102,7 @@ public class DbSeedExecutor {
 
 		if (surveyTags == null) {
 			// Use default survey tags if NOT specified by caller.
-			// Push 'Ethane-*' survey tags. Tracked by US3279.
-			String[] surveyTagsTemp = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
-				"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
-				"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-				"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
-			surveyTags = surveyTagsTemp;
+			surveyTags = PICARRO_CUSTOMER_SURVEYS;
 		}
 
 		try {
