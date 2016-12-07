@@ -4,7 +4,6 @@
 package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.ACTIONTIMEOUT;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
@@ -40,6 +39,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.ApiUtility;
 import common.source.BaseHelper;
@@ -862,7 +862,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) {
+	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) throws Exception {
 		Log.method("selectSurveysAndAddToReport", selectAll, numSurveysToSelect);
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
@@ -879,6 +879,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> rows = surveyTable.findElements(By.xpath("tr"));
 
 			int rowSize = rows.size();
+
+			// Verify survey table is NOT empty.
+			verifySurveyTableIsNotEmpty(rows);
+
 			int loopCount = 0;
 
 			if (rowSize < Integer.parseInt(PAGINATIONSETTING))
@@ -917,6 +921,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// Add the selected surveys
 			clickOnAddSurveysButton();
 			waitForSelectedSurveysToBeAdded(numSurveysToSelect);
+		}
+	}
+
+	private void verifySurveyTableIsNotEmpty(List<WebElement> rows) throws Exception {
+		if (rows != null && rows.size() == 1) {
+			// Verify survey datatable is NOT empty.
+			if (rows.get(0).getAttribute("class").equals("dataTables_empty")) {
+				TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
+						TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+				throw new Exception("Survey could NOT be selected. Verify specified survey exists in the environment.");
+			}
 		}
 	}
 
@@ -1075,13 +1090,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void openNewReportPage() {
-		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
 		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewCompRpt));
 		Log.clickElementInfo("New Compliance Report");
 		jsClick(this.btnNewComplianceRpt);
-		refreshPageUntilElementFound(elementXPath);
 		this.waitForNewPageLoad();
-
+		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
+		refreshPageUntilElementFound(elementXPath);
 	}
 
 	public void waitForNewPageLoad() {

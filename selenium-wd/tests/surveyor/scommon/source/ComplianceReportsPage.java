@@ -1794,7 +1794,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return highlighted;
 	}
 
-	public boolean checkSurveyModeDidNotChange(ReportModeFilter mode, String tag, ReportModeFilter newMode) {
+	public boolean checkSurveyModeDidNotChange(ReportModeFilter mode, String tag, ReportModeFilter newMode) throws Exception {
 		this.selectReportMode(mode);
 		// this.waitForConfirmReportModeChangePopupToClose();
 		this.inputSurveyTag(tag);
