@@ -433,6 +433,7 @@
 						<include name="**/ObserverViewPageStressTest.class" />
 						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
 						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+						<include name="**/ComplianceReportsNewCustomerShapeMetadataTest" />
 						<include name="**/ObserverViewPageTest2.class" />
 						<include name="**/DriverViewPageTest2.class" />
 					</fileset>
