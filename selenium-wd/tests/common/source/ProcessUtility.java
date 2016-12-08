@@ -10,7 +10,7 @@ import org.testng.Assert;
 
 public class ProcessUtility {
 
-	private static boolean DEBUG_ANALYZER = true;
+	private static boolean DEBUG_ANALYZER = false;
 	private static String AnalyzerDebugLogPath = "C:\\temp\\AnalyzerDebugLog.log";
 
 	public static ProcessOutputInfo executeProcess(String command, boolean isShellCommand, boolean waitForExit) throws IOException {
