@@ -24,7 +24,7 @@ import surveyor.scommon.source.mobile.MobileLoginPage;
 import surveyor.scommon.source.mobile.MobileReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
-public class SanityIntegrationTest extends SurveyorBaseTest {
+public class MobileUnitTest extends SurveyorBaseTest {
 	private static MobileReportsPage reportsPage;
 	private static MobileLoginPage loginPage;
 

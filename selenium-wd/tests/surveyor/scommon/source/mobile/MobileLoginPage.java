@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.scommon.source.EULAPage;
 
 /**
  * @author sxiang
@@ -47,7 +48,7 @@ public class MobileLoginPage extends MobileBasePage {
 	private void handleEULA() {
 		if (driver.getCurrentUrl().contains("/Eula")) {
 			// If user is redirected to EULA then click on Accept.
-			MobileEULAPage eulaPage = new MobileEULAPage(driver, this.strBaseURL, testSetup);
+			EULAPage eulaPage = new EULAPage(driver, this.strBaseURL, testSetup);
 			PageFactory.initElements(driver, eulaPage);
 			Log.clickElementInfo("Accept(EULA");
 			eulaPage.clickIAcceptButton();

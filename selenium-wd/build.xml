@@ -64,7 +64,7 @@
 
 	<target name="compile_scommon" depends="compile_common"
 			description="Compile scommon source code">
-		<javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
+		<javac srcdir="${basedir}/tests/surveyor/scommon/source/mobile:${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
 				debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
@@ -128,6 +128,19 @@
 
 	</target>
 
+	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
+		<javac srcdir="${basedir}/tests/surveyor/unittest/source/mobile:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${unit_jar}" basedir="${build}" />
+
+	</target>
+	
 	<target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
 		<javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
@@ -647,7 +660,7 @@
 			</junit>
 	</target>
 
-	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
+	<target name="tc_localrun" depends="compileUnitIntegrationTest" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "JUnitParallel" />
@@ -663,8 +676,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest10.class" />
-					<include name="**/ComplianceReportsPageTest8.class" />
+					<include name="**/SanityIntegrationTest.class" />
+					<include name="**/MobileUnitTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
