@@ -205,6 +205,14 @@ public enum TestContext {
 		return driver;
 	}
 
+	public WebDriver getAppiumDriver() {
+		WebDriver driver = null;
+		if (testSetup != null) {
+			driver = testSetup.getAppiumDriver();
+		}
+		return driver;
+	}
+	
 	public String getBaseUrl() {
 		String baseUrl = null;
 		if (testSetup != null) {

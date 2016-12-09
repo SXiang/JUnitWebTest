@@ -107,6 +107,14 @@ public class TestSetup {
 	private String loginPwd0000;
 	private String loginUserDisplayName;
 
+	private String appiumServerHost;
+	private String appiumServerPort;
+	private String mobileApp;
+	private String mobileBrowserName;
+	private String mobileVersion;
+	private String mobilePlatform;
+	private String deviceName;
+	
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
@@ -328,6 +336,10 @@ public class TestSetup {
 		return WebDriverFactory.getDriver();
 	}
 
+	public WebDriver getAppiumDriver() {
+		return WebDriverWrapper.getAppiumDriver();
+	}
+	
 	public WebDriver getDriver(int index) {
 		return WebDriverFactory.getDriver(index);
 	}
@@ -566,6 +578,63 @@ public class TestSetup {
 		return this.softwareVersion;
 	}
 
+	public String getAppiumServerHost() {
+		return appiumServerHost;
+	}
+
+	public void setAppiumServerHost(String appiumServerHost) {
+		this.appiumServerHost = appiumServerHost;
+	}
+
+	public String getAppiumServerPort() {
+		return appiumServerPort;
+	}
+
+	public void setAppiumServerPort(String appiumServerPort) {
+		this.appiumServerPort = appiumServerPort;
+	}
+
+	public String getMobileApp() {
+		return mobileApp;
+	}
+
+	public void setMobileApp(String mobileApp) {
+		this.mobileApp = mobileApp;
+	}
+
+	public String getMobileBrowserName() {
+		return mobileBrowserName;
+	}
+
+	public void setMobileBrowserName(String mobileBrowserName) {
+		this.mobileBrowserName = mobileBrowserName;
+	}
+
+	
+	public String getMobileVersion() {
+		return mobileVersion;
+	}
+
+	public void setMobileVersion(String mobileVersion) {
+		this.mobileVersion = mobileVersion;
+	}
+
+	public String getMobilePlatform() {
+		return mobilePlatform;
+	}
+
+	public void setMobilePlatform(String mobilePlatform) {
+		this.mobilePlatform = mobilePlatform;
+	}
+
+	public String getDeviceName() {
+		return deviceName;
+	}
+
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+
 	public void initialize() {
 		try {
 
@@ -582,6 +651,14 @@ public class TestSetup {
 			this.baseURL = this.testProp.getProperty("baseURL");
 			Log.info("\nThe baseURL is: " + this.baseURL + "\n");
 
+			this.setAppiumServerHost(this.testProp.getProperty("appiumServerHost"));
+			this.setAppiumServerPort(this.testProp.getProperty("appiumServerPort"));
+			this.setMobileApp(this.testProp.getProperty("mobileApp"));
+			this.setMobileBrowserName(this.testProp.getProperty("mobileBrowserName"));
+			this.setMobileVersion(this.testProp.getProperty("mobileVersion"));
+			this.setMobilePlatform(this.testProp.getProperty("mobilePlatform"));
+			this.setDeviceName(this.testProp.getProperty("deviceName"));
+			
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
 			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
