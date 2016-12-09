@@ -1,10 +1,7 @@
 package surveyor.scommon.source.mobile;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 
 /**
  * @author sxiang

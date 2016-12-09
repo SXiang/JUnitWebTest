@@ -4,7 +4,6 @@
 package surveyor.scommon.source.mobile;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -14,7 +13,6 @@ import common.source.BasePage;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
-import common.source.TestSetup;
 
 /**
  * @author sxiang

@@ -4,7 +4,6 @@
 package surveyor.unittest.source.mobile;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDR;
@@ -13,11 +12,9 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSUA;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import common.source.Log;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.mobile.MobileLoginPage;
