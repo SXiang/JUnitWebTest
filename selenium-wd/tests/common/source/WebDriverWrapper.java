@@ -219,9 +219,13 @@ public class WebDriverWrapper {
 	}
 	
 	public static RemoteWebDriver getAppiumDriver() {
-		if(appiumDriver==null){
+		if(!isAppiumDriverInTest()){
 			appiumDriver = new WebDriverWrapper().setupAppiumRemoteWebDriver();
 		}
 		return appiumDriver;
+	}
+	
+	public static boolean isAppiumDriverInTest(){
+		return appiumDriver != null;
 	}
 }

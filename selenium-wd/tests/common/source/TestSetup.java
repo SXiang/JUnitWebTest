@@ -339,6 +339,10 @@ public class TestSetup {
 	public WebDriver getAppiumDriver() {
 		return WebDriverWrapper.getAppiumDriver();
 	}
+
+	public boolean isAppiumDriverInTest() {
+		return WebDriverWrapper.isAppiumDriverInTest();
+	}
 	
 	public WebDriver getDriver(int index) {
 		return WebDriverFactory.getDriver(index);
