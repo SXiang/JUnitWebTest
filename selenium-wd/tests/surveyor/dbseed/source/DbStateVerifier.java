@@ -25,7 +25,7 @@ public class DbStateVerifier {
 	 * data has update checks before inserts. - SQL statements in generic seed
 	 * data are fairly safer to execute even if the seed data is already present
 	 * in DB.
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -50,10 +50,10 @@ public class DbStateVerifier {
 		User sqapicua = User.getUser(SQAPICUA);
 		User driver1pic = User.getUser(DRIVER1PIC);
 		User driver2pic = User.getUser(DRIVER2PIC);
-		User picDr = User.getUser(PICDR);		
+		User picDr = User.getUser(PICDR);
 
 		if (automationAdmin == null || sqacusdr == null || sqacussu == null || sqacusua == null || sqapgedr == null || sqapgeua == null
-				|| sqapgesu == null || sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null 
+				|| sqapgesu == null || sqapicad == null || sqapicdr == null || sqapicsu == null || sqapicsu1 == null || sqapicsup == null
 				|| sqapicua == null || driver1pic == null || driver2pic == null || picDr == null) {
 			return false;
 		}
@@ -93,10 +93,12 @@ public class DbStateVerifier {
 		Analyzer simautoAnalyzer4 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER4);
 		Analyzer simautoAnalyzer5 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_ANALYZER5);
 		Analyzer rfads2004Picarro = Analyzer.getAnalyzerBySerialNumber(RFADS2004PICARRO);
+		Analyzer sqacus2016_1 = Analyzer.getAnalyzerBySerialNumber(SQACUS20161);
 
-		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null 
-				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null 
-				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || rfads2004Picarro == null) {
+		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null
+				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null
+				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || rfads2004Picarro == null
+				|| sqacus2016_1 == null) {
 			return false;
 		}
 
@@ -107,7 +109,7 @@ public class DbStateVerifier {
 		SurveyorUnit silverNissanRogue = SurveyorUnit.getSurveyorUnit(SURVEYOR_SILVERNISSANROGUE);
 		SurveyorUnit picProd10 = SurveyorUnit.getSurveyorUnit(SURVEYOR_PICPROD10);
 		SurveyorUnit lightBlueEsc = SurveyorUnit.getSurveyorUnit(SURVEYOR_LIGHTBLUEESC);
-		SurveyorUnit blackDodge3300 = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKDODGE3300);		
+		SurveyorUnit blackDodge3300 = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKDODGE3300);
 		SurveyorUnit softwarecar_2037_testcust = SurveyorUnit.getSurveyorUnit(SURVEYOR_SOFTWARECAR2037TESTCUST);
 		SurveyorUnit softwareCar = SurveyorUnit.getSurveyorUnit(SQAPICLOC4SUR);
 		SurveyorUnit simautoSurveyor1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR1);
@@ -117,12 +119,14 @@ public class DbStateVerifier {
 		SurveyorUnit simautoSurveyor5 = SurveyorUnit.getSurveyorUnit(SIMAUTO_SURVEYOR5);
 		SurveyorUnit whiteDodge = SurveyorUnit.getSurveyorUnit(SQACUSLOCSUR);
 		SurveyorUnit surveyorIGPSCar = SurveyorUnit.getSurveyorUnit(SURVEYOR_IGPSCAR);
+		SurveyorUnit surveyorSqacus1 = SurveyorUnit.getSurveyorUnit(SURVEYOR_SQACUSUNIT1);
 
-		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null 
-				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null 
+		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null
+				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
-				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null 
-				|| simautoSurveyor5 == null || whiteDodge == null || surveyorIGPSCar == null) {
+				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null
+				|| simautoSurveyor5 == null || whiteDodge == null || surveyorIGPSCar == null
+				|| surveyorSqacus1 == null) {
 			return false;
 		}
 
@@ -131,7 +135,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Checks if DB has GIS seed data for the specified customer.
-	 * 
+	 *
 	 * @param customerId
 	 * @param expectedAssetCount
 	 * @param expectedBoundaryCount
@@ -190,7 +194,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if CustomerBoundaryType seed is present for the specified customer in database or not.
-	 * 
+	 *
 	 * @param customerId
 	 *            - Customer Id
 	 * @param expectedCustomerBoundaryTypeCount
@@ -226,10 +230,10 @@ public class DbStateVerifier {
 
 		return true;
 	}
-	
+
 	/**
 	 * Verified if CustomerMaterialType seed is present for the specified customer in database or not.
-	 * 
+	 *
 	 * @param customerId
 	 *            - Customer Id
 	 * @param expectedCustomerMaterialTypeCount
@@ -265,10 +269,10 @@ public class DbStateVerifier {
 
 		return true;
 	}
-	
+
 	/**
 	 * Verified if Survey seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -313,7 +317,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if SurveyCondition seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -360,7 +364,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if SurveyResult seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -406,7 +410,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if Measurement seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -456,7 +460,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if GPSRaw seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -507,7 +511,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if AnemometerRaw seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -559,7 +563,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if CaptureEvent seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -606,7 +610,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if FieldOfView seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -652,7 +656,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if Peak seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -698,7 +702,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if Segment seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
@@ -743,7 +747,7 @@ public class DbStateVerifier {
 
 	/**
 	 * Verified if Note seed is present in database or not.
-	 * 
+	 *
 	 * @param surveyId
 	 *            - Survey Id
 	 * @param analyzerId
