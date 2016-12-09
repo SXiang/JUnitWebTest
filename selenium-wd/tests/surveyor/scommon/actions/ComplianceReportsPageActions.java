@@ -520,6 +520,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex) throws Exception {
 		waitForReportFileDownload(dataRowID, fileType, fileIndex, -1);
 	}
+
 	private void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
 		ComplianceReportsDataRow compRptDataRow = getComplianceReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
@@ -1813,8 +1814,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyMetaDataZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyMetaDataZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipMeta);
-		return true;
+		return this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipMeta);
 	}
 
 	/**
@@ -1882,8 +1882,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyPDFThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyPDFThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceTablePDF);
-		return true;
+		return this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceTablePDF);
 	}
 
 	/**
@@ -1972,8 +1971,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyPDFZIPThumbnailIsShownInComplianceViewer(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyPDFZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
-		return true;
+		return this.getComplianceReportsPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
 	}
 
 	/**

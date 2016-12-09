@@ -212,7 +212,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 	 *
 	 */
 	@Ignore
-	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() {
+	public void TC207_ComplianceReportTest_VerifyReportModeNoChange() throws Exception {
 		String testCaseName	="TC207";
 		String rptTitle = testCaseName+" Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
