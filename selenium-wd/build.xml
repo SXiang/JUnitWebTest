@@ -663,7 +663,7 @@
 	<target name="tc_localrun" depends="compileUnitIntegrationTest" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "JUnitParallel" />
+			<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
 			<sysproperty key="maxParallelTestThreads" value="3" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
@@ -677,7 +677,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/SanityIntegrationTest.class" />
-					<include name="**/mobile/MobileUnitTest.class" />
+					<include name="**/MobileUnitTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
