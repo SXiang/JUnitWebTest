@@ -677,7 +677,7 @@
 				<formatter type="xml" />
 				<fileset dir="${build}">
 					<include name="**/SanityIntegrationTest.class" />
-					<include name="**/MobileUnitTest.class" />
+					<include name="**/mobile/MobileUnitTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
