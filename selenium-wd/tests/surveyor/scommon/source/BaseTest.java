@@ -191,7 +191,7 @@ public class BaseTest {
 
 	public static void reportTestFailed(Throwable e, String className) {
 		BaseTest.reportTestLogMessage(className);
-		getScreenCapture().takeScreenshot(getDriver(), className);
+		getScreenCapture().takeScreenshot(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
@@ -472,6 +472,9 @@ public class BaseTest {
 			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.stopDrivingSurvey("", -1);
+
+			// wait for a while before shutting down Analyzer.
+			testEnvironmentAction.idleForSeconds(String.valueOf(30), -1);
 
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.clickOnShutdownButton("", -1);

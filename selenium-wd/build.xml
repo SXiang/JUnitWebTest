@@ -433,6 +433,7 @@
 						<include name="**/ObserverViewPageStressTest.class" />
 						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
 						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+						<include name="**/ComplianceReportsNewCustomerShapeMetadataTest" />
 						<include name="**/ObserverViewPageTest2.class" />
 						<include name="**/DriverViewPageTest2.class" />
 					</fileset>
@@ -485,7 +486,7 @@
 			</batchtest>
 		</junit>
 	</target>
-	<target name="testdb3surveyupload" depends="compileregression" description="Run upload db3 tests">
+	<target name="testsurveyuploadtestcases" depends="compileregression" description="Run upload db3 tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 				showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "Regression" />
@@ -500,7 +501,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/UploadDb3Test.class" />
+					<include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -663,7 +664,6 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest10.class" />
 					<include name="**/ComplianceReportsPageTest8.class" />
 				</fileset>
 			</batchtest>

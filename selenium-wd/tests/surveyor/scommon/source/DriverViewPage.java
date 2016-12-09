@@ -59,10 +59,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "mode_stop_survey_element")
 	private WebElement stopSurveyButtonDivElement;
-	
+
 	@FindBy(id = "mode_shutdown_analyzer_element")
 	private WebElement systemShutdownButtonDivElement;
-	
+
 	@FindBy(id = "mode_start_isotopic_capture_element")
 	private WebElement startIsotopicCaptureButtonDivElement;
 
@@ -74,7 +74,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "mode_start_reference_element")
 	private WebElement refBottleMeasButtonDivElement;
-	
+
 	@FindBy(id = "mode_start_survey")
 	private WebElement startSurveyButton;
 
@@ -101,7 +101,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "btn_cancel_annotation")
 	private WebElement fieldNotesCancel;
-	
+
 	@FindBy(id = "btn_close_annotation")
 	private WebElement fieldNotesClose;
 
@@ -182,10 +182,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "survey_modal_tag")
 	private WebElement tagSurvey;
-	
+
 	@FindBy(id = "annotation_modal")
 	private WebElement fieldNotesModalDialog;
-	
+
 	@FindBy(id = "manual_survey_params")
 	private WebElement manualSurveySection;
 
@@ -200,13 +200,13 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "survey_start_warning")
 	protected WebElement divSurveyStartWarning;
-	
+
 	@FindBy(id = "survey_warning_message")
 	protected WebElement spanSurveyWarningMessage;
-	
+
 	@FindBy(id = "survey_start_warning_message")
 	protected WebElement spanSurveyFailedToStartMessage;
-	
+
 	@FindBy(id = "eq_mode_warning")
 	protected WebElement eqModeDialog;
 
@@ -218,19 +218,19 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "start_survey_modal")
 	protected WebElement startSurveyModalDialog;
-	
+
 	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
 	protected WebElement closeSurveyModalButton;
-	
+
 	@FindBy(id = "featureinfo_modal")
 	protected WebElement featureInfoModalDialog;
-	
+
 	@FindBy(id = "feature_info")
 	protected WebElement featureInfoText;
 
 	@FindBy(id = "btn_addupdate_annotation")
 	protected WebElement addUpdateNoteButton;
-	
+
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -296,15 +296,15 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public boolean isFieldNotesDialogShown() {
 		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
 	}
-	
+
 	public boolean isFeatureInfoDialogShown() {
 		return !this.featureInfoModalDialog.getAttribute("class").contains("ng-hide");
 	}
-	
+
 	public String getFeatureInfoDialogText() {
 		return this.featureInfoText.getAttribute("value");
 	}
-	
+
 	public WebElement getStartSurveyButton() {
 		return this.startSurveyButton;
 	}
@@ -403,7 +403,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return !(WebElementExtender.isAttributePresent(this.refBottleMeasButtonDivElement,"ng-cloak") ||
 					this.refBottleMeasButtonDivElement.getAttribute("class").contains("ng-hide"));
 	}
-	
+
 	public DriverViewPage clickSurveyDurationWarningDialogOkButton() {
 		Log.info("Click Ok in survey duration warning dialog");
 		this.surveyDurationWarningDialogOkButton.click();
@@ -415,7 +415,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.failedToStartSurveyDialogOkButton.click();
 		return this;
 	}
-	
+
 	/**
 	 * Verifies that the survey warning dialog is shown.
 	 */
@@ -461,7 +461,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		}
 		return false;
 	}
-	
+
 	public DriverViewPage hidePositionMenu() {
 		clickPositionButton();
 		return this;
@@ -648,7 +648,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public WebElement getOperatorButton() {
 		return operator;
 	}
-	
+
 	/**
 	 * Click on Operator Button.
 	 *
@@ -679,7 +679,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public WebElement getRapidResponseButton() {
 		return rapidResponse;
 	}
-	
+
 	/**
 	 * Click on Rapid Response Button.
 	 *
@@ -697,12 +697,12 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage clickFieldNotesSaveButton() {
-		fieldNotesSave = driver.findElement(By.id("btn_save_annotation")); 
+		fieldNotesSave = driver.findElement(By.id("btn_save_annotation"));
 		Log.clickElementInfo("Save Field Notes");
 		fieldNotesSave.click();
 		return this;
 	}
-	
+
 	/**
 	 * Get Manual Button.
 	 *
@@ -730,7 +730,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public WebElement getAssessmentButton() {
 		return assessment;
 	}
-	
+
 	/**
 	 * Click on Assessment Button.
 	 *
@@ -783,7 +783,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.closeSurveyModalButton.click();
 		return this;
 	}
-	
+
 	/**
 	 * Click on Strong Button.
 	 *
@@ -815,7 +815,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		addUpdateNoteButton.click();
 		return this;
 	}
-	
+
 	/**
 	 * Click on Terms Of Use Link.
 	 *
@@ -860,7 +860,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		fieldNotesTextField.sendKeys(fieldNotes);
 		return this;
 	}
-	
+
 	/**
 	 * Set default value to tag field.
 	 *
@@ -898,7 +898,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 */
 	public String getSurveyTagFromStartSurveyDialog() {
 		openStartSurveyModalDialog();
-		
+
 		return this.getTagSurveyTextField();
 	}
 
@@ -911,7 +911,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 			Wind wind, CloudCover cloudCover, SurveyType surveyType) {
 		return startDrivingSurvey(tag, surveyTime, solarRadiation, wind, cloudCover, surveyType, DEFAULT_MIN_AMPLITUDE);
 	}
-	
+
 	/**
 	 * Starts a survey with the specified values.
 	 *
@@ -925,11 +925,11 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 		this.waitForSignalRCallsToComplete();
 		this.setTagSurveyTextField(tag);
-		
+
 		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
 		selectWindInSurveyDialog(wind);
 		selectSurveyTypeInSurveyDialog(surveyType);
-		
+
 		if (surveyType.equals(SurveyType.Manual)) {
 			this.waitForMinAmpTextFieldToShow();
 			this.setMinAmpTextField(String.valueOf(minAmplitude));
@@ -952,7 +952,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		openStartEQSurveyModalDialog();
 
 		this.setTagSurveyTextField(tag);
-		
+
 		selectSurveyTimeAndRadiationInSurveyDialog(surveyTime, solarRadiation, cloudCover);
 		selectWindInSurveyDialog(wind);
 
@@ -964,10 +964,10 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	private void selectSurveyTypeInSurveyDialog(SurveyType surveyType) {
 		// Until SurveyType is selected the StartSurvey button should NOT be displayed.
-		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other. 
+		// NOTE: This check will NOT always work correctly as this button might be showing when multiple tests are run one after the other.
 		//assertTrue(this.getStartSurveyButtonFromStartSurveyDialog().isDisplayed() == false);
-		
-		Log.info("Selecting surveyType - '"+surveyType+"'");		
+
+		Log.info("Selecting surveyType - '"+surveyType+"'");
 		switch (surveyType) {
 		case Manual:
 			this.clickManualButton();
@@ -1102,7 +1102,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public boolean isEQModeDialogHidden() {
 		return this.eqModeDialog.getAttribute("class").equals("cssFade ng-hide");
 	}
-	
+
 	/**
 	 * Returns the message is EQ mode dialog.
 	 */

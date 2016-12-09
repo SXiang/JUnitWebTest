@@ -362,7 +362,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[2]")
 	protected WebElement btnCancelRptMode;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[1]")
 	protected WebElement areaErrorText;
 
@@ -1794,7 +1794,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return highlighted;
 	}
 
-	public boolean checkSurveyModeDidNotChange(ReportModeFilter mode, String tag, ReportModeFilter newMode) {
+	public boolean checkSurveyModeDidNotChange(ReportModeFilter mode, String tag, ReportModeFilter newMode) throws Exception {
 		this.selectReportMode(mode);
 		// this.waitForConfirmReportModeChangePopupToClose();
 		this.inputSurveyTag(tag);
@@ -2008,7 +2008,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			this.waitForConfirmReportModeChangePopupToClose();
 		}
 	}
-	
+
 	public boolean verifySurveysTableViaSurveyMode(boolean changeMode, ReportModeFilter strReportMode,
 			SurveyModeFilter surveyModeFilter) throws IOException {
 		Log.method("ComplianceReportsPage.verifySurveysTableViaSurveyMode", changeMode, strReportMode.name(),
@@ -4123,14 +4123,6 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		return zipIndex == 0 ? name : name + " (" + zipIndex + ")";
 	}
 
-	public void waitForShapeZipFileDownload() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void waitForResubmitButton() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -4314,7 +4306,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
 		return noResult;
 	}
-	
+
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {
 		return reportsCompliance.getLatLongXOffset() > 0 && reportsCompliance.getLatLongYOffset() > 0
 				&& reportsCompliance.getLatLongRectWidth() > 0 && reportsCompliance.getLatLongRectHeight() > 0;
