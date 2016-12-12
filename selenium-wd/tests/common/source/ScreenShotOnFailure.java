@@ -49,11 +49,14 @@ public class ScreenShotOnFailure{
 	}
 
 	public String takeScreenshots(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
-		String mainImgName = takeScreenshot(driver, className, takeBrowserScreenShot, logStatus);
-		if(TestContext.INSTANCE.isAppiumDriverInTest()){
-			takeScreenshot(TestContext.INSTANCE.getAppiumDriver(), className, true, logStatus, true);
+		String mainImgName = "", mobileImgName = "";
+		if(driver != null){
+			mainImgName = takeScreenshot(driver, className, takeBrowserScreenShot, logStatus);
 		}
-		return mainImgName;
+		if(TestContext.INSTANCE.isAppiumDriverInTest()){
+			mobileImgName = takeScreenshot(TestContext.INSTANCE.getAppiumDriver(), className, true, logStatus, true);
+		}
+		return mainImgName+", "+ mobileImgName;
 	}
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
 		return takeScreenshot(driver, className, takeBrowserScreenShot, logStatus, false);
