@@ -82,7 +82,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 *
 	 */
 	@Test
-	public void TC159_GenerateRefGasRpt_PicarroAdmin() {
+	public void DebugTC159_GenerateRefGasRpt_PicarroAdmin() {
 		String rptTitle = "TC159 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC159 Test Description: Generate Reference Gas Capture Report as Administrator. Report title - " + rptTitle);
 
@@ -148,7 +148,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 *
 	 */
 	@Test
-	public void TC179_GenerateRefGasRpt_CustAdmin() {
+	public void DebugTC179_GenerateRefGasRpt_CustAdmin() {
 		String rptTitle = "TC179 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC179 Test Description: Generate Reference Gas Capture Report as customer admin. Report title - " + rptTitle);
 
@@ -249,7 +249,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 *
 	 */
 	@Test
-	public void TC196_GenerateRefGasRpt_SingleDay() {
+	public void DebugTC196_GenerateRefGasRpt_SingleDay() {
 		String rptTitle = "TC196 Report" + getTestSetup().getRandomNumber();
 		String startDate = getSingleDayStartDate();
 		String endDate = startDate;
@@ -282,7 +282,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	 *
 	 */
 	@Test
-	public void TC515_GenerateRefGasRpt_CustSupervisor() {
+	public void DebugTC515_GenerateRefGasRpt_CustSupervisor() {
 		String rptTitle = "TC515 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor. Report Title - " + rptTitle);
 
