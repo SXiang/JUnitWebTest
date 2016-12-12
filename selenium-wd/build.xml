@@ -1,16 +1,17 @@
 <project name="selenium-qa" default="testsanity" basedir=".">
 	<property name="proj_name" value="selenium-qa" />
+	<property name="jar_version" value="2.5.0" />
 	<property name="dist" location="dist" />
 	<property name="source" location="source" />
 	<property name="build" location="build" />
 	<property name="reports" location="reports" />
-	<property name="sanity_jar" value="sanity.jar" />
-	<property name="gridpoc_jar" value="gridpoc.jar" />
-	<property name="regression_jar" value="regression.jar" />
-	<property name="testsuite_jar" value="testsuite.jar" />
-	<property name="performance_jar" value="performance.jar" />
-	<property name="common_jar" value="common.jar" />
-	<property name="scommon_jar" value="scommon.jar" />
+	<property name="sanity_jar" value="sanity" />
+	<property name="gridpoc_jar" value="gridpoc" />
+	<property name="regression_jar" value="regression" />
+	<property name="testsuite_jar" value="testsuite" />
+	<property name="performance_jar" value="performance" />
+	<property name="common_jar" value="common" />
+	<property name="scommon_jar" value="scommon" />
 	<property environment="env" />
 	<property name="jmeter.result.dir" value="../api/jmeter/result" />
 
@@ -41,15 +42,16 @@
 
 		<delete dir="${basedir}/tests/common/build" />
 		<delete dir="${basedir}/tests/common/dist" />
-		<delete file="${basedir}/lib/${common_jar}" />
+		<delete file="${basedir}/lib/${common_jar}.jar" />
 
 		<delete dir="${basedir}/tests/surveyor/scommon/build" />
 		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
-		<delete file="${basedir}/lib/${scommon_jar}" />
+		<delete file="${basedir}/lib/${scommon_jar}.jar" />
 	</target>
 
 	<target name="compile_common" depends="init"
 			description="Compile common source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
@@ -58,12 +60,13 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${basedir}/lib/${common_jar}" basedir="${basedir}/tests/common/build" />
+		<jar jarfile="${basedir}/lib/${common_jar}-${jar_version}.${build.number}.jar" basedir="${basedir}/tests/common/build" />
 
 	</target>
 
 	<target name="compile_scommon" depends="compile_common"
 			description="Compile scommon source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
 				debug="true">
 			<classpath>
@@ -73,11 +76,12 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${basedir}/lib/${scommon_jar}" basedir="${basedir}/tests/surveyor/scommon/build" />
+		<jar jarfile="${basedir}/lib/${scommon_jar}-${jar_version}.${build.number}.jar" basedir="${basedir}/tests/surveyor/scommon/build" />
 
 	</target>
 
 	<target name="compileregression" depends="compile_scommon" description="Compile regression source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
@@ -86,11 +90,12 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${dist}/${regression_jar}" basedir="${build}" />
+		<jar jarfile="${dist}/${regression_jar}-${jar_version}.${build.number}.jar" basedir="${build}" />
 
 	</target>
 
 	<target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
@@ -99,10 +104,11 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${dist}/${testsuite_jar}" basedir="${build}" />
+		<jar jarfile="${dist}/${testsuite_jar}-${jar_version}.${build.number}.jar" basedir="${build}" />
 	</target>
 
 	<target name="compileperformance" depends="compile_scommon" description="Compile performance tests source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/performance/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
@@ -111,11 +117,12 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${dist}/${performance_jar}" basedir="${build}" />
+		<jar jarfile="${dist}/${performance_jar}-${jar_version}.${build.number}.jar" basedir="${build}" />
 
 	</target>
 
 	<target name="compileSanity" depends="compile_scommon" description="Compile sanity source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
@@ -124,11 +131,12 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${dist}/${sanity_jar}" basedir="${build}" />
+		<jar jarfile="${dist}/${sanity_jar}-${jar_version}.${build.number}.jar" basedir="${build}" />
 
 	</target>
 
 	<target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
+		<buildnumber file="build.number" />
 		<javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
@@ -137,7 +145,7 @@
 			</classpath>
 		</javac>
 
-		<jar jarfile="${dist}/${gridpoc_jar}" basedir="${build}" />
+		<jar jarfile="${dist}/${gridpoc_jar}-${jar_version}.${build.number}.jar" basedir="${build}" />
 
 	</target>
 
