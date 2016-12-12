@@ -147,48 +147,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen
-	 * Test Description: Customer boundary area selection persist on Customer Boundary Selector screen
-	 * Script: -
-	 *	- - Login to p3sqa.picarro.com
-	 *	- - Navigate New or Copy compliance report screen
-	 *	- - Select Customer boundary and click on Boundary Selector
-	 *	- - Select any customer boundary and click OK
-	 *	- - Click on Boundary Selector button
-	 *	- - Click OK
-	 * Results: -
-	 *	- - Selected boundary areashould persist
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1255, location = ComplianceReportDataProvider.class)
-	public void TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
-		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
-		complianceReportsPageAction.getComplianceReportsPage().openCustomerBoundarySelector();
-
-		String boundaryName = "Level 2-AA";
-		latLongSelectionControl.waitForModalDialogOpen()
-			.switchMode(ControlMode.MapInteraction)
-			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary.toString())
-			.setCustomerBoundaryName(boundaryName)
-			.switchMode(ControlMode.Default)
-			.clickOkButton()
-			.waitForModalDialogToClose();
-
-		String actualValue = complianceReportsPageAction.getComplianceReportsPage().getBoundarySelectedText().getAttribute("value");
-		Log.info(String.format("Expected Boundary Selected TextField value = '%s'. Actual value = '%s'", boundaryName, actualValue));
-		assertTrue(actualValue.equals(boundaryName));
-	}
-
-	/**
 	 * Test Case ID: TC1274_SurveyTagLinkPresentSearchGridComplianceReportWorking
 	 * Test Description: Survey tag link present in search grid on compliance report is working
 	 * Script: -
