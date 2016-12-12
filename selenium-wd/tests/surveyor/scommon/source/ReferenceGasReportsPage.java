@@ -138,7 +138,6 @@ public class ReferenceGasReportsPage extends ReportsBasePage {
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurveyUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
-				String text = option.getText().trim();
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
 					Log.info(String.format("Select Surveyor Unit - '%s'", surUnit));
 					option.click();

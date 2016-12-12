@@ -168,7 +168,6 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, monthDiff, 0);
-//		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate, monthDiff, 0);
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
