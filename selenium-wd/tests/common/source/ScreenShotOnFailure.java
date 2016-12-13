@@ -54,9 +54,9 @@ public class ScreenShotOnFailure{
 			mainImgName = takeScreenshot(driver, className, takeBrowserScreenShot, logStatus);
 		}
 		if(TestContext.INSTANCE.isAppiumDriverInTest()){
-			mobileImgName = takeScreenshot(TestContext.INSTANCE.getAppiumDriver(), className, true, logStatus, true);
+			mobileImgName = ", " + takeScreenshot(TestContext.INSTANCE.getAppiumDriver(), className, true, logStatus, true);
 		}
-		return mainImgName+", "+ mobileImgName;
+		return mainImgName + mobileImgName;
 	}
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
 		return takeScreenshot(driver, className, takeBrowserScreenShot, logStatus, false);
