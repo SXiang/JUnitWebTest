@@ -277,7 +277,10 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			ReportOptViewLayersDataReader reader, Customer customer, Integer dataRowID) throws Exception {
 		if (dataRowID > 0) {
 			String argValue = reader.getDataRow(dataRowID).assetRowIDs;
-			String customerId = customer.getId();
+			String customerId = null;
+			if (customer != null) {
+				customer.getId();
+			}
 			if (!ActionArguments.isEmpty(argValue)) {
 				List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
 				for (Integer rowID : assetRowIDs) {
@@ -304,7 +307,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 					ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
 					ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
 					String boundaryID = dataRow.boundaryID;
-					if (!BaseHelper.isNullOrEmpty(dataRow.boundaryID)) {
+					if (BaseHelper.isNullOrEmpty(dataRow.boundaryID)) {
 						// BoundaryID not static. Determine boundaryId from DB.
 						boundaryID = CustomerBoundaryType.getCustomerBoundaryTypeByName(dataRow.boundaryName, customerId).getId().toLowerCase();
 					}
