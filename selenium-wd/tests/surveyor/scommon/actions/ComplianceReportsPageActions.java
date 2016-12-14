@@ -279,7 +279,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 			String argValue = reader.getDataRow(dataRowID).assetRowIDs;
 			String customerId = null;
 			if (customer != null) {
-				customer.getId();
+				customerId = customer.getId();
 			}
 			if (!ActionArguments.isEmpty(argValue)) {
 				List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
