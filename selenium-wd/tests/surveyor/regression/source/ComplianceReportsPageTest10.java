@@ -13,8 +13,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
@@ -26,16 +24,13 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SystemHistoryReportsPage;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.SurveyorConstants;
-import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -237,7 +232,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Test /*Need survey equals 100 ours */
+	@Test /*Need survey equals 100 hours */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -256,14 +251,12 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready - US3885
 //		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
 //		getComplianceReportsPage().clickOnSearchSurveyButton();
-//		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
 //		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* Add greater than 100 hours survey */
 //		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
-		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
 		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* Add less than 100 hours survey */
@@ -271,7 +264,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC8HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
-		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
 		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		getComplianceReportsPage().addReport();
