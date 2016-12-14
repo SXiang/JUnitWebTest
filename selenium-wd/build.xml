@@ -1,867 +1,802 @@
 <project name="selenium-qa" default="testsanity" basedir=".">
-	<property name="proj_name" value="surveyor-qa" />
-	<property name="version" value="2.4" />
-	<property name="git_hash" value="4e7e36a" />
-	<property name="git_branch" value="master" />
-	<property name="company" value="Picarro.com, Inc" />
-	<property name="dist" location="dist" />
-	<property name="source" location="source" />
-	<property name="build" location="build" />
-	<property name="reports" location="reports" />
-	<property name="sanity_jar" value="sanity" />
-	<property name="gridpoc_jar" value="gridpoc" />
-	<property name="regression_jar" value="regression" />
-	<property name="testsuite_jar" value="testsuite" />
-	<property name="performance_jar" value="performance" />
-	<property name="common_jar" value="common" />
-	<property name="scommon_jar" value="scommon" />
-	<property environment="env" />
-	<property name="jmeter.result.dir" value="../api/jmeter/result" />
-
-	<tstamp>
-	      <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US"/>
-	</tstamp>
-
-	<target name="init" depends="clean" description="Initialize build environment">
-		<mkdir dir="${build}" />
-		<mkdir dir="${dist}" />
-
-		<mkdir dir="${reports}/sanity/xml" />
-		<mkdir dir="${reports}/gridpoc/xml" />
-		<mkdir dir="${reports}/regression/xml" />
-		<mkdir dir="${reports}/performance/xml" />
-
-		<mkdir dir="${basedir}/tests/common/build" />
-		<mkdir dir="${basedir}/tests/common/dist" />
-		<mkdir dir="${basedir}/tests/surveyor/scommon/build" />
-		<mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
-	</target>
-
-	<target name="clean" description="Clean up">
-		<move file="${reports}" tofile="${reports}.old" failonerror="false" />
-
-		<delete dir="${build}" />
-		<delete dir="${dist}" />
-
-		<delete dir="${basedir}/tests/common/build" />
-		<delete dir="${basedir}/tests/common/dist" />
-		<delete dir="${basedir}/tests/surveyor/scommon/build" />
-		<delete dir="${basedir}/tests/surveyor/scommon/dist" />
-		<defaultexcludes remove="**/*~" />
-		<delete>
-			<fileset dir="${basedir}/lib" includes="**/${common_jar}-**.jar" />
-		</delete>
-		<delete>
-			<fileset dir="${basedir}/lib" includes="**/${scommon_jar}-**.jar" />
-		</delete>
-		<defaultexcludes default="true" />
-	</target>
-
-	<target name="compile_common" depends="init"
-			description="Compile common source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
-			<classpath>
-				<fileset dir="${basedir}">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${basedir}/lib/${common_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${basedir}/tests/common/build">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} common lib" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="compile_scommon" depends="compile_common"
-			description="Compile scommon source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
-				debug="true">
-			<classpath>
-				<fileset dir="${basedir}">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${basedir}/lib/${scommon_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${basedir}/tests/surveyor/scommon/build" >
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} pageobjects lib" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="compileregression" depends="compile_scommon" description="Compile regression source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
-			<classpath>
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${dist}/${regression_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} regression tests" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-
-	</target>
-
-	<target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
-			<classpath>
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${dist}/${testsuite_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} test suite" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-	</target>
-
-	<target name="compileperformance" depends="compile_scommon" description="Compile performance tests source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/performance/source" includeantruntime="false" destdir="${build}" debug="true">
-			<classpath>
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${dist}/${performance_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} performance tests" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-
-	</target>
-
-	<target name="compileSanity" depends="compile_scommon" description="Compile sanity source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
-			<classpath>
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${dist}/${sanity_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} sanity tests" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-
-	</target>
-
-	<target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
-		<buildnumber file="build.number" />
-		<javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
-			<classpath>
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-		</javac>
-
-		<jar jarfile="${dist}/${gridpoc_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Title" value="${proj_name} gridpoc tests" />
-				<attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
-				<attribute name="Implementation-Vendor" value="${company}" />
-				<attribute name="Git-Branch" value="${git_branch}" />
-			</manifest>
-		</jar>
-
-	</target>
-
-	<target name="performancetests" depends="compileperformance" description="Run performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestLight.class" />
-					<include name="**/ReportJobPerformanceTestMedium.class" />
-					<include name="**/ReportJobPerformanceTestHigh.class" />
-					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="performancetestsLight" depends="compileperformance" description="Run performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestLight.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="performancetestsMedium" depends="compileperformance" description="Run performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestMedium.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="performancetestsHigh" depends="compileperformance" description="Run performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestHigh.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="performancetestsUltraHigh" depends="compileperformance" description="Run performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testdriverview" depends="compileregression" description="Run driver view test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-
-					<include name="**/DriverViewPageTest.class" />
-
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testsurveyview" depends="compileregression" description="Run survey view test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/SurveyViewPageTest.class" />
-					<include name="**/SurveyViewPageTest1.class" />
-					<include name="**/SurveyViewPageTest2.class" />
-					<include name="**/SurveyViewPageTest3.class" />
-					<include name="**/SurveyViewPageTest4.class" />
-					<include name="**/SurveyViewPageTest5.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testobserverview" depends="compileregression" description="Run observer view test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ObserverViewPageTest.class" />
-					<include name="**/ObserverViewPageStressTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testlogin" depends="compileregression" description="Run login page test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/LoginPageTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testmanageusers" depends="compileregression" description="Run manage users page test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-
-					<include name="**/ManageUsersPageTest.class" />
-					<include name="**/ManageUsersAdminPageTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="compliancereportpageactiontests" depends="compileregression,compileperformance" description="Run compliance report page action test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testcompliancereport" depends="compileregression,compileperformance" description="Run compliance report test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ComplianceReportsPageTest.class" />
-					<include name="**/ComplianceReportsPageTest2.class" />
-					<include name="**/ComplianceReportsPageTest3.class" />
-					<include name="**/ComplianceReportsPageTest4.class" />
-					<include name="**/ComplianceReportsPageTest_Ethane.class" />
-					<include name="**/ComplianceReportsPageTest5.class" />
-					<include name="**/ComplianceReportsPageTest6.class" />
-					<include name="**/ComplianceReportsPageTest7.class" />
-					<include name="**/ComplianceReportsPageTest8.class" />
-					<include name="**/ComplianceReportsPageTest11.class" />
-					<include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
-					<include name="**/ComplianceReportsPageTest_AssetBox.class" />
-					<include name="**/ComplianceReportsPageTest10.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
-			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-				<sysproperty key = "testReportCategory" value = "Regression" />
-				<sysproperty key = "test_run_id" value = "${local_date}"/>
-				<classpath>
-					<pathelement path="${build}" />
-					<fileset dir="${basedir}/lib">
-						<include name="**/*.jar" />
-					</fileset>
-				</classpath>
-
-				<batchtest fork="yes" todir="${reports}/regression/xml">
-					<formatter type="xml" />
-					<fileset dir="${build}">
-						<include name="**/ActionsExecutionDriver.class" />
-						<include name="**/DriverViewPageTest.class" />
-						<include name="**/ObserverViewPageTest.class" />
-						<include name="**/ObserverViewPageStressTest.class" />
-						<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
-						<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
-						<include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
-						<include name="**/ObserverViewPageTest2.class" />
-						<include name="**/DriverViewPageTest2.class" />
-					</fileset>
-				</batchtest>
-			</junit>
-		</target>
-
-	<target name="testregression" depends="compileregression" description="Run regression test suite">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ACLandVisibilityTest.class" />
-					<include name="**/HomePageTest.class" />
-					<include name="**/LoginPageTest.class" />
-					<include name="**/ManageAnalyzersPageTest.class" />
-					<include name="**/ManageCustomersPageTest.class" />
-					<include name="**/ManageLocationsPageTest.class" />
-					<include name="**/ManageLocationsAdminPageTest.class" />
-					<include name="**/ManageRefGasBottlesAdminPageTest.class" />
-					<include name="**/ManageRefGasBottlesPageTest.class" />
-					<include name="**/ManageSurveyorPageTest.class" />
-					<include name="**/ManageSurveyorAdminPageTest.class" />
-					<include name="**/ManageSurveyorHistoriesPageTest.class" />
-					<include name="**/ManageUsersPageTest.class" />
-					<include name="**/ManageUsersAdminPageTest.class" />
-					<include name="**/MeasurementSessionsPageTest.class" />
-					<include name="**/SurveyViewPageTest.class" />
-					<include name="**/SurveyViewPageTest1.class" />
-					<include name="**/SurveyViewPageTest2.class" />
-					<include name="**/SurveyViewPageTest3.class" />
-					<include name="**/SurveyViewPageTest4.class" />
-					<include name="**/SurveyViewPageTest5.class" />
-					<include name="**/SystemHistoryReportsPageTest.class" />
-					<include name="**/ReferenceGasReportsPageTest.class" />
-					<include name="**/ManageLocationsPageTest_Ethane.class" />
-					<include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
-					<include name="**/LicensedFeatureAndVisibilityTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-	<target name="testsurveyuploadtestcases" depends="compileregression" description="Run upload db3 tests">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testsanity" depends="compileSanity" description="Run sanity test suite">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Sanity" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/sanity/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/SanityIntegrationTest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<echo message="junit build : ${build}" />
-	</target>
-
-	<target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Performance" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-			<batchtest fork="yes" todir="${reports}/performance/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ReportJobPerformanceTestLight.class" />
-					<include name="**/ReportJobPerformanceTestMedium.class" />
-					<include name="**/ReportJobPerformanceTestHigh.class" />
-					<include name="**/ReportJobPerformanceTestUltraHigh.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="testgridpoc5tests" depends="compileGridPOC" description="Run grid POC test suite with 5 tests in parallel">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key="testReportCategory" value="GridPOC" />
-			<sysproperty key="maxParallelTestThreads" value="5" />
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/GridPOCTestSuite_5TestClasses.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<echo message="junit build : ${build}" />
-	</target>
-
-	<target name="testgridpoc7tests" depends="compileGridPOC" description="Run grid POC test suite with 7 tests in parallel">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key="testReportCategory" value="GridPOC" />
-			<sysproperty key="maxParallelTestThreads" value="7" />
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/gridpoc/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/GridPOCTestSuite_7TestClasses.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<echo message="junit build : ${build}" />
-	</target>
-
-	<target name="paralleltestregression" depends="compiletestsuite" description="Run regression test suite tests in parallel">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key="maxParallelTestThreads" value="5" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/RegressionTestSuite1.class" />
-					<include name="**/RegressionTestSuite2.class" />
-					<include name="**/RegressionTestSuite3.class" />
-					<include name="**/RegressionTestSuite4.class" />
-					<include name="**/RegressionTestSuite5.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="paralleltestcompliancereport" depends="compiletestsuite" description="Run compliance report test suite tests in parallel">
-			<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-						showoutput="yes">
-				<sysproperty key = "testReportCategory" value = "JUnitParallel" />
-				<sysproperty key="maxParallelTestThreads" value="3" />
-				<sysproperty key = "test_run_id" value = "${local_date}"/>
-				<classpath>
-					<pathelement path="${build}" />
-					<fileset dir="${basedir}/lib">
-						<include name="**/*.jar" />
-					</fileset>
-				</classpath>
-
-				<batchtest fork="yes" todir="${reports}/regression/xml">
-					<formatter type="xml" />
-					<fileset dir="${build}">
-						<include name="**/ComplianceReportsTestSuite1.class" />
-						<include name="**/ComplianceReportsTestSuite2.class" />
-						<include name="**/ComplianceReportsTestSuite3.class" />
-						<include name="**/ComplianceReportsTestSuite4.class" />
-						<include name="**/ComplianceReportsTestSuite5.class" />
-					</fileset>
-				</batchtest>
-			</junit>
-	</target>
-
-	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "JUnitParallel" />
-			<sysproperty key="maxParallelTestThreads" value="3" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ComplianceReportsTestSuite5.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
-		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "Regression" />
-			<sysproperty key = "test_run_id" value = "${local_date}"/>
-			<classpath>
-				<pathelement path="${build}" />
-				<fileset dir="${basedir}/lib">
-					<include name="**/*.jar" />
-				</fileset>
-			</classpath>
-
-			<batchtest fork="yes" todir="${reports}/regression/xml">
-				<formatter type="xml" />
-				<fileset dir="${build}">
-					<include name="**/ComplianceReportsForAPITest.class" />
-				</fileset>
-			</batchtest>
-		</junit>
-	</target>
-
-	<target name="securityapitest" depends="init">
-		<delete dir="${jmeter.result.dir}" />
-		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
-		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
-			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,
-																HTTPSecurityTests/Analyzer.Security.HTTP.jmx,
-																HTTPSecurityTests/License.Security.HTTP.jmx"/>
-			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
-			<property name="runUUID" value="${env.RunUUID}" />
-			<property name="runEnvironment" value="${env.RunEnvironment}" />
-		</jmeter>
-	</target>
-
-	<target name="fileAccessPermissiontest" depends="init">
-		<delete dir="${jmeter.result.dir}" />
-		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
-		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
-			<testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.FilePermission.HTTP.jmx" />
-			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
-			<property name="serverName" value="${env.ServerName}" />
-			<property name="runEnvironment" value="${env.RunEnvironment}" />
-		</jmeter>
-	</target>
-
-	<target name="analyzerapiloadtest" depends="init">
-		<delete dir="${jmeter.result.dir}" />
-		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
-		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
-			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/picarro.analyzer.http.jmx"/>
-			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
-		</jmeter>
-	</target>
-
-	<target name="analyzerapiloadtestreporter" depends="init">
-		<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
-		<jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv" >
-			<testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/Publisher_PerfStatAnalyzer.jmx"/>
-			<property name="jmeter.result.dir" value="${jmeter.result.dir}" />
-		</jmeter>
-
-	</target>
-
-	<!-- JUnit Test Reports -->
-	<target name="sanityreport" depends="testsanity">
-		<junitreport todir="${reports}/sanity/xml">
-			<fileset dir="${reports}/sanity/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/sanity">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="gridpocreport_5" depends="testgridpoc5tests">
-		<junitreport todir="${reports}/gridpoc/xml">
-			<fileset dir="${reports}/gridpoc/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="gridpocreport_7" depends="testgridpoc7tests">
-		<junitreport todir="${reports}/gridpoc/xml">
-			<fileset dir="${reports}/gridpoc/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="regressionreport" depends="testregression">
-		<junitreport todir="${reports}/regression/xml">
-			<fileset dir="${reports}/regression/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/regression">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="compliancereportreport" depends="testcompliancereport">
-		<junitreport todir="${reports}/regression/xml">
-			<fileset dir="${reports}/regression/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/regression">
-			</report>
-		</junitreport>
-	</target>
-
-	<target name="debugreport" depends="tc_localrun">
-		<junitreport todir="${reports}/regression/xml">
-			<fileset dir="${reports}/regression/xml">
-				<include name="*TEST-*.xml" />
-			</fileset>
-			<report styledir="./tests" format="noframes" todir="${reports}/regression">
-			</report>
-		</junitreport>
-	</target>
-
+  <property name="proj_name" value="surveyor-qa" />
+  <property name="version" value="2.4" />
+  <property name="git_hash" value="50d57b8" />
+  <property name="git_branch" value="master" />
+  <property name="company" value="Picarro.com, Inc" />
+  <property name="dist" location="dist" />
+  <property name="source" location="source" />
+  <property name="build" location="build" />
+  <property name="reports" location="reports" />
+  <property name="sanity_jar" value="sanity" />
+  <property name="gridpoc_jar" value="gridpoc" />
+  <property name="regression_jar" value="regression" />
+  <property name="testsuite_jar" value="testsuite" />
+  <property name="performance_jar" value="performance" />
+  <property name="common_jar" value="common" />
+  <property name="scommon_jar" value="scommon" />
+  <property name="dbseed_jar" value="dbseed" />
+  <property environment="env" />
+  <property name="jmeter.result.dir" value="../api/jmeter/result" />
+  <tstamp>
+    <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US" />
+  </tstamp>
+  <target name="init" depends="clean" description="Initialize build environment">
+    <mkdir dir="${build}" />
+    <mkdir dir="${dist}" />
+    <mkdir dir="${reports}/sanity/xml" />
+    <mkdir dir="${reports}/gridpoc/xml" />
+    <mkdir dir="${reports}/regression/xml" />
+    <mkdir dir="${reports}/performance/xml" />
+    <mkdir dir="${basedir}/tests/common/build" />
+    <mkdir dir="${basedir}/tests/common/dist" />
+    <mkdir dir="${basedir}/tests/surveyor/scommon/build" />
+    <mkdir dir="${basedir}/tests/surveyor/scommon/dist" />
+  </target>
+  <target name="clean" description="Clean up">
+    <move file="${reports}" tofile="${reports}.old" failonerror="false" />
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+    <delete dir="${basedir}/tests/common/build" />
+    <delete dir="${basedir}/tests/common/dist" />
+    <delete dir="${basedir}/tests/surveyor/scommon/build" />
+    <delete dir="${basedir}/tests/surveyor/scommon/dist" />
+    <defaultexcludes remove="**/*~" />
+    <delete>
+      <fileset dir="${basedir}/lib" includes="**/${common_jar}-**.jar" />
+    </delete>
+    <delete>
+      <fileset dir="${basedir}/lib" includes="**/${scommon_jar}-**.jar" />
+    </delete>
+    <delete>
+      <fileset dir="${basedir}/lib" includes="**/${dbseed_jar}-**.jar" />
+    </delete>
+    <defaultexcludes default="true" />
+  </target>
+  <target name="compile_common" depends="init" description="Compile common source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
+      <classpath>
+        <fileset dir="${basedir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${basedir}/lib/${common_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${basedir}/tests/common/build">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} common lib" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compile_dbseed" depends="init" description="Compile db seed code and unit test">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/unittest/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${basedir}/lib/${dbseed_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} dbseed lib" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compile_scommon" depends="compile_common" description="Compile scommon source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build" debug="true">
+      <classpath>
+        <fileset dir="${basedir}">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${basedir}/lib/${scommon_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${basedir}/tests/surveyor/scommon/build">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} pageobjects lib" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compileregression" depends="compile_scommon" description="Compile regression source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${regression_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} regression tests" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${testsuite_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} test suite" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compileperformance" depends="compile_scommon" description="Compile performance tests source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/performance/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${performance_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} performance tests" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compileSanity" depends="compile_scommon" description="Compile sanity source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${sanity_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} sanity tests" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${gridpoc_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} gridpoc tests" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
+  <target name="dbseedtests" depends="compile_dbseed" description="Run dbseed unit tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="DBSeed" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/DbSeedExecutorSanityTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performancetests" depends="compileperformance" description="Run performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestLight.class" />
+          <include name="**/ReportJobPerformanceTestMedium.class" />
+          <include name="**/ReportJobPerformanceTestHigh.class" />
+          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performancetestsLight" depends="compileperformance" description="Run performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestLight.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performancetestsMedium" depends="compileperformance" description="Run performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestMedium.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performancetestsHigh" depends="compileperformance" description="Run performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestHigh.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performancetestsUltraHigh" depends="compileperformance" description="Run performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testdriverview" depends="compileregression" description="Run driver view test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/DriverViewPageTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testsurveyview" depends="compileregression" description="Run survey view test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/SurveyViewPageTest.class" />
+          <include name="**/SurveyViewPageTest1.class" />
+          <include name="**/SurveyViewPageTest2.class" />
+          <include name="**/SurveyViewPageTest3.class" />
+          <include name="**/SurveyViewPageTest4.class" />
+          <include name="**/SurveyViewPageTest5.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testobserverview" depends="compileregression" description="Run observer view test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ObserverViewPageTest.class" />
+          <include name="**/ObserverViewPageStressTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testlogin" depends="compileregression" description="Run login page test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/LoginPageTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testmanageusers" depends="compileregression" description="Run manage users page test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ManageUsersPageTest.class" />
+          <include name="**/ManageUsersAdminPageTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="compliancereportpageactiontests" depends="compileregression,compileperformance" description="Run compliance report page action test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testcompliancereport" depends="compileregression,compileperformance" description="Run compliance report test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsPageTest.class" />
+          <include name="**/ComplianceReportsPageTest2.class" />
+          <include name="**/ComplianceReportsPageTest3.class" />
+          <include name="**/ComplianceReportsPageTest4.class" />
+          <include name="**/ComplianceReportsPageTest_Ethane.class" />
+          <include name="**/ComplianceReportsPageTest5.class" />
+          <include name="**/ComplianceReportsPageTest6.class" />
+          <include name="**/ComplianceReportsPageTest7.class" />
+          <include name="**/ComplianceReportsPageTest8.class" />
+          <include name="**/ComplianceReportsPageTest11.class" />
+          <include name="**/ComplianceReportsLargeDatasetLoadTest.class" />
+          <include name="**/ComplianceReportsPageTest_AssetBox.class" />
+          <include name="**/ComplianceReportsPageTest10.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testsimulatorcases" depends="compileregression" description="Run action execution test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ActionsExecutionDriver.class" />
+          <include name="**/DriverViewPageTest.class" />
+          <include name="**/ObserverViewPageTest.class" />
+          <include name="**/ObserverViewPageStressTest.class" />
+          <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+          <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+          <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
+          <include name="**/ObserverViewPageTest2.class" />
+          <include name="**/DriverViewPageTest2.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testregression" depends="compileregression" description="Run regression test suite">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ACLandVisibilityTest.class" />
+          <include name="**/HomePageTest.class" />
+          <include name="**/LoginPageTest.class" />
+          <include name="**/ManageAnalyzersPageTest.class" />
+          <include name="**/ManageCustomersPageTest.class" />
+          <include name="**/ManageLocationsPageTest.class" />
+          <include name="**/ManageLocationsAdminPageTest.class" />
+          <include name="**/ManageRefGasBottlesAdminPageTest.class" />
+          <include name="**/ManageRefGasBottlesPageTest.class" />
+          <include name="**/ManageSurveyorPageTest.class" />
+          <include name="**/ManageSurveyorAdminPageTest.class" />
+          <include name="**/ManageSurveyorHistoriesPageTest.class" />
+          <include name="**/ManageUsersPageTest.class" />
+          <include name="**/ManageUsersAdminPageTest.class" />
+          <include name="**/MeasurementSessionsPageTest.class" />
+          <include name="**/SurveyViewPageTest.class" />
+          <include name="**/SurveyViewPageTest1.class" />
+          <include name="**/SurveyViewPageTest2.class" />
+          <include name="**/SurveyViewPageTest3.class" />
+          <include name="**/SurveyViewPageTest4.class" />
+          <include name="**/SurveyViewPageTest5.class" />
+          <include name="**/SystemHistoryReportsPageTest.class" />
+          <include name="**/ReferenceGasReportsPageTest.class" />
+          <include name="**/ManageLocationsPageTest_Ethane.class" />
+          <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
+          <include name="**/LicensedFeatureAndVisibilityTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testsurveyuploadtestcases" depends="compileregression" description="Run upload db3 tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testsanity" depends="compileSanity" description="Run sanity test suite">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Sanity" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/sanity/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/SanityIntegrationTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <echo message="junit build : ${build}" />
+  </target>
+  <target name="tc_localperfrun" depends="compileperformance" description="Run local performance test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Performance" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/performance/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceTestLight.class" />
+          <include name="**/ReportJobPerformanceTestMedium.class" />
+          <include name="**/ReportJobPerformanceTestHigh.class" />
+          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="testgridpoc5tests" depends="compileGridPOC" description="Run grid POC test suite with 5 tests in parallel">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="GridPOC" />
+      <sysproperty key="maxParallelTestThreads" value="5" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/gridpoc/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/GridPOCTestSuite_5TestClasses.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <echo message="junit build : ${build}" />
+  </target>
+  <target name="testgridpoc7tests" depends="compileGridPOC" description="Run grid POC test suite with 7 tests in parallel">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="GridPOC" />
+      <sysproperty key="maxParallelTestThreads" value="7" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/gridpoc/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/GridPOCTestSuite_7TestClasses.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <echo message="junit build : ${build}" />
+  </target>
+  <target name="paralleltestregression" depends="compiletestsuite" description="Run regression test suite tests in parallel">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="maxParallelTestThreads" value="5" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/RegressionTestSuite1.class" />
+          <include name="**/RegressionTestSuite2.class" />
+          <include name="**/RegressionTestSuite3.class" />
+          <include name="**/RegressionTestSuite4.class" />
+          <include name="**/RegressionTestSuite5.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="paralleltestcompliancereport" depends="compiletestsuite" description="Run compliance report test suite tests in parallel">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="JUnitParallel" />
+      <sysproperty key="maxParallelTestThreads" value="3" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsTestSuite1.class" />
+          <include name="**/ComplianceReportsTestSuite2.class" />
+          <include name="**/ComplianceReportsTestSuite3.class" />
+          <include name="**/ComplianceReportsTestSuite4.class" />
+          <include name="**/ComplianceReportsTestSuite5.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="JUnitParallel" />
+      <sysproperty key="maxParallelTestThreads" value="3" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsTestSuite5.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsForAPITest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="securityapitest" depends="init">
+    <delete dir="${jmeter.result.dir}" />
+    <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" />
+    <jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv">
+      <testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.Security.HTTP.jmx,                 HTTPSecurityTests/Analyzer.Security.HTTP.jmx,                 HTTPSecurityTests/License.Security.HTTP.jmx" />
+      <property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+      <property name="runUUID" value="${env.RunUUID}" />
+      <property name="runEnvironment" value="${env.RunEnvironment}" />
+    </jmeter>
+  </target>
+  <target name="fileAccessPermissiontest" depends="init">
+    <delete dir="${jmeter.result.dir}" />
+    <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" />
+    <jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv">
+      <testplans dir="${basedir}/../api/jmeter" includes="HTTPSecurityTests/Picarro.FilePermission.HTTP.jmx" />
+      <property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+      <property name="serverName" value="${env.ServerName}" />
+      <property name="runEnvironment" value="${env.RunEnvironment}" />
+    </jmeter>
+  </target>
+  <target name="analyzerapiloadtest" depends="init">
+    <delete dir="${jmeter.result.dir}" />
+    <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" />
+    <jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv">
+      <testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/picarro.analyzer.http.jmx" />
+      <property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+    </jmeter>
+  </target>
+  <target name="analyzerapiloadtestreporter" depends="init">
+    <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" />
+    <jmeter jmeterhome="${env.JMETER_HOME}" resultlog="${basedir}/../logs/jmeter.csv">
+      <testplans dir="${basedir}/../api/jmeter" includes="HTTPPerformanceTests/Publisher_PerfStatAnalyzer.jmx" />
+      <property name="jmeter.result.dir" value="${jmeter.result.dir}" />
+    </jmeter>
+  </target>
+  <!-- JUnit Test Reports -->
+  <target name="sanityreport" depends="testsanity">
+    <junitreport todir="${reports}/sanity/xml">
+      <fileset dir="${reports}/sanity/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/sanity">
+      </report>
+    </junitreport>
+  </target>
+  <target name="gridpocreport_5" depends="testgridpoc5tests">
+    <junitreport todir="${reports}/gridpoc/xml">
+      <fileset dir="${reports}/gridpoc/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
+      </report>
+    </junitreport>
+  </target>
+  <target name="gridpocreport_7" depends="testgridpoc7tests">
+    <junitreport todir="${reports}/gridpoc/xml">
+      <fileset dir="${reports}/gridpoc/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/gridpoc">
+      </report>
+    </junitreport>
+  </target>
+  <target name="regressionreport" depends="testregression">
+    <junitreport todir="${reports}/regression/xml">
+      <fileset dir="${reports}/regression/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/regression">
+      </report>
+    </junitreport>
+  </target>
+  <target name="compliancereportreport" depends="testcompliancereport">
+    <junitreport todir="${reports}/regression/xml">
+      <fileset dir="${reports}/regression/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/regression">
+      </report>
+    </junitreport>
+  </target>
+  <target name="debugreport" depends="tc_localrun">
+    <junitreport todir="${reports}/regression/xml">
+      <fileset dir="${reports}/regression/xml">
+        <include name="*TEST-*.xml" />
+      </fileset>
+      <report styledir="./tests" format="noframes" todir="${reports}/regression">
+      </report>
+    </junitreport>
+  </target>
 </project>

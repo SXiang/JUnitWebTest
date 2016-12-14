@@ -19,7 +19,9 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +32,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.runner.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
@@ -38,6 +42,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -1164,6 +1169,53 @@ public class TestSetup {
 			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 		} catch (IOException e) {
 			Log.error(e.toString());
+		}
+	}
+
+	public void postProductTestBinariesMap(String binaryFilePath) throws ParserConfigurationException, SAXException {
+		try {
+			XmlUtility xmlUtil = new XmlUtility();
+			final String TAG_ENVIRONMENT_URL = "EnvironmentUrl";
+			final String TAG_ENVIRONMENT_DB_NAME = "EnvironmentDBName";
+			final String TAG_ENVIRONMENT_BUILD_VERSION = "EnvironmentBuildVersion";
+			final String TAG_TEST_BINARY_MAJOR = "TestBinaryMajor";
+			final String TAG_TEST_BINARY_MINOR = "TestBinaryMinor";
+			final String TAG_TEST_BINARY_BUILD_NUMBER = "TestBinaryBuildNumber";
+			final String TAG_TEST_BINARY_GIT_HASH = "TestBinaryGitHash";
+			final String TAG_TEST_BRANCH = "TestBranch";
+
+			// -BuildWorkingDir '%~1' -AutomationReportingAPIBaseUrl '%~2' -TestBinaryFileName '%~3' -TestBinaryMajor '%~4'
+			// -TestBinaryMinor '%~5' -TestBinaryBuildNumber '%~6' -TestBinaryGitHash '%~7' -TestBranch '%~8' -EnvironmentUrl '%~9'
+			// -EnvironmentDBName '%~1' -EnvironmentBuildVersion '%~2' -BuildDate '%~3' -BuildSuccess '%~4'
+
+			String workingFolder = getRootPath();
+			String postBinariesMapCmdFolder = getExecutionPath(getRootPath()) + "lib";
+			String postBinariesMapCmdFullPath = postBinariesMapCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
+			String manifestFilePath = Paths.get(postBinariesMapCmdFolder, "manifest.xml").toString();
+			List<String> tagNames = Arrays.asList(TAG_ENVIRONMENT_URL, TAG_ENVIRONMENT_DB_NAME, TAG_ENVIRONMENT_BUILD_VERSION,
+					TAG_TEST_BINARY_MAJOR, TAG_TEST_BINARY_MINOR, TAG_TEST_BINARY_BUILD_NUMBER, TAG_TEST_BINARY_GIT_HASH, TAG_TEST_BRANCH);
+			HashMap<String, String> nodeValues = xmlUtil.getNodeValuesByTagNames(manifestFilePath, tagNames);
+
+			String command = "cd \"" + postBinariesMapCmdFolder + "\" && " + postBinariesMapCmdFullPath +
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+							workingFolder,
+							getAutomationReportingApiEndpoint(),
+							binaryFilePath,
+							nodeValues.get(TAG_TEST_BINARY_MAJOR),
+							nodeValues.get(TAG_TEST_BINARY_MINOR),
+							nodeValues.get(TAG_TEST_BINARY_BUILD_NUMBER),
+							nodeValues.get(TAG_TEST_BINARY_GIT_HASH),
+							nodeValues.get(TAG_TEST_BRANCH),
+							nodeValues.get(TAG_ENVIRONMENT_URL),
+							nodeValues.get(TAG_ENVIRONMENT_DB_NAME),
+							nodeValues.get(TAG_ENVIRONMENT_BUILD_VERSION),
+							DateUtility.getLongDateString(LocalDateTime.now()),
+							"true" /*buildSuccess*/);
+			Log.info("Posting product test binaries map. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		} finally {
 		}
 	}
 
