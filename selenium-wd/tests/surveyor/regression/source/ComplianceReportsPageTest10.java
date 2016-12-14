@@ -246,41 +246,40 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		
+
 		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
 
 		getComplianceReportsPage().selectSurveyInfoGeoFilter(false);
 		getComplianceReportsPage().fillReport(rpt);
-		
-		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready
+
+		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready - US3885
 //		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
 //		getComplianceReportsPage().clickOnSearchSurveyButton();
-//		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1);
+//		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
+//		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* Add greater than 100 hours survey */
 //		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
-		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1);
+		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
 		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
-		
+
 		/* Add less than 100 hours survey */
 
 		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC8HR01TAG);
 		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
 		getComplianceReportsPage().clickOnSearchSurveyButton();
-		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1);
-		
-		
+		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
+		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+
 		getComplianceReportsPage().addReport();
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
-		
-		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1));
 	}
 
 	/**

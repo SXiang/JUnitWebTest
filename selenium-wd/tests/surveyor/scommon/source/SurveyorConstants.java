@@ -320,19 +320,19 @@ public final class SurveyorConstants {
 	/*
 	 * Long driving surveys.
 	 */
-	public static final String PIC8HR01TAG = "8HourSurvey01";
-	public static final String PIC8HR02TAG = "8HourSurvey02";
-	public static final String PIC8HR03TAG = "8HourSurvey03";
-	public static final String PIC8HR04TAG = "8HourSurvey04";
-	public static final String PIC8HR05TAG = "8HourSurvey05";
-	public static final String PIC8HR06TAG = "8HourSurvey06";
-	public static final String PIC8HR07TAG = "8HourSurvey07";
-	public static final String PIC8HR08TAG = "8HourSurvey08";
-	public static final String PIC8HR09TAG = "8HourSurvey09";
-	public static final String PIC8HR10TAG = "8HourSurvey10";
-	public static final String PIC8HR11TAG = "8HourSurvey11";
-	public static final String PIC8HR12TAG = "8HourSurvey12";
-	public static final String PIC4HR01TAG = "4HourSurvey01";
+	public static final String PIC8HR01TAG = "8hoursurvey01";
+	public static final String PIC8HR02TAG = "8hoursurvey02";
+	public static final String PIC8HR03TAG = "8hoursurvey03";
+	public static final String PIC8HR04TAG = "8hoursurvey04";
+	public static final String PIC8HR05TAG = "8hoursurvey05";
+	public static final String PIC8HR06TAG = "8hoursurvey06";
+	public static final String PIC8HR07TAG = "8hoursurvey07";
+	public static final String PIC8HR08TAG = "8hoursurvey08";
+	public static final String PIC8HR09TAG = "8hoursurvey09";
+	public static final String PIC8HR10TAG = "8hoursurvey10";
+	public static final String PIC8HR11TAG = "8hoursurvey11";
+	public static final String PIC8HR12TAG = "8hoursurvey12";
+	public static final String PIC4HR01TAG = "4hoursurvey01";
 	public static final String PICLESS4HRTAG = "LessThan4Hour";
 	public static final String PICGREATER4HRTAG = "GreaterThan4Hour";
 

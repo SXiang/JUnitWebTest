@@ -869,7 +869,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	
 	public String getAddServeysBtnLabel(){
 		String btnLable = "Add Surveys";
-		String btnLableMsg = (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>() {
+		String btnLableMsg = btnLable;
+		try{
+			btnLableMsg = (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>() {
 			    public String apply(WebDriver d) {
 			    	String msg = btnAddSurveys.getAttribute("value");
 			        if(btnLable.isEmpty() || msg.equals(btnLable)){
@@ -878,6 +880,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			        return msg;
 			    }
 			});
+		}catch(Exception e){
+			Log.warn("No message returned by 'Add Surveys'");
+		}
+		Log.info("Add Surveys button is showing as '"+btnLableMsg+"'");
 		return btnLableMsg;
 	}
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) throws Exception {

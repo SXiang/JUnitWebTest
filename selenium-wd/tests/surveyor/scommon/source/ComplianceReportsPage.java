@@ -272,7 +272,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
-	private static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='$']/../../../p/button";
+	private static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
 	public static List<String[]> preCoverageForecastTo70;
