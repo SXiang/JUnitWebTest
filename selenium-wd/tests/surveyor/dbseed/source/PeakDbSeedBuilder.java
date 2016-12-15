@@ -13,7 +13,7 @@ public class PeakDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[Peak]";
 	private static final String SEED_DATA_FOLDER = SURVEY_SEED_DATA_FOLDER;
 	private static final String SEED_FILE_NAME = "PeakSeed.csv";
-	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Peak] ([AnalyzerId], [EpochTime], [SurveyModeTypeId], [Amplitude], [CH4], [Position], [Lisa], [LisaOpeningAngle], [LisaBearing], [CarBearing], [Major], [Minor], [CarSpeedNorth], [CarSpeedEast], [WindDirectionStdDev], [WindSpeedNorth], [WindSpeedEast], [Sigma], [Distance], [GpsLatitude], [GpsLongitude], [PassedAutoThreshold], [SurveyId], [EthaneRatio], [EthaneRatioSdevRaw], [EthaneRatioSdev], [EthaneConcentrationSdev], [EthyleneRatio], [EthyleneRatioSdevRaw], [EthyleneRatioSdev], [EthyleneConcentrationSdev], [PipEnergy], [MethanePeaktoPeak], [Disposition], [ClassificationConfidence]) VALUES (N'%s', %s, N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
+	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Peak] ([AnalyzerId], [EpochTime], [Amplitude], [CH4], [Position], [Lisa], [LisaOpeningAngle], [LisaBearing], [CarBearing], [Major], [Minor], [CarSpeedNorth], [CarSpeedEast], [WindDirectionStdDev], [WindSpeedNorth], [WindSpeedEast], [Sigma], [Distance], [GpsLatitude], [GpsLongitude], [PassedAutoThreshold], [SurveyId], [EthaneRatio], [EthaneRatioSdevRaw], [EthaneRatioSdev], [EthaneConcentrationSdev], [EthyleneRatio], [EthyleneRatioSdevRaw], [EthyleneRatioSdev], [EthyleneConcentrationSdev], [PipEnergy], [MethanePeaktoPeak], [Disposition], [ClassificationConfidence]) VALUES (N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, N'%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
 
 	public PeakDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
@@ -26,15 +26,14 @@ public class PeakDbSeedBuilder extends BaseDbSeedBuilder {
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();
-		
-        try  
-        {              
+
+        try
+        {
     		CSVUtility csvUtility = new CSVUtility();
     		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
     		for (Map<String, String> rowItem : allRows) {
     			String analyzerId = rowItem.get("AnalyzerId");
     			String epochTime = rowItem.get("EpochTime");
-    			String surveyModeTypeId = rowItem.get("SurveyModeTypeId");
     			String amplitude = rowItem.get("Amplitude");
     			String cH4 = rowItem.get("CH4");
     			String position = rowItem.get("Position");
@@ -68,15 +67,15 @@ public class PeakDbSeedBuilder extends BaseDbSeedBuilder {
     			String disposition = rowItem.get("Disposition");
     			String classificationConfidence = rowItem.get("ClassificationConfidence");
 
-    			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, surveyModeTypeId, amplitude, cH4, position, lisa, lisaOpeningAngle, lisaBearing, carBearing, major, minor, carSpeedNorth, carSpeedEast, windDirectionStdDev, windSpeedNorth, windSpeedEast, sigma, distance, gpsLatitude, gpsLongitude, passedAutoThreshold, surveyId, ethaneRatio, ethaneRatioSdevRaw, ethaneRatioSdev, ethaneConcentrationSdev, ethyleneRatio, ethyleneRatioSdevRaw, ethyleneRatioSdev, ethyleneConcentrationSdev, pipEnergy, methanePeaktoPeak, disposition, classificationConfidence));
+    			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, amplitude, cH4, position, lisa, lisaOpeningAngle, lisaBearing, carBearing, major, minor, carSpeedNorth, carSpeedEast, windDirectionStdDev, windSpeedNorth, windSpeedEast, sigma, distance, gpsLatitude, gpsLongitude, passedAutoThreshold, surveyId, ethaneRatio, ethaneRatioSdevRaw, ethaneRatioSdev, ethaneConcentrationSdev, ethyleneRatio, ethyleneRatioSdevRaw, ethyleneRatioSdev, ethyleneConcentrationSdev, pipEnergy, methanePeaktoPeak, disposition, classificationConfidence));
 			}
-    		
+
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
+        catch (Exception e)
+        {
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
 		return seedData;
 	}
 }
