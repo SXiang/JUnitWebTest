@@ -1069,6 +1069,8 @@ public class TestSetup {
 
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("DataManagerPublisher.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("pipelinerunner.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
