@@ -74,7 +74,7 @@
   </target>
   <target name="compile_dbseed" depends="init" description="Compile db seed code and unit test">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/unittest/source" includeantruntime="false" destdir="${build}" debug="true">
+    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/unittest/source" includeantruntime="false" destdir="${build}" debug="true">
       <classpath>
         <fileset dir="${basedir}">
           <include name="**/*.jar" />
