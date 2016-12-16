@@ -50,7 +50,10 @@ import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Asset;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerBoundaryType;
+import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -271,9 +274,13 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	}
 
 	private void fillViewLayersInfo(Map<String, String> viewLayerMap,
-			ReportOptViewLayersDataReader reader, Integer dataRowID) throws Exception {
+			ReportOptViewLayersDataReader reader, Customer customer, Integer dataRowID) throws Exception {
 		if (dataRowID > 0) {
 			String argValue = reader.getDataRow(dataRowID).assetRowIDs;
+			String customerId = null;
+			if (customer != null) {
+				customerId = customer.getId();
+			}
 			if (!ActionArguments.isEmpty(argValue)) {
 				List<Integer> assetRowIDs = ActionArguments.getNumericList(argValue);
 				for (Integer rowID : assetRowIDs) {
@@ -282,7 +289,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 					}
 					ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = getViewLayersAssetsDataReader();
 					ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
-					viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
+					String assetID = dataRow.assetID;
+					if (BaseHelper.isNullOrEmpty(dataRow.assetID)) {
+						// AssetID not static. Determine assetId from DB.
+						assetID = CustomerMaterialType.getCustomerMaterialTypeByName(dataRow.assetName, customerId).getId().toLowerCase();
+					}
+					viewLayerMap.put(assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
 				}
 			}
 			argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
@@ -294,7 +306,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 					}
 					ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = getViewLayersBoundaryDataReader();
 					ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
-					viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+					String boundaryID = dataRow.boundaryID;
+					if (BaseHelper.isNullOrEmpty(dataRow.boundaryID)) {
+						// BoundaryID not static. Determine boundaryId from DB.
+						boundaryID = CustomerBoundaryType.getCustomerBoundaryTypeByName(dataRow.boundaryName, customerId).getId().toLowerCase();
+					}
+					viewLayerMap.put(boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
 				}
 			}
 		} else {
@@ -364,7 +381,8 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<Map<String, String>> viewLayersList = new ArrayList<Map<String, String>>();
 		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(workingDataRow.get().reportOptViewLayerRowID);
 		Map<String, String> viewLayerMap = new HashMap<String, String>();
-		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility), reportOptVwLayersRowIDs.get(0));
+		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility),
+				Customer.getCustomer(customer), reportOptVwLayersRowIDs.get(0));
 		if (viewLayerMap.size() > 0) {
 			viewLayersList.add(viewLayerMap);
 		}
@@ -3502,11 +3520,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String data, Integer dataRowID) {
+	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySurveyGreaterThan100HoursCannotBeAdded", data, dataRowID);
-		// TODO: Add implementation.
-		return false;
+		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
+		return getComplianceReportsPage().isMaxSurveyDurationReached();
 	}
 
 	/**

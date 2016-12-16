@@ -51,7 +51,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 	private static ReferenceGasReportsPage referenceGasReportsPage = null;
 	private static DateFormat dateFormat = new SimpleDateFormat("dd");
 	private static final int START_DATE_DAY = 12;
-	private static final int START_DATE_SINGLE_DAY = 15;
+	private static final int START_DATE_SINGLE_DAY = 14;
 	private static final int START_DATE_MONTH = 12;
 	private static final int START_DATE_YEAR = 2015;
 
@@ -152,7 +152,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC179 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC179 Test Description: Generate Reference Gas Capture Report as customer admin. Report title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
@@ -168,7 +168,6 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		referenceGasReportsPage.open();
 
 		referenceGasReportsPage.addNewReport(rptTitle, TIMEZONEMT, surveyorUnit, startDate, endDate, monthDiff, 0);
-
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		if ((referenceGasReportsPage.checkActionStatus(rptTitle, SQACUSUA))) {
@@ -194,7 +193,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC1297 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1297 Test Description: Software version present on report PDF should match with UI software version. Report title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
@@ -286,7 +285,7 @@ public class ReferenceGasReportsPageTest extends SurveyorBaseTest {
 		String rptTitle = "TC515 Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC515 Test Description: Generate Reference Gas Capture Report as customer supervisor. Report Title - " + rptTitle);
 
-		String surveyorUnit = SQACUS + "-" + SQACUSLOC + "-" + SQACUSLOCSUR + "-" + SQAPICLOC4SURANA;
+		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
 		String startDate = getStartDate();
 		String endDate = getEndDate();
 		Integer monthDiff = getNumberOfPreMonths() + 1;
