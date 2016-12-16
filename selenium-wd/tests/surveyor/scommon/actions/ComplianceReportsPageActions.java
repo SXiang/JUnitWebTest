@@ -3520,11 +3520,12 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
 	 */
-	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String data, Integer dataRowID) {
+	public boolean verifySurveyGreaterThan100HoursCannotBeAdded(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySurveyGreaterThan100HoursCannotBeAdded", data, dataRowID);
-		// TODO: Add implementation.
-		return false;
+		getComplianceReportsPage().selectSurveysAndAddToReport(false, 1, false);
+		return getComplianceReportsPage().isMaxSurveyDurationReached();
 	}
 
 	/**
