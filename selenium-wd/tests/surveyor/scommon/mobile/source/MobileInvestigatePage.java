@@ -1,4 +1,4 @@
-package surveyor.scommon.source.mobile;
+package surveyor.scommon.mobile.source;
 
 import org.openqa.selenium.By;
 import common.source.Log;

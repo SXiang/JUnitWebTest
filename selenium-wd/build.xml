@@ -64,7 +64,7 @@
 
 	<target name="compile_scommon" depends="compile_common"
 			description="Compile scommon source code">
-		<javac srcdir="${basedir}/tests/surveyor/scommon/source/mobile:${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
+		<javac srcdir="${basedir}/tests/surveyor/scommon/mobile/source:${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build"
 				debug="true">
 			<classpath>
 				<fileset dir="${basedir}">
@@ -129,7 +129,7 @@
 	</target>
 
 	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
-		<javac srcdir="${basedir}/tests/surveyor/unittest/source/mobile:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
+		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
 					<include name="**/*.jar" />

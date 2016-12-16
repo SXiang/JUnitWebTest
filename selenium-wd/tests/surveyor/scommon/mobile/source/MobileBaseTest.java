@@ -1,7 +1,7 @@
 /**
  *
  */
-package surveyor.scommon.source.mobile;
+package surveyor.scommon.mobile.source;
 
 import surveyor.scommon.source.BaseTest;
 

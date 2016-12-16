@@ -1,7 +1,7 @@
 /**
  *
  */
-package surveyor.unittest.source.mobile;
+package surveyor.unittest.mobile.source;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
@@ -15,10 +15,11 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import surveyor.scommon.mobile.source.MobileLoginPage;
+import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.mobile.MobileLoginPage;
-import surveyor.scommon.source.mobile.MobileReportsPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class MobileUnitTest extends SurveyorBaseTest {
