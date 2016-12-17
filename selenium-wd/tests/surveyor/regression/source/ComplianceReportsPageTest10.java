@@ -13,7 +13,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
@@ -25,13 +24,13 @@ import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SystemHistoryReportsPage;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.SurveyorConstants;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -233,17 +232,46 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 *	- - Max Survey Duration Reached message is displayed on the search button
 	 *	- - User is able to add survey which doesnot exceed 100 hours duration  range
 	 */
-	@Ignore /*Need survey over 100 ours */
+	@Test /*Need survey equals 100 hours */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC194, location = ComplianceReportDataProvider.class)
 	public void TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours ...");
 
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+
+		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
+		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+
+		getComplianceReportsPage().selectSurveyInfoGeoFilter(false);
+		getComplianceReportsPage().fillReport(rpt);
+
+		/* Add 100 hours survey */ //Uncomment the following 4 lines whenever the survey is ready - US3885
+//		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PIC4HR01TAG);
+//		getComplianceReportsPage().clickOnSearchSurveyButton();
+//		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+
+		/* Add greater than 100 hours survey */
+//		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC4HR01TAG);
+		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
+		getComplianceReportsPage().clickOnSearchSurveyButton();
 		assertTrue(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+
+		/* Add less than 100 hours survey */
+
+		getComplianceReportsPage().deleteDrivingSurveyByTag(SurveyorConstants.PIC8HR01TAG);
+		getComplianceReportsPage().inputSurveyTag(SurveyorConstants.PICGREATER4HRTAG);
+		getComplianceReportsPage().clickOnSearchSurveyButton();
+		assertFalse(complianceReportsPageAction.verifySurveyGreaterThan100HoursCannotBeAdded(EMPTY, getReportRowID(reportDataRowID1)));
+
+		getComplianceReportsPage().addReport();
+		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1));
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1));
 	}
 
 	/**
@@ -531,5 +559,9 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
+	}
+	
+	private ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)getReportsPage();
 	}
 }

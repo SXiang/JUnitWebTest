@@ -504,67 +504,71 @@ IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='NoLicAna' AN
 END
 
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
+-- RefGasBottle for 'SoftwareCar_2037_picarro' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='00000014-fb61-2ef6-5dd1-39c8ac533d40', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2014-01-01 00:00:00.000' AS DateTime) WHERE [Id]='00000015-db64-fde7-7e67-39c8ac544d60'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-db64-fde7-7e67-39c8ac544d60', N'00000014-fb61-2ef6-5dd1-39c8ac533d40', N'109-56-12100', -32.7, CAST(N'2014-01-01 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SoftwareCar_2037_Testcust' - 'sqaTest'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='00000014-fb61-2ef6-5dd1-39c8ac533d42', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2014-01-01 00:00:00.000' AS DateTime) WHERE [Id]='00000015-db64-fde7-7e67-39c8ac544d62'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-db64-fde7-7e67-39c8ac544d62', N'00000014-fb61-2ef6-5dd1-39c8ac533d42', N'109-56-12100', -32.7, CAST(N'2014-01-01 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'SoftwareCar_2037_cust' - 'sqacus'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='00000014-fb61-2ef6-5dd1-39c8ac533d41', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2014-01-01 00:00:00.000' AS DateTime) WHERE [Id]='00000015-db64-fde7-7e67-39c8ac544d61'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-db64-fde7-7e67-39c8ac544d61', N'00000014-fb61-2ef6-5dd1-39c8ac533d41', N'109-56-12100', -32.7, CAST(N'2014-01-01 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'PGE-FEDS2015' - 'PGE'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', [BatchId]='109-56-12100', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-09-29 00:00:00.000' AS DateTime) WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC544D63'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC544D63', N'C24E9253-F195-9AEC-DE1E-39D0FBB5D8A1', N'109-56-12100', -32.7 ,CAST(N'2015-09-29 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SimAuto-Surveyor1'
+-- RefGasBottle for 'SimAuto-Surveyor1' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB4F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FA982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FA982CC-6232-D7B9-F5AC-39D40114FA56', N'FB4F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SimAuto-Surveyor2'
+-- RefGasBottle for 'SimAuto-Surveyor2' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB5F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle2', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FB982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FB982CC-6232-D7B9-F5AC-39D40114FA56', N'FB5F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle2', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SimAuto-Surveyor3'
+-- RefGasBottle for 'SimAuto-Surveyor3' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='FB6F3579-843A-113E-001C-39D4011393C9', [BatchId]='Sim-RefGasBottle3', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='6FC982CC-6232-D7B9-F5AC-39D40114FA56'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'6FC982CC-6232-D7B9-F5AC-39D40114FA56', N'FB6F3579-843A-113E-001C-39D4011393C9', N'Sim-RefGasBottle3', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SimAuto-Surveyor4'
+-- RefGasBottle for 'SimAuto-Surveyor4' - 'sqacus'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='84F35FAA-71CB-44AE-AB4A-15C343F1C84A', [BatchId]='Sim-RefGasBottle4', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-09-14 00:00:00.000' AS DateTime) WHERE [Id]='10A2997C-7D61-4D27-B97A-20453837300A'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'10A2997C-7D61-4D27-B97A-20453837300A', N'84F35FAA-71CB-44AE-AB4A-15C343F1C84A', N'Sim-RefGasBottle4', -32.7 ,CAST(N'2016-09-14 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SimAuto-Surveyor5'
+-- RefGasBottle for 'SimAuto-Surveyor5' - 'PG&E'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='B432D533-83DB-4EC2-8A39-38DF4125B609', [BatchId]='Sim-RefGasBottle5', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-09-14 00:00:00.000' AS DateTime) WHERE [Id]='B65CFDB0-7964-4E1E-80CE-F0DA93A6140E'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'B65CFDB0-7964-4E1E-80CE-F0DA93A6140E', N'B432D533-83DB-4EC2-8A39-38DF4125B609', N'Sim-RefGasBottle5', -32.7 ,CAST(N'2016-09-14 00:00:00.000' AS DateTime))
--- RefGasBottle for 'SQACusSrvUnit-1'
+-- RefGasBottle for 'SQACusSrvUnit-1' - 'sqacus'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', [BatchId]='SQACusSrvUnit1-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='FA197B16-C53F-FF50-8056-39CEC9EA1F32'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'FA197B16-C53F-FF50-8056-39CEC9EA1F32', N'EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A', N'SQACusSrvUnit1-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'White Dodge'
+-- RefGasBottle for 'White Dodge' - 'sqacus'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', [BatchId]='WhiteDodge-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='AF197B16-C53F-FF50-8056-39CEC9EA1F23'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'AF197B16-C53F-FF50-8056-39CEC9EA1F23', N'DEBACFF7-E103-C14C-9DF8-39CD7B5F2A0A', N'WhiteDodge-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'Software Car'
+-- RefGasBottle for 'Software Car' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', [BatchId]='SoftwareCar-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='00000015-DB64-FDE7-7E67-39C8AC544D68'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'00000015-DB64-FDE7-7E67-39C8AC544D68', N'2AA6AC90-B839-4787-F3B5-39D4B4DCEE95', N'SoftwareCar-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
--- RefGasBottle for 'Picarro Production #10'
+-- RefGasBottle for 'Picarro Production #10' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='4A474FE4-B1AC-9A12-1F51-39CFD683AF02', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-02-19 21:47:06.363' AS DateTime) WHERE [Id]='3636977B-4928-AFD1-CAA5-39D60DAD00FA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'3636977B-4928-AFD1-CAA5-39D60DAD00FA', N'4A474FE4-B1AC-9A12-1F51-39CFD683AF02', N'109-56-12523', -32.7 ,CAST(N'2016-02-19 21:47:06.363' AS DateTime))
--- RefGasBottle for 'Light Blue Escape'
+-- RefGasBottle for 'Light Blue Escape' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='F4A45601-E357-3CED-6EE6-39D6D20B16D9', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-03-29 00:56:43.150' AS DateTime) WHERE [Id]='FF3BD070-9E44-48F6-D992-39D6D20C418E'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'FF3BD070-9E44-48F6-D992-39D6D20C418E', N'F4A45601-E357-3CED-6EE6-39D6D20B16D9', N'109-56-12523', -32.7 ,CAST(N'2016-03-29 00:56:43.150' AS DateTime))
--- RefGasBottle for 'BlackDodgeP3300'
+-- RefGasBottle for 'BlackDodgeP3300' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='47FC54A4-26ED-7306-4D1D-39D76AFC27C4', [BatchId]='RFADS2004', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-04-27 17:42:17.007' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC', N'47FC54A4-26ED-7306-4D1D-39D76AFC27C4', N'RFADS2004', -32.7 ,CAST(N'2016-04-27 17:42:17.007' AS DateTime), 0.03)
--- RefGasBottle for 'iGPS car'
+-- RefGasBottle for 'iGPS car' - 'Picarro'
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-06-28 02:52:45.447' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='AE226F93-63FB-181B-F319-39D8A7193208'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'AE226F93-63FB-181B-F319-39D8A7193208', N'EDA5A3A0-7B86-A343-69F6-39D8A7186DC1', N'109-56-12523', -32.7 ,CAST(N'2016-06-28 02:52:45.447' AS DateTime), 0.03)
--- RefGasBottle for 'NoLicAna'
+-- RefGasBottle for 'NoLicAna' - CustomerWithNoLicense''
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='1E7426FF-6C7C-EFF3-303E-39DA802825EB', [BatchId]='NoLicSur-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='24F12158-BB25-09EF-1DFA-39DA8028A2EA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'24F12158-BB25-09EF-1DFA-39DA8028A2EA', N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', N'NoLicSur-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))

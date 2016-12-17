@@ -26,6 +26,10 @@ public class DataAccessUnitTests {
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
+		Log.info("Executing testCustomerMaterialType_ByName() ...");
+		testCustomerMaterialType_ByName();
+		Log.info("Executing testCustomerBoundaryType_ByName() ...");
+		testCustomerBoundaryType_ByName();
 		Log.info("Executing testSurvey_GetSurveyByTag_Valid() ...");
 		testSurvey_GetSurveyByTag_Valid();
 		Log.info("Executing testSurvey_GetSurveyByTag_Invalid() ...");
@@ -91,6 +95,22 @@ public class DataAccessUnitTests {
 
 		Log.info("DONE!");
 
+	}
+
+	private static void testCustomerMaterialType_ByName() {
+		String customerName = "sqacus";
+		CustomerMaterialType materialType = CustomerMaterialType.getCustomerMaterialTypeByName("Cast Iron",
+				Customer.getCustomer(customerName).getId());
+		Log.info(String.format("MaterialType ID=[%s]", materialType.getId()));
+		Assert.assertTrue(materialType != null, "Value cannot be NULL.");
+	}
+
+	private static void testCustomerBoundaryType_ByName() {
+		String customerName = "sqacus";
+		CustomerBoundaryType boundaryType = CustomerBoundaryType.getCustomerBoundaryTypeByName("Small Boundary",
+				Customer.getCustomer(customerName).getId());
+		Log.info(String.format("BoundaryType ID=[%s]", boundaryType.getId()));
+		Assert.assertTrue(boundaryType != null, "Value cannot be NULL.");
 	}
 
 	private static void testSurvey_GetSurveyByTag_Valid() {
@@ -325,7 +345,7 @@ public class DataAccessUnitTests {
 		Iterator<StoredProcEQGetEQData> iterator = list.iterator();
 		Assert.assertTrue(!iterator.hasNext());
 	}
-	
+
 
 	private static void testStoredProcLisaInvestigationShowIndication_Valid() {
 		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("166328b0-b266-a7c2-3e41-39d7a866a18c");

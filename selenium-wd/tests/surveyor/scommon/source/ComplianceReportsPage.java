@@ -272,7 +272,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
-
+	private static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
 	public static List<String[]> preCoverageForecastTo70;
@@ -1837,7 +1837,15 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return btnDeleteDrivingSurveys.isEmpty();
 	}
-
+	
+	public boolean deleteDrivingSurveyByTag(String tag) {
+		String xpathToDeleteSurveyBtnByTag = String.format(deleteSurveyBtnByTagParameter, tag);
+		WebElement btnDelete = driver.findElement(By.xpath(xpathToDeleteSurveyBtnByTag));
+		jsClick(btnDelete);
+		this.waitForPageToLoad();
+		return true;
+	}
+	
 	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
 		this.btnDeleteDrivingSurvey.click();
 		this.waitForCopyReportPagetoLoad();
