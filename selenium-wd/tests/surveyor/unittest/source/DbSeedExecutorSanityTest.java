@@ -15,7 +15,7 @@ import surveyor.dbseed.source.DbSeedExecutor;
 
 public class DbSeedExecutorSanityTest extends DbSeedExecutorBaseTest {
 	@BeforeClass
-	public static void BeforeClass()	{
+	public static void beforeTestClass()	{
 		TestSetup testSetup = new TestSetup(true /* initialize */);
 		String rootPath;
 		try {
