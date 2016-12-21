@@ -1,33 +1,39 @@
 ﻿# ---------------------------------------------------------------
 # SAMPLE USAGE:
-#   .\Invoke-DBSeed.ps1 `
-#           -BuildWorkingDir "C:\Repositories\surveyor-qa"  `
-#           -AutomationReportingAPIBaseUrl "http://localhost:63087" `
-#           -APIName "Measurement"  `
-#           -EnvironmentID 3  `
-# ---------------------------------------------------------------
+#   .\Invoke-DBSeed.ps1 -BuildWorkingDir "C:\Repositories\surveyor-qa" `
+#       -AutomationReportingAPIBaseUrl "http://localhost:63087" `
+#       -ArtifactoryBaseUrl "http://picarro.artifactoryonline.com/picarro" `
+#       -ArtifactoryAPIKey "AKCp2VoGPeRruh1fKTMx8K99yceZRay15wBQHHuoFoDuAgib16cSrM8VuKaTtjznPeEC9QXGL" `
+#       -ArtifactoryRepository "picarro-generic-private-qa" `
+#       -ArtifactoryFolder "2.4" `
+#       -BinaryVersionToUse "2.4.0.5a4erf2" `   
+#       -EnvironmentID 1
+
 param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $BuildWorkingDir = "C:\Repositories\surveyor",                       # Path to working directory (for eg. C:\Repositories\surveyor)
+  [Parameter(Mandatory=$true)]
+  [String] $BuildWorkingDir,                       # Path to working directory (for eg. C:\Repositories\surveyor)
+
+  [Parameter(Mandatory=$true)]
+  [String] $AutomationReportingAPIBaseUrl,         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
+
+  [Parameter(Mandatory=$true)]
+  [String] $ArtifactoryBaseUrl,                    # Artifactory Base Url. For eg. http://picarro.artifactoryonline.com/picarro
+
+  [Parameter(Mandatory=$true)]
+  [String] $ArtifactoryAPIKey,                     # Artifactory API Key. 
+
+  [Parameter(Mandatory=$true)]
+  [String] $ArtifactoryRepository,
+
+  [Parameter(Mandatory=$true)]
+  [String] $ArtifactoryFolder,
+
+  [Parameter(Mandatory=$true)]
+  [int] $EnvironmentID,
 
   [Parameter(Mandatory=$false)]
-  [String] $AutomationReportingAPIBaseUrl = "http://localhost:63087",         # Path to AutomationReporting API Base Url. For eg. http://localhost:63087
-
-  [Parameter(Mandatory=$false)]
-  [String] $ArtifactoryBaseUrl = "http://picarro.artifactoryonline.com/picarro",         # Artifactory Base Url. For eg. http://picarro.artifactoryonline.com/picarro
-
-  [Parameter(Mandatory=$false)]
-  [String] $ArtifactoryAPIKey = "AKCp2VoGPeRruh1fKTMx8K99yceZRay15wBQHHuoFoDuAgib16cSrM8VuKaTtjznPeEC9QXGL",         # Artifactory API Key. 
-
-  [Parameter(Mandatory=$false)]
-  [String] $ArtifactoryRepository = "picarro-generic-private-qa",
-
-  [Parameter(Mandatory=$false)]
-  [String] $BinaryVersionToUse = "",
-
-  [Parameter(Mandatory=$false)]
-  [int] $EnvironmentID = 1
+  [String] $BinaryVersionToUse                     # If NOT specified latest version will be searched and used.
 )
 
 # 1.
@@ -37,7 +43,10 @@ if (-not (Test-Path $qaBinariesDestFolder)) {
     New-item -ItemType Directory $qaBinariesDestFolder
 }
 
-$version = $BinaryVersionToUse
+if ($PSBoundParameters.ContainsKey("BinaryVersionToUse")) {
+    $version = $BinaryVersionToUse
+}
+
 $dbSeedJarFile = ""
 $dbSeedDepZipFile = ""
 
@@ -89,12 +98,12 @@ $dbSeedDepZipFile = "$ZIPPrefix-$version.zip"
 $jarDownloadPath = "$qaBinariesDestFolder\$dbSeedJarFile"
 $zipDownloadPath = "$qaBinariesDestFolder\$dbSeedDepZipFile"
 
-$downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$dbSeedJarFile"
+$downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFolder/$dbSeedJarFile"
 "Start downloading JAR file from->[$downloadURL], to->[$jarDownloadPath]"
 Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $jarDownloadPath
 "DONE downloading JAR file."
 
-$downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$dbSeedDepZipFile"
+$downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFolder/$dbSeedDepZipFile"
 "Start downloading ZIP file from->[$downloadURL], to->[$zipDownloadPath]"
 Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $zipDownloadPath
 "DONE downloading JAR file."

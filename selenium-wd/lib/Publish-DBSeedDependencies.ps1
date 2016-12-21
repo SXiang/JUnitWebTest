@@ -1,13 +1,19 @@
-﻿param
+﻿# 
+# Sample Usage: 
+#   .\Publish-DBSeedDependencies.ps1 -buildWorkingDir "C:\Repositories\surveyor-qa" `
+#       -dbSeedReportFileRelativePath "selenium-wd\reports\sanity\*DbSeedExecutorSanityTest.html" `
+#       -WaitTimeInMinutesForDBSeedPush 40
+
+param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $buildWorkingDir = "C:\Repositories\surveyor-qa",
+  [Parameter(Mandatory=$true)]
+  [String] $buildWorkingDir,
 
-  [Parameter(Mandatory=$false)]
-  [String] $dbSeedReportFileRelativePath = "selenium-wd\reports\sanity\*DbSeedExecutorSanityTest.html",
+  [Parameter(Mandatory=$true)]
+  [String] $dbSeedReportFileRelativePath,
 
-  [Parameter(Mandatory=$false)]
-  [int] $WaitTimeInMinutesForDBSeedPush = 40
+  [Parameter(Mandatory=$true)]
+  [int] $WaitTimeInMinutesForDBSeedPush
 )
 
 $helperScriptFolder = "selenium-wd\lib\HelperScripts"
@@ -21,7 +27,7 @@ $DBSEED_REPORT_HTML_FILEPATTERN = "$BuildWorkingDir\$dbSeedReportFileRelativePat
 $WaitTimeInSecondsForDBSeedPush = 60 * $WaitTimeInMinutesForDBSeedPush
 while ($WaitTimeInSecondsForDBSeedPush -gt 0) {
     if (Test-Path $DBSEED_REPORT_HTML_FILEPATTERN) {
-        Write-Host "DB seed data push COMPLETE. Start publishing DBSeedJAR dependencies ..."
+        Write-Host "DB seed data push complete. Start publishing DBSeedJAR dependencies ..."
         $dbSeedPushComplete = $true
         break
     } else {
@@ -104,6 +110,12 @@ Get-ChildItem $dest | % {
         $version = $file.Name.Replace($DBSEED_PREFIX, "").Replace(".jar", "")
     }
 }
+
+# copy manifest.xml file (post $version computation).
+$dest = "$PUBLISH_DIR\manifest-$version.xml"
+$source = "$buildWorkingDir\selenium-wd\manifest.xml"
+copy $source $dest
+#Rename-Item "$PUBLISH_DIR\manifest.xml" "$PUBLISH_DIR\manifest-$version.xml"
 
 # compress the 'selenium-wd' folder
 #  (delete existing archive file if it exists)
