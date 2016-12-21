@@ -29,7 +29,7 @@ public class DbSeedExecutorSanityTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
-	public void testExecuteAllSeed() throws Exception {
+	public void testSanityDBSeedPush() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
 		verifyGenericSeedDataIsPresent();
 
@@ -38,10 +38,8 @@ public class DbSeedExecutorSanityTest extends DbSeedExecutorBaseTest {
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
 		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
 
-		DbSeedExecutor.executeSurveyDataSeed();
-		verifySurveySeedDataIsPresent();
-
-		DbSeedExecutor.executeSurveyDataSeed(DbSeedExecutor.SQACUS_CUSTOMER_SURVEYS);
-		verifySurveySeedDataIsPresent(DbSeedExecutor.SQACUS_CUSTOMER_SURVEYS);
+		final String[] surveyTags = {"assessment-1", "EthaneStnd", "stnd-pic"};
+		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
+		verifySurveySeedDataIsPresent(surveyTags);
 	}
 }

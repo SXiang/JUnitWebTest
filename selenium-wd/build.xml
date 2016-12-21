@@ -207,7 +207,7 @@
   </target>
   <target name="dbseedtests" depends="compile_dbseed" description="Run dbseed unit tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-      <sysproperty key="testReportCategory" value="DBSeed" />
+      <sysproperty key="testReportCategory" value="Sanity" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
@@ -215,7 +215,7 @@
           <include name="**/*.jar" />
         </fileset>
       </classpath>
-      <batchtest fork="yes" todir="${reports}/regression/xml">
+      <batchtest fork="yes" todir="${reports}/sanity/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/DbSeedExecutorSanityTest.class" />

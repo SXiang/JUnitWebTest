@@ -38,8 +38,9 @@ import surveyor.dbseed.source.SegmentDbSeedBuilder;
 import surveyor.dbseed.source.SurveyConditionDbSeedBuilder;
 import surveyor.dbseed.source.SurveyDbSeedBuilder;
 import surveyor.dbseed.source.SurveyResultDbSeedBuilder;
+import surveyor.scommon.source.BaseTest;
 
-public class DbSeedExecutorBaseTest {
+public class DbSeedExecutorBaseTest extends BaseTest {
 
 	protected void verifyGenericSeedDataIsPresent() throws Exception, SQLException {
 		// Verify generic seed data is now present in the DB.
