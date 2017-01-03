@@ -68,7 +68,7 @@ $libFolder = "selenium-wd\lib"
 
 $authToken = Execute-WithRetry -RetryDelay 1 -MaxRetries 5 { Get-ReportingAppAuthToken -BuildWorkingDir $BuildWorkingDir -AutomationReportingAPIBaseUrl $AutomationReportingAPIBaseUrl }
 
-# Post perf stat info to API/ProductTestBinariesMap url
+# Post product/test binaries mapping to API/ProductTestBinariesMap url
 $productTestBinariesMapApiUrl = "api/ProductTestBinariesMap"
 $postContentType = "application/json; charset=UTF-8"
 $Headers = @{

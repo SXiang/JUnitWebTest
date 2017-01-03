@@ -3,15 +3,12 @@
  */
 package common.source;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,38 +21,22 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.runner.Description;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.relevantcodes.extentreports.DisplayOrder;
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.NetworkMode;
-
-import net.lightbody.bmp.BrowserMobProxy;
-import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.client.ClientUtil;
-import net.lightbody.bmp.core.har.Har;
-import surveyor.api.source.ReportJobsStat;
-import surveyor.dataaccess.source.Survey;
 import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
@@ -1077,10 +1058,6 @@ public class TestSetup {
 			final String TAG_TEST_BINARY_GIT_HASH = "TestBinaryGitHash";
 			final String TAG_TEST_BRANCH = "TestBranch";
 
-			// -BuildWorkingDir '%~1' -AutomationReportingAPIBaseUrl '%~2' -TestBinaryFileName '%~3' -TestBinaryMajor '%~4'
-			// -TestBinaryMinor '%~5' -TestBinaryBuildNumber '%~6' -TestBinaryGitHash '%~7' -TestBranch '%~8' -EnvironmentUrl '%~9'
-			// -EnvironmentDBName '%~1' -EnvironmentBuildVersion '%~2' -BuildDate '%~3' -BuildSuccess '%~4'
-
 			String workingFolder = getRootPath();
 			String postBinariesMapCmdFolder = getExecutionPath(getRootPath()) + "lib";
 			String postBinariesMapCmdFullPath = postBinariesMapCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
@@ -1089,6 +1066,10 @@ public class TestSetup {
 					TAG_TEST_BINARY_MAJOR, TAG_TEST_BINARY_MINOR, TAG_TEST_BINARY_BUILD_NUMBER, TAG_TEST_BINARY_GIT_HASH, TAG_TEST_BRANCH);
 			HashMap<String, String> nodeValues = xmlUtil.getNodeValuesByTagNames(manifestFilePath, tagNames);
 
+			// Script parameters:
+			// -BuildWorkingDir '%~1' -AutomationReportingAPIBaseUrl '%~2' -TestBinaryFileName '%~3' -TestBinaryMajor '%~4'
+			// -TestBinaryMinor '%~5' -TestBinaryBuildNumber '%~6' -TestBinaryGitHash '%~7' -TestBranch '%~8' -EnvironmentUrl '%~9'
+			// -EnvironmentDBName '%~10' -EnvironmentBuildVersion '%~11' -BuildDate '%~12' -BuildSuccess '%~13'
 			String command = "cd \"" + postBinariesMapCmdFolder + "\" && " + postBinariesMapCmdFullPath +
 					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 							workingFolder,
