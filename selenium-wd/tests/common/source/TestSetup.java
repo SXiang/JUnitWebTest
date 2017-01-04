@@ -3,15 +3,12 @@
  */
 package common.source;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,38 +16,27 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.runner.Description;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.relevantcodes.extentreports.DisplayOrder;
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.NetworkMode;
-
-import net.lightbody.bmp.BrowserMobProxy;
-import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.client.ClientUtil;
-import net.lightbody.bmp.core.har.Har;
-import surveyor.api.source.ReportJobsStat;
-import surveyor.dataaccess.source.Survey;
 import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.TestEnvironmentActions;
@@ -71,6 +57,7 @@ public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
+	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
 	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
 	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
@@ -87,7 +74,6 @@ public class TestSetup {
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
 
 	private static Process analyzerProcess;
-	private BrowserMobProxy networkProxy;
 
 	private Properties testProp;
 
@@ -187,93 +173,6 @@ public class TestSetup {
 	public TestSetup(Boolean initialize) {
 		if (initialize) {
 			initialize();
-		}
-	}
-
-	/* NETWORK PROXY related methods */
-	/*
-	 * EXAMPLE USAGE: 1. Using Proxy to limit Upstream/Downstream KBPS.
-	 * startNetworkProxy(true|false); setNetworkProxyDownstreamKbps(<long>);
-	 * setNetworkProxyUpstreamKbps(<long>); ... <perform test actions> ...
-	 * stopNetworkProxy();
-	 *
-	 * 2. Using Proxy to turn OFF/ON HTTP Traffic for Selenium tests.
-	 * turnOffHttpTraffic(); ... <perform test actions> ... turnOnHttpTraffic()
-	 */
-
-	public void startNetworkProxy(boolean createHarFile) throws MalformedURLException {
-		// start the proxy
-		networkProxy = new BrowserMobProxyServer();
-		networkProxy.start(0);
-
-		// when we start the network proxy we are recycling the driver object.
-		// Quit the driver if present.
-		if (WebDriverFactory.getDriver() != null) {
-			WebDriverFactory.getDriver().quit();
-		}
-
-		// get the selenium proxy object
-		Proxy seleniumProxy = ClientUtil.createSeleniumProxy(networkProxy);
-		WebDriverFactory.setChromeBrowserCapabilities(seleniumProxy);
-
-		if (createHarFile) {
-			// create new Har file.
-			networkProxy.newHar("Automation Proxy Results");
-		}
-	}
-
-	public void stopNetworkProxy() {
-		if (networkProxy != null) {
-			if (networkProxy.isStarted()) {
-				networkProxy.stop();
-			}
-		}
-	}
-
-	public Har getNetworkProxyHarData() {
-		if (networkProxy != null) {
-			return networkProxy.getHar();
-		}
-		return null;
-	}
-
-	public void setNetworkProxyDownstreamKbps(long kbps) {
-		if (networkProxy != null) {
-			networkProxy.setReadBandwidthLimit(kbps);
-		}
-	}
-
-	public void setNetworkProxyUpstreamKbps(long kbps) {
-		if (networkProxy != null) {
-			networkProxy.setWriteBandwidthLimit(kbps);
-		}
-	}
-
-	public void setNetworkProxyLatency(long latency, TimeUnit timeUnit) {
-		if (networkProxy != null) {
-			networkProxy.setLatency(latency, timeUnit);
-		}
-	}
-
-	public void turnOffHttpTraffic() throws MalformedURLException {
-		if (networkProxy == null || !networkProxy.isStarted()) {
-			startNetworkProxy(false /* createHarFile */);
-		}
-
-		this.setNetworkProxyDownstreamKbps(0);
-		this.setNetworkProxyUpstreamKbps(0);
-	}
-
-	public void turnOnHttpTraffic() {
-		if (networkProxy != null) {
-			// when we stop the network proxy we should recycling the driver
-			// object to remove the Proxy capability.
-			if (WebDriverFactory.getDriver() != null) {
-				WebDriverFactory.getDriver().quit();
-			}
-
-			WebDriverFactory.setChromeBrowserCapabilities(); // No proxy.
-			this.stopNetworkProxy();
 		}
 	}
 
@@ -1072,25 +971,6 @@ public class TestSetup {
 		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
-	public static String getNetworkProxyHarFileContent() throws Exception {
-		Har harData = TestContext.INSTANCE.getTestSetup().getNetworkProxyHarData();
-		String harDataFile = TestSetup.getUUIDString() + "_HarData.dat";
-		String harDataFullPath = Paths.get(TestSetup.getSystemTempDirectory(), harDataFile).toString();
-		Log.info(String.format("Creating HAR data file at: %s", harDataFullPath));
-		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(harDataFullPath));
-		try {
-			// HarData file should be created in the system temp directory.
-			harData.writeTo(bufferedWriter);
-			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
-		} catch (IOException e) {
-			Log.error(e.toString());
-		} finally {
-			bufferedWriter.close();
-		}
-
-		return FileUtility.readFileContents(harDataFullPath);
-	}
-
 	private static void stopAnalyzerIfRunning() throws UnknownHostException {
 		if (isAnalyzerRunning()) {
 			Log.info("An instance of Analyzer EXE is currently running. Stopping...");
@@ -1167,6 +1047,55 @@ public class TestSetup {
 		}
 	}
 
+	public void postProductTestBinariesMap(String binaryFilePath) throws ParserConfigurationException, SAXException {
+		try {
+			XmlUtility xmlUtil = new XmlUtility();
+			final String TAG_ENVIRONMENT_URL = "EnvironmentUrl";
+			final String TAG_ENVIRONMENT_DB_NAME = "EnvironmentDBName";
+			final String TAG_ENVIRONMENT_BUILD_VERSION = "EnvironmentBuildVersion";
+			final String TAG_TEST_BINARY_MAJOR = "TestBinaryMajor";
+			final String TAG_TEST_BINARY_MINOR = "TestBinaryMinor";
+			final String TAG_TEST_BINARY_BUILD_NUMBER = "TestBinaryBuildNumber";
+			final String TAG_TEST_BINARY_GIT_HASH = "TestBinaryGitHash";
+			final String TAG_TEST_BRANCH = "TestBranch";
+
+			String workingFolder = getRootPath();
+			String seleniumFolder = getExecutionPath(getRootPath());
+			String postBinariesMapCmdFolder = seleniumFolder + "lib";
+			String postBinariesMapCmdFullPath = postBinariesMapCmdFolder + File.separator + POST_PRODUCT_TEST_BINARIES_MAP_CMD;
+			String manifestFilePath = Paths.get(seleniumFolder, "manifest.xml").toString();
+			List<String> tagNames = Arrays.asList(TAG_ENVIRONMENT_URL, TAG_ENVIRONMENT_DB_NAME, TAG_ENVIRONMENT_BUILD_VERSION,
+					TAG_TEST_BINARY_MAJOR, TAG_TEST_BINARY_MINOR, TAG_TEST_BINARY_BUILD_NUMBER, TAG_TEST_BINARY_GIT_HASH, TAG_TEST_BRANCH);
+			HashMap<String, String> nodeValues = xmlUtil.getNodeValuesByTagNames(manifestFilePath, tagNames);
+			Log.info(String.format("Values read from '%s' -> %s", manifestFilePath, LogHelper.mapToString(nodeValues)));
+
+			// Script parameters:
+			// -BuildWorkingDir '%~1' -AutomationReportingAPIBaseUrl '%~2' -TestBinaryFileName '%~3' -TestBinaryMajor '%~4'
+			// -TestBinaryMinor '%~5' -TestBinaryBuildNumber '%~6' -TestBinaryGitHash '%~7' -TestBranch '%~8' -EnvironmentUrl '%~9'
+			// -EnvironmentDBName '%~10' -EnvironmentBuildVersion '%~11' -BuildDate '%~12' -BuildSuccess '%~13'
+			String command = "cd \"" + postBinariesMapCmdFolder + "\" && " + postBinariesMapCmdFullPath +
+					String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+							workingFolder,
+							getAutomationReportingApiEndpoint(),
+							binaryFilePath,
+							nodeValues.get(TAG_TEST_BINARY_MAJOR),
+							nodeValues.get(TAG_TEST_BINARY_MINOR),
+							nodeValues.get(TAG_TEST_BINARY_BUILD_NUMBER),
+							nodeValues.get(TAG_TEST_BINARY_GIT_HASH),
+							nodeValues.get(TAG_TEST_BRANCH),
+							nodeValues.get(TAG_ENVIRONMENT_URL),
+							nodeValues.get(TAG_ENVIRONMENT_DB_NAME),
+							nodeValues.get(TAG_ENVIRONMENT_BUILD_VERSION),
+							DateUtility.getLongDateString(LocalDateTime.now()),
+							"true" /*buildSuccess*/);
+			Log.info("Posting product test binaries map. Command -> " + command);
+			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		} catch (IOException e) {
+			Log.error(e.toString());
+		} finally {
+		}
+	}
+
 	public void postReportJobPerfStat(String reportTitle, String reportJobTypeId, String reportJobTypeName,
 			 LocalDateTime reportJobStartTime, LocalDateTime reportJobEndTime,
 			 LocalDateTime testExecutionStartDate, LocalDateTime testExecutionEndDate,
@@ -1215,130 +1144,6 @@ public class TestSetup {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
-	}
-
-	public static void main(String[] args) {
-		TestSetup testSetup = new TestSetup(true /* initialization=TRUE */);
-		TestContext.INSTANCE.setTestSetup(testSetup);
-
-		// Run the Unit test for BrowserMob Proxy.
-		testBrowserMobProxyMethods(testSetup);
-	}
-
-	/**
-	 * Executes the unit tests for BrowserMobProxy related methods.
-	 *
-	 * @param testSetup
-	 */
-	private static void testBrowserMobProxyMethods(TestSetup testSetup) {
-		String validTag = "stnd-sqacudr";
-		Survey objSurvey = null;
-		boolean stoppedProxy = false;
-		try {
-			Log.info("Running test - testStartNetworkProxy() ...");
-			testStartNetworkProxy(testSetup);
-			Log.info("Running test - testNetworkConnectionOff() ...");
-			testNetworkConnectionOff(testSetup, validTag, objSurvey);
-			Log.info("Running test - testNetworkConnectionOn() ...");
-			testNetworkConnectionOn(testSetup, validTag, objSurvey);
-			stoppedProxy = true;
-			Log.info("Running test - testHarDataFile() ...");
-			testHarDataFile(testSetup);
-		} catch (Exception e) {
-			Assert.fail("UNEXPECTED EXCEPTION: " + ExceptionUtility.getStackTraceString(e));
-		} finally {
-			if (!stoppedProxy) {
-				testStopNetworkProxy(testSetup);
-				if (testSetup.getDriver() != null) {
-					testSetup.getDriver().quit();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Tests startNetworkProxy() method.
-	 *
-	 * @param testSetup
-	 * @throws MalformedURLException
-	 */
-	private static void testStartNetworkProxy(TestSetup testSetup) throws MalformedURLException {
-		testSetup.startNetworkProxy(true);
-	}
-
-	/**
-	 * Tests stopNetworkProxy() method.
-	 *
-	 * @param testSetup
-	 */
-	private static void testStopNetworkProxy(TestSetup testSetup) {
-		testSetup.stopNetworkProxy();
-	}
-
-	/**
-	 * Tests getNetworkProxyHarData() method.
-	 *
-	 * @param testSetup
-	 */
-	private static void testHarDataFile(TestSetup testSetup) throws IOException {
-		Har harData = testSetup.getNetworkProxyHarData();
-		Assert.assertTrue(harData != null, "Har Data should NOT be NULL.");
-		String harDataFile = TestSetup.getUUIDString() + "_HarData.dat";
-		String harDataFullPath = Paths.get(TestSetup.getSystemTempDirectory(), harDataFile).toString();
-		Log.info(String.format("Creating HAR data file at: %s", harDataFullPath));
-		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(harDataFullPath));
-		try {
-			// HarData file should be created in the system temp directory.
-			harData.writeTo(bufferedWriter);
-			Log.info(String.format("Created HAR data file at: %s", harDataFullPath));
-		} catch (IOException e) {
-			// No exception thrown here.
-			e.printStackTrace();
-		} finally {
-			bufferedWriter.close();
-		}
-		Assert.assertTrue(FileUtility.readFileContents(harDataFullPath).length() > 0,
-				"HarData file should have content.");
-	}
-
-	/**
-	 * Tests turnOnNetworkConnection() method.
-	 *
-	 * @param testSetup
-	 */
-	private static void testNetworkConnectionOn(TestSetup testSetup, String validTag, Survey objSurvey) {
-		testSetup.turnOnHttpTraffic();
-		try {
-			objSurvey = Survey.getSurvey(validTag);
-			testSetup.getDriver().get(testSetup.baseURL);
-		} catch (Exception e) {
-			// No exception should be thrown here, as Network Connection is back
-			// ON.
-			Log.error("UNEXPECTED ERROR: " + ExceptionUtility.getStackTraceString(e));
-		}
-		Assert.assertTrue(objSurvey != null, "Survey object should NOT be NULL.");
-		Assert.assertTrue(testSetup.getDriver().getPageSource().contains("Log In"));
-	}
-
-	/**
-	 * Tests turnOffNetworkConnection() method.
-	 *
-	 * @param testSetup
-	 * @throws MalformedURLException
-	 */
-	private static void testNetworkConnectionOff(TestSetup testSetup, String validTag, Survey objSurvey)
-			throws MalformedURLException {
-		testSetup.turnOffHttpTraffic();
-		try {
-			objSurvey = Survey.getSurvey(validTag);
-			testSetup.getDriver().get(testSetup.baseURL);
-		} catch (Exception e) {
-			// This should throw an exception as Network Connection is OFF.
-			Log.info("EXPECTED ERROR: " + ExceptionUtility.getStackTraceString(e));
-		}
-		Assert.assertTrue(objSurvey != null, "Survey object should NOT be NULL. "
-				+ "Network connection is NOT disabled. ONLY Http traffic should be disabled.");
-		Assert.assertTrue(testSetup.getDriver().getPageSource().contains("ERR_EMPTY_RESPONSE"));
 	}
 
 	public void uploadSurveys() throws Exception {
