@@ -82,6 +82,11 @@ public class CustomerMaterialType extends BaseEntity {
 		return objCustomerMaterialType;
 	}
 
+	public static CustomerMaterialType getCustomerMaterialTypeByName(String materialName, String customerId) {
+		CustomerMaterialType objCustomerMaterialType = new CustomerMaterialType().getByName(materialName, customerId);
+		return objCustomerMaterialType;
+	}
+
 	public CustomerMaterialType get(String id) {
 		CustomerMaterialType objCustomerMaterialType = null;
 
@@ -94,6 +99,23 @@ public class CustomerMaterialType extends BaseEntity {
 			if (objCustomerMaterialTypeList!=null && objCustomerMaterialTypeList.size()>0) {
 				objCustomerMaterialType = objCustomerMaterialTypeList.get(0);
 				DBCache.INSTANCE.set(CACHE_KEY + id, objCustomerMaterialType);
+			}
+		}
+		return objCustomerMaterialType;
+	}
+
+	public CustomerMaterialType getByName(String materialName, String customerId) {
+		CustomerMaterialType objCustomerMaterialType = null;
+
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+customerId+materialName)) {
+			objCustomerMaterialType = (CustomerMaterialType)DBCache.INSTANCE.get(CACHE_KEY+customerId+materialName);
+		} else {
+			String SQL = "SELECT * FROM dbo.[CustomerMaterialType] WHERE CustomerId='" + customerId + "' AND [Description]='" + materialName + "'";
+			ArrayList<CustomerMaterialType> objCustomerMaterialTypeList = load(SQL);
+			if (objCustomerMaterialTypeList!=null && objCustomerMaterialTypeList.size()>0) {
+				objCustomerMaterialType = objCustomerMaterialTypeList.get(0);
+				DBCache.INSTANCE.set(CACHE_KEY+customerId+materialName, objCustomerMaterialType);
 			}
 		}
 		return objCustomerMaterialType;

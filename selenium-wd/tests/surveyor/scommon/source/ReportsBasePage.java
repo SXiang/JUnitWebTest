@@ -862,7 +862,34 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
+	public boolean isMaxSurveyDurationReached(){
+		Log.info("Check if 100 hours max survey duration reached");
+		return (SurveyorConstants.MAXSURVEYDURATIONREACHED).equals(getAddServeysBtnLabel());
+	}
+	
+	public String getAddServeysBtnLabel(){
+		String btnLable = "Add Surveys";
+		String btnLableMsg = btnLable;
+		try{
+			btnLableMsg = (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>() {
+			    public String apply(WebDriver d) {
+			    	String msg = btnAddSurveys.getAttribute("value");
+			        if(btnLable.isEmpty() || msg.equals(btnLable)){
+			        	return null;
+			        }
+			        return msg;
+			    }
+			});
+		}catch(Exception e){
+			Log.warn("No message returned by 'Add Surveys'");
+		}
+		Log.info("Add Surveys button is showing as '"+btnLableMsg+"'");
+		return btnLableMsg;
+	}
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) throws Exception {
+		selectSurveysAndAddToReport(selectAll, numSurveysToSelect, true);
+	}
+	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect, boolean waitForSurvyesToBeAdded) throws Exception {
 		Log.method("selectSurveysAndAddToReport", selectAll, numSurveysToSelect);
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
@@ -920,7 +947,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			// Add the selected surveys
 			clickOnAddSurveysButton();
-			waitForSelectedSurveysToBeAdded(numSurveysToSelect);
+			if(waitForSurvyesToBeAdded){
+			   waitForSelectedSurveysToBeAdded(numSurveysToSelect);
+			}
 		}
 	}
 

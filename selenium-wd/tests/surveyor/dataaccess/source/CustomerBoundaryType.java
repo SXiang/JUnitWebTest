@@ -102,6 +102,11 @@ public class CustomerBoundaryType extends BaseEntity {
 		return objCustomerBoundaryType;
 	}
 
+	public static CustomerBoundaryType getCustomerBoundaryTypeByName(String boundaryName, String customerId) {
+		CustomerBoundaryType objCustomerBoundaryType = new CustomerBoundaryType().getByName(boundaryName, customerId);
+		return objCustomerBoundaryType;
+	}
+
 	public CustomerBoundaryType get(String id) {
 		CustomerBoundaryType objCustomerBoundaryType = null;
 
@@ -114,6 +119,23 @@ public class CustomerBoundaryType extends BaseEntity {
 			if (objCustomerBoundaryTypeList!=null && objCustomerBoundaryTypeList.size()>0) {
 				objCustomerBoundaryType = objCustomerBoundaryTypeList.get(0);
 				DBCache.INSTANCE.set(CACHE_KEY + id, objCustomerBoundaryType);
+			}
+		}
+		return objCustomerBoundaryType;
+	}
+
+	public CustomerBoundaryType getByName(String boundaryName, String customerId) {
+		CustomerBoundaryType objCustomerBoundaryType = null;
+
+		// Get from cache if present. Else fetch from Database.
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY+customerId+boundaryName)) {
+			objCustomerBoundaryType = (CustomerBoundaryType)DBCache.INSTANCE.get(CACHE_KEY+customerId+boundaryName);
+		} else {
+			String SQL = "SELECT * FROM dbo.[CustomerBoundaryType] WHERE CustomerId='" + customerId + "' AND [FeatureClassDescription]='" + boundaryName + "'";
+			ArrayList<CustomerBoundaryType> objCustomerBoundaryTypeList = load(SQL);
+			if (objCustomerBoundaryTypeList!=null && objCustomerBoundaryTypeList.size()>0) {
+				objCustomerBoundaryType = objCustomerBoundaryTypeList.get(0);
+				DBCache.INSTANCE.set(CACHE_KEY+customerId+boundaryName, objCustomerBoundaryType);
 			}
 		}
 		return objCustomerBoundaryType;

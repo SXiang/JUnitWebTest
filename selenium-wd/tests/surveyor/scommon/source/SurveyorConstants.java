@@ -320,18 +320,19 @@ public final class SurveyorConstants {
 	/*
 	 * Long driving surveys.
 	 */
-	public static final String PIC8HR01TAG = "8HourSurvey01";
-	public static final String PIC8HR02TAG = "8HourSurvey02";
-	public static final String PIC8HR03TAG = "8HourSurvey03";
-	public static final String PIC8HR04TAG = "8HourSurvey04";
-	public static final String PIC8HR05TAG = "8HourSurvey05";
-	public static final String PIC8HR06TAG = "8HourSurvey06";
-	public static final String PIC8HR07TAG = "8HourSurvey07";
-	public static final String PIC8HR08TAG = "8HourSurvey08";
-	public static final String PIC8HR09TAG = "8HourSurvey09";
-	public static final String PIC8HR10TAG = "8HourSurvey10";
-	public static final String PIC8HR11TAG = "8HourSurvey11";
-	public static final String PIC8HR12TAG = "8HourSurvey12";
+	public static final String PIC8HR01TAG = "8hoursurvey01";
+	public static final String PIC8HR02TAG = "8hoursurvey02";
+	public static final String PIC8HR03TAG = "8hoursurvey03";
+	public static final String PIC8HR04TAG = "8hoursurvey04";
+	public static final String PIC8HR05TAG = "8hoursurvey05";
+	public static final String PIC8HR06TAG = "8hoursurvey06";
+	public static final String PIC8HR07TAG = "8hoursurvey07";
+	public static final String PIC8HR08TAG = "8hoursurvey08";
+	public static final String PIC8HR09TAG = "8hoursurvey09";
+	public static final String PIC8HR10TAG = "8hoursurvey10";
+	public static final String PIC8HR11TAG = "8hoursurvey11";
+	public static final String PIC8HR12TAG = "8hoursurvey12";
+	public static final String PIC4HR01TAG = "4hoursurvey01";
 	public static final String PICLESS4HRTAG = "LessThan4Hour";
 	public static final String PICGREATER4HRTAG = "GreaterThan4Hour";
 
@@ -347,6 +348,7 @@ public final class SurveyorConstants {
 	public static final String PIC8HR10_DATAFILE = "8HourSurvey-10";
 	public static final String PIC8HR11_DATAFILE = "8HourSurvey-11";
 	public static final String PIC8HR12_DATAFILE = "8HourSurvey-12";
+	public static final String PIC4HR01_DATAFILE = "4HourSurvey-01";
 	public static final String PICLESS4HR_DATAFILE = "LessThan4Hour-1";
 	public static final String PICGREATER4HR_DATAFILE = "GreaterThan4Hour-1";
 
@@ -466,6 +468,8 @@ public final class SurveyorConstants {
 	 * Other string constants
 	 */
 	public static final String UNKNOWN_TEXT = "UnknownText";
+	public static final String MAXSURVEYDURATIONREACHED = "Max Survey duration reached";
+	public static final String ALREADYADDED = "Already added...";
 
 	/*
 	 * Other string constants

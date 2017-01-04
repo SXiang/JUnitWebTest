@@ -651,8 +651,7 @@
 	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
-			<sysproperty key = "testReportCategory" value = "JUnitParallel" />
-			<sysproperty key="maxParallelTestThreads" value="3" />
+			<sysproperty key = "testReportCategory" value = "regression" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
@@ -664,7 +663,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ReferenceGasReportsPageTest.class" />
+					<include name="**/ComplianceReportsPageTest10.class" />
 				</fileset>
 			</batchtest>
 		</junit>
