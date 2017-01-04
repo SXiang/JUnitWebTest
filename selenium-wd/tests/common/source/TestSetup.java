@@ -57,6 +57,7 @@ public class TestSetup {
 
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
+	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
 	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
 	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
@@ -1059,12 +1060,14 @@ public class TestSetup {
 			final String TAG_TEST_BRANCH = "TestBranch";
 
 			String workingFolder = getRootPath();
-			String postBinariesMapCmdFolder = getExecutionPath(getRootPath()) + "lib";
-			String postBinariesMapCmdFullPath = postBinariesMapCmdFolder + File.separator + POST_AUTOMATION_RUN_RESULT_CMD;
-			String manifestFilePath = Paths.get(postBinariesMapCmdFolder, "manifest.xml").toString();
+			String seleniumFolder = getExecutionPath(getRootPath());
+			String postBinariesMapCmdFolder = seleniumFolder + "lib";
+			String postBinariesMapCmdFullPath = postBinariesMapCmdFolder + File.separator + POST_PRODUCT_TEST_BINARIES_MAP_CMD;
+			String manifestFilePath = Paths.get(seleniumFolder, "manifest.xml").toString();
 			List<String> tagNames = Arrays.asList(TAG_ENVIRONMENT_URL, TAG_ENVIRONMENT_DB_NAME, TAG_ENVIRONMENT_BUILD_VERSION,
 					TAG_TEST_BINARY_MAJOR, TAG_TEST_BINARY_MINOR, TAG_TEST_BINARY_BUILD_NUMBER, TAG_TEST_BINARY_GIT_HASH, TAG_TEST_BRANCH);
 			HashMap<String, String> nodeValues = xmlUtil.getNodeValuesByTagNames(manifestFilePath, tagNames);
+			Log.info(String.format("Values read from '%s' -> %s", manifestFilePath, LogHelper.mapToString(nodeValues)));
 
 			// Script parameters:
 			// -BuildWorkingDir '%~1' -AutomationReportingAPIBaseUrl '%~2' -TestBinaryFileName '%~3' -TestBinaryMajor '%~4'

@@ -39,6 +39,7 @@ param
 # 1.
 # Prepare destination folder.
 $qaBinariesDestFolder = "$BuildWorkingDir\dbseedtests"
+$seleniumWdFolder = "$BuildWorkingDir\selenium-wd"
 if (-not (Test-Path $qaBinariesDestFolder)) {
     New-item -ItemType Directory $qaBinariesDestFolder
 }
@@ -58,6 +59,7 @@ $Headers = @{
 
 $JARPrefix = "dbseed"
 $ZIPPrefix = "selenium-wd"
+$ManifestPrefix = "manifest"
 
 $aql = "items.find     " + 
         "(                " + 
@@ -94,9 +96,11 @@ if ($version -eq $null -or $version -eq "") {
 
 $dbSeedJarFile = "$JARPrefix-$version.jar"
 $dbSeedDepZipFile = "$ZIPPrefix-$version.zip"
+$dbSeedDepManifestFile = "$ManifestPrefix-$version.xml"
 
 $jarDownloadPath = "$qaBinariesDestFolder\$dbSeedJarFile"
 $zipDownloadPath = "$qaBinariesDestFolder\$dbSeedDepZipFile"
+$manifestDownloadPath = "$qaBinariesDestFolder\$dbSeedDepManifestFile"
 
 $downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFolder/$dbSeedJarFile"
 "Start downloading JAR file from->[$downloadURL], to->[$jarDownloadPath]"
@@ -106,7 +110,13 @@ Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $jarDownloadP
 $downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFolder/$dbSeedDepZipFile"
 "Start downloading ZIP file from->[$downloadURL], to->[$zipDownloadPath]"
 Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $zipDownloadPath
-"DONE downloading JAR file."
+"DONE downloading ZIP file."
+
+$downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFolder/$dbSeedDepManifestFile"
+"Start downloading Manifest file from->[$downloadURL], to->[$manifestDownloadPath]"
+Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $manifestDownloadPath
+"DONE downloading Manifest file."
+
 
 # 3.
 # Unzip the Archive zip to BINARIESDEST\selenium-wd.
@@ -143,7 +153,34 @@ $additionalDeps.Keys | % {
     }
 }
 
-# 4.
+# 5.
 # Invoke DBSeed Sanity test
 cd $qaBinariesDestFolder
-java -cp "$qaBinariesDestFolder\$dbSeedJarFile;$qaBinariesDestFolder\selenium-wd\lib\*" org.junit.runner.JUnitCore surveyor.unittest.source.DbSeedExecutorSanityTest
+$retVal = java -cp "$qaBinariesDestFolder\$dbSeedJarFile;$qaBinariesDestFolder\selenium-wd\lib\*" org.junit.runner.JUnitCore surveyor.unittest.source.DbSeedExecutorSanityTest
+$success = $false
+$testPass = $false
+$runPass = $false
+$retVal | %{
+    [string]$msg = $_
+    if ($msg.Contains("OK (1 test)")) {
+        $runPass = $true
+    }
+    if ($msg.Contains("reportTestSucceeded") -and $msg.Contains("_PASS_")) {
+        $testPass = $true
+    }
+}
+
+$retVal
+$success = $testPass -and $runPass
+"DbSeedExecutorSanityTest command execution status = [$success]"
+
+# 6.
+# If DB seeding worked successfully, store ProductTest binaries mapping in Automation DB. 
+
+# Replace manifest.xml with one from Artifisa
+Copy-Item "$manifestDownloadPath" "$seleniumWdFolder\manifest.xml" -Force
+
+if ($success) {
+    cd $BuildWorkingDir
+    java -cp "$qaBinariesDestFolder\$dbSeedJarFile;$qaBinariesDestFolder\selenium-wd\lib\*" common.source.ProductTestBinariesMapExecutor "$dbSeedJarFile"
+}
