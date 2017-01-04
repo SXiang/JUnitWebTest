@@ -75,7 +75,8 @@ $buildXmlFileContent.Save($buildXmlFile)
 
 # Create build.number file next to build.xml with specified build number
 $buildNumberFile = [System.IO.Path]::Combine($buildWorkingDir, $buildNumberFilePath)
-New-Item $buildNumberFile -Type file -Force -Value "build.number=$buildNumber"
+$buildNumLessOne = ([int]$buildNumber) - 1        # inject a number less than the actual build for ANT to increment and set to correct value.
+New-Item $buildNumberFile -Type file -Force -Value "build.number=$buildNumLessOne"
 
 
 # Create manifest.xml to store [product]<->[test] code version mapping
