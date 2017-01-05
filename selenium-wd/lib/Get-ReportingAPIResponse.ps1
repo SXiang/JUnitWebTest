@@ -35,6 +35,7 @@ $Headers = @{
     Token = $authToken
 }
 
-Write-Host "Get results for $AutomationReportingAPIBaseUrl/$APIRelativeUrl ..."
+#Write-Host "Get results for $AutomationReportingAPIBaseUrl/$APIRelativeUrl ..."
 $response = Invoke-WebRequest -Uri "$AutomationReportingAPIBaseUrl/$APIRelativeUrl" -Headers $Headers -Method GET
-Write-Host "Get results successful! Response = $response"
+#Write-Host "Get results successful! Response = $response"
+$response
