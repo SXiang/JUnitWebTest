@@ -28,7 +28,16 @@ public class WebDriverWrapper {
 	private String downloadPath;
 	private String platform;
 
+	private String appiumServerHost;
+	private String appiumServerPort;
+	private String mobileApp;
+	private String mobileBrowserName;
+	private String mobileVersion;
+	private String mobilePlatform;
+	private String deviceName;
+	
 	private RemoteWebDriver driver;
+	private static RemoteWebDriver appiumDriver;
 	private DesiredCapabilities capabilities;
 	private boolean isRemoteBrowser;
 
@@ -43,6 +52,14 @@ public class WebDriverWrapper {
 		this.downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		this.platform = TestContext.INSTANCE.getTestSetup().getPlatform();
 		this.isRemoteBrowser = TestContext.INSTANCE.getTestSetup().isRemoteBrowser();
+		
+		this.appiumServerHost = TestContext.INSTANCE.getTestSetup().getAppiumServerHost();
+		this.appiumServerPort = TestContext.INSTANCE.getTestSetup().getAppiumServerPort();
+		this.mobileApp = TestContext.INSTANCE.getTestSetup().getMobileApp();
+		this.mobileBrowserName = TestContext.INSTANCE.getTestSetup().getMobileBrowserName();
+		this.mobileVersion = TestContext.INSTANCE.getTestSetup().getMobileVersion();
+		this.mobilePlatform = TestContext.INSTANCE.getTestSetup().getMobilePlatform();
+		this.deviceName = TestContext.INSTANCE.getTestSetup().getDeviceName();
 	}
 
 	public void driverSetup() {
@@ -59,7 +76,6 @@ public class WebDriverWrapper {
 							DesiredCapabilities.internetExplorer()));
 					break;
 				case "ff":
-
 					this.capabilities = DesiredCapabilities.firefox();
 					this.capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 					setDriver(new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"),
@@ -103,6 +119,38 @@ public class WebDriverWrapper {
 		}
 	}
 
+	public RemoteWebDriver setupAppiumRemoteWebDriver(){
+		this.capabilities = new DesiredCapabilities();
+		this.capabilities.setCapability(CapabilityType.BROWSER_NAME, this.mobileBrowserName);
+		this.capabilities.setCapability("platformVersion", this.mobileVersion);
+		this.capabilities.setCapability("platformName", this.mobilePlatform);
+		this.capabilities.setCapability("app", this.mobileApp);
+		this.capabilities.setCapability("deviceName", this.deviceName);
+		this.capabilities.setCapability("autoWebview", true);
+		this.capabilities.setCapability("orientation", "PORTRAIT");
+		this.capabilities.setCapability("fullReset", true);
+
+		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
+			this.capabilities.setCapability("automationName", "XCUITest");
+			this.capabilities.setCapability("launchTimeout", 300000);
+			this.capabilities.setCapability("autoAcceptAlerts", true);
+		}else{
+			this.capabilities.setCapability("automationName", "Appium");
+			this.capabilities.setCapability("avdLaunchTimeout", 300000);
+		}
+		try {
+			appiumDriver = new RemoteWebDriver(new URL("http://" + this.appiumServerHost + ":" + this.appiumServerPort + "/wd/hub/"),
+					capabilities);
+		} catch (MalformedURLException e) {
+			Log.error(e.toString());
+			System.exit(1);
+		}
+		isRemoteBrowser = true;
+		Log.info("\nRunning Appium Server for use with RemoteDrivers and the server is running on: "
+				+ this.appiumServerHost + "\n");
+		return appiumDriver;
+	}
+	
 	public void setChromeBrowserCapabilities() {
 		setChromeBrowserCapabilities(null);
 	}
@@ -166,5 +214,16 @@ public class WebDriverWrapper {
 
 	public void setDriver(RemoteWebDriver driver) {
 		this.driver = driver;
+	}
+	
+	public static RemoteWebDriver getAppiumDriver() {
+		if(!isAppiumDriverInTest()){
+			appiumDriver = new WebDriverWrapper().setupAppiumRemoteWebDriver();
+		}
+		return appiumDriver;
+	}
+	
+	public static boolean isAppiumDriverInTest(){
+		return appiumDriver != null;
 	}
 }

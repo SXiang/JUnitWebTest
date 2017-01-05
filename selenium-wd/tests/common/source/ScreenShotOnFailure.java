@@ -48,13 +48,27 @@ public class ScreenShotOnFailure{
 		return takeScreenshot(driver, className, isBrowserScreenshot, LogStatus.FAIL);
 	}
 
+	public String takeScreenshots(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
+		String mainImgName = "", mobileImgName = "";
+		if(driver != null){
+			mainImgName = takeScreenshot(driver, className, takeBrowserScreenShot, logStatus);
+		}
+		if(TestContext.INSTANCE.isAppiumDriverInTest()){
+			mobileImgName = ", " + takeScreenshot(TestContext.INSTANCE.getAppiumDriver(), className, true, logStatus, true);
+		}
+		return mainImgName + mobileImgName;
+	}
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
+		return takeScreenshot(driver, className, takeBrowserScreenShot, logStatus, false);
+	}
+	
+	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus, boolean isMobile) {
 		this.driver = driver;
 		String imgName = imgPath;
 		try{
 			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest(className);
 			String fname = reportLogger.getTest().getName();
-			String imgFile = fname.split("\\[")[0] + "."+format;
+			String imgFile = fname.split("\\[")[0]  + (isMobile?"_mobile":"") + "."+format;
 			imgName += imgFile;
 			if(takeBrowserScreenShot && driver!=null){
 				captureBrowserScreenShot(imgName);
