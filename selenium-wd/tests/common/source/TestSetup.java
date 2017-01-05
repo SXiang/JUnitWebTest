@@ -997,7 +997,6 @@ public class TestSetup {
 			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 			try {
 				TestSetup.stopAnalyzerIfRunning();
-				TestSetup.setupSimulatorPreReqs();
 				TestSetup.updateAnalyzerConfiguration();
 				TestSetup.startAnalyzer();
 			} catch (IOException e) {
