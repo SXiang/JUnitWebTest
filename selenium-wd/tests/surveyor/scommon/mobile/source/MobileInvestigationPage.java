@@ -14,8 +14,8 @@ public class MobileInvestigationPage extends MobileBasePage {
 
 	public MobileInvestigationPage(){
 		super(STRURLPath);
-		pageKey = By.cssSelector("button[id='boxType'].dropdown");
-		Log.info("The Login Page URL is: " + this.strPageURL);
+		pageKey = By.cssSelector("[id='boxType'].dropdown");
+		Log.info("The Investigations Page URL is: " + this.strPageURL);
 	}
 	
 	public void open(String reportId, String type) {

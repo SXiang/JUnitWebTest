@@ -1,6 +1,7 @@
 package surveyor.scommon.actions;
 
 import common.source.Log;
+import common.source.NetworkProxyHandler;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
@@ -170,7 +171,7 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public boolean startNetworkProxy(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.startNetworkProxy", data, dataRowID);
-		TestContext.INSTANCE.getTestSetup().startNetworkProxy(true);
+		new NetworkProxyHandler().startNetworkProxy(true);
 		return true;
 	}
 
@@ -183,7 +184,7 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public boolean stopNetworkProxy(String data, Integer dataRowID) throws Exception {
 		logAction("TestEnvironmentActions.stopNetworkProxy", data, dataRowID);
-		TestContext.INSTANCE.getTestSetup().stopNetworkProxy();
+		new NetworkProxyHandler().stopNetworkProxy();
 		return true;
 	}
 

@@ -14,8 +14,8 @@ public class MobileInvestigatePage extends MobileBasePage {
 
 	public MobileInvestigatePage(){
 		super(STRURLPath);
-		pageKey = By.cssSelector("button[id='boxType'].dropdown");
-		Log.info("The Login Page URL is: " + this.strPageURL);
+		pageKey = By.cssSelector("[id='legend-dropdown'].dropdown-toggle");
+		Log.info("The Investigate Page URL is: " + this.strPageURL);
 	}
 	
 	public void open(String boxId) {
