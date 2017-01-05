@@ -42,7 +42,7 @@ public class MobileUnitTest extends SurveyorBaseTest {
 		reportsPage.open();
 
 		assertTrue(PICDFADMIN + " user login unsuccessful!",
-				reportsPage.waitUntillPageLoad());
+				reportsPage.waitUntilPageLoad());
 		loginPage = reportsPage.logout();
 	}
 
@@ -53,7 +53,7 @@ public class MobileUnitTest extends SurveyorBaseTest {
 
 		reportsPage.open();
 		assertTrue(SQACUSUAUSER + " user login unsuccessful!",
-				reportsPage.waitUntillPageLoad());
+				reportsPage.waitUntilPageLoad());
 		loginPage = reportsPage.logout();
 	}
 
@@ -64,7 +64,7 @@ public class MobileUnitTest extends SurveyorBaseTest {
 
 		reportsPage.open();
 		assertTrue(SQACUSDRUSER + " user login unsuccessful!",
-				reportsPage.waitUntillPageLoad());
+				reportsPage.waitUntilPageLoad());
 		loginPage = reportsPage.logout();
 	}
 }

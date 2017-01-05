@@ -134,11 +134,9 @@ public class WebDriverWrapper {
 			this.capabilities.setCapability("automationName", "XCUITest");
 			this.capabilities.setCapability("launchTimeout", 300000);
 			this.capabilities.setCapability("autoAcceptAlerts", true);
-			this.capabilities.setCapability("automationName", "XCUITest");
 		}else{
 			this.capabilities.setCapability("automationName", "Appium");
 			this.capabilities.setCapability("avdLaunchTimeout", 300000);
-			this.capabilities.setCapability("orientation", "PORTRAIT");
 		}
 		try {
 			appiumDriver = new RemoteWebDriver(new URL("http://" + this.appiumServerHost + ":" + this.appiumServerPort + "/wd/hub/"),

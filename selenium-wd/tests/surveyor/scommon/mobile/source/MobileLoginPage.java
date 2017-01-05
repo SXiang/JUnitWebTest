@@ -29,9 +29,6 @@ public class MobileLoginPage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnLogin;
-
-	@FindBy(how = How.CSS, using = "[type='submit']")
-	private WebElement btnAccept;
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
 	private WebElement txtAccountDisabled;	
@@ -63,7 +60,7 @@ public class MobileLoginPage extends MobileBasePage {
 		login(userName, password);
 		MobileReportsPage reportsPage = new MobileReportsPage();
 		handleEULA();	
-		reportsPage.waitUntillPageLoad();
+		reportsPage.waitUntilPageLoad();
 		return reportsPage;
 	}
 	

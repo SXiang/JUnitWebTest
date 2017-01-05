@@ -21,6 +21,6 @@ public class MobileInvestigatePage extends MobileBasePage {
 	public void open(String boxId) {
 		strPageURL = String.format(strPageURL, boxId);
 		driver.get(strPageURL);
-		waitUntillPageLoad();
+		waitUntilPageLoad();
 	}
 }

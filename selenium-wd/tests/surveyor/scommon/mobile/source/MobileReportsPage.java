@@ -54,7 +54,7 @@ public class MobileReportsPage extends MobileBasePage {
 	@Override
 	public void open() {
 		driver.get(strPageURL);
-		waitUntillPageLoad();
+		waitUntilPageLoad();
 	}
 	
 	public boolean checkVisibilityForUser(String loginUser) {

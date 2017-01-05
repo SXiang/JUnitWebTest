@@ -40,7 +40,7 @@ public class MobileBasePage extends BasePage {
 		PageFactory.initElements(driver, this);
 	}
 
-	public boolean waitUntillPageLoad(){
+	public boolean waitUntilPageLoad(){
 		WebElement pageKeyElement = null;
 		try{
 			pageKeyElement = waitUntilPresenceOfElementLocated(pageKey);
