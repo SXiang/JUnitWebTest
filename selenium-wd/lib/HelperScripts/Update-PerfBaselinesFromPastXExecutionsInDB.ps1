@@ -1,29 +1,30 @@
 ﻿param(
-    [switch] $isLocalMachine = $true
+    [int] $pastXDays = 100,
+    [float] $percentileValue = 95,
+    [float] $changeFactor = 1.2,
+    [switch] $isRunningOnServer = $false
 )
 
 . "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\DatabaseHelpers.ps1"
-
-
-$DAYS = 100
-$COMPUTE_PERCENTILE = 95
-$CHANGE_FACTOR = 1.2
+. "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\CommonHelpers.ps1"
+. "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\DateTimeHelpers.ps1"
 
 $SEPERATOR = "|"
+
 $LOCAL_MACHINE_CONN_STRING = "Server=PULIKKAL-850G2E\SQLEXPRESS;Database=AutomationReporting;Trusted_Connection=True;"
 $BUILD_AGENT_CONN_STRING = "Server=WIN-JEPVISGJUTG\SQLSERVEREXP;Database=AutomationReporting;integrated security=True;"
 
-$lastXDays = (-1) * $DAYS
+$lastXDays = (-1) * $pastXDays
 
 # Hash table.
 $script:rptJobStatsTable = @{}
 
-if ($isLocalMachine) {
+if ($isRunningOnServer) {
     # LOCAL machine connection string
-    $connString = $LOCAL_MACHINE_CONN_STRING
+    $connString = $BUILD_AGENT_CONN_STRING
 } else {
     #Reporting machine connection string
-    $connString = $BUILD_AGENT_CONN_STRING
+    $connString = $LOCAL_MACHINE_CONN_STRING
 }
 
 # HashTable with ArrayList value
@@ -97,42 +98,6 @@ $script:rptJobStatsTable.Keys | % {
     }
 }
 
-function Get-LastLineFromCSV($csvFilePath, $colHeaderForSort, $colHeaderForStats) {
-    $csvLines = Import-Csv $csvFilePath | Sort-Object $colHeaderForSort
-    $stats = $csvLines | Measure-Object "$colHeaderForStats" -Average -Minimum -Maximum
-    $linesCount = $stats.Count
-    $csvLines[$linesCount-1]
-}
-
-function Get-Average($csvFilePath, $colHeaderForPercentile) {
-    $csvLines = Import-Csv $csvFilePath
-    $stats = $csvLines | Measure-Object "$colHeaderForPercentile" -Average -Minimum -Maximum
-    $stats.Average
-}
-
-function Convert-StringArrayToNumericArray($strArray) {
-    $intArray = @()
-    if ($strArray) {
-        $strArray | % {
-            $intArray += @([int]$_)
-        }
-    }
-    $intArray
-}
-
-function Get-NthPercentile($n, $csvFilePath, $colHeaderForPercentile) {
-    $csvLines = Import-Csv $csvFilePath
-    $stats = $csvLines | Measure-Object "$colHeaderForPercentile" -Average -Minimum -Maximum
-    $linesCount = $stats.Count
-    $csvColLines = $csvLines."$colHeaderForPercentile"
-    if ($csvColLines.GetType().Name -eq "String") {
-        [int]$csvColLines
-    } else {
-        $sortedLines = Convert-StringArrayToNumericArray -strArray $csvColLines | Sort-Object
-        $upperBound = [int]($linesCount * ($n/100))
-        [int]$sortedLines[$upperBound-1]
-    }
-}
 
 # At this point OUTPUT folder has individual .csv files for each test case with processing times from all runs.
 # Generate CSV files with Percentile.
@@ -150,16 +115,22 @@ Get-ChildItem $outputFolder | % {
     $fileFullPath = $file.FullName
     $tcid = $fileName.Split("^")[0]
     $jobType = $fileName.Split("^")[1]
-    $percentile = Get-NthPercentile -n $COMPUTE_PERCENTILE -csvFilePath $fileFullPath -colHeaderForPercentile "ProcessingTimeInMs"
-    $average = Get-Average -csvFilePath $fileFullPath -colHeaderForPercentile "ProcessingTimeInMs"
-    $percentile = [int]($CHANGE_FACTOR * $percentile)
-    $average = [int]($CHANGE_FACTOR * $average)
+    $percentile = Get-NthPercentile -n $percentileValue -csvFilePath $fileFullPath -colHeaderForPercentile "ProcessingTimeInMs"
+    $average = Get-Average -csvFilePath $fileFullPath -colHeaderForAverage "ProcessingTimeInMs"
+    $percentile = [int]($changeFactor * $percentile)
+    $average = [int]($changeFactor * $average)
 
     $lastLine = Get-LastLineFromCSV -csvFilePath $fileFullPath -colHeaderForSort "EndTime" -colHeaderForStats "ProcessingTimeInMs"
     $ReportJobTypeId = $lastLine.ReportJobTypeId
     $StartTime = $lastLine.StartTime
     $EndTime = $lastLine.EndTime
     $ProcessingTimeInMs = $lastLine.ProcessingTimeInMs
+
+    $startDateTime = [System.DateTime]::Parse($StartTime)
+    $endDateTime = [System.DateTime]::Parse($EndTime)
+
+    $epochStartTime = ToUnixTime -dateTime $startDateTime
+    $epochEndTime = ToUnixTime -dateTime $endDateTime
 
     # Write the resulting percentile to result CSV.
     $outFileFullPath1 = [System.IO.Path]::Combine($resultFolder, "$tcId-Percentile.csv")
@@ -176,7 +147,7 @@ Get-ChildItem $outputFolder | % {
         # Write header.
         add-content $OUTFILE2 "ReportJobTypeId,StartTime,EndTime,ProcessingTimeInMs"
     } 
-    add-content $OUTFILE1 "$ReportJobTypeId,$StartTime,$EndTime,$percentile"
-    add-content $OUTFILE2 "$ReportJobTypeId,$StartTime,$EndTime,$average"
+    add-content $OUTFILE1 "$ReportJobTypeId,$epochStartTime,$epochEndTime,$percentile"
+    add-content $OUTFILE2 "$ReportJobTypeId,$epochStartTime,$epochEndTime,$average"
 }
 
