@@ -1,4 +1,4 @@
-﻿param(
+param(
     [int] $pastXDays = 100,
     [float] $percentileValue = 95,
     [float] $changeFactor = 1.2,
@@ -11,7 +11,9 @@
 
 $SEPERATOR = "|"
 
+# LOCAL machine connection string
 $LOCAL_MACHINE_CONN_STRING = "Server=PULIKKAL-850G2E\SQLEXPRESS;Database=AutomationReporting;Trusted_Connection=True;"
+# Reporting machine connection string
 $BUILD_AGENT_CONN_STRING = "Server=WIN-JEPVISGJUTG\SQLSERVEREXP;Database=AutomationReporting;integrated security=True;"
 
 $lastXDays = (-1) * $pastXDays
@@ -20,10 +22,8 @@ $lastXDays = (-1) * $pastXDays
 $script:rptJobStatsTable = @{}
 
 if ($isRunningOnServer) {
-    # LOCAL machine connection string
     $connString = $BUILD_AGENT_CONN_STRING
 } else {
-    #Reporting machine connection string
     $connString = $LOCAL_MACHINE_CONN_STRING
 }
 
@@ -90,11 +90,9 @@ $script:rptJobStatsTable.Keys | % {
             $OUTFILE = New-Item -type file $outFileFullPath -force
             # Write header.
             add-content $OUTFILE "ReportJobTypeId,StartTime,EndTime,ProcessingTimeInMs"
-            #add-content $OUTFILE "`r`n"
         } 
         # Write value.
         add-content $OUTFILE "$ReportJobTypeId,$StartTime,$EndTime,$ProcessingTimeInMs"
-        #add-content $OUTFILE "`r`n"
     }
 }
 
