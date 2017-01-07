@@ -478,7 +478,6 @@
           <include name="**/DriverViewPageTest.class" />
           <include name="**/ObserverViewPageTest.class" />
           <include name="**/ObserverViewPageStressTest.class" />
-          <include name="**/ObserverViewPageTest2.class" />
           <include name="**/DriverViewPageTest2.class" />
         </fileset>
       </batchtest>
