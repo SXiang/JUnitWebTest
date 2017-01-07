@@ -161,6 +161,8 @@ public class TestSetup {
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
 
+	private String numAnalyzersInPool;
+
 	private ScreenShotOnFailure screenCapture;
 
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
@@ -545,6 +547,8 @@ public class TestSetup {
 			this.slowdownInSeconds = this.testProp.getProperty("slowdownInSeconds");
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
+
+			this.setNumAnalyzersInPool(this.testProp.getProperty("numAnalyzersInPool"));
 
 			inputStream.close();
 
@@ -1364,5 +1368,13 @@ public class TestSetup {
 
 	public void setScreenCapture(ScreenShotOnFailure screenCapture) {
 		this.screenCapture = screenCapture;
+	}
+
+	public String getNumAnalyzersInPool() {
+		return numAnalyzersInPool;
+	}
+
+	public void setNumAnalyzersInPool(String numAnalyzersInPool) {
+		this.numAnalyzersInPool = numAnalyzersInPool;
 	}
 }
