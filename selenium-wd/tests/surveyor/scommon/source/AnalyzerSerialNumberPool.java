@@ -22,7 +22,7 @@ public enum AnalyzerSerialNumberPool {
 	INSTANCE;
 
 	private Integer runningIdx = 0;
-	private final String SERIAL_NUM_PREFIX = "AutoTestNewAnalyzer";
+	private final String SERIAL_NUM_PREFIX = "AutoTestAnalyzer";
 	private List<String> analyzerPool = Collections.synchronizedList(new ArrayList<String>());
 
 	private AnalyzerSerialNumberPool() {

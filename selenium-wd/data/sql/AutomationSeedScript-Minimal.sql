@@ -619,6 +619,14 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'26F7026D-788B-0413-0D89-39D76AFCAAFE'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'26F7026D-788B-0413-0D89-39D76AFCAAFE', 0)
+-- HardwareCapabilityType for RFADS2004-PICARRO
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'D2CCC285-2BD3-5D22-667E-39D823D4D255'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', 1)
+-- HardwareCapabilityType for SQACUS2016-1
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'43A34021-8814-8A01-9183-39D4B4DE03EB'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', 1)
 
 
 --Users:
