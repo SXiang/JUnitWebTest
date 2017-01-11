@@ -270,7 +270,7 @@ public class BaseTest {
 	}
 
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
-		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, false /*fetchAnalyzerFromPool*/);
+		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){

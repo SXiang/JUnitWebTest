@@ -16,7 +16,7 @@ if ($executeTests) {
                 $filename = $file.Name
                 $certFilePath = $file.FullName
 
-                $storageFlagsEnum = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet
+                $storageFlagsEnum = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
                 $subjectNm = Get-SubjectName -certificatePath "$certFilePath" -keyStorageFlags $storageFlagsEnum
                 if ($subjectNm -ne $NULL -and $subjectNm -ne "") {
                     $subjectNm = $subjectNm.Replace("CN=", "")
@@ -30,7 +30,7 @@ if ($executeTests) {
     if ($testsToRun.Contains("Test-02")) {
         #### [Test-02]: CHECK AND IMPORT CERTIFICATE.
         $certFolder = "C:\Repositories\surveyor-qa\selenium-wd\data\certs"
-        $storageFlagsEnum = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet
+        $storageFlagsEnum = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
         $storeNameEnum = [System.Security.Cryptography.X509Certificates.StoreName]::My
         $storeLocationEnum = [System.Security.Cryptography.X509Certificates.StoreLocation]::LocalMachine
         $FILTERS = "*.pfx"
