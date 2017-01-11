@@ -580,8 +580,11 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/DriverViewPageTest.class" />
-          <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+            <include name="**/DriverViewPageTest.class" />
+            <include name="**/DriverViewPageTest2.class" />
+            <include name="**/ObserverViewPageTest.class" />
+            <include name="**/ObserverViewPageTest2.class" />
+            <include name="**/ObserverViewPageStressTest.class" />
         </fileset>
       </batchtest>
     </junit>
