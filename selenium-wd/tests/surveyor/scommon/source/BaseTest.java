@@ -38,6 +38,7 @@ import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.TestSetupFactory;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -260,11 +261,19 @@ public class BaseTest {
 		return createTestAccount(testCase, null, addTestSurveyor);
 	}
 
+	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+		return createTestAccount(testCase, null, addTestSurveyor, fetchAnalyzerFromPool);
+	}
+
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
 		return createTestAccount(testCase, lfsToExclude, true);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
+		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
@@ -273,9 +282,20 @@ public class BaseTest {
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
 		String locationName = uniqueNumber + "Loc";
-
 		String surveyorName = uniqueNumber + "Sur";
 		String analyzerName = uniqueNumber + "Ana";
+
+		if (fetchAnalyzerFromPool) {
+			// Fetch Analyzer from pool. Delete if already exists.
+			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
+			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
+			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
+			if (analyzer != null) {
+				Log.info(String.format("Deleting Analyzer with serial number-'%s' using data access objects", analyzerName));
+				analyzer.deleteAnalyzer();
+			}
+		}
+
 		String analyzerSharedKey = analyzerName + "Key";
 		String lotNum = getTestSetup().getRandomNumber() + testCase;
 		String isoValue = "-32.7";

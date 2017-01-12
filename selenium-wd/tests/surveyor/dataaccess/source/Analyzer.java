@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import common.source.Log;
+import common.source.NumberUtility;
 
 public class Analyzer extends BaseEntity {
 	private static final String CACHE_KEY = "ANALYZER.";
@@ -110,6 +111,11 @@ public class Analyzer extends BaseEntity {
 	public ArrayList<Analyzer> getAll() {
 		String SQL = "SELECT * FROM dbo.[Analyzer]";
 		return load(SQL);
+	}
+
+	public void deleteAnalyzer() {
+		String SQL = String.format("DELETE [dbo].[Analyzer] WHERE SerialNumber='%s'", getSerialNumber());
+		executeNonQuery(SQL);
 	}
 
 	public ArrayList<Analyzer> load(String SQL) {

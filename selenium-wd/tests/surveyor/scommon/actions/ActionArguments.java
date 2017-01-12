@@ -82,4 +82,13 @@ public class ActionArguments {
 		}
 		return argValue;
 	}
+
+	public static Boolean evaluateArgForFunction(String argValue, StringBuilder evaluatedArgValue) throws Exception {
+		ActionFunctionExecutor funcExecutor = new ActionFunctionExecutor();
+		if (funcExecutor.isValidFunction(argValue)) {
+			evaluatedArgValue.append(funcExecutor.executeFunction(argValue));
+			return true;
+		}
+		return false;
+	}
 }
