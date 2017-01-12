@@ -15,7 +15,10 @@ public class WebDriverFactory {
 		webDriverWrapper.driverSetup();
 		return webDriverWrapper;
 	}
-
+	public static WebDriver getAppiumDriver() {
+		return WebDriverWrapper.getAppiumDriver();
+	}
+	
 	public static WebDriver getDriver() {
 		return getDriver(0);
 	}

@@ -93,7 +93,7 @@
   </target>
   <target name="compile_scommon" depends="compile_common" description="Compile scommon source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build" debug="true">
+    <javac srcdir="${basedir}/tests/surveyor/scommon/mobile/source:${basedir}/tests/surveyor/scommon/source" includeantruntime="false" destdir="${basedir}/tests/surveyor/scommon/build" debug="true">
       <classpath>
         <fileset dir="${basedir}">
           <include name="**/*.jar" />
@@ -186,6 +186,19 @@
       </manifest>
     </jar>
   </target>
+	
+	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
+		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<jar jarfile="${dist}/${unit_jar}" basedir="${build}" />
+	</target>
+	
   <target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
     <buildnumber file="build.number" />
     <javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
@@ -694,25 +707,28 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
-    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-      <sysproperty key="testReportCategory" value="JUnitParallel" />
-      <sysproperty key="maxParallelTestThreads" value="3" />
-      <sysproperty key="test_run_id" value="${local_date}" />
-      <classpath>
-        <pathelement path="${build}" />
-        <fileset dir="${basedir}/lib">
-          <include name="**/*.jar" />
-        </fileset>
-      </classpath>
-      <batchtest fork="yes" todir="${reports}/regression/xml">
-        <formatter type="xml" />
-        <fileset dir="${build}">
-          <include name="**/ComplianceReportsTestSuite5.class" />
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
+	<target name="tc_localrun" depends="compileUnitIntegrationTest" description="Run test suite tests">
+		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
+					showoutput="yes">
+			<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
+			<sysproperty key="maxParallelTestThreads" value="3" />
+			<sysproperty key = "test_run_id" value = "${local_date}"/>
+			<classpath>
+				<pathelement path="${build}" />
+				<fileset dir="${basedir}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+
+			<batchtest fork="yes" todir="${reports}/regression/xml">
+				<formatter type="xml" />
+				<fileset dir="${build}">
+					<include name="**/SanityIntegrationTest.class" />
+					<include name="**/MobileUnitTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
   <target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="Regression" />

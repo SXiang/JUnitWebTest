@@ -192,7 +192,7 @@ public class BaseTest {
 
 	public static void reportTestFailed(Throwable e, String className) {
 		BaseTest.reportTestLogMessage(className);
-		getScreenCapture().takeScreenshot(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
