@@ -2436,7 +2436,7 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SQACus Utility Admin" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -2444,8 +2444,8 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1484186963000</longProp>
-        <longProp name="ThreadGroup.end_time">1484186963000</longProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
@@ -2626,22 +2626,380 @@ for(int i=0; i&lt;size; i++){
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
+            <stringProp name="XPathExtractor.default"></stringProp>
+            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+            <stringProp name="Sample.scope">all</stringProp>
+            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
+          </XPathExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
+              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
+              </elementProp>
               <elementProp name="Username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">AutomationAdmin</stringProp>
+                <stringProp name="Argument.value">sqacusua@email.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Username</stringProp>
               </elementProp>
               <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <boolProp name="HTTPArgument.always_encode">true</boolProp>
                 <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Password</stringProp>
               </elementProp>
             </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+            <boolProp name="XPath.negate">false</boolProp>
+            <stringProp name="XPath.xpath">//*[@id=&quot;user-manual&quot;]</stringProp>
+            <boolProp name="XPath.validate">false</boolProp>
+            <boolProp name="XPath.whitespace">false</boolProp>
+            <boolProp name="XPath.tolerant">true</boolProp>
+            <boolProp name="XPath.namespace">false</boolProp>
+          </XPathAssertion>
+          <hashTree/>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
+          <stringProp name="WhileController.condition">${endpoint}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminCustomerHTTPGETS" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
+            <stringProp name="HTTPSampler.path">/${Controller}/${ActionName}${__eval(${QueryString})}</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+              <stringProp name="filename">data/viewController_Get.csv</stringProp>
+              <stringProp name="fileEncoding"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="delimiter">,</stringProp>
+              <boolProp name="quotedData">true</boolProp>
+              <boolProp name="recycle">false</boolProp>
+              <boolProp name="stopThread">true</boolProp>
+              <stringProp name="shareMode">shareMode.thread</stringProp>
+            </CSVDataSet>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
+String role= &quot;CustomerAdmin&quot;;
+if (vars.get(role).equals(&quot;NO&quot;)){
+	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
+	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
+		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
+		Failure = true;
+		}else{
+			Failure = false;
+		}
+}else{
+	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
+		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
+		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
+		Failure = true;
+	}else{
+		Failure = false;
+	}
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies"/>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+        </CookieManager>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SQACus Supervisor" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
+        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports001</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportTitle, DateStarted, Id
+From dbo.Report
+Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">AssessmentReports002</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
+	}
+}
+//ComplianceReports - 2
+result = vars.getObject(&quot;ComplianceReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
+	}
+}
+
+
+//AssessmentReports - 1
+result = vars.getObject(&quot;AssessmentReports001&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
+	}
+}
+
+//AssessmentReports - 2
+result = vars.getObject(&quot;AssessmentReports002&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	if(i==0){
+		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
+	}else{
+		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
+		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
+	}
+}
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select ReportId, PeakNumber, Id
+From dbo.ReportPeak
+Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
+          <stringProp name="dataSource">SQAAuto</stringProp>
+          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
+From dbo.ReportJob
+Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as String</stringProp>
+          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
+          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
+ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
+int size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+/*ComplianceReports Views 1*/
+result = vars.getObject(&quot;ComplianceReports001View&quot;);
+size = result.size();
+for(int i=0; i&lt;size; i++){
+	HashMap table = result.get(i);
+	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
+	vars.put(varName, table.get(&quot;Id&quot;));
+	log.info(varName+&quot;: &quot; + vars.get(varName));
+}
+
+</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
@@ -2727,7 +3085,7 @@ for(int i=0; i&lt;size; i++){
           <stringProp name="WhileController.condition">${endpoint}</stringProp>
         </WhileController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CustomerSupervisorHTTPGETS" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminCustomerHTTPGETS" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -2760,7 +3118,7 @@ for(int i=0; i&lt;size; i++){
             <hashTree/>
             <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
               <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
-String role= &quot;CustomerSupervisor&quot;;
+String role= &quot;CustomerAdmin&quot;;
 if (vars.get(role).equals(&quot;NO&quot;)){
 	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
 	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
@@ -3197,379 +3555,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SQACus Utility Admin" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
-        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports002</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports001</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports002</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
-          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
-ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
-int size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
-	}
-}
-//ComplianceReports - 2
-result = vars.getObject(&quot;ComplianceReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
-	}
-}
-
-
-//AssessmentReports - 1
-result = vars.getObject(&quot;AssessmentReports001&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
-	}
-}
-
-//AssessmentReports - 2
-result = vars.getObject(&quot;AssessmentReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
-	}
-}
-</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportId, PeakNumber, Id
-From dbo.ReportPeak
-Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
-From dbo.ReportJob
-Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
-          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
-ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
-int size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
-	vars.put(varName, table.get(&quot;Id&quot;));
-	log.info(varName+&quot;: &quot; + vars.get(varName));
-}
-
-/*ComplianceReports Views 1*/
-result = vars.getObject(&quot;ComplianceReports001View&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
-	vars.put(varName, table.get(&quot;Id&quot;));
-	log.info(varName+&quot;: &quot; + vars.get(varName));
-}
-
-</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
-            <stringProp name="XPathExtractor.default"></stringProp>
-            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
-            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
-            <boolProp name="XPathExtractor.validate">false</boolProp>
-            <boolProp name="XPathExtractor.tolerant">true</boolProp>
-            <boolProp name="XPathExtractor.namespace">false</boolProp>
-            <stringProp name="Sample.scope">all</stringProp>
-            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
-          </XPathExtractor>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
-              </elementProp>
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">sqacusua@email.com</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
-            <boolProp name="XPath.negate">false</boolProp>
-            <stringProp name="XPath.xpath">//*[@id=&quot;user-manual&quot;]</stringProp>
-            <boolProp name="XPath.validate">false</boolProp>
-            <boolProp name="XPath.whitespace">false</boolProp>
-            <boolProp name="XPath.tolerant">true</boolProp>
-            <boolProp name="XPath.namespace">false</boolProp>
-          </XPathAssertion>
-          <hashTree/>
-        </hashTree>
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
-          <stringProp name="WhileController.condition">${endpoint}</stringProp>
-        </WhileController>
-        <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminCustomerHTTPGETS" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments"/>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-            <stringProp name="HTTPSampler.path">/${Controller}/${ActionName}${__eval(${QueryString})}</stringProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">data/viewController_Get.csv</stringProp>
-              <stringProp name="fileEncoding"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="delimiter">,</stringProp>
-              <boolProp name="quotedData">true</boolProp>
-              <boolProp name="recycle">false</boolProp>
-              <boolProp name="stopThread">true</boolProp>
-              <stringProp name="shareMode">shareMode.thread</stringProp>
-            </CSVDataSet>
-            <hashTree/>
-            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-              <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
-String role= &quot;CustomerAdmin&quot;;
-if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
-	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
-		Failure = true;
-		}else{
-			Failure = false;
-		}
-}else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
-		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
-		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
-		Failure = true;
-	}else{
-		Failure = false;
-	}
-}</stringProp>
-              <stringProp name="BeanShellAssertion.filename"></stringProp>
-              <stringProp name="BeanShellAssertion.parameters"></stringProp>
-              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
-            </BeanShellAssertion>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
-        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
-          <collectionProp name="CookieManager.cookies"/>
-          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
-        </CookieManager>
-        <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
       <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
         <boolProp name="ResultCollector.error_logging">true</boolProp>
         <objProp>
@@ -3634,379 +3619,6 @@ if (vars.get(role).equals(&quot;NO&quot;)){
         <stringProp name="filename">${projectHome}\..\result\resultTable_Controller.csv</stringProp>
       </ResultCollector>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="SQACus Supervisor" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1459897786000</longProp>
-        <longProp name="ThreadGroup.end_time">1459897786000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport001ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetComplianceReport002ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_ReportTitle002}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports002</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport001ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports001</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetAssessmentReport002ID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportTitle, DateStarted, Id
-From dbo.Report
-Where ReportTitle like &apos;${APISecurityTest_AssessmentTitle002}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">AssessmentReports002</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportIDs" enabled="true">
-          <stringProp name="BeanShellSampler.query">/*ComplianceReports 1*/
-ArrayList result = vars.getObject(&quot;ComplianceReports001&quot;);
-int size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report001: &quot; + vars.get(&quot;APISecurityTest_Report001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete001: &quot; + vars.get(&quot;APISecurityTest_ReportDelete001&quot;));
-	}
-}
-//ComplianceReports - 2
-result = vars.getObject(&quot;ComplianceReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Report002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Report002: &quot; + vars.get(&quot;APISecurityTest_Report002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_ReportDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_ReportDelete002: &quot; + vars.get(&quot;APISecurityTest_ReportDelete002&quot;));
-	}
-}
-
-
-//AssessmentReports - 1
-result = vars.getObject(&quot;AssessmentReports001&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment001: &quot; + vars.get(&quot;APISecurityTest_Assessment001&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete001&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete001: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete001&quot;));
-	}
-}
-
-//AssessmentReports - 2
-result = vars.getObject(&quot;AssessmentReports002&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	if(i==0){
-		vars.put(&quot;APISecurityTest_Assessment002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_Assessment002: &quot; + vars.get(&quot;APISecurityTest_Assessment002&quot;));
-	}else{
-		vars.put(&quot;APISecurityTest_AssessmentDelete002&quot;, table.get(&quot;Id&quot;));
-		log.info(&quot;APISecurityTest_AssessmentDelete002: &quot; + vars.get(&quot;APISecurityTest_AssessmentDelete002&quot;));
-	}
-}
-</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001PeakID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select ReportId, PeakNumber, Id
-From dbo.ReportPeak
-Where ReportId like &apos;${APISecurityTest_Report001}&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001Peak</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="GetReport001ViewID" enabled="true">
-          <stringProp name="dataSource">SQAAuto</stringProp>
-          <stringProp name="query">Select Id, ReportId, ReportJobStatusId, ReportViewId
-From dbo.ReportJob
-Where ReportId like &apos;${APISecurityTest_Report001}&apos; and ReportJobTypeId = &apos;00000000-0000-0000-0001-000000000000&apos;</stringProp>
-          <stringProp name="queryArguments"></stringProp>
-          <stringProp name="queryArgumentsTypes"></stringProp>
-          <stringProp name="queryTimeout"></stringProp>
-          <stringProp name="queryType">Select Statement</stringProp>
-          <stringProp name="resultSetHandler">Store as String</stringProp>
-          <stringProp name="resultVariable">ComplianceReports001View</stringProp>
-          <stringProp name="variableNames"></stringProp>
-        </JDBCSampler>
-        <hashTree/>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="SaveReportItemIDs" enabled="true">
-          <stringProp name="BeanShellSampler.query">/*ComplianceReports Peaks 1*/
-ArrayList result = vars.getObject(&quot;ComplianceReports001Peak&quot;);
-int size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	String varName = &quot;APISecurityTest_Report001Peak00&quot;+i;
-	vars.put(varName, table.get(&quot;Id&quot;));
-	log.info(varName+&quot;: &quot; + vars.get(varName));
-}
-
-/*ComplianceReports Views 1*/
-result = vars.getObject(&quot;ComplianceReports001View&quot;);
-size = result.size();
-for(int i=0; i&lt;size; i++){
-	HashMap table = result.get(i);
-	String varName = &quot;APISecurityTest_Report001View00&quot;+i;
-	vars.put(varName, table.get(&quot;Id&quot;));
-	log.info(varName+&quot;: &quot; + vars.get(varName));
-}
-
-</stringProp>
-          <stringProp name="BeanShellSampler.filename"></stringProp>
-          <stringProp name="BeanShellSampler.parameters"></stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginGET" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments"/>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="RequestVerificationTokenExtractor" enabled="true">
-            <stringProp name="XPathExtractor.default"></stringProp>
-            <stringProp name="XPathExtractor.refname">RequestVerificationToken</stringProp>
-            <stringProp name="XPathExtractor.xpathQuery">//*[@action=&apos;/Account/Login&apos;]/input/@value</stringProp>
-            <boolProp name="XPathExtractor.validate">false</boolProp>
-            <boolProp name="XPathExtractor.tolerant">true</boolProp>
-            <boolProp name="XPathExtractor.namespace">false</boolProp>
-            <stringProp name="Sample.scope">all</stringProp>
-            <stringProp name="Scope.variable">RequestVerificationToken</stringProp>
-          </XPathExtractor>
-          <hashTree/>
-        </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="LoginPOST" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="__RequestVerificationToken" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${RequestVerificationToken}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">__RequestVerificationToken</stringProp>
-              </elementProp>
-              <elementProp name="Username" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">sqacussu@email.com</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Username</stringProp>
-              </elementProp>
-              <elementProp name="Password" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">sqa#Picarro$0</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Password</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain"></stringProp>
-          <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Account/Login?ReturnUrl=%2FHome</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <boolProp name="HTTPSampler.monitor">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree>
-          <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
-            <boolProp name="XPath.negate">false</boolProp>
-            <stringProp name="XPath.xpath">//*[@id=&quot;user-manual&quot;]</stringProp>
-            <boolProp name="XPath.validate">false</boolProp>
-            <boolProp name="XPath.whitespace">false</boolProp>
-            <boolProp name="XPath.tolerant">true</boolProp>
-            <boolProp name="XPath.namespace">false</boolProp>
-          </XPathAssertion>
-          <hashTree/>
-        </hashTree>
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While EOF paramList.csv" enabled="true">
-          <stringProp name="WhileController.condition">${endpoint}</stringProp>
-        </WhileController>
-        <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="UtilityAdminCustomerHTTPGETS" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments"/>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
-            <stringProp name="HTTPSampler.path">/${Controller}/${ActionName}${__eval(${QueryString})}</stringProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-              <stringProp name="filename">data/viewController_Get.csv</stringProp>
-              <stringProp name="fileEncoding"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="delimiter">,</stringProp>
-              <boolProp name="quotedData">true</boolProp>
-              <boolProp name="recycle">false</boolProp>
-              <boolProp name="stopThread">true</boolProp>
-              <stringProp name="shareMode">shareMode.thread</stringProp>
-            </CSVDataSet>
-            <hashTree/>
-            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-              <stringProp name="BeanShellAssertion.query">String response= new String(ResponseData);
-String role= &quot;CustomerAdmin&quot;;
-if (vars.get(role).equals(&quot;NO&quot;)){
-	if (!(response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;) 
-	      || response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;))){
-		FailureMessage = &quot;User(&quot;+role+&quot;) should not be authorized to access this page&quot;;
-		Failure = true;
-		}else{
-			Failure = false;
-		}
-}else{
-	if (response.contains(&quot;document.getElementById(&apos;Username&apos;).focus()&quot;) || response.contains(&quot;&lt;title&gt;Error&lt;/title&gt;&quot;)
-		|| response.contains(&quot;&lt;title&gt;Unauthorized&lt;/title&gt;&quot;)){
-		FailureMessage = &quot;User(&quot;+role+&quot;)  should have access to this page&quot;;
-		Failure = true;
-	}else{
-		Failure = false;
-	}
-}</stringProp>
-              <stringProp name="BeanShellAssertion.filename"></stringProp>
-              <stringProp name="BeanShellAssertion.parameters"></stringProp>
-              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
-            </BeanShellAssertion>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
-        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
-          <collectionProp name="CookieManager.cookies"/>
-          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
-        </CookieManager>
-        <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>false</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <threadCounts>true</threadCounts>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-      </hashTree>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
