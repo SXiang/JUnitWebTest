@@ -125,8 +125,6 @@ public class WebDriverWrapper {
 		this.capabilities.setCapability("platformVersion", this.mobileVersion);
 		this.capabilities.setCapability("platformName", this.mobilePlatform);
 		this.capabilities.setCapability("deviceName", this.deviceName); //10.0.0.3:5555
-		this.capabilities.setCapability("autoWebview", true);
-		this.capabilities.setCapability("orientation", "PORTRAIT");
 
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
 			this.capabilities.setCapability("app", this.mobileApp);
@@ -134,11 +132,13 @@ public class WebDriverWrapper {
 			this.capabilities.setCapability("launchTimeout", 300000);
 			this.capabilities.setCapability("autoAcceptAlerts", true);
 			this.capabilities.setCapability("fullReset", true);
+			this.capabilities.setCapability("autoWebview", true);
+			this.capabilities.setCapability("orientation", "PORTRAIT");
 		}else{
 			this.capabilities.setCapability("automationName", "Appium");
 			this.capabilities.setCapability("avdLaunchTimeout", 300000);
-			this.capabilities.setCapability("appPackage", "com.android.chrome/org.chromium.chrome.browser");
-			this.capabilities.setCapability("appActivity", "com.android.chrome/org.chromium.chrome.browser.ChromeTabbedActivity");
+			this.capabilities.setCapability("appPackage", "com.android.chrome");
+			this.capabilities.setCapability("appActivity", "com.google.android.apps.chrome.Main");
 		}
 		try {
 			appiumDriver = new RemoteWebDriver(new URL("http://" + this.appiumServerHost + ":" + this.appiumServerPort + "/wd/hub/"),
