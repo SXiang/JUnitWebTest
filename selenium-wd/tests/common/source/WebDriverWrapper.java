@@ -124,7 +124,7 @@ public class WebDriverWrapper {
 		this.capabilities.setCapability(CapabilityType.BROWSER_NAME, this.mobileBrowserName);
 		this.capabilities.setCapability("platformVersion", this.mobileVersion);
 		this.capabilities.setCapability("platformName", this.mobilePlatform);
-		this.capabilities.setCapability("deviceName", this.deviceName); //10.0.0.3:5555
+		this.capabilities.setCapability("deviceName", this.deviceName);
 
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
 			this.capabilities.setCapability("app", this.mobileApp);
