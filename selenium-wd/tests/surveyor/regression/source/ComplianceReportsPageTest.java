@@ -145,47 +145,50 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 
-		if (testCaseName.equals("TC203")) {
-			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber() + "#%$,\"<>";
-		} else {
-			rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
-		}
-
-		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-
-		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
-		this.getComplianceReportsPage().open();
-
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
-		this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
-		this.getComplianceReportsPage().addNewReport(rpt);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
-			this.getComplianceReportsPage().clickOnReportViewerCloseButton();
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
-			assertTrue(this.getComplianceReportsPage().verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
-					assertTrue(this.getComplianceReportsPage().verifyCoverageValuesTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				if (cutomer.equalsIgnoreCase("Picarro")) {
-					assertTrue(this.getComplianceReportsPage().verifyLayersTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
-				}
-				assertTrue(this.getComplianceReportsPage().verifyViewsTable(getTestSetup().getDownloadPath(), rptTitle, viewList));
-				assertTrue(this.getComplianceReportsPage().verifyDrivingSurveysTable(getTestSetup().getDownloadPath(), rptTitle));
-				assertTrue(this.getComplianceReportsPage().verifyAllViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName,viewList.size()));
-				if (tablesList.get(0).get(KEYISOANA).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyIsotopicAnalysisTable(getTestSetup().getDownloadPath(), rptTitle));
-				}
-				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
-					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
-				}
+		// TODO: Included for testing.
+		if (testCaseName.equals("TC250")) {
+			if (testCaseName.equals("TC203")) {
+				rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber() + "#%$,\"<>";
+			} else {
+				rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 			}
-		} else
-			fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+
+			Log.info("\nRunning " + testCaseName + " - " + rptTitle);
+
+			this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
+			this.getComplianceReportsPage().open();
+
+			ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+			this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
+			this.getComplianceReportsPage().addNewReport(rpt);
+			this.getComplianceReportsPage().waitForPageLoad();
+
+			if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
+				this.getComplianceReportsPage().clickOnReportViewerCloseButton();
+				assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
+				assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
+				assertTrue(this.getComplianceReportsPage().verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
+				if (tablesList != null) {
+					if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
+						assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
+						assertTrue(this.getComplianceReportsPage().verifyCoverageValuesTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
+					}
+					if (cutomer.equalsIgnoreCase("Picarro")) {
+						assertTrue(this.getComplianceReportsPage().verifyLayersTable(getTestSetup().getDownloadPath(), rptTitle, tablesList.get(0)));
+					}
+					assertTrue(this.getComplianceReportsPage().verifyViewsTable(getTestSetup().getDownloadPath(), rptTitle, viewList));
+					assertTrue(this.getComplianceReportsPage().verifyDrivingSurveysTable(getTestSetup().getDownloadPath(), rptTitle));
+					assertTrue(this.getComplianceReportsPage().verifyAllViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName,viewList.size()));
+					if (tablesList.get(0).get(KEYISOANA).equals("1")) {
+						assertTrue(this.getComplianceReportsPage().verifyIsotopicAnalysisTable(getTestSetup().getDownloadPath(), rptTitle));
+					}
+					if (tablesList.get(0).get(KEYINDTB).equals("1")) {
+						assertTrue(this.getComplianceReportsPage().verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
+					}
+				}
+			} else
+				fail("\nTestcase " + getTestCaseName(index) + " failed.\n");
+		}
 	}
 
 	private static String getTestCaseName(String key) {

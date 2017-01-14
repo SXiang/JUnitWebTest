@@ -437,10 +437,11 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 * 6. View will change from Satellite to Map
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
+	 * @throws Exception
 	 */
 	// Partially automated. Console windows error checking NOT present.
 	@Test
-	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
+	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() throws Exception {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
 		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
@@ -493,6 +494,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		driverViewPage.getStopDrivingSurveyButton().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
+		// stop replay in simulator.
+		TestContext.INSTANCE.getTestSetup().stopReplay();
+
 		Log.info("Waiting on UI unblock.");
 		driverViewPage.waitForUIUnBlock();
 
@@ -504,6 +508,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// 8.
 		Log.info("SURVEY INACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals(SURVEY_INFO_SURVEY_STATUS_INACTIVE));
+
+		// TODO: Remove before merge. Added for testing.
+		//testEnvironmentAction.get().idleForSeconds(String.valueOf(60), NOTSET);
 	}
 
 	/**

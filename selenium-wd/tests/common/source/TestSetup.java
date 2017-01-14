@@ -100,7 +100,7 @@ public class TestSetup {
 	private String mobileVersion;
 	private String mobilePlatform;
 	private String deviceName;
-	
+
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
@@ -242,7 +242,7 @@ public class TestSetup {
 	public boolean isAppiumDriverInTest() {
 		return WebDriverWrapper.isAppiumDriverInTest();
 	}
-	
+
 	public WebDriver getDriver(int index) {
 		return WebDriverFactory.getDriver(index);
 	}
@@ -513,7 +513,7 @@ public class TestSetup {
 		this.mobileBrowserName = mobileBrowserName;
 	}
 
-	
+
 	public String getMobileVersion() {
 		return mobileVersion;
 	}
@@ -561,7 +561,7 @@ public class TestSetup {
 			this.setMobileVersion(this.testProp.getProperty("mobileVersion"));
 			this.setMobilePlatform(this.testProp.getProperty("mobilePlatform"));
 			this.setDeviceName(this.testProp.getProperty("deviceName"));
-			
+
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
 			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
@@ -1059,7 +1059,7 @@ public class TestSetup {
 		}
 	}
 
-	public static void stopReplay() {
+	public void stopReplay() {
 		// Execute replay script from the contained folder.
 		try {
 			String stopReplayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
