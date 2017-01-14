@@ -508,9 +508,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// 8.
 		Log.info("SURVEY INACTIVE:[" + driverViewPage.getSurveyStatusLabelText() + "]");
 		assertTrue(driverViewPage.getSurveyStatusLabelText().equals(SURVEY_INFO_SURVEY_STATUS_INACTIVE));
-
-		// TODO: Remove before merge. Added for testing.
-		//testEnvironmentAction.get().idleForSeconds(String.valueOf(60), NOTSET);
 	}
 
 	/**
