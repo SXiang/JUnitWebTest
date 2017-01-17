@@ -58,6 +58,7 @@ public class TestSetup {
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
+	private static final String POST_SURVEY_SESSION_FROM_DB3_CMD = "Post-SurveySessionFromDB3.cmd";
 	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
 	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
@@ -1126,6 +1127,25 @@ public class TestSetup {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
+	}
+
+	public void postSurveySessionFromDB3(String analyzerSerialNumber, String analyzerSharedKey, String surveyor) throws IOException {
+		String workingFolder = getRootPath();
+		String seleniumFolder = getExecutionPath(getRootPath());
+		String postSurveySessionCmdFolder = seleniumFolder + "lib";
+		String postSurveySessionCmdFullPath = postSurveySessionCmdFolder + File.separator + POST_SURVEY_SESSION_FROM_DB3_CMD;
+
+		// Script parameters:
+		// -WorkingFolder '%~1' -BaseURL '%~2' -AnalyzerSerialNumber '%~3' -AnalyzerSharedKey '%~4' -Surveyor '%~5'
+		String command = "cd \"" + postSurveySessionCmdFolder + "\" && " + postSurveySessionCmdFullPath +
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+						workingFolder,
+						TestContext.INSTANCE.getTestSetup().baseURL,
+						analyzerSerialNumber,
+						analyzerSharedKey,
+						surveyor);
+		Log.info("Posting survey session from surveyor.db3 to cloud. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public void postProductTestBinariesMap(String binaryFilePath) throws ParserConfigurationException, SAXException {

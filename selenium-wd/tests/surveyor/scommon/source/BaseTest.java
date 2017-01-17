@@ -445,7 +445,8 @@ public class BaseTest {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
 
-		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(3));
+		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
+		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(TEST_ENVIRONMENT_DATA_ROW_ID));
 		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
 		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
 		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
@@ -480,6 +481,7 @@ public class BaseTest {
 			driverViewPageAction.clickOnShutdownButton("", -1);
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+			testEnvironmentAction.postSurveySessionsFromDB3ToCloud("", TEST_ENVIRONMENT_DATA_ROW_ID);
 			TestSetup.stopAnalyzer();
 			TestSetup.startAnalyzer();
 		}
