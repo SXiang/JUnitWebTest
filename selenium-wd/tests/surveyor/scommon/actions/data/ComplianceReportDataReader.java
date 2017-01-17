@@ -1,5 +1,6 @@
 package surveyor.scommon.actions.data;
 
+import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ActionArguments;
@@ -108,7 +109,9 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String tCID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_TCID, TESTDATA_SHEET_NAME);
 		String title = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Title, TESTDATA_SHEET_NAME);
 		title = ActionArguments.evaluateArgForFunction(title);
-		title = String.format("%s_%s", tCID, title);
+		if (!BaseHelper.isNullOrEmpty(tCID)) {
+			title = String.format("%s_%s", tCID, title);
+		}
 		String customerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
 		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
 		String exclusionRadius = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ExclusionRadius, TESTDATA_SHEET_NAME);
