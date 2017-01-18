@@ -15,6 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
+import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSAGE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
+import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -42,6 +44,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	private static ManageRefGasBottlesAdminPage manageRefGasBottlesAdminPage;
 	private static LoginPage loginPage;
+	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
 
 	/**
 	 * This method is called by the 'main' thread
@@ -67,6 +70,9 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 
 		manageRefGasBottlesAdminPage = pageObjectFactory.getManageRefGasBottlesAdminPage();
 		PageFactory.initElements(getDriver(),  manageRefGasBottlesAdminPage);
+
+		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
+		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
 	}
 
 	/**
@@ -77,7 +83,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 * Expected Results: User is navigated to Manager Reference Gas Bottles page and its details are displayed in the table
 	 * Current implementation:
 	 * Current Issue:
-     * Future Improvement:
+	 * Future Improvement:
 	 */
 	@Test
 	public void TC463_AddRefGasBottle_CustUA() {
@@ -102,12 +108,12 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 * Expected Results: "Please fill out this field." message should be displayed
 	 * Current implementation:
 	 * Current Issue:
-     * Future Improvement: deal with the tooltip text
+	 * Future Improvement: deal with the tooltip text
 	 */
 	@Test
 	public void TC464_AddRefGasBottleBlankRequiredFields_CustUA() {
 		String lotNum="";
-		String isoValue = "";
+		String isoValue = "0";
 		String ethaneMethaneRatio = "1";
 
 		Log.info("\nRunning TC464_AddRefGasBottleBlankRequiredFields_CustUA - Test Description: add reference gas bottle - "
@@ -117,9 +123,8 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQACUSUA, USERPASSWORD);
 
 		manageRefGasBottlesAdminPage.open();
-		assertFalse(manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false));
-
-		
+		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
+		assertTrue(manageRefGasBottlesPage.getLotNumberError().equals(REQUIRED_FIELD_VAL_MESSAGE));
 	}
 
 	/**
@@ -129,7 +134,7 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 	 * Expected Results: User cannot enter more than ... characters and message having limit of characters displayed
 	 * Current implementation:
 	 * Current Issue:
-     * Future Improvement:
+	 * Future Improvement:
 	 */
 	@Test
 	public void TC465_AddRefGasBottleLotNumber50CharLimit_CustUA() {
