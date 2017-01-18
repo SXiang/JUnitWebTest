@@ -355,7 +355,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean stopDrivingSurvey(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.stopDrivingSurvey", data, dataRowID);
 		// stop simulator replay.
-		TestContext.INSTANCE.getTestSetup().stopReplay();
+		//TestContext.INSTANCE.getTestSetup().stopReplay();
 		// stop survey from UI.
 		getDriverViewPage().stopDrivingSurvey();
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());

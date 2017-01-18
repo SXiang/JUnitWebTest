@@ -2,7 +2,9 @@ package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Analyzer;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
@@ -23,9 +25,9 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		initializePageObject(driver, new ManageAnalyzersPage(driver, strBaseURL, testSetup));
 		setDataReader(new AnalyzerDataReader(this.excelUtility));
 	}
-	
+
 	private void setDataReader(AnalyzerDataReader customerDataReader) {
-		this.dataReader = customerDataReader;	
+		this.dataReader = customerDataReader;
 	}
 
 	// Note: Not thread-safe.
@@ -50,8 +52,8 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws NumberFormatException 
+	 * @throws Exception
+	 * @throws NumberFormatException
 	 */
 	public boolean createNewAnalyzer(String data, Integer dataRowID) throws NumberFormatException, Exception {
 		logAction("ManageAnalyzerPageActions.createNewAnalyzer", data, dataRowID);
@@ -63,7 +65,7 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 		String customerName = null;
 		if (ManageCustomerPageActions.workingDataRow.get() != null) {
 			customerName = ManageCustomerPageActions.workingDataRow.get().name;
-		} else {	
+		} else {
 			if (ManageSurveyorPageActions.workingDataRow.get() != null) {
 				SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
 				SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(Integer.valueOf(analyzerDataRow.surveyorRowID));
@@ -74,7 +76,7 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 				throw new Exception("Could not determine the correct customer to use for the the Analyzer.");
 			}
 		}
-		
+
 		String surveyor = null;
 		if (ManageSurveyorPageActions.workingDataRow.get() != null) {
 			surveyor = ManageSurveyorPageActions.workingDataRow.get().description;
@@ -92,14 +94,24 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 			LocationDataRow locationDataRow = locationDataReader.getDataRow(Integer.valueOf(analyzerDataRow.locationRowID));
 			locationName = locationDataRow.name;
 		}
-		
+
+		// If serial number has been fetched from pool, delete existing Analyzer before creating new.
+		if (analyzerDataRow.isSerialNumberFromPool) {
+			Log.info(String.format("Found Analyzer with serial number-'%s' fetched from pool", analyzerDataRow.serialNumber));
+			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerDataRow.serialNumber);
+			if (analyzer != null) {
+				Log.info(String.format("Deleting Analyzer with serial number-'%s' using data access objects", analyzerDataRow.serialNumber));
+				analyzer.deleteAnalyzer();
+			}
+		}
+
 		this.getManageAnalyzersPage().addNewAnalyzer(serialNumber, sharedKey, surveyor, customerName, locationName);
-		
+
 		workingDataRow.set(analyzerDataRow);
-		
+
 		return true;
 	}
- 
+
 	private ManageAnalyzersPage getManageAnalyzersPage() {
 		return (ManageAnalyzersPage)this.getPageObject();
 	}

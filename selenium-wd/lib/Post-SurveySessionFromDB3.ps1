@@ -41,6 +41,8 @@ Write-Host "Posting Authenticate Session successful!"
 # Post session to Analyzer API
 $analyzerSessionUrl = "api/Analyzer/Session"
 
+. $WorkingFolder\$libFolder\HelperScripts\DateTimeHelpers.ps1
+. $WorkingFolder\$libFolder\HelperScripts\StabilityClassMapper.ps1
 . $WorkingFolder\$libFolder\HelperScripts\ReadWriteSQLite.ps1 -WorkingFolder $WorkingFolder
 
 # Read Surveys from DB3 and post to Analyzer API.
@@ -77,6 +79,15 @@ if ($surveys -ne $null) {
                 $ConditionArray += $Condition
             }
         }
+
+        # If EndEpoch is NULL, post current epoch time as Survey end time.
+        if ($EndEpoch -eq [System.DbNull]::Value) {
+            $endDateTime = [System.DateTime]::UtcNow
+            $EndEpoch = ToUnixTime -dateTime $endDateTime
+        }
+
+        # Map SurveyStabilityClass -> AnalyzerSurveyStabilityClass.
+        $StabilityClass = MapTo-AnalyzerSurveyStabilityClass -surveyStabilityClass "$StabilityClass"
 
         $Body2 = @{
             Id="$SurveyUUID"

@@ -66,7 +66,7 @@ public class TestSetup {
 
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
-	public static final String ANALYZER_EXE_PATH = "C:\\PicarroAnalyzer\\Picarro.Surveyor.Analyzer.exe";
+	public static final String ANALYZER_EXE_PATH = "C:\\Picarro\\G2000\\Picarro.Surveyor.Analyzer\\Picarro.Surveyor.Analyzer.exe";
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 	public static final String TEST_ANALYZER_KEY = "SimAuto-AnalyzerKey1";
 
@@ -169,6 +169,8 @@ public class TestSetup {
 
 	private String parallelBuildRunUUID;
 	private Integer parallelBuildRequiredNodes;
+
+	private String numAnalyzersInPool;
 
 	private ScreenShotOnFailure screenCapture;
 
@@ -628,6 +630,8 @@ public class TestSetup {
 			this.randomNumber = Long.toString((new Random()).nextInt(1000000));
 			Log.info("\nThe random number is: " + this.randomNumber + "\n");
 
+			this.setNumAnalyzersInPool(this.testProp.getProperty("numAnalyzersInPool"));
+
 			inputStream.close();
 
 			TestContext.INSTANCE.setTestSetup(this);
@@ -978,7 +982,6 @@ public class TestSetup {
 			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 			try {
 				TestSetup.stopAnalyzerIfRunning();
-				TestSetup.setupSimulatorPreReqs();
 				TestSetup.updateAnalyzerConfiguration();
 				TestSetup.startAnalyzer();
 			} catch (IOException e) {
@@ -1050,6 +1053,8 @@ public class TestSetup {
 
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("DataManagerPublisher.exe", /* killChildProcesses */ true);
+		ProcessUtility.killProcess("pipelinerunner.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("supervisor.exe", /* killChildProcesses */ true);
 	}
 
@@ -1464,5 +1469,13 @@ public class TestSetup {
 
 	public void setScreenCapture(ScreenShotOnFailure screenCapture) {
 		this.screenCapture = screenCapture;
+	}
+
+	public String getNumAnalyzersInPool() {
+		return numAnalyzersInPool;
+	}
+
+	public void setNumAnalyzersInPool(String numAnalyzersInPool) {
+		this.numAnalyzersInPool = numAnalyzersInPool;
 	}
 }

@@ -50,7 +50,7 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		initializePageObjects();
 
 		if(testAccount == null){
-			testAccount = createTestAccount("LicFeature");
+			testAccount = createTestAccount("LicFeature", true /*addTestSurveyor*/, false /*fetchAnalyzerFromPool*/);
 		}else{
 			loginPage.open();
 			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());

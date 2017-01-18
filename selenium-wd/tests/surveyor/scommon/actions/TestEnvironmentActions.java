@@ -332,6 +332,7 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
 		testEnvironmentAction.postSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
