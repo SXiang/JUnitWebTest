@@ -100,8 +100,9 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 			Log.info(String.format("Found Analyzer with serial number-'%s' fetched from pool", analyzerDataRow.serialNumber));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerDataRow.serialNumber);
 			if (analyzer != null) {
-				Log.info(String.format("Deleting Analyzer with serial number-'%s' using data access objects", analyzerDataRow.serialNumber));
-				analyzer.deleteAnalyzer();
+				Log.info(String.format("Analyzer with serial number-'%s' fetched from pool ALREADY EXISTS in DB. "
+						+ "Deleting Analyzer.", analyzerDataRow.serialNumber));
+				analyzer.cascadeDeleteAnalyzer();
 			}
 		}
 

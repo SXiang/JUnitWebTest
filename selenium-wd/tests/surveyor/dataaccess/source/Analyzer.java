@@ -3,6 +3,9 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import common.source.ApiUtility;
 import common.source.Log;
 import common.source.NumberUtility;
 
@@ -113,7 +116,23 @@ public class Analyzer extends BaseEntity {
 		return load(SQL);
 	}
 
-	public void deleteAnalyzer() {
+	public void cascadeDeleteAnalyzer() {
+		List<String> queries = new ArrayList<String>();
+		queries.add(String.format("DELETE [dbo].[AnalyzerAlarmLog] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnalyzerHardwareCapabilityType] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnalyzerHeartbeat] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnalyzerLog] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnalyzerSurveyorUnitHistory] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnalyzerUpdateJob] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[AnemometerRaw] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[GPSRaw] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[Measurement] WHERE AnalyzerId='%s'", getId()));
+		queries.add(String.format("DELETE [dbo].[Note] WHERE AnalyzerId='%s'", getId()));
+		queries.forEach(sql -> executeNonQuery(sql));
+
+		Survey.getSurveysForAnalyzer(getId().toString()).forEach(
+				s -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_MEASUREMENT_SESSION_RELATIVE_URL, s.getId())));
+
 		String SQL = String.format("DELETE [dbo].[Analyzer] WHERE SerialNumber='%s'", getSerialNumber());
 		executeNonQuery(SQL);
 	}

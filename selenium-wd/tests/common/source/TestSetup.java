@@ -55,6 +55,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  */
 public class TestSetup {
 
+	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
@@ -1134,21 +1135,22 @@ public class TestSetup {
 		}
 	}
 
-	public void postSurveySessionFromDB3(String analyzerSerialNumber, String analyzerSharedKey, String surveyor) throws IOException {
+	public void checkPostSurveySessionFromDB3(String analyzerSerialNumber, String analyzerSharedKey, String surveyor) throws IOException {
 		String workingFolder = getRootPath();
 		String seleniumFolder = getExecutionPath(getRootPath());
 		String postSurveySessionCmdFolder = seleniumFolder + "lib";
 		String postSurveySessionCmdFullPath = postSurveySessionCmdFolder + File.separator + POST_SURVEY_SESSION_FROM_DB3_CMD;
 
 		// Script parameters:
-		// -WorkingFolder '%~1' -BaseURL '%~2' -AnalyzerSerialNumber '%~3' -AnalyzerSharedKey '%~4' -Surveyor '%~5'
+		// -WorkingFolder '%~1' -BaseURL '%~2' -AnalyzerSerialNumber '%~3' -AnalyzerSharedKey '%~4' -Surveyor '%~5' -AnalyzerLogFilePath '%~6'
 		String command = "cd \"" + postSurveySessionCmdFolder + "\" && " + postSurveySessionCmdFullPath +
-				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
 						workingFolder,
 						TestContext.INSTANCE.getTestSetup().baseURL,
 						analyzerSerialNumber,
 						analyzerSharedKey,
-						surveyor);
+						surveyor,
+						TestContext.INSTANCE.getTestSetup().getAnalyzerDebugLogPath());
 		Log.info("Posting survey session from surveyor.db3 to cloud. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
@@ -1477,5 +1479,9 @@ public class TestSetup {
 
 	public void setNumAnalyzersInPool(String numAnalyzersInPool) {
 		this.numAnalyzersInPool = numAnalyzersInPool;
+	}
+
+	public String getAnalyzerDebugLogPath() {
+		return ANALYZER_DEBUG_LOG_FILE;
 	}
 }

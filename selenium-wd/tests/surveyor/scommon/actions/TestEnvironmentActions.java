@@ -33,9 +33,9 @@ public class TestEnvironmentActions extends BaseActions {
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean postSurveySessionsFromDB3ToCloud(String data, Integer dataRowID)  throws Exception {
-		logAction("TestEnvironmentActions.postSurveySessionsFromDB3ToCloud", data, dataRowID);
-		postSurveySessionsFromDB3(dataRowID);
+	public boolean checkPostSurveySessionsFromDB3ToCloud(String data, Integer dataRowID)  throws Exception {
+		logAction("TestEnvironmentActions.checkPostSurveySessionsFromDB3ToCloud", data, dataRowID);
+		checkPostSurveySessionsFromDB3(dataRowID);
 		return true;
 	}
 
@@ -195,7 +195,7 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
-		if (actionName.equals("postSurveySessionsFromDB3ToCloud")) { return this.postSurveySessionsFromDB3ToCloud(data, dataRowID); }
+		if (actionName.equals("postSurveySessionsFromDB3ToCloud")) { return this.checkPostSurveySessionsFromDB3ToCloud(data, dataRowID); }
 		else if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
 		else if (actionName.equals("startAnalyzer")) { return this.startAnalyzer(data, dataRowID); }
 		else if (actionName.equals("stopAnalyzer")) { return this.stopAnalyzer(data, dataRowID); }
@@ -258,7 +258,7 @@ public class TestEnvironmentActions extends BaseActions {
 		outAnalyzerSharedKey.append(analyzerSharedKey);
 	}
 
-	private void postSurveySessionsFromDB3(Integer dataRowID) throws Exception, IOException {
+	private void checkPostSurveySessionsFromDB3(Integer dataRowID) throws Exception, IOException {
 		TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
 		StringBuffer outAnalyzerSerialNumber = new StringBuffer();
 		StringBuffer outAnalyzerSharedKey = new StringBuffer();
@@ -268,7 +268,7 @@ public class TestEnvironmentActions extends BaseActions {
 		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzerSerialNumber);
 		SurveyorUnit objSurveyorUnit = SurveyorUnit.getSurveyorUnitById(String.valueOf(objAnalyzer.getSurveyorUnitId()));
 		String surveyor = objSurveyorUnit.getDescription();
-		TestContext.INSTANCE.getTestSetup().postSurveySessionFromDB3(analyzerSerialNumber, analyzerSharedKey, surveyor);
+		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerSerialNumber, analyzerSharedKey, surveyor);
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class TestEnvironmentActions extends BaseActions {
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
-		testEnvironmentAction.postSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
+		testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }

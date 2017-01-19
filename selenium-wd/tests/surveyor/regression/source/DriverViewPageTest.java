@@ -444,10 +444,10 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() throws Exception {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
 
-		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
-
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
@@ -480,6 +480,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 
 		// 6.
 		driverViewPage.verifyLoadedMap(MapSwitchType.Map);
+
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
