@@ -317,6 +317,13 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		
 		// Verify investigation status
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+				/* Need verification of PDF and CSV*/
+		
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());

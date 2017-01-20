@@ -3,11 +3,17 @@
  */
 package surveyor.scommon.mobile.source;
 
+import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
+
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import common.source.Log;
 
 /**
@@ -66,7 +72,7 @@ public class MobileReportsPage extends MobileBasePage {
 	}
 
 	public MobileInvestigationPage clickOnReportName(String reportName){
-		WebElement reportLink = driver.findElement(By.xpath(String.format(reportXPattern, reportName)));
+		WebElement reportLink = waitUntilPresenceOfReport(By.xpath(String.format(reportXPattern, reportName)));
 		reportLink.click();
 		MobileInvestigationPage investigationPage = new MobileInvestigationPage();
 		investigationPage.waitUntilPageLoad();
@@ -102,6 +108,29 @@ public class MobileReportsPage extends MobileBasePage {
 		
 		String result = getElementText(firstTableData);
 		return result;
+	}
+	
+	
+	protected WebElement waitUntilPresenceOfReport(By locator){
+		WebElement element = null;
+		try {
+			element = (new WebDriverWait(driver,5*timeout)).until(
+					new ExpectedCondition<WebElement>(){
+						public WebElement apply(WebDriver d){
+							WebElement we = null;
+							try{
+								we = d.findElement(locator);
+							}catch(Exception e){
+								inputSearch.sendKeys(Keys.ENTER);
+								waitForPageLoad();
+							}
+							return we;
+						}
+					});
+		}catch(Exception e){
+			element = null;
+		}
+		return element;
 	}
 	public boolean checkVisibilityForUser(String loginUser) {
 		if (!this.picarroLogo.isDisplayed()){
