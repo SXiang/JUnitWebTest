@@ -4106,7 +4106,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	public void waitForInvestigationCSVFileDownload(String reportName) {
-		waitForFileDownload(reportName + "-ReportInvestigations.pdf", testSetup.getDownloadPath());
+		waitForFileDownload(reportName + "-ReportInvestigations.csv", testSetup.getDownloadPath());
 	}
 
 	public void waitForReportZIPFileDownload(String reportName) {
