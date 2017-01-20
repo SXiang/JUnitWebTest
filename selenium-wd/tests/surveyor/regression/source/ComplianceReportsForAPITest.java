@@ -28,29 +28,29 @@ import surveyor.scommon.source.ReportsCompliance;
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 
-	private static LoginPageActions loginPageAction;
-	private static ComplianceReportsPageActions complianceReportsPageAction;
+		private static LoginPageActions loginPageAction;
+		private static ComplianceReportsPageActions complianceReportsPageAction;
 
-	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		initializePageActions();
-		// Select run mode here.
-		setPropertiesForTestRunMode();
-	}
-
-	@Before
-	public void beforeTest() throws Exception{
-		setPropertiesForTestRunMode();
-	}
-
-	private static void setPropertiesForTestRunMode() throws Exception {
-		setTestRunMode(ReportTestRunMode.FullTestRun);
-
-		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		@BeforeClass
+		public static void beforeClass() {
+			initializeTestObjects();
 		}
-	}
 
+		@Before
+		public void beforeTest() throws Exception {
+			initializeTestObjects();
+			initializePageActions();
+			// Select run mode here.
+			setPropertiesForTestRunMode();
+		}
+
+		private static void setPropertiesForTestRunMode() throws Exception {
+			setTestRunMode(ReportTestRunMode.FullTestRun);
+
+			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+				complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+			}
+		}
 	/**
 	 * Initializes the page action objects.
 	 * @throws Exception

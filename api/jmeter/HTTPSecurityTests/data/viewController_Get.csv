@@ -55,8 +55,8 @@ Home,ExportPeaks,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Sur
 Home,ExportAnalysis,/${APISecurityTest_Survey001},sqapicdr@picarro.com: SimAuto-Surveyor3,NO,NO,NO,NO,NO,NO,YES,YES,
 Reports,ComplianceReports,,,NO,NO,YES,YES,YES,YES,YES,YES,
 Reports,ComplianceReport,,,NO,NO,YES,YES,YES,YES,YES,YES,
-Reports,ResubmitReport,?reportType=Compliance&reportId=${APISecurityTest_ReportDelete002},,NO,NO,NO,NO,NO,NO,YES,YES,
-Reports,CancelReport,?reportType=ComplianceReports&reportId=${APISecurityTest_ReportDelete002},,NO,NO,YES,YES,YES,YES,YES,YES,Cancel report has a redirection for supervisor need to be handled
+Reports,ResubmitReport,?reportType=Compliance&reportId=${APISecurityTest_Report002},,NO,NO,NO,NO,NO,NO,YES,YES,
+Reports,CancelReport,?reportType=ComplianceReports&reportId=${APISecurityTest_Report002},,NO,NO,YES,YES,YES,YES,YES,YES,Cancel report has a redirection for supervisor need to be handled
 Reports,CopyComplianceReport,?reportId=${APISecurityTest_Report002},,NO,NO,NO,NO,YES,YES,YES,YES,
 Reports,GetReportStat,?reportTitle=${APISecurityTest_ReportTitle001},,NO,NO,NO,NO,YES,YES,YES,YES,
 Reports,ViewReportPdf,?reportId=${APISecurityTest_Report001}&ReportType=Investigation,APISecurityTestReport001,NO,NO,NO,NO,YES,YES,YES,YES,
@@ -77,8 +77,8 @@ Reports,EQReports,,,NO,NO,YES,YES,YES,YES,YES,YES,
 Reports,EQReport,,,NO,NO,YES,YES,YES,YES,YES,YES,
 Reports,AssessmentReport,,,NO,NO,YES,YES,YES,YES,YES,YES,
 Reports,AssessmentReports,,,NO,NO,YES,YES,YES,YES,YES,YES,
-Reports,ResubmitReport,?reportType=Assessment&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,NO,NO,NO,NO,YES,YES,
-Reports,CancelReport,?reportType=AssessmentReports&reportId=${APISecurityTest_AssessmentDelete002},,NO,NO,YES,YES,YES,YES,YES,YES,Cancel report has a redirection for supervisor need to be handled
+Reports,ResubmitReport,?reportType=Assessment&reportId=${APISecurityTest_Assessment002},,NO,NO,NO,NO,NO,NO,YES,YES,
+Reports,CancelReport,?reportType=AssessmentReports&reportId=${APISecurityTest_Assessment002},,NO,NO,YES,YES,YES,YES,YES,YES,Cancel report has a redirection for supervisor need to be handled
 Reports,CopyAssessmentReport,?reportId=${APISecurityTest_Assessment002},,NO,NO,NO,NO,YES,YES,YES,YES,
 Admin,ManageSurveyors,,,NO,NO,NO,YES,NO,YES,NO,YES,
 Admin,ManageSurveyorsData,,,NO,NO,NO,YES,NO,YES,NO,YES,

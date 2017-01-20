@@ -249,30 +249,30 @@ UPDATE [dbo].[Location] SET [CustomerId]=@customerId, [Description]=N'Default',[
 DECLARE @surveyModeTypeID uniqueidentifier 
 
 /* NOTE: FovVersion is set to 1 for 3100 algorithm in web.config, code will use FovVersion1Ratio value.
- * Here are corresponding values for MinimumAmplitude, LeakRate
+ * Here are corresponding values for MinimumAmplitude
 */
 SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
 SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='Rapid Response'
 
-UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=5, [LeakRate]=166.666666667 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
+UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=5 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
 IF @@ROWCOUNT=0
-	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude], [LeakRate]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5, 166.666666667)
+	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5)
 SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='Manual'
-UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=0.035, [LeakRate]=166.666666667 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
+UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=0.035 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
 IF @@ROWCOUNT=0
-	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude], [LeakRate]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 0.035, 1.16666666667)
+	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 0.035)
 SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='Operator'
-UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=5, [LeakRate]=166.666666667 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
+UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=5 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
 IF @@ROWCOUNT=0
-	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude], [LeakRate]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5, 166.666666667)
+	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5)
 SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='Standard'
-UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=0.035, [LeakRate]=166.666666667 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
+UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=0.035 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
 IF @@ROWCOUNT=0
-	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude], [LeakRate]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 0.035, 1.16666666667)
+	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 0.035)
 SELECT @surveyModeTypeID=[Id] FROM [dbo].[SurveyModeType] WHERE Description='EQ'
-UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=05, [LeakRate]=166.666666667 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
+UPDATE [dbo].[SurveyModeTypeConfiguration] SET [MinimumAmplitude]=5 WHERE [LocationId] = @locationID AND [SurveyModeTypeId] = @surveyModeTypeID AND [FromDate]=CAST(N'1980-01-01 00:00:00.000' AS DateTime)
 IF @@ROWCOUNT=0
-	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude], [LeakRate]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5, 166.666666667)
+	INSERT [dbo].[SurveyModeTypeConfiguration] ([LocationId],[SurveyModeTypeId], [FromDate], [MinimumAmplitude]) VALUES (@locationID, @surveyModeTypeID, CAST(N'1980-01-01 00:00:00.000' AS DateTime), 5)
 
 	
 --IsotopicIdentity:
@@ -619,6 +619,14 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'26F7026D-788B-0413-0D89-39D76AFCAAFE'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'26F7026D-788B-0413-0D89-39D76AFCAAFE', 0)
+-- HardwareCapabilityType for RFADS2004-PICARRO
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'D2CCC285-2BD3-5D22-667E-39D823D4D255'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', 1)
+-- HardwareCapabilityType for SQACUS2016-1
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'43A34021-8814-8A01-9183-39D4B4DE03EB'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', 1)
 
 
 --Users:

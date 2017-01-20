@@ -79,7 +79,8 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	@Override
 	public void postTestMethodProcessing() {
 		try {
-			cleanUp();
+			// Commenting for failure investigations until DE2633 is fixed.
+			//cleanUp();
 			getReportsPage().logout();
 		} catch (Exception e) {
 			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
