@@ -30,11 +30,11 @@ public class WebDriverWrapper {
 
 	private String appiumServerHost;
 	private String appiumServerPort;
-	private String mobileApp;
-	private String mobileBrowserName;
-	private String mobileVersion;
+	private String iosApp;
+	private String androidBrowserName;
+	private String iosVersion, androidVersion;
 	private String mobilePlatform;
-	private String deviceName;
+	private String iosDeviceName, androidDeviceName;
 	
 	private RemoteWebDriver driver;
 	private static RemoteWebDriver appiumDriver;
@@ -55,11 +55,13 @@ public class WebDriverWrapper {
 		
 		this.appiumServerHost = TestContext.INSTANCE.getTestSetup().getAppiumServerHost();
 		this.appiumServerPort = TestContext.INSTANCE.getTestSetup().getAppiumServerPort();
-		this.mobileApp = TestContext.INSTANCE.getTestSetup().getMobileApp();
-		this.mobileBrowserName = TestContext.INSTANCE.getTestSetup().getMobileBrowserName();
-		this.mobileVersion = TestContext.INSTANCE.getTestSetup().getMobileVersion();
+		this.iosApp = TestContext.INSTANCE.getTestSetup().getIosApp();
+		this.androidBrowserName = TestContext.INSTANCE.getTestSetup().getAndroidBrowserName();
+		this.iosVersion = TestContext.INSTANCE.getTestSetup().getIosVersion();
 		this.mobilePlatform = TestContext.INSTANCE.getTestSetup().getMobilePlatform();
-		this.deviceName = TestContext.INSTANCE.getTestSetup().getDeviceName();
+		this.iosDeviceName = TestContext.INSTANCE.getTestSetup().getIosDeviceName();
+		this.androidVersion = TestContext.INSTANCE.getTestSetup().getAndroidVersion();
+		this.androidDeviceName = TestContext.INSTANCE.getTestSetup().getAndroidDeviceName();
 	}
 
 	public void driverSetup() {
@@ -121,13 +123,13 @@ public class WebDriverWrapper {
 
 	public RemoteWebDriver setupAppiumRemoteWebDriver(){
 		this.capabilities = new DesiredCapabilities();
-		this.capabilities.setCapability(CapabilityType.BROWSER_NAME, this.mobileBrowserName);
-		this.capabilities.setCapability("platformVersion", this.mobileVersion);
 		this.capabilities.setCapability("platformName", this.mobilePlatform);
-		this.capabilities.setCapability("deviceName", this.deviceName);
 
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
-			this.capabilities.setCapability("app", this.mobileApp);
+			this.capabilities.setCapability("app", this.iosApp);
+			this.capabilities.setCapability("platformVersion", this.iosVersion);
+			this.capabilities.setCapability("platformName", this.mobilePlatform);
+			this.capabilities.setCapability("deviceName", this.iosDeviceName);
 			this.capabilities.setCapability("automationName", "XCUITest");
 			this.capabilities.setCapability("launchTimeout", 300000);
 			this.capabilities.setCapability("autoAcceptAlerts", true);
@@ -135,6 +137,9 @@ public class WebDriverWrapper {
 			this.capabilities.setCapability("autoWebview", true);
 			this.capabilities.setCapability("orientation", "PORTRAIT");
 		}else{
+			this.capabilities.setCapability(CapabilityType.BROWSER_NAME, this.androidBrowserName);
+			this.capabilities.setCapability("platformVersion", this.androidVersion);
+			this.capabilities.setCapability("deviceName", this.androidDeviceName);
 			this.capabilities.setCapability("automationName", "Appium");
 			this.capabilities.setCapability("avdLaunchTimeout", 300000);
 			this.capabilities.setCapability("appPackage", "com.android.chrome");

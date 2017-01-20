@@ -95,11 +95,11 @@ public class TestSetup {
 
 	private String appiumServerHost;
 	private String appiumServerPort;
-	private String mobileApp;
-	private String mobileBrowserName;
-	private String mobileVersion;
+	private String iosApp;
+	private String androidBrowserName;
+	private String iosVersion, androidVersion;
 	private String mobilePlatform;
-	private String deviceName;
+	private String iosDeviceName, androidDeviceName;
 	
 	private String browser;
 	private String chromeDriverPath;
@@ -497,31 +497,38 @@ public class TestSetup {
 		this.appiumServerPort = appiumServerPort;
 	}
 
-	public String getMobileApp() {
-		return mobileApp;
+	public String getIosApp() {
+		return iosApp;
 	}
 
-	public void setMobileApp(String mobileApp) {
-		this.mobileApp = mobileApp;
+	public void setIosApp(String iosApp) {
+		this.iosApp = iosApp;
 	}
 
-	public String getMobileBrowserName() {
-		return mobileBrowserName;
+	public String getAndroidBrowserName() {
+		return androidBrowserName;
 	}
 
-	public void setMobileBrowserName(String mobileBrowserName) {
-		this.mobileBrowserName = mobileBrowserName;
+	public void setAndroidBrowserName(String androidBrowserName) {
+		this.androidBrowserName = androidBrowserName;
 	}
 
 	
-	public String getMobileVersion() {
-		return mobileVersion;
+	public String getIosVersion() {
+		return iosVersion;
 	}
 
-	public void setMobileVersion(String mobileVersion) {
-		this.mobileVersion = mobileVersion;
+	public void setIosVersion(String iosVersion) {
+		this.iosVersion = iosVersion;
 	}
 
+	public String getAndroidVersion() {
+		return androidVersion;
+	}
+
+	public void setAndroidVersion(String androidVersion) {
+		this.androidVersion = androidVersion;
+	}
 	public String getMobilePlatform() {
 		return mobilePlatform;
 	}
@@ -530,14 +537,21 @@ public class TestSetup {
 		this.mobilePlatform = mobilePlatform;
 	}
 
-	public String getDeviceName() {
-		return deviceName;
+	public String getIosDeviceName() {
+		return iosDeviceName;
 	}
 
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
+	public void setIosDeviceName(String iosDeviceName) {
+		this.iosDeviceName = iosDeviceName;
 	}
 
+	public String getAndroidDeviceName() {
+		return androidDeviceName;
+	}
+
+	public void setAndroidDeviceName(String androidDeviceName) {
+		this.androidDeviceName = androidDeviceName;
+	}
 	public void initialize() {
 		try {
 
@@ -556,11 +570,13 @@ public class TestSetup {
 
 			this.setAppiumServerHost(this.testProp.getProperty("appiumServerHost"));
 			this.setAppiumServerPort(this.testProp.getProperty("appiumServerPort"));
-			this.setMobileApp(this.testProp.getProperty("mobileApp"));
-			this.setMobileBrowserName(this.testProp.getProperty("mobileBrowserName"));
-			this.setMobileVersion(this.testProp.getProperty("mobileVersion"));
+			this.setIosApp(this.testProp.getProperty("iosApp"));
+			this.setAndroidBrowserName(this.testProp.getProperty("androidBrowserName"));
+			this.setIosVersion(this.testProp.getProperty("iosVersion"));
 			this.setMobilePlatform(this.testProp.getProperty("mobilePlatform"));
-			this.setDeviceName(this.testProp.getProperty("deviceName"));
+			this.setIosDeviceName(this.testProp.getProperty("iosDeviceName"));
+			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
+			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
 			
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
