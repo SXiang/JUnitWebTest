@@ -80,6 +80,7 @@ public class MobileReportsPage extends MobileBasePage {
 	}
 
 	public boolean isReportTitleSearchable(String reportTitle){
+		waitUntilPresenceOfReport(By.xpath(String.format(reportXPattern, reportTitle)));
 		performSearch(reportTitle);
 		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatable']//td[1]"));
 		for(WebElement item:itemValues){

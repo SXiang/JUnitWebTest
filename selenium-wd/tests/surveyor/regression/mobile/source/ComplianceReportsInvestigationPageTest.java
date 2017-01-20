@@ -105,9 +105,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Fill out leak details in popup window and click OK, the click on Mark as Complete button
 	 * - Select another LISA and repeat, but do not click on Mark as Complete button
 	 * - Select a third LISA and click on Add Source -> Add Other Source button, fill in details and click OK, then click Mark as Complete
-	 * - Click on first LISA -> Investigate -> Add Source
-	 * - Click on second LISA -> Investigate -> Add Source
-	 * - Click on third LISA -> Investigate -> Add Source
 	 * - Click on Investigate button on Compliance Reports page
 	 * Results: 
 	 * - First LISA should be marked as Investigated, Leak Found, with Status of Found Gas Leak
@@ -222,14 +219,14 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * Test Case ID: TC695_VerifyMobileIsNotPreFetchingMap.
 	 * Test Description: Verify that Mobile is not pre fetching map always and data usage is minimized.
 	 * Script: 
-	 * -  In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools) 
-  - Turn on device mode by pressing the Toggle device mode  icon (When device mode         is enabled, the icon turns blue and the viewport transforms into a device emulator.)
-  - Switch to Network tab on developer tool.
- - Login as Driver to Pcubed site in required environment. 
+	 * - In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools) 
+	 * - Turn on device mode by pressing the Toggle device mode  icon (When device mode         is enabled, the icon turns blue and the viewport transforms into a device emulator.)
+	 * - Switch to Network tab on developer tool.
+	 *- Login as Driver to Pcubed site in required environment. 
 	 * - 
 	 * Results: 
 	 * -  verify that the network activity is stalled when the map is already rendered and you are not moving the screen. (Today the network activity keeps on happening in loop.)
-  - data activity is not happening in the console.
+	 * - data activity is not happening in the console.
 	 */
 	@Ignore /* Not automatable */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = ComplianceReportDataProvider.class)
@@ -257,8 +254,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Fill out details of leak on popup and click OK
 	 * - Click on Mark as Complete button
 	 * - On web view, check for the above Lisa
-	* Results:
-    *  -  User should be able to log in and accept the EULA successfully
+	 * Results:
+	 *  -  User should be able to log in and accept the EULA successfully
 	 * - User is navigated to report list page and should see only those reports of which the Lisa's are assigned (eg. Test report)
 	 * - User can successfully investigate the Lisa and Found Gas Leak is displayed after that Lisa in mobile view
 	 * - Investigation status, Leak found, Date values should be updated

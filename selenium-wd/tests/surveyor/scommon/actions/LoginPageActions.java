@@ -66,7 +66,7 @@ public class LoginPageActions extends BasePageActions {
 		}
 		return dataRow;
 	}
-	
+
 	public Customer getLoggedInUserCustomer() throws Exception, IOException {
 		Customer customer = null;
     	if (LoginPageActions.workingDataRow.get() != null) {
