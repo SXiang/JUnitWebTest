@@ -32,6 +32,7 @@ import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -44,7 +45,6 @@ import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 
 
 @RunWith(SurveyorTestRunner.class)

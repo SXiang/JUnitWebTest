@@ -18,12 +18,12 @@ import org.junit.Test;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
+import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 
@@ -92,7 +92,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
 		this.getComplianceReportsPage().open();
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit,
 				userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter,
 				listBoundary, tagList, tablesList, viewList, viewLayersList);
 

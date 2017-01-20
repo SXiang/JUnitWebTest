@@ -1,7 +1,7 @@
 /**
  *
  */
-package surveyor.scommon.source;
+package surveyor.scommon.entities;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,11 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * @author zlu
- *
- */
-public class Reports {
+public class BaseReportEntity {
 
 	/**
 	 *
@@ -27,7 +23,7 @@ public class Reports {
 	public static Map<String, ReportJobType> ReportJobTypeGuids;
 	public static Map<ReportJobType, String> ReportJobTypeReverseGuids;
 
-	protected String rptTitle;
+	private String rptTitle;
 	protected String strCreatedBy;
 	private String customer;
 	protected String timeZone;
@@ -155,35 +151,34 @@ public class Reports {
 		}
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, null, tagList);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, boolean geoFilter) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, geoFilter, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String startDate, String endDate, boolean geoFilter) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, null);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate, boolean geoFilter) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, String startDate, String endDate, boolean geoFilter) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, startDate, endDate, geoFilter, tagList);
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName,  String startDate, String endDate,  List<String> tagList) {
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName,  String startDate, String endDate,  List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate, null, tagList);
 	}
 
-	public Reports(){
-
+	public BaseReportEntity(){
 	}
 
-	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, Boolean geoFilter, List<String> tagList){
+	public BaseReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, String userName, String startDate, String endDate, Boolean geoFilter, List<String> tagList){
 		this.rptTitle = rptTitle;
 		this.strCreatedBy = strCreatedBy;
 		this.setCustomer(customer);
@@ -196,7 +191,6 @@ public class Reports {
 
 		this.startDate = startDate;
 		this.endDate = endDate;
-
 	}
 
 	public String getRptTitle() {
@@ -344,8 +338,5 @@ public class Reports {
 		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.Zip, "00000000-0000-0000-0010-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.AssetBoxHighlight, "00000000-0000-0000-0011-000000000000");
-	}
-
-	public static void main(String[] args) {
 	}
 }

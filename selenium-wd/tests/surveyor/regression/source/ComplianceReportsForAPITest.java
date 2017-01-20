@@ -16,6 +16,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -23,7 +24,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
@@ -89,7 +89,7 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 
 		String[] titles = {"APISecurityTest_Report001","APISecurityTest_Report002",
 				"APISecurityTest_ReportDelete001","APISecurityTest_ReportDelete002"};
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
 
 		for(String rptTitle:titles){
 			Report report = Report.getReport(rptTitle);

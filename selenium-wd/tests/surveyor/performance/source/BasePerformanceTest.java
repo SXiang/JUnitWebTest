@@ -12,8 +12,8 @@ import common.source.Log;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
 import surveyor.scommon.source.BaseReportsPageTest;
-import surveyor.scommon.source.Reports.ReportJobType;
 
 public class BasePerformanceTest extends BaseReportsPageTest {
 

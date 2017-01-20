@@ -9,11 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
 @RunWith(SurveyorTestRunner.class)
@@ -261,7 +261,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		int reportDataRowID = 114;
 		ReportColorOption[] colors = {ReportColorOption.ORANGE, ReportColorOption.RED};
 
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID);
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID);
 
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
 		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);

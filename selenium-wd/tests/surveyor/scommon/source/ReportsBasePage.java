@@ -60,12 +60,13 @@ import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
-import surveyor.scommon.source.ReportJobPerfDBStat;
-import surveyor.scommon.source.Reports.ReportJobType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.ReportStatusType;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsSurveyInfo;
+import surveyor.scommon.entities.ReportJobPerfDBStat;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.ReportStatusType;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
@@ -358,14 +359,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']")
 	protected WebElement btnFirstCopyCompliance;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
-	protected WebElement btnFirstInvestigateCompliance;
-
 	@FindBy(how = How.ID, using = "report-FOV-opacity")
 	protected WebElement inputFOVOpacity;
-
-	@FindBy(how = How.ID, using = "report-LISA-opacity")
-	protected WebElement inputLISAOpacity;
 
 	@FindBy(id = "report-show-gaps")
 	protected WebElement checkBoxGap;
@@ -563,7 +558,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public ReportModeFilter getReportModeFilter() {
 		for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
-			Map<String, ReportModeFilter> reportSurveyModeFilterGuids = Reports.ReportSurveyModeFilterGuids;
+			Map<String, ReportModeFilter> reportSurveyModeFilterGuids = BaseReportEntity.ReportSurveyModeFilterGuids;
 			Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
 			for (Entry<String, ReportModeFilter> entry : entrySet) {
 				if (entry.getKey().equals(radElement.getAttribute("value"))) {
@@ -620,7 +615,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public SurveyModeFilter getSurveyModeFilter() {
 		for (WebElement radElement : surveyModeTypeRadiobuttonList) {
-			Map<String, SurveyModeFilter> surveyModeFilterGuids = Reports.SurveyModeFilterGuids;
+			Map<String, SurveyModeFilter> surveyModeFilterGuids = BaseReportEntity.SurveyModeFilterGuids;
 			Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
 			for (Entry<String, SurveyModeFilter> entry : entrySet) {
 				if (entry.getKey().equals(radElement.getAttribute("value"))) {
@@ -640,10 +635,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public String getFOVOpacity() {
 		return this.inputFOVOpacity.getText();
-	}
-
-	public String getLISAOpacity() {
-		return this.inputLISAOpacity.getText();
 	}
 
 	/************ PDF Output Values *************/
@@ -743,11 +734,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public void addNewReport(Reports reports) throws Exception {
+	public void addNewReport(BaseReportEntity reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
 
-	public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+	public void addNewReport(BaseReportEntity reports, boolean openNewReportsPage) throws Exception {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
@@ -776,7 +767,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			colorPicker.get(colorIndex).click();
 		}
 	}
-	public void fillReport(Reports reports) throws Exception {
+	public void fillReport(BaseReportEntity reports) throws Exception {
 		// 1. Title and Customer
 		inputReportTitle(reports.getRptTitle());
 		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
@@ -810,11 +801,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.clickOnCancelBtn();
 	}
 
-	public void addSurveyInformation(Reports reports) throws Exception {
+	public void addSurveyInformation(BaseReportEntity reports) throws Exception {
 		addSurveyInformation(reports, null);
 	}
 
-	public void addSurveyInformation(Reports reports, List<Integer> tagIndexes) throws Exception {
+	public void addSurveyInformation(BaseReportEntity reports, List<Integer> tagIndexes) throws Exception {
 		Log.info("Adding Survey information");
 		String surveyor = reports.getSurveyorUnit();
 		String username = reports.getUsername();
@@ -839,7 +830,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public void addMultipleSurveysToReport(Reports reports) throws Exception {
+	public void addMultipleSurveysToReport(BaseReportEntity reports) throws Exception {
 		Log.info("Adding all Surveys matching information.");
 
 		List<ReportsSurveyInfo> surveyInfoList = reports.getSurveyInfoList();
@@ -866,7 +857,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info("Check if 100 hours max survey duration reached");
 		return (SurveyorConstants.MAXSURVEYDURATIONREACHED).equals(getAddServeysBtnLabel());
 	}
-	
+
 	public String getAddServeysBtnLabel(){
 		String btnLable = "Add Surveys";
 		String btnLableMsg = btnLable;
@@ -1078,7 +1069,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
-	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1349,23 +1340,23 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String getUrlString() throws Exception {
-		throw new Exception("Not implemented");
+		throw new Exception("To be implemented by derived class.");
 	}
 
 	public String getStrPageText() throws Exception {
-		throw new Exception("Not implemented");
+		throw new Exception("To be implemented by derived class");
 	}
 
 	public String getStrCopyPageText() throws Exception {
-		throw new Exception("Not implemented");
+		throw new Exception("To be implemented by derived class");
 	}
 
 	public String getNewPageString() throws Exception {
-		throw new Exception("Not implemented");
+		throw new Exception("To be implemented by derived class");
 	}
 
-	public void fillReportSpecific(Reports reportsCompliance) throws Exception {
-		throw new Exception("Not implemented");
+	public void fillReportSpecific(BaseReportEntity reportsCompliance) throws Exception {
+		throw new Exception("To be implemented by derived class");
 	}
 
 	public void selectReportMode(ReportModeFilter mode) throws Exception {
@@ -2613,7 +2604,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		ReportJobType reportJobType = Reports.ReportJobTypeGuids.get(reportJobTypeId);
+		ReportJobType reportJobType = BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId);
 		BaseReportsPageTest.setRollingReportJobProcessingTime(reportJobType, processingTimeInMs);
 		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest
 				.getReportJobRollingProcessingTimeAvg(reportJobType);
@@ -2685,7 +2676,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
-			String reportJobTypeId = Reports.ReportJobTypeReverseGuids
+			String reportJobTypeId = BaseReportEntity.ReportJobTypeReverseGuids
 					.get(ReportJobType.valueOf(reportJob.ReportJobType));
 
 			// validate report job.
@@ -2728,7 +2719,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					throw new Exception(
 						String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
 							expectedFilePath.toString(),
-							Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(),
+							BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId).toString(),
 							reportJobTypeId, testCaseID));
 				}
 			}

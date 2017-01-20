@@ -27,7 +27,7 @@ import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
-import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -150,7 +150,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary.toString())
+			.selectCustomerBoundaryType(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary.toString())
 			.setCustomerBoundaryName(boundaryName)
 			.switchMode(ControlMode.Default)
 			.clickOkButton()

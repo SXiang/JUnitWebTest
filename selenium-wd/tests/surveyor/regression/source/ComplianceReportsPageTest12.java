@@ -12,13 +12,13 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 
@@ -103,7 +103,7 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
-			.selectCustomerBoundaryType(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary.toString())
+			.selectCustomerBoundaryType(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary.toString())
 			.setCustomerBoundaryName(boundaryName)
 			.switchMode(ControlMode.Default)
 			.clickOkButton()

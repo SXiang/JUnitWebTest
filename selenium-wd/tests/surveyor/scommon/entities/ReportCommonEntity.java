@@ -1,19 +1,11 @@
-/**
- *
- */
-package surveyor.scommon.source;
+package surveyor.scommon.entities;
 
 import java.util.List;
 import java.util.Map;
 
 import common.source.Log;
 
-/**
- * @author zlu
- *
- */
-public class ReportsCompliance extends Reports {
-
+public class ReportCommonEntity extends BaseReportEntity {
 	public static final String ASSET_PREFIX = "Asset_";
 	public static final String BOUNDARY_PREFIX = "Boundary_";
 	public static final String ASSET_ALL_PREFIX = "AssetAll_";
@@ -42,7 +34,6 @@ public class ReportsCompliance extends Reports {
 	protected String imageMapWidth;
 	//Opacity Fine-Tuning
 	protected String fovOpacity;
-	protected String lisaOpacity;
 	//Views
 	protected List<Map<String, String>> viewList;
 	//Optional Tablular PDF Content
@@ -210,7 +201,7 @@ public class ReportsCompliance extends Reports {
 		}
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);
 		this.exclusionRadius = exclusionRadius;
@@ -227,7 +218,7 @@ public class ReportsCompliance extends Reports {
 		this.viewList=viewList;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
@@ -239,7 +230,7 @@ public class ReportsCompliance extends Reports {
 		this.viewLayersList=viewLayersList;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
@@ -250,7 +241,7 @@ public class ReportsCompliance extends Reports {
 		this.surveyModeFilter=surveyMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary, List<Map<String, String>> tablesList,
 			String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList, SurveyModeFilter surveyMode, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
 		this.exclusionRadius=exclusionRadius;
@@ -262,7 +253,7 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate,
 			List<Map<String, String>> viewList, SurveyModeFilter surveyMode, Boolean geoFilter) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
@@ -274,7 +265,7 @@ public class ReportsCompliance extends Reports {
 		this.surveyModeFilter=surveyMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, String startDate, String endDate, List<Map<String, String>> viewList,
 			SurveyModeFilter surveyMode, String userName, Boolean geoFilterOn, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
@@ -287,7 +278,7 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList, ReportModeFilter reportMode) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList);
 		this.exclusionRadius=exclusionRadius;
@@ -298,8 +289,8 @@ public class ReportsCompliance extends Reports {
 		this.reportModeFilter=reportMode;
 	}
 
-	public ReportsCompliance(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName,
-			String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter,
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, String surveyorUnit, String userName,
+			String startDate, String endDate, String fovOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter,
 			EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList, List<Map<String, String>> viewList,
 			List<Map<String, String>> viewLayersList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, userName, startDate, endDate,geoFilter, tagList);
@@ -307,7 +298,6 @@ public class ReportsCompliance extends Reports {
 		this.setListBoundary(listBoundary);
 
 		this.fovOpacity=fovOpacity;
-		this.lisaOpacity=lisaOpacity;
 		this.reportModeFilter=reportMode;
 		this.surveyModeFilter=surveyModeFilter;
 		this.ethaneFilter=ethaneFilter;
@@ -316,7 +306,7 @@ public class ReportsCompliance extends Reports {
 		this.viewLayersList=viewLayersList;
 	}
 
-	public ReportsCompliance(){
+	public ReportCommonEntity(){
 		super();
 	}
 
@@ -402,14 +392,6 @@ public class ReportsCompliance extends Reports {
 
 	public void setFovOpactiy(String fovOpactiy) {
 		this.fovOpacity = fovOpactiy;
-	}
-
-	public String getLisaOpacity() {
-		return this.lisaOpacity;
-	}
-
-	public void setLisaOpacity(String lisaOpacity) {
-		this.lisaOpacity = lisaOpacity;
 	}
 
 	public List<Map<String, String>> getViewList() {
@@ -519,7 +501,6 @@ public class ReportsCompliance extends Reports {
 		this.latLongRectWidth = latLongRectWidth;
 	}
 
-
 	public String getFovOpacity() {
 		return fovOpacity;
 	}
@@ -534,12 +515,5 @@ public class ReportsCompliance extends Reports {
 
 	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
 		this.customerBoundaryFilterType = customerBoundaryFilterType;
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
 	}
 }

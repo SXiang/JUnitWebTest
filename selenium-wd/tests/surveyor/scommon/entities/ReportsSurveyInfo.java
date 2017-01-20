@@ -1,9 +1,9 @@
-package surveyor.scommon.source;
+package surveyor.scommon.entities;
 
-import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 
 public class ReportsSurveyInfo {
-	
+
 	public enum ColumnHeaders {
 		User ("User", 1),
 		Surveyor ("Surveyor", 2),
@@ -12,7 +12,7 @@ public class ReportsSurveyInfo {
 		SurveyType ("Type", 5),
 		Tag ("Tag", 6),
 		IsSurveySelected ("Selected?", 7);
-		
+
 		private final Integer index;
 		private final String name;
 
@@ -39,8 +39,8 @@ public class ReportsSurveyInfo {
 	private Integer numberOfSurveysToSelect;
 	private boolean selectAllSurveys;
 	private boolean isGeoFilterOn;
-	
-	public ReportsSurveyInfo(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter, 
+
+	public ReportsSurveyInfo(String surveyor, String username, String tag, String startDate, String endDate, SurveyModeFilter surveyModeFilter,
 			boolean isGeoFilterOn, Integer numberOfSurveysToSelect, boolean selectAllSurveys) {
 		this.surveyor = surveyor;
 		this.username = username;
@@ -52,7 +52,7 @@ public class ReportsSurveyInfo {
 		this.selectAllSurveys = selectAllSurveys;
 		this.isGeoFilterOn = isGeoFilterOn;
 	}
-	
+
 	public boolean isGeoFilterOn() {
 		return isGeoFilterOn;
 	}

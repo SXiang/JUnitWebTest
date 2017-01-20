@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static surveyor.scommon.entities.ComplianceReportEntity.EthaneFilter;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
@@ -15,8 +16,6 @@ import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
-
-import static surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -36,15 +35,15 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsCompliance;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -96,7 +95,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
@@ -169,13 +168,13 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
 
 		complianceReportsPage.addNewReport(rpt);
 		complianceReportsPage.waitForPageLoad();
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
-			complianceReportsPage.checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, ComplianceReportButtonType.Investigate, true, true);
+			complianceReportsPage.checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, ReportsButtonType.Investigate, true, true);
 			if(testCaseName.equals("TC217")){
 			assertFalse(complianceReportsPage.getBtnAssignInvestigators().isEnabled());
 			}

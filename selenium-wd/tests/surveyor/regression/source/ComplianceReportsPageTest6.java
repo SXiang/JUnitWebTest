@@ -6,10 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 import java.util.List;
 
-import common.source.ExceptionUtility;
 import common.source.Log;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -19,25 +17,19 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
-import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity.IsotopicAnalysisTableColumns;
+import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
-import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
@@ -819,7 +811,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(
-				ReportsCompliance.LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
+				ComplianceReportEntity.LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
 	}
 
 	/**

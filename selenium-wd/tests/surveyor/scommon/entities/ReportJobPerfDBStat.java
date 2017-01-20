@@ -1,4 +1,4 @@
-package surveyor.scommon.source;
+package surveyor.scommon.entities;
 
 import java.time.LocalDateTime;
 

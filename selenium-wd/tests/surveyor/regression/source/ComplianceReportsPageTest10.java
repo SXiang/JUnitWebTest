@@ -22,6 +22,8 @@ import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SystemHistoryReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -29,9 +31,7 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReferenceGasReportsPage;
-import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.SurveyorConstants;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 
@@ -242,7 +242,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
 
 		getComplianceReportsPage().selectSurveyInfoGeoFilter(false);
@@ -476,7 +476,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID1);
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.getComplianceReportsPage().fillReport(rpt);
 
@@ -488,7 +488,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.getComplianceReportsPage().cancelChangeRptMode();
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportModeSelected(ReportModeFilter.RapidResponse));
 
-		rpt = complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID2);
+		rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID2);
 		complianceReportsPageAction.getComplianceReportsPage().fillReport(rpt);
 
 		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.RapidResponse);
@@ -560,7 +560,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, getReportRowID(reportDataRowID1));
 	}
-	
+
 	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}

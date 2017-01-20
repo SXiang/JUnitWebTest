@@ -50,8 +50,8 @@ import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsSurveyInfo;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 public class ReportDataProvider extends SurveyorTestRunner {
@@ -222,7 +222,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			for (Integer rowID : assetRowIDs) {
 				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
 				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.assetID, ReportsCompliance.ASSET_PREFIX + dataRow.assetName);
+				viewLayerMap.put(dataRow.assetID, ComplianceReportEntity.ASSET_PREFIX + dataRow.assetName);
 			}
 		}
 	}
@@ -233,7 +233,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			for (Integer rowID : boundaryRowIDs) {
 				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
 				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + dataRow.boundaryName);
+				viewLayerMap.put(dataRow.boundaryID, ComplianceReportEntity.BOUNDARY_PREFIX + dataRow.boundaryName);
 			}
 		}
 	}
@@ -245,7 +245,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		for (int i = 0; i < assetsRowCount; i++) {
 			ReportOptViewLayersAssetsDataRow assetsDataRow = assetsDataReader.getDataRow(i);
 			if (Integer.valueOf(assetsDataRow.customerRowID) == customerRowID) {
-				viewLayerMap.put(assetsDataRow.assetID, ReportsCompliance.ASSET_PREFIX + assetsDataRow.assetName);
+				viewLayerMap.put(assetsDataRow.assetID, ComplianceReportEntity.ASSET_PREFIX + assetsDataRow.assetName);
 			}
 		}
 	}
@@ -257,7 +257,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		for (int i = 0; i < boundaryRowCount; i++) {
 			ReportOptViewLayersBoundaryDataRow boundaryDataRow = boundaryDataReader.getDataRow(i);
 			if (Integer.valueOf(boundaryDataRow.customerRowID) == customerRowID) {
-				viewLayerMap.put(boundaryDataRow.boundaryID, ReportsCompliance.BOUNDARY_PREFIX + boundaryDataRow.boundaryName);
+				viewLayerMap.put(boundaryDataRow.boundaryID, ComplianceReportEntity.BOUNDARY_PREFIX + boundaryDataRow.boundaryName);
 			}
 		}
 	}

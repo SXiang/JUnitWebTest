@@ -2,12 +2,8 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
-import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.*;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
 
@@ -15,13 +11,13 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTest {
@@ -95,7 +91,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyLISAInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
 		Assert.assertTrue(complianceReportsPageAction.verifyGAPInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
 	}
@@ -125,7 +121,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -133,7 +129,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
@@ -164,7 +160,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -172,10 +168,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/**
 	 * Test Case ID: TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF
 	 * Test Description: - All indication and asset box bubbles should be contained within the border of the Report View PDF
@@ -203,7 +199,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -211,10 +207,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/**
 	 * Test Case ID: TC2200_GapBoxNumberBubblesHasSameColorAsGap
 	 * Test Description: - Gap Box Number Bubbles should be rendered with same color as Gap
@@ -240,7 +236,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
 		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -248,7 +244,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
