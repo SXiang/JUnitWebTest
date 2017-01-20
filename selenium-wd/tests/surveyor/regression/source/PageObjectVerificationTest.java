@@ -14,6 +14,7 @@ import common.source.CryptoUtility;
 import common.source.DateUtility;
 import common.source.Log;
 import common.source.OLMapUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
@@ -448,7 +449,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Stopping the replay before capturing OLMapUtility objects.
 		// This is necessary to click on correct co-ordinates.
 		Log.info("Stopping replay...");
-		TestSetup.stopReplay();
+		TestContext.INSTANCE.getTestSetup().stopReplay();
 
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(getDriver());

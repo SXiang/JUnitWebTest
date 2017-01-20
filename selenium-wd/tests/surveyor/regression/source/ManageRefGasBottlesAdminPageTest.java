@@ -125,7 +125,6 @@ public class ManageRefGasBottlesAdminPageTest extends SurveyorBaseTest {
 		manageRefGasBottlesAdminPage.open();
 		manageRefGasBottlesAdminPage.addNewRefGasBottle(lotNum, isoValue, ethaneMethaneRatio, SQACUS, SQACUSLOC, SQACUSLOCSUR, false);
 		assertTrue(manageRefGasBottlesPage.getLotNumberError().equals(REQUIRED_FIELD_VAL_MESSAGE));
-
 	}
 
 	/**
