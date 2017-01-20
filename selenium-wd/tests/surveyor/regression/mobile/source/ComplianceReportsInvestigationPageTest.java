@@ -315,15 +315,17 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		mobileLoginPage.logout();
 		
-		// Verify investigation status
+		/* Need verification of PDF and CSV*/
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
-				/* Need verification of PDF and CSV*/
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
 		
+		// Verify investigation status
+//		complianceReportsPageAction.open(EMPTY, reportDataRowID);		
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());

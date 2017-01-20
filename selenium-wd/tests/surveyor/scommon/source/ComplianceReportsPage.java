@@ -1050,7 +1050,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	public String getInvestigationCSVFileName(String rptTitle, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
 		if (includeExtension) {
-			reportName += "-ReportLISAInvestigations.csv";
+			reportName += "-ReportInvestigations.csv";
 		}
 		return reportName;
 	}
