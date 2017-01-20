@@ -473,6 +473,26 @@ public class BasePage {
 		return selected;
 	}
 
+	public boolean selectDropdownItem(WebElement buttonDropdown, String item){
+		if(isItemSelected(buttonDropdown, item)){
+			return true;
+		}
+		buttonDropdown.click();
+		WebElement listItem = buttonDropdown.findElement(By.xpath("../ul/li/a[starts-with(text(), '"+item+"')]"));
+		listItem.click();
+		waitForPageToLoad();
+		return isItemSelected(buttonDropdown, item);
+	}
+
+	private boolean isItemSelected(WebElement buttonDropdown, String item){
+		try{
+			buttonDropdown.findElement(By.xpath("span[text()='"+item+"']"));
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	
     public String getElementText(WebElement element) {
     	String text = "";
     	try{

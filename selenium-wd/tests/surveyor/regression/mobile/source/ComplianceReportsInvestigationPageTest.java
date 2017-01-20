@@ -3,23 +3,43 @@
  */
 package surveyor.regression.mobile.source;
 
+import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
+import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.mobile.source.MobileInvestigatePage;
+import surveyor.scommon.mobile.source.MobileInvestigationPage;
+import surveyor.scommon.mobile.source.MobileLeakSourcePage;
 import surveyor.scommon.mobile.source.MobileLoginPage;
+import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
+import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.ReportInvestigationsPage;
+import surveyor.scommon.source.ReportInvestigationsPage.LisaStatus;
 
 /**
  *
@@ -29,7 +49,12 @@ import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActionTest {
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
+	private static ReportInvestigationsPage reportInvestigationsPage;
 	private static MobileLoginPage mobileLoginPage;
+	private static MobileReportsPage mobileReportsPage;
+	private static MobileInvestigationPage mobileInvestigationPage;
+	private static MobileInvestigatePage mobileInvestigatePage;
+	private static MobileLeakSourcePage mobileLeakSourcePage;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -39,10 +64,11 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		mobileLoginPage = new MobileLoginPage();
 		initializePageActions();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
+		mobileLoginPage = new MobileLoginPage();
+		reportInvestigationsPage = new ReportInvestigationsPage(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -62,9 +88,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-
-// TC219, TC224, TC807, TC1553, TC1623, TC1624, TC1628, TC1629
-// TC695, TC1378 are marked as not automatable
 	
 	/**
 	 * Test Case ID: TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView
@@ -91,7 +114,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Second LISA should be marked as Investigated, Leak Found, with Status of In Progress
 	 * - Third LISA should be marked as Investigated, Leak Not Found, with Status of Found Other Source
 	 */
-	
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = ComplianceReportDataProvider.class)
 	public void TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -102,40 +125,97 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
+		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		mobileLeakSourcePage.addLeakDetails();
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete();
+		
+		// Mobile - add leak
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
+		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		mobileLeakSourcePage.addLeakDetails();
+		mobileLeakSourcePage.closeAddSourceDialog();
+		
+		// Mobile - add other source
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3);
+		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
+		mobileLeakSourcePage.addOtherSource();
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete();
+		
+		mobileLoginPage.logout();
+		
+		// Verify investigation status
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		
-		complianceReportsPage.checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, ComplianceReportButtonType.Investigate, true, true);
-		
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), LisaStatus.FOUNDGASLEAK.toString());
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), LisaStatus.INPROGRESS.toString());
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), LisaStatus.FOUNDOTHERSOURCE.toString());
 	}
 	
 	/**
 	 * Test Case ID: TC224_SearchValidLisaOnInvestigationReportScreen
 	 * Test Description: Search valid lisa on investigation report screen
 	 * Script: 
-	 * -  Navigate to investigation report screen
+	 * - Navigate to investigation report screen
 	 * - Search the Lisa with valid CH4 value
 	 * Results: 
 	 * -  Search result should display the lisa with that provided CH4 value
 	 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC224, location = ComplianceReportDataProvider.class)
 	public void TC224_SearchValidLisaOnInvestigationReportScreen(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC224_SearchValidLisaOnInvestigationReportScreen ..." +
 			 "\nTest Description: Search valid lisa on investigation report screen");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		String lisaValue = reportInvestigationsPage.getLisaValue(lisaNumberPrefix+1);
+		assertTrue(reportInvestigationsPage.isLisaValueSearchable(lisaValue));
 	}
 	
 	/**
@@ -154,7 +234,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	@Ignore /* Not automatable */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = ComplianceReportDataProvider.class)
 	public void TC695_VerifyMobileIsNotPreFetchingMap(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC695_VerifyMobileIsNotPreFetchingMap ..." +
 			 "\nTest Description: Verify that Mobile is not pre fetching map always and data usage is minimized.");
 	}
@@ -184,21 +264,63 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Investigation status, Leak found, Date values should be updated
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, etc
 	 */
+	@Test /* Need verification of PDF and csv data */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC807, location = ComplianceReportDataProvider.class)
 	public void TC807_InvestigateLisaAsNewUser(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC807_InvestigateLisaAsNewUser ..." +
 			 "\nTest Description: Investigate Lisa as new user");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		
+		// Create a new user
+		String userName = getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
+		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
+				CUSUSERROLEDR, "Picarro - Default", TIMEZONECT)){
+			fail(String.format("Failed to add a new picarro user %s, %s",userName, USERPASSWORD));
+		}
+		
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 4;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(userName);
+		
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(userName, USERPASSWORD);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		mobileLeakSourcePage.addLeakDetails();
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete();
+
+		mobileLoginPage.logout();
+		
+		// Verify investigation status
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());
+		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
 	}
 	
 	/**
@@ -219,7 +341,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	@Ignore /* Not automatable */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1378, location = ComplianceReportDataProvider.class)
 	public void TC1378_MobileAppMapDoesNotAutoRotate(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1378_MobileAppMapDoesNotAutoRotate ..." +
 			 "\nTest Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.");
 	}
@@ -242,21 +364,52 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is logged out successfully
 	 * - Investigation report SSRS PDF is displaying correct LISA investigation status.  Lisa investigated: Yes  Leak Found: Yes
 	 */
+	@Test /* Need verification of PDF */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1553, location = ComplianceReportDataProvider.class)
 	public void TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView ..." +
 			 "\nTest Description: Check customer driver user can logout from map page in mobile view");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 5;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		mobileLeakSourcePage.addLeakDetails();
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete();
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		mobileLoginPage.logout();
+		
+		// Verify investigation data
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		/* Need verification of PDF */
 	}
 
 	/**
@@ -276,21 +429,43 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Report is searched successfully 
 	 * - User can see LISA associated searched report 
 	 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1623, location = ComplianceReportDataProvider.class)
 	public void TC1623_CustomerUserCanSearchValidInvestigationReportOnMobileView(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1623_CustomerUserCanSearchValidInvestigationReportOnMobileView ..." +
 			 "\nTest Description: Customer user can search a valid investigation report on mobile view");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				reportTitle, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 6;
+		int workingLisa1 = 7;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa1);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		
+		assertTrue(mobileReportsPage.isReportTitleSearchable(reportTitle));
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+workingLisa));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+workingLisa1));
+		
+		mobileLoginPage.logout();
 	}
 	
 	/**
@@ -308,28 +483,47 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * Results: 
 	 * -  "No matching records found" or user friendly message should be displayed to the user
 	 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1624, location = ComplianceReportDataProvider.class)
 	public void TC1624_MessageToUserInvalidInvestigationReportOnMobileView(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1624_MessageToUserInvalidInvestigationReportOnMobileView ..." +
 			 "\nTest Description: Message is displayed to user if Customer user search invalid investigation report on mobile view");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				reportTitle, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 6;
+		int workingLisa1 = 7;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa1);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		
+		assertEquals(mobileReportsPage.performSearch(reportTitle+"InvalidTitle"), NOMATCHINGSEARCH);
+		
+		mobileLoginPage.logout();
 	}
 	
 	/**
 	 * Test Case ID: TC1628_MobileViewClassicLISAshape
 	 * Test Description: Mobile View - Classic LISA shape
 	 * - Customer should have assets and assets should be intersected with LISAs
-	 * - Compliance Report that contains LISAs for customer that has LISA Box 1.0 enabled. Make sure LISA, Assets and Highlight LISA Assets are selected in report's view section
+	 * - Compliance Report that contains LISAs for customer that does not have LISA Box 1.0 enabled. Make sure Highlight LISA Assets, LISA and Assets are selected in Views section.
 	 * Script: 
 	 * - Log in as Customer Supervisor user
 	 * - Navigate to Compliance Reports page
@@ -351,21 +545,42 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, assets intersecting Classic LISAs are highlighted 
 	 */
+	@Test /* Need map verification */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
 	public void TC1628_MobileViewClassicLISAshape(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1628_MobileViewClassicLISAshape ..." +
 			 "\nTest Description: Mobile View - Classic LISA shape");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 9;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnFollow();
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		/* Need more verifications */
+		mobileLoginPage.logout();
+		/* Need verification of PDF */
 	}
 	
 	/**
@@ -394,21 +609,44 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, LISA Boxes are displayed and assets intersecting Lisa are highlighted 
 	 */
+	@Test /* Need map verification */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1629, location = ComplianceReportDataProvider.class)
 	public void TC1629_MobileViewWithLISABoxShape(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1629_MobileViewWithLISABoxShape ..." +
 			 "\nTest Description: Mobile View - LISA Box shape");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		int workingLisa = 9;
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		
+		// Mobile - add leak and complete
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnFollow();
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		/* Need more verifications */
+		mobileLoginPage.logout();
+		/* Need verification of PDF */
 	}
 
 }

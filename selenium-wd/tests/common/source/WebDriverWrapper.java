@@ -128,15 +128,16 @@ public class WebDriverWrapper {
 		this.capabilities.setCapability("deviceName", this.deviceName);
 		this.capabilities.setCapability("autoWebview", true);
 		this.capabilities.setCapability("orientation", "PORTRAIT");
-		this.capabilities.setCapability("fullReset", true);
+		this.capabilities.setCapability("fullReset", false);
+		
 
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
 			this.capabilities.setCapability("automationName", "XCUITest");
-			this.capabilities.setCapability("launchTimeout", 300000);
+			this.capabilities.setCapability("launchTimeout", 600000);
 			this.capabilities.setCapability("autoAcceptAlerts", true);
+			this.capabilities.setCapability("newCommandTimeout", 360000);
 		}else{
 			this.capabilities.setCapability("automationName", "Appium");
-			this.capabilities.setCapability("avdLaunchTimeout", 300000);
 		}
 		try {
 			appiumDriver = new RemoteWebDriver(new URL("http://" + this.appiumServerHost + ":" + this.appiumServerPort + "/wd/hub/"),
