@@ -437,16 +437,17 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 * 6. View will change from Satellite to Map
 	 * 7. Stop Driving Survey, Isotopic Capture and Reference Bottle Measurement buttons are present
 	 * 8. Survey Inactive message is displayed and only car icon is present on map. Car icon is displayed in grey color. Breadcrumb will  be displayed in grey color. There should be no errors on the consolebuttons are disabled
+	 * @throws Exception
 	 */
 	// Partially automated. Console windows error checking NOT present.
 	@Test
-	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() {
+	public void TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin() throws Exception {
 		Log.info("Running TC1098_SimulatorTest_StopDrivingSurvey_PicAdmin");
-
-		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		TestSetup.replayDB3Script(REPLAY_DB3_DEFN_FILE, SURVEYOR_DB3);
 
 		driverViewPage.open();
 		driverViewPage.waitForPageLoad();
@@ -480,6 +481,8 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		// 6.
 		driverViewPage.verifyLoadedMap(MapSwitchType.Map);
 
+		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+
 		Log.info("Clicking on MODE button");
 		driverViewPage.clickModeButton();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
@@ -492,6 +495,9 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		Log.info("Clicking on STOP SURVEY");
 		driverViewPage.getStopDrivingSurveyButton().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+
+		// stop replay in simulator.
+		TestContext.INSTANCE.getTestSetup().stopReplay();
 
 		Log.info("Waiting on UI unblock.");
 		driverViewPage.waitForUIUnBlock();

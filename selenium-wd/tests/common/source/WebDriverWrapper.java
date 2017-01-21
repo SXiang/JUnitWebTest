@@ -124,24 +124,24 @@ public class WebDriverWrapper {
 	public RemoteWebDriver setupAppiumRemoteWebDriver(){
 		this.capabilities = new DesiredCapabilities();
 		this.capabilities.setCapability("platformName", this.mobilePlatform);
-
+		
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
 			this.capabilities.setCapability("app", this.iosApp);
 			this.capabilities.setCapability("platformVersion", this.iosVersion);
-			this.capabilities.setCapability("platformName", this.mobilePlatform);
 			this.capabilities.setCapability("deviceName", this.iosDeviceName);
 			this.capabilities.setCapability("automationName", "XCUITest");
-			this.capabilities.setCapability("launchTimeout", 300000);
+			this.capabilities.setCapability("launchTimeout", 600000);
+			this.capabilities.setCapability("newCommandTimeout", 360000);
 			this.capabilities.setCapability("autoAcceptAlerts", true);
-			this.capabilities.setCapability("fullReset", true);
 			this.capabilities.setCapability("autoWebview", true);
 			this.capabilities.setCapability("orientation", "PORTRAIT");
+			this.capabilities.setCapability("fullReset", false);
 		}else{
 			this.capabilities.setCapability(CapabilityType.BROWSER_NAME, this.androidBrowserName);
 			this.capabilities.setCapability("platformVersion", this.androidVersion);
 			this.capabilities.setCapability("deviceName", this.androidDeviceName);
-			this.capabilities.setCapability("automationName", "Appium");
 			this.capabilities.setCapability("avdLaunchTimeout", 300000);
+			this.capabilities.setCapability("automationName", "Appium");
 			this.capabilities.setCapability("appPackage", "com.android.chrome");
 			this.capabilities.setCapability("appActivity", "com.google.android.apps.chrome.Main");
 		}

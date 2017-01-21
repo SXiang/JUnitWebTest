@@ -1,9 +1,13 @@
 package surveyor.scommon.actions;
 
+import java.io.IOException;
+
 import common.source.Log;
 import common.source.NetworkProxyHandler;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
 import surveyor.scommon.actions.data.TestEnvironmentDataReader;
@@ -24,6 +28,18 @@ public class TestEnvironmentActions extends BaseActions {
 	}
 
 	/**
+	 * Executes postSurveySessionsFromDB3ToCloud action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean checkPostSurveySessionsFromDB3ToCloud(String data, Integer dataRowID)  throws Exception {
+		logAction("TestEnvironmentActions.checkPostSurveySessionsFromDB3ToCloud", data, dataRowID);
+		checkPostSurveySessionsFromDB3(dataRowID);
+		return true;
+	}
+
+	/**
 	 * Executes startAnalyzer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -35,22 +51,11 @@ public class TestEnvironmentActions extends BaseActions {
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_SIMULATOR, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			String analyzerSerialNumber = null;
-			String analyzerSharedKey = null;
-			if (!ActionArguments.isEmpty(dataRow.analyzerRowID)) {
-				if (ManageAnalyzerPageActions.workingDataRow.get() != null) {
-					analyzerSerialNumber = ManageAnalyzerPageActions.workingDataRow.get().serialNumber;
-					analyzerSharedKey = ManageAnalyzerPageActions.workingDataRow.get().sharedKey;
-				} else {
-					AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(this.excelUtility);
-					AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(dataRow.analyzerRowID));
-					analyzerSerialNumber = analyzerDataRow.serialNumber;
-					analyzerSharedKey = analyzerDataRow.sharedKey;
-				}
-			} else {
-				analyzerSerialNumber = dataRow.analyzerSerialNumber;
-				analyzerSharedKey = dataRow.analyzerSharedKey;
-			}
+			StringBuffer outAnalyzerSerialNumber = new StringBuffer();
+			StringBuffer outAnalyzerSharedKey = new StringBuffer();
+			getAnalyzerInfo(dataRow, outAnalyzerSerialNumber, outAnalyzerSharedKey);
+			String analyzerSerialNumber = outAnalyzerSerialNumber.toString();
+			String analyzerSharedKey = outAnalyzerSharedKey.toString();
 			Log.info("[startAnalyzer] -> Updating Analyzer configuration");
 			TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 					analyzerSerialNumber, analyzerSharedKey);
@@ -190,7 +195,8 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
-		if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
+		if (actionName.equals("postSurveySessionsFromDB3ToCloud")) { return this.checkPostSurveySessionsFromDB3ToCloud(data, dataRowID); }
+		else if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
 		else if (actionName.equals("startAnalyzer")) { return this.startAnalyzer(data, dataRowID); }
 		else if (actionName.equals("stopAnalyzer")) { return this.stopAnalyzer(data, dataRowID); }
 		else if (actionName.equals("startNetworkProxy")) { return this.startNetworkProxy(data, dataRowID); }
@@ -228,6 +234,41 @@ public class TestEnvironmentActions extends BaseActions {
 			}
 		}
 		return TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
+	}
+
+	private void getAnalyzerInfo(TestEnvironmentDataRow dataRow, StringBuffer outAnalyzerSerialNumber, StringBuffer outAnalyzerSharedKey) throws NumberFormatException, Exception {
+		String analyzerSerialNumber = null;
+		String analyzerSharedKey = null;
+		if (!ActionArguments.isEmpty(dataRow.analyzerRowID)) {
+			if (ManageAnalyzerPageActions.workingDataRow.get() != null) {
+				analyzerSerialNumber = ManageAnalyzerPageActions.workingDataRow.get().serialNumber;
+				analyzerSharedKey = ManageAnalyzerPageActions.workingDataRow.get().sharedKey;
+			} else {
+				AnalyzerDataReader analyzerDataReader = new AnalyzerDataReader(this.excelUtility);
+				AnalyzerDataRow analyzerDataRow = analyzerDataReader.getDataRow(Integer.valueOf(dataRow.analyzerRowID));
+				analyzerSerialNumber = analyzerDataRow.serialNumber;
+				analyzerSharedKey = analyzerDataRow.sharedKey;
+			}
+		} else {
+			analyzerSerialNumber = dataRow.analyzerSerialNumber;
+			analyzerSharedKey = dataRow.analyzerSharedKey;
+		}
+
+		outAnalyzerSerialNumber.append(analyzerSerialNumber);
+		outAnalyzerSharedKey.append(analyzerSharedKey);
+	}
+
+	private void checkPostSurveySessionsFromDB3(Integer dataRowID) throws Exception, IOException {
+		TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
+		StringBuffer outAnalyzerSerialNumber = new StringBuffer();
+		StringBuffer outAnalyzerSharedKey = new StringBuffer();
+		getAnalyzerInfo(dataRow, outAnalyzerSerialNumber, outAnalyzerSharedKey);
+		String analyzerSerialNumber = outAnalyzerSerialNumber.toString();
+		String analyzerSharedKey = outAnalyzerSharedKey.toString();
+		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzerSerialNumber);
+		SurveyorUnit objSurveyorUnit = SurveyorUnit.getSurveyorUnitById(String.valueOf(objAnalyzer.getSurveyorUnitId()));
+		String surveyor = objSurveyorUnit.getDescription();
+		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerSerialNumber, analyzerSharedKey, surveyor);
 	}
 
 	/**
@@ -291,7 +332,8 @@ public class TestEnvironmentActions extends BaseActions {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(60), NOTSET);    /* wait 60 seconds after stop survey for data upload */
+		testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
+		testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 }

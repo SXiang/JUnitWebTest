@@ -357,7 +357,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		getDriverViewPage().stopDrivingSurvey();
 		TestContext.INSTANCE.getTestSetup().slowdownInSeconds(TestContext.INSTANCE.getTestSetup().getSlowdownInSeconds());
 		getDriverViewPage().waitForUIUnBlock();
-
 		return true;
 	}
 

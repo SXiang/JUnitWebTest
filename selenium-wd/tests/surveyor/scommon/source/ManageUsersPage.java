@@ -92,6 +92,12 @@ public class ManageUsersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='PasswordConfirm']")
 	protected WebElement inputPasswordConfirm;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='User_FirstName']")
+	protected WebElement firstName;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='User_LastName']")
+	protected WebElement lastName;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='User_RoleId']")
 	protected WebElement dropDownRole;
 
@@ -332,7 +338,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		}
 
 		if(!done){
-			Log.info("Confirm password - '"+passwordConfirm+"'");
+			Log.info("Confirm password - '<HIDDEN>'");
 			this.inputPasswordConfirm.sendKeys(passwordConfirm);
 			focusOnPage(pageLabel);
 			done = isElementPresent(this.labelPwdConfirmErrorXPath, validatationTimeout);
@@ -350,6 +356,11 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 			enableDisableUser(enabled);
 		}
+
+		if (email.contains("@email.com")) {
+			this.firstName.sendKeys(email.replaceAll("@email.com", ""));
+		}
+
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
