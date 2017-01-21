@@ -36,7 +36,7 @@ public class MobileLoginPage extends MobileBasePage {
 	public MobileLoginPage(){
 		super(STRURLPath);
 		pageKey = By.cssSelector("[type='submit']");
-		Log.info("The Login Page URL is: " + this.strPageURL);
+		Log.info("The Mobile Login Page URL is: " + this.strPageURL);
 	}
 	
 	private void handleEULA() {
@@ -61,6 +61,7 @@ public class MobileLoginPage extends MobileBasePage {
 		MobileReportsPage reportsPage = new MobileReportsPage();
 		handleEULA();	
 		reportsPage.waitUntilPageLoad();
+		reportsPage.clearFilter();
 		return reportsPage;
 	}
 	

@@ -3,10 +3,17 @@
  */
 package surveyor.scommon.mobile.source;
 
+import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
+
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import common.source.Log;
 
 /**
@@ -39,7 +46,14 @@ public class MobileReportsPage extends MobileBasePage {
 	private WebElement firstButton;
 	@FindBy(css = "[id='datatable_paginate'] a.paginate_button.current")
 	private WebElement currentButton;
+
+	@FindBy(css = ".dataTables_filter input.search-icon[type='search']")
+	private WebElement inputSearch;
+
+	@FindBy(css = "table[id='datatable'] td")
+	private WebElement firstTableData;
 	
+	protected String reportXPattern = "//*[@id='datatable']//td[text()='%s']";
 	/**
 	 * @param driver
 	 * @param baseURL
@@ -56,7 +70,69 @@ public class MobileReportsPage extends MobileBasePage {
 		driver.get(strPageURL);
 		waitUntilPageLoad();
 	}
+
+	public MobileInvestigationPage clickOnReportName(String reportName){
+		WebElement reportLink = waitUntilPresenceOfReport(By.xpath(String.format(reportXPattern, reportName)));
+		reportLink.click();
+		MobileInvestigationPage investigationPage = new MobileInvestigationPage();
+		investigationPage.waitUntilPageLoad();
+		return investigationPage;
+	}
+
+	public boolean isReportTitleSearchable(String reportTitle){
+		waitUntilPresenceOfReport(By.xpath(String.format(reportXPattern, reportTitle)));
+		performSearch(reportTitle);
+		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatable']//td[1]"));
+		for(WebElement item:itemValues){
+			String value = getElementText(item);
+			if(!value.equals(reportTitle)){
+				Log.error("reportTitle '"+reportTitle+"' is not searchable or invalid");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void clearFilter(){
+		this.inputSearch.clear();
+		this.inputSearch.sendKeys(Keys.ENTER);
+		super.waitForPageLoad();
+	}
 	
+	public String performSearch(String searchTerm) {
+		Log.method("performSearch", searchTerm);
+		this.inputSearch.clear();
+		Log.info(String.format("Input search text - '%s'",searchTerm));
+		this.inputSearch.sendKeys(searchTerm);
+		this.inputSearch.sendKeys(Keys.ENTER);
+		super.waitForPageLoad();
+		
+		String result = getElementText(firstTableData);
+		return result;
+	}
+	
+	
+	protected WebElement waitUntilPresenceOfReport(By locator){
+		WebElement element = null;
+		try {
+			element = (new WebDriverWait(driver,5*timeout)).until(
+					new ExpectedCondition<WebElement>(){
+						public WebElement apply(WebDriver d){
+							WebElement we = null;
+							try{
+								we = d.findElement(locator);
+							}catch(Exception e){
+								inputSearch.sendKeys(Keys.ENTER);
+								waitForPageLoad();
+							}
+							return we;
+						}
+					});
+		}catch(Exception e){
+			element = null;
+		}
+		return element;
+	}
 	public boolean checkVisibilityForUser(String loginUser) {
 		if (!this.picarroLogo.isDisplayed()){
 			Log.error("Not found - picarro logo");

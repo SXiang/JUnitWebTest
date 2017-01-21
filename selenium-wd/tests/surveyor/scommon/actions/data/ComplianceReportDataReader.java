@@ -110,7 +110,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String title = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Title, TESTDATA_SHEET_NAME);
 		title = ActionArguments.evaluateArgForFunction(title);
 		if (!BaseHelper.isNullOrEmpty(tCID)) {
-			title = String.format("%s_%s", tCID, title);
+			title = String.format("%s-%s", tCID, title);
 		}
 		String customerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
 		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
