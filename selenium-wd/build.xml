@@ -131,7 +131,7 @@
   </target>
   <target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
+    <javac srcdir="${basedir}/tests/surveyor/regression/mobile/source:${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
       <classpath>
         <fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
@@ -707,7 +707,7 @@
       </batchtest>
     </junit>
   </target>
-	<target name="tc_localrun" depends="compileUnitIntegrationTest" description="Run test suite tests">
+	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
@@ -723,8 +723,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/SanityIntegrationTest.class" />
-					<include name="**/MobileUnitTest.class" />
+					<include name="**/ComplianceReportsInvestigationPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

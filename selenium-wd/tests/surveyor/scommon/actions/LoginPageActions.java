@@ -51,7 +51,15 @@ public class LoginPageActions extends BasePageActions {
 					"", "", "", "", "", "", "");
 		} else if (workingDataRow.get() != null) {
 			dataRow = workingDataRow.get();
-		} else if (dataRowID >0) {
+		} else {
+			dataRow = getDataRow(dataRowID);
+		}
+		return dataRow;
+	}
+
+	public UserDataRow getDataRow(Integer dataRowID) throws Exception{
+		UserDataRow dataRow = null;
+		if (dataRowID >0) {
 			dataRow = dataReader.getDataRow(dataRowID);
 		} else {
 			throw new Exception("Neither 'usernameColonPassword' nor 'dataRowID' specified for action 'login'");
