@@ -67,7 +67,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		initializePageActions();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-//		mobileLoginPage = new MobileLoginPage();
+		mobileLoginPage = new MobileLoginPage();
 		reportInvestigationsPage = new ReportInvestigationsPage(getDriver(), getBaseURL(), getTestSetup());
 	}
 
