@@ -69,7 +69,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
         Log.info("\nUS2774_EnableBaselineShapeFilesForComplianceReports");
         complianceReportsPageAction.workingDataRow.set(new ComplianceReportDataReader(null).new ComplianceReportsDataRow(null,null,
         		null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-        		null));
+        		null,null));
         complianceReportsPageAction.workingDataRow.get().title = "TC148 Report639729";
         complianceReportsPageAction.workingDataRow.get().tCID = "UnitTest-US2774";
 

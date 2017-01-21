@@ -57,6 +57,8 @@ public class ReportsCompliance extends Reports {
 	private String customerBoundaryName;
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
 
+	private SearchAreaPreference srchAreaPreference;
+
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, ExcludePossibleNaturalGas, All, None
 	}
@@ -536,10 +538,11 @@ public class ReportsCompliance extends Reports {
 		this.customerBoundaryFilterType = customerBoundaryFilterType;
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	public SearchAreaPreference getSearchAreaPreference() {
+		return srchAreaPreference;
+	}
 
+	public void setSearchAreaPreference(SearchAreaPreference srchAreaPreference) {
+		this.srchAreaPreference = srchAreaPreference;
 	}
 }
