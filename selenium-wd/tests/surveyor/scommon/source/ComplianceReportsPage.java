@@ -4282,7 +4282,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	}
 
 	private void selectSearchPreferenceArea(ReportsCompliance reportsCompliance) {
-		selectHighlightingAlgorithmDropdown(reportsCompliance.getSearchAreaPreference().toString());
+		if (reportsCompliance.getSearchAreaPreference() != null) {
+			selectHighlightingAlgorithmDropdown(reportsCompliance.getSearchAreaPreference().toString());
+		}
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
