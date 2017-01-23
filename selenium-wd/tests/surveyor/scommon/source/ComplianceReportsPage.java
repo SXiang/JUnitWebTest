@@ -132,6 +132,8 @@ import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.parsers.source.SSRSViewNamesParser;
+import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -1837,7 +1839,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 		return btnDeleteDrivingSurveys.isEmpty();
 	}
-	
+
 	public boolean deleteDrivingSurveyByTag(String tag) {
 		String xpathToDeleteSurveyBtnByTag = String.format(deleteSurveyBtnByTagParameter, tag);
 		WebElement btnDelete = driver.findElement(By.xpath(xpathToDeleteSurveyBtnByTag));
@@ -1845,7 +1847,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		this.waitForPageToLoad();
 		return true;
 	}
-	
+
 	public boolean deleteSurveyAndIncludeAgain(String surveyTag) {
 		this.btnDeleteDrivingSurvey.click();
 		this.waitForCopyReportPagetoLoad();
@@ -3808,26 +3810,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(pdfFilePath);
-
-		List<String> actualViewNamesList = new ArrayList<String>();
-		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
-
-		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		try {
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
-					String[] split = line.split("\\s+");
-					String viewName = line.replace(split[split.length - 1], "").trim();
-					actualViewNamesList.add(viewName);
-				}
-			}
-
-		} finally {
-			bufferReader.close();
-		}
-		return actualViewNamesList;
+		SSRSViewNamesParser viewTableParser = new SSRSViewNamesParser();
+		return viewTableParser.parse(actualReportString, ViewNamesParserAlgorithm.All);
 	}
 
 	/**
