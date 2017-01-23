@@ -48,7 +48,7 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int HIGH_LOAD6_REPORT_DATA_ROW_ID = 110;
 	private static final int HIGH_LOAD6_EXECUTIONS_FOR_BASELINES = 10;
 
-	private static final int HIGH_LOAD7_USER_ROW_ID = 10;
+	private static final int HIGH_LOAD7_USER_ROW_ID = 15;
 	private static final int HIGH_LOAD7_REPORT_DATA_ROW_ID = 144;
 	private static final int HIGH_LOAD7_EXECUTIONS_FOR_BASELINES = 10;
 
