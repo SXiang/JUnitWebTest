@@ -17,7 +17,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -2559,7 +2558,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		// Look for AssetBoxNumber static string if there is a view with AssetBox.
 		boolean assetBxNumViewPresent = false;
 		for (Map<String, String> viewMap : viewsList) {
-			if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 				assetBxNumViewPresent = true;
 				break;
 			}
