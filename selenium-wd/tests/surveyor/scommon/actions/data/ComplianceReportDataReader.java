@@ -35,6 +35,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_ReportOptViewLayerRowID = 19;
 	public static final int Excel_TestData__Col_ReportOptTabularPDFContentRowID = 20;
 	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 21;
+	public static final int Excel_TestData__Col_SearchAreaPreference = 22;
 
 	public class ComplianceReportsDataRow {
 		public String rowID;
@@ -59,12 +60,13 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		public String reportOptViewLayerRowID;
 		public String reportOptTabularPDFContentRowID;
 		public String reportSurveyRowIDs;
+		public String searchAreaPreference;
 
 		public ComplianceReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
 				String reportMode, String minAmplitude, String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat,
 				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV, String opacityLISA,
 				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID,
-				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs) {
+				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs, String searchAreaPreference) {
 			this.rowID = rowID;
 			this.tCID = tCID;
 			this.title = title;
@@ -87,6 +89,7 @@ public class ComplianceReportDataReader extends BaseDataReader {
 			this.reportOptViewLayerRowID = reportOptViewLayerRowID;
 			this.reportOptTabularPDFContentRowID = reportOptTabularPDFContentRowID;
 			this.reportSurveyRowIDs = reportSurveyRowIDs;
+			this.searchAreaPreference = searchAreaPreference;
 		}
 	}
 
@@ -131,17 +134,20 @@ public class ComplianceReportDataReader extends BaseDataReader {
 		String reportOptViewLayerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptViewLayerRowID, TESTDATA_SHEET_NAME);
 		String reportOptTabularPDFContentRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptTabularPDFContentRowID, TESTDATA_SHEET_NAME);
 		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportSurveyRowIDs, TESTDATA_SHEET_NAME);
+		String searchAreaPreference = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SearchAreaPreference, TESTDATA_SHEET_NAME);
 
 		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
 				+ "reportMode=[%s], minAmplitude=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
 				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], opacityLISA=[%s], pDFImageOutputWidth=[%s], "
 				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "
-				+ "reportSurveyRowIDs=[%s]", rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat,
+				+ "reportSurveyRowIDs=[%s], searchAreaPreference=[%s]", rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat,
 				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA,
-				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs));
+				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID,
+				reportSurveyRowIDs, searchAreaPreference));
 
 		return new ComplianceReportsDataRow(rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat,
 				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA,
-				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs);
+				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID,
+				reportSurveyRowIDs, searchAreaPreference);
 	}
 }

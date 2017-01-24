@@ -4,7 +4,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -86,6 +85,7 @@ import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SearchAreaPreference;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
 import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
@@ -236,7 +236,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightLisaAssets = reportViewsDataRow.highlightLisa.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String highlightBoxAssets = reportViewsDataRow.highlightBox.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightGapAssets = reportViewsDataRow.highlightGap.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String assetBoxNumber = reportViewsDataRow.assetBoxNumber.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showBoundaries = reportViewsDataRow.boundaries.equalsIgnoreCase("TRUE") ? "1" : "0";
@@ -251,7 +250,6 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		if (showGaps != "") viewMap.put(KEYGAPS, showGaps);
 		if (showAssets != "") viewMap.put(KEYASSETS, showAssets);
 		if (highlightLisaAssets != "") viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAssets);
-		if (highlightBoxAssets != "") viewMap.put(KEYHIGHLIGHTBOXASSETS, highlightBoxAssets);
 		if (highlightGapAssets != "") viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAssets);
 		if (assetBoxNumber != "") viewMap.put(KEYASSETBOXNUMBER, assetBoxNumber);
 		if (showBoundaries != "") viewMap.put(KEYBOUNDARIES, showBoundaries);
@@ -392,8 +390,18 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(workingDataRow.get(), this.excelUtility);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, TestContext.INSTANCE.getLoggedInUser(), customer, timeZone, exclusionRadius,
 				listBoundary, tablesList, null /*surveyorUnit*/, null /*tagList*/, viewList, viewLayersList);
+
 		rpt.setSurveyInfoList(reportsSurveyInfoList);
         rpt.setCustomerBoundaryInfo(workingDataRow.get().customerBoundaryType, workingDataRow.get().customerBoundaryName);
+
+        // Set search area preference (highlighting algorithm)
+        SearchAreaPreference srchAreaPref = SearchAreaPreference.LISAS;
+        if (workingDataRow.get().searchAreaPreference.equalsIgnoreCase(SearchAreaPreference.ASSETBOXES.toString())) {
+        	srchAreaPref = SearchAreaPreference.ASSETBOXES;
+        }
+
+        rpt.setSearchAreaPreference(srchAreaPref);
+
         String reportMode = workingDataRow.get().reportMode;
         if(!BaseHelper.isNullOrEmpty(reportMode)){
              rpt.setReportModeFilter(ReportModeFilter.valueOf(reportMode.replaceAll(" ", "")));

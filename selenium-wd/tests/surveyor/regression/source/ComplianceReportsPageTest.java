@@ -37,14 +37,11 @@ import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.RSURSTARTDATE;
-import static surveyor.scommon.source.SurveyorConstants.RSURENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNMANTAG;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNRRTAG;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
@@ -69,21 +66,19 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
-import common.source.TestContext;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
-import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
-import surveyor.scommon.source.ComplianceReportsPage.ReportFileType;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SearchAreaPreference;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -141,7 +136,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PROVIDER, location = ComplianceReportDataProvider.class)
 	public void ComplianceReportTest_VerifyNonEthaneReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
 
@@ -157,6 +152,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		this.getComplianceReportsPage().open();
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+		rpt.setSearchAreaPreference(srchAreaPref);
 		this.getComplianceReportsPage().setReportGenerationTimeout(DATAPROVIDER_REPORT_GENERATION_TIMEOUT_IN_SECONDS);
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -299,7 +295,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -323,6 +318,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -399,7 +395,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -410,6 +405,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -549,7 +545,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "1");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap.put(KEYASSETBOXNUMBER, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -563,6 +558,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 			rptTitle = testCaseID + " "+reportMode.toString() + " " + getTestSetup().getRandomNumber();
 			ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0",
 					listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, reportMode);
+			rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 			rpt.setViewLayersList(viewLayerList);
 			this.getComplianceReportsPage().addNewReport(rpt);
 			this.getComplianceReportsPage().waitForPageLoad();
@@ -610,7 +606,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -634,6 +629,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -687,7 +683,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -711,6 +706,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, false);
 		rpt.setViewLayersList(viewLayerList);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 
@@ -769,7 +765,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "0");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -825,7 +820,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
-		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYASSETBOXNUMBER, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
@@ -836,6 +830,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -893,7 +888,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
-		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYASSETBOXNUMBER, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
@@ -904,6 +898,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -953,7 +948,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -977,6 +971,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Manual, ReportModeFilter.Manual);
 		rpt.setViewLayersList(viewLayerList);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -1038,7 +1033,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
-		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYASSETBOXNUMBER, "0");
 
@@ -1050,6 +1044,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -1096,7 +1091,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
 		viewMap1.put(KEYHIGHLIGHTLISAASSETS, "1");
-		viewMap1.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap1.put(KEYHIGHLIGHTGAPASSETS, "1");
 		viewMap1.put(KEYASSETBOXNUMBER, "0");
 		viewMap1.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Map));
@@ -1115,6 +1109,8 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(PICADMNSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard, ReportModeFilter.Standard);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
+
 		this.getComplianceReportsPage().addNewReport(rpt);
 		Assert.assertEquals(this.getComplianceReportsPage().getAssetErrorText().getText(), STRReportAssetNotSelectedMsg);
 		Assert.assertEquals(this.getComplianceReportsPage().getBoundaryErrorText().getText(), STRReportBoundaryNotSelectedMsg);
@@ -1191,7 +1187,6 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
 		viewMap.put(KEYHIGHLIGHTLISAASSETS, "0");
-		viewMap.put(KEYHIGHLIGHTBOXASSETS, "0");
 		viewMap.put(KEYHIGHLIGHTGAPASSETS, "0");
 		viewMap.put(KEYASSETBOXNUMBER, "0");
 		viewMap.put(KEYBASEMAP, Resources.getResource(ResourceKeys.Constant_Satellite));
@@ -1202,6 +1197,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		tagList.add(CUSDRVSTDTAG);
 
 		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		rpt.setSearchAreaPreference(SearchAreaPreference.LISAS);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();

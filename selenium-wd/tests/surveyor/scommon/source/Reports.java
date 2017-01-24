@@ -155,6 +155,21 @@ public class Reports {
 		}
 	}
 
+	public enum SearchAreaPreference {
+		LISAS ("LISAs"),
+		ASSETBOXES ("Asset Boxes");
+
+		private final String name;
+
+		SearchAreaPreference(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public Reports(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
 		this(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, null, null, null, null, tagList);
 	}

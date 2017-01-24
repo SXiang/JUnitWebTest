@@ -17,7 +17,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -115,6 +114,7 @@ import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
 import common.source.TextUtility;
+import common.source.Timeout;
 import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
@@ -436,7 +436,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
-	protected WebElement highlightLisaAssetDropdown;
+	protected WebElement highlightAlgorithmDropdown;
 
 	public static final String REPORT_ASSET_SELECTALL_CHKBX_ID = "report-asset-selectall";
 	public static final String REPORT_BOUNDRY_SELECTALL_CHKBX_ID = "report-boundry-selectall";
@@ -703,23 +703,18 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 
-				// Select Highlight LISAs in dropdown.
-				selectHighlightLisaAssetDropdown("LISAs");
-			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
-				colNum = 11;
-				Log.clickElementInfo("Highlight Box Assets", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-
-				// Select Highlight Asset Boxes in dropdown.
-				selectHighlightLisaAssetDropdown("Asset Boxes");
-
 				// Check Asset Box Number
 				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 					colNum = 13;
 					Log.clickElementInfo("Asset Box Number", ElementType.CHECKBOX);
-					strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+					if (rowNum == 1) {
+						strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'view-showassetboxasset')]";
+					} else {
+						strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum + "]/td/input[contains(@class,'view-showassetboxasset')]";
+					}
+					WebElement boxNumberElement = driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']"));
+					WebElementExtender.waitForElementToBeClickable(Timeout.TEN, driver, boxNumberElement);
+					SelectElement(boxNumberElement);
 				}
 			}
 
@@ -756,16 +751,9 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 	}
 
-	private void selectHighlightLisaAssetDropdown(String value) {
-		Log.method("selectHighlightLisaAssetDropdown", value);
-		List<WebElement> options = highlightLisaAssetDropdown.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equals(value)) {
-				Log.info("Select Highlight Lisa Asset - '" + value + "'");
-				option.click();
-				break;
-			}
-		}
+	private void selectHighlightingAlgorithmDropdown(String value) {
+		Log.method("selectAlgorithmDropdown", value);
+		WebElementExtender.selectDropdownValue(highlightAlgorithmDropdown, value);
 	}
 
 	private boolean selectView(Map<String, String> viewMap, String option) {
@@ -2573,7 +2561,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		// Look for AssetBoxNumber static string if there is a view with AssetBox.
 		boolean assetBxNumViewPresent = false;
 		for (Map<String, String> viewMap : viewsList) {
-			if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 				assetBxNumViewPresent = true;
 				break;
 			}
@@ -4224,7 +4212,8 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());
 		inputImageMapWidth(reportsCompliance.getImageMapWidth());
 
-		// 3. Views
+		// 3. SearchAreaPreference and Views
+		selectSearchPreferenceArea(reportsCompliance);
 		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
 
 		// 4. Optional Tabular PDF Content
@@ -4259,6 +4248,12 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
 		}
 
+	}
+
+	private void selectSearchPreferenceArea(ReportsCompliance reportsCompliance) {
+		if (reportsCompliance.getSearchAreaPreference() != null) {
+			selectHighlightingAlgorithmDropdown(reportsCompliance.getSearchAreaPreference().toString());
+		}
 	}
 
 	private void fillCustomerBoundary(ReportsCompliance reportsCompliance) {
