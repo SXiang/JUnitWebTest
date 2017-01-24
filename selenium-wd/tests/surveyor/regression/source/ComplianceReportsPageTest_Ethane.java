@@ -70,6 +70,7 @@ import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 import surveyor.scommon.source.Reports.ReportModeFilter;
+import surveyor.scommon.source.Reports.SearchAreaPreference;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.ReportsSurveyInfo;
@@ -345,24 +346,24 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneSTDRRReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
 				exclusionRadius, surveyorUnit, userName, startDate, endDate,
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList);
+				tablesList, viewList, viewLayersList, srchAreaPref);
 
 	}
 
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_MANUAL_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneManualReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
 				exclusionRadius, surveyorUnit, userName, startDate, endDate,
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList);
+				tablesList, viewList, viewLayersList, srchAreaPref);
 	}
 
 	private void executeVerifyEthaneReportTest(String index, String strCreatedBy, String password,
@@ -374,7 +375,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			List<String> listBoundary, List<String> tagList,
 			List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList,
-			List<Map<String, String>> viewLayersList) throws Exception,
+			List<Map<String, String>> viewLayersList,
+			SearchAreaPreference srchAreaPref) throws Exception,
 			IOException, InterruptedException {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
@@ -391,6 +393,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
 			rpt.setSurveyInfoList(reportSurveyInfoList);}
 		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt.setSearchAreaPreference(srchAreaPref);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();

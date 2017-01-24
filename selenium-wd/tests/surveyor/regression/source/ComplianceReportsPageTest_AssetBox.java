@@ -95,7 +95,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyLISAInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
 		Assert.assertTrue(complianceReportsPageAction.verifyGAPInvestigationTable(EMPTY, getReportRowID(reportDataRowID1)));
 	}
@@ -133,7 +133,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
@@ -172,10 +172,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/**
 	 * Test Case ID: TC2199_AllIndicationAssetBoxBubblesContainedWithinTheReportViewPDF
 	 * Test Description: - All indication and asset box bubbles should be contained within the border of the Report View PDF
@@ -211,10 +211,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
-	
+
 	/**
 	 * Test Case ID: TC2200_GapBoxNumberBubblesHasSameColorAsGap
 	 * Test Description: - Gap Box Number Bubbles should be rendered with same color as Gap
@@ -248,7 +248,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1)));
-		
+
 		Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 
