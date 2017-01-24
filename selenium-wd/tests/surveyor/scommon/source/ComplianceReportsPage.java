@@ -3097,7 +3097,7 @@ public class ComplianceReportsPage extends ReportsBasePage {
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
-			double amp = Math.round(Float.parseFloat((csvRow.get("AMPLITUDE")).trim()) * 100.0) / 100.0;
+			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
