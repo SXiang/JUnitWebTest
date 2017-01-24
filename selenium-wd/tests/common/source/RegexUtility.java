@@ -254,12 +254,6 @@ public class RegexUtility {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String inputString1 = "Software Car 12/14/2015 3:29 PM PST Not Natural Gas -54.72+/-0.43 1. Not Natural Gas";
-		List<String> matchingGroups1 = RegexUtility.getMatchingGroups(inputString1, ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_GROUP_PATTERN);
-		Log.info(String.format("InputString1-[%s]: Matching groups are - '%s', ",
-				inputString1, LogHelper.strListToString(matchingGroups1)));
-
-
 		Log.info("Running test - testAppVersion_Success() ...");
 		testAppVersion_Success();
 		Log.info("Running test - testAppVersion_FailMatch() ...");
