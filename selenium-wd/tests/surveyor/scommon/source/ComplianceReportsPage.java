@@ -132,6 +132,7 @@ import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.parsers.source.SSRSViewNamesParser;
 import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
 import common.source.PDFUtility;
@@ -3329,46 +3330,26 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		}
 
 		if (actualReportString != null) {
-			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
-			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			try {
-				ArrayList<String> reportIsotopicList = new ArrayList<String>();
-				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
-				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(),
-								RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
-						if (matchingGroups != null && matchingGroups.size() > 0) {
-							line = matchingGroups.get(0);
-							Log.info("Matched line as a table row!");
-							line = line.replaceAll(" +", " ").trim();
-							reportIsotopicList.add(line);
-						}
-					}
-				}
-
-				Log.info(String.format("ReportIsotopic ArrayList Values : %s",
-						LogHelper.strListToString(reportIsotopicList)));
-				ArrayList<StoredProcComplianceGetIsotopics> storedProcIsotopicList = StoredProcComplianceGetIsotopics
-						.getReportIsotopics(reportId);
-				Iterator<StoredProcComplianceGetIsotopics> lineIterator = storedProcIsotopicList.iterator();
-				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
-				while (lineIterator.hasNext()) {
-					StoredProcComplianceGetIsotopics objStoredProc = lineIterator.next();
-					String objAsString = objStoredProc.toString();
-					storedProcConvStringList.add(objAsString.trim());
-				}
-
-				Log.info(String.format("Checking in ReportIsotopic ArrayList, StoredProcConvStringList Values : %s",
-						LogHelper.strListToString(storedProcConvStringList)));
-				if (!reportIsotopicList.equals(storedProcConvStringList)) {
-					Log.info("Isotopic Analysis table verification failed");
-					return false;
-				}
-			} finally {
-				bufferReader.close();
+			List<String> reportIsotopicList = new SSRSIsotopicAnalysisTableParser().parse(actualReportString, null);
+			Log.info(String.format("ReportIsotopic ArrayList Values : %s",
+					LogHelper.strListToString(reportIsotopicList)));
+			ArrayList<StoredProcComplianceGetIsotopics> storedProcIsotopicList = StoredProcComplianceGetIsotopics
+					.getReportIsotopics(reportId);
+			Iterator<StoredProcComplianceGetIsotopics> lineIterator = storedProcIsotopicList.iterator();
+			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+			while (lineIterator.hasNext()) {
+				StoredProcComplianceGetIsotopics objStoredProc = lineIterator.next();
+				String objAsString = objStoredProc.toString();
+				storedProcConvStringList.add(objAsString.trim());
 			}
+
+			Log.info(String.format("Checking in ReportIsotopic ArrayList, StoredProcConvStringList Values : %s",
+					LogHelper.strListToString(storedProcConvStringList)));
+			if (!reportIsotopicList.equals(storedProcConvStringList)) {
+				Log.info("Isotopic Analysis table verification failed");
+				return false;
+			}
+
 		}
 		Log.info("Isotopic Analysis table verification passed");
 		return true;
@@ -4188,16 +4169,21 @@ public class ComplianceReportsPage extends ReportsBasePage {
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
-		Log.info("Checking if Array values returned has header...");
 		if (ArrayUtility.listValuesHasHeader(pdfTableList)) {
 			Log.info("Found header in returned array values. Skipping header...");
-			Log.info(String.format("Extracted tables values from PDF (before skipping header) : %s",
-					LogHelper.listOfArrayToString(pdfTableList)), LogCategory.SSRSPdfContent);
+			Log.info(String.format("Extracted tables values from PDF (before skipping header) : %s", LogHelper.listOfArrayToString(pdfTableList)), LogCategory.SSRSPdfContent);
+			Log.info("Checking if Array values returned has header...");
 			pdfTableList = ArrayUtility.getListValuesSkipHeader(pdfTableList);
 		}
 		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
 				LogCategory.SSRSPdfContent);
 		return pdfTableList;
+	}
+
+	public String getSSRSPdfText(String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+		return new PDFUtility().extractPDFText(pdfFilePath);
 	}
 
 	public String getSoftwareVersionFromInvestigationPDF(String reportTitle, String downloadPath) {

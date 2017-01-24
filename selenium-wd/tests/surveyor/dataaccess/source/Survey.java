@@ -20,7 +20,6 @@ public class Survey extends BaseEntity {
 	private String referenceGasBottleId;
 	private Float minimumAmplitude;
 	private String status;
-	private Float leakRate;
 	private Date startDateTime;
 	private String id;
 	private Date processingDateStarted;
@@ -105,14 +104,6 @@ public class Survey extends BaseEntity {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public Float getLeakRate() {
-		return leakRate;
-	}
-
-	public void setLeakRate(Float leakRate) {
-		this.leakRate = leakRate;
 	}
 
 	public Date getStartDateTime() {
@@ -247,7 +238,6 @@ public class Survey extends BaseEntity {
 			objSurvey.setReferenceGasBottleId(resultSet.getString("ReferenceGasBottleId"));
 			objSurvey.setMinimumAmplitude(resultSet.getFloat("MinimumAmplitude"));
 			objSurvey.setStatus(resultSet.getString("Status"));
-			objSurvey.setLeakRate(resultSet.getFloat("LeakRate"));
 			objSurvey.setStartDateTime(resultSet.getDate("StartDateTime"));
 			objSurvey.setId(resultSet.getString("Id"));
 			objSurvey.setProcessingDateStarted(resultSet.getDate("ProcessingDateStarted"));

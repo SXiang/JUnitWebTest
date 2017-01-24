@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
+import common.source.Log;
 import common.source.TestSetup;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 
@@ -17,12 +18,20 @@ public class PostAutomationReportingAPITest {
 
 	// NOTE: This is local test endpoint. Before running unit tests from this class ensure that this endpoint is alive.
 	private static final String automationReportingApiEndpoint = "http://localhost:63087";
+	//private static final String automationReportingApiEndpoint = "http://20.20.152.36:8082";
 	private static TestSetup testSetup = null;
 
 	@BeforeClass
 	public static void beforeClass() {
 		testSetup = new TestSetup();
 		testSetup.setAutomationReportingApiEndpoint(automationReportingApiEndpoint);
+	}
+
+	@Test
+	public void verifyCIBuildNumber() {
+		String ciBuildNumber = testSetup.getCIEnvironmentBuildNumber();
+		Log.info("CI build number is: " + ciBuildNumber);
+		Assert.assertNotNull(ciBuildNumber);
 	}
 
 	@Test
