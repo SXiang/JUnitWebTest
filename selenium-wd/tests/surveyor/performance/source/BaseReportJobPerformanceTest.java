@@ -28,7 +28,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
-	protected static final Integer REPORT_GENERATION_TIMEOUT_IN_SECONDS = 3600;  // Max timeout= 1hr for report gen.
 
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
@@ -154,7 +153,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			getLoginPageAction().login(EMPTY, userDataRowID);
 			getComplianceReportsPageAction().open(EMPTY, NOTSET);
 			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
-			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_IN_SECONDS), reportDataRowID);
+			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
 			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
 			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);

@@ -24,6 +24,7 @@ public class RegexUtility {
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
 	public static final String SEMI_COLON_SPLIT_REGEX_PATTERN = ";";
 	public static final String VERTICAL_BAR_SPLIT_REGEX_PATTERN = "\\|";
+	public static final String BACKQUOTE_SPLIT_REGEX_PATTERN = "`";
 	public static final String COMMA_SPLIT_REGEX_PATTERN = ",";
 	public static final String REGEX_PATTERN_EXTRACT_FUNCTION_ARGS = "([a-zA-Z_]\\w+)\\((.+)\\)";
 	public static final String REGEX_PATTERN_EXTRACT_VALUE_WRAPPED_IN_QUOTE = "'(.+)'";
@@ -37,6 +38,7 @@ public class RegexUtility {
 	public static final String SSRS_PDF_PAGE_FOOTER_PATTERN = "^\\d+ of  \\d+.*";
 	public static final String INDICATION_TABLE_LINE_REGEX_PATTERN = "^(\\? )?\\d+ .*";
 	public static final String ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN = ".* \\d+/\\d+/\\d+ \\d+:\\d+ .* \\-?\\d+.\\d+\\+/\\-\\d+.\\d+.*";
+	public static final String ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_GROUP_PATTERN = "(.*) (\\d+/\\d+/\\d+ \\d+:\\d+) (.*) (\\-?\\d+.\\d+\\+/\\-\\d+.\\d+)(.*)";
 	public static final String VIEWS_TABLE_LINE_REGEX_PATTERN = ".* (Satellite|Map|None)$";
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";

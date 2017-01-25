@@ -56,6 +56,7 @@ import surveyor.dataaccess.source.CustomerMaterialType;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
+import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
@@ -2230,8 +2231,9 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifyIsotopicTableSortedAscByColumn(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifyIsotopicTableSortedAscByColumn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyIsotopicTableSortedAscByColumn", ARG_DATA, data);
-		List<String[]> isotopicAnalysisTblList = this.getComplianceReportsPage().getSSRSPDFTableValues(
-				PDFTable.ISOTOPICANALYSISTABLE, workingDataRow.get().title);
+		String extractPDFText = this.getComplianceReportsPage().getSSRSPdfText(workingDataRow.get().title);
+		List<String[]> isotopicAnalysisTblList = new SSRSIsotopicAnalysisTableParser().parseAsTable(extractPDFText,
+				RegexUtility.BACKQUOTE_SPLIT_REGEX_PATTERN);
 		IsotopicAnalysisTableColumns tableColumn = IsotopicAnalysisTableColumns.valueOf(data);
 		List<String> tableValuesList = ArrayUtility.getColumnStringList(isotopicAnalysisTblList, tableColumn.getIndex());
 		return SortHelper.isSortedASC(tableValuesList.toArray(new String[tableValuesList.size()]));
@@ -3463,7 +3465,7 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	public boolean verifySSRSPDFFooter(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSPDFFooter", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		String expectedSoftwareVersion = TestContext.INSTANCE.getTestSetup().getSoftwareVersion();
+		String expectedSoftwareVersion = TestContext.INSTANCE.getTestSetup().getCIEnvironmentBuildNumber();
 		return this.getComplianceReportsPage().verifySSRSPDFFooter(downloadPath,
 				workingDataRow.get().title, expectedSoftwareVersion , LoginPageActions.workingDataRow.get().username);
 	}

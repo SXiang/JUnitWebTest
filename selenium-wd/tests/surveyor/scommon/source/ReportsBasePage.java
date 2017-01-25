@@ -866,7 +866,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info("Check if 100 hours max survey duration reached");
 		return (SurveyorConstants.MAXSURVEYDURATIONREACHED).equals(getAddServeysBtnLabel());
 	}
-	
+
 	public String getAddServeysBtnLabel(){
 		String btnLable = "Add Surveys";
 		String btnLableMsg = btnLable;
