@@ -1,6 +1,13 @@
 package surveyor.unittest.source;
 
 import common.source.Log;
+import common.source.LogHelper;
+import common.source.PDFUtility;
+import common.source.PDFTableUtility.PDFTable;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -10,6 +17,7 @@ import org.junit.Test;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.Reports.ReportModeFilter;
 import surveyor.scommon.source.Reports.SurveyModeFilter;
+import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -62,6 +70,34 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
+	}
+
+	@Test
+	public void verifySSRSIsotopicAnalysisTable() throws IOException {
+		final String SAMPLE_REPORT_TITLE = "TC509-9794be9a5e664f52be67";
+		List<String[]> isotopicAnalysisTblList = complianceReportsPage.getSSRSPDFTableValues(
+				PDFTable.ISOTOPICANALYSISTABLE, SAMPLE_REPORT_TITLE);
+		Log.info(String.format("ReportIsotopic ArrayList Values : %s",
+				LogHelper.listOfArrayToString(isotopicAnalysisTblList)));
+	}
+
+	@Test
+	public void verifyLISASMetaDataFile() throws FileNotFoundException, IOException {
+		final String SAMPLE_REPORT_TITLE = "TC1389-1a5eb25d4cec40c89c8e";
+		final String CSV_FILE_PATH = "C:\\temp\\CR-0F737A-Meta";
+		boolean verificationStatus = complianceReportsPage.verifyLISASMetaDataFile(CSV_FILE_PATH, SAMPLE_REPORT_TITLE);
+		Log.info(String.format("LISAMetaData file verification status : %b",verificationStatus));
+	}
+
+	@Test
+	public void verifySSRSIsotopicAnalysisTableParser() throws Exception {
+		String SAMPLE_REPORT_PDF_FILE = "C:\\Users\\spulikkal\\Downloads\\CR-E5ADE3.pdf";
+		PDFUtility pdfUtility = new PDFUtility();
+		String actualReportString = pdfUtility.extractPDFText(SAMPLE_REPORT_PDF_FILE);
+		SSRSIsotopicAnalysisTableParser tableParser = new SSRSIsotopicAnalysisTableParser();
+		List<String[]> parseAsTable = tableParser.parseAsTable(actualReportString, "`");
+		Log.info(String.format("ReportIsotopic ArrayList Values : %s",
+				LogHelper.listOfArrayToString(parseAsTable)));
 	}
 
 	@Test
