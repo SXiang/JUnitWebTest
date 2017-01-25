@@ -300,6 +300,15 @@ public class TestSetup {
 		return this.randomNumber;
 	}
 
+	private void resetRandomNumber() {
+		this.randomNumber = Long.toString((new Random()).nextInt(1000000));
+	}
+
+	public String getNewFixedSizeRandomNumber(int size) {
+		resetRandomNumber();
+		return getFixedSizeRandomNumber(size);
+	}
+
 	public String getFixedSizeRandomNumber(int size) {
 		int len = this.randomNumber.length();
 		if (len > size) {

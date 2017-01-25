@@ -186,7 +186,7 @@
       </manifest>
     </jar>
   </target>
-	
+
 	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
 		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
@@ -198,7 +198,7 @@
 
 		<jar jarfile="${dist}/${unit_jar}" basedir="${build}" />
 	</target>
-	
+
   <target name="compileGridPOC" depends="compile_scommon" description="Compile grid POC source code">
     <buildnumber file="build.number" />
     <javac srcdir="${basedir}/tests/surveyor/grid/poc/source" includeantruntime="false" destdir="${build}" debug="true">
@@ -680,6 +680,9 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
+    	  <!-- Single thread execution test classes -->
+          <include name="**/SurveyViewPageTest6.class" />
+          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -270,6 +270,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]",
 				surveyorName400Chars, locationName, customerName));
 		manageSurveyorPage.addNewSurveyor(surveyorName400Chars, locationName, customerName);
+
+		// NOTE: Surveyor will get created with first 400 chars of 401 chars provided.
 		Log.info(String.format("Adding new Surveyor: Name-[%s]; Location-[%s]; Customer-[%s]",
 				surveyorName401Chars, locationName, customerName));
 		manageSurveyorPage.addNewSurveyor(surveyorName401Chars, locationName, customerName);
@@ -282,6 +284,8 @@ public class ManageSurveyorPageTest extends SurveyorBaseTest {
 		manageSurveyorPage.open();
 		assertFalse(manageSurveyorPage.findExistingSurveyor(customerName, locationName, surveyorName401Chars));
 
+		// Use another 401 chars string to prevent conflict with previously created surveyor with 401 chars.
+		surveyorName401Chars = locationName + "SurA" + getTestSetup().getNewFixedSizeRandomNumber(370);
 		Log.info(String.format("Editing Surveyor: Location-[%s]; Current Surveyor Name-[%s]; New Surveyor Name-[%s]",
 				locationName, surveyorName400Chars, surveyorName401Chars));
 		manageSurveyorAdminPage.editExistingSurveyor(customerName,locationName, surveyorName400Chars, locationName,surveyorName401Chars, false);
