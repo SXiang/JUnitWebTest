@@ -326,8 +326,10 @@ public class SurveyorBasePage extends BasePage {
 
 		if(firstPage){
 			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
-			jsClick(firstBtn);
-			this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			if (WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
+				jsClick(firstBtn);
+				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			}
 		}
 		setPaginationCheckMessage(str, paginationMsg);
 	}

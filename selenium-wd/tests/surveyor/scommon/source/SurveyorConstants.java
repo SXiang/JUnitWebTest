@@ -552,6 +552,7 @@ public final class SurveyorConstants {
 		CHANGEPASSWORD ("Change Password"),
 		RELEASENOTES ("Release Notes"),
 		MANUAL ("Manual"),
+		SETSERIALNUMBER ("Set Serial Number"),
 		LOGOUT ("Log out");
 
 		private final String text;

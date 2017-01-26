@@ -19,7 +19,6 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,MeasurementSessionsPageTest.class
 	,SurveyViewPageTest1.class
 	,SurveyViewPageTest2.class
-	,LicensedFeatureAndVisibilityTest.class
 })
 public class RegressionTestSuite4 {
 
