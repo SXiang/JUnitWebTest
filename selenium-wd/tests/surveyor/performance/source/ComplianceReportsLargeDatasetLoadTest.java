@@ -20,6 +20,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -84,7 +85,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 			String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate,
 			String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter,
 			EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		String testCaseName = getTestCaseName(index);
 		String rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
@@ -95,6 +96,7 @@ public class ComplianceReportsLargeDatasetLoadTest extends BaseReportsPageAction
 		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, customer, timeZone, exclusionRadius, surveyorUnit,
 				userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter,
 				listBoundary, tagList, tablesList, viewList, viewLayersList);
+		rpt.setSearchAreaPreference(srchAreaPref);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();

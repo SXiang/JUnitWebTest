@@ -95,7 +95,7 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.getComplianceReportsPage().openCustomerBoundarySelector();
 

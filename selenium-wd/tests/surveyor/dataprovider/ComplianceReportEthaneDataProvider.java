@@ -21,6 +21,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
 import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 
 public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
@@ -45,8 +46,9 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderEthaneComplianceReport() throws Exception {
 
+		SearchAreaPreference srchAreaPref = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1","0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		tablesList.add(createOptionalTabularPDFContent("1", "1", "1", "1","1","0"));
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -63,14 +65,14 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 
 		return new Object[][] {
 				{ "1"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPT/*timeZone*/, ETHREXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
-					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, ReportModeFilter.Standard/*reportMode*/, null/*surveyModeFilter*/, EthaneFilter.ExcludeVehicleExhaust/*ethaneFilter*/, createMapAndBoundaryList(false /*includeCustomBoundary*/)/*listBoundary*/, tagList1/*tagList*/, tablesList/*tablesList*/, viewList/*viewList*/, viewLayerList/*viewLayersList*/ },
-					{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
-					{ "3", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
-					{ "4", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList},
-					{ "9", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeVehicleExhaust, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
-					{ "10", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
-					{ "11", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
-					{ "12", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList},
+					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, ReportModeFilter.Standard/*reportMode*/, null/*surveyModeFilter*/, EthaneFilter.ExcludeVehicleExhaust/*ethaneFilter*/, createMapAndBoundaryList(false /*includeCustomBoundary*/)/*listBoundary*/, tagList1/*tagList*/, tablesList/*tablesList*/, viewList/*viewList*/, viewLayerList/*viewLayersList*/, srchAreaPref },
+					{ "2", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "3", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "4", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Standard, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList1, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "9", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeVehicleExhaust, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "10", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "11", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "12", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.RapidResponse, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList2, tablesList, viewList, viewLayerList, srchAreaPref},
 		};
 	}
 
@@ -83,8 +85,9 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderEthaneManualComplianceReport() throws Exception {
 
+		SearchAreaPreference srchAreaPref = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1","0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
 		tablesList.add(createOptionalTabularPDFContent("1", "1", "1", "1","1","0"));
 		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -97,10 +100,10 @@ public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 
 		return new Object[][] {
 				{ "5"/*index*/, SQAPICSUP/*strCreatedBy*/, USERPASSWORDHASH/*password(encrypted)*/, "Picarro"/*customer*/, TIMEZONEPT/*timeZone*/, ETHREXCLUSIONRADIUS/*exclusionRadius*/, null/*surveyorUnit*/, null/*userName*/, null/*startDate*/,
-					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, ReportModeFilter.Manual/*reportMode*/, null/*surveyModeFilter*/, EthaneFilter.ExcludeVehicleExhaust/*ethaneFilter*/, createMapAndBoundaryList(false /*includeCustomBoundary*/)/*listBoundary*/, tagList3/*tagList*/, tablesList/*tablesList*/, viewList/*viewList*/, viewLayerList/*viewLayersList*/ },
-					{ "6", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
-					{ "7", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
-					{ "8", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList},
+					null/*endDate*/, null/*fovOpacity*/, null/*lisaOpacity*/, null/*geoFilter*/, ReportModeFilter.Manual/*reportMode*/, null/*surveyModeFilter*/, EthaneFilter.ExcludeVehicleExhaust/*ethaneFilter*/, createMapAndBoundaryList(false /*includeCustomBoundary*/)/*listBoundary*/, tagList3/*tagList*/, tablesList/*tablesList*/, viewList/*viewList*/, viewLayerList/*viewLayersList*/, srchAreaPref },
+					{ "6", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.ExcludeBiogenicMethane, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "7", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.All, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList, srchAreaPref},
+					{ "8", SQAPICSUP, USERPASSWORDHASH, "Picarro", TIMEZONEPT, ETHREXCLUSIONRADIUS, null, null, null, null, null, null, null, ReportModeFilter.Manual, null, EthaneFilter.None, createMapAndBoundaryList(false /*includeCustomBoundary*/), tagList3, tablesList, viewList, viewLayerList, srchAreaPref},
 		};
 	}
 }

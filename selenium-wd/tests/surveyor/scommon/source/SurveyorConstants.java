@@ -224,7 +224,6 @@ public final class SurveyorConstants {
 	public static final String KEYASSETS = "Assets";
 	public static final String KEYBOUNDARIES = "Boundaries";
 	public static final String KEYHIGHLIGHTLISAASSETS = "Highlight LISA Assets";
-	public static final String KEYHIGHLIGHTBOXASSETS = "Highlight Box Assets";
 	public static final String KEYHIGHLIGHTGAPASSETS = "Highlight GAP Assets";
 	public static final String KEYASSETBOXNUMBER = "Asset Box Number";
 	public static final String KEYBASEMAP = "Base Map";
@@ -553,6 +552,7 @@ public final class SurveyorConstants {
 		CHANGEPASSWORD ("Change Password"),
 		RELEASENOTES ("Release Notes"),
 		MANUAL ("Manual"),
+		SETSERIALNUMBER ("Set Serial Number"),
 		LOGOUT ("Log out");
 
 		private final String text;

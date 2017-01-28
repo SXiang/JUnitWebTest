@@ -69,6 +69,7 @@ import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.source.BaseReportsPageTest;
@@ -118,7 +119,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
 		assertTrue(this.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
@@ -218,7 +219,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().getViewsAnalysesColumn().getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
 	}
@@ -236,7 +237,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
@@ -265,7 +266,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		System.out.println(this.getComplianceReportsPage().getTubularAnalysisOption().getText());
 		assertTrue(this.getComplianceReportsPage().getTubularAnalysisOption().getText().equalsIgnoreCase(" " + Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
@@ -286,7 +287,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Standard, SurveyModeFilter.Operator));
 
@@ -309,7 +310,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
 
@@ -333,7 +334,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
 
@@ -345,24 +346,24 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneSTDRRReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
 				exclusionRadius, surveyorUnit, userName, startDate, endDate,
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList);
+				tablesList, viewList, viewLayersList, srchAreaPref);
 
 	}
 
 	@Test
 	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_MANUAL_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
 	public void ComplianceReportTest_VerifyEthaneManualReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList) throws Exception {
+			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
 				exclusionRadius, surveyorUnit, userName, startDate, endDate,
 				fovOpacity, lisaOpacity, geoFilter, reportMode,
 				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList);
+				tablesList, viewList, viewLayersList, srchAreaPref);
 	}
 
 	private void executeVerifyEthaneReportTest(String index, String strCreatedBy, String password,
@@ -374,7 +375,8 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 			List<String> listBoundary, List<String> tagList,
 			List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewList,
-			List<Map<String, String>> viewLayersList) throws Exception,
+			List<Map<String, String>> viewLayersList,
+			SearchAreaPreference srchAreaPref) throws Exception,
 			IOException, InterruptedException {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
@@ -389,8 +391,11 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
 		if(!reportMode.equals(ReportModeFilter.Manual) ){
 			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
-			rpt.setSurveyInfoList(reportSurveyInfoList);}
+			rpt.setSurveyInfoList(reportSurveyInfoList);
+		}
+
 		rpt.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt.setSearchAreaPreference(srchAreaPref);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -455,7 +460,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		this.getComplianceReportsPage().getBtnSurveySearch().click();
 		this.getComplianceReportsPage().waitForSurveyTabletoLoad();

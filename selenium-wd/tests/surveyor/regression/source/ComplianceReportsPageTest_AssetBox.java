@@ -84,8 +84,8 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -124,7 +124,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -163,7 +163,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -202,7 +202,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -239,7 +239,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));

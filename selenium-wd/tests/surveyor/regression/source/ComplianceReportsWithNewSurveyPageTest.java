@@ -171,8 +171,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -269,8 +269,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 			// Create report for the new customer.
 			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -313,7 +313,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		this.getComplianceReportsPage().open();
 
-		this.getComplianceReportsPage().getNewComplianceReportBtn().click();
+		this.getComplianceReportsPage().getNewReportBtn().click();
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 		this.getComplianceReportsPage().clickOnCancelBtn();
 
@@ -415,8 +415,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 			// Create report for the new customer.
 			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));

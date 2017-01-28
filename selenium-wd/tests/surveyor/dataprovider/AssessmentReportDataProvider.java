@@ -35,7 +35,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1434() {
 		return new Object[][] {
-			{ "TC1434" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC1434" /*TestCaseID*/, 6 /*userDataRowID*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
 		};
 	}
 
@@ -56,14 +56,14 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1438() {
 		return new Object[][] {
-			{ "TC1438" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC1438" /*TestCaseID*/, 2 /*userDataRowID - [Customer Supervisor]*/,  4 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1439() {
 		return new Object[][] {
-			{ "TC1439" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC1439" /*TestCaseID*/, 2 /*userDataRowID - [Customer Supervisor]*/,  4 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 

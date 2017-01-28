@@ -97,7 +97,7 @@ public class ComplianceReportsForAPITest extends BaseReportsPageActionTest {
 				rpt.setRptTitle(rptTitle);
 				ComplianceReportsPageActions.workingDataRow.get().title = rptTitle;
 				getComplianceReportsPage().addNewReport(rpt, true);
-				waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			}
 		}
 	}

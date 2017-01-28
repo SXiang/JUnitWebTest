@@ -39,6 +39,8 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.TestSetupFactory;
 import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.Location;
+import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -286,19 +288,20 @@ public class BaseTest {
 		String locationName = uniqueNumber + "Loc";
 		String surveyorName = uniqueNumber + "Sur";
 		String analyzerName = uniqueNumber + "Ana";
+		String analyzerSharedKey = analyzerName + "Key";
 
 		if (fetchAnalyzerFromPool) {
-			// Fetch Analyzer from pool. Delete if already exists.
+			// Fetch Analyzer from pool. Delete analyzer if already exists in DB.
 			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 			if (analyzer != null) {
-				Log.info(String.format("Deleting Analyzer with serial number-'%s' using data access objects", analyzerName));
-				analyzer.deleteAnalyzer();
+				Log.info(String.format("Analyzer with serial number-'%s' fetched from pool ALREADY EXISTS in DB. "
+						+ "Deleting Analyzer.", analyzerName));
+				analyzer.cascadeDeleteAnalyzer();
 			}
 		}
 
-		String analyzerSharedKey = analyzerName + "Key";
 		String lotNum = getTestSetup().getRandomNumber() + testCase;
 		String isoValue = "-32.7";
 
@@ -335,7 +338,7 @@ public class BaseTest {
 
 		manageUsersPage.open();
 		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
-			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
+			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
 
 		if(!addTestSurveyor){
@@ -459,7 +462,10 @@ public class BaseTest {
 
 		HashMap<String, String> testSurvey = new HashMap<String, String>();
 		testSurvey.put("analyzerName", analyzerName);
-		testSurvey.put("analyzerShearedKey", analyzerSharedKey);
+		testSurvey.put("analyzerSharedKey", analyzerSharedKey);
+
+		String surveyorUnitId = new Analyzer().getBySerialNumber(analyzerName).getSurveyorUnitId().toString();
+		String surveyorName = new SurveyorUnit().getById(surveyorUnitId).getDescription();
 
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, Password);
@@ -467,7 +473,8 @@ public class BaseTest {
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
 
-		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(3));
+		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
+		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(TEST_ENVIRONMENT_DATA_ROW_ID));
 		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
 		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
 		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
@@ -502,8 +509,8 @@ public class BaseTest {
 			driverViewPageAction.clickOnShutdownButton("", -1);
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
 			TestSetup.stopAnalyzer();
-			TestSetup.startAnalyzer();
 		}
 
 		return Collections.synchronizedMap(testSurvey);

@@ -55,9 +55,11 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
  */
 public class TestSetup {
 
+	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
+	private static final String POST_SURVEY_SESSION_FROM_DB3_CMD = "Post-SurveySessionFromDB3.cmd";
 	private static final String POST_REPORT_JOB_PERF_STAT_CMD = "Post-ReportJobPerfStat.cmd";
 	private static final String POST_ANALYZER_API_PERF_STAT_CMD = "Post-AnalyzerAPIPerfStat.cmd";
 	private static final String[] CI_MACHINES = { "20.20.20.59", "20.20.10.82", "10.0.2.15", "10.200.2.48"};
@@ -95,12 +97,12 @@ public class TestSetup {
 
 	private String appiumServerHost;
 	private String appiumServerPort;
-	private String mobileApp;
-	private String mobileBrowserName;
-	private String mobileVersion;
+	private String iosApp;
+	private String androidBrowserName;
+	private String iosVersion, androidVersion;
 	private String mobilePlatform;
-	private String deviceName;
-	
+	private String iosDeviceName, androidDeviceName;
+
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
@@ -244,7 +246,7 @@ public class TestSetup {
 	public boolean isAppiumDriverInTest() {
 		return WebDriverWrapper.isAppiumDriverInTest();
 	}
-	
+
 	public WebDriver getDriver(int index) {
 		return WebDriverFactory.getDriver(index);
 	}
@@ -296,6 +298,15 @@ public class TestSetup {
 
 	public String getRandomNumber() {
 		return this.randomNumber;
+	}
+
+	private void resetRandomNumber() {
+		this.randomNumber = Long.toString((new Random()).nextInt(1000000));
+	}
+
+	public String getNewFixedSizeRandomNumber(int size) {
+		resetRandomNumber();
+		return getFixedSizeRandomNumber(size);
 	}
 
 	public String getFixedSizeRandomNumber(int size) {
@@ -499,31 +510,38 @@ public class TestSetup {
 		this.appiumServerPort = appiumServerPort;
 	}
 
-	public String getMobileApp() {
-		return mobileApp;
+	public String getIosApp() {
+		return iosApp;
 	}
 
-	public void setMobileApp(String mobileApp) {
-		this.mobileApp = mobileApp;
+	public void setIosApp(String iosApp) {
+		this.iosApp = iosApp;
 	}
 
-	public String getMobileBrowserName() {
-		return mobileBrowserName;
+	public String getAndroidBrowserName() {
+		return androidBrowserName;
 	}
 
-	public void setMobileBrowserName(String mobileBrowserName) {
-		this.mobileBrowserName = mobileBrowserName;
+	public void setAndroidBrowserName(String androidBrowserName) {
+		this.androidBrowserName = androidBrowserName;
 	}
 
-	
-	public String getMobileVersion() {
-		return mobileVersion;
+
+	public String getIosVersion() {
+		return iosVersion;
 	}
 
-	public void setMobileVersion(String mobileVersion) {
-		this.mobileVersion = mobileVersion;
+	public void setIosVersion(String iosVersion) {
+		this.iosVersion = iosVersion;
 	}
 
+	public String getAndroidVersion() {
+		return androidVersion;
+	}
+
+	public void setAndroidVersion(String androidVersion) {
+		this.androidVersion = androidVersion;
+	}
 	public String getMobilePlatform() {
 		return mobilePlatform;
 	}
@@ -532,14 +550,21 @@ public class TestSetup {
 		this.mobilePlatform = mobilePlatform;
 	}
 
-	public String getDeviceName() {
-		return deviceName;
+	public String getIosDeviceName() {
+		return iosDeviceName;
 	}
 
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
+	public void setIosDeviceName(String iosDeviceName) {
+		this.iosDeviceName = iosDeviceName;
 	}
 
+	public String getAndroidDeviceName() {
+		return androidDeviceName;
+	}
+
+	public void setAndroidDeviceName(String androidDeviceName) {
+		this.androidDeviceName = androidDeviceName;
+	}
 	public void initialize() {
 		try {
 
@@ -558,12 +583,14 @@ public class TestSetup {
 
 			this.setAppiumServerHost(this.testProp.getProperty("appiumServerHost"));
 			this.setAppiumServerPort(this.testProp.getProperty("appiumServerPort"));
-			this.setMobileApp(this.testProp.getProperty("mobileApp"));
-			this.setMobileBrowserName(this.testProp.getProperty("mobileBrowserName"));
-			this.setMobileVersion(this.testProp.getProperty("mobileVersion"));
+			this.setIosApp(this.testProp.getProperty("iosApp"));
+			this.setAndroidBrowserName(this.testProp.getProperty("androidBrowserName"));
+			this.setIosVersion(this.testProp.getProperty("iosVersion"));
 			this.setMobilePlatform(this.testProp.getProperty("mobilePlatform"));
-			this.setDeviceName(this.testProp.getProperty("deviceName"));
-			
+			this.setIosDeviceName(this.testProp.getProperty("iosDeviceName"));
+			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
+			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
+
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
 			this.setRemoteServerPort(this.testProp.getProperty("remoteServerPort"));
@@ -1064,7 +1091,7 @@ public class TestSetup {
 		}
 	}
 
-	public static void stopReplay() {
+	public void stopReplay() {
 		// Execute replay script from the contained folder.
 		try {
 			String stopReplayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
@@ -1131,6 +1158,26 @@ public class TestSetup {
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
+	}
+
+	public void checkPostSurveySessionFromDB3(String analyzerSerialNumber, String analyzerSharedKey, String surveyor) throws IOException {
+		String workingFolder = getRootPath();
+		String seleniumFolder = getExecutionPath(getRootPath());
+		String postSurveySessionCmdFolder = seleniumFolder + "lib";
+		String postSurveySessionCmdFullPath = postSurveySessionCmdFolder + File.separator + POST_SURVEY_SESSION_FROM_DB3_CMD;
+
+		// Script parameters:
+		// -WorkingFolder '%~1' -BaseURL '%~2' -AnalyzerSerialNumber '%~3' -AnalyzerSharedKey '%~4' -Surveyor '%~5' -AnalyzerLogFilePath '%~6'
+		String command = "cd \"" + postSurveySessionCmdFolder + "\" && " + postSurveySessionCmdFullPath +
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+						workingFolder,
+						TestContext.INSTANCE.getTestSetup().baseURL,
+						analyzerSerialNumber,
+						analyzerSharedKey,
+						surveyor,
+						TestContext.INSTANCE.getTestSetup().getAnalyzerDebugLogPath());
+		Log.info("Posting survey session from surveyor.db3 to cloud. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public void postProductTestBinariesMap(String binaryFilePath) throws ParserConfigurationException, SAXException {
@@ -1457,5 +1504,9 @@ public class TestSetup {
 
 	public void setNumAnalyzersInPool(String numAnalyzersInPool) {
 		this.numAnalyzersInPool = numAnalyzersInPool;
+	}
+
+	public String getAnalyzerDebugLogPath() {
+		return ANALYZER_DEBUG_LOG_FILE;
 	}
 }

@@ -48,6 +48,8 @@ public class ReportCommonEntity extends BaseReportEntity {
 	private String customerBoundaryName;
 	private CustomerBoundaryFilterType customerBoundaryFilterType;
 
+	private SearchAreaPreference srchAreaPreference;
+
 	public enum EthaneFilter {
 		ExcludeVehicleExhaust, ExcludeBiogenicMethane, ExcludePossibleNaturalGas, All, None
 	}
@@ -515,5 +517,13 @@ public class ReportCommonEntity extends BaseReportEntity {
 
 	public void setCustomerBoundaryFilterType(CustomerBoundaryFilterType customerBoundaryFilterType) {
 		this.customerBoundaryFilterType = customerBoundaryFilterType;
+	}
+
+	public SearchAreaPreference getSearchAreaPreference() {
+		return srchAreaPreference;
+	}
+
+	public void setSearchAreaPreference(SearchAreaPreference srchAreaPreference) {
+		this.srchAreaPreference = srchAreaPreference;
 	}
 }

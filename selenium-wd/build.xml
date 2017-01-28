@@ -55,7 +55,7 @@
   </target>
   <target name="compile_common" depends="init" description="Compile common source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/scommon/entities:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
+  	<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/scommon/entities:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api:${basedir}/tests/surveyor/parsers/source" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
       <classpath>
         <fileset dir="${basedir}">
           <include name="**/*.jar" />
@@ -131,7 +131,7 @@
   </target>
   <target name="compiletestsuite" depends="compile_scommon" description="Compile testsuite source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
+    <javac srcdir="${basedir}/tests/surveyor/regression/mobile/source:${basedir}/tests/surveyor/regression/source:${basedir}/tests/surveyor/performance/source:${basedir}/tests/surveyor/testsuite/source" includeantruntime="false" destdir="${build}" debug="true">
       <classpath>
         <fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
@@ -680,6 +680,9 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
+    	  <!-- Single thread execution test classes -->
+          <include name="**/SurveyViewPageTest6.class" />
+          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -707,7 +710,7 @@
       </batchtest>
     </junit>
   </target>
-	<target name="tc_localrun" depends="compileUnitIntegrationTest" description="Run test suite tests">
+	<target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
@@ -723,8 +726,7 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/SanityIntegrationTest.class" />
-					<include name="**/MobileUnitTest.class" />
+					<include name="**/ComplianceReportsInvestigationPageTest.class" />
 				</fileset>
 			</batchtest>
 		</junit>

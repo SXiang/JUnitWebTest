@@ -1,9 +1,5 @@
 package surveyor.scommon.actions;
 
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +9,7 @@ import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
+
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
@@ -23,6 +20,7 @@ import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
 import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
@@ -33,11 +31,10 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	private ComplianceReportDataReader dataReader = null;
 	public static ThreadLocal<ComplianceReportEntity> workingReportsEntity = new ThreadLocal<ComplianceReportEntity>();      		// Stores the ReportsCompliance object from createNewReport action
 	public static ThreadLocal<ComplianceReportsDataRow> workingDataRow = new ThreadLocal<ComplianceReportsDataRow>();   // Stores the workingDataRow from createNewReport action
-	//public static ThreadLocal<List<ReportViewsDataRow>> workingReportViewsDataRows = new ThreadLocal<List<ReportViewsDataRow>>();    // Stores the dataRows for views created in createNewReport action.
 
 	public ComplianceReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
-		initializePageObject(driver, new ReportsCommonPage(driver, strBaseURL, testSetup));
+		initializePageObject(driver, new ComplianceReportsPage(driver, strBaseURL, testSetup));
 		setDataReader(new ComplianceReportDataReader(this.excelUtility));
 	}
 
@@ -61,63 +58,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 				false /*confirmAction*/);  // By default use FALSE confirm action.
 	}
 
-	@Override
-	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		ComplianceReportsDataRow compRptDataRow = null;
-		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
-			compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
-		} else {
-			compRptDataRow = getDataReader().getDataRow(dataRowID);
-		}
-		return compRptDataRow;
-	}
-
-	@Override
-	public ReportCommonEntity getWorkingReportsEntity() throws Exception {
-		return workingReportsEntity.get();
-	}
-
-	@Override
-	public void setWorkingReportsEntity(ReportCommonEntity reportsEntity) throws Exception {
-		workingReportsEntity.set((ComplianceReportEntity) reportsEntity);
-	}
-
-	@Override
-	public ReportsCommonDataRow getWorkingReportsDataRow() throws Exception {
-		return workingDataRow.get();
-	}
-
-	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
-		workingDataRow.set((ComplianceReportsDataRow) dataRow);
-	}
-
-	@Override
-	public ReportsCommonPage createNewPageObject() {
-		ReportsCommonPage compReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(),
-				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		return compReportsPage;
-	}
-
-	@Override
-	protected void waitForReportSpecificFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
-		ReportsCommonDataRow compRptDataRow = getReportsDataRow(dataRowID);
-		String reportTitle = compRptDataRow.title;
-		String reportName = "";
-
-		switch(fileType) {
-		case InvestigationPDF:
-			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
-			this.getComplianceReportsPage().waitForInvestigationPDFFileDownload(reportName);
-			break;
-		case InvestigationCSV:
-			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
-			this.getComplianceReportsPage().waitForInvestigationCSVFileDownload(reportName);
-			break;
-		default:
-			break;
-		}
-	}
 
 	public ComplianceReportsDataRow getWorkingCmpReportsDataRow() throws Exception {
 		return workingDataRow.get();
@@ -525,6 +465,64 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
+		ReportsCommonDataRow compRptDataRow = null;
+		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
+			compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
+		} else {
+			compRptDataRow = getDataReader().getDataRow(dataRowID);
+		}
+		return compRptDataRow;
+	}
+
+	@Override
+	public ReportCommonEntity getWorkingReportsEntity() throws Exception {
+		return workingReportsEntity.get();
+	}
+
+	@Override
+	public void setWorkingReportsEntity(ReportCommonEntity reportsEntity) throws Exception {
+		workingReportsEntity.set((ComplianceReportEntity) reportsEntity);
+	}
+
+	@Override
+	public ReportsCommonDataRow getWorkingReportsDataRow() throws Exception {
+		return workingDataRow.get();
+	}
+
+	@Override
+	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+		workingDataRow.set((ComplianceReportsDataRow) dataRow);
+	}
+
+	@Override
+	public ReportsCommonPage createNewPageObject() {
+		ReportsCommonPage compReportsPage = new ComplianceReportsPage(TestContext.INSTANCE.getDriver(),
+				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		return compReportsPage;
+	}
+
+	@Override
+	protected void waitForReportSpecificFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
+		ReportsCommonDataRow compRptDataRow = getReportsDataRow(dataRowID);
+		String reportTitle = compRptDataRow.title;
+		String reportName = "";
+
+		switch(fileType) {
+		case InvestigationPDF:
+			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForInvestigationPDFFileDownload(reportName);
+			break;
+		case InvestigationCSV:
+			reportName = this.getComplianceReportsPage().getReportPDFFileName(reportTitle, false /*includeExtension*/);
+			this.getComplianceReportsPage().waitForInvestigationCSVFileDownload(reportName);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) {
@@ -538,6 +536,14 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
         if(!BaseHelper.isNullOrEmpty(reportMode)){
         	reportEntity.setReportModeFilter(ReportModeFilter.valueOf(reportMode.replaceAll(" ", "")));
         }
+
+        // Set search area preference (highlighting algorithm)
+        SearchAreaPreference srchAreaPref = SearchAreaPreference.LISAS;
+        if (workingDataRow.get().searchAreaPreference.equalsIgnoreCase(SearchAreaPreference.ASSETBOXES.toString())) {
+        	srchAreaPref = SearchAreaPreference.ASSETBOXES;
+        }
+
+        reportEntity.setSearchAreaPreference(srchAreaPref);
 	}
 
 	@Override

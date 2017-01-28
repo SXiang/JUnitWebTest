@@ -46,12 +46,6 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	private static final String EMPTY = BaseActions.EMPTY;
 	private static final Integer NOTSET = BaseActions.NOTSET;
 
-	public ActionsVerificationTest() {
-		loginPageAction = ActionBuilder.createLoginPageAction();
-		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
-		testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
-	}
-
 	@BeforeClass
 	public static void BeforeClass()	{
 		TestSetup testSetup = new TestSetup(true /* initialize */);
@@ -72,6 +66,13 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();
 		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();
 	}
+
+	public ActionsVerificationTest() {
+		loginPageAction = ActionBuilder.createLoginPageAction();
+		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
+		testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+	}
+
 	@Test
 	public void TC_SimulatorTest_DriverViewInstrumentReady() {
 		try {
@@ -336,7 +337,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
 		final int DB3_ANALYZER_ROW_ID = 9;	 	/* Analyzer3/Surveyor3. Replay db3 file rowID */
 		final int SURVEY_ROW_ID = 4;	 		/* Survey information rowID */
-		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+		final int SURVEY_RUNTIME_IN_SECONDS = 30; /* Number of seconds to run the survey for. */
 
 		// Existing user with static username/password. Use overload with LoginUserRowID.
 		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID,

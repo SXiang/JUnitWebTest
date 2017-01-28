@@ -2,6 +2,18 @@ package surveyor.dataaccess.source;
 
 public class ResourceKeys {
 	public static final String AddRefGasBottle_PageTitle = "AddRefGasBottle_PageTitle";
+
+	// Assessment report resource keys.
+	public static final String AssessmentReport_AssessmentTablePDF = "AssessmentReport_AssessmentTablePDF";
+	public static final String AssessmentReport_AssessmentZipMeta = "AssessmentReport_AssessmentZipMeta";
+	public static final String AssessmentReport_AssessmentZipPDF = "AssessmentReport_AssessmentZipPDF";
+	public static final String AssessmentReport_AssessmentZipShape = "AssessmentReport_AssessmentZipShape";
+	public static final String AssessmentReport_PageTitle = "AssessmentReport_PageTitle";
+	public static final String AssessmentReport_PageTitleNew = "AssessmentReport_PageTitleNew";
+	public static final String AssessmentReports_AddNew = "AssessmentReports_AddNew";
+	public static final String AssessmentReports_PageTitle = "AssessmentReports_PageTitle";
+
+	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
 	public static final String ComplianceReport_CustomBoundary = "ComplianceReport_CustomBoundary";
@@ -72,6 +84,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable="ComplianceReportSSRS_EthaneAnalysisTable";
+
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";
 	public static final String Constant_Boundaries = "Constant_Boundaries";

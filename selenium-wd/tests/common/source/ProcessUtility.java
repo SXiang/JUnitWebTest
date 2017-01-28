@@ -10,8 +10,7 @@ import org.testng.Assert;
 
 public class ProcessUtility {
 
-	private static boolean DEBUG_ANALYZER = false;
-	private static String AnalyzerDebugLogPath = "C:\\temp\\AnalyzerDebugLog.log";
+	private static boolean DEBUG_ANALYZER = true;
 
 	public static ProcessOutputInfo executeProcess(String command, boolean isShellCommand, boolean waitForExit) throws IOException {
 		Process process = null;
@@ -22,7 +21,7 @@ public class ProcessUtility {
 
 			if (isShellCommand) {
 				if (DEBUG_ANALYZER && command.toLowerCase().contains("picarro.surveyor.analyzer.exe")) {
-					execCommand = String.format("cmd.exe /C \"%s > %s\"", command, AnalyzerDebugLogPath);
+					execCommand = String.format("cmd.exe /C \"%s > %s\"", command, TestContext.INSTANCE.getTestSetup().getAnalyzerDebugLogPath());
 				} else {
 					execCommand = "cmd.exe /C " + command;
 				}

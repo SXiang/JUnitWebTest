@@ -74,12 +74,12 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		createNewComplianceReport(complianceReportsPageAction, 4);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 4);
+		createNewReport(complianceReportsPageAction, 4);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 4);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
-		modifyComplianceReport(complianceReportsPageAction, 5);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 5);
+		modifyReport(complianceReportsPageAction, 5);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 5);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 5);
 	}
 
@@ -101,14 +101,14 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		createNewComplianceReport(complianceReportsPageAction, 6);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 6);
+		createNewReport(complianceReportsPageAction, 6);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 6);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Manual", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
 		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
-		modifyComplianceReport(complianceReportsPageAction, 7);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 7);
+		modifyReport(complianceReportsPageAction, 7);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 7);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
 	}
 
@@ -130,14 +130,14 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		createNewComplianceReport(complianceReportsPageAction, 8);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 8);
+		createNewReport(complianceReportsPageAction, 8);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 8);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Standard", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
 		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
-		modifyComplianceReport(complianceReportsPageAction, 9);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, 9);
+		modifyReport(complianceReportsPageAction, 9);
+		waitForReportGenerationToComplete(complianceReportsPageAction, 9);
 		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);
 	}
 
@@ -191,13 +191,13 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 
 		int reportDataRowID = 112;
 
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID);
 		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID);
 		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID));
 
-		modifyComplianceReport(complianceReportsPageAction, reportDataRowID);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+		modifyReport(complianceReportsPageAction, reportDataRowID);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);
@@ -231,8 +231,8 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 
 		int reportDataRowID = 113;
 
-		createNewComplianceReport(complianceReportsPageAction, reportDataRowID);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+		createNewReport(complianceReportsPageAction, reportDataRowID);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID);
@@ -263,7 +263,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 
 		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(reportDataRowID);
 
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID);
 		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID);
 		assertTrue(complianceReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID));
@@ -271,7 +271,7 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		getComplianceReportsPage().fillReport(rpt);
 		getComplianceReportsPage().selectFOVColor(colors);
 		getComplianceReportsPage().addReport();
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID);
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID);

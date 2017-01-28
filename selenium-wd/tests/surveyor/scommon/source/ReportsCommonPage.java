@@ -17,21 +17,16 @@ import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTBOXASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
@@ -53,15 +48,11 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
 import surveyor.scommon.entities.BaseReportEntity;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
-import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
-import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 
 import java.awt.Rectangle;
@@ -87,6 +78,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -118,6 +110,7 @@ import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
 import common.source.TestSetup;
 import common.source.TextUtility;
+import common.source.Timeout;
 import common.source.WebElementExtender;
 import sun.misc.BASE64Decoder;
 import surveyor.dataaccess.source.BaseMapType;
@@ -128,13 +121,14 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcComplianceGetCoverage;
-import surveyor.dataaccess.source.StoredProcComplianceGetCoverageForecast;
 import surveyor.dataaccess.source.StoredProcComplianceGetEthaneCapture;
 import surveyor.dataaccess.source.StoredProcComplianceGetGaps;
 import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcComplianceGetIsotopics;
-import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
+import surveyor.parsers.source.SSRSViewNamesParser;
+import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -161,117 +155,65 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String BASE64_IGNORE = "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";
 
 	public static final String BOUNDARY_SELECTOR_CANVAS_X_PATH = "//*[@id=\"map\"]/div/canvas";
-	public static final String STRURLPath = "/Reports/ComplianceReports";
-	public static final String STRPageTitle = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRSurveyIncludedMsg = Resources.getResource(ResourceKeys.ComplianceReport_AlreadyAdded);
-	public static final String ComplianceReport_SurveyMissingMessage = Resources
-			.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
-	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
-	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
-	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.ComplianceReport_PageTitle);
-	public static final String STRReportTitle = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ComplianceReportSSRS);
-	public static final String ComplianceReportSSRS_LISAInvestigationComplete = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_LISAInvestigationComplete);
-	public static final String ComplianceReportSSRS_GAPInvestigationComplete = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_GAPInvestigationComplete);
-	public static final String ComplianceReportSSRS_CGIInvestigationComplete = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_CGIInvestigationComplete);
-	public static final String ComplianceReportSSRS_MapHeightWidth = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
-	public static final String ComplianceReportSSRS_NELatNELong = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_NELatNELong);
-	public static final String ComplianceReportSSRS_SWLatSWLong = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_SWLatSWLong);
-	public static final String ComplianceReportSSRS_TimeZone = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
-	public static final String ComplianceReportSSRS_ShowCoverage = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowCoverage);
-	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
-	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
-	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
-	public static final String ComplianceReportSSRS_PercentServiceCoverageWithLISAs = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoveragewithLISAs);
-	public static final String ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs);
-	public static final String ComplianceReportSSRS_ProbabilitytoObtain70Coverage = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ProbabilitytoObtain70Coverage);
-	public static final String ComplianceReportSSRS_Asset = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_Asset);
-	public static final String ComplianceReportSSRS_Boundary = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_Boundary);
-	public static final String ComplianceReportSSRS_ViewTable = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ViewTable);
-	public static final String ComplianceReportSSRS_ViewName = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ViewName);
-	public static final String ComplianceReportSSRS_ShowLISAs = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowLISAs);
-	public static final String ComplianceReportSSRS_ShowFOV = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowFOV);
-	public static final String ComplianceReportSSRS_ShowBreadcrumb = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowBreadcrumb);
-	public static final String ComplianceReportSSRS_ShowIndications = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowIndications);
-	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowIsotopicAnalyses);
-	public static final String ComplianceReportSSRS_FieldNotes = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
-	public static final String ComplianceReportSSRS_ShowGaps = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
-	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightLISAAssets);
-	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightGAPAssets);
-	public static final String ComplianceReportSSRS_ShowAssets = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssets);
-	public static final String ComplianceReportSSRS_ShowAssetBoxNumber = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssetBoxNumber);
-	public static final String ComplianceReportSSRS_ShowBoundaries = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_ShowBoundaries);
-	public static final String ComplianceReportSSRS_BaseMap = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_BaseMap);
-	public static final String ComplianceReportSSRS_TotalLinearAssetCoverage = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_TotalLinearAssetCoverage);
-	public static final String ReportSSRS_SelectedDrivingSurveys = Resources
-			.getResource(ResourceKeys.ReportSSRS_SelectedDrivingSurveys);
-	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_IsotopicAnalysisTable);
-	public static final String ComplianceReportSSRS_IndicationTable = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
-	public static final String ComplianceReportSSRS_GapTable = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
-	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
+	public static final String ComplianceReport_SurveyMissingMessage = Resources.getResource(ResourceKeys.ComplianceReport_SurveyMissingMessage);
+	public static final String STRReportTitle = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ComplianceReportSSRS);
+	public static final String ComplianceReportSSRS_LISAInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISAInvestigationComplete);
+	public static final String ComplianceReportSSRS_GAPInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GAPInvestigationComplete);
+	public static final String ComplianceReportSSRS_CGIInvestigationComplete = Resources.getResource(ResourceKeys.ComplianceReportSSRS_CGIInvestigationComplete);
+	public static final String ComplianceReportSSRS_MapHeightWidth = Resources.getResource(ResourceKeys.ComplianceReportSSRS_MapHeightWidth);
+	public static final String ComplianceReportSSRS_NELatNELong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_NELatNELong);
+	public static final String ComplianceReportSSRS_SWLatSWLong = Resources.getResource(ResourceKeys.ComplianceReportSSRS_SWLatSWLong);
+	public static final String ComplianceReportSSRS_TimeZone = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TimeZone);
+	public static final String ComplianceReportSSRS_ShowCoverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowCoverage);
+	public static final String ComplianceReportSSRS_PercentCoverageAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageAssets);
+	public static final String ComplianceReportSSRS_PercentCoverageForecast = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageForecast);
+	public static final String ComplianceReportSSRS_PercentCoverageReportArea = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentCoverageReportArea);
+	public static final String ComplianceReportSSRS_PercentServiceCoverageWithLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoveragewithLISAs);
+	public static final String ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_PercentServiceCoverageWithoutLISAs);
+	public static final String ComplianceReportSSRS_ProbabilitytoObtain70Coverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ProbabilitytoObtain70Coverage);
+	public static final String ComplianceReportSSRS_Asset = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Asset);
+	public static final String ComplianceReportSSRS_Boundary = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Boundary);
+	public static final String ComplianceReportSSRS_ViewTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ViewTable);
+	public static final String ComplianceReportSSRS_ViewName = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ViewName);
+	public static final String ComplianceReportSSRS_ShowLISAs = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowLISAs);
+	public static final String ComplianceReportSSRS_ShowFOV = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowFOV);
+	public static final String ComplianceReportSSRS_ShowBreadcrumb = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBreadcrumb);
+	public static final String ComplianceReportSSRS_ShowIndications = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIndications);
+	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIsotopicAnalyses);
+	public static final String ComplianceReportSSRS_FieldNotes = Resources.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
+	public static final String ComplianceReportSSRS_ShowGaps = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
+	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightLISAAssets);
+	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightGAPAssets);
+	public static final String ComplianceReportSSRS_ShowAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssets);
+	public static final String ComplianceReportSSRS_ShowAssetBoxNumber = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowAssetBoxNumber);
+	public static final String ComplianceReportSSRS_ShowBoundaries = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBoundaries);
+	public static final String ComplianceReportSSRS_BaseMap = Resources.getResource(ResourceKeys.ComplianceReportSSRS_BaseMap);
+	public static final String ComplianceReportSSRS_TotalLinearAssetCoverage = Resources.getResource(ResourceKeys.ComplianceReportSSRS_TotalLinearAssetCoverage);
+	public static final String ReportSSRS_SelectedDrivingSurveys = Resources.getResource(ResourceKeys.ReportSSRS_SelectedDrivingSurveys);
+	public static final String ComplianceReportSSRS_IsotopicAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IsotopicAnalysisTable);
+	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
+	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
+	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
 
-	public static final String LisaInvestigationReportSSRS_Lisa = Resources
-			.getResource(ResourceKeys.LisaInvestigationReportSSRS_Lisa);
-	public static final String LisaInvestigationReportSSRS_Amplitude = Resources
-			.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
+	public static final String LisaInvestigationReportSSRS_Lisa = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Lisa);
+	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
-	public static final String LisaInvestigationReportSSRS_Investigator = Resources
-			.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
-	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources
-			.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
-	public static final String LisaInvestigations_PageTitle = Resources
-			.getResource(ResourceKeys.LisaInvestigations_PageTitle);
+	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
+	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
+	public static final String LisaInvestigations_PageTitle = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 
-	public static final String ComplianceReportSSRS_LISA_Number = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_LISA_Number);
-	public static final String ComplianceReportSSRS_Amplitude = Resources
-			.getResource(ResourceKeys.ComplianceReportSSRS_Amplitude);
+	public static final String ComplianceReportSSRS_LISA_Number = Resources.getResource(ResourceKeys.ComplianceReportSSRS_LISA_Number);
+	public static final String ComplianceReportSSRS_Amplitude = Resources.getResource(ResourceKeys.ComplianceReportSSRS_Amplitude);
 	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
 	public static final String Constant_AnalyzerType = Resources.getResource(ResourceKeys.Constant_AnalyzerType);
 	public static final String Constant_Investigator = Resources.getResource(ResourceKeys.Constant_Investigator);
 	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);
-	public static final String ComplianceReport_LicenseMissing = Resources
-			.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
+	public static final String ComplianceReport_LicenseMissing = Resources.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
 
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
-	private static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
+	protected static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
 	public static List<String[]> preCoverageForecastTo70;
@@ -302,10 +244,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private List<WebElement> areaBoundaryRadioButtons;
 
 	@FindBy(css = "input[name='rdAreaMode'][value='Custom']")
-	private WebElement customBoundaryRadioButton;
+	protected WebElement customBoundaryRadioButton;
 
 	@FindBy(css = "input[name='rdAreaMode'][value='Customer']")
-	private WebElement customerBoundaryRadioButton;
+	protected WebElement customerBoundaryRadioButton;
 
 	@FindBy(css = "input[name='rdAreaMode'][value='FreeForm']")
 	private WebElement freeFormBoundaryRadioButton;
@@ -363,7 +305,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	protected WebElement fstRptTilNm;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	protected WebElement newComplianceReportBtn;
+	protected WebElement newReportBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-show-percent-coverage-report-area']")
 	protected WebElement percentCoverReportArea;
@@ -396,8 +338,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return this.boundarySelectedText;
 	}
 
-	public WebElement getNewComplianceReportBtn() {
-		return this.newComplianceReportBtn;
+	public WebElement getNewReportBtn() {
+		return this.newReportBtn;
 	}
 
 	public WebElement getPercentCoverReportArea() {
@@ -412,7 +354,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return this.rptSmallBoundary;
 	}
 
-	private LatLongSelectionControl latLongSelectionControl = null;
+	protected LatLongSelectionControl latLongSelectionControl = null;
 
 	protected String pagination = "100";
 
@@ -474,10 +416,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @param strBaseURL
 	 * @param testSetup
 	 */
-	public ReportsCommonPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
-		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
+	public ReportsCommonPage(WebDriver driver, String strBaseURL, TestSetup testSetup, String strPageURL,
+			Supplier<ResourceProvider> resxSupplier) {
+		super(driver, strBaseURL, testSetup, strBaseURL + strPageURL);
 
-		Log.info(String.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL));
+		// Set the resource provider on super class.
+		resxProvider = resxSupplier.get();
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
@@ -549,7 +493,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public void addViews(String customer, List<Map<String, String>> viewList) {
-		Log.method("ComplianceReportsPage.addViews", customer, LogHelper.mapListToString(viewList));
+		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
 		int colNum;
 		String strBaseXPath;
@@ -578,110 +522,91 @@ public class ReportsCommonPage extends ReportsBasePage {
 			if (selectView(viewMap, KEYLISA)) {
 				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showlisa", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYFOV)) {
 				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showfov", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYBREADCRUMB)) {
 				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showbreadcrumb", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYINDICATIONS)) {
 				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showindication", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
 				colNum = 7;
 				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYANNOTATION)) {
 				colNum = 8;
 				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
 				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showgap", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYASSETS)) {
 				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-showasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
 				colNum = 11;
 				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-highlightlisaasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 
-				// Select Highlight LISAs in dropdown.
-				selectHighlightLisaAssetDropdown("LISAs");
-			} else if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
-				colNum = 11;
-				Log.clickElementInfo("Highlight Box Assets", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-
-				// Select Highlight Asset Boxes in dropdown.
-				selectHighlightLisaAssetDropdown("Asset Boxes");
-
-				// Check Asset Box Number
-				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
-					colNum = 13;
-					Log.clickElementInfo("Asset Box Number", ElementType.CHECKBOX);
-					strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
-					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-				}
+ 				// Check Asset Box Number
+ 				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
+ 					colNum = 13;
+ 					Log.clickElementInfo("Asset Box Number", ElementType.CHECKBOX);
+ 					strBaseXPath = getViewsTableInputElementXpath("view-showassetboxasset", rowNum);
+					WebElement boxNumberElement = driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']"));
+					WebElementExtender.waitForElementToBeClickable(Timeout.TEN, driver, boxNumberElement);
+					SelectElement(boxNumberElement);
+ 				}
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
 				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
-				strBaseXPath = getViewXPathByRowCol(rowNum, colNum);
+				strBaseXPath = getViewsTableInputElementXpath("view-highlightgapasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYBOUNDARIES)) {
 				Log.clickElementInfo("BOUNDARIES", ElementType.CHECKBOX);
-				if (rowNum == 1) {
-					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'view-showboundry')]";
-				} else {
-					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum
-							+ "]/td/input[contains(@class,'view-showboundry')]";
-				}
+				strBaseXPath = getViewsTableInputElementXpath("view-showboundry", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (viewMap.get(KEYBASEMAP) != null && !viewMap.get(KEYBASEMAP).trim().equals("")) {
-				if (rowNum == 1) {
-					strBaseXPath = "//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'view-basemap')]";
-				} else {
-					strBaseXPath = "//*[@id='datatableViews']/tbody/tr[" + rowNum
-							+ "]/td/select[contains(@class,'view-basemap')]";
-				}
+				strBaseXPath = getViewsTableSelectElementXpath("view-basemap", rowNum);
 				WebElement dropdownBaseMap = driver.findElement(By.xpath(strBaseXPath));
 				String thisMap = viewMap.get(KEYBASEMAP);
 				Log.info(String.format("Select base map - '%s'", thisMap));
@@ -690,19 +615,27 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 	}
 
-	private void selectHighlightLisaAssetDropdown(String value) {
-		Log.method("selectHighlightLisaAssetDropdown", value);
-		List<WebElement> options = highlightLisaAssetDropdown.findElements(By.tagName("option"));
-		for (WebElement option : options) {
-			if (option.getText().trim().equals(value)) {
-				Log.info("Select Highlight Lisa Asset - '" + value + "'");
-				option.click();
-				break;
-			}
+	private String getViewsTableInputElementXpath(String className, Integer rowNum) {
+		String strXPath = String.format("//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'%s')]", className);
+		if (rowNum > 1) {
+			strXPath = String.format("//*[@id='datatableViews']/tbody/tr[%d]]/td/input[contains(@class,'%s')]",
+					rowNum, className);
 		}
+
+		return strXPath;
 	}
 
-	private boolean selectView(Map<String, String> viewMap, String option) {
+	private String getViewsTableSelectElementXpath(String className, Integer rowNum) {
+		String strXPath = String.format("//*[@id='datatableViews']/tbody/tr/td/select[contains(@class,'%s')]", className);
+		if (rowNum > 1) {
+			strXPath = String.format("//*[@id='datatableViews']/tbody/tr[%d]/td/select[contains(@class,'%s')]",
+					rowNum, className);
+		}
+
+		return strXPath;
+	}
+
+	protected boolean selectView(Map<String, String> viewMap, String option) {
 		boolean select = false;
 		String value = viewMap.get(option);
 		if (value != null && value.equalsIgnoreCase("1")) {
@@ -837,20 +770,20 @@ public class ReportsCommonPage extends ReportsBasePage {
 		cancelDelete.click();
 	}
 
-	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy,
+	public boolean clickOnButtonInReportPage(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true,
+		return checkButtonOnReportsPageAndClick(rptTitle, strCreatedBy, buttonType, true,
 				true /* By default confirm the action */);
 	}
 
 	public boolean clickComplianceReportButton(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean confirmAction) throws Exception {
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, true, confirmAction);
+		return checkButtonOnReportsPageAndClick(rptTitle, strCreatedBy, buttonType, true, confirmAction);
 	}
 
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
-		Log.method("ComplianceReportsPage.handleFileDownloads", rptTitle, testCaseID);
+		Log.method("ReportsCommonPage.handleFileDownloads", rptTitle, testCaseID);
 		String reportName = "CR-" + getReportName(rptTitle);
 		invokePDFFileDownload(rptTitle);
 		waitForPDFFileDownload(reportName);
@@ -973,13 +906,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public String getInvestigationCSVFileName(String rptTitle, boolean includeExtension) {
 		String reportName = "CR-" + getReportName(rptTitle);
 		if (includeExtension) {
-			reportName += "-ReportLISAInvestigations.csv";
+			reportName += "-ReportInvestigations.csv";
 		}
 		return reportName;
 	}
 
 	public boolean checkAndGenerateBaselineShapeFiles(String unzipFolder, String testCaseID) throws Exception {
-		Log.method("ComplianceReportsPage.checkAndGenerateBaselineShapeFiles", unzipFolder, testCaseID);
+		Log.method("ReportsCommonPage.checkAndGenerateBaselineShapeFiles", unzipFolder, testCaseID);
 		boolean isGenerateBaselineShapeFiles = TestContext.INSTANCE.getTestSetup().isGenerateBaselineShapeFiles();
 		Path unzipDirectory = Paths.get(unzipFolder);
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
@@ -994,7 +927,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean checkAndGenerateBaselineSSRSImage(String reportName, String testCaseID) throws Exception {
-		Log.method("ComplianceReportsPage.checkAndGenerateBaselineSSRSImage", reportName, testCaseID);
+		Log.method("ReportsCommonPage.checkAndGenerateBaselineSSRSImage", reportName, testCaseID);
 		boolean isGenerateBaselineSSRSImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 		if (isGenerateBaselineSSRSImages) {
 			String htmlReportName = reportName + ".html";
@@ -1021,7 +954,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
-		Log.method("ComplianceReportsPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
+		Log.method("ReportsCommonPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
 		PDFUtility pdfUtility = new PDFUtility();
 		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 		if (isGenerateBaselineViewImages) {
@@ -1147,9 +1080,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws Exception
 	 */
 
-	public boolean checkComplianceReportButtonPresenceAndClick(String rptTitle, String strCreatedBy,
+	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		Log.method("ComplianceReportsPage.checkComplianceReportButtonPresenceAndClick", rptTitle, strCreatedBy,
+		Log.method("ReportsCommonPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
 				buttonType.name(), clickButton, confirmAction);
 
 		setPagination(PAGINATIONSETTING);
@@ -1357,7 +1290,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean resubmitReport(String rptTitle, String strCreatedBy) {
-		Log.method("ComplianceReportsPage.resubmitReport", rptTitle, strCreatedBy);
+		Log.method("ReportsCommonPage.resubmitReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 
 		this.waitForPageLoad();
@@ -1429,7 +1362,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(String reportTitle, String downloadPath) {
-		Log.method("ComplianceReportsPage.validatePdfFiles", reportTitle, downloadPath);
+		Log.method("ReportsCommonPage.validatePdfFiles", reportTitle, downloadPath);
 		String reportName;
 		String reportZipName;
 		try {
@@ -1473,7 +1406,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean validatePdfFiles(ReportCommonEntity reportsEntity, String downloadPath) {
-		Log.method("ComplianceReportsBasePage.validatePdfFiles", reportsEntity, downloadPath);
+		Log.method("ReportsCommonPage.validatePdfFiles", reportsEntity, downloadPath);
 		String reportName;
 		String reportZipName;
 		try {
@@ -1532,7 +1465,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 
 	public boolean validateReportCreationDate(String actualPath) throws IOException {
-		Log.method("ComplianceReportsPage.validateReportCreationDate", actualPath);
+		Log.method("ReportsCommonPage.validateReportCreationDate", actualPath);
 		String reportDate = null;
 		String actualReport = actualPath + getReportName().trim() + ".pdf";
 		PDFUtility pdfUtility = new PDFUtility();
@@ -1590,7 +1523,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void modifyComplianceViews() {
+	public void modifyReportViews() {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
 		this.inputViewAnno.click();
@@ -1729,13 +1662,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
 												// followed by name of
 												// Asset/Boundary
-			if (value.startsWith(ComplianceReportEntity.ASSET_PREFIX)) {
+			if (value.startsWith(ReportCommonEntity.ASSET_PREFIX)) {
 				// Asset key.
 				WebElement assetElement = getViewLayerAssetCheckbox(key);
 				if (assetElement != null) {
 					SelectElement(assetElement);
 				}
-			} else if (value.startsWith(ComplianceReportEntity.ASSET_ALL_PREFIX)) {
+			} else if (value.startsWith(ReportCommonEntity.ASSET_ALL_PREFIX)) {
 				SelectElement(checkboxViewLayerAllAssets);
 			}
 		}
@@ -1746,14 +1679,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
 												// followed by name of
 												// Asset/Boundary
-			if (value.startsWith(ComplianceReportEntity.BOUNDARY_PREFIX)) {
+			if (value.startsWith(ReportCommonEntity.BOUNDARY_PREFIX)) {
 				// Boundary key.
-				value = value.replace(ComplianceReportEntity.BOUNDARY_PREFIX, "");
+				value = value.replace(ReportCommonEntity.BOUNDARY_PREFIX, "");
 				WebElement boundaryElement = getViewLayerBoundaryCheckbox(value);
 				if (boundaryElement != null) {
 					SelectElement(boundaryElement);
 				}
-			} else if (value.startsWith(ComplianceReportEntity.BOUNDARY_ALL_PREFIX)) {
+			} else if (value.startsWith(ReportCommonEntity.BOUNDARY_ALL_PREFIX)) {
 				SelectElement(checkboxViewLayerAllBoundaries);
 			}
 		}
@@ -1779,8 +1712,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyComplianceReportButton(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType) throws Exception {
-		Log.method("ComplianceReportsPage.verifyComplianceReportButton", rptTitle, strCreatedBy, buttonType.name());
-		return checkComplianceReportButtonPresenceAndClick(rptTitle, strCreatedBy, buttonType, false,
+		Log.method("ReportsCommonPage.verifyComplianceReportButton", rptTitle, strCreatedBy, buttonType.name());
+		return checkButtonOnReportsPageAndClick(rptTitle, strCreatedBy, buttonType, false,
 				false /* confirmAction */);
 	}
 
@@ -1790,7 +1723,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains(String boundaryFilterType,
 			String customerBoundaryName, List<String> autocompleteListEntries) {
-		Log.method("ComplianceReportsPage.verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains",
+		Log.method("ReportsCommonPage.verifyCustomerBoundaryLatLongSelectorAutoCompleteListContains",
 				boundaryFilterType, customerBoundaryName, LogHelper.listToString(autocompleteListEntries));
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
@@ -1817,9 +1750,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ComplianceReportEntity reportsCompliance) throws IOException {
-		Log.method("ComplianceReportsPage.verifyComplianceReportStaticText", reportsCompliance);
-		return verifyComplianceReportStaticText(reportsCompliance, testSetup.getDownloadPath());
+	public boolean verifyComplianceReportStaticText(ReportCommonEntity reportsEntity) throws IOException {
+		Log.method("ReportsCommonPage.verifyComplianceReportStaticText", reportsEntity);
+		return verifyComplianceReportStaticText(reportsEntity, testSetup.getDownloadPath());
 	}
 
 	/**
@@ -1830,11 +1763,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ComplianceReportEntity reportsCompliance, String actualPath)
+	public boolean verifyComplianceReportStaticText(ReportCommonEntity reportsEntity, String actualPath)
 			throws IOException {
-		Log.method("ComplianceReportsBasePage.verifyComplianceReportStaticText", reportsCompliance, actualPath);
+		Log.method("ReportsCommonPage.verifyComplianceReportStaticText", reportsEntity, actualPath);
 		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportsCompliance.getRptTitle());
+		Report reportObj = Report.getReport(reportsEntity.getRptTitle());
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		setReportName("CR-" + reportId);
@@ -1848,17 +1781,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
-		if (isCustomBoundarySpecified(reportsCompliance)) {
-			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getNELat())
-					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getNELong())) {
+		if (isCustomBoundarySpecified(reportsEntity)) {
+			if (!BaseHelper.isNullOrEmpty(reportsEntity.getNELat())
+					&& !BaseHelper.isNullOrEmpty(reportsEntity.getNELong())) {
 				expectedReportString.add(ComplianceReportSSRS_NELatNELong);
 			}
-			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getSWLat())
-					&& !BaseHelper.isNullOrEmpty(reportsCompliance.getSWLong())) {
+			if (!BaseHelper.isNullOrEmpty(reportsEntity.getSWLat())
+					&& !BaseHelper.isNullOrEmpty(reportsEntity.getSWLong())) {
 				expectedReportString.add(ComplianceReportSSRS_SWLatSWLong);
 			}
 		} else {
-			if (!BaseHelper.isNullOrEmpty(reportsCompliance.getCustomerBoundaryName())) {
+			if (!BaseHelper.isNullOrEmpty(reportsEntity.getCustomerBoundaryName())) {
 				expectedReportString.add(ComplianceReportSSRS_Boundary);
 			}
 		}
@@ -1885,7 +1818,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyComplianceReportContainsText", reportTitle,
+		Log.method("ReportsCommonPage.verifyComplianceReportContainsText", reportTitle,
 				LogHelper.listToString(expectedReportString));
 		String actualPath = testSetup.getDownloadPath();
 		PDFUtility pdfUtility = new PDFUtility();
@@ -1914,7 +1847,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyShowCoverageTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsBasePage.verifyShowCoverageTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyShowCoverageTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -1950,7 +1883,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyCoverageValuesTable(String actualPath, String reportTitle, Map<String, String> userSelection)
 			throws IOException {
-		Log.method("ComplianceReportsBasePage.verifyCoverageValuesTable", actualPath, reportTitle,
+		Log.method("ReportsCommonPage.verifyCoverageValuesTable", actualPath, reportTitle,
 				LogHelper.mapToString(userSelection));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2016,7 +1949,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyLayersTable(String actualPath, String reportTitle, Map<String, String> userInput)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyLayersTable", actualPath, reportTitle,
+		Log.method("ReportsCommonPage.verifyLayersTable", actualPath, reportTitle,
 				LogHelper.mapToString(userInput));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2058,7 +1991,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyViewsTable(String actualPath, String reportTitle, List<Map<String, String>> viewsList)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyViewsTable", actualPath, reportTitle,
+		Log.method("ReportsCommonPage.verifyViewsTable", actualPath, reportTitle,
 				LogHelper.mapListToString(viewsList));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2086,7 +2019,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		// Look for AssetBoxNumber static string if there is a view with AssetBox.
 		boolean assetBxNumViewPresent = false;
 		for (Map<String, String> viewMap : viewsList) {
-			if (selectView(viewMap, KEYHIGHLIGHTBOXASSETS)) {
+			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
 				assetBxNumViewPresent = true;
 				break;
 			}
@@ -2149,7 +2082,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyDrivingSurveysTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyDrivingSurveysTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyDrivingSurveysTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2224,7 +2157,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyEthaneCaptureTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyEthaneCaptureTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyEthaneCaptureTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2295,7 +2228,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyReportSurveyMetaDataFile", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyReportSurveyMetaDataFile", actualPath, reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2351,7 +2284,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2403,13 +2336,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle);
 		return verifyEthaneCaptureMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
 	public boolean verifyEthaneCaptureMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle, reportId);
+		Log.method("ReportsCommonPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle, reportId);
 
 		CSVUtility csvUtility = new CSVUtility();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
@@ -2462,13 +2395,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle);
 		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws FileNotFoundException, IOException {
-		Log.method("ComplianceReportsPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
+		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = actualPath;
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
@@ -2500,7 +2433,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
-			double amp = Math.round(Float.parseFloat((csvRow.get("AMPLITUDE")).trim()) * 100.0) / 100.0;
+			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
@@ -2570,7 +2503,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyIsotopicValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
-		Log.method("ComplianceReportsPage.verifyIsotopicValueIsFormattedCorrectly", isotopicUncertaintyValue);
+		Log.method("ReportsCommonPage.verifyIsotopicValueIsFormattedCorrectly", isotopicUncertaintyValue);
 
 		String isotopicValue = getIsotopicValue(isotopicUncertaintyValue);
 
@@ -2597,7 +2530,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyUncertaintyValueIsFormattedCorrectly(String isotopicUncertaintyValue) {
-		Log.method("ComplianceReportsPage.verifyUncertaintyValueIsFormattedCorrectly", isotopicUncertaintyValue);
+		Log.method("ReportsCommonPage.verifyUncertaintyValueIsFormattedCorrectly", isotopicUncertaintyValue);
 		String uncertaintyValue = getUncertaintyPercent(isotopicUncertaintyValue);
 
 		// Value values:
@@ -2631,7 +2564,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyEthaneAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyEthaneAnalysisTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyEthaneAnalysisTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2710,7 +2643,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIsotopicAnalysisTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyIsotopicAnalysisTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyIsotopicAnalysisTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2733,46 +2666,26 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 
 		if (actualReportString != null) {
-			InputStream inputStream = new ByteArrayInputStream(actualReportString.getBytes());
-			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			try {
-				ArrayList<String> reportIsotopicList = new ArrayList<String>();
-				Log.info(String.format("Matching line to check if it is table row. Line text=[%s]", line));
-				while ((line = bufferReader.readLine()) != null) {
-					if (!line.trim().matches(RegexUtility.INDICATION_TABLE_LINE_REGEX_PATTERN)) {
-						List<String> matchingGroups = RegexUtility.getMatchingGroups(line.trim(),
-								RegexUtility.ISOTOPIC_ANALYSIS_TABLE_LINE_REGEX_PATTERN);
-						if (matchingGroups != null && matchingGroups.size() > 0) {
-							line = matchingGroups.get(0);
-							Log.info("Matched line as a table row!");
-							line = line.replaceAll(" +", " ").trim();
-							reportIsotopicList.add(line);
-						}
-					}
-				}
-
-				Log.info(String.format("ReportIsotopic ArrayList Values : %s",
-						LogHelper.strListToString(reportIsotopicList)));
-				ArrayList<StoredProcComplianceGetIsotopics> storedProcIsotopicList = StoredProcComplianceGetIsotopics
-						.getReportIsotopics(reportId);
-				Iterator<StoredProcComplianceGetIsotopics> lineIterator = storedProcIsotopicList.iterator();
-				ArrayList<String> storedProcConvStringList = new ArrayList<String>();
-				while (lineIterator.hasNext()) {
-					StoredProcComplianceGetIsotopics objStoredProc = lineIterator.next();
-					String objAsString = objStoredProc.toString();
-					storedProcConvStringList.add(objAsString.trim());
-				}
-
-				Log.info(String.format("Checking in ReportIsotopic ArrayList, StoredProcConvStringList Values : %s",
-						LogHelper.strListToString(storedProcConvStringList)));
-				if (!reportIsotopicList.equals(storedProcConvStringList)) {
-					Log.info("Isotopic Analysis table verification failed");
-					return false;
-				}
-			} finally {
-				bufferReader.close();
+			List<String> reportIsotopicList = new SSRSIsotopicAnalysisTableParser().parse(actualReportString, null);
+			Log.info(String.format("ReportIsotopic ArrayList Values : %s",
+					LogHelper.strListToString(reportIsotopicList)));
+			ArrayList<StoredProcComplianceGetIsotopics> storedProcIsotopicList = StoredProcComplianceGetIsotopics
+					.getReportIsotopics(reportId);
+			Iterator<StoredProcComplianceGetIsotopics> lineIterator = storedProcIsotopicList.iterator();
+			ArrayList<String> storedProcConvStringList = new ArrayList<String>();
+			while (lineIterator.hasNext()) {
+				StoredProcComplianceGetIsotopics objStoredProc = lineIterator.next();
+				String objAsString = objStoredProc.toString();
+				storedProcConvStringList.add(objAsString.trim());
 			}
+
+			Log.info(String.format("Checking in ReportIsotopic ArrayList, StoredProcConvStringList Values : %s",
+					LogHelper.strListToString(storedProcConvStringList)));
+			if (!reportIsotopicList.equals(storedProcConvStringList)) {
+				Log.info("Isotopic Analysis table verification failed");
+				return false;
+			}
+
 		}
 		Log.info("Isotopic Analysis table verification passed");
 		return true;
@@ -2792,7 +2705,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifySSRSPDFContainsText(String actualPath, String reportTitle, List<String> expectedReportString)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifySSRSPDFContainsText", actualPath, reportTitle,
+		Log.method("ReportsCommonPage.verifySSRSPDFContainsText", actualPath, reportTitle,
 				LogHelper.listToString(expectedReportString));
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2821,7 +2734,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyIndicationTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyIndicationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2923,7 +2836,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyGapsTable(String actualPath, String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.verifyGapsTable", actualPath, reportTitle);
+		Log.method("ReportsCommonPage.verifyGapsTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
@@ -2990,7 +2903,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifySSRSPDFFooter(String actualPath, String reportTitle, String expectedSoftwareVersion,
 			String expectedReportAuthor) throws Exception {
-		Log.method("ComplianceReportsPage.verifySSRSPDFFooter", actualPath, reportTitle, expectedSoftwareVersion,
+		Log.method("ReportsCommonPage.verifySSRSPDFFooter", actualPath, reportTitle, expectedSoftwareVersion,
 				expectedReportAuthor);
 		String reportPDFFilename = getReportPDFFileName(reportTitle, true /* includeExtension */);
 		return verifyPDFFooter(actualPath, reportPDFFilename, expectedSoftwareVersion, expectedReportAuthor);
@@ -2998,7 +2911,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyPDFFooter(String actualPath, String pdfFilename, String expectedSoftwareVersion,
 			String expectedReportAuthor) throws Exception {
-		Log.method("ComplianceReportsPage.verifyPDFFooter", actualPath, pdfFilename, expectedSoftwareVersion,
+		Log.method("ReportsCommonPage.verifyPDFFooter", actualPath, pdfFilename, expectedSoftwareVersion,
 				expectedReportAuthor);
 		String actualReport = Paths.get(actualPath, pdfFilename).toString();
 		PDFUtility pdfUtility = new PDFUtility();
@@ -3086,7 +2999,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifySSRSImages(String actualPath, String reportTitle, String testCase)
 			throws IOException, InterruptedException {
-		Log.method("ComplianceReportsBasePage.verifySSRSImages", actualPath, reportTitle, testCase);
+		Log.method("ReportsCommonPage.verifySSRSImages", actualPath, reportTitle, testCase);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
@@ -3168,7 +3081,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	// Once (DE1973) is fixed we could utilize this method for checking correct
 	// order in compliance viewer.
 	public boolean verifyViewsInComplianceViewerAreInCorrectSequence(List<String> viewNamesList) {
-		Log.method("ComplianceReportsPage.verifyViewsInComplianceViewerAreInCorrectSequence",
+		Log.method("ReportsCommonPage.verifyViewsInComplianceViewerAreInCorrectSequence",
 				LogHelper.listToString(viewNamesList));
 		List<WebElement> thumbnailImages = driver.findElements(By.xpath("//*[@id='ImageList']/li"));
 		if (viewNamesList != null && viewNamesList.size() > 0) {
@@ -3194,7 +3107,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyViewsInSSRSPDFAreInCorrectSequence(List<String> expectedViewNamesList, String reportTitle)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyViewsInSSRSPDFAreInCorrectSequence",
+		Log.method("ReportsCommonPage.verifyViewsInSSRSPDFAreInCorrectSequence",
 				LogHelper.listToString(expectedViewNamesList), reportTitle);
 		Log.info(String.format("Expected views are: %s", LogHelper.strListToString(expectedViewNamesList)));
 
@@ -3208,32 +3121,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public List<String> getViewNamesFromSSRSPdfViewTable(String reportTitle) throws IOException {
-		Log.method("ComplianceReportsPage.getViewNamesFromSSRSPdfViewTable", reportTitle);
+		Log.method("ReportsCommonPage.getViewNamesFromSSRSPdfViewTable", reportTitle);
 		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(pdfFilePath);
-
-		List<String> actualViewNamesList = new ArrayList<String>();
-		String viewTable = RegexUtility.getStringInBetween(actualReportString, "Selected Views", "View Table");
-
-		InputStream inputStream = new ByteArrayInputStream(viewTable.getBytes());
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-		String line = null;
-		try {
-			while ((line = bufferReader.readLine()) != null) {
-				if (line.length() > 3) {
-					String[] split = line.split("\\s+");
-					String viewName = line.replace(split[split.length - 1], "").trim();
-					actualViewNamesList.add(viewName);
-				}
-			}
-
-		} finally {
-			bufferReader.close();
-		}
-		return actualViewNamesList;
+		SSRSViewNamesParser viewTableParser = new SSRSViewNamesParser();
+		return viewTableParser.parse(actualReportString, ViewNamesParserAlgorithm.All);
 	}
 
 	/**
@@ -3248,7 +3143,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyAllViewsImages(String actualPath, String reportTitle, String testCase, int numberOfViews)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyAllViewsImages", actualPath, reportTitle, testCase, numberOfViews);
+		Log.method("ReportsCommonPage.verifyAllViewsImages", actualPath, reportTitle, testCase, numberOfViews);
 		for (int numberViews = 1; numberViews <= numberOfViews; numberViews++) {
 			if (!verifyViewsImages(actualPath, reportTitle, testCase,
 					new NumberUtility().getOrdinalNumberString(numberViews) + " View")) {
@@ -3269,13 +3164,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName)
 			throws IOException {
-		Log.method("ComplianceReportsPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName);
+		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName);
 		return verifyViewsImages(actualPath, reportTitle, testCase, viewName, true);
 	}
 
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName,
 			boolean inZipFolder) throws IOException {
-		Log.method("ComplianceReportsPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
+		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
 		PDFUtility pdfUtility = new PDFUtility();
 		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
 		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
@@ -3405,7 +3300,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 	}
 
-	private void waitForCustomBoundarySectionToShow() {
+	protected void waitForCustomBoundarySectionToShow() {
 		WebElement dvAreaModeCustom = this.divCustomBoundarySection;
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3414,7 +3309,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		});
 	}
 
-	private void waitForResubmitPopupToShow() {
+	protected void waitForResubmitPopupToShow() {
 		WebElement resubmitPopupSection = this.driver.findElement(By.id("resubmitReportModal"));
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3458,22 +3353,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		});
 	}
 
-	private void waitForCustomerBoundarySectionToShow() {
+	protected void waitForCustomerBoundarySectionToShow() {
 		WebElement dvAreaModeCustomer = this.divCustomerBoundarySection;
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !dvAreaModeCustomer.getAttribute("style").contains("display:none")
 						&& !dvAreaModeCustomer.getAttribute("style").contains("display: none");
-			}
-		});
-	}
-
-	@Override
-	public void waitForPageLoad() {
-		waitForAJAXCallsToComplete();
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return d.getPageSource().contains(STRPageContentText);
 			}
 		});
 	}
@@ -3587,6 +3472,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.info("Found header in returned array values. Skipping header...");
 			Log.info(String.format("Extracted tables values from PDF (before skipping header) : %s",
 					LogHelper.listOfArrayToString(pdfTableList)), LogCategory.SSRSPdfContent);
+			Log.info("Checking if Array values returned has header...");
 			pdfTableList = ArrayUtility.getListValuesSkipHeader(pdfTableList);
 		}
 		Log.info(String.format("Extracted tables values from PDF : %s", LogHelper.listOfArrayToString(pdfTableList)),
@@ -3594,9 +3480,15 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return pdfTableList;
 	}
 
-	protected void fillCustomerBoundary(ComplianceReportEntity reportsCompliance) {
-		fillCustomerBoundary(reportsCompliance.getCustomerBoundaryFilterType().toString(),
-				reportsCompliance.getCustomerBoundaryName());
+	public String getSSRSPdfText(String reportTitle) throws IOException {
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
+		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
+		return new PDFUtility().extractPDFText(pdfFilePath);
+	}
+
+	protected void fillCustomerBoundary(ReportCommonEntity reportsEntity) {
+		fillCustomerBoundary(reportsEntity.getCustomerBoundaryFilterType().toString(),
+				reportsEntity.getCustomerBoundaryName());
 	}
 
 	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
@@ -3617,31 +3509,31 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return noResult;
 	}
 
-	protected boolean useCustomBoundaryLatLongSelector(ComplianceReportEntity reportsCompliance) {
-		return reportsCompliance.getLatLongXOffset() > 0 && reportsCompliance.getLatLongYOffset() > 0
-				&& reportsCompliance.getLatLongRectWidth() > 0 && reportsCompliance.getLatLongRectHeight() > 0;
+	protected boolean useCustomBoundaryLatLongSelector(ReportCommonEntity reportsEntity) {
+		return reportsEntity.getLatLongXOffset() > 0 && reportsEntity.getLatLongYOffset() > 0
+				&& reportsEntity.getLatLongRectWidth() > 0 && reportsEntity.getLatLongRectHeight() > 0;
 	}
 
-	protected boolean isCustomBoundarySpecified(ComplianceReportEntity reportsCompliance) {
-		Log.method("isCustomBoundarySpecified", reportsCompliance);
+	protected boolean isCustomBoundarySpecified(ReportCommonEntity reportsEntity) {
+		Log.method("isCustomBoundarySpecified", reportsEntity);
 		boolean useSelector = false;
-		if (reportsCompliance != null) {
-			boolean textFieldsSpecified = !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getNELat())
-					&& !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getNELong())
-					&& !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getSWLat())
-					&& !BaseHelper.isNullOrEmptyOrZero(reportsCompliance.getSWLong());
-			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsCompliance);
+		if (reportsEntity != null) {
+			boolean textFieldsSpecified = !BaseHelper.isNullOrEmptyOrZero(reportsEntity.getNELat())
+					&& !BaseHelper.isNullOrEmptyOrZero(reportsEntity.getNELong())
+					&& !BaseHelper.isNullOrEmptyOrZero(reportsEntity.getSWLat())
+					&& !BaseHelper.isNullOrEmptyOrZero(reportsEntity.getSWLong());
+			boolean latLongFieldsSpecified = useCustomBoundaryLatLongSelector(reportsEntity);
 			useSelector = textFieldsSpecified || latLongFieldsSpecified;
 		}
 		return useSelector;
 	}
 
-	protected void fillCustomBoundaryUsingLatLongSelector(ComplianceReportEntity reportsCompliance) {
+	protected void fillCustomBoundaryUsingLatLongSelector(ReportCommonEntity reportsEntity) {
 		openCustomBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad()
-				.drawSelectorRectangle(ComplianceReportEntity.CANVAS_X_PATH, reportsCompliance.getLatLongXOffset(),
-						reportsCompliance.getLatLongYOffset(), reportsCompliance.getLatLongRectWidth(),
-						reportsCompliance.getLatLongRectHeight())
+				.drawSelectorRectangle(ReportCommonEntity.CANVAS_X_PATH, reportsEntity.getLatLongXOffset(),
+						reportsEntity.getLatLongYOffset(), reportsEntity.getLatLongRectWidth(),
+						reportsEntity.getLatLongRectHeight())
 				.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
 	}
 
@@ -3670,21 +3562,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			this.inputViewBoundaries.click();
 
 			selectViewLayerBoundaries(ReportDataProvider.getAllViewLayerBoundariesForCustomer(customer));
-		}
-	}
-
-	@Override
-	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
-		SurveyModeFilter surveyModeFilter = ((ComplianceReportEntity) reports).getSurveyModeFilter();
-		if (surveyModeFilter != null) {
-			selectSurveyModeForSurvey(surveyModeFilter);
-		}
-	}
-
-	@Override
-	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) {
-		if (surveyModeFilter != null) {
-			selectSurveyModeForSurvey(surveyModeFilter);
 		}
 	}
 
@@ -3761,26 +3638,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			List<Map<String, String>> views) {
 		fillCustomBoundaryTextFields(NELat, NELong, SWLat, SWLong);
 		addViews(customer, views);
-	}
-
-	@Override
-	public String getUrlString() {
-		return STRURLPath;
-	}
-
-	@Override
-	public String getNewPageString() {
-		return STRNewPageContentText;
-	}
-
-	@Override
-	public String getStrPageText() {
-		return STRPageContentText;
-	}
-
-	@Override
-	public String getStrCopyPageText() {
-		return STRCopyPageTitle;
 	}
 
 	@Override

@@ -326,7 +326,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	}
 
 	private void clickOnComplianceReportButton(String rptTitle, String strCreatedBy, ReportsButtonType reportButtonType) throws Exception {
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(rptTitle, strCreatedBy, reportButtonType);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(rptTitle, strCreatedBy, reportButtonType);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 	}

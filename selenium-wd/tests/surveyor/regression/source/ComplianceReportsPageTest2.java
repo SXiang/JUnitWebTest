@@ -1377,7 +1377,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		this.getComplianceReportsPage().open();
 
-		this.getComplianceReportsPage().clickOnNewComplianceReportBtn();
+		this.getComplianceReportsPage().clickOnNewReportBtn();
 		assertTrue(this.getComplianceReportsPage().getPercentCoverForecast().isDisplayed());
 		this.getComplianceReportsPage().clickOnCancelBtn();
 		this.getComplianceReportsPage().waitForPageLoad();
@@ -1483,7 +1483,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().waitForPageLoad();
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
 
-		this.getComplianceReportsPage().clickComplianceReportButton(rptTitle, getTestSetup().getLoginUser(), ReportsButtonType.Resubmit);
+		this.getComplianceReportsPage().clickOnButtonInReportPage(rptTitle, getTestSetup().getLoginUser(), ReportsButtonType.Resubmit);
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
