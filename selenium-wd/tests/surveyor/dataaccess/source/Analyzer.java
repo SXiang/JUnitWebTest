@@ -130,8 +130,18 @@ public class Analyzer extends BaseEntity {
 		queries.add(String.format("DELETE [dbo].[Note] WHERE AnalyzerId='%s'", getId()));
 		queries.forEach(sql -> executeNonQuery(sql));
 
+		// Delete surveys and associated reports.
 		Survey.getSurveysForAnalyzer(getId().toString()).forEach(
-				s -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_MEASUREMENT_SESSION_RELATIVE_URL, s.getId())));
+			s -> {
+				// Delete reports.
+				ReportDrivingSurvey.getReportDrivingSurveysBySurveyId(s.getId().toString()).forEach(
+						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, r.getReportId())));
+				ReportEQDrivingSurvey.getReportEQDrivingSurveysBySurveyId(s.getId().toString()).forEach(
+						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId())));
+
+				// Delete survey.
+				ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_MEASUREMENT_SESSION_RELATIVE_URL, s.getId()));
+			});
 
 		String SQL = String.format("DELETE [dbo].[Analyzer] WHERE SerialNumber='%s'", getSerialNumber());
 		executeNonQuery(SQL);
