@@ -1,8 +1,11 @@
 package surveyor.scommon.actions;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 
 import common.source.BaseHelper;
+import common.source.RegexUtility;
 import common.source.TestSetup;
 import surveyor.scommon.source.HomePage;
 
@@ -67,6 +70,18 @@ public class HomePageActions extends BasePageActions {
 	}
 
 	/**
+	 * Executes clickOnFirstMatchingOnlineSurveyorLink action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean clickOnFirstMatchingOnlineSurveyorLink(String data, Integer dataRowID) {
+		logAction("HomePageActions.clickOnFirstMatchingOnlineSurveyorLink", data, dataRowID);
+		getHomePage().clickOnFirstMatchingOnlineSurveyorLink(data);
+		return true;
+	}
+
+	/**
 	 * Executes clickOnFirstOnlineSurveyorLink action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -88,6 +103,7 @@ public class HomePageActions extends BasePageActions {
 		else if (actionName.equals("clickOnViewAllDrivingSurveysLink")) { return this.clickOnViewAllDrivingSurveysLink(data, dataRowID); }
 		else if (actionName.equals("clickOnFirstOnlineSurveyorLink")) { return this.clickOnFirstOnlineSurveyorLink(data, dataRowID); }
 		else if (actionName.equals("clickOnFirstMatchingDrivingSurvey")) { return this.clickOnFirstMatchingDrivingSurvey(data, dataRowID); }
+		else if (actionName.equals("clickOnFirstMatchingOnlineSurveyorLink")) { return this.clickOnFirstMatchingOnlineSurveyorLink(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }

@@ -18,6 +18,7 @@ import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import surveyor.scommon.actions.ObserverViewPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ObserverViewPage;
 
 /*
@@ -122,7 +123,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
 		// Goto home page and click on first Online Surveyor link.
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 
 		// ## Verifications
@@ -151,7 +154,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
@@ -209,7 +214,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
@@ -252,7 +259,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
@@ -295,7 +304,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
@@ -352,7 +363,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
@@ -392,7 +405,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnPosition(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
@@ -433,7 +448,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
@@ -490,7 +507,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllAssets(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllBoundaries(EMPTY, NOTSET);
@@ -518,7 +537,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
@@ -582,7 +603,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
@@ -656,7 +679,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		// Verify 1st survey field note is NOT shown.
 		// Verify 2nd survey indication is shown.
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
 		observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
@@ -680,7 +705,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
@@ -752,7 +779,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
@@ -784,7 +813,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).showCurtainView(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnCurtainReturnButton(EMPTY, NOTSET);
@@ -821,7 +852,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnCurtainArrowUpButton(EMPTY, NOTSET);
 		// TODO:
@@ -856,7 +889,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
@@ -885,7 +920,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnSatelliteView(EMPTY, NOTSET);
@@ -932,7 +969,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnMapView(EMPTY, NOTSET);
@@ -978,7 +1017,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 
@@ -1013,7 +1054,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
@@ -1051,7 +1094,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffPosition(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
@@ -1109,7 +1154,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
@@ -1160,7 +1207,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnAllDisplayOptions(EMPTY, NOTSET);
@@ -1214,7 +1263,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffAllDisplayOptions(EMPTY, NOTSET);
@@ -1252,7 +1303,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		homePageActionList.get(0).clickOnFirstOnlineSurveyorLink(EMPTY, NOTSET);
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		stopSurveyAndAnalyzer();
