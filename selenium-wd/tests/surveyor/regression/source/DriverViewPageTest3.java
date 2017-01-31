@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -118,7 +119,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore // TODO: Ignoring for now. Current host build will cause this test to fail. Waiting on new host build before enabling.
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_COMPARE_INDICATIONS_DRIVERVIEW_SURVEYVIEW_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_SimulatorTest_DrivingSurvey_CompareIndications_DriverView_SurveyView_UtilityAdmin_Driver(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
