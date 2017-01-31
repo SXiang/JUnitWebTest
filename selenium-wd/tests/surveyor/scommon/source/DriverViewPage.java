@@ -331,6 +331,11 @@ public class DriverViewPage extends BaseDrivingViewPage {
 					this.startEQSurveyButtonDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
+	public boolean isStopSurveyButtonVisible() {
+		return !(WebElementExtender.isAttributePresent(this.stopSurveyButtonDivElement,"ng-cloak") ||
+					this.stopSurveyButtonDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
 	public WebElement getSystemShutdownButton() {
 		return this.systemShutdownButton;
 	}
@@ -1078,6 +1083,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	public DriverViewPage stopDrivingSurvey() {
 		Log.clickElementInfo("Stop Driving Survey");
+		this.waitForStopSurveyButtonToBeVisible();
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
 		return this;
@@ -1284,6 +1290,17 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isStartSurveyButtonVisible();
+			}
+		});
+	}
+
+	/**
+	 * Waits for StartSurvey button to be visible.
+	 */
+	public void waitForStopSurveyButtonToBeVisible() {
+		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isStopSurveyButtonVisible();
 			}
 		});
 	}
