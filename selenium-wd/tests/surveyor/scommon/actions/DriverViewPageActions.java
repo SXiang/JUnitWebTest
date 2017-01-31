@@ -1,11 +1,15 @@
 package surveyor.scommon.actions;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
 import common.source.Log;
+import common.source.OLMapEntities;
+import common.source.OLMapEntities.Indication;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
@@ -1580,5 +1584,22 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 
 	public DriverViewPage getDriverViewPage() {
 		return (DriverViewPage)this.getPageObject();
+	}
+
+	public Set<OLMapEntities.Indication> collectIndicationsDuringSurvey(Integer surveyDurationInSeconds) {
+		Log.method("collectIndicationsDuringSurvey", surveyDurationInSeconds);
+		final Integer INCREMENT = 3;
+		Integer durationInSec = 0;
+		Set<Indication> allIndications = new HashSet<Indication>();
+		while (durationInSec < surveyDurationInSeconds) {
+			Set<Indication> indicationSet = new OLMapUtility(getDriver()).getIndicationsArray();
+			allIndications.addAll(indicationSet);
+			TestContext.INSTANCE.stayIdle(INCREMENT);
+			durationInSec += INCREMENT;
+		}
+
+		Log.info(String.format("Indications detected in Driver view = %d", allIndications.size()));
+		allIndications.forEach(i -> Log.info(i.toString()));
+		return allIndications;
 	}
 }

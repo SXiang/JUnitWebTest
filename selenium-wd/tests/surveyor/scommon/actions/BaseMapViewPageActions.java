@@ -1,10 +1,14 @@
 package surveyor.scommon.actions;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import common.source.Log;
+import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
@@ -32,7 +36,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
 	private static final String FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS = "verifySurveyInfoTagLabelEquals";
-	
+
 	private static final String CLS_BASEMAP_VIEW_PAGE_ACTIONS = "BaseMapViewPageActions::";
 	private static final int TIMEOUT_LOAD_LAYER = 10;
 
@@ -42,7 +46,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 	public boolean clickOnCurtainArrowDownButton(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnCurtainArrowDownButton", data, dataRowID);
-		getBaseMapViewPageObject().clickCurtainArrowDownButton();		
+		getBaseMapViewPageObject().clickCurtainArrowDownButton();
 		return true;
 	}
 
@@ -120,7 +124,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().clickZoomInButton();
 		return true;
 	}
- 
+
 	/**
 	 * Executes clickOnZoomOutButton action.
 	 * @param data - specifies the input data passed to the action.
@@ -138,7 +142,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies type of the indication (For eg.'NaturalGas','NotNaturalGas','PossibleNaturalGas','VehicleExhaust').
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 */	
+	 */
 	public boolean clickOnFirst3300IndicationShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
 		String mapCanvasXPath = "//*[@id='map']/div/canvas";
@@ -181,7 +185,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleMapSwitch(MapSwitchType.Satellite, true);
 		return true;
 	}
-	
+
 	public boolean verifyMapSwitchOn(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyMapSwitchOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_MAP_SWITCH_ON, ARG_DATA, data);
@@ -193,7 +197,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		}
 		return getBaseMapViewPageObject().isMapSwitchOn(switchType);
 	}
-	
+
 	public boolean verifyMapSwitchOff(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyMapSwitchOff", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_MAP_SWITCH_OFF, ARG_DATA, data);
@@ -207,8 +211,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOnAllAssets(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllAssets", data, dataRowID);
@@ -221,14 +225,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOnUseAllPipes(data, dataRowID);
 		return true;
 	}
- 
+
 	/**
 	 * Executes turnOnAllBoundaries action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOnAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllBoundaries", data, dataRowID);
@@ -236,14 +240,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOnSmallBoundary(data, dataRowID);
 		return true;
 	}
- 
+
 	/**
 	 * Executes turnOnAllAssetsAndBoundaries action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOnAllAssetsAndBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOnAllAssetsAndBoundaries", data, dataRowID);
@@ -352,14 +356,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleGisSwitch(GisSwitchType.UseAllPipes, false);
 		return true;
 	}
-	
+
 	/**
 	 * Executes turnOffAllAssets action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOffAllAssets(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllAssets", data, dataRowID);
@@ -372,14 +376,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOffUseAllPipes(data, dataRowID);
 		return true;
 	}
- 
+
 	/**
 	 * Executes turnOffAllBoundaries action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOffAllBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllBoundaries", data, dataRowID);
@@ -387,14 +391,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOffSmallBoundary(data, dataRowID);
 		return true;
 	}
- 
+
 	/**
 	 * Executes turnOffAllAssetsAndBoundaries action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
-	 * @throws IOException 
+	 * @throws Exception
+	 * @throws IOException
 	 */
 	public boolean turnOffAllAssetsAndBoundaries(String data, Integer dataRowID) throws IOException, Exception {
 		logAction(getRuntimeType() + ".turnOffAllAssetsAndBoundaries", data, dataRowID);
@@ -493,7 +497,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffEightHourHistory(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffEightHourHistory", data, dataRowID);
 		try {
-			// Intentional delay included in this action. 
+			// Intentional delay included in this action.
 			// Observed Behavior: Not including a delay before this action intermittently causes some elements to not appear on the map.
 			new TestEnvironmentActions().idleForSeconds("2", NOTSET);
 		} catch (Exception e) {
@@ -552,9 +556,9 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, false);
 		return true;
 	}
-	
+
 	/* Button state verification methods */
-	
+
 	public boolean verifyDisplaySwitchIsOn(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIsOn", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_DISPLAY_SWITCH_IS_ON, ARG_DATA, data);
@@ -625,6 +629,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isLISAShownOnMap();
 	}
+
 	public boolean verifyIndicationsIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyIndicationsIsShownOnMap", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
@@ -645,10 +650,10 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isFOVShownOnMap();
 	}
-	
+
 	public boolean verifyAssetIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAssetIsShownOnMap", data, dataRowID);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());	
+		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		boolean isAssetShown = false;
 		try {
 			isAssetShown =	(new WebDriverWait(getDriver(),TIMEOUT_LOAD_LAYER)).until(new ExpectedCondition<Boolean>(){
@@ -666,18 +671,18 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isBoundariesShownOnMap();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.
 	 * @param dataRowID
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifyCrossHairIconIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyCrossHairIconIsShownOnMap", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP, ARG_DATA, data);
-		IconColor color = IconColor.Gray;		
+		IconColor color = IconColor.Gray;
 		if (data.equalsIgnoreCase("Gray")) {
 			color = IconColor.Gray;
 		} else if (data.equalsIgnoreCase("White")) {
@@ -685,7 +690,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		} else if (data.equalsIgnoreCase("Red")) {
 			color = IconColor.Red;
 		}
-		
+
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isCrossHairIconShownOnMap(color);
 	}
@@ -709,7 +714,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyFOVIsNotShownOnMap", data, dataRowID);
 		return !verifyFOVIsShownOnMap(data, dataRowID);
 	}
-	
+
 	public boolean verifyAssetIsNotShownOnMap(String data, Integer dataRowID){
 		logAction(getRuntimeType() + ".verifyAssetIsNotShownOnMap", data, dataRowID);
 		return !verifyAssetIsShownOnMap(data, dataRowID);
@@ -719,11 +724,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !verifyBoundariesIsShownOnMap(data, dataRowID);
 	}
 	/**
-	 * 
+	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.
 	 * @param dataRowID
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifyCrossHairIconIsNotShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyCrossHairIconIsNotShownOnMap", data, dataRowID);
@@ -747,7 +752,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isMapViewShown();
 	}
- 
+
 	/**
 	 * Executes verifySatelliteViewIsShown action.
 	 * @param data - specifies the input data passed to the action.
@@ -759,7 +764,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isSatelliteViewShown();
 	}
-	
+
 	/**
 	 * Executes verifyDisplaySwitch8HourHistoryButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -770,7 +775,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitch8HourHistoryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitch8HourHistoryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchWindroseButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -781,7 +786,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchWindroseButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchWindroseButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchConcentrationChartButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -792,7 +797,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchConcentrationChartButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchNotesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -803,7 +808,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchNotesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -814,7 +819,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIsotopicAnalysisButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIndicationsButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -825,7 +830,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIndicationsButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchIndicationsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchLisasButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -836,7 +841,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchLisasButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchLisasButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchFovsButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -847,7 +852,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchFovsButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchFovsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCastIronButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -858,7 +863,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCastIronButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeCastIronButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCopperButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -869,7 +874,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCopperButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeCopperButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -880,7 +885,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeOtherPlasticButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypePEPlasticButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -891,7 +896,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypePEPlasticButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypePEPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -902,7 +907,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeProtectedSteelButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -913,7 +918,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeUnProtectedSteelButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllPipesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -924,7 +929,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisUseAllPipesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisUseAllPipesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundaryBigBoundaryButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -935,7 +940,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundaryBigBoundaryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisBoundaryBigBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundarySmallBoundaryButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -946,7 +951,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundarySmallBoundaryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisBoundarySmallBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -957,7 +962,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisUseAllBoundariesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisUseAllBoundariesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitch8HourHistoryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -968,7 +973,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitch8HourHistoryButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitch8HourHistoryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchWindroseButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -979,7 +984,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchWindroseButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchWindroseButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchConcentrationChartButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -990,7 +995,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchConcentrationChartButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchConcentrationChartButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchNotesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1001,7 +1006,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchNotesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1012,7 +1017,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchIsotopicAnalysisButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchIndicationsButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1023,7 +1028,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIndicationsButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchIndicationsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchLisasButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1034,7 +1039,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchLisasButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchLisasButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyDisplaySwitchFovsButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1045,7 +1050,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchFovsButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isDisplaySwitchFovsButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCastIronButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1056,7 +1061,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCastIronButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypeCastIronButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeCopperButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1067,7 +1072,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCopperButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypeCopperButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeOtherPlasticButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1078,7 +1083,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeOtherPlasticButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypeOtherPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypePEPlasticButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1089,7 +1094,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypePEPlasticButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypePEPlasticButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeProtectedSteelButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1100,7 +1105,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeProtectedSteelButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypeProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1111,7 +1116,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeUnProtectedSteelButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisMaterialTypeUnProtectedSteelButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisUseAllPipesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1122,7 +1127,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisUseAllPipesButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisUseAllPipesButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundaryBigBoundaryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1133,7 +1138,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundaryBigBoundaryButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisBoundaryBigBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyGisBoundarySmallBoundaryButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1144,7 +1149,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisBoundarySmallBoundaryButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisBoundarySmallBoundaryButtonVisible();
 	}
- 
+
 	/**
 	 * Executes verifyStatusButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1166,7 +1171,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyStatusIsNotShownOnMap", data, dataRowID);
 		return !getBaseMapViewPageObject().isModeButtonVisible();
 	}
-	
+
 	/**
 	 * Executes verifyShutdownAnalyzerIsNotShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
@@ -1258,7 +1263,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	/**
 	 * Executes verifyMapShownForZoomLevelIsCorrect action.
 	 * @param data - specifies the zoom level on the map.
-	 * 	 default zoom level is 19. 
+	 * 	 default zoom level is 19.
 	 *   for zoom out specify values like 18,17,16, etc
 	 *   for zoom in specify values like 20,21,22, etc
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -1271,7 +1276,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		int zoomLevel = Integer.valueOf(data) - DEFAULT_ZOOM_LEVEL;
 		return mapUtility.isMapResolutionCorrect(zoomLevel);
 	}
-	
+
 	/**
 	 * Executes verifyGisUseAllBoundariesButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -1282,22 +1287,43 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyGisUseAllBoundariesButtonIsNotVisible", data, dataRowID);
 		return !getBaseMapViewPageObject().isGisUseAllBoundariesButtonVisible();
 	}
- 
+
+	/**
+	 * Executes waitForIndicationsToBeShownOnMap action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean waitForIndicationsToBeShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForIndicationsToBeShownOnMap", data, dataRowID);
+		getBaseMapViewPageObject().waitForIndicationsToBeShownOnMap();
+		return true;
+	}
+
 	public BaseMapViewPage getBaseMapViewPageObject() {
 		return (BaseMapViewPage)getPageObject();
 	}
 
+	public Set<Indication> getIndicationsShownOnPage() {
+		Log.method("getIndicationsShownOnPage");
+		OLMapUtility mapUtility = new OLMapUtility(getDriver());
+		Set<Indication> indicationsArray = mapUtility.getIndicationsArray();
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsArray.size()));
+		indicationsArray.forEach(i -> Log.info(i.toString()));
+		return indicationsArray;
+	}
+
 	protected String getRuntimeType() {
-		if (this.getClass() == DriverViewPageActions.class) { 
+		if (this.getClass() == DriverViewPageActions.class) {
 			return "DriverViewPageActions";
-		} else if (this.getClass() == ObserverViewPageActions.class) { 
+		} else if (this.getClass() == ObserverViewPageActions.class) {
 			return "ObserverViewPageActions";
-		} else if (this.getClass() == SurveyViewPageActions.class) { 
+		} else if (this.getClass() == SurveyViewPageActions.class) {
 			return "SurveyViewPageActions";
 		}
 		return "";
 	}
-	
+
 	protected boolean verifySurveyInfoTagLabelEquals(String data, Integer dataRowID, DriverViewDataRow workingDataRow, String actualTagValue) throws Exception {
 		String expectedTagValue = null;
 		if (!ActionArguments.isEmpty(data)) {
@@ -1307,7 +1333,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		} else {
 			throw new Exception(String.format("Either data or dataRowID must be passed for %s action.", FN_VERIFY_SURVEY_INFO_TAG_LABEL_EQUALS));
 		}
-		
+
 		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
 		return actualTagValue.equals(expectedTagValue);
 	}

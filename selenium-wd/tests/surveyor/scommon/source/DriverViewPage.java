@@ -842,6 +842,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * @return the DriverViewPage class instance.
 	 */
 	public DriverViewPage setMinAmpTextField(String minAmpValue) {
+		Log.info("Clearing minAmp text field");
+		manualModeMinAmp.clear();
 		Log.info("Set Min Amp to '"+minAmpValue+"'");
 		manualModeMinAmp.sendKeys(minAmpValue);
 		return this;

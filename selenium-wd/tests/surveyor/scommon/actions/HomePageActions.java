@@ -1,6 +1,8 @@
 package surveyor.scommon.actions;
 
 import org.openqa.selenium.WebDriver;
+
+import common.source.BaseHelper;
 import common.source.TestSetup;
 import surveyor.scommon.source.HomePage;
 
@@ -19,7 +21,11 @@ public class HomePageActions extends BasePageActions {
 	 */
 	public boolean open(String data, Integer dataRowID) {
 		logAction("HomePageActions.open", data, dataRowID);
-		getHomePage().open(data);
+		if (!BaseHelper.isNullOrEmpty(data)) {
+			getHomePage().open(data);
+		} else {
+			getHomePage().open();
+		}
 		return true;
 	}
 
