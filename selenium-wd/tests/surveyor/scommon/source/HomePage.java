@@ -130,6 +130,8 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody")
 	private WebElement tableActiveSurveyors;
 
+	private String strTRASXPath = "//*[@id='datatable-Surveyor']/tbody/tr";
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_length']/label/select")
 	private WebElement paginationInputRDS;
 
@@ -838,6 +840,30 @@ public class HomePage extends SurveyorBasePage {
 				Log.info("Found survey tag. Clicking on the Completed link");
 				completedLink.click();
 				Log.info("DONE clicking on the Completed link");
+				break;
+			}
+		}
+	}
+
+	public void clickOnFirstMatchingOnlineSurveyorLink(String analyzer) {
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String analyzerXPath;
+		String onlineLinkXPath;
+		WebElement analyzerCell;
+		WebElement onlineLink;
+
+		List<WebElement> rows = this.tableActiveSurveyors.findElements(By.xpath(this.strTRASXPath));
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			analyzerXPath = this.strTRASXPath + "["+rowNum+"]/td[2]";
+			analyzerCell = this.tableActiveSurveyors.findElement(By.xpath(analyzerXPath));
+
+			if (analyzerCell.getText().trim().equalsIgnoreCase(analyzer)) {
+				onlineLinkXPath = this.strTRASXPath + "["+rowNum+"]/td[3]/a";
+				onlineLink = this.tableActiveSurveyors.findElement(By.xpath(onlineLinkXPath));
+				Log.info("Found online surveyor. Clicking on the Online link");
+				onlineLink.click();
+				Log.info("DONE clicking on the Online link");
 				break;
 			}
 		}

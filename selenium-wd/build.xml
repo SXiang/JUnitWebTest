@@ -490,6 +490,7 @@
           <include name="**/ActionsExecutionDriver.class" />
           <include name="**/DriverViewPageTest.class" />
           <include name="**/DriverViewPageTest2.class" />
+          <include name="**/DriverViewPageTest3.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
           <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
           <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
@@ -592,13 +593,13 @@
       </classpath>
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
-        <fileset dir="${build}">
-            <include name="**/DriverViewPageTest.class" />
-            <include name="**/DriverViewPageTest2.class" />
-            <include name="**/ObserverViewPageTest.class" />
-            <include name="**/ObserverViewPageTest2.class" />
-            <include name="**/ObserverViewPageStressTest.class" />
-        </fileset>
+			<fileset dir="${build}">
+			  <include name="**/DriverViewPageTest3.class" />
+			  <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+			  <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
+			  <include name="**/ObserverViewPageTest.class" />
+			  <include name="**/ObserverViewPageTest2.class" />
+			</fileset>
       </batchtest>
     </junit>
   </target>

@@ -3,6 +3,7 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.Log;
+import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
 import common.source.TestContext;
@@ -1558,5 +1560,21 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 */
 	public void waitForPageLoad() {
 		this.verifyPageLoaded();
+	}
+
+	/**
+	 * Wait for atleast one indication to shown up on map displayed on the page.
+	 */
+	public void waitForIndicationsToBeShownOnMap() {
+		(new WebDriverWait(driver, timeout * 20)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				Set<Indication> indicationsArray = new OLMapUtility(d).getIndicationsArray();
+				Log.info(String.format("[indicationsArray != null] = '%b'", indicationsArray != null));
+				if (indicationsArray != null) {
+					Log.info(String.format("[indicationsArray.size()] = %d", indicationsArray.size()));
+				}
+				return (indicationsArray != null && indicationsArray.size()>0);
+			}
+		});
 	}
 }

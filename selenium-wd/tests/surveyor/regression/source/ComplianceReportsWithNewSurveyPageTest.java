@@ -314,6 +314,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		this.getComplianceReportsPage().open();
 
 		this.getComplianceReportsPage().getNewComplianceReportBtn().click();
+		this.getComplianceReportsPage().waitForNewPageLoad();
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 		this.getComplianceReportsPage().clickOnCancelBtn();
 

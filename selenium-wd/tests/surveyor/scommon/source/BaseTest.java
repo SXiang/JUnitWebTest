@@ -479,9 +479,10 @@ public class BaseTest {
 
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 				analyzerName, analyzerSharedKey);
-		TestSetup.restartAnalyzer();
 
 		for(SurveyType st:surveyTypes){
+			TestSetup.restartAnalyzer();
+
 			driverViewPageAction.open("", -1);
 			driverViewPageAction.waitForConnectionToComplete("", -1);
 
@@ -508,8 +509,9 @@ public class BaseTest {
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
 			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
-			TestSetup.stopAnalyzer();
 		}
+
+		TestSetup.stopAnalyzer();
 
 		return Collections.synchronizedMap(testSurvey);
 	}
