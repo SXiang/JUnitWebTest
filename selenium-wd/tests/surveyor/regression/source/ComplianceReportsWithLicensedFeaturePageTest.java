@@ -21,6 +21,9 @@ import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
@@ -37,20 +40,21 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 	private static Map<String, String> testAccount, testSurvey, testReport;
 
 	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		initializePageActions();
-
-		// Select run mode here.
-		setPropertiesForTestRunMode();
-		driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), driverViewPage);
-		manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageCustomerPageAction);
+	public static void beforeClass() {
+		initializeTestObjects();
 	}
 
 	@Before
-	public void beforeTest() throws Exception{
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+
+		initializePageActions();
+
+		initializePageObjects();
+
+		// Select run mode here.
 		setPropertiesForTestRunMode();
+
 		if(testAccount == null){
 			testAccount = createTestAccount("LicFeature");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
@@ -62,6 +66,22 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
 		}
 	}
+
+	private void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
+		PageFactory.initElements(getDriver(), driverViewPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
+	}
+
 
 	private static void setPropertiesForTestRunMode() throws Exception {
 		setTestRunMode(ReportTestRunMode.FullTestRun);
