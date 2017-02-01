@@ -2,11 +2,13 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 
 import common.source.Log;
+import common.source.LogHelper;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -328,7 +330,10 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			complianceReportsPageAction.open(EMPTY, NOTSET);
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
 
-			assertTrue(getHomePage().getLicenseMissingText().contains(errorMsg));
+			List<String> licenseMissingText = getHomePage().getLicenseMissingText();
+			Log.info(String.format("[ACTUAL] License missing text found on page -> %s", LogHelper.listToString(licenseMissingText)));
+			Log.info(String.format("[EXPECTED] Error message -> %s", errorMsg));
+			assertTrue(licenseMissingText.contains(errorMsg));
 			getHomePage().logout();
 		}
 	}

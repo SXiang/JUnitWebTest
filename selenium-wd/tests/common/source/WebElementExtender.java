@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -170,6 +171,9 @@ public class WebElementExtender {
 	       }
 	   } catch (NoSuchElementException e) {
 		   Log.warn("Element NOT found. NoSuchElementException encountered.");
+		   return false;
+	   } catch (StaleElementReferenceException e) {
+		   Log.warn("Element NOT found. StaleElementReferenceException encountered.");
 		   return false;
 	   }
 	   return false;
