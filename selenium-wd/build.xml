@@ -592,9 +592,13 @@
       </classpath>
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
-        <fileset dir="${build}">
-            <include name="**/DriverViewPageTest3.class" />
-        </fileset>
+			<fileset dir="${build}">
+			  <include name="**/DriverViewPageTest3.class" />
+			  <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+			  <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
+			  <include name="**/ObserverViewPageTest.class" />
+			  <include name="**/ObserverViewPageTest2.class" />
+			</fileset>
       </batchtest>
     </junit>
   </target>

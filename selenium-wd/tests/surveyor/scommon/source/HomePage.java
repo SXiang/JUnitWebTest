@@ -851,7 +851,7 @@ public class HomePage extends SurveyorBasePage {
 		String analyzerXPath;
 		String onlineLinkXPath;
 		WebElement analyzerCell;
-		WebElement onlinkLink;
+		WebElement onlineLink;
 
 		List<WebElement> rows = this.tableActiveSurveyors.findElements(By.xpath(this.strTRASXPath));
 		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
@@ -860,9 +860,9 @@ public class HomePage extends SurveyorBasePage {
 
 			if (analyzerCell.getText().trim().equalsIgnoreCase(analyzer)) {
 				onlineLinkXPath = this.strTRASXPath + "["+rowNum+"]/td[3]/a";
-				onlinkLink = this.tableActiveSurveyors.findElement(By.xpath(onlineLinkXPath));
+				onlineLink = this.tableActiveSurveyors.findElement(By.xpath(onlineLinkXPath));
 				Log.info("Found online surveyor. Clicking on the Online link");
-				onlinkLink.click();
+				onlineLink.click();
 				Log.info("DONE clicking on the Online link");
 				break;
 			}
