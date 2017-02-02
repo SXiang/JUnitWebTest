@@ -10,4 +10,4 @@ node meas_conditioner target=data_conditioner.data_conditioner
 node merger target=stream_merger.stream_merger
      in=gps_out,anemometer_out,meas_conditioner_out out=merge_out
 node zmq_pub target=zmqsender.zmq_sender in=merge_out
-     args=True,50,FEDS_mode,True
+     args=True,60,FEDS_mode,True

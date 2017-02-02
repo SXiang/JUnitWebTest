@@ -301,6 +301,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 			int surveyDataRowID = surveyDataRowIDs[surveyIdx];
 
 			// start survey.
+			driverViewPageAction.getDriverViewPage().setUseAnalyzerReadyLongTimeout(true);   // Use longer timeout.
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
 			getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
