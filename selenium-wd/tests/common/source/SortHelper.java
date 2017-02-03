@@ -32,14 +32,15 @@ public class SortHelper {
 	public static boolean isStringSortedASC(String[] strArray, int beginAt) {
 		return isSortedASC(false, strArray, beginAt, strArray.length - 1);
 	}
-	
+
 	public static boolean isSortedASC(String[] strArray, int beginAt, int endAt){
 		// The actual data type of the elements is determined by the type of the first element specified
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
 		return isSortedASC(isNumber, strArray, beginAt, endAt);
 	}
-	
+
 	public static boolean isSortedASC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
+		Log.method("isSortedASC", isNumber, LogHelper.arrayToString(strArray), beginAt, endAt);
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if(strArray[i-1].trim().equals("")){
@@ -87,8 +88,9 @@ public class SortHelper {
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
 		return isSortedDESC(isNumber, strArray, beginAt, endAt);
 	}
-	
+
 	public static boolean isSortedDESC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
+		Log.method("isSortedDESC", isNumber, LogHelper.arrayToString(strArray), beginAt, endAt);
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if(strArray[i-1].trim().equals("")){
@@ -102,12 +104,12 @@ public class SortHelper {
 				}
 			} else {
 				if (strArray[i - 1].toLowerCase().compareTo(strArray[i].toLowerCase()) < 0)
-					return false;				
+					return false;
 			}
 		}
 		return true;
 	}
-	
+
 	public static boolean isDateSortedDESC(String[] strArray) {
 		return isDateSortedDESC(strArray, 0);
 	}
@@ -117,7 +119,7 @@ public class SortHelper {
 	}
 
 	/**
-	 * Checks whether a Date array is sorted Descending 
+	 * Checks whether a Date array is sorted Descending
 	 * @param strArray
 	 * @param beginAt - index 0 based
 	 * @param endAt - index 0 based
@@ -125,16 +127,16 @@ public class SortHelper {
 	 */
 	public static boolean isDateSortedDESC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
-		for (int i = beginAt ; i < endAt; i++) {		
+		for (int i = beginAt ; i < endAt; i++) {
 				DateTime dateTime1 =dateFormat.parseDateTime(strArray[i]);
 				DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);
 				if(dateTime1.isBefore(dateTime2)){
 					return false;
-				}			
+				}
 		}
 		return true;
 	}
-	
+
 	public static boolean isDateSortedASC(String[] strArray) {
 		return isDateSortedASC(strArray, 0);
 	}
@@ -144,7 +146,7 @@ public class SortHelper {
 	}
 
 	/**
-	 * Checks whether a Date array is sorted Ascending 
+	 * Checks whether a Date array is sorted Ascending
 	 * @param strArray
 	 * @param beginAt - index 0 based
 	 * @param endAt - index 0 based
@@ -152,19 +154,19 @@ public class SortHelper {
 	 */
 	public static boolean isDateSortedASC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
-		for (int i = beginAt ; i < endAt; i++) {		
+		for (int i = beginAt ; i < endAt; i++) {
 			DateTime dateTime1 =dateFormat.parseDateTime(strArray[i]);
-			DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);			
+			DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);
 			if(dateTime1.isAfter(dateTime2)){
 				return false;
-			}			
+			}
 	}
 	return true;
 	}
-	
+
 	/**
 	 * Executes the unit tests for this class.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -219,7 +221,7 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
+
 	private static void testisDateSortedDESC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		String[] strings = { "5/12/2016 2:59 PM", "5/11/2016 10:11 AM", "5/10/2016 12:31 PM", "5/10/2016 12:25 PM", "5/10/2016 12:20 PM" };
@@ -231,7 +233,7 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
+
 	private static void testisDateSortedASC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		String[] strings = { "5/10/2016 12:20 PM" , "5/10/2016 12:25 PM", "5/10/2016 12:31 PM", "5/11/2016 10:11 AM",  "5/12/2016 2:59 PM"};
@@ -243,6 +245,6 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
+
 
 }
