@@ -23,7 +23,7 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import common.source.Constants;
 import common.source.Log;
-import common.source.RetryOnException;
+import common.source.RetryUtil;
 import common.source.TestContext;
 import common.source.TestSetup;
 
@@ -554,7 +554,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-		RetryOnException.retry(
+		RetryUtil.retryOnException(
 			() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
 					public Boolean apply(WebDriver d) {
 						return isPageTitleMatch(d.getTitle(),STRPageContentText);

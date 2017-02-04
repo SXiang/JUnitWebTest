@@ -40,6 +40,10 @@ public class BaseHelper {
 	public BaseHelper() {
 	}
 
+	public static boolean compareTwoFilesByContent(String file1, String file2) throws IOException {
+		return FileUtils.contentEquals(new File(file1), new File(file2));
+	}
+
 	public static void deCompressZipFile(String strNameBase, String strDLPath) throws Exception {
 		Log.method("deCompressZipFile", strNameBase, strDLPath);
 		String zipFile = Paths.get(strDLPath, strNameBase + ".zip").toString();
@@ -52,6 +56,135 @@ public class BaseHelper {
 		String zipFile = Paths.get(strDLPath, strName).toString();
 		String outputFolder = strDLPath;
 		unZip(zipFile, outputFolder);
+	}
+
+	public static String getLineSeperator() {
+		return System.getProperty("line.separator");
+	}
+
+	public static String getPaginationShowingStartString() {
+		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
+		// get first 3 parts of the string.
+		List<String> strParts = RegexUtility.split(paginationShowingText, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
+		StringBuffer showingStartString = new StringBuffer();
+		if (strParts != null && strParts.size() > 1) {
+			showingStartString.append(strParts.get(0));
+			showingStartString.append(" ");
+			showingStartString.append(strParts.get(1).replace("_START_", NumberUtility.getNumberStringForCurrentLocale(1)));
+			showingStartString.append(" ");
+			showingStartString.append(strParts.get(2));
+		}
+		return showingStartString.toString();
+	}
+
+	public static boolean isNullOrEmptyOrZero(String str){
+    	return isNullOrEmpty(str)||str.matches("[0\\.]*");
+    }
+
+	public static boolean isNullOrEmpty(String str) {
+		return str==null||str.length()==0;
+	}
+
+	public static boolean isStringListSorted(List<String> strList) {
+		boolean sorted = true;
+		for (int i = 1; i < strList.size(); i++) {
+			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) > 0)
+				sorted = false;
+		}
+		return sorted;
+	}
+
+	public static boolean isStringListSortedDes(List<String> strList) {
+		boolean sorted = true;
+		for (int i = 1; i < strList.size(); i++) {
+			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) < 0)
+				sorted = false;
+		}
+		return sorted;
+	}
+
+	/**
+	 * This method checks for a list of key value pairs in a given string. Input
+	 * is a list of Strings to be matched and returns the String and associated
+	 * value
+	 * @param actualReportString
+	 * @param inputList
+	 * @return HashMap<String, String> a map with the string and whether it's matched
+	 */
+	public static Map<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
+		Log.method("matchPatternforPairs", actualReportString, LogHelper.strListToString(inputList));
+		Map<String, String> stringMatch = Collections.synchronizedMap(new HashMap<String, String>());
+		String[] lines = actualReportString.split("\\n");
+		Iterator<String> listIterator = inputList.iterator();
+		while (listIterator.hasNext()) {
+			Pattern pattertoMatch = Pattern.compile(listIterator.next().trim());
+			for (String line : lines) {
+				String formatteLine = line.trim();
+				if (pattertoMatch.matcher(line).find()) {
+					Matcher matcher = pattertoMatch.matcher(formatteLine);
+					matcher.find();
+					stringMatch.put((formatteLine.substring(matcher.start(), matcher.end()).trim()),
+							(formatteLine.substring(matcher.end() + 1).trim().replace(":", "").trim()));
+				}
+			}
+		}
+		return stringMatch;
+	}
+
+	/**
+	 * This method checks a list of strings are contained in a given string
+	 *
+	 * @param actualReportString
+	 * @param inputList
+	 * @return HashMap<String, Boolean> a map with the string and whether it's
+	 *         matched
+	 */
+	public static Map<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
+		Log.method("matchSinglePattern", actualReportString, LogHelper.strListToString(inputList));
+		Map<String, Boolean> stringsToMatch = Collections.synchronizedMap(new HashMap<String, Boolean>());
+		String[] lines = actualReportString.split("\\n");
+		Iterator<String> listIterator = inputList.iterator();
+		while (listIterator.hasNext()) {
+			String stringtoMatch = listIterator.next().trim();
+			stringsToMatch.put(stringtoMatch, false);
+		}
+		for (String line : lines) {
+			listIterator = inputList.iterator();
+			while (listIterator.hasNext()) {
+				String stringtoMatch = listIterator.next().trim();
+				String formatteLine = line.trim();
+				if (formatteLine.contains(stringtoMatch)) {
+					stringsToMatch.put(stringtoMatch, true);
+				}
+			}
+		}
+
+		Log.info(String.format("Match String Map is : %s", LogHelper.mapToString(stringsToMatch)));
+		return stringsToMatch;
+	}
+
+	public static String nullToEmpty(String input) {
+		if (input == null) {
+			return "";
+		}
+		return input;
+	}
+
+	public static String prependStringWithChar(String input, char prependChar, int times) {
+		StringBuilder builder = new StringBuilder();
+		if (times > 0) {
+			char[] ch = new char[times];
+			for (int i = 0; i < ch.length; i++) {
+				ch[i] = prependChar;
+			}
+			builder.append(String.copyValueOf(ch));
+		}
+
+		if (input != null) {
+			builder.append(input);
+		}
+
+		return builder.toString();
 	}
 
 	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
@@ -163,132 +296,6 @@ public class BaseHelper {
 		}
 
 		return false;
-	}
-
-	public static boolean compareTwoFilesByContent(String file1, String file2) throws IOException {
-		return FileUtils.contentEquals(new File(file1), new File(file2));
-	}
-
-	public static String getLineSeperator() {
-		return System.getProperty("line.separator");
-	}
-
-	public static String getPaginationShowingStartString() {
-		String paginationShowingText = Resources.getResource(ResourceKeys.Constant_ShowingStartToEndOfTotalEntries);
-		// get first 3 parts of the string.
-		List<String> strParts = RegexUtility.split(paginationShowingText, RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
-		StringBuffer showingStartString = new StringBuffer();
-		if (strParts != null && strParts.size() > 1) {
-			showingStartString.append(strParts.get(0));
-			showingStartString.append(" ");
-			showingStartString.append(strParts.get(1).replace("_START_", NumberUtility.getNumberStringForCurrentLocale(1)));
-			showingStartString.append(" ");
-			showingStartString.append(strParts.get(2));
-		}
-		return showingStartString.toString();
-	}
-
-	public static boolean isStringListSorted(List<String> strList) {
-		boolean sorted = true;
-		for (int i = 1; i < strList.size(); i++) {
-			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) > 0)
-				sorted = false;
-		}
-		return sorted;
-	}
-
-	public static boolean isStringListSortedDes(List<String> strList) {
-		boolean sorted = true;
-		for (int i = 1; i < strList.size(); i++) {
-			if (strList.get(i - 1).compareToIgnoreCase(strList.get(i)) < 0)
-				sorted = false;
-		}
-		return sorted;
-	}
-
-	public static boolean isNullOrEmptyOrZero(String str){
-    	return isNullOrEmpty(str)||str.matches("[0\\.]*");
-    }
-
-	public static boolean isNullOrEmpty(String str) {
-		return str==null||str.length()==0;
-	}
-
-	public static String prependStringWithChar(String input, char prependChar, int times) {
-		StringBuilder builder = new StringBuilder();
-		if (times > 0) {
-			char[] ch = new char[times];
-			for (int i = 0; i < ch.length; i++) {
-				ch[i] = prependChar;
-			}
-			builder.append(String.copyValueOf(ch));
-		}
-
-		if (input != null) {
-			builder.append(input);
-		}
-
-		return builder.toString();
-	}
-
-	/**
-	 * This method checks a list of strings are contained in a given string
-	 *
-	 * @param actualReportString
-	 * @param inputList
-	 * @return HashMap<String, Boolean> a map with the string and whether it's
-	 *         matched
-	 */
-	public static Map<String, Boolean> matchSinglePattern(String actualReportString, List<String> inputList) {
-		Log.method("matchSinglePattern", actualReportString, LogHelper.strListToString(inputList));
-		Map<String, Boolean> stringsToMatch = Collections.synchronizedMap(new HashMap<String, Boolean>());
-		String[] lines = actualReportString.split("\\n");
-		Iterator<String> listIterator = inputList.iterator();
-		while (listIterator.hasNext()) {
-			String stringtoMatch = listIterator.next().trim();
-			stringsToMatch.put(stringtoMatch, false);
-		}
-		for (String line : lines) {
-			listIterator = inputList.iterator();
-			while (listIterator.hasNext()) {
-				String stringtoMatch = listIterator.next().trim();
-				String formatteLine = line.trim();
-				if (formatteLine.contains(stringtoMatch)) {
-					stringsToMatch.put(stringtoMatch, true);
-				}
-			}
-		}
-
-		Log.info(String.format("Match String Map is : %s", LogHelper.mapToString(stringsToMatch)));
-		return stringsToMatch;
-	}
-
-	/**
-	 * This method checks for a list of key value pairs in a given string. Input
-	 * is a list of Strings to be matched and returns the String and associated
-	 * value
-	 * @param actualReportString
-	 * @param inputList
-	 * @return HashMap<String, String> a map with the string and whether it's matched
-	 */
-	public static Map<String, String> matchPatternforPairs(String actualReportString, List<String> inputList) {
-		Log.method("matchPatternforPairs", actualReportString, LogHelper.strListToString(inputList));
-		Map<String, String> stringMatch = Collections.synchronizedMap(new HashMap<String, String>());
-		String[] lines = actualReportString.split("\\n");
-		Iterator<String> listIterator = inputList.iterator();
-		while (listIterator.hasNext()) {
-			Pattern pattertoMatch = Pattern.compile(listIterator.next().trim());
-			for (String line : lines) {
-				String formatteLine = line.trim();
-				if (pattertoMatch.matcher(line).find()) {
-					Matcher matcher = pattertoMatch.matcher(formatteLine);
-					matcher.find();
-					stringMatch.put((formatteLine.substring(matcher.start(), matcher.end()).trim()),
-							(formatteLine.substring(matcher.end() + 1).trim().replace(":", "").trim()));
-				}
-			}
-		}
-		return stringMatch;
 	}
 
 	/**
