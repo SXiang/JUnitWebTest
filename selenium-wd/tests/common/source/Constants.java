@@ -38,5 +38,6 @@ public class Constants {
 
 	// Default retries time constants.
 	public static final Integer DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC = 0;   // by default on exception we retry without wait.
+	public static final Integer THOUSAND_MSEC_WAIT_BETWEEN_RETRIES = 1000;
 	public static final Integer DEFAULT_MAX_RETRIES = 3;
 }
