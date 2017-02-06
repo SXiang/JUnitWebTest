@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.util.Arrays;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,8 +54,19 @@ public class SortHelper {
 					return false;
 				}
 			} else {
-				if (strArray[i - 1].toLowerCase().compareTo(strArray[i].toLowerCase()) > 0)
+				// Keep only chars till first non-alphanumeric character is encountered.
+				String prevLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i - 1].toLowerCase());
+				String currLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i].toLowerCase());
+
+				// Make both strings of equal length before comparison.
+				prevLowerAlpNum = BaseHelper.toLength(prevLowerAlpNum, currLowerAlpNum.length());
+				currLowerAlpNum = BaseHelper.toLength(currLowerAlpNum, prevLowerAlpNum.length());
+
+				if (prevLowerAlpNum.compareTo(currLowerAlpNum) > 0) {
+					Log.warn(String.format("Compare failed at index-[%d]. Previous lc_alphanumeric value='%s', current lc_alphanumeric value='%s'",
+							i, prevLowerAlpNum, currLowerAlpNum));
 					return false;
+				}
 			}
 		}
 		return true;
@@ -103,8 +115,19 @@ public class SortHelper {
 					return false;
 				}
 			} else {
-				if (strArray[i - 1].toLowerCase().compareTo(strArray[i].toLowerCase()) < 0)
+				// Keep only chars till first non-alphanumeric character is encountered.
+				String prevLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i - 1].toLowerCase());
+				String currLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i].toLowerCase());
+
+				// Make both strings of equal length before comparison.
+				prevLowerAlpNum = BaseHelper.toLength(prevLowerAlpNum, currLowerAlpNum.length());
+				currLowerAlpNum = BaseHelper.toLength(currLowerAlpNum, prevLowerAlpNum.length());
+
+				if (prevLowerAlpNum.compareTo(currLowerAlpNum) < 0) {
+					Log.warn(String.format("Compare failed at index-[%d]. Previous lc_alphanumeric value='%s', current lc_alphanumeric value='%s'",
+							i, prevLowerAlpNum, currLowerAlpNum));
 					return false;
+				}
 			}
 		}
 		return true;
@@ -168,11 +191,13 @@ public class SortHelper {
 	 * Executes the unit tests for this class.
 	 *
 	 * @param args
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		testIsSortedASC_Number();
 		testIsSortedASC_String();
 		testIsSortedDESC_Number();
+		testIsSortedASC_LongString();
 		testIsSortedDESC_String();
 		testisDateSortedDESC_String();
 		testisDateSortedASC_String();
@@ -197,6 +222,15 @@ public class SortHelper {
 		Assert.assertTrue(isSortedASC(strings, 1));
 		Assert.assertFalse(isSortedASC(strings));
 		Assert.assertTrue(isSortedASC(strings, 0, 0));
+
+		Log.info("Verified isSortedASC for strings " + Arrays.toString(strings));
+	}
+
+	private static void testIsSortedASC_LongString() throws IOException {
+		String ascValuesFilePath = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\sorthelper-tests\\asc-values-01.txt";
+		String[] strings = FileUtility.readFileLinesToList(ascValuesFilePath).toArray(new String[0]);
+
+		Assert.assertTrue(isSortedASC(strings, 0, strings.length - 1));
 
 		Log.info("Verified isSortedASC for strings " + Arrays.toString(strings));
 	}
@@ -245,6 +279,4 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-
-
 }

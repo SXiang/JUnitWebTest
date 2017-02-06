@@ -159,8 +159,14 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 
 		assertTrue(getComplianceReportsPage().isReportColumnSorted("Report Title","String"));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
 		assertTrue(getComplianceReportsPage().isReportColumnSorted("Created By","String"));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
 		assertTrue(getComplianceReportsPage().isReportColumnSorted("Date","Date"));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
 		assertFalse(getComplianceReportsPage().isReportColumnSorted("Report Name","String"));
 	}
 
