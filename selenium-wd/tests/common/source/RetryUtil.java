@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.relevantcodes.extentreports.LogStatus;
 
-public class RetryOnException {
+public class RetryUtil {
 
 	/**
 	 * Retries a method for specified number of times after handling exception.
@@ -15,7 +15,7 @@ public class RetryOnException {
 	 * @param waitInMSecsBetweenRetries - wait time in msec between retries.
 	 * @param maxRetries - max number of retries.
 	 */
-	public static <T> void retry(BooleanSupplier mainMethod, Supplier<T> methodOnFailure, Integer waitInMSecsBetweenRetries, Integer maxRetries,
+	public static <T> boolean retryOnException(BooleanSupplier mainMethod, Supplier<T> methodOnFailure, Integer waitInMSecsBetweenRetries, Integer maxRetries,
 			Boolean takeScreenshotOnFailure) {
 		Integer retryAttempt = 0;
 		Boolean success = false;
@@ -28,18 +28,20 @@ public class RetryOnException {
 					try {
 						Thread.sleep(waitInMSecsBetweenRetries);
 					} catch (InterruptedException e1) {
-						e1.printStackTrace();
+						Log.error(ExceptionUtility.getStackTraceString(e1));
 					}
 				}
-				Log.warn(String.format("Attempt-[%d] - Method failure. Exception -> '%s'", retryAttempt, e.getMessage()));
+				Log.warn(String.format("Attempt-[%d] - Method failure. Exception -> '%s'", retryAttempt, ExceptionUtility.getStackTraceString(e)));
 				methodOnFailure.get();
 			}
-		} while(retryAttempt < maxRetries);
+		} while(!success && retryAttempt < maxRetries);
 
 		if (!success && takeScreenshotOnFailure) {
 			Log.warn(String.format("Method FAILED after %d attempts", retryAttempt));
 			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
 					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
 		}
+
+		return success;
 	}
 }

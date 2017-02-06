@@ -20,6 +20,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class WebElementFunctionUtil {
 
 	/**
+	 * Tries to fetch value from web element specified by the function and returns the value.
+	 * Handles NoSuchElementException & StaleElementReferenceException that could be thrown when fetching the element.
+	 * If no element is found, return NULL.
+	 *
+	 * @param parentElement - parent element from where to find element.
+	 * @param findElementFunc - function to find element.
+	 * @return
+	 */
+	public static String tryFetchValue(WebElement parentElement, Function<WebElement, Object> fetchValueFunc) {
+		Object value = tryApplyFunction(parentElement, fetchValueFunc);
+		return (value != null) ? ((String)value) : null;
+	}
+
+	/**
 	 * Tries to find element specified by the function and returns the element.
 	 * Handles NoSuchElementException & StaleElementReferenceException that could be thrown when fetching the element.
 	 * If no element is found, return NULL.
@@ -29,7 +43,7 @@ public class WebElementFunctionUtil {
 	 * @return
 	 */
 	public static WebElement tryFindElement(WebElement parentElement, Function<WebElement, Object> findElementFunc) {
-		Object element = tryFind(parentElement, findElementFunc);
+		Object element = tryApplyFunction(parentElement, findElementFunc);
 		return (element != null) ? ((WebElement)element) : null;
 	}
 
@@ -44,7 +58,7 @@ public class WebElementFunctionUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<WebElement> tryFindElements(WebElement parentElement, Function<WebElement, Object> findElementsFunc) {
-		Object element = tryFind(parentElement, findElementsFunc);
+		Object element = tryApplyFunction(parentElement, findElementsFunc);
 		return (element != null) ? ((List<WebElement>)element) : null;
 	}
 
@@ -78,7 +92,7 @@ public class WebElementFunctionUtil {
 		return tryFindElements(parentElement, findElementsFunc);
 	}
 
-	private static Object tryFind(WebElement parentElement, Function<WebElement, Object> func) {
+	private static Object tryApplyFunction(WebElement parentElement, Function<WebElement, Object> func) {
 		Object element = null;
 		try {
 			element = func.apply(parentElement);
