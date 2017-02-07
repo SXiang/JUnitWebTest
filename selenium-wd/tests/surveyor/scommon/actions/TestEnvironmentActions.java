@@ -195,7 +195,7 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/* Invoke action using specified ActionName */
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
-		if (actionName.equals("postSurveySessionsFromDB3ToCloud")) { return this.checkPostSurveySessionsFromDB3ToCloud(data, dataRowID); }
+		if (actionName.equals("checkPostSurveySessionsFromDB3ToCloud")) { return this.checkPostSurveySessionsFromDB3ToCloud(data, dataRowID); }
 		else if (actionName.equals("startReplay")) { return this.startReplay(data, dataRowID); }
 		else if (actionName.equals("startAnalyzer")) { return this.startAnalyzer(data, dataRowID); }
 		else if (actionName.equals("stopAnalyzer")) { return this.stopAnalyzer(data, dataRowID); }
@@ -236,7 +236,7 @@ public class TestEnvironmentActions extends BaseActions {
 		return TestSetup.TEST_ANALYZER_SERIAL_NUMBER;
 	}
 
-	private void getAnalyzerInfo(TestEnvironmentDataRow dataRow, StringBuffer outAnalyzerSerialNumber, StringBuffer outAnalyzerSharedKey) throws NumberFormatException, Exception {
+	public void getAnalyzerInfo(TestEnvironmentDataRow dataRow, StringBuffer outAnalyzerSerialNumber, StringBuffer outAnalyzerSharedKey) throws NumberFormatException, Exception {
 		String analyzerSerialNumber = null;
 		String analyzerSharedKey = null;
 		if (!ActionArguments.isEmpty(dataRow.analyzerRowID)) {

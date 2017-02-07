@@ -350,6 +350,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
+		else if (actionName.equals("waitForIndicationsToBeShownOnMap")) { return this.waitForIndicationsToBeShownOnMap(data, dataRowID); }
 		return false;
 	}
 

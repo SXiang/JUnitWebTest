@@ -15,6 +15,8 @@ public class ApiUtility {
 	public static final String REPORTS_GET_REPORT_STAT_API_RELATIVE_URL = "Reports/GetReportStat?reportTitle=%s";
 	public static final String ENVIRONMENT_BUILD_API_RELATIVE_URL = "api/EnvironmentBuilds?environmentName=%s";
 	public static final String DELETE_MEASUREMENT_SESSION_RELATIVE_URL = "Home/DeleteSession/%s";
+	public static final String DELETE_COMPLIANCE_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=ComplianceReports&reportId=%s";
+	public static final String DELETE_EQ_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=EQReports&reportId=%s";
 	private static final String GET_API_RESPONSE_CMD = "GetAPIResponse.cmd";
 	private static final String GET_AUTOMATION_API_RESPONSE_CMD = "Get-ReportingAPIResponse.cmd";
 
@@ -24,6 +26,13 @@ public class ApiUtility {
 	public static String getApiResponse(String apiRelativePath) {
 		String loginUser = TestContext.INSTANCE.getLoggedInUser();
 		String loginPwd = TestContext.INSTANCE.getLoggedInUserPassword();
+
+		// If API is invoked before login in UI, use default credentials.
+		if (BaseHelper.isNullOrEmpty(loginUser) || BaseHelper.isNullOrEmpty(loginPwd)) {
+			loginUser = TestContext.INSTANCE.getTestSetup().getLoginUser();
+			loginPwd = TestContext.INSTANCE.getTestSetup().getLoginPwd();
+		}
+
 		return getApiResponse(apiRelativePath, loginUser, loginPwd);
 	}
 
@@ -31,30 +40,10 @@ public class ApiUtility {
 		String responseText = "";
 		try {
 			String baseUrl = TestContext.INSTANCE.getBaseUrl();
-			String workingFolder = TestSetup.getExecutionPath(TestSetup.getRootPath());
-			String libFolder = workingFolder + "lib";
-			String apiCmdFullPath = libFolder + File.separator + GET_API_RESPONSE_CMD;
-
-			String workingApiCmdFile = TestSetup.getUUIDString() + "_" + GET_API_RESPONSE_CMD;
-			String workingApiCmdFullPath = Paths.get(libFolder + File.separator, workingApiCmdFile).toString();
-
-			// Create a copy of the get api response cmd file.
-			Files.copy(Paths.get(apiCmdFullPath), Paths.get(workingApiCmdFullPath));
-
-			// Update the working copy.
-			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
-			placeholderMap.put("%WORKING_DIR%", workingFolder);
-			placeholderMap.put("%1%", baseUrl);
-			placeholderMap.put("%2%", apiRelativePath);
-			placeholderMap.put("%3%", loginUser);
-			placeholderMap.put("%4%", loginPwd);
-			FileUtility.updateFile(workingApiCmdFullPath, placeholderMap);
-
-			// Execute update config cmd.
-			responseText = executeGetApiResponseCmd(workingApiCmdFile);
-
-			// Delete the working copy of the update config cmd file.
-			Files.delete(Paths.get(workingApiCmdFullPath));
+			String workingFolder = TestSetup.getRootPath();
+			String filePathWithCommand = GET_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",
+							workingFolder, baseUrl, apiRelativePath, loginUser, loginPwd);
+			responseText = executeGetApiResponseCmd(filePathWithCommand);
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
@@ -73,9 +62,9 @@ public class ApiUtility {
 		try {
 			String workingFolder = TestSetup.getRootPath();
 			String automationApiUrl = TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint();
-			String command = GET_AUTOMATION_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\"",
+			String filePathWithCommand = GET_AUTOMATION_API_RESPONSE_CMD + String.format(" \"%s\" \"%s\" \"%s\"",
 							workingFolder, automationApiUrl, apiRelativePath);
-			responseText = executeGetApiResponseCmd(command);
+			responseText = executeGetApiResponseCmd(filePathWithCommand);
 		} catch (IOException e) {
 			Log.error(e.toString());
 		}
@@ -87,16 +76,16 @@ public class ApiUtility {
 	 * Executes the specified api and returns the response string.
 	 * If invalid API is provided returns NULL.
 	 *
-	 * @param workingApiCmdFile
+	 * @param apiCmdFileWithArgs
 	 * @return
 	 */
-	private static String executeGetApiResponseCmd(String workingApiCmdFile) {
+	private static String executeGetApiResponseCmd(String apiCmdFileWithArgs) {
 		String responseText = null;
 		// Execute get api response script from the contained folder.
 		try {
 			String apiCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-			String apiCmdFileFullPath = apiCmdFolder + File.separator + workingApiCmdFile;
-			String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFileFullPath;
+			String apiCmdFileFullPathWithArgs = apiCmdFolder + File.separator + apiCmdFileWithArgs;
+			String command = "cd \"" + apiCmdFolder + "\" && " + apiCmdFileFullPathWithArgs;
 			Log.info("Executing get api response script. Command -> " + command);
 			ProcessOutputInfo processOutputInfo = ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 			responseText = processOutputInfo.getOutput();
@@ -140,7 +129,7 @@ public class ApiUtility {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
 		// NOTE: Before running the tests replace this constant with a valid report title on the environment
-		String VALID_REPORT_TITLE = "cc17066cba3d4f77b654";
+		String VALID_REPORT_TITLE = "RPTTemplate-49068c5c2a7e4b699f71StandardStandard";
 		String INVALID_REPORT_TITLE = "InvalidReportTitle";
 		String VALID_API_URL_FORMAT = REPORTS_GET_REPORT_STAT_API_RELATIVE_URL;
 		String INVALID_API_URL_FORMAT = "Reports/InvalidApi?invalidQS=%s";

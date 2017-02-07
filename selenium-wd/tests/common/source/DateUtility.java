@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -210,8 +211,16 @@ public class DateUtility {
 	 */
 	public static Integer getSystemHourIn12HourFormat() {
 		Integer hourOfDay = DateUtility.getCalendarForSystem().get(Calendar.HOUR_OF_DAY);
-		if (hourOfDay > 12) {
-			hourOfDay = hourOfDay - 12;
+		return getHourIn12HourFormat(hourOfDay);
+	}
+
+	private static Integer getHourIn12HourFormat(Integer hourOfDay) {
+		if (hourOfDay == 0) {
+			hourOfDay = 12;
+		} else {
+			if (hourOfDay > 12) {
+				hourOfDay = hourOfDay - 12;
+			}
 		}
 		return hourOfDay;
 	}
@@ -605,6 +614,9 @@ public class DateUtility {
 
 		Log.info(NumberUtility.formatString(DateUtility.getCurrentUnixEpochTime(), 3));
 
+		Log.info("Executing getSystemHourIn12HourFormat() unit test...");
+		testSystemHourIn12HourFormat();
+
 		String timeString1 = "00:00:00";
 		String timeString2 = "00:00:00";
 		Log.info(String.format("Comparing Time1 - '%s' with Time2 - '%s'", timeString1, timeString2));
@@ -755,5 +767,13 @@ public class DateUtility {
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 11:26:27 PM GMT", false, "3/7/2016 1:55 PM PST", false)==-1);
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 11:16:07 PM GMT", false)==0);
 		Assert.assertTrue(DateUtility.compareDatesWithTZ("12/14/2015 3:16:07 PM PST", false, "12/14/2015 12:16:07 PM GMT", false)==1);
+	}
+
+	private static void testSystemHourIn12HourFormat() {
+		Integer[] inputValues = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+		Integer[] expectedResults = {12,1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11};
+		Arrays.asList(inputValues).forEach(i -> {
+				Assert.assertTrue(DateUtility.getHourIn12HourFormat(i) == expectedResults[i]);
+		});
 	}
 }

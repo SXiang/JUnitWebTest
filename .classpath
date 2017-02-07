@@ -55,5 +55,6 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/joda-time-2.4.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-toolbox-2.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/commons-lang3-3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1198,6 +1198,12 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1215_ActionTest_CannotLoginDriverViewInvalidCredentials() throws Exception {
 		Log.info("\nRunning TC1215_SimulatorTest_CannotLoginDriverViewInvalidCredentials");
 
+		// Logout to clear off any previous sessions.
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		homePage.waitForPageLoad();
+		homePage.logout();
+
 		getTestEnvironmentAction().startAnalyzer(EMPTY, 3); 	// start simulator and replay db3 file.
 		driverViewPage.open();
 

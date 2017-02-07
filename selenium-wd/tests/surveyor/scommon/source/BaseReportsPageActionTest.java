@@ -1,6 +1,17 @@
 package surveyor.scommon.source;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
+import org.junit.Assert;
+
+import common.source.ExceptionUtility;
+import common.source.Log;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.BaseActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ReportCommonPageActions;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
@@ -106,5 +117,49 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
 	public void setCleanUpPerformed(boolean cleanUpPerformed) {
 		this.cleanUpPerformed = cleanUpPerformed;
+	}
+
+	protected boolean executeAsCustomerWithGISData(Predicate<ReportCommonPageActions> testActions, ReportCommonPageActions pageAction,
+			Integer reportDataRowID) {
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+		return executeAsCustomerWithGISData(testActions, pageAction, reportDataRowID, customer.getId());
+	}
+
+	protected boolean executeAsCustomerWithGISData(Predicate<ReportCommonPageActions> testActions, ReportCommonPageActions pageAction,
+			Integer reportDataRowID, String customerId) {
+		boolean retVal = false;
+		try {
+			// Add GIS seed for customer.
+			DbSeedExecutor.executeGisSeed(customerId);
+
+			retVal = testActions.test(pageAction);
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		} finally {
+			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+			pageAction.open(EMPTY, getReportRowID(reportDataRowID));
+			try {
+				pageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID));
+				DbSeedExecutor.cleanUpGisSeed(customerId);
+			} catch (Exception e) {
+				Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			}
+		}
+
+		return retVal;
+	}
+
+	protected void createMultipleReports(ReportCommonPageActions reportsPageAction, Integer reportDataRowID1, Integer numReportsToCreate) {
+		IntStream.rangeClosed(1, numReportsToCreate).forEach(i -> {
+			try {
+				reportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(reportsPageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(reportsPageAction, getReportRowID(reportDataRowID1));
+			} catch (Exception e) {
+				Log.error(String.format("Error creating report. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			}
+		});
 	}
 }

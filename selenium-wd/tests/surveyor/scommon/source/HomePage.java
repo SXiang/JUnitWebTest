@@ -4,9 +4,11 @@
 package surveyor.scommon.source;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,10 +22,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.BrowserCommands;
+import common.source.Constants;
 import common.source.Log;
+import common.source.RetryUtil;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
+import common.source.WebElementPredicates;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
@@ -37,10 +42,13 @@ public class HomePage extends SurveyorBasePage {
 			Resources.getResource(ResourceKeys.Index_Title), Resources.getResource(ResourceKeys.Constant_Surveyor));
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Index_Heading);
 	public static final String Constant_Offline = Resources.getResource(ResourceKeys.Constant_Offline);
+	public static final String Constant_Analyzer = Resources.getResource(ResourceKeys.Constant_Analyzer);
 	public static final String STRSurveyorDashboard = "Surveyor Dashboard";
 	public static final String STRReleaseNotes="ReleaseNotes";
 	public static final String STRReleaseNotesLink="Surveyor_v2.1_ReleaseNotes.pdf";
+
 	public static final String EQ_REPORT_LINK_XPATH = "//*[@id='report-investigation']";
+	private static final String DATATABLE_SURVEYOR_XPATH = "//*[@id='datatable-Surveyor']";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='wrapper']/nav/div[1]/a/img")
 	private WebElement picarroLogo;
@@ -127,8 +135,10 @@ public class HomePage extends SurveyorBasePage {
 
 	private String strTRRDSXPath = "//*[@id='datatable-Session']/tbody/tr";
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']")
 	private WebElement tableActiveSurveyors;
+
+	private String strTRASXPath = "//*[@id='datatable-Surveyor']/tbody/tr";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session_length']/label/select")
 	private WebElement paginationInputRDS;
@@ -843,6 +853,35 @@ public class HomePage extends SurveyorBasePage {
 		}
 	}
 
+	public void clickOnFirstMatchingOnlineSurveyorLink(String analyzer) {
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		HashMap<String, String> tblHeaderMap = new HashMap<String, String>();
+		tblHeaderMap.put(Constant_Analyzer, analyzer);
+		DataTablePage dataTable = buildDataTablePage(By.id("datatable-Surveyor"));
+		By onlineLinkBy = By.xpath("//td[3]/a");
+		String elementName = "Online Link";
+		String elementReadyText = "Online";
+		Predicate<WebElement> waitForOnlineLinkReady = WebElementPredicates.getWaitForElementTextReadyPredicate(driver, timeout, elementName, elementReadyText);
+		Predicate<WebElement> clickOnOnlineLink = WebElementPredicates.getClickPredicate(elementName);
+		Predicate<WebElement> waitAndClickOnlineLink = waitForOnlineLinkReady.and(clickOnOnlineLink);
+
+		// When page is loaded Surveyor may not show 'Online'. In such case reload the page and retry.
+		boolean actionSuccess = RetryUtil.retryOnException(
+			() -> {
+				dataTable.actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);
+				return true;},
+			() -> {
+				super.open();waitForPageLoad();resetTableActiveSurveyors();
+				return true;},
+			Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+			Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+
+		if (!actionSuccess) {
+			Log.error(String.format("Clicking on '%s' FAILED!", elementName));
+		}
+	}
+
 	public List<String> getTagListRecentDrivingSurveys() {
 		List<String> tagList = new ArrayList<String>();
 
@@ -893,6 +932,14 @@ public class HomePage extends SurveyorBasePage {
 			}
 		}
 		return null;
+	}
+
+	public WebElement getTableActiveSurveyors() {
+		return tableActiveSurveyors;
+	}
+
+	public void resetTableActiveSurveyors() {
+		this.tableActiveSurveyors = driver.findElement(By.xpath(DATATABLE_SURVEYOR_XPATH));
 	}
 
 	public boolean isReleaseNotes(WebDriver driver,String winHandle){

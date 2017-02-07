@@ -29,6 +29,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import surveyor.scommon.source.DataTablePage;
+
 /**
  * @author zlu
  *
@@ -48,7 +50,7 @@ public class BasePage {
 
 	@FindBy(how = How.CSS, using = ".pcubed > img")
 	public WebElement pcubedLogo;
-	
+
 	@FindBy(how = How.XPATH, using = "//h1/strong")
 	private WebElement pageHeader;
 
@@ -421,7 +423,7 @@ public class BasePage {
 	public void jsScrollToView(WebElement element){
 		WebElementExtender.executeScript(element, driver, "arguments[0].scrollIntoView();");
 	}
-	
+
 	public void focusOnPage(WebElement element){
 		Actions action = new Actions(driver);
 		action.moveToElement(element).click().click().perform();
@@ -492,7 +494,7 @@ public class BasePage {
 		}
 		return true;
 	}
-	
+
     public String getElementText(WebElement element) {
     	String text = "";
     	try{
@@ -545,6 +547,13 @@ public class BasePage {
     	}
     	return licenseMissingMsg;
     }
+
+	public DataTablePage buildDataTablePage(By tableBy) {
+		WebElement tableContext = driver.findElement(tableBy);
+		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext,
+				this.testSetup, this.strBaseURL, this.strPageURL);
+		return dataTable;
+	}
 
 	public static void verifyPageLoadedInNewTab(WebDriver webDriver, BooleanSupplier pageLoadedMethod) {
 		String parentWindow = webDriver.getWindowHandle();

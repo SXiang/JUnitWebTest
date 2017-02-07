@@ -46,7 +46,6 @@ import surveyor.scommon.source.PageObjectFactory;
 
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 
-
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
 
@@ -252,43 +251,32 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-		String customerId = customer.getId();
+		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+			try {
+				// Create a survey for the new user.
+				TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+						DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 
-		try {
-			// Add GIS seed for customer to enable GIS elements in New Compliance reports -> views.
-			DbSeedExecutor.executeGisSeed(customerId);
+				// Re-login as admin user (with username:password format to enforce specific username/password) and create report.
+				loginPageAction.open(EMPTY, NOTSET);
+				loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-			// Create a survey for the new user.
-			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
-
-			// Re-login as admin user (with username:password format to enforce specific username/password) and create report.
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
-
-			// Create report for the new customer.
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-		} catch (Exception ex) {
-			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-
-		} finally {
-			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
-			// Remove GIS seed from the customer.
-			DbSeedExecutor.cleanUpGisSeed(customerId);
-		}
+				// Create report for the new customer.
+				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(pageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			} catch (Exception ex) {
+				return false;
+			}
+			return true;
+		}, complianceReportsPageAction, reportDataRowID1));
 	}
 
 	/**
@@ -314,6 +302,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		this.getComplianceReportsPage().open();
 
 		this.getComplianceReportsPage().getNewReportBtn().click();
+		this.getComplianceReportsPage().waitForNewPageLoad();
+
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 		this.getComplianceReportsPage().clickOnCancelBtn();
 
@@ -398,49 +388,38 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-		String customerId = customer.getId();
+		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+			try {
+				// Create a survey for the new user.
+				TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+						DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 
-		try {
-			// Add GIS seed for customer to enable GIS elements in New Compliance reports -> views.
-			DbSeedExecutor.executeGisSeed(customerId);
+				// Re-login as admin user (with username:password format to enforce specific username/password) and create report.
+				loginPageAction.open(EMPTY, NOTSET);
+				loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-			// Create a survey for the new user.
-			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
-
-			// Re-login as admin user (with username:password format to enforce specific username/password) and create report.
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
-
-			// Create report for the new customer.
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-			complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-			assertTrue(complianceReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-			assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-			assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-			complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-			assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-
-		} catch (Exception ex) {
-			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-
-		} finally {
-			// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
-			// Remove GIS seed from the customer.
-			DbSeedExecutor.cleanUpGisSeed(customerId);
-		}
+				// Create report for the new customer.
+				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(pageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				assertTrue(pageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+				pageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assertTrue(pageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+				assertTrue(pageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+				assertTrue(pageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+			} catch (Exception ex) {
+				return false;
+			}
+			return true;
+		}, complianceReportsPageAction, reportDataRowID1));
 	}
 }

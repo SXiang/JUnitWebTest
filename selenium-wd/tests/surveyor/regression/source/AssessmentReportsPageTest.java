@@ -1,12 +1,15 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
@@ -22,7 +25,6 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
 import surveyor.scommon.source.AssessmentReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -42,7 +44,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	private static AssessmentReportsPageActions assessmentReportsPageAction;
 
 	private static HomePage homePage;
-	private static AssessmentReportsPage assessmentReportsPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 	@BeforeClass
@@ -111,13 +112,10 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		Log.info("\nRunning TC1434_PicarroAdminCanProvideAssessmentPrivilegeExistingCustomer_NewAssessmentReport ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		// Create new customer with Report ShapeFile enabled and login as new customer user.
-		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		manageCustomerPageAction.createNewCustomer(EMPTY, 10 /*customerRowID*/);
 
 		manageLocationPageAction.open(EMPTY, NOTSET);
@@ -130,22 +128,31 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
-		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+			try {
+				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(pageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+
+				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+				pageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+				pageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		        Assert.assertTrue(pageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+
+		        assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				assertTrue(pageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+			} catch (Exception ex) {
+				return false;
+			}
+			return true;
+		}, assessmentReportsPageAction, reportDataRowID1));
 	}
 
 	/**
@@ -181,31 +188,47 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, NOTSET);
-		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, NOTSET);
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-		modifyReport(assessmentReportsPageAction, getReportRowID(reportDataRowID2));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+
+		// Create new customer with Report ShapeFile enabled and login as new customer user.
+		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.createNewCustomer(EMPTY, 10 /*customerRowID*/);
+
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 11 /*locationRowID*/);
+
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, 21 /*userRowID*/);
+
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
+
+		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+			try {
+				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+				createNewReport(pageAction, getReportRowID(reportDataRowID1));
+				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+				modifyReport(pageAction, getReportRowID(reportDataRowID2));
+				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+
+				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+				pageAction.waitForViewDownloadToCompleteByViewIndex(EMPTY, getReportRowID(reportDataRowID1));
+				assertTrue(pageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+				assertTrue(pageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+			} catch (Exception ex) {
+				return false;
+			}
+			return true;
+		}, assessmentReportsPageAction, reportDataRowID1));
 	}
 
 	/**
@@ -222,6 +245,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Assessment privilege is not granted to Customer
 	 *	- - Assessment report not present
 	 */
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1437, location = AssessmentReportDataProvider.class)
 	public void TC1437_DisableAssessmentFeatureAssessmentPriviledgedCustomer(
@@ -230,15 +254,23 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, NOTSET);
-		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, NOTSET);
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+
+		// Create new customer without Assessment permission and login as new customer user.
+		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.createNewCustomer(EMPTY, 11 /*customerRowID*/);
+
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 12 /*locationRowID*/);
+
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, 22 /*userRowID*/);
+
+		String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
+
+		assessmentReportsPageAction.getAssessmentReportsPage().open();  // open without waiting for load complete.
+		assertTrue(homePageAction.verifyPageLoaded(EMPTY, NOTSET));		// verify user is redirected to home page.
 	}
 
 	/**
@@ -252,7 +284,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	-
 	 *	- - Only Assessment customer's surveys should be present in the searched list
 	 */
-	// TODO: Check surveys are assessment surveys.
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1438, location = AssessmentReportDataProvider.class)
 	public void TC1438_AssessmentReportCanIncludeOnlyAssessmentSurveysNewScreen(
@@ -264,7 +296,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		assessmentReportsPageAction.open(EMPTY, NOTSET);
 		assessmentReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
-		assessmentReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);
+		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
 
 		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
@@ -301,7 +333,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		assessmentReportsPageAction.open(EMPTY, NOTSET);
 		assessmentReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
-		assessmentReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);
+		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
 
 		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
@@ -319,6 +351,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Assessment report mode is not displayed in Report mode section
 	 *	- - Assessment surveys should not be displayed in searched survey grid
 	 */
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1440, location = AssessmentReportDataProvider.class)
 	public void TC1440_NewComplianceReportScreenShouldNotDisplayAssessmentModeSurveysAssessmentReportMode(
@@ -329,7 +362,15 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
+		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+
+		assertTrue(assessmentReportsPageAction.verifyReportModeIsNotShownOnPage(EMPTY, getReportRowID(reportDataRowID1)));
+
+		assessmentReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);
+		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
+
+		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -344,6 +385,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Warning should be present : ?Do you really want to delete report ID + title?
 	 *	- - Deleted report is not present on assessment report list screen
 	 */
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1448, location = AssessmentReportDataProvider.class)
 	public void TC1448_DeleteAssessmentReportCustomerSupervisorUser(
@@ -352,11 +394,14 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.deleteReport(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(assessmentReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, getReportRowID(reportDataRowID1)));
+		assessmentReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
+		clickOnConfirmDeleteReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+		assertTrue(assessmentReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
 
 	/**
@@ -364,10 +409,11 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Pagination - Assessment Report - Customer Supervisor User
 	 * Script: -
 	 *	- - Login as Customer Supervisor user- On Home Page, click Reports -&Assessment
-	 *	- -10,25,50 and 100 Reports selection on Assessmentreport screen
+	 *	- -10,25,50 and 100 Reports selection on Assessment report screen
 	 * Results: -
 	 *	- - Selected number of reports will be listed in the table
 	 */
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1478, location = AssessmentReportDataProvider.class)
 	public void TC1478_Pagination_AssessmentReport_CustomerSupervisorUser(
@@ -376,9 +422,22 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		//assessmentReportsPageAction.setPagination(EMPTY, NOTSET);
-		//assessmentReportsPageAction.verifyPagination(EMPTY, NOTSET);
+
+		// Create some reports to ensure data table gets populated over multiple executions of the test.
+		createMultipleReports(assessmentReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
+
+		String paginationSetting25 = "25";
+		String paginationSetting50 = "50";
+		String paginationSetting100 = "100";
+
+		assertTrue(this.getAssessmentReportsPage().checkPaginationSetting(PAGINATIONSETTING));
+		assertTrue(!(this.getAssessmentReportsPage().getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+		assertTrue(this.getAssessmentReportsPage().checkPaginationSetting(paginationSetting25));
+		assertTrue(!(this.getAssessmentReportsPage().getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+		assertTrue(this.getAssessmentReportsPage().checkPaginationSetting(paginationSetting50));
+		assertTrue(!(this.getAssessmentReportsPage().getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+		assertTrue(this.getAssessmentReportsPage().checkPaginationSetting(paginationSetting100));
+		assertTrue(!(this.getAssessmentReportsPage().getNumberofRecords() > Integer.parseInt(paginationSetting100)));
 	}
 
 	/**
@@ -386,11 +445,12 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Search valid Assessment Report
 	 * Script: -
 	 *	- - Login as Customer Supervisor user- On Home Page, click Reports -&Assessment
-	 *	- -Search valid report title
+	 *	- - Search valid report title
 	 *	- - Search valid report name
 	 * Results: -
 	 *	- - Report search successful
 	 */
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1482, location = AssessmentReportDataProvider.class)
 	public void TC1482_SearchValidAssessmentReport(
@@ -399,14 +459,18 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(assessmentReportsPageAction.findReport(EMPTY, getReportRowID(reportDataRowID1)));
+
+		// TODO: findReportByName() needs to be implemented fully.
+		//assertTrue(assessmentReportsPageAction.findReportByName(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
-	 * Test Case ID: TC1483_SearchNon_ExistingAssessmentReport
+	 * Test Case ID: TC1483_SearchNonExistingAssessmentReport
 	 * Test Description: Search non-existing Assessment Report
 	 * Script: -
 	 *	- - Login as Customer Supervisor user- On Home Page, click Reports -&Assessment
@@ -416,9 +480,9 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 */
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1483, location = AssessmentReportDataProvider.class)
-	public void TC1483_SearchNon_ExistingAssessmentReport(
+	public void TC1483_SearchNonExistingAssessmentReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1483_SearchNon_ExistingAssessmentReport ...");
+		Log.info("\nRunning TC1483_SearchNonExistingAssessmentReport ...");
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -552,9 +616,9 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, NOTSET);
-		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, NOTSET);
+		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
@@ -591,9 +655,11 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, NOTSET);
-		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, NOTSET);
+
+		manageCustomerPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.createNewCustomer(EMPTY, getReportRowID(reportDataRowID1));
+		manageCustomerPageAction.editCustomerSelectLicensedFeatures(EMPTY, getReportRowID(reportDataRowID1));
+
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));

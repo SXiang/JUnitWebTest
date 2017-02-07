@@ -48,6 +48,7 @@ import common.source.TestSetup;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerBoundaryType;
 import surveyor.dataaccess.source.CustomerMaterialType;
+import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
@@ -1141,6 +1142,23 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		String reportTitle = compRptDataRow.title;
 		String createdBy = LoginPageActions.workingDataRow.get().username;
 		this.getReportsCommonPage().findReport(reportTitle, createdBy);
+		return true;
+	}
+
+	/**
+	 * Executes findReportByName action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean findReportByName(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.findReportByName", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("findReportByName", ARG_DATA_ROW_ID, dataRowID);
+		ReportsCommonDataRow compRptDataRow = getReportsDataRow(dataRowID);
+		String reportName = this.getReportsCommonPage().getReportName(compRptDataRow.title);
+		String createdBy = LoginPageActions.workingDataRow.get().username;
+		this.getReportsCommonPage().findReport(reportName, createdBy);
 		return true;
 	}
 

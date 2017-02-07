@@ -58,6 +58,19 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 
 	/* START - Actions on the Page*/
 
+	/**
+	 * Executes verifyReportModeIsNotShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyReportModeIsNotShownOnPage(String data, Integer dataRowID) {
+		logAction("AssessmentReportsPageActions.verifyReportModeIsNotShownOnPage", data, dataRowID);
+		return !this.getAssessmentReportsPage().isStandardReportModeShown() &&
+				!this.getAssessmentReportsPage().isRapidResponseReportModeShown() &&
+				!this.getAssessmentReportsPage().isManualReportModeShown();
+	}
+
 	/* END - Actions on the Page*/
 
 	/* Invoke action using specified ActionName */
