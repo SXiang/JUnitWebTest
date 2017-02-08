@@ -39,9 +39,14 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
 import common.source.ArrayUtility;
+import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.RegexUtility;
 import common.source.TestContext;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.CustomerBoundaryType;
+import surveyor.dataaccess.source.CustomerMaterialType;
+import surveyor.scommon.actions.ActionArguments;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
@@ -49,7 +54,7 @@ import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader;
 import surveyor.scommon.actions.data.ReportOptViewLayersAssetsDataReader.ReportOptViewLayersAssetsDataRow;
 import surveyor.scommon.actions.data.ReportOptViewLayersBoundaryDataReader.ReportOptViewLayersBoundaryDataRow;
-import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -134,27 +139,37 @@ public class ReportDataProvider extends SurveyorTestRunner {
 	}
 
 	public static Map<String, String> getAllViewLayerAssetsForCustomer(String customerName) throws Exception {
-		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		ExcelUtility excelUtility = getExcelUtility();
 		int customerRowID = getCustomerRowID(customerName, excelUtility);
+		return getAllViewLayerAssetsForCustomer(customerRowID);
+	}
+
+	public static Map<String, String> getAllViewLayerAssetsForCustomer(Integer customerRowID) throws Exception {
+		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
 		if (customerRowID != -1) {
 			// If found a matching customer, get all assets for this customer.
+			ExcelUtility excelUtility = getExcelUtility();
 			addAllViewLayersAssetsForCustomer(viewLayerMap, excelUtility, customerRowID);
 		}
 
 		return viewLayerMap;
 	}
 
-	public static Map<String, String> getAllViewLayerBoundariesForCustomer(String customerName) throws Exception {
+	public static Map<String, String> getAllViewLayerBoundariesForCustomer(Integer customerRowID) throws Exception {
 		Map<String, String> viewLayerMap = Collections.synchronizedMap(new HashMap<String, String>());
-		ExcelUtility excelUtility = getExcelUtility();
-		int customerRowID = getCustomerRowID(customerName, excelUtility);
 		if (customerRowID != -1) {
 			// If found a matching customer, get all boundaries for this customer.
+			ExcelUtility excelUtility = getExcelUtility();
 			addAllViewLayerBoundariesForCustomer(viewLayerMap, excelUtility, customerRowID);
 		}
 
 		return viewLayerMap;
+	}
+
+	public static Map<String, String> getAllViewLayerBoundariesForCustomer(String customerName) throws Exception {
+		ExcelUtility excelUtility = getExcelUtility();
+		int customerRowID = getCustomerRowID(customerName, excelUtility);
+		return getAllViewLayerBoundariesForCustomer(customerRowID);
 	}
 
 	public static Map<String, String> createOptionalViewLayersContent(List<Integer> assetRowIDs,
@@ -220,7 +235,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			for (Integer rowID : assetRowIDs) {
 				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
 				ReportOptViewLayersAssetsDataRow dataRow = viewLayersAssetsDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.assetID, ComplianceReportEntity.ASSET_PREFIX + dataRow.assetName);
+				viewLayerMap.put(dataRow.assetID, ReportCommonEntity.ASSET_PREFIX + dataRow.assetName);
 			}
 		}
 	}
@@ -231,7 +246,7 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			for (Integer rowID : boundaryRowIDs) {
 				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
 				ReportOptViewLayersBoundaryDataRow dataRow = viewLayersBoundaryDataReader.getDataRow(rowID);
-				viewLayerMap.put(dataRow.boundaryID, ComplianceReportEntity.BOUNDARY_PREFIX + dataRow.boundaryName);
+				viewLayerMap.put(dataRow.boundaryID, ReportCommonEntity.BOUNDARY_PREFIX + dataRow.boundaryName);
 			}
 		}
 	}
@@ -240,10 +255,19 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			throws Exception {
 		int assetsRowCount = excelUtility.getRowCount(ReportOptViewLayersAssetsDataReader.TESTDATA_SHEET_NAME);
 		ReportOptViewLayersAssetsDataReader assetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
+		Customer customer = getCustomer(excelUtility, customerRowID);
 		for (int i = 0; i < assetsRowCount; i++) {
 			ReportOptViewLayersAssetsDataRow assetsDataRow = assetsDataReader.getDataRow(i);
-			if (Integer.valueOf(assetsDataRow.customerRowID) == customerRowID) {
-				viewLayerMap.put(assetsDataRow.assetID, ComplianceReportEntity.ASSET_PREFIX + assetsDataRow.assetName);
+			if (!BaseHelper.isNullOrEmpty(assetsDataRow.customerRowID)) {
+				if (Integer.valueOf(assetsDataRow.customerRowID) == customerRowID) {
+					String assetID = assetsDataRow.assetID;
+					if (BaseHelper.isNullOrEmpty(assetID)) {
+						// AssetID not static. Determine assetId from DB.
+						assetID = CustomerMaterialType.getCustomerMaterialTypeByName(assetsDataRow.assetName, customer.getId()).getId().toLowerCase();
+					}
+
+					viewLayerMap.put(assetID, ReportCommonEntity.ASSET_PREFIX + assetsDataRow.assetName);
+				}
 			}
 		}
 	}
@@ -252,11 +276,27 @@ public class ReportDataProvider extends SurveyorTestRunner {
 			throws Exception {
 		int boundaryRowCount = excelUtility.getRowCount(ReportOptViewLayersBoundaryDataReader.TESTDATA_SHEET_NAME);
 		ReportOptViewLayersBoundaryDataReader boundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
+		Customer customer = getCustomer(excelUtility, customerRowID);
 		for (int i = 0; i < boundaryRowCount; i++) {
 			ReportOptViewLayersBoundaryDataRow boundaryDataRow = boundaryDataReader.getDataRow(i);
-			if (Integer.valueOf(boundaryDataRow.customerRowID) == customerRowID) {
-				viewLayerMap.put(boundaryDataRow.boundaryID, ComplianceReportEntity.BOUNDARY_PREFIX + boundaryDataRow.boundaryName);
+			if (!BaseHelper.isNullOrEmpty(boundaryDataRow.customerRowID)) {
+				if (Integer.valueOf(boundaryDataRow.customerRowID) == customerRowID) {
+					String boundaryID = boundaryDataRow.boundaryID;
+					if (BaseHelper.isNullOrEmpty(boundaryID)) {
+						// BoundaryID not static. Determine boundaryId from DB.
+						boundaryID = CustomerBoundaryType.getCustomerBoundaryTypeByName(boundaryDataRow.boundaryName, customer.getId()).getId().toLowerCase();
+					}
+
+					viewLayerMap.put(boundaryID, ReportCommonEntity.BOUNDARY_PREFIX + boundaryDataRow.boundaryName);
+				}
 			}
 		}
+	}
+
+	private static Customer getCustomer(ExcelUtility excelUtility, int customerRowID) throws Exception {
+		CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+		CustomerDataRow customerDataRow = customerDataReader.getDataRow(customerRowID);
+		Customer customer = Customer.getCustomer(customerDataRow.name);
+		return customer;
 	}
 }

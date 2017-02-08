@@ -51,6 +51,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -134,6 +135,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[2]")
 	protected WebElement btnCancelRptMode;
+
+	@FindBy(name = "report-survey-mode-type")
+	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
 
 	@FindBy(how = How.ID, using = "report-LISA-opacity")
 	protected WebElement inputLISAOpacity;
@@ -472,6 +476,22 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			this.inputSWLong.clear();
 			this.inputSWLong.sendKeys(swLong);
 		}
+	}
+
+	/**
+	 * Get the selected Report Mode.
+	 */
+	public ReportModeFilter getReportModeFilter() {
+		for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
+			if (radElement.isSelected()) {
+				Map<String, ReportModeFilter> reportSurveyModeFilterGuids = BaseReportEntity.ReportSurveyModeFilterGuids;
+				return reportSurveyModeFilterGuids.entrySet().stream()
+					.filter(e -> e.getKey().equalsIgnoreCase(radElement.getAttribute("value")))
+					.map(e -> e.getValue())
+					.findFirst().orElse(ReportModeFilter.All);
+			}
+		}
+		return ReportModeFilter.All;
 	}
 
 	public ReportModeFilter getReportMode(String reportMode) {
@@ -2660,7 +2680,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	public String getLISAOpacity() {
-		return this.inputLISAOpacity.getText();
+		return this.inputLISAOpacity.getAttribute("value");
 	}
 
 	public void waitForConfirmReportModeChangePopupToClose() {

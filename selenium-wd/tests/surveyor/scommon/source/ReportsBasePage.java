@@ -409,9 +409,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(name = "survey-mode-type")
 	private List<WebElement> surveyModeTypeRadiobuttonList;
 
-	@FindBy(name = "report-survey-mode-type")
-	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
-
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
 
@@ -524,7 +521,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String getExclusionRadius() {
-		return this.inputExclusionRadius.getText();
+		return this.inputExclusionRadius.getAttribute("value");
 	}
 
 	protected String getSoftwareVersionFromPDF(Supplier<String> downloadPath) {
@@ -555,39 +552,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return softwareVersion;
 	}
 
-	/**
-	 * Get the selected Report Mode.
-	 */
-	public ReportModeFilter getReportModeFilter() {
-		for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
-			Map<String, ReportModeFilter> reportSurveyModeFilterGuids = BaseReportEntity.ReportSurveyModeFilterGuids;
-			Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
-			for (Entry<String, ReportModeFilter> entry : entrySet) {
-				if (entry.getKey().equals(radElement.getAttribute("value"))) {
-					if (radElement.isSelected())
-						return entry.getValue();
-				}
-			}
-		}
-		return ReportModeFilter.All;
-	}
-
 	/***** Area Selector values *****/
 
 	public String getNELatitude() {
-		return this.inputNELat.getText();
+		return this.inputNELat.getAttribute("value");
 	}
 
 	public String getNELongitude() {
-		return this.inputNELong.getText();
+		return this.inputNELong.getAttribute("value");
 	}
 
 	public String getSWLatitude() {
-		return this.inputSWLat.getText();
+		return this.inputSWLat.getAttribute("value");
 	}
 
 	public String getSWLongitude() {
-		return this.inputSWLong.getText();
+		return this.inputSWLong.getAttribute("value");
 	}
 
 	/***** Survey Selector values *****/
@@ -636,17 +616,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/************ Opacity Fine Tuning Values *************/
 
 	public String getFOVOpacity() {
-		return this.inputFOVOpacity.getText();
+		return this.inputFOVOpacity.getAttribute("value");
 	}
 
 	/************ PDF Output Values *************/
 
 	public String getPDFWidth() {
-		return this.inputImgMapWidth.getText();
+		return this.inputImgMapWidth.getAttribute("value");
 	}
 
 	public String getPDFHeight() {
-		return this.inputImgMapHeight.getText();
+		return this.inputImgMapHeight.getAttribute("value");
 	}
 
 	/************ Report Generation Timeout *************/
@@ -770,8 +750,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 	public void fillReport(BaseReportEntity reports) throws Exception {
-		// 1. Title and Customer
+		// 1. Title and Timezone
 		inputReportTitle(reports.getRptTitle());
+
+		selectTimeZone(reports.getTimeZone());
 
 		// 2. Other parameters
 		fillReportSpecific(reports);
@@ -1753,6 +1735,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
+		Log.method("copyReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 		String reportTitleXPath;
 		String createdByXPath;

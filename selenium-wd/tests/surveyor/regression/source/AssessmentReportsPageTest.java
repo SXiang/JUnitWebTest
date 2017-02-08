@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 
 import common.source.Log;
@@ -23,6 +24,7 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
@@ -57,6 +59,14 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		initializePageActions();
 
+		initializePageObjects();
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+
+	}
+
+	private void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 		homePage = pageObjectFactory.getHomePage();
 		PageFactory.initElements(getDriver(), homePage);
@@ -66,6 +76,14 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 	private AssessmentReportsPage getAssessmentReportsPage() {
 		return (AssessmentReportsPage)getReportsPage();
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			assessmentReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
 	}
 
 	/**
@@ -313,7 +331,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	-
 	 *	- - Only assessment customer's surveys should be present in the searched list on copy screen
 	 */
-	// TODO: Check surveys are assessment surveys.
+	// Verified.
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1439, location = AssessmentReportDataProvider.class)
 	public void TC1439_AssessmentReportCanIncludeOnlyAssessmentSurveysCopyScreen(
@@ -327,16 +345,8 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 
-		assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-		modifyReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-
-		assessmentReportsPageAction.open(EMPTY, NOTSET);
-		assessmentReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
-		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
-		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
-
-		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
+		assessmentReportsPageAction.copyReport(AssessmentReportsPageActions.workingDataRow.get().title, NOTSET);
+		assertTrue(assessmentReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -487,9 +497,10 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
-		assertTrue(assessmentReportsPageAction.findReport(EMPTY, getReportRowID(reportDataRowID1)));
+
+		// Search for report without creation (non-existent report)
+		assertFalse(assessmentReportsPageAction.getAssessmentReportsPage().searchReport("INVALID_REPORT_TITLE987", LoginPageActions.workingDataRow.get().username));
+		assertEquals(NOMATCHINGSEARCH, assessmentReportsPageAction.getAssessmentReportsPage().getEmptyTableMessage());
 	}
 
 	/**

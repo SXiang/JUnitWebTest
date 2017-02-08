@@ -28,7 +28,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -45,6 +48,7 @@ import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.CustomerBoundaryType;
 import surveyor.dataaccess.source.CustomerMaterialType;
@@ -52,6 +56,7 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.User;
+import surveyor.dataprovider.ReportDataProvider;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
@@ -115,10 +120,95 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 				isPDFPercentCoverageForecastSelectionMatch(dataRow) && isPDFPercentCoverageReportAreaSelectionMatch(dataRow);
 	}
 
-	// TODO: Check assets and boundaries provided to the dataRow.
-	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) {
-		return false;
+	/**
+	 * Verified if asset and boundary checkboxes corresponding to the value in DataRow are selected in UI.
+	 * Method supports known customer assets.
+	 * @param dataRow
+	 * @return
+	 * @throws Exception
+	 */
+	private boolean areAssetBoundariesMatch(ReportOptViewLayersDataRow dataRow) throws Exception {
+		Log.method("areAssetBoundariesMatch", dataRow);
+		return areAssetsMatch(dataRow) && areBoundariesMatch(dataRow);
 	}
+
+	private boolean areAssetsMatch(ReportOptViewLayersDataRow dataRow) throws Exception {
+		Log.method("areAssetsMatch", dataRow);
+		boolean areAssetsMatch = true;
+		if (!ActionArguments.isEmpty(dataRow.assetRowIDs)) {
+			Map<String, String> assetsForCustomer = null;
+			List<Integer> assetRowIDs = ActionArguments.getNumericList(dataRow.assetRowIDs);
+			for (Integer assetRowID : assetRowIDs) {
+				ReportOptViewLayersAssetsDataReader viewLayersAssetsDataReader = new ReportOptViewLayersAssetsDataReader(excelUtility);
+				ReportOptViewLayersAssetsDataRow viewLayersAssetsDataRow = viewLayersAssetsDataReader.getDataRow(assetRowID);
+				WebElement assetElement = null;
+				if (!ActionArguments.isEmpty(viewLayersAssetsDataRow.assetID)) {
+					assetElement = this.getReportsCommonPage().getViewLayerAssetCheckbox(viewLayersAssetsDataRow.assetID);
+				} else {
+					if (assetsForCustomer == null) {
+						assetsForCustomer = ReportDataProvider.getAllViewLayerAssetsForCustomer(Integer.valueOf(viewLayersAssetsDataRow.customerRowID));
+					}
+
+					Optional<String> customerAssetID = assetsForCustomer.entrySet().stream()
+						.filter(e -> e.getValue().replace(ReportCommonEntity.ASSET_PREFIX, "").equalsIgnoreCase(viewLayersAssetsDataRow.assetName))
+						.map(e -> e.getKey())
+						.findFirst();
+
+					if (customerAssetID.isPresent()) {
+						assetElement = this.getReportsCommonPage().getViewLayerAssetCheckbox(customerAssetID.get());
+					}
+				}
+
+				areAssetsMatch = areAssetsMatch && (assetElement!=null) && assetElement.isSelected();
+
+				if (!areAssetsMatch) {
+					Log.error(String.format("Asset checkbox value MISMATCH for Asset=[%s]", viewLayersAssetsDataRow.assetName));
+				}
+			}
+		}
+
+		return areAssetsMatch;
+	}
+
+	private boolean areBoundariesMatch(ReportOptViewLayersDataRow dataRow) throws Exception {
+		Log.method("areBoundariesMatch", dataRow);
+		boolean areBoundariesMatch = true;
+		if (!ActionArguments.isEmpty(dataRow.boundariesRowIDs)) {
+			Map<String, String> boundariesForCustomer = null;
+			List<Integer> boundaryRowIDs = ActionArguments.getNumericList(dataRow.boundariesRowIDs);
+			for (Integer boundaryRowID : boundaryRowIDs) {
+				ReportOptViewLayersBoundaryDataReader viewLayersBoundaryDataReader = new ReportOptViewLayersBoundaryDataReader(excelUtility);
+				ReportOptViewLayersBoundaryDataRow viewLayersBoundaryDataRow = viewLayersBoundaryDataReader.getDataRow(boundaryRowID);
+				WebElement boundaryElement = null;
+				if (!ActionArguments.isEmpty(viewLayersBoundaryDataRow.boundaryID)) {
+					boundaryElement = this.getReportsCommonPage().getViewLayerBoundaryCheckbox(viewLayersBoundaryDataRow.boundaryName);
+				} else {
+					if (boundariesForCustomer == null) {
+						boundariesForCustomer = ReportDataProvider.getAllViewLayerBoundariesForCustomer(Integer.valueOf(viewLayersBoundaryDataRow.customerRowID));
+					}
+
+					Optional<String> customerBoundaryName = boundariesForCustomer.entrySet().stream()
+						.filter(e -> e.getValue().replace(ReportCommonEntity.BOUNDARY_PREFIX, "").equalsIgnoreCase(viewLayersBoundaryDataRow.boundaryName))
+						.map(e -> e.getValue().replace(ReportCommonEntity.BOUNDARY_PREFIX, ""))
+						.findFirst();
+
+					if (customerBoundaryName.isPresent()) {
+						boundaryElement = this.getReportsCommonPage().getViewLayerBoundaryCheckbox(customerBoundaryName.get());
+					}
+				}
+
+				areBoundariesMatch = areBoundariesMatch && (boundaryElement!=null) && boundaryElement.isSelected();
+
+				if (!areBoundariesMatch) {
+					Log.error(String.format("Boundary checkbox value MISMATCH for Boundary=[%s]", viewLayersBoundaryDataRow.boundaryName));
+				}
+			}
+		}
+
+		return areBoundariesMatch;
+	}
+
+
 
 	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
@@ -142,22 +232,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 			}
 			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(excelUtility);
 			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(rowID);
-
-			SurveyModeFilter modeFilter = SurveyModeFilter.All;
-			if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("standard")) {
-				modeFilter = SurveyModeFilter.Standard;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("assessment")) {
-				modeFilter = SurveyModeFilter.Assessment;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("eq")) {
-				modeFilter = SurveyModeFilter.EQ;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("manual")) {
-				modeFilter = SurveyModeFilter.Manual;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("operator")) {
-				modeFilter = SurveyModeFilter.Operator;
-			} else if (surveyDataRow.surveyModeFilter.equalsIgnoreCase("rapid response")) {
-				modeFilter = SurveyModeFilter.RapidResponse;
-			}
-
+			SurveyModeFilter modeFilter = toSurveyModeFilter(surveyDataRow.surveyModeFilter);
 			reportsSurveyInfoList.add(new ReportsSurveyInfo(
 					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag,
 					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate,
@@ -166,6 +241,24 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 					Boolean.valueOf(surveyDataRow.selectAllSurveys)));
 		}
 		return reportsSurveyInfoList;
+	}
+
+	private static SurveyModeFilter toSurveyModeFilter(String surveyModeFilter) {
+		SurveyModeFilter modeFilter = SurveyModeFilter.All;
+		if (surveyModeFilter.equalsIgnoreCase("standard")) {
+			modeFilter = SurveyModeFilter.Standard;
+		} else if (surveyModeFilter.equalsIgnoreCase("assessment")) {
+			modeFilter = SurveyModeFilter.Assessment;
+		} else if (surveyModeFilter.equalsIgnoreCase("eq")) {
+			modeFilter = SurveyModeFilter.EQ;
+		} else if (surveyModeFilter.equalsIgnoreCase("manual")) {
+			modeFilter = SurveyModeFilter.Manual;
+		} else if (surveyModeFilter.equalsIgnoreCase("operator")) {
+			modeFilter = SurveyModeFilter.Operator;
+		} else if (surveyModeFilter.equalsIgnoreCase("rapid response")) {
+			modeFilter = SurveyModeFilter.RapidResponse;
+		}
+		return modeFilter;
 	}
 
 	protected void fillViewDetails(Map<String, String> viewMap, ReportViewsDataReader reader,
@@ -239,7 +332,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 						// AssetID not static. Determine assetId from DB.
 						assetID = CustomerMaterialType.getCustomerMaterialTypeByName(dataRow.assetName, customerId).getId().toLowerCase();
 					}
-					viewLayerMap.put(assetID, ComplianceReportEntity.ASSET_PREFIX + dataRow.assetName);
+					viewLayerMap.put(assetID, ReportCommonEntity.ASSET_PREFIX + dataRow.assetName);
 				}
 			}
 			argValue = reader.getDataRow(dataRowID).boundariesRowIDs;
@@ -256,7 +349,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 						// BoundaryID not static. Determine boundaryId from DB.
 						boundaryID = CustomerBoundaryType.getCustomerBoundaryTypeByName(dataRow.boundaryName, customerId).getId().toLowerCase();
 					}
-					viewLayerMap.put(boundaryID, ComplianceReportEntity.BOUNDARY_PREFIX + dataRow.boundaryName);
+					viewLayerMap.put(boundaryID, ReportCommonEntity.BOUNDARY_PREFIX + dataRow.boundaryName);
 				}
 			}
 		} else {
@@ -266,12 +359,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 			// US3653 -> tracks improving this implementation and make it more flexible to select specific Assets/Boundaries
 			//          if test cases require this implementation in future.
 			if (dataRowID == -1) {
-				viewLayerMap.put(ReportsCommonPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ComplianceReportEntity.ASSET_ALL_PREFIX);
+				viewLayerMap.put(ReportsCommonPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ReportCommonEntity.ASSET_ALL_PREFIX);
 			} else if (dataRowID == -2) {
-				viewLayerMap.put(ReportsCommonPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ComplianceReportEntity.BOUNDARY_ALL_PREFIX);
+				viewLayerMap.put(ReportsCommonPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ReportCommonEntity.BOUNDARY_ALL_PREFIX);
 			} else if (dataRowID == -4) {
-				viewLayerMap.put(ReportsCommonPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ComplianceReportEntity.ASSET_ALL_PREFIX);
-				viewLayerMap.put(ReportsCommonPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ComplianceReportEntity.BOUNDARY_ALL_PREFIX);
+				viewLayerMap.put(ReportsCommonPage.REPORT_ASSET_SELECTALL_CHKBX_ID, ReportCommonEntity.ASSET_ALL_PREFIX);
+				viewLayerMap.put(ReportsCommonPage.REPORT_BOUNDRY_SELECTALL_CHKBX_ID, ReportCommonEntity.BOUNDARY_ALL_PREFIX);
 			}
 		}
 	}
@@ -428,28 +521,29 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		}
 		return fileIndex;
 	}
+
 	private boolean isPDFGapSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFGapSelected() && (dataRow.gapTable == "TRUE");
+		return dataRow.gapTable.equalsIgnoreCase("FALSE") || (dataRow.gapTable.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFGapSelected());
 	}
 
 	private boolean isPDFIndicationSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFIndicationSelected() && (dataRow.indicationTable == "TRUE");
+		return dataRow.indicationTable.equalsIgnoreCase("FALSE") || (dataRow.indicationTable.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFIndicationSelected());
 	}
 
 	private boolean isPDFIsotopicAnalysisSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFIsotopicAnalysisSelected() && (dataRow.isotopicAnalysis == "TRUE");
+		return dataRow.isotopicAnalysis.equalsIgnoreCase("FALSE") || (dataRow.isotopicAnalysis.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFIsotopicAnalysisSelected());
 	}
 
 	private boolean isPDFPercentCoverageAssetsSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFPercentCoverageAssetsSelected() && (dataRow.percentCoverageAssets == "TRUE");
+		return dataRow.percentCoverageAssets.equalsIgnoreCase("FALSE") || (dataRow.percentCoverageAssets.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFPercentCoverageAssetsSelected());
 	}
 
 	private boolean isPDFPercentCoverageForecastSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFPercentCoverageForecastSelected() && (dataRow.percentCoverageForecast == "TRUE");
+		return dataRow.percentCoverageForecast.equalsIgnoreCase("FALSE") || (dataRow.percentCoverageForecast.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFPercentCoverageForecastSelected());
 	}
 
 	private boolean isPDFPercentCoverageReportAreaSelectionMatch(ReportOptTabularPDFContentDataRow dataRow) {
-		return this.getReportsCommonPage().isPDFPercentCoverageReportAreaSelected() && (dataRow.percentCoverageReportArea == "TRUE");
+		return dataRow.percentCoverageReportArea.equalsIgnoreCase("FALSE") || (dataRow.percentCoverageReportArea.equalsIgnoreCase("TRUE") && this.getReportsCommonPage().isPDFPercentCoverageReportAreaSelected());
 	}
 
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
@@ -494,8 +588,31 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return this.getReportsCommonPage().verifyComplianceReportButton(reportTitle, LoginPageActions.workingDataRow.get().username, buttonType);
 	}
 
-	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) throws IOException {
-		return false;
+	private boolean verifyReportSurveyValuesMatch(List<Integer> surveyRowIDs) throws Exception {
+		boolean retVal = true;
+		int len = surveyRowIDs.size();
+		for (int i = 0; i < len; i++) {
+			ReportSurveyDataReader surveyDataReader = new ReportSurveyDataReader(excelUtility);
+			ReportSurveyDataRow surveyDataRow = surveyDataReader.getDataRow(surveyRowIDs.get(i));
+			SurveyModeFilter mode = toSurveyModeFilter(surveyDataRow.surveyModeFilter);
+			String tag = surveyDataRow.surveyTag;
+
+			// Divs appears on page in reverse order in UI. ie highest number appears first, lowest last.
+			WebElement surveyDiv = getDriver().findElement(By.id(String.format("surveyContent-%d", len-i-1)));
+			WebElement surveyMode = surveyDiv.findElement(By.id(String.format("report-run-%d-surveymode", len-i-1)));
+			WebElement surveyTag = surveyDiv.findElement(By.id(String.format("report-run-%d-surveytag", len-i-1)));
+
+			retVal = retVal && surveyMode.getText().equals(mode.toString()) && surveyTag.getText().startsWith(tag);
+
+			if (!retVal) {
+				Log.error(String.format("Incorrect match found for survey tag-'%s' -> "
+						+ "Survey mode=[Expected-'%s';Actual-'%s'], Survey tag=[Expected-'%s';Actual-'%s']",
+						surveyTag.getText(), mode, surveyMode.getText(), tag, surveyTag.getText()));
+				break;
+			}
+		}
+
+		return retVal;
 	}
 
 	/**
@@ -1899,17 +2016,17 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	public boolean verifyReportPageFieldsAreCorrect(String data, Integer dataRowID) throws Exception {
+
 		logAction("ReportsCommonPageActions.verifyReportPageFieldsAreCorrect", data, dataRowID);
 		ReportsCommonDataRow dataRow = getReportsDataRow(dataRowID);
-		String customerName = new CustomerDataReader(this.excelUtility).getDataRow(NumberUtility.getIntegerValueOf(dataRow.customerRowID)).name;
 		List<Integer> surveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		Integer reportViewLayerRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptViewLayerRowID);
 		ReportOptViewLayersDataRow reportOptViewLayersDataRow = new ReportOptViewLayersDataReader(this.excelUtility).getDataRow(reportViewLayerRowID);
 		Integer reportPDFContentRowID = NumberUtility.getIntegerValueOf(dataRow.reportOptTabularPDFContentRowID);
 		ReportOptTabularPDFContentDataRow reportPDFContentDataRow = new ReportOptTabularPDFContentDataReader(this.excelUtility).getDataRow(reportPDFContentRowID);
+		//String customerName = new CustomerDataReader(this.excelUtility).getDataRow(NumberUtility.getIntegerValueOf(dataRow.customerRowID)).name;
 		//boolean reportTitleMatches = (dataRow.title == this.getReportsCommonPage().getReportTitle());
 
-		String actualCustomerValue = this.getReportsCommonPage().getCustomerValue();
 		String actualTimezoneValue = this.getReportsCommonPage().getTimezoneValue();
 		String actualExclusionRadius = this.getReportsCommonPage().getExclusionRadius();
 		String actualNELatitude = this.getReportsCommonPage().getNELatitude();
@@ -1920,7 +2037,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		String actualPDFWidth = this.getReportsCommonPage().getPDFWidth();
 		String actualPDFHeight = this.getReportsCommonPage().getPDFHeight();
 
-		Log.info(String.format("Matching customer. Expected=[%s], Actual=[%s]", customerName, actualCustomerValue));
 		Log.info(String.format("Matching timezone. Expected=[%s], Actual=[%s]", dataRow.timezone, actualTimezoneValue));
 		Log.info(String.format("Matching exclusionRadius. Expected=[%s], Actual=[%s]", dataRow.exclusionRadius, actualExclusionRadius));
 		Log.info(String.format("Matching customBoundaryNELat. Expected=[%s], Actual=[%s]", dataRow.customBoundaryNELat, actualNELatitude));
@@ -1928,10 +2044,9 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		Log.info(String.format("Matching customBoundarySWLat. Expected=[%s], Actual=[%s]", dataRow.customBoundarySWLat, actualSWLatitude));
 		Log.info(String.format("Matching customBoundarySWLong. Expected=[%s], Actual=[%s]", dataRow.customBoundarySWLong, actualSWLongitude));
 		Log.info(String.format("Matching opacityFOV. Expected=[%s], Actual=[%s]", dataRow.opacityFOV, actualFOVOpacity));
-		Log.info(String.format("Matching pDFImageOutputWidth. Expected=[%s], Actual=[%s]", dataRow.pDFImageOutputWidth, actualPDFWidth));
-		Log.info(String.format("Matching pDFImageOutputHeight. Expected=[%s], Actual=[%s]", dataRow.pDFImageOutputHeight, actualPDFHeight));
+		Log.info(String.format("Matching pDFImageOutputWidth. Expected=[%f], Actual=[%f]", Double.valueOf(dataRow.pDFImageOutputWidth), Double.valueOf(actualPDFWidth)));
+		Log.info(String.format("Matching pDFImageOutputHeight. Expected=[%f], Actual=[%f]", Double.valueOf(dataRow.pDFImageOutputHeight), Double.valueOf(actualPDFHeight)));
 
-		boolean customerMatches = (customerName.equals(actualCustomerValue));
 		boolean timezoneMatches = (dataRow.timezone.equals(actualTimezoneValue));
 		boolean exclusionRadiusMatches = (dataRow.exclusionRadius.equals(actualExclusionRadius));
 		boolean nELatMatches = (dataRow.customBoundaryNELat.equals(actualNELatitude));
@@ -1939,15 +2054,22 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		boolean sWLatMatches = (dataRow.customBoundarySWLat.equals(actualSWLatitude));
 		boolean sWLongMatches = (dataRow.customBoundarySWLong.equals(actualSWLongitude));
 		boolean fovOpacityMatches = (dataRow.opacityFOV.equals(actualFOVOpacity));
-		boolean pdfWidthMatches = (dataRow.pDFImageOutputWidth.equals(actualPDFWidth));
-		boolean pdfHeightMatches = (dataRow.pDFImageOutputHeight.equals(actualPDFHeight));
+		boolean pdfWidthMatches = (Double.valueOf(dataRow.pDFImageOutputWidth).equals(Double.valueOf(actualPDFWidth)));
+		boolean pdfHeightMatches = (Double.valueOf(dataRow.pDFImageOutputHeight).equals(Double.valueOf(actualPDFHeight)));
 		boolean verifyReportSurveyValuesMatch = verifyReportSurveyValuesMatch(surveyRowIDs);
 		boolean areAssetBoundariesMatch = areAssetBoundariesMatch(reportOptViewLayersDataRow);
 		boolean areTabularPDFContentSelectionMatch = areTabularPDFContentSelectionMatch(reportPDFContentDataRow);
 
 		boolean reportsSpecifiedFieldsMatch = verifyReportsSpecificPageFieldsAreCorrect(dataRow);
 
-		return /*reportTitleMatches &&*/ customerMatches && timezoneMatches && exclusionRadiusMatches &&
+		Log.info(String.format("MATCH result -> timezoneMatches=[%b];exclusionRadiusMatches=[%b];nELatMatches=[%b];nELongMatches=[%b];"
+				+ "sWLatMatches=[%b];sWLongMatches=[%b];fovOpacityMatches=[%b];pdfWidthMatches=[%b];pdfHeightMatches=[%b];verifyReportSurveyValuesMatch=[%b]"
+				+ ";areAssetBoundariesMatch=[%b];areTabularPDFContentSelectionMatch=[%b]",
+				timezoneMatches,exclusionRadiusMatches,nELatMatches,nELongMatches,
+				sWLatMatches,sWLongMatches,fovOpacityMatches,pdfWidthMatches,pdfHeightMatches,verifyReportSurveyValuesMatch,
+				areAssetBoundariesMatch,areTabularPDFContentSelectionMatch));
+
+		return timezoneMatches && exclusionRadiusMatches &&
 				nELatMatches && nELongMatches && sWLatMatches && sWLongMatches && fovOpacityMatches &&
 				pdfWidthMatches && pdfHeightMatches && verifyReportSurveyValuesMatch &&
 				areAssetBoundariesMatch && areTabularPDFContentSelectionMatch && reportsSpecifiedFieldsMatch;

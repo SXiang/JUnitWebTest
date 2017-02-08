@@ -1,6 +1,5 @@
 package surveyor.scommon.source;
 
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -23,7 +22,7 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 	// These variables are added for unit testing page actions.
 	// Remove these variables after verifications.
 	//==============================================================================================================
-	private static final Integer testDataRowID1_User1 = 6;
+	private static final Integer testDataRowID1_User1 = 2;
 	private static final Integer testDataRowID1_Report_Std1 = 49;
 
 	//===============================================================================================================

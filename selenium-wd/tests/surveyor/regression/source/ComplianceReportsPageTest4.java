@@ -77,10 +77,10 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, 4);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 4);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
-		complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4);
+		assertTrue(complianceReportsPageAction.verifyReportPageFieldsAreCorrect(EMPTY, 4));
 		modifyReport(complianceReportsPageAction, 5);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 5);
-		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 5);
+		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 5));
 	}
 
 	/**
@@ -106,10 +106,10 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Manual", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
-		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7));
 		modifyReport(complianceReportsPageAction, 7);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 7);
-		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7);
+		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 7));
 	}
 
 	/**
@@ -135,10 +135,10 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
 		complianceReportsPageAction.selectReportMode("Standard", 7);
 		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
-		complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7));
 		modifyReport(complianceReportsPageAction, 9);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 9);
-		complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9);
+		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9));
 	}
 
 	/**
