@@ -1289,7 +1289,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString)
+	public boolean verifyReportContainsText(String reportTitle, List<String> expectedReportString)
 			throws IOException {
 		Log.method("ComplianceReportsPage.verifyComplianceReportContainsText", reportTitle,
 				LogHelper.listToString(expectedReportString));

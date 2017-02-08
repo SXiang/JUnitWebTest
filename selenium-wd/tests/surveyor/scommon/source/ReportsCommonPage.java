@@ -618,7 +618,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private String getViewsTableInputElementXpath(String className, Integer rowNum) {
 		String strXPath = String.format("//*[@id='datatableViews']/tbody/tr/td/input[contains(@class,'%s')]", className);
 		if (rowNum > 1) {
-			strXPath = String.format("//*[@id='datatableViews']/tbody/tr[%d]]/td/input[contains(@class,'%s')]",
+			strXPath = String.format("//*[@id='datatableViews']/tbody/tr[%d]/td/input[contains(@class,'%s')]",
 					rowNum, className);
 		}
 
@@ -1816,7 +1816,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportContainsText(String reportTitle, List<String> expectedReportString)
+	public boolean verifyReportContainsText(String reportTitle, List<String> expectedReportString)
 			throws IOException {
 		Log.method("ReportsCommonPage.verifyComplianceReportContainsText", reportTitle,
 				LogHelper.listToString(expectedReportString));
@@ -3492,12 +3492,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
+		fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/);
+	}
+
+	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> outBoundaryNames) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
-		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
+		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
 		latLongSelectionControl.switchMode(ControlMode.Default);
 		latLongSelectionControl.clickOkButton();
 		latLongSelectionControl.waitForModalDialogToClose();

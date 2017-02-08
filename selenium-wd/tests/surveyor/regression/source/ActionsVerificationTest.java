@@ -23,6 +23,8 @@ import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
 import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorConstants;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -368,36 +370,9 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
 
-		// Create new customer.
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
-
-		// Create new location.
-		manageLocationPageAction.open(EMPTY, NOTSET);
-		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID /*locationRowID*/);
-
-		// Create new user.
-		manageUsersPageAction.open(EMPTY, NOTSET);
-		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID /*userRowID*/);
-
-		// Create new surveyor.
-		manageSurveyorPageAction.open(EMPTY, NOTSET);
-		manageSurveyorPageAction.createNewSurveyor(EMPTY, newSurveyorRowID /*surveyorRowID*/);
-
-		// Create new analyzer.
-		manageAnalyzerPageAction.open(EMPTY, NOTSET);
-		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, newAnalyzerRowID /*analyzerRowID*/);
-
-		// Create new ref gas bottle.
-		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
-		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, newRefGasBottleRowID /*refGasBottleRowID*/);
-
-		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
-		// For such cases, use the overload with username and password for generateSurveyForUser().
-		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
-		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
-		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-				DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
+		new TestDataGenerator().generateNewCustomerAndSurvey(new CustomerSurveyInfoEntity(
+				SURVEY_RUNTIME_IN_SECONDS, newLocationRowID, newSurveyorRowID, newRefGasBottleRowID,
+				newAnalyzerRowID, newCustomerUserRowID, SURVEY_ROW_ID, newCustomerRowID, DB3_ANALYZER_ROW_ID));
 	}
 
 	/**

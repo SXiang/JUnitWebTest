@@ -12,6 +12,8 @@ import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ReportCommonPageActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
 
 public class BaseReportsPageActionTest extends BaseReportsPageTest {
 
@@ -118,14 +120,35 @@ public class BaseReportsPageActionTest extends BaseReportsPageTest {
 		this.cleanUpPerformed = cleanUpPerformed;
 	}
 
-	protected boolean executeAsCustomerWithGISData(Predicate<ReportCommonPageActions> testActions, ReportCommonPageActions pageAction,
-			Integer reportDataRowID) {
+	/**
+	 * Creates a new customer and a survey with specified parameters. Executes GIS seed and runs the steps specified in Predicate.
+	 * @param pageAction - page action object
+	 * @param custSrvInfo - customer and survey row id info
+	 * @param reportDataRowID - report row id
+	 * @param testActions - test actions to run
+	 * @return
+	 */
+	protected boolean executeAsNewCustomerWithSurveyAndGISData(ReportCommonPageActions pageAction, CustomerSurveyInfoEntity custSrvInfo, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
+		try {
+			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+		} catch (Exception e) {
+			Log.error(String.format("EXCEPTION when creating customer and survey. Error -> %s",
+					ExceptionUtility.getStackTraceString(e)));
+		}
+
 		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-		return executeAsCustomerWithGISData(testActions, pageAction, reportDataRowID, customer.getId());
+		return executeAsCustomerWithGISData(pageAction, customer.getId(), reportDataRowID, testActions);
 	}
 
-	protected boolean executeAsCustomerWithGISData(Predicate<ReportCommonPageActions> testActions, ReportCommonPageActions pageAction,
-			Integer reportDataRowID, String customerId) {
+	/**
+	 * Executes GIS seed for specified customer and runs the steps specified in Predicate.
+	 * @param pageAction - page action object
+	 * @param customerId - guid of customer in DB
+	 * @param reportDataRowID - report row id
+	 * @param testActions - test actions to run
+	 * @return
+	 */
+	protected boolean executeAsCustomerWithGISData(ReportCommonPageActions pageAction, String customerId, Integer reportDataRowID, Predicate<ReportCommonPageActions> testActions) {
 		boolean retVal = false;
 		try {
 			// Add GIS seed for customer.

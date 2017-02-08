@@ -39,6 +39,7 @@ import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.NumberUtility;
@@ -1124,6 +1125,33 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes getCustomerBoundNamesUsingAreaSelector action.
+	 * @param data - Customer boundary info in format <boundaryType>,<boundaryName>
+	 * 		For eg. SmallBoundary,Level-01
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean fillAndVerifyCustomerBoundaryNamesListInAreaSelectorIsCorrect(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.fillAndVerifyCustomerBoundaryNamesListInAreaSelectorIsCorrect", data, dataRowID);
+		List<String> boundaryNameList = new ArrayList<String>();
+		String customerBoundaryName = "";
+		if (dataRowID != -1) {
+			ReportsCommonDataRow reportsDataRow = getReportsDataRow(dataRowID);
+			customerBoundaryName = reportsDataRow.customerBoundaryName;
+			this.getReportsCommonPage().fillCustomerBoundary(reportsDataRow.customerBoundaryType,
+					customerBoundaryName, boundaryNameList);
+		} else {
+			ActionArguments.verifyNotNullOrEmpty("enterCustomBoundaryUsingAreaSelector", ARG_DATA, data);
+			List<String> boundaryInfo = verifyCustomerBoundaryInfo(data);
+			customerBoundaryName = boundaryInfo.get(0);
+			this.getReportsCommonPage().fillCustomerBoundary(customerBoundaryName, boundaryInfo.get(1), boundaryNameList);
+		}
+
+		return FunctionUtil.allListEntriesMatch(boundaryNameList, FunctionUtil.stringStartsWithPredicate(customerBoundaryName));
+	}
+
+	/**
 	 * Executes enterExclusionRadius action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -1741,7 +1769,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyPDFContainsInputtedInformation", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyPDFContainsInputtedInformation", ARG_DATA, data);
 		List<String> listExpectedStrings = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
-		return this.getReportsCommonPage().verifyComplianceReportContainsText(getWorkingReportsDataRow().title, listExpectedStrings);
+		return this.getReportsCommonPage().verifyReportContainsText(getWorkingReportsDataRow().title, listExpectedStrings);
 	}
 
 	/**

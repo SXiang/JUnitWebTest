@@ -1,6 +1,7 @@
 package surveyor.scommon.source;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -15,6 +16,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import common.source.Log;
 import common.source.WebElementExtender;
+import common.source.WebElementFunctionUtil;
 
 public class LatLongSelectionControl extends BaseControl {
 
@@ -30,6 +32,8 @@ public class LatLongSelectionControl extends BaseControl {
 			+ "return imgData;};";
 
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
+
+	private static final String AUTOCOMPLETE_LIST_UL_ID = "ui-id-1";
 
 	@FindBy(id = "boundary-feature-class")
 	private WebElement filterByTypeDropDown;
@@ -206,7 +210,7 @@ public class LatLongSelectionControl extends BaseControl {
 		WebElementExtender.sendKeys(selectByNameTextField, boundaryName);
 		this.waitForAutoCompleteListToOpen();
 
-		if (!WebElementExtender.checkElementsListContains(driver, "//*[@id='ui-id-1']/li", autocompleteListEntries)) {
+		if (!WebElementExtender.checkElementsListContains(driver, String.format("//*[@id='%s']/li", AUTOCOMPLETE_LIST_UL_ID), autocompleteListEntries)) {
 			return false;
 		}
 
@@ -221,6 +225,15 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl setCustomerBoundaryName(String name) {
+		return setCustomerBoundaryName(name, null /*outBoundaryNames*/);
+	}
+
+	/**
+	 * Set value to selectByName Text field.
+	 *
+	 * @return the LatLongSelectionControl class instance.
+	 */
+	public LatLongSelectionControl setCustomerBoundaryName(String name, List<String> outBoundaryNames) {
 		Log.info("Wait for boundary name text field to be clickable");
 		// NOTE: In CI server run,  map is not loading in 30 seconds. Increasing timeout for debugging.
 		WebElementExtender.waitForElementToBeClickable(60 /*timeout*/, driver, selectByNameTextField);
@@ -229,6 +242,9 @@ public class LatLongSelectionControl extends BaseControl {
 		Log.info("Set customer boundary name '"+name+"'");
 		selectByNameTextField.sendKeys(name);
 		this.waitForAutoCompleteListToOpen();
+		if (outBoundaryNames != null) {
+			outBoundaryNames = getAutoCompleteListEntries();
+		}
 		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
 		this.waitForAutoCompleteListToClose();
 		return this;
@@ -251,8 +267,20 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @param entryIdx - 1-based index in the list.
 	 */
 	public void clickOnAutoCompleteListEntry(Integer entryIdx) {
-		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='ui-id-1']/li[%d]", entryIdx)));
+		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='" + AUTOCOMPLETE_LIST_UL_ID + "']/li[%d]", entryIdx)));
 		element.click();
+	}
+
+	/**
+	 * Returns the list of menu items shown in auto-complete list.
+	 * @return
+	 */
+	public List<String> getAutoCompleteListEntries() {
+		WebElement autoCompleteList = this.driver.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
+		List<WebElement> listElements = WebElementFunctionUtil.tryFindElements(autoCompleteList, p -> p.findElements(By.xpath("li[@class='ui-menu-item']")));
+		return listElements.stream()
+			.map(e -> e.getText())
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -262,10 +290,10 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForAutoCompleteListToOpen() {
 		Log.info("Waiting for auto-complete list to open.");
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id("ui-id-1")));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(AUTOCOMPLETE_LIST_UL_ID)));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
+				WebElement autoCompleteList = d.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
 				String elementStyle = autoCompleteList.getAttribute("style");
 				return !elementStyle.contains("display:none") &&
 						!elementStyle.contains("display: none");
@@ -283,7 +311,7 @@ public class LatLongSelectionControl extends BaseControl {
 		Log.info("Waiting for auto-complete list to close.");
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				WebElement autoCompleteList = d.findElement(By.id("ui-id-1"));
+				WebElement autoCompleteList = d.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
 				return !autoCompleteList.getAttribute("style").contains("display:block") &&
 						!autoCompleteList.getAttribute("style").contains("display: block");
 			}

@@ -251,7 +251,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+
+		Assert.assertTrue(executeAsCustomerWithGISData(complianceReportsPageAction, customer.getId(), reportDataRowID1, pageAction -> {
 			try {
 				// Create a survey for the new user.
 				TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
@@ -276,7 +278,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				return false;
 			}
 			return true;
-		}, complianceReportsPageAction, reportDataRowID1));
+		}));
 	}
 
 	/**
@@ -388,7 +390,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		Assert.assertTrue(executeAsCustomerWithGISData(pageAction -> {
+		Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+
+		Assert.assertTrue(executeAsCustomerWithGISData(complianceReportsPageAction, customer.getId(), reportDataRowID1, pageAction -> {
 			try {
 				// Create a survey for the new user.
 				TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
@@ -420,6 +424,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 				return false;
 			}
 			return true;
-		}, complianceReportsPageAction, reportDataRowID1));
+		}));
 	}
 }
