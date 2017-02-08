@@ -1,31 +1,19 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
-import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.MeasurementSessionsPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
 import surveyor.scommon.source.AssessmentReportsPage;
