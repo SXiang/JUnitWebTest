@@ -392,7 +392,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		if(!reportMode.equals(ReportModeFilter.Manual) ){
 			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
 			rpt.setSurveyInfoList(reportSurveyInfoList);}
-		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 		rpt.setSearchAreaPreference(srchAreaPref);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
