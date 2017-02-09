@@ -25,23 +25,11 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	@DataProvider
 	public static Object[][] dataProviderDriverViewMissingColumnValues() throws Exception {
 
-		// methane - c2h6 missing
-		final int userDataRowID1 = 16;
-		final int analyzerDb3DataRowID1 = 44;
-		final int surveyRuntimeInSeconds1 = 200;
-		final int surveyDataRowID1 = 3;
-
 		// methane - ch4 missing
 		final int userDataRowID2 = 16;
 		final int analyzerDb3DataRowID2 = 45;
 		final int surveyRuntimeInSeconds2 = 200;
 		final int surveyDataRowID2 = 3;
-
-		// methane - ch4 & c2h6 missing
-		final int userDataRowID3 = 16;
-		final int analyzerDb3DataRowID3 = 46;
-		final int surveyRuntimeInSeconds3 = 200;
-		final int surveyDataRowID3 = 3;
 
 		// ethane - ch4 missing
 		final int userDataRowID4 = 16;
@@ -62,9 +50,7 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 		final int surveyDataRowID6 = 3;
 
 		return new Object[][] {
-			{ userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
 			{ userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
-			{ userDataRowID3, analyzerDb3DataRowID3, surveyRuntimeInSeconds3, surveyDataRowID3 },
 			{ userDataRowID4, analyzerDb3DataRowID4, surveyRuntimeInSeconds4, surveyDataRowID4 },
 			{ userDataRowID5, analyzerDb3DataRowID5, surveyRuntimeInSeconds5, surveyDataRowID5 },
 			{ userDataRowID6, analyzerDb3DataRowID6, surveyRuntimeInSeconds6, surveyDataRowID6 },
