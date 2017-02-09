@@ -886,9 +886,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info("Add Surveys button is showing as '"+btnLableMsg+"'");
 		return btnLableMsg;
 	}
+
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect) throws Exception {
 		selectSurveysAndAddToReport(selectAll, numSurveysToSelect, true);
 	}
+
 	public void selectSurveysAndAddToReport(boolean selectAll, Integer numSurveysToSelect, boolean waitForSurvyesToBeAdded) throws Exception {
 		Log.method("selectSurveysAndAddToReport", selectAll, numSurveysToSelect);
 		if (selectAll || numSurveysToSelect > 0) {
@@ -1217,13 +1219,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void waitForSelectedSurveysToBeAdded(Integer countOfSurveys) {
 		if (countOfSurveys == Integer.MAX_VALUE) {
-			// If all surveys are selected find the number of surveys shown in
-			// UI.
+			// If all surveys are selected find the number of surveys shown in UI.
 			countOfSurveys = getRecordsInSurveyTable(driver);
 		}
 
-		(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions
-				.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys - 1))));
+		(new WebDriverWait(driver, timeout + 15)).until(ExpectedConditions.presenceOfElementLocated(By.id(String.format("surveyContent-%d", countOfSurveys - 1))));
 	}
 
 	/**

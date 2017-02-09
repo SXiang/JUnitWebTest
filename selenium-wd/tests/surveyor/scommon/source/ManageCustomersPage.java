@@ -19,7 +19,7 @@ import org.openqa.selenium.support.FindBy;
 import common.source.Constants;
 import common.source.EnumUtility;
 import common.source.Log;
-import common.source.RetryOnException;
+import common.source.RetryUtil;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -647,7 +647,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@Override
 	public void waitForPageLoad() {
-		RetryOnException.retry(
+		RetryUtil.retryOnException(
 			() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
 					public Boolean apply(WebDriver d) {
 						return d.getPageSource().contains(STRPageContentText);

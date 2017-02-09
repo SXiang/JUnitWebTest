@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -20,10 +21,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestSetup;
+import common.source.Timeout;
 import common.source.WebElementExtender;
+import common.source.WebElementFunctionUtil;
 
 public class DataTablePage extends SurveyorBasePage {
 
@@ -50,7 +54,7 @@ public class DataTablePage extends SurveyorBasePage {
 	private WebElement firstButton;
 	@FindBy(css = ".paginate_button.current")
 	private WebElement currentButton;
-	
+
 	public enum TableColumnType {
 		Number("Number"), String("String"), Date("Date");
 		private final String name;
@@ -62,7 +66,7 @@ public class DataTablePage extends SurveyorBasePage {
 		public String toString() {
 			return this.name;
 		}
-		
+
 		public static TableColumnType getTableColumnType(String type){
 			if(type.equalsIgnoreCase("Number")){
 				return Number;
@@ -81,7 +85,7 @@ public class DataTablePage extends SurveyorBasePage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param driver
 	 * @param searchContext
 	 *            - The root WebElement of this datatable
@@ -98,7 +102,7 @@ public class DataTablePage extends SurveyorBasePage {
 	// **************** Test methods ***********************
 	/**
 	 * Find records in this data table, page by page
-	 * 
+	 *
 	 * @param filter
 	 *            - conditions for matching a row, columnName:value pairs
 	 * @return true if found
@@ -119,14 +123,15 @@ public class DataTablePage extends SurveyorBasePage {
     public List<String> getRecords(String columnName, Integer numRecords){
 		setPagination(pagination);
 		waitForTableToLoad();
-		
+
 		int colIdx = getColumnIndex(columnName);
 		List<String> columnValues = new ArrayList<String>();
 		int numFound = 0;
 		boolean done = false;
-		do{			
+		do{
 			for(WebElement row: tableRow){
-				List<WebElement> field = row.findElements(By.cssSelector("td"));
+				List<WebElement> field = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
+						(parentEl) -> parentEl.findElements(By.cssSelector("td")));
 				columnValues.add(getElementText(field.get(colIdx)));
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
@@ -134,13 +139,13 @@ public class DataTablePage extends SurveyorBasePage {
 					break;
 				}
 			}
-		}while(!done&&toNextPage());		
+		}while(!done&&toNextPage());
         return columnValues;
    }
-    
+
 	/**
 	 * Find records in this data table, page by page
-	 * 
+	 *
 	 * @param filter
 	 *            - conditions for matching a row, columnName:value pairs
 	 * @return total number of matched records, -1 if not found
@@ -151,7 +156,7 @@ public class DataTablePage extends SurveyorBasePage {
 
 	/**
 	 * Find records in this data table, page by page
-	 * 
+	 *
 	 * @param filter
 	 *            - conditions for matching a row, columnName:value pairs
 	 * @param numRecords
@@ -185,32 +190,70 @@ public class DataTablePage extends SurveyorBasePage {
 	}
 
 	/**
+	 * Performs specified action on the matching element specified in By condition.
+	 * @param elementAction
+	 * @param matchFilters
+	 * @param elementBy
+	 * @return
+	 */
+	public boolean actionOnMatchingRow(By elementBy, Map<String, String> matchFilters, WebElement tableContext, Boolean applyPagination, Predicate<WebElement> elementAction) {
+		Log.method("actionOnMatchingRow", elementBy, LogHelper.mapToString(matchFilters));
+		WebElement row = this.getMatchingRow(matchFilters, tableContext, applyPagination);
+		if (row != null) {
+			WebElement element = row.findElement(elementBy);
+			if (elementAction.test(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Find row in this data table, page by page
-	 * 
+	 *
 	 * @param filter
 	 *            - conditions for matching a row, columnName:value pairs
-	 * 
+	 *
 	 * @return matched row as a WebElement
 	 */
 	public WebElement getMatchingRow(Map<String, String> filter) {
+		Log.method("getMatchingRow", LogHelper.mapToString(filter));
+		return getMatchingRow(filter, null /*tableContext*/, true /*applyPagination*/);
+	}
+
+	public WebElement getMatchingRow(Map<String, String> filter, WebElement tableContext, Boolean applyPagination) {
+		Log.method("getMatchingRow", LogHelper.mapToString(filter));
 		Map<String, List<String>> indexedMap = new HashMap<String, List<String>>();
 		for (Entry<String, String> entry : filter.entrySet()) {
 			List<String> value = new ArrayList<String>();
 			value.add(entry.getValue());
 			indexedMap.put(entry.getKey(), value);
 		}
-		return getMatchingRowOptionalInput(indexedMap);
+		return getMatchingRowOptionalInput(indexedMap, tableContext, applyPagination);
 	}
 
-	public WebElement getMatchingRowOptionalInput(Map<String, List<String>> filter) {
-		setPagination(pagination);
-		waitForTableToLoad();
+	private WebElement getMatchingRowOptionalInput(Map<String, List<String>> filter, WebElement tableContext, Boolean applyPagination) {
+		Log.method("getMatchingRowOptionalInput", LogHelper.mapToString(filter), applyPagination);
+		if (applyPagination) {
+			setPagination(pagination);
+		}
+
+		// If no table context provided, wait for table to load.
+		if (tableContext == null) {
+			waitForTableToLoad();
+		}
+
 		Map<Integer, List<String>> indexedMap = new HashMap<Integer, List<String>>();
 		for (Entry<String, List<String>> entry : filter.entrySet()) {
-			indexedMap.put(getColumnIndex(entry.getKey().toString()), entry.getValue());
+			indexedMap.put(getColumnIndex(tableContext, entry.getKey().toString()), entry.getValue());
 		}
 		do {
-			for (WebElement row : tableRow) {
+			// If table context is provided, fetch rows from the table context.
+			if (tableContext != null) {
+				this.tableRow = tableContext.findElements(By.xpath("tbody/tr"));
+			}
+
+			for (WebElement row : this.tableRow) {
 				if (rowMatches(row, indexedMap)) {
 					return row;
 				}
@@ -218,11 +261,11 @@ public class DataTablePage extends SurveyorBasePage {
 		} while (toNextPage());
 		return null;
 	}
-	
+
 	//******************** Table Helpers ****************************
 	/**
 	 * To find matches by equals or matches
-	 * 
+	 *
 	 * @param row
 	 * @param filter
 	 * @return true if matches
@@ -245,17 +288,18 @@ public class DataTablePage extends SurveyorBasePage {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * check whether data in table columns are sorted Ascending
-	 * 
+	 *
 	 * @param cloumnMap
 	 * @return
 	 */
-	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
-		return isTableSortedAsc(cloumnMap, str, paginationOption, dataTable, -1);
+	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement tableContext) {
+		return isTableSortedAsc(cloumnMap, str, paginationOption, tableContext, -1);
 	}
-	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable, int numRecords) {
+
+	public boolean isTableSortedAsc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement tableContext, int numRecords) {
 		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
 			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
 			List<String> values = getRecords(entry.getKey().trim(), numRecords ).stream().map(String::toLowerCase).collect(Collectors.toList());
@@ -272,16 +316,16 @@ public class DataTablePage extends SurveyorBasePage {
 
 	/**
 	 * check whether data in table columns are sorted Descending
-	 * 
+	 *
 	 * @param cloumnMap
 	 * @return
 	 */
-	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable) {
-		return isTableSortedDesc(cloumnMap, str, paginationOption, dataTable, -1);
+	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement tableContext) {
+		return isTableSortedDesc(cloumnMap, str, paginationOption, tableContext, -1);
 	}
-	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement dataTable, int numRecords) {
+	public boolean isTableSortedDesc(HashMap<String, TableColumnType> cloumnMap, String str, List<WebElement> paginationOption, WebElement tableContext, int numRecords) {
 		for (Entry<String, TableColumnType> entry : (cloumnMap.entrySet())) {
-			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());			
+			TableColumnType columnType = cloumnMap.get(entry.getKey().trim());
 			List<String> values = getRecords(entry.getKey().trim(), numRecords).stream().map(String::toLowerCase).collect(Collectors.toList());
 			if (columnType == TableColumnType.Date) {
 				return SortHelper.isDateSortedDESC(values.stream().toArray(String[]::new));
@@ -297,11 +341,19 @@ public class DataTablePage extends SurveyorBasePage {
 
 	/**
 	 * To find the index number of a column
-	 * 
+	 *
 	 * @param columnName
 	 * @return index of the column
 	 */
 	public int getColumnIndex(String columnName) {
+		return getColumnIndex(null /*tableContext*/, columnName);
+	}
+
+	public int getColumnIndex(WebElement tableContext, String columnName) {
+		if (tableContext != null) {
+			tableHeader = tableContext.findElements(By.xpath("thead/tr/th"));
+		}
+
 		for (int i = 0; i < tableHeader.size(); i++) {
 			String columnText = tableHeader.get(i).getText();
 			if (columnText != null && columnText.trim().equals(columnName)) {
@@ -314,7 +366,7 @@ public class DataTablePage extends SurveyorBasePage {
 
 	/**
 	 * Navigate to next page of this table
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean toNextPage() {
@@ -324,7 +376,7 @@ public class DataTablePage extends SurveyorBasePage {
 
 	/**
 	 * Navigate to another page of this table
-	 * 
+	 *
 	 * @param pageNavButton
 	 *            - actual button will be clicked
 	 * @return true if button clicked
@@ -351,6 +403,7 @@ public class DataTablePage extends SurveyorBasePage {
 	 * Wait for this data table to be loaded
 	 */
 	public void waitForTableToLoad() {
+		Log.method("waitForTableToLoad");
 		waitForPageLoad();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {

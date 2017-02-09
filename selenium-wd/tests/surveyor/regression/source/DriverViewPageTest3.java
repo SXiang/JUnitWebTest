@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -19,15 +18,10 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.OLMapEntities.Indication;
-import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.dataaccess.source.Analyzer;
-import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.actions.data.TestEnvironmentDataReader.TestEnvironmentDataRow;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -119,7 +113,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
 	 */
-	@Ignore // TODO: Ignoring for now. Current host build will cause this test to fail. Waiting on new host build before enabling.
+	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_COMPARE_INDICATIONS_DRIVERVIEW_SURVEYVIEW_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_SimulatorTest_DrivingSurvey_CompareIndications_DriverView_SurveyView_UtilityAdmin_Driver(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
@@ -137,6 +131,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 
 		// start survey.
+		driverViewPageAction.getDriverViewPage().setUseAnalyzerReadyLongTimeout(true);   // Use longer timeout.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
 

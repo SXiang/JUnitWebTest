@@ -7,4 +7,4 @@ node meas_reader target=dbreader.measurement_reader
 node merger target=stream_merger.stream_merger
      in=gps_out,anemometer_out,meas_out out=merge_out
 node zmq_pub target=zmqsender.zmq_sender in=merge_out
-     args=True
+     args=True,30,FEDS_mode,True

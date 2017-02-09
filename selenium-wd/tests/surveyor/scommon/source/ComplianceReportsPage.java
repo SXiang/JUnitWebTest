@@ -4261,23 +4261,31 @@ public class ComplianceReportsPage extends ReportsBasePage {
 				reportsCompliance.getCustomerBoundaryName());
 	}
 
-	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
-		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName);
+		boolean setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
+		boolean invalidResults = false;
+		if (!setSuccess) {
+			// If value not set, check if noResults entry has been found.
+			Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
+			invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
+			Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+		}
+
 		latLongSelectionControl.switchMode(ControlMode.Default);
-		latLongSelectionControl.clickOkButton();
+		if (setSuccess) {
+			latLongSelectionControl.clickOkButton();
+		} else {
+			latLongSelectionControl.clickCancelButton();
+		}
+
 		latLongSelectionControl.waitForModalDialogToClose();
-	}
 
-
-	public boolean noBoundarySearchResultByName(){
-		By noResultBy = By.xpath("//ul[@id='ui-id-1']//div[text()='no results...']");
-		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
-		return noResult;
+		return setSuccess || invalidResults;
 	}
 
 	private boolean useCustomBoundaryLatLongSelector(ReportsCompliance reportsCompliance) {

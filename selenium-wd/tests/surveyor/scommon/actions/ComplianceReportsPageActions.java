@@ -1076,16 +1076,17 @@ public class ComplianceReportsPageActions extends BaseReportsPageActions {
 	 */
 	public boolean enterCustomerBoundaryUsingAreaSelector(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.enterCustomerBoundaryUsingAreaSelector", data, dataRowID);
+		boolean retVal = false;
 		if (dataRowID != -1) {
 			ComplianceReportsDataRow complianceReportsDataRow = getComplianceReportsDataRow(dataRowID);
-			this.getComplianceReportsPage().fillCustomerBoundary(complianceReportsDataRow.customerBoundaryType,
+			retVal = this.getComplianceReportsPage().fillCustomerBoundary(complianceReportsDataRow.customerBoundaryType,
 					complianceReportsDataRow.customerBoundaryName);
 		} else {
 			ActionArguments.verifyNotNullOrEmpty("enterCustomBoundaryUsingAreaSelector", ARG_DATA, data);
 			List<String> boundaryInfo = verifyCustomerBoundaryInfo(data);
-			this.getComplianceReportsPage().fillCustomerBoundary(boundaryInfo.get(0), boundaryInfo.get(1));
+			retVal = this.getComplianceReportsPage().fillCustomerBoundary(boundaryInfo.get(0), boundaryInfo.get(1));
 		}
-		return true;
+		return retVal;
 	}
 
 	/**

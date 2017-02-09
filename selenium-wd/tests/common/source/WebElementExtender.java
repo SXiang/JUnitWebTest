@@ -70,6 +70,7 @@ public class WebElementExtender {
    	}
 
 	public static boolean checkElementsListContains(WebDriver driver, String listElementXPath, List<String> entriesToFind) {
+		Log.method("checkElementsListContains", driver, listElementXPath, LogHelper.listToString(entriesToFind));
 		Hashtable<String, Boolean> listMap = new Hashtable<String, Boolean>();
 		List<WebElement> listElements = driver.findElements(By.xpath(listElementXPath));
 		for (WebElement element : listElements) {

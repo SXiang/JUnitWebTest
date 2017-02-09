@@ -76,38 +76,38 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 
 		// methane - manual
 		final int userDataRowID1 = 17;          // utility admin.
-		final int analyzerDb3DataRowID1 = 50;
-		final int surveyRuntimeInSeconds1 = 300;
+		final int analyzerDb3DataRowID1 = 57;
+		final int surveyRuntimeInSeconds1 = 720;
 		final int surveyDataRowID1 = 24;
 
 		// methane - rr
 		final int userDataRowID2 = 16;          // driver.
-		final int analyzerDb3DataRowID2 = 51;
-		final int surveyRuntimeInSeconds2 = 300;
+		final int analyzerDb3DataRowID2 = 58;
+		final int surveyRuntimeInSeconds2 = 720;
 		final int surveyDataRowID2 = 27;
 
 		// methane - std
 		final int userDataRowID3 = 16;          // driver.
-		final int analyzerDb3DataRowID3 = 52;
-		final int surveyRuntimeInSeconds3 = 300;
+		final int analyzerDb3DataRowID3 = 59;
+		final int surveyRuntimeInSeconds3 = 720;
 		final int surveyDataRowID3 = 3;
 
 		// ethane - manual
 		final int userDataRowID4 = 17;          // utility admin.
 		final int analyzerDb3DataRowID4 = 53;
-		final int surveyRuntimeInSeconds4 = 300;
+		final int surveyRuntimeInSeconds4 = 520;
 		final int surveyDataRowID4 = 32;
 
 		// ethane - std
 		final int userDataRowID5 = 16;          // driver.
 		final int analyzerDb3DataRowID5 = 54;
-		final int surveyRuntimeInSeconds5 = 300;
+		final int surveyRuntimeInSeconds5 = 30;
 		final int surveyDataRowID5 = 4;
 
 		// methane - operator
 		final int userDataRowID6 = 16;          // driver.
-		final int analyzerDb3DataRowID6 = 55;
-		final int surveyRuntimeInSeconds6 = 100;
+		final int analyzerDb3DataRowID6 = 60;
+		final int surveyRuntimeInSeconds6 = 720;
 		final int surveyDataRowID6 = 5;
 
 		return new Object[][] {

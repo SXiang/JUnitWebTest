@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.util.Arrays;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.format.DateTimeFormatter;
@@ -32,14 +33,15 @@ public class SortHelper {
 	public static boolean isStringSortedASC(String[] strArray, int beginAt) {
 		return isSortedASC(false, strArray, beginAt, strArray.length - 1);
 	}
-	
+
 	public static boolean isSortedASC(String[] strArray, int beginAt, int endAt){
 		// The actual data type of the elements is determined by the type of the first element specified
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
 		return isSortedASC(isNumber, strArray, beginAt, endAt);
 	}
-	
+
 	public static boolean isSortedASC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
+		Log.method("isSortedASC", isNumber, LogHelper.arrayToString(strArray), beginAt, endAt);
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if(strArray[i-1].trim().equals("")){
@@ -52,8 +54,19 @@ public class SortHelper {
 					return false;
 				}
 			} else {
-				if (strArray[i - 1].toLowerCase().compareTo(strArray[i].toLowerCase()) > 0)
+				// Keep only chars till first non-alphanumeric character is encountered.
+				String prevLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i - 1].toLowerCase());
+				String currLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i].toLowerCase());
+
+				// Make both strings of equal length before comparison.
+				prevLowerAlpNum = BaseHelper.toLength(prevLowerAlpNum, currLowerAlpNum.length());
+				currLowerAlpNum = BaseHelper.toLength(currLowerAlpNum, prevLowerAlpNum.length());
+
+				if (prevLowerAlpNum.compareTo(currLowerAlpNum) > 0) {
+					Log.warn(String.format("Compare failed at index-[%d]. Previous lc_alphanumeric value='%s', current lc_alphanumeric value='%s'",
+							i, prevLowerAlpNum, currLowerAlpNum));
 					return false;
+				}
 			}
 		}
 		return true;
@@ -87,8 +100,9 @@ public class SortHelper {
 		boolean isNumber = NumberUtils.isNumber(strArray[beginAt]);
 		return isSortedDESC(isNumber, strArray, beginAt, endAt);
 	}
-	
+
 	public static boolean isSortedDESC(boolean isNumber, String[] strArray, int beginAt, int endAt) {
+		Log.method("isSortedDESC", isNumber, LogHelper.arrayToString(strArray), beginAt, endAt);
 		for (int i = beginAt + 1; i <= endAt; i++) {
 			if (isNumber) {
 				if(strArray[i-1].trim().equals("")){
@@ -101,13 +115,24 @@ public class SortHelper {
 					return false;
 				}
 			} else {
-				if (strArray[i - 1].toLowerCase().compareTo(strArray[i].toLowerCase()) < 0)
-					return false;				
+				// Keep only chars till first non-alphanumeric character is encountered.
+				String prevLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i - 1].toLowerCase());
+				String currLowerAlpNum = BaseHelper.alphaNumericSubStr(strArray[i].toLowerCase());
+
+				// Make both strings of equal length before comparison.
+				prevLowerAlpNum = BaseHelper.toLength(prevLowerAlpNum, currLowerAlpNum.length());
+				currLowerAlpNum = BaseHelper.toLength(currLowerAlpNum, prevLowerAlpNum.length());
+
+				if (prevLowerAlpNum.compareTo(currLowerAlpNum) < 0) {
+					Log.warn(String.format("Compare failed at index-[%d]. Previous lc_alphanumeric value='%s', current lc_alphanumeric value='%s'",
+							i, prevLowerAlpNum, currLowerAlpNum));
+					return false;
+				}
 			}
 		}
 		return true;
 	}
-	
+
 	public static boolean isDateSortedDESC(String[] strArray) {
 		return isDateSortedDESC(strArray, 0);
 	}
@@ -117,7 +142,7 @@ public class SortHelper {
 	}
 
 	/**
-	 * Checks whether a Date array is sorted Descending 
+	 * Checks whether a Date array is sorted Descending
 	 * @param strArray
 	 * @param beginAt - index 0 based
 	 * @param endAt - index 0 based
@@ -125,16 +150,16 @@ public class SortHelper {
 	 */
 	public static boolean isDateSortedDESC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
-		for (int i = beginAt ; i < endAt; i++) {		
+		for (int i = beginAt ; i < endAt; i++) {
 				DateTime dateTime1 =dateFormat.parseDateTime(strArray[i]);
 				DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);
 				if(dateTime1.isBefore(dateTime2)){
 					return false;
-				}			
+				}
 		}
 		return true;
 	}
-	
+
 	public static boolean isDateSortedASC(String[] strArray) {
 		return isDateSortedASC(strArray, 0);
 	}
@@ -144,7 +169,7 @@ public class SortHelper {
 	}
 
 	/**
-	 * Checks whether a Date array is sorted Ascending 
+	 * Checks whether a Date array is sorted Ascending
 	 * @param strArray
 	 * @param beginAt - index 0 based
 	 * @param endAt - index 0 based
@@ -152,25 +177,27 @@ public class SortHelper {
 	 */
 	public static boolean isDateSortedASC(String[] strArray, int beginAt, int endAt) {
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
-		for (int i = beginAt ; i < endAt; i++) {		
+		for (int i = beginAt ; i < endAt; i++) {
 			DateTime dateTime1 =dateFormat.parseDateTime(strArray[i]);
-			DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);			
+			DateTime dateTime2 =dateFormat.parseDateTime(strArray[i+1]);
 			if(dateTime1.isAfter(dateTime2)){
 				return false;
-			}			
+			}
 	}
 	return true;
 	}
-	
+
 	/**
 	 * Executes the unit tests for this class.
-	 * 
+	 *
 	 * @param args
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		testIsSortedASC_Number();
 		testIsSortedASC_String();
 		testIsSortedDESC_Number();
+		testIsSortedASC_LongString();
 		testIsSortedDESC_String();
 		testisDateSortedDESC_String();
 		testisDateSortedASC_String();
@@ -199,6 +226,15 @@ public class SortHelper {
 		Log.info("Verified isSortedASC for strings " + Arrays.toString(strings));
 	}
 
+	private static void testIsSortedASC_LongString() throws IOException {
+		String ascValuesFilePath = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data\\test-data\\sorthelper-tests\\asc-values-01.txt";
+		String[] strings = FileUtility.readFileLinesToList(ascValuesFilePath).toArray(new String[0]);
+
+		Assert.assertTrue(isSortedASC(strings, 0, strings.length - 1));
+
+		Log.info("Verified isSortedASC for strings " + Arrays.toString(strings));
+	}
+
 	private static void testIsSortedDESC_Number() {
 		String[] numbers = { "TestNumber", "5.3", "5.29", "3.087", "2.11", "1", "10" };
 
@@ -219,7 +255,7 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
+
 	private static void testisDateSortedDESC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		String[] strings = { "5/12/2016 2:59 PM", "5/11/2016 10:11 AM", "5/10/2016 12:31 PM", "5/10/2016 12:25 PM", "5/10/2016 12:20 PM" };
@@ -231,7 +267,7 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
+
 	private static void testisDateSortedASC_String() {
 		TestContext.INSTANCE.setUserCulture("en-US");
 		String[] strings = { "5/10/2016 12:20 PM" , "5/10/2016 12:25 PM", "5/10/2016 12:31 PM", "5/11/2016 10:11 AM",  "5/12/2016 2:59 PM"};
@@ -243,6 +279,4 @@ public class SortHelper {
 
 		Log.info("Verified isSortedDESC for strings " + Arrays.toString(strings));
 	}
-	
-
 }
