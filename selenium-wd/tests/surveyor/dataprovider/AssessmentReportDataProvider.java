@@ -129,7 +129,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1434() {
 		return new Object[][] {
 			{ "TC1434" /*TestCaseID*/, 6 /*userDataRowID*/,  1 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
-				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1434)}
 		};
 	}
 
@@ -137,7 +137,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1435() {
 		return new Object[][] {
 			{ "TC1435" /*TestCaseID*/, 6 /*userDataRowID*/,  2 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
-				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1435)}
 		};
 	}
 
@@ -145,7 +145,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1588() {
 		return new Object[][] {
 			{ "TC1588" /*TestCaseID*/, 6 /*userDataRowID*/,  14 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
-				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1588)}
 		};
 	}
 
@@ -153,7 +153,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1594() {
 		return new Object[][] {
 			{ "TC1594" /*TestCaseID*/, 6 /*userDataRowID*/,  15 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
-				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10_MethaneSurveyTC1594)}
 		};
 	}
 }
