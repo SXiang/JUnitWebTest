@@ -62,38 +62,38 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 
 		// methane - manual
 		final int userDataRowID1 = 17;          // utility admin.
-		final int analyzerDb3DataRowID1 = 57;
-		final int surveyRuntimeInSeconds1 = 720;
+		final int analyzerDb3DataRowID1 = 9;
+		final int surveyRuntimeInSeconds1 = 40;
 		final int surveyDataRowID1 = 24;
 
 		// methane - rr
 		final int userDataRowID2 = 16;          // driver.
-		final int analyzerDb3DataRowID2 = 58;
-		final int surveyRuntimeInSeconds2 = 720;
+		final int analyzerDb3DataRowID2 = 9;
+		final int surveyRuntimeInSeconds2 = 40;
 		final int surveyDataRowID2 = 27;
 
 		// methane - std
 		final int userDataRowID3 = 16;          // driver.
-		final int analyzerDb3DataRowID3 = 59;
-		final int surveyRuntimeInSeconds3 = 720;
+		final int analyzerDb3DataRowID3 = 52;
+		final int surveyRuntimeInSeconds3 = 330;
 		final int surveyDataRowID3 = 3;
 
 		// ethane - manual
 		final int userDataRowID4 = 17;          // utility admin.
 		final int analyzerDb3DataRowID4 = 53;
-		final int surveyRuntimeInSeconds4 = 520;
+		final int surveyRuntimeInSeconds4 = 180;
 		final int surveyDataRowID4 = 32;
 
 		// ethane - std
 		final int userDataRowID5 = 16;          // driver.
 		final int analyzerDb3DataRowID5 = 54;
-		final int surveyRuntimeInSeconds5 = 30;
+		final int surveyRuntimeInSeconds5 = 180;
 		final int surveyDataRowID5 = 4;
 
 		// methane - operator
 		final int userDataRowID6 = 16;          // driver.
-		final int analyzerDb3DataRowID6 = 60;
-		final int surveyRuntimeInSeconds6 = 720;
+		final int analyzerDb3DataRowID6 = 20;
+		final int surveyRuntimeInSeconds6 = 90;
 		final int surveyDataRowID6 = 5;
 
 		return new Object[][] {
@@ -108,39 +108,71 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 
 	@DataProvider
 	public static Object[][] dataProviderStartStopSurveyMeth() throws Exception {
-		// standard surveys.
+		// standard surveys - shorter DB3, shorter surveys.
 		final Integer userDataRowID1 = 17;
 		final Integer analyzerDb3DataRowID1 = 52;
 		final Integer[] surveyDataRowIDs1 = {3,4,6,7,11,12,17,18,21,22,23};
 		final Integer surveyRuntimeInSeconds1 = 10;
-		final Integer numberOfSurveys1 = 30;	// TODO: Increase when we have longer DB3.
+		final Integer numberOfSurveys1 = 3;
 
-		// manual surveys.
+		// manual surveys - shorter DB3, shorter surveys.
 		final Integer userDataRowID2 = 17;
 		final Integer analyzerDb3DataRowID2 = 50;
 		final Integer[] surveyDataRowIDs2 = {24,31,32,36,41};
 		final Integer surveyRuntimeInSeconds2 = 30;
-		final Integer numberOfSurveys2 = 30;	// TODO: Increase when we have longer DB3.
+		final Integer numberOfSurveys2 = 3;
 
-		// operator surveys.
+		// operator surveys - shorter DB3, shorter surveys.
 		final Integer userDataRowID3 = 17;
 		final Integer analyzerDb3DataRowID3 = 55;
 		final Integer[] surveyDataRowIDs3 = {5,35,37,38,39,40};
-		final Integer surveyRuntimeInSeconds3 = 30;
-		final Integer numberOfSurveys3 = 20;	// TODO: Increase when we have longer DB3.
+		final Integer surveyRuntimeInSeconds3 = 3;
+		final Integer numberOfSurveys3 = 20;
 
-		// rapid response surveys.
+		// rapid response surveys - shorter DB3, shorter surveys.
 		final Integer userDataRowID4 = 17;
 		final Integer analyzerDb3DataRowID4 = 51;
 		final Integer[] surveyDataRowIDs4 = {8,9,13,14,15,16,25,26,27,28,29};
-		final Integer surveyRuntimeInSeconds4 = 30;
-		final Integer numberOfSurveys4 = 20;	// TODO: Increase when we have longer DB3.
+		final Integer surveyRuntimeInSeconds4 = 3;
+		final Integer numberOfSurveys4 = 20;
+
+		// standard surveys - longer DB3, longer surveys.
+		final Integer userDataRowID5 = 17;
+		final Integer analyzerDb3DataRowID5 = 57;
+		final Integer[] surveyDataRowIDs5 = {3,4,6,7,11,12,17,18,21,22,23};
+		final Integer surveyRuntimeInSeconds5 = 30;
+		final Integer numberOfSurveys5 = 100;
+
+		// manual surveys - longer DB3, longer surveys.
+		final Integer userDataRowID6 = 17;
+		final Integer analyzerDb3DataRowID6 = 57;
+		final Integer[] surveyDataRowIDs6 = {24,31,32,36,41};
+		final Integer surveyRuntimeInSeconds6 = 30;
+		final Integer numberOfSurveys6 = 100;
+
+		// operator surveys - longer DB3, longer surveys.
+		final Integer userDataRowID7 = 17;
+		final Integer analyzerDb3DataRowID7 = 57;
+		final Integer[] surveyDataRowIDs7 = {5,35,37,38,39,40};
+		final Integer surveyRuntimeInSeconds7 = 30;
+		final Integer numberOfSurveys7 = 100;
+
+		// rapid response surveys - longer DB3, longer surveys.
+		final Integer userDataRowID8 = 17;
+		final Integer analyzerDb3DataRowID8 = 57;
+		final Integer[] surveyDataRowIDs8 = {8,9,13,14,15,16,25,26,27,28,29};
+		final Integer surveyRuntimeInSeconds8 = 30;
+		final Integer numberOfSurveys8 = 100;
 
 		return new Object[][] {
 			{ userDataRowID1, analyzerDb3DataRowID1, surveyDataRowIDs1, surveyRuntimeInSeconds1, numberOfSurveys1 },
 			{ userDataRowID2, analyzerDb3DataRowID2, surveyDataRowIDs2, surveyRuntimeInSeconds2, numberOfSurveys2 },
 			{ userDataRowID3, analyzerDb3DataRowID3, surveyDataRowIDs3, surveyRuntimeInSeconds3, numberOfSurveys3 },
 			{ userDataRowID4, analyzerDb3DataRowID4, surveyDataRowIDs4, surveyRuntimeInSeconds4, numberOfSurveys4 },
+			{ userDataRowID5, analyzerDb3DataRowID5, surveyDataRowIDs5, surveyRuntimeInSeconds5, numberOfSurveys5 },
+			{ userDataRowID6, analyzerDb3DataRowID6, surveyDataRowIDs6, surveyRuntimeInSeconds6, numberOfSurveys6 },
+			{ userDataRowID7, analyzerDb3DataRowID7, surveyDataRowIDs7, surveyRuntimeInSeconds7, numberOfSurveys7 },
+			{ userDataRowID8, analyzerDb3DataRowID8, surveyDataRowIDs8, surveyRuntimeInSeconds8, numberOfSurveys8 },
 		};
 	}
 

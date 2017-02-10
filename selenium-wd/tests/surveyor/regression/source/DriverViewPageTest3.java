@@ -169,7 +169,13 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 		surveyViewPageAction.waitForIndicationsToBeShownOnMap(EMPTY, NOTSET);
 		Set<Indication> indicationsOnSurveyView = surveyViewPageAction.getIndicationsShownOnPage();
 
-		// Compare indications on driver view and survey view.
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
+		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+		Log.info(String.format("Indications detected in Survey view = %d", indicationsOnSurveyView.size()));
+		indicationsOnSurveyView.forEach(i -> Log.info(i.toString()));
+
+		// Compare indications count on driver view and survey view. Comparing index, disposition and text on Indications set objects.
+		assertTrue(indicationsOnDriverView.size() == indicationsOnSurveyView.size());
 		assertTrue(indicationsOnDriverView.equals(indicationsOnSurveyView));
 	}
 
