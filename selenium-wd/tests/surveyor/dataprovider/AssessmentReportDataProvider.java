@@ -5,6 +5,7 @@ import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.CustomerSurveyInfoBuilder;
 import surveyor.scommon.generators.TestDataGenerator;
 
@@ -19,7 +20,6 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1483 = "dataProviderPageActionsAssessmentReports_TC1483";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1484 = "dataProviderPageActionsAssessmentReports_TC1484";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488 = "dataProviderPageActionsAssessmentReports_TC1488";
-	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1594 = "dataProviderPageActionsAssessmentReports_TC1594";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1800 = "dataProviderPageActionsAssessmentReports_TC1800";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2019 = "dataProviderPageActionsAssessmentReports_TC2019";
 
@@ -27,6 +27,7 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1434 = "dataProviderPageActionsAssessmentReports_TC1434";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1435 = "dataProviderPageActionsAssessmentReports_TC1435";
 	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1588 = "dataProviderPageActionsAssessmentReports_TC1588";
+	public static final String ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1594 = "dataProviderPageActionsAssessmentReports_TC1594";
 
 	public AssessmentReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -109,13 +110,6 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	}
 
 	@DataProvider
-	public static Object[][] dataProviderPageActionsAssessmentReports_TC1594() {
-		return new Object[][] {
-			{ "TC1594" /*TestCaseID*/, 6 /*userDataRowID*/,  15 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
-		};
-	}
-
-	@DataProvider
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1800() {
 		return new Object[][] {
 			{ "TC1800" /*TestCaseID*/, 2 /*userDataRowID*/,  16 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
@@ -151,6 +145,14 @@ public class AssessmentReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsAssessmentReports_TC1588() {
 		return new Object[][] {
 			{ "TC1588" /*TestCaseID*/, 6 /*userDataRowID*/,  14 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderPageActionsAssessmentReports_TC1594() {
+		return new Object[][] {
+			{ "TC1594" /*TestCaseID*/, 6 /*userDataRowID*/,  15 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
 				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportShapeAsssessment_NoLisaBox10)}
 		};
 	}
