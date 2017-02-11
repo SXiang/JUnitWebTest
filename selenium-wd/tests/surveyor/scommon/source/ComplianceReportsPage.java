@@ -529,6 +529,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return mode;
 	}
 
+	public String getFullReportName(String rptTitle) {
+		return "CR" + "-" + getReportName(rptTitle);
+	}
+
 	protected void handleOptionalDynamicViewLayersSection(List<Map<String, String>> viewLayersList) {
 		if (viewLayersList != null && !viewLayersList.isEmpty()) {
 			selectViewLayerAssets(viewLayersList.get(0));
@@ -758,43 +762,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to compare the report creation date with current date & Report
-	 * creation date format with locale
-	 *
-	 * @param actualPath
-	 *            - actual path to the generated report
-	 * @return boolean - true or false based on whether the report creation date
-	 *         matches the current date and format matches the locale format
-	 * @throws IOException
-	 */
-
-	public boolean validateReportCreationDate(String actualPath) throws IOException {
-		Log.method("ComplianceReportsPage.validateReportCreationDate", actualPath);
-		String reportDate = null;
-		String actualReport = actualPath + getReportName().trim() + ".pdf";
-		PDFUtility pdfUtility = new PDFUtility();
-		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
-		String[] lines = actualReportString.split("\\n");
-		Pattern pattertoMatch = Pattern.compile("Report Creation Date");
-		for (String line : lines) {
-			String formatteLine = line.trim();
-			if (pattertoMatch.matcher(line).find()) {
-				Matcher matcher = pattertoMatch.matcher(formatteLine);
-				matcher.find();
-				reportDate = formatteLine.substring(matcher.end() + 1).trim();
-			}
-		}
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm a zzz");
-		String currentDate = dateFormat.format(new Date()).toString();
-		if (DateUtility.compareDateTimeFormat(reportDate, true)
-				&& (DateUtility.compareDates(currentDate.toString(), reportDate, true))) {
-			return true;
-		}
-		Log.error("Date not match, expected: " + currentDate + ", actual: " + reportDate);
-		return false;
 	}
 
 	public boolean checkBlankReportErrorTextPresentAndRequiredFieldsHighlighted() {
@@ -2624,6 +2591,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		if (surveyModeFilter != null) {
 			selectSurveyModeForSurvey(surveyModeFilter);
 		}
+	}
+
+	@Override
+	public String getReportPrefix() {
+		return "CR";
 	}
 
 	public boolean areInvestigationTableColumnsSorted() {

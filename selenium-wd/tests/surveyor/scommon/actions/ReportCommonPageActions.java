@@ -1284,27 +1284,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.findReport", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("findReport", ARG_DATA_ROW_ID, dataRowID);
 		ReportsCommonDataRow compRptDataRow = getReportsDataRow(dataRowID);
-		String reportTitle = compRptDataRow.title;
-		String createdBy = LoginPageActions.workingDataRow.get().username;
-		this.getReportsCommonPage().findReport(reportTitle, createdBy);
-		return true;
+		return findReportInternal(compRptDataRow.title, 1 /*colIdx = 1 for reportTitle*/);
 	}
 
-	/**
-	 * Executes findReportByName action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception
-	 */
-	public boolean findReportByName(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.findReportByName", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("findReportByName", ARG_DATA_ROW_ID, dataRowID);
-		ReportsCommonDataRow compRptDataRow = getReportsDataRow(dataRowID);
-		String reportName = this.getReportsCommonPage().getReportName(compRptDataRow.title);
+	public boolean findReportInternal(String searchKeyword, Integer columnIndex) throws Exception {
 		String createdBy = LoginPageActions.workingDataRow.get().username;
-		this.getReportsCommonPage().findReport(reportName, createdBy);
-		return true;
+		return this.getReportsCommonPage().findReportbySearch(searchKeyword, createdBy, columnIndex);
 	}
 
 	/**
@@ -1773,6 +1758,20 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyPDFDoesNotContainInputtedInformation action.
+	 * @param data - Colon separated list of string values to be found in the PDF.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyPDFDoesNotContainInputtedInformation(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyPDFDoesNotContainInputtedInformation", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty("verifyPDFDoesNotContainInputtedInformation", ARG_DATA, data);
+		List<String> listExpectedStrings = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		return this.getReportsCommonPage().verifyReportDoesNotContainText(getWorkingReportsDataRow().title, listExpectedStrings);
+	}
+
+	/**
 	 * Executes verifyMetaDataFilesHaveCorrectData action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -1993,6 +1992,24 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyPDFZIPThumbnailIsShownInComplianceViewer", data, dataRowID);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
 		return this.getReportsCommonPage().verifyThumbnailInReportViewer(ReportViewerThumbnailType.ComplianceZipPDF);
+	}
+
+	/**
+	 * Executes verifyPDFZipFilesArePresent action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyReportCreationInSSRSPDFIsCorrect(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyReportCreationInSSRSPDFIsCorrect", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyReportCreationInSSRSPDFIsCorrect", ARG_DATA_ROW_ID, dataRowID);
+
+		if (getWorkingReportsEntity() == null) {
+			throw new Exception("Create new report before verifying report PDF files. Report has not been created.");
+		}
+
+		return getReportsCommonPage().validateReportCreationDate(TestContext.INSTANCE.getTestSetup().getDownloadPath());
 	}
 
 	/**
@@ -2419,11 +2436,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
 	 */
-	public boolean verifyWarningMessageOnDeleteButtonClickEquals(String data, Integer dataRowID) {
+	public boolean verifyWarningMessageOnDeleteButtonClickEquals(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyWarningMessageOnDeleteButtonClickEquals", data, dataRowID);
-		// clicking on Cancel button in popup will succeed only if the confirm delete popup is showing.
-		this.getReportsCommonPage().clickOnCancelInDeleteReportPopup();
+		ReportsCommonDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		this.getReportsCommonPage().verifyDeleteModalMessageIsCorrect(reportsDataRow.title);
 		return true;
 	}
 
@@ -2980,11 +2998,10 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 		// for each view in the test case verify that the view image is present.
 		List<Integer> viewRowIDs = ActionArguments.getNumericList(reportsDataRow.reportViewRowIDs);
-		for (Integer viewRowID : viewRowIDs) {
-			ReportViewsDataReader viewsDataReader = new ReportViewsDataReader(this.excelUtility);
-			ReportViewsDataRow viewsDataRow = viewsDataReader.getDataRow(viewRowID);
+		for (int i=0; i<viewRowIDs.size(); i++) {
+			String viewName = workingReportViewsDataRows.get().get(i).name;
 			retVal = retVal && this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
-					reportsDataRow.title, reportsDataRow.tCID, viewsDataRow.name, inZipFolder);
+					reportsDataRow.title, reportsDataRow.tCID, viewName, inZipFolder);
 		}
 		return retVal;
 	}
@@ -3414,6 +3431,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyIsotopicTableIsEmpty")) { return this.verifyIsotopicTableIsEmpty(data, dataRowID); }
 		else if (actionName.equals("verifyPageLoaded")) { return this.verifyPageLoaded(data, dataRowID); }
 		else if (actionName.equals("verifyNewPageLoaded")) { return this.verifyNewPageLoaded(data, dataRowID); }
+		else if (actionName.equals("verifyReportCreationInSSRSPDFIsCorrect")) { return this.verifyReportCreationInSSRSPDFIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyReportFilesArePresent")) { return this.verifyReportFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyReportGenerationIsCancelled")) { return this.verifyReportGenerationIsCancelled(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSelectedArea")) { return this.verifySearchedSurveysAreForSelectedArea(data, dataRowID); }

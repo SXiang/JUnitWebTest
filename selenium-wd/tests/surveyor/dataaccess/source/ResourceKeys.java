@@ -300,4 +300,10 @@ public class ResourceKeys {
 
 	// Constants for Licensed Features
 	public static final String ComplianceReport_LicenseMissing = "ComplianceReport_LicenseMissing";
+
+	// Report constants
+	public static final String Reports_DeleteReportWarning = "Reports_DeleteReportWarning";
+
+	// Modal dialog constant.
+	public static final String Dialog_ProceedMessage = "Dialog_ProceedMessage";
 }

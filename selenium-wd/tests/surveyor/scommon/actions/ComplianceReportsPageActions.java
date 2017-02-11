@@ -145,6 +145,20 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	/**
+	 * Executes findReportByName action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean findReportByName(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.findReportByName", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("findReportByName", ARG_DATA_ROW_ID, dataRowID);
+		ReportsCommonDataRow rptDataRow = getReportsDataRow(dataRowID);
+		return findReportInternal(this.getComplianceReportsPage().getFullReportName(rptDataRow.title), 2 /*colIdx = 2 for reportName*/);
+	}
+
+	/**
 	 * Executes investigateReport action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.

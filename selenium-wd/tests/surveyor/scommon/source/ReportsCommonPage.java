@@ -140,6 +140,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
 
+	private static final String XPATH_DELETE_MODAL_REPORT_NAME = "//*[@id='delete-report-name']";
+	private static final String XPATH_DELETE_MODAL_DELETE_WARNING = "//*[@id='deleteReportModal']/div/div/div[2]/p[2]";
+	private static final String XPATH_DELETE_MODAL_DELETE_CONFIRMATION = "//*[@id='deleteReportModal']/div/div/div[2]/p[3]";
+
 	private static final String PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Compliance";
 	private static final String INVESTIGATION_PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Investigation";
 	private static final String INVESTIGATION_CSV_FILE_DOWNLOAD_URL = "../Reports/DownloadInvestigationData?reportId=%s";
@@ -784,7 +788,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@Override
 	public boolean handleFileDownloads(String rptTitle, String testCaseID) throws Exception {
 		Log.method("ReportsCommonPage.handleFileDownloads", rptTitle, testCaseID);
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle);
 		invokePDFFileDownload(rptTitle);
 		waitForPDFFileDownload(reportName);
 		Log.info("SSRS zip file got downloaded");
@@ -851,34 +855,34 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return getReportPDFZipFileName(rptTitle, 0, includeExtension);
 	}
 
-	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle) + "-PDF";
-		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		if (includeExtension) {
-			reportName += ".zip";
-		}
-		return reportName;
-	}
-
 	public String getReportMetaZipFileName(String rptTitle, boolean includeExtension) {
 		return getReportMetaZipFileName(rptTitle, 0, includeExtension);
-	}
-
-	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle) + "-Meta";
-		reportName = getZipFileNameWithIndex(reportName, zipIndex);
-		if (includeExtension) {
-			reportName += ".zip";
-		}
-		return reportName;
 	}
 
 	public String getReportShapeZipFileName(String rptTitle, boolean includeExtension) {
 		return getReportShapeZipFileName(rptTitle, 0, includeExtension);
 	}
 
+	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-PDF";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportMetaZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-Meta";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
 	public String getReportShapeZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle) + "-Shape";
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-Shape";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
 		if (includeExtension) {
 			reportName += ".zip";
@@ -888,7 +892,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	@Override
 	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle);
 		if (includeExtension) {
 			reportName += ".pdf";
 		}
@@ -896,7 +900,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public String getInvestigationPDFFileName(String rptTitle, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle);
 		if (includeExtension) {
 			reportName += "-Investigation.pdf";
 		}
@@ -904,7 +908,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public String getInvestigationCSVFileName(String rptTitle, boolean includeExtension) {
-		String reportName = "CR-" + getReportName(rptTitle);
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle);
 		if (includeExtension) {
 			reportName += "-ReportInvestigations.csv";
 		}
@@ -1769,8 +1773,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportsEntity.getRptTitle());
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		setReportName("CR-" + reportId);
+		String actualReport = actualPath + getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf";
+		setReportName(getReportPrefix() + "-" + reportId);
 		setReportName(getReportName());
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
 		actualReportString = RegexUtility.removeSpecialChars(actualReportString);
@@ -1818,19 +1822,32 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 */
 	public boolean verifyReportContainsText(String reportTitle, List<String> expectedReportString)
 			throws IOException {
-		Log.method("ReportsCommonPage.verifyComplianceReportContainsText", reportTitle,
+		Log.method("ReportsCommonPage.verifyReportContainsText", reportTitle,
 				LogHelper.listToString(expectedReportString));
-		String actualPath = testSetup.getDownloadPath();
-		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		setReportName("CR-" + reportId);
-		setReportName(getReportName());
-		String actualReportString = pdfUtility.extractPDFText(actualReport);
-		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
+		Map<String, Boolean> actualFirstPage = getStringMatchResultMap(reportTitle, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
+				return false;
+		}
+		return true;
+
+	}
+
+	/**
+	 * Method to verify static text is NOT matched.
+	 *
+	 * @param reportTitle
+	 * @param expectedReportString
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean verifyReportDoesNotContainText(String reportTitle, List<String> expectedReportString)
+			throws IOException {
+		Log.method("ReportsCommonPage.verifyReportDoesNotContainText", reportTitle,
+				LogHelper.listToString(expectedReportString));
+		Map<String, Boolean> actualFirstPage = getStringMatchResultMap(reportTitle, expectedReportString);
+		for (Boolean value : actualFirstPage.values()) {
+			if (value)
 				return false;
 		}
 		return true;
@@ -1851,8 +1868,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -1888,8 +1905,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		Log.info("Actual PDF text is:");
@@ -1954,8 +1971,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -1996,8 +2013,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2086,8 +2103,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2161,8 +2178,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		String reportName = "CR-" + reportId;
+		String actualReport = actualPath + getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf";
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2238,9 +2255,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		if (!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
 
-		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6)
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportSurvey.csv";
-		String reportName = "CR-" + reportId;
+		String reportName = getReportPrefix() + "-" + reportId;
 
 		if (actualPath.endsWith("-ReportSurvey.csv")) {
 			pathToCsv = actualPath;
@@ -2294,9 +2311,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		if (!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
 
-		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6)
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportIsotopicCapture.csv";
-		String reportName = "CR-" + reportId;
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
@@ -2347,9 +2364,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		CSVUtility csvUtility = new CSVUtility();
 		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
 		String pathToMetaDataUnZip = actualPath + File.separator + metaDataZipFileName;
-		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6)
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportEthaneCapture.csv";
-		String reportName = "CR-" + reportId;
+		String reportName = getReportPrefix() + "-" + reportId;
 
 		if (actualPath.endsWith("-ReportEthaneCapture.csv")) {
 			pathToCsv = actualPath;
@@ -2409,8 +2426,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		if (!actualPath.endsWith(unZipFolder))
 			pathToMetaDataUnZip += unZipFolder;
 
-		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
-		String reportName = "CR-" + reportId;
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
+		String reportName = getReportPrefix() + "-" + reportId;
 		if (actualPath.endsWith("-ReportLISAS.csv")) {
 			pathToCsv = actualPath;
 		}
@@ -2568,8 +2585,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2647,8 +2664,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2710,8 +2727,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
@@ -2738,8 +2755,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -2840,8 +2857,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = Paths.get(actualPath, "CR-" + reportId.substring(0, 6) + ".pdf").toString();
-		String reportName = "CR-" + reportId;
+		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
+		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
@@ -3002,7 +3019,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.method("ReportsCommonPage.verifySSRSImages", actualPath, reportTitle, testCase);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String reportNameWithoutExt = "CR-" + reportId.substring(0, 6);
+		String reportNameWithoutExt = getReportPrefix() + "-" + reportId.substring(0, 6);
 		String reportName = reportNameWithoutExt + ".pdf";
 		String htmlReportName = reportNameWithoutExt + ".html";
 		String htmlReportPath = Paths.get(actualPath, htmlReportName).toString();
@@ -3264,12 +3281,27 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 	}
 
+	public void verifyDeleteModalMessageIsCorrect(String reportTitle) {
+		Log.method("verifyDeleteModalMessageIsCorrect", reportTitle);
+
+		WebElement modalReportName = driver.findElement(By.xpath(XPATH_DELETE_MODAL_REPORT_NAME));
+		WebElement modalDeleteWarning = driver.findElement(By.xpath(XPATH_DELETE_MODAL_DELETE_WARNING));
+		WebElement modalDeleteConfirmation = driver.findElement(By.xpath(XPATH_DELETE_MODAL_DELETE_CONFIRMATION));
+
+		boolean reportTitleFound = modalReportName.getText().contains(reportTitle);
+		boolean deleteWarningFound = modalDeleteWarning.getText().contains(Resources.getResource(ResourceKeys.Reports_DeleteReportWarning));
+		boolean deleteConfirmationFound = modalDeleteConfirmation.getText().contains(Resources.getResource(ResourceKeys.Dialog_ProceedMessage));
+
+		Log.info(String.format("reportTitleFound=[%b], deleteWarningFound=[%b], deleteConfirmationFound=[%b]",
+				reportTitleFound, deleteWarningFound, deleteConfirmationFound));
+	}
+
 	public String removeReportId(String oriName) {
 		return replaceReportIdWith(oriName, "");
 	}
 
 	public String replaceReportIdWith(String oriName, String replaceWith) {
-		String CR_FilenamePattern = "(CR\\-)[A-Z0-9]{6}([\\.\\-])";
+		String CR_FilenamePattern = "(" + getReportPrefix() + "\\-)[A-Z0-9]{6}([\\.\\-])";
 		Path currPath = Paths.get(oriName);
 		String currFileName = currPath.getFileName().toString();
 		String currFileDirectory = currPath.getParent().toString();
@@ -3539,6 +3571,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 						reportsEntity.getLatLongYOffset(), reportsEntity.getLatLongRectWidth(),
 						reportsEntity.getLatLongRectHeight())
 				.switchMode(ControlMode.Default).clickOkButton().waitForModalDialogToClose();
+	}
+
+	private Map<String, Boolean> getStringMatchResultMap(String reportTitle, List<String> expectedReportString) throws IOException {
+		String actualPath = testSetup.getDownloadPath();
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf";
+		setReportName(getReportName());
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+		return matchSinglePattern(actualReportString, expectedReportString);
 	}
 
 	@Override

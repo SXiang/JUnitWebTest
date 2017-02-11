@@ -1,10 +1,6 @@
 package surveyor.scommon.source;
 
-import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYINDTB;
-import static surveyor.scommon.source.SurveyorConstants.KEYISOANA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
-import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 
 import java.util.HashMap;
@@ -19,8 +15,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.entities.AssessmentReportEntity;
 import surveyor.scommon.entities.BaseReportEntity;
-import surveyor.scommon.entities.ComplianceReportEntity;
-import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 
 /**
@@ -42,6 +36,10 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 		super(driver, strBaseURL, testSetup, STRURLPath, () -> getCommonResourceProvider());
 
 		Log.info(String.format("\nThe Assessment Reports Page URL is: %s\n", this.strPageURL));
+	}
+
+	public String getFullReportName(String rptTitle) {
+		return "AS" + "-" + getReportName(rptTitle);
 	}
 
 	@Override
@@ -87,6 +85,11 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 		if (viewLayersList != null && viewLayersList.size() > 0) {
 			handleOptionalDynamicViewLayersSection(viewLayersList);
 		}
+	}
+
+	@Override
+	public String getReportPrefix() {
+		return "AS";
 	}
 
 	@Override

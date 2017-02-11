@@ -1826,6 +1826,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found report with title = '%s', created by = '%s", rptTitle, strCreatedBy));
 				return true;
 			}
 
@@ -1848,20 +1849,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
-		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy));
+		return findReportbySearch(rptTitle, strCreatedBy, 1 /*searchColIndex -> 1=reportTitle */);
+	}
+
+	public boolean findReportbySearch(String searchKeyword, String strCreatedBy, Integer searchKeywordColIdx) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-
-		this.getTextBoxReportSerach().sendKeys(rptTitle);
-		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
+		this.getTextBoxReportSearch().sendKeys(searchKeyword);
+		this.getTextBoxReportSearch().sendKeys(Keys.ENTER);
 		this.waitForPageLoad();
 
 		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
+			Log.info(String.format("Did NOT find report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 			return false;
 		}
 		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
@@ -1876,12 +1879,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			this.waitForPageLoad();
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + String.valueOf(searchKeywordColIdx) + "]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+			if (rptTitleCellText.trim().equalsIgnoreCase(searchKeyword)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 				return true;
 			}
 
@@ -1900,7 +1904,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy));
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 		return false;
 	}
 
@@ -2454,7 +2458,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.reportName = reportTitle;
 	}
 
-	public WebElement getTextBoxReportSerach() {
+	public WebElement getTextBoxReportSearch() {
 		return textBoxReportSearch;
 	}
 
@@ -3005,6 +3009,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String getReportName(String rptTitle) {
+		// Implementation to be provided by derived type.
+		return null;
+	}
+
+	public String getReportPrefix() {
 		// Implementation to be provided by derived type.
 		return null;
 	}

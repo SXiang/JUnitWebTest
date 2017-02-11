@@ -239,6 +239,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.verifyWarningMessageOnDeleteButtonClickEquals(EMPTY, getReportRowID(reportDataRowID1));
 		clickOnConfirmDeleteReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(assessmentReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 	}
@@ -304,8 +305,11 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(assessmentReportsPageAction.findReport(EMPTY, getReportRowID(reportDataRowID1)));
 
-		// TODO: findReportByName() needs to be implemented fully.
-		//assertTrue(assessmentReportsPageAction.findReportByName(EMPTY, getReportRowID(reportDataRowID1)));
+		assessmentReportsPageAction.getAssessmentReportsPage().logout();
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(assessmentReportsPageAction.findReportByName(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -402,8 +406,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	- - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
-	// Verified (w/ missing framework methods)
-	// TODO: Add framework methods for missing verifications. See comments below.
+	// Verified (some methods remaining to be verified)
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
 	public void TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt(
@@ -419,47 +422,53 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 
-		/* Currently disabling checks that need framework additions.
+		assertTrue(assessmentReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		// Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
-		// TODO: Confirm if additional CHECKS needed.
-		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// TODO: Find correct match string. (PDF should have survey details, view details and assets)
-		//assertTrue(assessmentReportsPageAction.verifyReportPDFMatches(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// TODO: Find strings to match in PDF. (Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected)
-		//assertTrue(assessmentReportsPageAction.verifyPDFContainsInputtedInformation(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// TODO: Add a NOT contains method in PageAction. SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
-		//assertTrue(assessmentReportsPageAction.verifyPDFContainsInputtedInformation(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// TODO: CHECK when setting baseline.
-		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
-		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// TODO: CHECK when setting baseline.
 		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		// TODO: CHECK verification correct for Metadata CSVs.
-		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
+		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		// TODO: Add missing methods to perform the remaining checks.
+		/* TURN ON THESE ASSERTS after local verification.
+
+		// (PDF should have survey details, view details and assets)
+		assertTrue(assessmentReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(assessmentReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(assessmentReportsPageAction.verifySSRSLayersTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+
+		//(Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected)
+		// date printed -> verified in Footer verification.
+		// survey start/end date -> verified in verifySSRSDrivingSurveyTableInfo
+		assertTrue(assessmentReportsPageAction.verifyReportCreationInSSRSPDFIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(assessmentReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
+
+		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
+		String notContainsText = "Indications:LISA:Isotopic Analysis:Field Notes:Report Mode";
+		assertTrue(assessmentReportsPageAction.verifyPDFDoesNotContainInputtedInformation(notContainsText, getReportRowID(reportDataRowID1)));
+
+		// Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
+		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+
+		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+
 		// All the information present in ReportLISA.csv file
 		//   ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
 		// Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
 		// All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
 		// Data present in ReportLisa.csv should be same as SSRS PDF indication table.
-		assertTrue(assessmentReportsPageAction.verifyReportSurveyMetadataFile(EMPTY, getReportRowID(reportDataRowID1)));
 
+		//assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 		*/
 	}
 
