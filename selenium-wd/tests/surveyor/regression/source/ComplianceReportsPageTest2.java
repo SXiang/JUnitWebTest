@@ -897,7 +897,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		String testCaseID = "TC1268";
 		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
-		String smallBoundary = "TestPlat-Auto-1.5km";
+		String smallBoundary = "TESTPlat-Auto-1.5km";
 		String bigBoundary = "Level 1";
 
 		this.getComplianceReportsPage().open();
@@ -1727,7 +1727,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		ComplianceReportEntity rpt2 = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList1, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList);
-		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 
 		this.getComplianceReportsPage().addNewReport(rpt2);
 		Log.info("!!!!!" + this.getComplianceReportsPage().getAssetErrorText().getText()+ "!!!!!");
@@ -1845,7 +1845,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		this.getComplianceReportsPage().open();
 		ComplianceReportEntity rpt2 = new ComplianceReportEntity(rptTitle2, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
 		rpt2.setViewLayersList(viewLayerList2);
-		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 		this.getComplianceReportsPage().addNewReport(rpt2);
 		this.getComplianceReportsPage().waitForPageLoad();
 
@@ -1862,7 +1862,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		this.getComplianceReportsPage().open();
 		ComplianceReportEntity rpt3 = new ComplianceReportEntity(rptTitle3, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList3, SurveyModeFilter.Standard);
-		rpt3.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TestPlat-Auto-1.5km");
+		rpt3.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 		this.getComplianceReportsPage().addNewReport(rpt3);
 		this.getComplianceReportsPage().waitForPageLoad();
 

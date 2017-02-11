@@ -12,6 +12,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -69,18 +72,21 @@ public class WebElementExtender {
 	    return screen;
    	}
 
-	public static boolean checkElementsListContains(WebDriver driver, String listElementXPath, List<String> entriesToFind) {
-		Hashtable<String, Boolean> listMap = new Hashtable<String, Boolean>();
-		List<WebElement> listElements = driver.findElements(By.xpath(listElementXPath));
+   /**
+    * Checks if LI elements in UI are matching the entries specified in list.
+    * An LI element is a match if LI element text is contained in any of the entry in specified list.
+    * @param driver - web driver instance.
+    * @param liElementsXPath - xPath for LI elements in UI.
+    * @param entriesToFind - list entries to match.
+    * @return - true if match, false otherwise.
+    */
+	public static boolean checkElementsListContains(WebDriver driver, String liElementsXPath, List<String> entriesToFind) {
+		Log.method("checkElementsListContains", driver, liElementsXPath, LogHelper.listToString(entriesToFind));
+		List<WebElement> listElements = driver.findElements(By.xpath(liElementsXPath));
 		for (WebElement element : listElements) {
-			String autoText = element.getText();
-			if (!listMap.containsKey(autoText)) {
-				listMap.put(autoText, true);
-			}
-		}
-
-		for (String entry : entriesToFind) {
-			if (!listMap.containsKey(entry)) {
+			boolean match = entriesToFind.stream()
+				.anyMatch(s -> element.getText().contains(s));
+			if (!match) {
 				return false;
 			}
 		}

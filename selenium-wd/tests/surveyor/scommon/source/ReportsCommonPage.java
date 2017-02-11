@@ -3518,25 +3518,40 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return new PDFUtility().extractPDFText(pdfFilePath);
 	}
 
-	protected void fillCustomerBoundary(ReportCommonEntity reportsEntity) {
-		fillCustomerBoundary(reportsEntity.getCustomerBoundaryFilterType().toString(),
+	protected boolean fillCustomerBoundary(ReportCommonEntity reportsEntity) {
+		return fillCustomerBoundary(reportsEntity.getCustomerBoundaryFilterType().toString(),
 				reportsEntity.getCustomerBoundaryName());
 	}
 
-	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
-		fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/);
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
+		return fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/);
 	}
 
-	public void fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> outBoundaryNames) {
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> outBoundaryNames) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
-		latLongSelectionControl.setCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		boolean setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		boolean invalidResults = false;
+		if (!setSuccess) {
+			// If value not set, check if noResults entry has been found.
+			Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
+			invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
+			Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+		}
+
 		latLongSelectionControl.switchMode(ControlMode.Default);
-		latLongSelectionControl.clickOkButton();
+		if (setSuccess) {
+			latLongSelectionControl.clickOkButton();
+		} else {
+			latLongSelectionControl.clickCancelButton();
+		}
+
 		latLongSelectionControl.waitForModalDialogToClose();
+
+		return setSuccess || invalidResults;
 	}
 
 	public boolean noBoundarySearchResultByName(){

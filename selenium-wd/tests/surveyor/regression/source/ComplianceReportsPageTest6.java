@@ -1051,9 +1051,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(PAGINATIONSETTING, NOTSET));
 
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Report Title","String"));
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Created By","String"));
+
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Date","Date"));
-		// NOTE: Sorting by ReportName is NOT allowed. Refer TC165.
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isReportColumnSorted("Report Name","String"));
 	}
 }

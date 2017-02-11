@@ -18,9 +18,12 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.testng.Assert;
 
 import surveyor.dataaccess.source.ResourceKeys;
@@ -39,6 +42,24 @@ public class BaseHelper {
 	 *
 	 */
 	public BaseHelper() {
+	}
+
+	/**
+	 * Returns substring which ends at the first char that is not alphanumeric.
+	 * @param input
+	 * @return
+	 */
+	public static String alphaNumericSubStr(String input) {
+		final char replaceChar = '|';
+		String output = input;
+		if (!BaseHelper.isNullOrEmpty(input)) {
+			output = toAlphaNumeric(input, replaceChar);
+			int firstIdx = output.indexOf('|');
+			if (firstIdx > 0) {
+				output = output.substring(0, firstIdx);
+			}
+		}
+		return output;
 	}
 
 	public static boolean compareTwoFilesByContent(String file1, String file2) throws IOException {
@@ -188,7 +209,44 @@ public class BaseHelper {
 		return builder.toString();
 	}
 
-	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
+	/**
+	 * Converts the specified string to retain only alphanumeric characters.
+	 * Non-alphanumeric characters are replaced by the specified character.
+	 * @param input
+	 * @param replaceChar
+	 * @return
+	 */
+	public static String toAlphaNumeric(String input, Character replaceChar) {
+		String output = input;
+		if (!BaseHelper.isNullOrEmpty(input)) {
+			List<Character> characters = Stream.of(ArrayUtils.toObject(input.toCharArray()))
+				.map(c -> (Character.isLetterOrDigit(c)) ? c : replaceChar)
+				.collect(Collectors.toList());
+			output = String.valueOf(ArrayUtils.toPrimitive(characters.toArray(new Character[0])));
+		}
+
+		return output;
+	}
+
+	/**
+	 * Cuts the specified string to the specified length.
+	 * If input string is shorter than the specified length returns the input string as is.
+	 * @param input
+	 * @param len
+	 * @return
+	 */
+	public static String toLength(String input, int len) {
+		String output = input;
+		if (!BaseHelper.isNullOrEmpty(input)) {
+			if (input.length() > len) {
+				output = input.substring(0, len);
+			}
+		}
+
+		return output;
+	}
+
+ 	private static void unZip(String zipFile, String outputFolder) throws FileNotFoundException, IOException {
 		Log.method("unZip", zipFile, outputFolder);
 		FileInputStream inputStream = new FileInputStream(zipFile);
 		ZipInputStream zis = new ZipInputStream(inputStream);
@@ -315,6 +373,10 @@ public class BaseHelper {
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
+		// ** Test ToAlphaNumeric.
+		test_ToAlphaNumeric();
+		test_AlphaNumericSubStr();
+
 		// ** Unit tests for getPaginationShowingStartString() method **/
 		Log.info("Setting user culture to en-US");
 		TestContext.INSTANCE.setUserCulture("en-US");
@@ -332,5 +394,54 @@ public class BaseHelper {
 		TestContext.INSTANCE.setUserCulture("zh-Hans");
 		startString = BaseHelper.getPaginationShowingStartString();
 		Log.info("Paging start string is: " + startString);
+	}
+
+	private static void test_ToAlphaNumeric() {
+		Log.info("Executing test_ToAlphaNumeric() ...");
+		Map<String, String> inOutMap = new HashMap<String, String>();
+		inOutMap.put("", "");
+		inOutMap.put("T", "T");
+		inOutMap.put("777ea887bc6943309479", "777ea887bc6943309479");
+		inOutMap.put("tc1373-777ea887bc6943309479", "tc1373|777ea887bc6943309479");
+		inOutMap.put("tc1091 report126315", "tc1091|report126315");
+		inOutMap.put("customer supervisor report tc739 98272", "customer|supervisor|report|tc739|98272");
+		inOutMap.put("Rpttemplate-b3bb8b7ab2@#&*504ef19acdstandar~!@doperaTor", "Rpttemplate|b3bb8b7ab2||||504ef19acdstandar|||doperaTor");
+
+		final Character replaceChar = '|';
+		inOutMap.entrySet().stream()
+			.forEach(
+				e -> {
+					String key = e.getKey();
+					String value = e.getValue();
+					String alphaNumeric = BaseHelper.toAlphaNumeric(key, replaceChar);
+					Log.info("Input = " + key);
+					Log.info("Output = " + alphaNumeric);
+					Assert.assertTrue(alphaNumeric.equals(value));
+				}
+		);
+	}
+
+	private static void test_AlphaNumericSubStr() {
+		Log.info("Executing test_AlphaNumericSubStr() ...");
+		Map<String, String> inOutMap = new HashMap<String, String>();
+		inOutMap.put("", "");
+		inOutMap.put("T", "T");
+		inOutMap.put("777ea887bc6943309479", "777ea887bc6943309479");
+		inOutMap.put("tc1373-777ea887bc6943309479", "tc1373");
+		inOutMap.put("tc1091 report126315", "tc1091");
+		inOutMap.put("customer supervisor report tc739 98272", "customer");
+		inOutMap.put("Rpttemplate-b3bb8b7ab2@#&*504ef19acdstandar~!@doperaTor", "Rpttemplate");
+
+		inOutMap.entrySet().stream()
+			.forEach(
+				e -> {
+					String key = e.getKey();
+					String value = e.getValue();
+					String alphaNumeric = BaseHelper.alphaNumericSubStr(key);
+					Log.info("Input = " + key);
+					Log.info("Output = " + alphaNumeric);
+					Assert.assertTrue(alphaNumeric.equals(value));
+				}
+		);
 	}
 }

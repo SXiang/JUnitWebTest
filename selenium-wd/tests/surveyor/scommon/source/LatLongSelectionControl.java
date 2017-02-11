@@ -1,5 +1,6 @@
 package surveyor.scommon.source;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,11 +16,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import common.source.Log;
+import common.source.LogHelper;
+import common.source.Timeout;
 import common.source.WebElementExtender;
 import common.source.WebElementFunctionUtil;
 
 public class LatLongSelectionControl extends BaseControl {
-
 	public enum ControlMode {
 		MapInteraction,
 		Default
@@ -33,7 +35,8 @@ public class LatLongSelectionControl extends BaseControl {
 
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION_CALL = "return getBoundarySelectorCanvasImageData();";
 
-	private static final String AUTOCOMPLETE_LIST_UL_ID = "ui-id-1";
+	private static final String BOUNDARY_NAME_DROPDOWNLIST_UL_ID = "ui-id-1";
+	private static final String BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH = "//ul[@id='" + BOUNDARY_NAME_DROPDOWNLIST_UL_ID + "']";
 
 	@FindBy(id = "boundary-feature-class")
 	private WebElement filterByTypeDropDown;
@@ -205,18 +208,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public boolean verifyCustomerBoundaryAutoCompleteListContains(String boundaryName, List<String> autocompleteListEntries) {
-		Log.info("Set boundary name to '"+boundaryName+"'");
-		waitForElementToBeEnabled(selectByNameTextField);
-		WebElementExtender.sendKeys(selectByNameTextField, boundaryName);
-		this.waitForAutoCompleteListToOpen();
-
-		if (!WebElementExtender.checkElementsListContains(driver, String.format("//*[@id='%s']/li", AUTOCOMPLETE_LIST_UL_ID), autocompleteListEntries)) {
-			return false;
-		}
-
-		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
-		this.waitForAutoCompleteListToClose();
-		return true;
+		Log.method("verifyCustomerBoundaryAutoCompleteListContains", boundaryName, LogHelper.listToString(autocompleteListEntries));
+		return selectFromNameDropdownList(boundaryName, autocompleteListEntries);
 	}
 
 	/**
@@ -225,29 +218,29 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return the LatLongSelectionControl class instance.
 	 */
 	public LatLongSelectionControl setCustomerBoundaryName(String name) {
-		return setCustomerBoundaryName(name, null /*outBoundaryNames*/);
+		Log.method("setCustomerBoundaryName", name);
+		selectFromNameDropdownList(name, Arrays.asList(new String[] {name}));
+		return this;
 	}
 
 	/**
-	 * Set value to selectByName Text field.
+	 * Set value to selectByName Text field. Return whether or not boundary name was set successfully.
 	 *
-	 * @return the LatLongSelectionControl class instance.
+	 * @return whether or not boundary name was set successfully.
 	 */
-	public LatLongSelectionControl setCustomerBoundaryName(String name, List<String> outBoundaryNames) {
-		Log.info("Wait for boundary name text field to be clickable");
-		// NOTE: In CI server run,  map is not loading in 30 seconds. Increasing timeout for debugging.
-		WebElementExtender.waitForElementToBeClickable(60 /*timeout*/, driver, selectByNameTextField);
-		Log.info("Wait for boundary name text field to be enabled");
-		this.waitForElementToBeEnabled(selectByNameTextField);
-		Log.info("Set customer boundary name '"+name+"'");
-		selectByNameTextField.sendKeys(name);
-		this.waitForAutoCompleteListToOpen();
-		if (outBoundaryNames != null) {
-			outBoundaryNames = getAutoCompleteListEntries();
-		}
-		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
-		this.waitForAutoCompleteListToClose();
-		return this;
+	public boolean setVerifyCustomerBoundaryName(String name) {
+		Log.method("setVerifyCustomerBoundaryName", name);
+		return setVerifyCustomerBoundaryName(name, Arrays.asList(new String[] {name}));
+	}
+
+	/**
+	 * Set value to selectByName Text field. Return whether or not boundary name was set successfully.
+	 *
+	 * @return whether or not boundary name was set successfully.
+	 */
+	public boolean setVerifyCustomerBoundaryName(String name, List<String> autoCompleteList) {
+		Log.method("setVerifyCustomerBoundaryName", name, autoCompleteList);
+		return selectFromNameDropdownList(name, autoCompleteList);
 	}
 
 	/**
@@ -262,12 +255,14 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
+
+
 	/**
 	 * Clicks on the specified entry in the autocomplete list box.
 	 * @param entryIdx - 1-based index in the list.
 	 */
 	public void clickOnAutoCompleteListEntry(Integer entryIdx) {
-		WebElement element = this.driver.findElement(By.xpath(String.format("//ul[@id='" + AUTOCOMPLETE_LIST_UL_ID + "']/li[%d]", entryIdx)));
+		WebElement element = this.driver.findElement(By.xpath(String.format(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "/li[%d]", entryIdx)));
 		element.click();
 	}
 
@@ -276,7 +271,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 * @return
 	 */
 	public List<String> getAutoCompleteListEntries() {
-		WebElement autoCompleteList = this.driver.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
+		WebElement autoCompleteList = this.driver.findElement(By.id(BOUNDARY_NAME_DROPDOWNLIST_UL_ID));
 		List<WebElement> listElements = WebElementFunctionUtil.tryFindElements(autoCompleteList, p -> p.findElements(By.xpath("li[@class='ui-menu-item']")));
 		return listElements.stream()
 			.map(e -> e.getText())
@@ -290,10 +285,10 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl waitForAutoCompleteListToOpen() {
 		Log.info("Waiting for auto-complete list to open.");
-		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(AUTOCOMPLETE_LIST_UL_ID)));
+		(new WebDriverWait(driver, timeout)).until(ExpectedConditions.visibilityOfElementLocated(By.id(BOUNDARY_NAME_DROPDOWNLIST_UL_ID)));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				WebElement autoCompleteList = d.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
+				WebElement autoCompleteList = d.findElement(By.id(BOUNDARY_NAME_DROPDOWNLIST_UL_ID));
 				String elementStyle = autoCompleteList.getAttribute("style");
 				return !elementStyle.contains("display:none") &&
 						!elementStyle.contains("display: none");
@@ -311,7 +306,7 @@ public class LatLongSelectionControl extends BaseControl {
 		Log.info("Waiting for auto-complete list to close.");
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				WebElement autoCompleteList = d.findElement(By.id(AUTOCOMPLETE_LIST_UL_ID));
+				WebElement autoCompleteList = d.findElement(By.id(BOUNDARY_NAME_DROPDOWNLIST_UL_ID));
 				return !autoCompleteList.getAttribute("style").contains("display:block") &&
 						!autoCompleteList.getAttribute("style").contains("display: block");
 			}
@@ -372,7 +367,6 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
-
 	/**
 	 *
 	 *
@@ -407,6 +401,13 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
+	public boolean verifyNoBoundaryNameSearchResult() {
+		Log.method("verifyNoBoundaryNameSearchResult");
+		By noResultBy = By.xpath(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "//div[text()='no results...']");
+		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
+		return noResult;
+	}
+
 	protected boolean selectDropdownOption(WebElement dropdown, String option){
 		boolean selected = false;
 		int numTry = 0;
@@ -422,5 +423,20 @@ public class LatLongSelectionControl extends BaseControl {
 			}
 		}while(!selected&&numTry<5);
 		return selected;
+	}
+
+	private boolean selectFromNameDropdownList(String boundaryName, List<String> autocompleteListEntries) {
+		WebElementExtender.waitForElementToBeClickable(Timeout.TEN * 6 /*timeout*/, driver, selectByNameTextField);
+		waitForElementToBeEnabled(selectByNameTextField);
+		WebElementExtender.sendKeys(selectByNameTextField, boundaryName);
+		this.waitForAutoCompleteListToOpen();
+
+		if (!WebElementExtender.checkElementsListContains(driver, BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "//li", autocompleteListEntries)) {
+			return false;
+		}
+
+		this.clickOnAutoCompleteListEntry(1);   // click on first entry in autocomplete list.
+		this.waitForAutoCompleteListToClose();
+		return true;
 	}
 }

@@ -295,12 +295,14 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, getReportRowID(reportDataRowID1));
+		boolean retVal = false;
 		try{
-			complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
+			// NOTE: With invalid entry enterCustomerBoundaryUsingAreaSelector() return true only if 'invalid results' entry was found.
+			retVal = complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 		}catch(Exception e){
 			Log.warn("Exception when selecting an invalid customer boundary name: "+e);
 		}
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().noBoundarySearchResultByName());
+		assertTrue(retVal == true);
 	}
 
 	/**

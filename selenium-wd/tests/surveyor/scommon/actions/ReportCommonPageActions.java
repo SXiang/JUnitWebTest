@@ -1112,16 +1112,17 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean enterCustomerBoundaryUsingAreaSelector(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.enterCustomerBoundaryUsingAreaSelector", data, dataRowID);
+		boolean retVal = false;
 		if (dataRowID != -1) {
 			ReportsCommonDataRow reportsDataRow = getReportsDataRow(dataRowID);
-			this.getReportsCommonPage().fillCustomerBoundary(reportsDataRow.customerBoundaryType,
+			retVal = this.getReportsCommonPage().fillCustomerBoundary(reportsDataRow.customerBoundaryType,
 					reportsDataRow.customerBoundaryName);
 		} else {
 			ActionArguments.verifyNotNullOrEmpty("enterCustomBoundaryUsingAreaSelector", ARG_DATA, data);
 			List<String> boundaryInfo = verifyCustomerBoundaryInfo(data);
-			this.getReportsCommonPage().fillCustomerBoundary(boundaryInfo.get(0), boundaryInfo.get(1));
+			retVal = this.getReportsCommonPage().fillCustomerBoundary(boundaryInfo.get(0), boundaryInfo.get(1));
 		}
-		return true;
+		return retVal;
 	}
 
 	/**

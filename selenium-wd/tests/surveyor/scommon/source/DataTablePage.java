@@ -25,7 +25,9 @@ import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestSetup;
+import common.source.Timeout;
 import common.source.WebElementExtender;
+import common.source.WebElementFunctionUtil;
 
 public class DataTablePage extends SurveyorBasePage {
 
@@ -128,7 +130,8 @@ public class DataTablePage extends SurveyorBasePage {
 		boolean done = false;
 		do{
 			for(WebElement row: tableRow){
-				List<WebElement> field = row.findElements(By.cssSelector("td"));
+				List<WebElement> field = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
+						(parentEl) -> parentEl.findElements(By.cssSelector("td")));
 				columnValues.add(getElementText(field.get(colIdx)));
             	numFound++;
 				if(numRecords>-1 && numFound >= numRecords){
