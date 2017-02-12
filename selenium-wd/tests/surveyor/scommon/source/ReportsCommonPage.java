@@ -3533,7 +3533,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
-		boolean setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		boolean setSuccess = false;
+		if (outBoundaryNames != null) {
+			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		} else {
+			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
+		}
+
 		boolean invalidResults = false;
 		if (!setSuccess) {
 			// If value not set, check if noResults entry has been found.
