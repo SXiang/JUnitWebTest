@@ -9,7 +9,8 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 public class DriverViewDataProvider extends SurveyorTestRunner {
 	public static final String DRIVERVIEW_MISSING_COLUMN_VALUES_PROVIDER = "dataProviderDriverViewMissingColumnValues";
-	public static final String DRIVERVIEW_START_STOP_SURVEY_METH_PROVIDER = "dataProviderStartStopSurveyMeth";
+	public static final String DRIVERVIEW_START_STOP_SURVEY_METH_SHORTDB3_PROVIDER = "dataProviderStartStopSurveyMethShortDB3";
+	public static final String DRIVERVIEW_START_STOP_SURVEY_METH_LONGDB3_PROVIDER = "dataProviderStartStopSurveyMethLongDB3";
 	public static final String DRIVERVIEW_START_STOP_SURVEY_ETH_PROVIDER = "dataProviderStartStopSurveyEth";
 	public static final String DRIVERVIEW_COMPARE_INDICATIONS_DRIVERVIEW_SURVEYVIEW_PROVIDER = "dataProviderCompareIndicationsDriverViewSurveyView";
 
@@ -68,8 +69,8 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 
 		// methane - rr
 		final int userDataRowID2 = 16;          // driver.
-		final int analyzerDb3DataRowID2 = 9;
-		final int surveyRuntimeInSeconds2 = 40;
+		final int analyzerDb3DataRowID2 = 23;
+		final int surveyRuntimeInSeconds2 = 60;
 		final int surveyDataRowID2 = 27;
 
 		// methane - std
@@ -107,7 +108,7 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	}
 
 	@DataProvider
-	public static Object[][] dataProviderStartStopSurveyMeth() throws Exception {
+	public static Object[][] dataProviderStartStopSurveyMethShortDB3() throws Exception {
 		// standard surveys - shorter DB3, shorter surveys.
 		final Integer userDataRowID1 = 17;
 		final Integer analyzerDb3DataRowID1 = 52;
@@ -136,6 +137,16 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 		final Integer surveyRuntimeInSeconds4 = 3;
 		final Integer numberOfSurveys4 = 20;
 
+		return new Object[][] {
+			{ userDataRowID1, analyzerDb3DataRowID1, surveyDataRowIDs1, surveyRuntimeInSeconds1, numberOfSurveys1 },
+			{ userDataRowID2, analyzerDb3DataRowID2, surveyDataRowIDs2, surveyRuntimeInSeconds2, numberOfSurveys2 },
+			{ userDataRowID3, analyzerDb3DataRowID3, surveyDataRowIDs3, surveyRuntimeInSeconds3, numberOfSurveys3 },
+			{ userDataRowID4, analyzerDb3DataRowID4, surveyDataRowIDs4, surveyRuntimeInSeconds4, numberOfSurveys4 },
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderStartStopSurveyMethLongDB3() throws Exception {
 		// standard surveys - longer DB3, longer surveys.
 		final Integer userDataRowID5 = 17;
 		final Integer analyzerDb3DataRowID5 = 57;
@@ -165,10 +176,6 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 		final Integer numberOfSurveys8 = 100;
 
 		return new Object[][] {
-			{ userDataRowID1, analyzerDb3DataRowID1, surveyDataRowIDs1, surveyRuntimeInSeconds1, numberOfSurveys1 },
-			{ userDataRowID2, analyzerDb3DataRowID2, surveyDataRowIDs2, surveyRuntimeInSeconds2, numberOfSurveys2 },
-			{ userDataRowID3, analyzerDb3DataRowID3, surveyDataRowIDs3, surveyRuntimeInSeconds3, numberOfSurveys3 },
-			{ userDataRowID4, analyzerDb3DataRowID4, surveyDataRowIDs4, surveyRuntimeInSeconds4, numberOfSurveys4 },
 			{ userDataRowID5, analyzerDb3DataRowID5, surveyDataRowIDs5, surveyRuntimeInSeconds5, numberOfSurveys5 },
 			{ userDataRowID6, analyzerDb3DataRowID6, surveyDataRowIDs6, surveyRuntimeInSeconds6, numberOfSurveys6 },
 			{ userDataRowID7, analyzerDb3DataRowID7, surveyDataRowIDs7, surveyRuntimeInSeconds7, numberOfSurveys7 },

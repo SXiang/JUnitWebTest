@@ -3,32 +3,16 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.Random;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.OLMapEntities.Indication;
-import common.source.TestSetup;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
-import surveyor.scommon.actions.SurveyViewPageActions;
-import surveyor.scommon.source.DriverViewPage;
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageCustomersPage;
-import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -41,58 +25,10 @@ import surveyor.scommon.source.SurveyorTestRunner;
  *
  */
 @RunWith(SurveyorTestRunner.class)
-public class DriverViewPageTest3 extends BaseMapViewTest {
+public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_PipelineRunnerBase {
 
-	private DriverViewPageActions driverViewPageAction;
-	private SurveyViewPageActions surveyViewPageAction;
-	private static DriverViewPage driverViewPage;
-	private static ManageCustomersPage manageCustomersPage = null;
-	private static ManageUsersPage manageUsersPage = null;
-	private static HomePage homePage;
-	private static LoginPage loginPage;
-
-	public DriverViewPageTest3() throws IOException {
+	public DriverViewPageTests_PipelineRunner1() throws IOException {
 		super();
-	}
-
-	@BeforeClass
-	public static void beforeTestClass() {
-			initializeTestObjects();
-	}
-
-	@Before
-	public void beforeTestMethod() {
-		try {
-			initializeTestObjects();
-			initializePageObjects();
-			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(),getTestSetup());
-			surveyViewPageAction = new SurveyViewPageActions(getDriver(), getBaseURL(),getTestSetup());
-			TestSetup.restartAnalyzer();
-		} catch (UnknownHostException e) {
-			Log.info(ExceptionUtility.getStackTraceString(e));
-		} catch (IOException e) {
-			Log.info(ExceptionUtility.getStackTraceString(e));
-		}
-	}
-
-	private void initializePageObjects() {
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-
-		homePage = pageObjectFactory.getHomePage();
-		PageFactory.initElements(getDriver(), homePage);
-
-		loginPage = pageObjectFactory.getLoginPage();
-		PageFactory.initElements(getDriver(), loginPage);
-
-		driverViewPage = pageObjectFactory.getDriverViewPage();
-		PageFactory.initElements(getDriver(), driverViewPage);
-
-		// Additional page objects.
-		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-
-		manageUsersPage = pageObjectFactory.getManageUsersPage();
-		PageFactory.initElements(getDriver(),  manageUsersPage);
 	}
 
 	/**
@@ -198,7 +134,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_MISSING_COLUMN_VALUES_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_SimulatorTest_DrivingSurvey_CH4_C2H6_Missing_UtilityAdmin(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
@@ -230,10 +166,10 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	}
 
 	/**
-	 * Test Case ID: TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneReplayWithLongDB3
+	 * Test Case ID: TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_ShortDB3
 	 * Script: -
 	 *	- Start a survey using Methane Analyzer with appropriate survey details in the dialog, select Survey Type "Standard" and click OK
-	 *	- Run survey for about 2 minutes.
+	 *	- Run survey for few seconds.
 	 *	- From the Mode menu, click Stop Survey
 	 *	- From the Mode menu, click Start Survey again
 	 *	- When the dialog pops up, change the survey type "Manual", "RapidResponse", "Assessment" or "Operator" and click Start Survey
@@ -244,12 +180,12 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
  	 **/
-	@Ignore
-	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_METH_PROVIDER, location = DriverViewDataProvider.class)
-	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys(Integer userDataRowID,
+	@Test
+	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_METH_SHORTDB3_PROVIDER, location = DriverViewDataProvider.class)
+	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_ShortDB3(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer[] surveyDataRowIDs, Integer surveyRuntimeInSeconds,
 			Integer numberOfSurveys) throws Exception {
-		Log.info("\nRunning TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys");
+		Log.info("\nRunning TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_ShortDB3");
 
 		executeReplayWithLongDB3(userDataRowID, analyzerDb3DataRowID, surveyDataRowIDs, surveyRuntimeInSeconds, numberOfSurveys);
 	}
@@ -269,7 +205,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
  	 **/
-	@Ignore
+	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_ETH_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesEthaneSurveys(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer[] surveyDataRowIDs, Integer surveyRuntimeInSeconds,
@@ -277,47 +213,5 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 		Log.info("\nRunning TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesEthMethSurveys");
 
 		executeReplayWithLongDB3(userDataRowID, analyzerDb3DataRowID, surveyDataRowIDs, surveyRuntimeInSeconds, numberOfSurveys);
-	}
-
-	private void executeReplayWithLongDB3(final Integer userDataRowID, final Integer analyzerDb3DataRowID,
-			final Integer[] surveyDataRowIDs, final Integer surveyRuntimeInSeconds,
-			final Integer numberOfSurveys) throws Exception {
-		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().login(EMPTY, userDataRowID);
-
-		Log.info("Starting Analyzer...");
-		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-
-		Log.info("Starting Replay...");
-		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
-
-		int iteration = 0;
-		int surveyIdx = 0;
-		while (iteration < numberOfSurveys) {
-			Log.info(String.format("Initiating survey number-[%d]. [%d] more surveys before completion", iteration, numberOfSurveys-iteration-1));
-
-			// pick a random survey from the list.
-			surveyIdx = new Random().nextInt(surveyDataRowIDs.length-1);
-			int surveyDataRowID = surveyDataRowIDs[surveyIdx];
-
-			// start survey.
-			driverViewPageAction.getDriverViewPage().setUseAnalyzerReadyLongTimeout(true);   // Use longer timeout.
-			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
-			getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
-
-			// stop survey.
-			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-
-			iteration++;
-			surveyIdx++;
-		}
-
-		// Stop simulator and PSA.
-		Log.info("Stopping Analyzer...");
-		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 }
