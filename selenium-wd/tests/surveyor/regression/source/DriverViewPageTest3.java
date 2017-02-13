@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -197,7 +198,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_MISSING_COLUMN_VALUES_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_SimulatorTest_DrivingSurvey_CH4_C2H6_Missing_UtilityAdmin(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
@@ -243,7 +244,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
  	 **/
-	@Test
+	@Ignore
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_METH_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer[] surveyDataRowIDs, Integer surveyRuntimeInSeconds,
@@ -268,7 +269,7 @@ public class DriverViewPageTest3 extends BaseMapViewTest {
 	 *
 	 * @throws Exception
  	 **/
-	@Test
+	@Ignore
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_ETH_PROVIDER, location = DriverViewDataProvider.class)
 	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesEthaneSurveys(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer[] surveyDataRowIDs, Integer surveyRuntimeInSeconds,
