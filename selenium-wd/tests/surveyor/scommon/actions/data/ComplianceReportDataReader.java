@@ -96,17 +96,18 @@ public class ComplianceReportDataReader extends ReportsCommonDataReader {
 		String reportMode = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportMode, TESTDATA_SHEET_NAME);
 		String minAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_MinAmplitude, TESTDATA_SHEET_NAME);
 		String opacityLISA = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_OpacityLISA, TESTDATA_SHEET_NAME);
-		String searchAreaPreference = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_SearchAreaPreference, TESTDATA_SHEET_NAME);
+		String searchAreaPreference = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SearchAreaPreference, TESTDATA_SHEET_NAME);
 
 		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
 				+ "reportMode=[%s], minAmplitude=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
 				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], opacityLISA=[%s], pDFImageOutputWidth=[%s], "
 				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "
-				+ "reportSurveyRowIDs=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
+				+ "reportSurveyRowIDs=[%s],searchAreaPreference=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
 				reportsDataRow.exclusionRadius, reportMode, minAmplitude, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,
 				reportsDataRow.customBoundarySWLat, reportsDataRow.customBoundarySWLong, reportsDataRow.customerBoundaryType, reportsDataRow.customerBoundaryName,
 				reportsDataRow.opacityFOV, opacityLISA, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
-				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs));
+				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs,
+				searchAreaPreference));
 
 		return new ComplianceReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
 				reportsDataRow.exclusionRadius, reportMode, minAmplitude, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,

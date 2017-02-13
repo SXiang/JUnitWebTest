@@ -425,20 +425,27 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+        assessmentReportsPageAction.clickOnComplianceViewerViewByIndex("2", getReportRowID(reportDataRowID1));
+        assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
+        assessmentReportsPageAction.clickOnComplianceViewerViewByIndex("3", getReportRowID(reportDataRowID1));
+        assessmentReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", getReportRowID(reportDataRowID1));
+
+        assessmentReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 
+		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
+		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+
 		assertTrue(assessmentReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-
-		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
-		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		/* TURN ON THESE ASSERTS after local verification.
 

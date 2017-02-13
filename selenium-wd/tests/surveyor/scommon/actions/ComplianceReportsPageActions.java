@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
+import common.source.Log;
+import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
 
@@ -364,8 +366,12 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	public boolean verifySearchedSurveysMatchSelectedMode(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySearchedSurveysMatchSelectedMode", data, dataRowID);
 		List<String> surveyModes = this.getReportsCommonPage().getSelectedSurveyTableValuesForColumn(ReportsSurveyInfo.ColumnHeaders.SurveyType);
+		Log.info(String.format("All Survey mode values found -> ", LogHelper.listToString(surveyModes)));
 		List<String> distinctSurveyModes = ArrayUtility.getDistinctValues(surveyModes);
+		Log.info(String.format("Distinct Survey mode values found -> ", LogHelper.listToString(distinctSurveyModes)));
 		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
+		Log.info(String.format("distinctSurveyModes.size() = %d", distinctSurveyModes.size()));
+		Log.info(String.format("Comparing survey mode values. Expected (distinctSurveyModes.get(0)) -'%s'. Actual (reportsDataRow.reportMode) -'%s'", distinctSurveyModes.get(0), reportsDataRow.reportMode));
 		return (distinctSurveyModes != null && distinctSurveyModes.size()==1 && distinctSurveyModes.get(0).equalsIgnoreCase(reportsDataRow.reportMode));
 	}
 
