@@ -90,7 +90,8 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
-		if (actionName.equals("verifyReportModeIsNotShownOnPage")) { return this.verifyReportModeIsNotShownOnPage(data, dataRowID); }
+		if (actionName.equals("findReportByName")) { return this.findReportByName(data, dataRowID); }
+		else if (actionName.equals("verifyReportModeIsNotShownOnPage")) { return this.verifyReportModeIsNotShownOnPage(data, dataRowID); }
 		return false;
 	}
 
