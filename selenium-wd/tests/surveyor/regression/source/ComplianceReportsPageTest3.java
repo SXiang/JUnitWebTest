@@ -246,7 +246,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
-	@Test /* Using Picarro Admin now, Change to Utility Admin when small boundary is available */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
 	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -794,7 +794,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Test /* Input Custom Boundary manually */ /* Login as Picarro Admin - No Assets,Boundaries for Customer supervisor */
+	@Test /* Input Custom Boundary manually */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -846,7 +846,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Test/* Change to Utility Admin when customer boundary is available */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC14, location = ComplianceReportDataProvider.class)
 	public void TC14_ReportViewThumbnailsCustomerBoundarySingleView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
