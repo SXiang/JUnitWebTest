@@ -16,10 +16,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -140,7 +140,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
@@ -163,7 +163,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
@@ -185,7 +185,7 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);

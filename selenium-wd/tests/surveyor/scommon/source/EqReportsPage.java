@@ -38,6 +38,8 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDrivingSurveys;
 import surveyor.dataaccess.source.StoredProcEQAddedSurveys;
 import surveyor.dataaccess.source.StoredProcEQGetEQData;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.BaseHelper;
 import common.source.DBConnection;
@@ -290,8 +292,8 @@ public class EqReportsPage extends ReportsBasePage {
 	}
 
 	@Override
-	public void fillReportSpecific(Reports reports) {
-		ReportsEQ eqReports = (ReportsEQ) reports;		
+	public void fillReportSpecific(BaseReportEntity reports) {
+		EQReportEntity eqReports = (EQReportEntity) reports;		
 		getSelectArea().click();
 		for (List<Coordinates> coordinates : eqReports.getListOfCords()) {
 			latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectSegment(CANVAS_X_PATH, coordinates).switchMode(ControlMode.Default);
@@ -318,7 +320,7 @@ public class EqReportsPage extends ReportsBasePage {
 	}
 	
 	@Override
-	protected void handleExtraAddSurveyInfoParameters(Reports reports) {		
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {		
 	}
 
 	public void clickOnZIPInReportViewer() {

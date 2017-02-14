@@ -67,6 +67,7 @@ BEGIN
 END		
 
 -- Assigned Licensed Features to Customers
+---- PG&E
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'3EB7107C-EE5E-467C-92CE-222A83BCB7CF' AND [CustomerId]=N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
@@ -103,7 +104,7 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8CEF7673-80D2-407A-B833-F164C472CFDA', N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'E871C797-B62D-EF28-0EA7-39CAE44E5C19')
-	
+---- Picarro
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'3EB7107C-EE5E-467C-92CE-222A83BCB7CF' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
@@ -140,7 +141,11 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8CEF7673-80D2-407A-B833-F164C472CFDA', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
-	
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+---- sqaCus
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'00000000-0000-0000-0000-000000000002')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'3EB7107C-EE5E-467C-92CE-222A83BCB7CF' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
@@ -177,7 +182,13 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8CEF7673-80D2-407A-B833-F164C472CFDA', N'00000000-0000-0000-0000-000000000002')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'00000000-0000-0000-0000-000000000002')
-	
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732', N'00000000-0000-0000-0000-000000000002')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD', N'00000000-0000-0000-0000-000000000002')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'1F91B807-DB58-45DD-A469-C46DF80F0B62' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'1F91B807-DB58-45DD-A469-C46DF80F0B62', N'00000000-0000-0000-0000-000000000002')
+---- sqaTest
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'00000000-0000-0000-0000-000000000003')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'00000000-0000-0000-0000-000000000003')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'3EB7107C-EE5E-467C-92CE-222A83BCB7CF' AND [CustomerId]=N'00000000-0000-0000-0000-000000000003')

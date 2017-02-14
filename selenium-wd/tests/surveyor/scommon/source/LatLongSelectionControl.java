@@ -2,6 +2,7 @@ package surveyor.scommon.source;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -18,6 +19,7 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.Timeout;
 import common.source.WebElementExtender;
+import common.source.WebElementFunctionUtil;
 
 public class LatLongSelectionControl extends BaseControl {
 	public enum ControlMode {
@@ -228,7 +230,17 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public boolean setVerifyCustomerBoundaryName(String name) {
 		Log.method("setVerifyCustomerBoundaryName", name);
-		return selectFromNameDropdownList(name, Arrays.asList(new String[] {name}));
+		return setVerifyCustomerBoundaryName(name, Arrays.asList(new String[] {name}));
+	}
+
+	/**
+	 * Set value to selectByName Text field. Return whether or not boundary name was set successfully.
+	 *
+	 * @return whether or not boundary name was set successfully.
+	 */
+	public boolean setVerifyCustomerBoundaryName(String name, List<String> autoCompleteList) {
+		Log.method("setVerifyCustomerBoundaryName", name, autoCompleteList);
+		return selectFromNameDropdownList(name, autoCompleteList);
 	}
 
 	/**
@@ -252,6 +264,18 @@ public class LatLongSelectionControl extends BaseControl {
 	public void clickOnAutoCompleteListEntry(Integer entryIdx) {
 		WebElement element = this.driver.findElement(By.xpath(String.format(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "/li[%d]", entryIdx)));
 		element.click();
+	}
+
+	/**
+	 * Returns the list of menu items shown in auto-complete list.
+	 * @return
+	 */
+	public List<String> getAutoCompleteListEntries() {
+		WebElement autoCompleteList = this.driver.findElement(By.id(BOUNDARY_NAME_DROPDOWNLIST_UL_ID));
+		List<WebElement> listElements = WebElementFunctionUtil.tryFindElements(autoCompleteList, p -> p.findElements(By.xpath("li[@class='ui-menu-item']")));
+		return listElements.stream()
+			.map(e -> e.getText())
+			.collect(Collectors.toList());
 	}
 
 	/**

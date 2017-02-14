@@ -66,14 +66,14 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
+import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SearchAreaPreference;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -119,7 +119,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
 		assertTrue(this.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
@@ -183,7 +183,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEPT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -219,7 +219,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().getViewsAnalysesColumn().getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
 	}
@@ -237,7 +237,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaTag(true, ReportModeFilter.Standard, CUSDRVSTDTAG));
 
@@ -266,7 +266,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		System.out.println(this.getComplianceReportsPage().getTubularAnalysisOption().getText());
 		assertTrue(this.getComplianceReportsPage().getTubularAnalysisOption().getText().equalsIgnoreCase(" " + Resources.getResource(ResourceKeys.ComplianceReportSSRS_Analysis)));
@@ -287,7 +287,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Standard, SurveyModeFilter.Operator));
 
@@ -310,7 +310,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.RapidResponse, SurveyModeFilter.RapidResponse));
 
@@ -334,7 +334,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
 
@@ -388,11 +388,13 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		this.getComplianceReportsPage().login(strCreatedBy, new CryptoUtility().decrypt(password));
 		this.getComplianceReportsPage().open();
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, strCreatedBy, cutomer, timeZone, exclusionRadius, surveyorUnit, userName, startDate, endDate, fovOpacity, lisaOpacity, geoFilter, reportMode, surveyModeFilter, ethaneFilter, listBoundary, tagList, tablesList, viewList, viewLayersList);
 		if(!reportMode.equals(ReportModeFilter.Manual) ){
 			List<ReportsSurveyInfo> reportSurveyInfoList = ReportDataProvider.buildReportSurveyInfoList("36");
-			rpt.setSurveyInfoList(reportSurveyInfoList);}
-		rpt.setCustomerBoundaryInfo(ReportsCompliance.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
+			rpt.setSurveyInfoList(reportSurveyInfoList);
+		}
+
+		rpt.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
 		rpt.setSearchAreaPreference(srchAreaPref);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -458,7 +460,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().login(SQAPICSUP, USERPASSWORD);
 		this.getComplianceReportsPage().open();
-		this.getComplianceReportsPage().openNewComplianceReportPage();
+		this.getComplianceReportsPage().openNewReportsPage();
 
 		this.getComplianceReportsPage().getBtnSurveySearch().click();
 		this.getComplianceReportsPage().waitForSurveyTabletoLoad();
@@ -527,7 +529,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -603,7 +605,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -683,7 +685,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -761,7 +763,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVETHSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);

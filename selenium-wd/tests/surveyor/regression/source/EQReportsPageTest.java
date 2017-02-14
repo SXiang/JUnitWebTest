@@ -14,8 +14,8 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EqReportsPage;
 import surveyor.scommon.source.LatLongSelectionControl;
+import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.BaseReportsPageTest;
-import surveyor.scommon.source.ReportsEQ;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -68,7 +68,7 @@ public class EQReportsPageTest extends BaseReportsPageTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add("EQGPSoffset");
 
-		ReportsEQ eqRpt = new ReportsEQ(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "", tagList, coordList);
+		EQReportEntity eqRpt = new EQReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "", tagList, coordList);
 
 		eqReportsPage.addNewReport(eqRpt);
 

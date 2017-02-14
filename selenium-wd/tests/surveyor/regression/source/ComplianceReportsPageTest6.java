@@ -21,15 +21,15 @@ import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity.IsotopicAnalysisTableColumns;
+import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsCompliance.IsotopicAnalysisTableColumns;
-import surveyor.scommon.source.ReportsCompliance.LISAIndicationTableColumns;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
@@ -99,8 +99,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* NOTE: Use Customer Admin when assets populated */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -142,8 +142,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -213,8 +213,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -255,11 +255,11 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
-		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2));
@@ -288,8 +288,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
 		clickOnConfirmDeleteReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -324,8 +324,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Supervisor */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -372,8 +372,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -449,8 +449,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -514,8 +514,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -557,8 +557,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -609,8 +609,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, reportDataRowID1));
 
@@ -619,8 +619,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		manageCustomerPageAction.editCustomerUnSelectLicensedFeatures(reportShapeLicensedFeaturesRowID, NOTSET);
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, reportDataRowID1));
 	}
@@ -647,8 +647,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
@@ -687,8 +687,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -725,8 +725,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -766,8 +766,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -803,15 +803,15 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyGapsTableInfo(EMPTY, NOTSET));
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableSortedDescByColumn(
-				ReportsCompliance.LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
+				ComplianceReportEntity.LISAIndicationTableColumns.Amplitude.toString(), NOTSET));
 	}
 
 	/**
@@ -856,8 +856,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
 
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, reportDataRowID1));
@@ -907,8 +907,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -956,7 +956,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -1003,7 +1003,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
