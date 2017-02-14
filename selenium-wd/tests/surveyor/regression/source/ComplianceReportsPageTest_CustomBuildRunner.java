@@ -48,13 +48,13 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ReportDataProvider;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsSurveyInfo;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -179,7 +179,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(PICADMNSTDTAG);
 		surTag.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -266,7 +266,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		surTag.add(PICADMNSTDTAG);
 		surTag.add(PICADMNOPTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, PICDFADMIN, strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -365,7 +365,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);
@@ -437,7 +437,7 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), strCustomer, TIMEZONEET, exclusionRadius, listBoundary, tablesList, surUnit, surTag, viewList, ReportModeFilter.RapidResponse);
 		rpt.setViewLayersList(viewLayerList);
 
 		this.getComplianceReportsPage().addNewReport(rpt);

@@ -36,7 +36,6 @@ import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportInvestigationsPage;
 import surveyor.scommon.source.ReportInvestigationsPage.LisaStatus;
@@ -88,11 +87,11 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-	
+
 	/**
 	 * Test Case ID: TC219_LisaInvestigatedAndLeakFoundStatusShouldPersistOnMobileView
 	 * Test Description: Lisa Investigated and Leak found status should persist on Mobile View
-	 * Script: 
+	 * Script:
 	 * - Generate compliance report for survey having indications in it
 	 * - On Home Page, navigate to Reports -> Compliance Reports page
 	 * - Click on Investigate icon present for the compliance report
@@ -106,7 +105,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Select another LISA and repeat, but do not click on Mark as Complete button
 	 * - Select a third LISA and click on Add Source -> Add Other Source button, fill in details and click OK, then click Mark as Complete
 	 * - Click on Investigate button on Compliance Reports page
-	 * Results: 
+	 * Results:
 	 * - First LISA should be marked as Investigated, Leak Found, with Status of Found Gas Leak
 	 * - Second LISA should be marked as Investigated, Leak Found, with Status of In Progress
 	 * - Third LISA should be marked as Investigated, Leak Not Found, with Status of Found Other Source
@@ -121,14 +120,14 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		
+
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -136,12 +135,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-		
+
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-		
+
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
 		mobileInvestigatePage.clickOnInvestigate();
@@ -150,7 +149,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLeakSourcePage.addLeakDetails();
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete();
-		
+
 		// Mobile - add leak
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
@@ -160,7 +159,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
 		mobileLeakSourcePage.addLeakDetails();
 		mobileLeakSourcePage.closeAddSourceDialog();
-		
+
 		// Mobile - add other source
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
@@ -171,25 +170,25 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLeakSourcePage.addOtherSource();
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete();
-		
+
 		mobileLoginPage.logout();
-		
+
 		// Verify investigation status
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		
+
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), LisaStatus.FOUNDGASLEAK.toString());
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), LisaStatus.INPROGRESS.toString());
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), LisaStatus.FOUNDOTHERSOURCE.toString());
 	}
-	
+
 	/**
 	 * Test Case ID: TC224_SearchValidLisaOnInvestigationReportScreen
 	 * Test Description: Search valid lisa on investigation report screen
-	 * Script: 
+	 * Script:
 	 * - Navigate to investigation report screen
 	 * - Search the Lisa with valid CH4 value
-	 * Results: 
+	 * Results:
 	 * -  Search result should display the lisa with that provided CH4 value
 	 */
 	@Test
@@ -202,7 +201,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
@@ -214,17 +213,17 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		String lisaValue = reportInvestigationsPage.getLisaValue(lisaNumberPrefix+1);
 		assertTrue(reportInvestigationsPage.isLisaValueSearchable(lisaValue));
 	}
-	
+
 	/**
 	 * Test Case ID: TC695_VerifyMobileIsNotPreFetchingMap.
 	 * Test Description: Verify that Mobile is not pre fetching map always and data usage is minimized.
-	 * Script: 
-	 * - In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools) 
+	 * Script:
+	 * - In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools)
 	 * - Turn on device mode by pressing the Toggle device mode  icon (When device mode         is enabled, the icon turns blue and the viewport transforms into a device emulator.)
 	 * - Switch to Network tab on developer tool.
-	 *- Login as Driver to Pcubed site in required environment. 
-	 * - 
-	 * Results: 
+	 *- Login as Driver to Pcubed site in required environment.
+	 * -
+	 * Results:
 	 * -  verify that the network activity is stalled when the map is already rendered and you are not moving the screen. (Today the network activity keeps on happening in loop.)
 	 * - data activity is not happening in the console.
 	 */
@@ -235,12 +234,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		Log.info("\nRunning TC695_VerifyMobileIsNotPreFetchingMap ..." +
 			 "\nTest Description: Verify that Mobile is not pre fetching map always and data usage is minimized.");
 	}
-	
-	
+
+
 	/**
 	 * Test Case ID: TC807_InvestigateLisaAsNewUser
 	 * Test Description: Investigate Lisa as new user
-	 * Script: 
+	 * Script:
 	 * - Generate a new driver user (eg. driveruser@picarro.com)
 	 * - Generate Compliance report (eg. Test report)
 	 * -  Log in to Mobile View as new user (eg. driveruser@picarro.com)
@@ -270,7 +269,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		
+
 		// Create a new user
 		String userName = getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
 		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
@@ -280,10 +279,10 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 				CUSUSERROLEDR, "Picarro - Default", TIMEZONECT)){
 			fail(String.format("Failed to add a new picarro user %s, %s",userName, USERPASSWORD));
 		}
-		
+
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
@@ -295,12 +294,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(userName);
-		
+
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(userName, USERPASSWORD);
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-		
+
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnInvestigate();
@@ -311,7 +310,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigatePage.clickOnMarkAsComplete();
 
 		mobileLoginPage.logout();
-		
+
 		/* Need verification of PDF and CSV*/
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
@@ -320,19 +319,19 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
-		
+
 		// Verify investigation status
-//		complianceReportsPageAction.open(EMPTY, reportDataRowID);		
+//		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
 		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());
 		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
 	}
-	
+
 	/**
 	 * Test Case ID: TC1378_MobileAppMapDoesNotAutoRotate
 	 * Test Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.
-	 * Script: 
+	 * Script:
 	 * - On the Compliance Reports page, select a report that has LISAs and click the Investigate button
 	 * - Click on one or more of the checkboxes on the far right
 	 * - Find the two Assign Investigators buttons on the right and click on the one to the left (with the square icon)
@@ -341,7 +340,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - From the list of reports that appears on the mobile device, select the report in the first step and click on it
 	 * - Select a LISA and click on it
 	 * - Walk around in different directions
-	 * Results: 
+	 * Results:
 	 * - While walking around and viewing the map on the mobile device, the orientation should consistently show the map with North at the top of the screen. The Map should not rotate, regardless of the direction in which the user is moving
 	 */
 	@Ignore /* Not automatable */
@@ -355,8 +354,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	/**
 	 * Test Case ID: TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView
 	 * Test Description: Check customer driver user can logout from map page in mobile view
-	 * Script: 
-	 * - Generate report and assign LISA for investigation to customer supervisor user 
+	 * Script:
+	 * - Generate report and assign LISA for investigation to customer supervisor user
 	 * - Log in to mobile application as customer driver user
 	 * - Click on any one of the LISA for investigation
 	 * - Click on Investigate -> Add Source -> Add Leak
@@ -364,7 +363,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Click Mark as Complete
 	 * - Click on Log out button
 	 * - Download investigation report
-	 * Results: 
+	 * Results:
 	 * - User is navigated to map page and Logout button is present
 	 * - LISA investigation status is saved
 	 * - User is logged out successfully
@@ -381,11 +380,11 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-		
+
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
@@ -393,12 +392,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-		
+
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-		
+
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnInvestigate();
@@ -409,7 +408,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigatePage.clickOnMarkAsComplete();
 
 		mobileLoginPage.logout();
-		
+
 		// Verify investigation data
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
@@ -421,7 +420,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	/**
 	 * Test Case ID: TC1623_CustomerUserCanSearchValidInvestigationReportOnMobileView
 	 * Test Description: Customer user can search a valid investigation report on mobile view
-	 * Script: 
+	 * Script:
 	 * - Log in as customer supervisor or admin user
 	 * - Generate compliance report for survey having indications in it
 	 * - On Home Page, navigate to Reports -> Compliance Reports page
@@ -431,9 +430,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Log in as customer supervisor user to mobile view (eg. PGE supervisor user)
 	 * - Type report title in search box
 	 * - Click on searched report
-	 * Results: 
-	 * - Report is searched successfully 
-	 * - User can see LISA associated searched report 
+	 * Results:
+	 * - Report is searched successfully
+	 * - User can see LISA associated searched report
 	 */
 	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1623, location = ComplianceReportDataProvider.class)
@@ -446,7 +445,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				reportTitle, TestContext.INSTANCE.getLoggedInUser());
@@ -465,19 +464,19 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
-		
+
 		assertTrue(mobileReportsPage.isReportTitleSearchable(reportTitle));
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+workingLisa));
 		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+workingLisa1));
-		
+
 		mobileLoginPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: TC1624_MessageToUserInvalidInvestigationReportOnMobileView
 	 * Test Description: Message is displayed to user if Customer user search invalid investigation report on mobile view
-	 * Script: 
+	 * Script:
 	 * - Log in as customer supervisor or admin user
 	 * - Generate compliance report for survey having indications in it
 	 * - On Home Page, navigate to Reports -> Compliance Reports page
@@ -486,7 +485,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Select Assigned To name from the drop down and click OK
 	 * - Log in as customer supervisor user to mobile view (eg. PGE supervisor user)
 	 * - Type invalid or non-existing report title in search box (eg. zzzzakfjd)
-	 * Results: 
+	 * Results:
 	 * -  "No matching records found" or user friendly message should be displayed to the user
 	 */
 	@Test
@@ -500,7 +499,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				reportTitle, TestContext.INSTANCE.getLoggedInUser());
@@ -519,18 +518,18 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
-		
+
 		assertEquals(mobileReportsPage.performSearch(reportTitle+"InvalidTitle"), NOMATCHINGSEARCH);
-		
+
 		mobileLoginPage.logout();
 	}
-	
+
 	/**
 	 * Test Case ID: TC1628_MobileViewClassicLISAshape
 	 * Test Description: Mobile View - Classic LISA shape
 	 * - Customer should have assets and assets should be intersected with LISAs
 	 * - Compliance Report that contains LISAs for customer that does not have LISA Box 1.0 enabled. Make sure Highlight LISA Assets, LISA and Assets are selected in Views section.
-	 * Script: 
+	 * Script:
 	 * - Log in as Customer Supervisor user
 	 * - Navigate to Compliance Reports page
 	 * - Click on Investigate button
@@ -542,14 +541,14 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Select Indication from the dropdown
 	 * - Click on a LISA
 	 * - Click on Follow button
-	 * Results: 
+	 * Results:
 	 * -  User is navigated to LISA Investigations page
 	 * - A drop-down menu will appear with names of users for this customer
 	 * - The drop-down will disappear and the selected name will appear in the Investigator column of the selected LISA(s)
-	 * - User is navigated to a page with a list of one or more reports 
+	 * - User is navigated to a page with a list of one or more reports
 	 * - User is navigated to a page with a list of one or more LISAs and a drop-down menu with selections "LISA" and "Gap"
 	 * - User is navigated to a map showing user's location
-	 * - On map, assets intersecting Classic LISAs are highlighted 
+	 * - On map, assets intersecting Classic LISAs are highlighted
 	 */
 	@Test /* Need map verification */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
@@ -562,11 +561,11 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-		
+
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
@@ -574,12 +573,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-		
+
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-		
+
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
@@ -588,14 +587,14 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLoginPage.logout();
 		/* Need verification of PDF */
 	}
-	
+
 	/**
 	 * Test Case ID: TC1629_MobileViewWithLISABoxShape
 	 * Test Description: Mobile View - LISA Box shape
-	 * Pre-Conditions: 
+	 * Pre-Conditions:
 	 * - Customer should have assets and assets should be intersected with LISAs
 	 * - Compliance Report that contains LISAs for customer that has LISA Box 1.0 enabled. Make sure LISA, Assets and Highlight LISA Assets are selected in report's view section
-	 * Script: 
+	 * Script:
 	 * - Log in as Customer Supervisor user
 	 * - Navigate to Compliance Reports page
 	 * - Click on Investigate button
@@ -603,17 +602,17 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - There are two Assign Investigators buttons near the top right. Click the leftmost of these buttons.
 	 * - From the dropdown, select a user to whom to assign the LISA(s)
 	 * - On a mobile device, log in as the selected user
-	 * - Select the appropriate report 
+	 * - Select the appropriate report
 	 * - Click on a LISA
 	 * - Click on Follow button
-	 * Results: 
+	 * Results:
 	 * - User is navigated to LISA Investigations page
 	 * - A dropdown menu will appear with names of users for this customer
 	 * - The dropdown will disappear and the selected name will appear in the Investigator column of the selected LISA(s)
-	 * - User is navigated to a page with a list of one or more reports 
+	 * - User is navigated to a page with a list of one or more reports
 	 * - User is navigated to a page with a list of one or more LISAs
 	 * - User is navigated to a map showing user's location
-	 * - On map, LISA Boxes are displayed and assets intersecting Lisa are highlighted 
+	 * - On map, LISA Boxes are displayed and assets intersecting Lisa are highlighted
 	 */
 	@Test /* Need map verification */
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1629, location = ComplianceReportDataProvider.class)
@@ -628,11 +627,11 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		// Generate report
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-		
+
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
@@ -640,12 +639,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-		
+
 		// Mobile - login and investigate lisas
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-		
+
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();

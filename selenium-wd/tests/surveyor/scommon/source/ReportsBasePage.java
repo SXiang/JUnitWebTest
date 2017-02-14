@@ -60,12 +60,13 @@ import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
-import surveyor.scommon.source.ReportJobPerfDBStat;
-import surveyor.scommon.source.Reports.ReportJobType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.ReportStatusType;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsSurveyInfo;
+import surveyor.scommon.entities.ReportJobPerfDBStat;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.ReportStatusType;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
 
@@ -77,8 +78,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	protected WebElement btnNewComplianceRpt;
-	protected String strBtnNewCompRpt = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
+	protected WebElement btnNewReport;
+	protected String strBtnNewReport = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 
 	@FindBy(how = How.ID, using = "report-title")
 	protected WebElement inputTitle;
@@ -266,8 +267,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected String btnChangeModeXPath = "//*[@id='surveyModal']/div/div/div[3]/a[1]";
 
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[2]/p[1]")
-	protected WebElement errorMsgDeleteCompliacneReport;
-	protected String errorMsgDeleteCompliacneReportXPath = "/html/body/div/div[2]/div/div/div[2]/p[1]";
+	protected WebElement errorMsgDeleteReport;
+	protected String errorMsgDeleteReportXPath = "/html/body/div/div[2]/div/div/div[2]/p[1]";
 
 	@FindBy(how = How.XPATH, using = "/html/body/div/div[2]/div/div/div[3]/a[2]")
 	protected WebElement btnReturnToHomePage;
@@ -358,14 +359,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']")
 	protected WebElement btnFirstCopyCompliance;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
-	protected WebElement btnFirstInvestigateCompliance;
-
 	@FindBy(how = How.ID, using = "report-FOV-opacity")
 	protected WebElement inputFOVOpacity;
-
-	@FindBy(how = How.ID, using = "report-LISA-opacity")
-	protected WebElement inputLISAOpacity;
 
 	@FindBy(id = "report-show-gaps")
 	protected WebElement checkBoxGap;
@@ -414,9 +409,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(name = "survey-mode-type")
 	private List<WebElement> surveyModeTypeRadiobuttonList;
 
-	@FindBy(name = "report-survey-mode-type")
-	private List<WebElement> reportSurveyModeTypeRadiobuttonList;
-
 	@FindBy(id = "datatableSurveys_next")
 	protected WebElement surveyNextButton;
 
@@ -450,6 +442,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private List<String> reportJobComparisonFailureMessages;
 
+	protected ResourceProvider resxProvider;
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -474,7 +468,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public WebElement getBtnNewComplianceRpt() {
-		return this.btnNewComplianceRpt;
+		return this.btnNewReport;
 	}
 
 	public WebElement getLinkReportMenu() {
@@ -527,7 +521,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String getExclusionRadius() {
-		return this.inputExclusionRadius.getText();
+		return this.inputExclusionRadius.getAttribute("value");
 	}
 
 	protected String getSoftwareVersionFromPDF(Supplier<String> downloadPath) {
@@ -558,39 +552,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return softwareVersion;
 	}
 
-	/**
-	 * Get the selected Report Mode.
-	 */
-	public ReportModeFilter getReportModeFilter() {
-		for (WebElement radElement : reportSurveyModeTypeRadiobuttonList) {
-			Map<String, ReportModeFilter> reportSurveyModeFilterGuids = Reports.ReportSurveyModeFilterGuids;
-			Set<Entry<String, ReportModeFilter>> entrySet = reportSurveyModeFilterGuids.entrySet();
-			for (Entry<String, ReportModeFilter> entry : entrySet) {
-				if (entry.getKey().equals(radElement.getAttribute("value"))) {
-					if (radElement.isSelected())
-						return entry.getValue();
-				}
-			}
-		}
-		return ReportModeFilter.All;
-	}
-
 	/***** Area Selector values *****/
 
 	public String getNELatitude() {
-		return this.inputNELat.getText();
+		return this.inputNELat.getAttribute("value");
 	}
 
 	public String getNELongitude() {
-		return this.inputNELong.getText();
+		return this.inputNELong.getAttribute("value");
 	}
 
 	public String getSWLatitude() {
-		return this.inputSWLat.getText();
+		return this.inputSWLat.getAttribute("value");
 	}
 
 	public String getSWLongitude() {
-		return this.inputSWLong.getText();
+		return this.inputSWLong.getAttribute("value");
 	}
 
 	/***** Survey Selector values *****/
@@ -620,7 +597,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public SurveyModeFilter getSurveyModeFilter() {
 		for (WebElement radElement : surveyModeTypeRadiobuttonList) {
-			Map<String, SurveyModeFilter> surveyModeFilterGuids = Reports.SurveyModeFilterGuids;
+			Map<String, SurveyModeFilter> surveyModeFilterGuids = BaseReportEntity.SurveyModeFilterGuids;
 			Set<Entry<String, SurveyModeFilter>> entrySet = surveyModeFilterGuids.entrySet();
 			for (Entry<String, SurveyModeFilter> entry : entrySet) {
 				if (entry.getKey().equals(radElement.getAttribute("value"))) {
@@ -639,21 +616,17 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/************ Opacity Fine Tuning Values *************/
 
 	public String getFOVOpacity() {
-		return this.inputFOVOpacity.getText();
-	}
-
-	public String getLISAOpacity() {
-		return this.inputLISAOpacity.getText();
+		return this.inputFOVOpacity.getAttribute("value");
 	}
 
 	/************ PDF Output Values *************/
 
 	public String getPDFWidth() {
-		return this.inputImgMapWidth.getText();
+		return this.inputImgMapWidth.getAttribute("value");
 	}
 
 	public String getPDFHeight() {
-		return this.inputImgMapHeight.getText();
+		return this.inputImgMapHeight.getAttribute("value");
 	}
 
 	/************ Report Generation Timeout *************/
@@ -743,11 +716,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public void addNewReport(Reports reports) throws Exception {
+	public void addNewReport(BaseReportEntity reports) throws Exception {
 		addNewReport(reports, true /**/);
 	}
 
-	public void addNewReport(Reports reports, boolean openNewReportsPage) throws Exception {
+	public void addNewReport(BaseReportEntity reports, boolean openNewReportsPage) throws Exception {
 		if (openNewReportsPage) {
 			openNewReportPage();
 		}
@@ -776,17 +749,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			colorPicker.get(colorIndex).click();
 		}
 	}
-	public void fillReport(Reports reports) throws Exception {
-		// 1. Title and Customer
+	public void fillReport(BaseReportEntity reports) throws Exception {
+		// 1. Title and Timezone
 		inputReportTitle(reports.getRptTitle());
-		if (reports.getCustomer() != null && !reports.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
-			Log.info("Select customer '"+reports.getCustomer()+"'");
-			selectCustomer(reports.getCustomer());
-			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
-			if (confirmed) {
-				inputReportTitle(reports.getRptTitle());
-			}
-		}
+
+		selectTimeZone(reports.getTimeZone());
 
 		// 2. Other parameters
 		fillReportSpecific(reports);
@@ -810,11 +777,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.clickOnCancelBtn();
 	}
 
-	public void addSurveyInformation(Reports reports) throws Exception {
+	public void addSurveyInformation(BaseReportEntity reports) throws Exception {
 		addSurveyInformation(reports, null);
 	}
 
-	public void addSurveyInformation(Reports reports, List<Integer> tagIndexes) throws Exception {
+	public void addSurveyInformation(BaseReportEntity reports, List<Integer> tagIndexes) throws Exception {
 		Log.info("Adding Survey information");
 		String surveyor = reports.getSurveyorUnit();
 		String username = reports.getUsername();
@@ -839,7 +806,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	public void addMultipleSurveysToReport(Reports reports) throws Exception {
+	public void addMultipleSurveysToReport(BaseReportEntity reports) throws Exception {
 		Log.info("Adding all Surveys matching information.");
 
 		List<ReportsSurveyInfo> surveyInfoList = reports.getSurveyInfoList();
@@ -1080,7 +1047,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	/**
 	 * Implementation to be provided by Derived classes.
 	 */
-	protected void handleExtraAddSurveyInfoParameters(Reports reports) throws Exception {
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1094,7 +1061,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
-					strBaseURL + getUrlString());
+					strBaseURL + strPageURL);
 			PageFactory.initElements(driver, dateSetting);
 			if (startDate.startsWith("0")) {
 				startDate = startDate.replaceFirst("0*", "");
@@ -1109,7 +1076,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void selectEndDateForSurvey(String endDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
-					strBaseURL + getUrlString());
+					strBaseURL + strPageURL);
 			PageFactory.initElements(driver, dateSetting);
 			if (endDate.startsWith("0")) {
 				endDate = endDate.replaceFirst("0*", "");
@@ -1121,9 +1088,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void openNewReportPage() {
-		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewCompRpt));
-		Log.clickElementInfo("New Compliance Report");
-		jsClick(this.btnNewComplianceRpt);
+		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewReport));
+		Log.clickElementInfo("New Report Button");
+		jsClick(this.btnNewReport);
 		this.waitForNewPageLoad();
 		String elementXPath = "//*[@id='datatableViews']/tbody/tr/td[2]/input";
 		refreshPageUntilElementFound(elementXPath);
@@ -1349,23 +1316,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String getUrlString() throws Exception {
-		throw new Exception("Not implemented");
+		throw new Exception("To be implemented by derived class.");
 	}
 
-	public String getStrPageText() throws Exception {
-		throw new Exception("Not implemented");
-	}
-
-	public String getStrCopyPageText() throws Exception {
-		throw new Exception("Not implemented");
-	}
-
-	public String getNewPageString() throws Exception {
-		throw new Exception("Not implemented");
-	}
-
-	public void fillReportSpecific(Reports reportsCompliance) throws Exception {
-		throw new Exception("Not implemented");
+	public void fillReportSpecific(BaseReportEntity reportsEntity) throws Exception {
+		throw new Exception("To be implemented by derived class");
 	}
 
 	public void selectReportMode(ReportModeFilter mode) throws Exception {
@@ -1780,6 +1735,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
+		Log.method("copyReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 		String reportTitleXPath;
 		String createdByXPath;
@@ -1870,6 +1826,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found report with title = '%s', created by = '%s", rptTitle, strCreatedBy));
 				return true;
 			}
 
@@ -1892,20 +1849,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean findReportbySearch(String rptTitle, String strCreatedBy) {
-		Log.info(String.format("Find report with title = '%s', created by = '%s", rptTitle, strCreatedBy));
+		return findReportbySearch(rptTitle, strCreatedBy, 1 /*searchColIndex -> 1=reportTitle */);
+	}
+
+	public boolean findReportbySearch(String searchKeyword, String strCreatedBy, Integer searchKeywordColIdx) {
+		Log.info(String.format("Find report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 		setPagination(PAGINATIONSETTING);
 		this.waitForPageLoad();
 		String reportTitleXPath;
 		String createdByXPath;
 
-		WebElement rptTitleCell;
-		WebElement createdByCell;
-
-		this.getTextBoxReportSerach().sendKeys(rptTitle);
-		this.getTextBoxReportSerach().sendKeys(Keys.ENTER);
+		this.getTextBoxReportSearch().sendKeys(searchKeyword);
+		this.getTextBoxReportSearch().sendKeys(Keys.ENTER);
 		this.waitForPageLoad();
 
 		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
+			Log.info(String.format("Did NOT find report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 			return false;
 		}
 		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
@@ -1920,12 +1879,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			this.waitForPageLoad();
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + String.valueOf(searchKeywordColIdx) + "]";
 			createdByXPath = "tr[" + rowNum + "]/td[3]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
+			if (rptTitleCellText.trim().equalsIgnoreCase(searchKeyword)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
+				Log.info(String.format("Found report with title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 				return true;
 			}
 
@@ -1944,7 +1904,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
-		Log.error(String.format("Report not found: title = '%s', created by = '%s", rptTitle, strCreatedBy));
+		Log.error(String.format("Report not found: title = '%s', created by = '%s", searchKeyword, strCreatedBy));
 		return false;
 	}
 
@@ -2017,7 +1977,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					js.executeScript("arguments[0].click();", getBtnDeleteConfirm());
 					this.waitForPageLoad();
 
-					if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
+					if (this.isElementPresent(errorMsgDeleteReportXPath)) {
 						Log.clickElementInfo("Error message shown on Delete. Return to home page.");
 						this.btnReturnToHomePage.click();
 						return false;
@@ -2064,8 +2024,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (waitForDeletePopupLoad()) {
 			jsClick(getBtnDeleteConfirm());
 			this.waitForPageLoad();
-			if (this.isElementPresent(errorMsgDeleteCompliacneReportXPath)) {
-				Log.error(getElementText(errorMsgDeleteCompliacneReport));
+			if (this.isElementPresent(errorMsgDeleteReportXPath)) {
+				Log.error(getElementText(errorMsgDeleteReport));
 				Log.clickElementInfo("Return to home page");
 				this.btnReturnToHomePage.click();
 				return false;
@@ -2206,7 +2166,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].value='" + rptTitleNew + "';", inputTitle);
 
-		complianceChangeMode(rptTitleNew, changeMode, strReportMode);
+		reportChangeMode(rptTitleNew, changeMode, strReportMode);
 		if (surUnit != "") {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
@@ -2238,7 +2198,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			clickOnAddSurveysButton();
 		}
 
-		modifyComplianceViews();
+		modifyReportViews();
 
 		this.clickOnOKButton();
 		return true;
@@ -2347,7 +2307,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void openNewComplianceReportPage() {
+	public void openNewReportsPage() {
 		openNewReportPage();
 	}
 
@@ -2357,15 +2317,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.btnCancel.click();
 		this.waitForPageLoad();
 
-		if (isElementPresent(strBtnNewCompRpt))
+		if (isElementPresent(strBtnNewReport))
 			return true;
 
 		return false;
 	}
 
-	public void clickOnNewComplianceReportBtn() {
-		Log.clickElementInfo("New Compliance Report");
-		this.btnNewComplianceRpt.click();
+	public void clickOnNewReportBtn() {
+		Log.clickElementInfo("New Report");
+		this.btnNewReport.click();
 		this.waitForNewPageLoad();
 	}
 
@@ -2498,7 +2458,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.reportName = reportTitle;
 	}
 
-	public WebElement getTextBoxReportSerach() {
+	public WebElement getTextBoxReportSearch() {
 		return textBoxReportSearch;
 	}
 
@@ -2548,11 +2508,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void modifyComplianceViews() throws Exception {
+	public void modifyReportViews() throws Exception {
 		throw new Exception("Not implemented");
 	}
 
-	public void complianceChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode)
+	public void reportChangeMode(String rptTitleNew, boolean changeMode, ReportModeFilter strReportMode)
 			throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -2613,7 +2573,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		// Create the directory for test case if it does not exist.
 		FileUtility.createDirectoryIfNotExists(expectedDataFolderPath);
 		Path expectedFilePath = Paths.get(expectedDataFolderPath, String.format("%s.csv", testCaseID));
-		ReportJobType reportJobType = Reports.ReportJobTypeGuids.get(reportJobTypeId);
+		ReportJobType reportJobType = BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId);
 		BaseReportsPageTest.setRollingReportJobProcessingTime(reportJobType, processingTimeInMs);
 		Integer reportJobRollingProcessingTimeAvg = BaseReportsPageTest
 				.getReportJobRollingProcessingTimeAvg(reportJobType);
@@ -2685,7 +2645,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
-			String reportJobTypeId = Reports.ReportJobTypeReverseGuids
+			String reportJobTypeId = BaseReportEntity.ReportJobTypeReverseGuids
 					.get(ReportJobType.valueOf(reportJob.ReportJobType));
 
 			// validate report job.
@@ -2728,7 +2688,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					throw new Exception(
 						String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
 							expectedFilePath.toString(),
-							Reports.ReportJobTypeGuids.get(reportJobTypeId).toString(),
+							BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId).toString(),
 							reportJobTypeId, testCaseID));
 				}
 			}
@@ -3053,8 +3013,27 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return null;
 	}
 
+	public String getReportPrefix() {
+		// Implementation to be provided by derived type.
+		return null;
+	}
+
 	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
 		// Implementation to be provided by derived type.
 		return null;
+	}
+
+	/* Getters for Common resources on the page */
+
+	public String getNewPageString() {
+		return resxProvider.getResource(ResourceTable.Key_NewPageText);
+	}
+
+	public String getStrPageText() {
+		return resxProvider.getResource(ResourceTable.Key_PageText);
+	}
+
+	public String getStrCopyPageText() {
+		return resxProvider.getResource(ResourceTable.Key_CopyPageText);
 	}
 }

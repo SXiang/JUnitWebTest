@@ -1,6 +1,5 @@
 package surveyor.scommon.actions;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,10 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-import common.source.Log;
 import common.source.RegexUtility;
 import surveyor.scommon.source.SurveyorBasePage;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.SurveyorBasePage.TableSortOrder;
 
 public class BasePageActions extends BaseActions {
@@ -19,16 +16,16 @@ public class BasePageActions extends BaseActions {
 
 	private static final String FN_SORT_RECORDS_BY = "sortRecordsBy";
 	private String baseURL = null;
-	
+
 	private ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
 	protected ThreadLocal<SurveyorBasePage> pageObject = new ThreadLocal<SurveyorBasePage>();
-	
+
 	public BasePageActions(WebDriver driver, String baseURL) {
 		super();
 		this.setDriver(driver);
 		this.setBaseURL(baseURL);
 	}
-	
+
 	public void initializePageObject(WebDriver driver, SurveyorBasePage pageObj) {
 		setPageObject(pageObj);
 		PageFactory.initElements(driver, getPageObject());
@@ -147,15 +144,15 @@ public class BasePageActions extends BaseActions {
 	public boolean selectRadioButtonByXPath(String elementXPath, Integer dataRowID) {
 		return false;
 	}
-	
+
 	/**
 	 * Executes sortRecordsBy action.
-	 * @param data - the column index and sort order in colon seperated format. 
+	 * @param data - the column index and sort order in colon seperated format.
 	 * 	For eg. {1:DESC} implies sorting column 1 in Descending order
 	 *  Use 1-based index and DESC/ASC for Descending/Ascending sort orders.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean sortRecordsBy(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.sortRecordsBy", data, dataRowID);
@@ -164,7 +161,7 @@ public class BasePageActions extends BaseActions {
 		if (parts == null || parts.size() != 2) {
 			throw new Exception(String.format("[%s] - Invalid data parameter specified. Data value='%s'.", FN_SORT_RECORDS_BY, data));
 		}
-		
+
 		Integer columnIdx = Integer.valueOf(parts.get(0));
 		TableSortOrder sortOrder = this.getPageObject().getSortOrderFromString(parts.get(1));
 		this.getPageObject().sortTableByColumn(columnIdx, sortOrder);

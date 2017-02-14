@@ -82,8 +82,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -117,8 +117,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -157,17 +157,17 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
 		//Add 1 survey
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
         complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
 		//Add 2 surveys, same tag
         complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
 		//Add 2 surveys, different tags
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID2));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 	}
 
@@ -198,8 +198,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		String rptTitle = ComplianceReportsPageActions.workingDataRow.get().title;
 
 		//Add no survey
@@ -213,7 +213,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		//Add 2 surveys, same tag
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
+		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
@@ -221,7 +221,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		//Add 2 surveys, different tags
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
-		modifyComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
+		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
 
 	}
@@ -256,8 +256,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -290,9 +290,9 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_30MIN_IN_SECONDS), reportDataRowID1);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -301,10 +301,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsComp.get().getRptTitle(), getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingReportsEntity.get().getRptTitle(), getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -337,8 +337,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -348,7 +348,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -384,8 +384,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -397,7 +397,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -429,8 +429,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -439,7 +439,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 
@@ -475,8 +475,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -487,7 +487,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
@@ -526,8 +526,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -568,8 +568,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));  /* Change to Utility Admin when customer boundary is available */
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -610,8 +610,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -654,8 +654,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
@@ -688,12 +688,12 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 	}
 
 	/**
@@ -717,12 +717,12 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		Assert.assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 	}
 
 	/**
@@ -752,8 +752,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -804,8 +804,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
  		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -856,8 +856,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.verifyPDFThumbnailIsShownInComplianceViewer(EMPTY, getReportRowID(reportDataRowID1));
@@ -906,8 +906,8 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));

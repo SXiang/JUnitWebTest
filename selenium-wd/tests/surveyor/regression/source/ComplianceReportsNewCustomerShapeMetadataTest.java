@@ -18,16 +18,16 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ComplianceReportsPage.ComplianceReportButtonType;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.Report;
@@ -37,7 +37,6 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPageActionTest {
@@ -165,7 +164,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
 
 			// Verify report meta and report shape files are generated successfully.
-			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 		} catch (Exception ex) {
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
@@ -228,7 +227,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
 
 			// Verify report meta and report shape files are NOT shown in Compliance Viewer.
-			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
 			assertFalse(complianceReportsPageAction.verifyShapeZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
 			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
 
@@ -294,7 +293,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			copyReportAndWaitForReportGenerationToComplete(rptTitle, strCreatedBy);
 
 			// Verify report meta and report shape files are generated successfully.
-			clickOnComplianceReportButton(rptTitle, strCreatedBy, ComplianceReportButtonType.ReportViewer);
+			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 
 		} catch (Exception ex) {
@@ -326,8 +325,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		}
 	}
 
-	private void clickOnComplianceReportButton(String rptTitle, String strCreatedBy, ComplianceReportButtonType reportButtonType) throws Exception {
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(rptTitle, strCreatedBy, reportButtonType);
+	private void clickOnComplianceReportButton(String rptTitle, String strCreatedBy, ReportsButtonType reportButtonType) throws Exception {
+		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(rptTitle, strCreatedBy, reportButtonType);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
 		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 	}
