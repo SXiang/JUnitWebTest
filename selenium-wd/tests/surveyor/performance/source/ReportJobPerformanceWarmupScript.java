@@ -16,7 +16,7 @@ public class ReportJobPerformanceWarmupScript extends BaseReportJobPerformanceTe
 	 *  - This script creates a report, waits for completion and ignores any perf metrics from this report.
 	 */
 	@Test
-	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_MEDIUM_LOAD, location = PerformanceReportJobDataProvider.class)
+	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_WARMUP_SCRIPT, location = PerformanceReportJobDataProvider.class)
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
 		Log.info("\nRunning Performance Warmup Script ...");
