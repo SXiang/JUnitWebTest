@@ -7,24 +7,21 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.dataprovider.PerformanceReportJobDataProvider;
 
-public class ReportJobPerformanceTestMedium extends BaseReportJobPerformanceTest {
+public class ReportJobPerformanceWarmupScript extends BaseReportJobPerformanceTest {
 
 	/**
 	 * Test Case ID: ReportJob_PerformanceTest
+	 * This is a warmup script for report job perf tests which runs prior to actual perf test metric collection test execution.
 	 * Script: -
-	 *	- - Login as specified user
-	 *	- - Create New Compliance Report with specified report data
-	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: -
-	 *	- - Verify report job processing time values confirm to the baseline values.
+	 *  - This script creates a report, waits for completion and ignores any perf metrics from this report.
 	 */
 	@Test
 	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_MEDIUM_LOAD, location = PerformanceReportJobDataProvider.class)
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] Performance Test MEDIUM_LOAD ...", rallyTestCaseID));
+		Log.info("\nRunning Performance Warmup Script ...");
 
-		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
+		initializePageActions();
+		createAndWaitForReportGeneration(userDataRowID, reportDataRowID);;
 	}
 }

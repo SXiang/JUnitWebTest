@@ -108,3 +108,51 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'85DDA6EE-106A-A783-4B0D-39CD1FBC3999')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'85DDA6EE-106A-A783-4B0D-39CD1FBC3999')
 	
+	
+-- CenterPoint surveys for Large Area/Large Asset tests.
+UPDATE [dbo].[Survey] set Tag='AACPTPerf01' where [Id]='B7B5AA1E-0C59-E56A-3902-39D07E5F8F37'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf02' where [Id]='1C9326F3-4397-244F-8E4D-39D7FCCEA01F'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf03' where [Id]='FEA7C4D1-B176-DC57-EE1C-39D827142B6C'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf04' where [Id]='93348B54-36D2-BC12-095B-39D827EF19A5'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf05' where [Id]='F4B4EA37-08B0-CD57-6079-39D7F2C6C0EA'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf06' where [Id]='513292E5-54EB-C3DE-284B-39D7F2F23AC7'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf07' where [Id]='17B27ABF-8B7C-A17B-1FB0-39D7D9240618'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf08' where [Id]='7F7EAC25-30DD-C42D-3506-39D7D98DD327'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf09' where [Id]='958E7FEE-AD21-0222-7F80-39D7DDD5DED9'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf10' where [Id]='304C01FE-BA18-B161-828C-39D7F7E160E0'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf11' where [Id]='C468F44C-2FCD-FE2F-8E0F-39D801E8AF7C'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf12' where [Id]='9157EA90-AD90-AF7A-14BB-39D81BBC7C80'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf13' where [Id]='C7B752F1-8FF9-4822-5CAD-39D81CB46232'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf14' where [Id]='DBC900E9-66C8-B8CF-249C-39D83FDDCC1F'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf15' where [Id]='29D43D1B-F583-C8FA-7A24-39D83FF266BF'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf16' where [Id]='33ED6C74-A6EB-8029-CFF1-39D8401A42F1'
+
+UPDATE [dbo].[Survey] set Tag='AACPTPerf17' where [Id]='A8866B7B-8647-E108-E3A5-39D7D8DD3CCA'
+
+-- SIG surveys for Large Area/Large Asset tests.
+UPDATE [dbo].[Survey] set Tag='AASGPerf01' where [Id]='FC5D3AE1-F174-8CCE-260A-39D7A4D6A898'
+UPDATE [dbo].[Survey] set Tag='AASGPerf02' where [Id]='6B17E60D-D2B7-DDF2-D220-39D7F2CF46F5'
+UPDATE [dbo].[Survey] set Tag='AASGPerf03' where [Id]='B4F7EA85-F79D-58C8-D5E8-39D7F115CC34'
+UPDATE [dbo].[Survey] set Tag='AASGPerf04' where [Id]='1699298B-400A-2795-E5B5-39D7B919A041'
+UPDATE [dbo].[Survey] set Tag='AASGPerf05' where [Id]='80777E48-2ADC-7D6A-5002-39D7EC5E2AF7'
+UPDATE [dbo].[Survey] set Tag='AASGPerf06' where [Id]='2D4EAC5F-DF9B-20F3-E430-39D7ECBEBAE1'
+UPDATE [dbo].[Survey] set Tag='AASGPerf07' where [Id]='43FFBEC2-C7DA-4069-0942-39D7F6CF3F96'
+
+UPDATE [dbo].[Survey] set Tag='AASGPerf08' where [Id]='057668C9-B242-5905-F680-39D881F20067'
+UPDATE [dbo].[Survey] set Tag='AASGPerf09' where [Id]='E3180D8B-4F90-5B76-5ABB-39D88C2FA5B0'
+UPDATE [dbo].[Survey] set Tag='AASGPerf10' where [Id]='B6D95D63-FF89-FEF4-0D6B-39D85E378C44'
+UPDATE [dbo].[Survey] set Tag='AASGPerf11' where [Id]='B34C9E1E-5F2A-7425-EDFE-39D86424F7CE'
+UPDATE [dbo].[Survey] set Tag='AASGPerf12' where [Id]='80C56F75-86BB-B2AD-62AD-39D86E3E8DEF'
+UPDATE [dbo].[Survey] set Tag='AASGPerf13' where [Id]='812D8D46-EA34-1A05-4141-39D87C9A09DB'
+UPDATE [dbo].[Survey] set Tag='AASGPerf14' where [Id]='B06DC220-5402-15CF-C33F-39D8870AE175'
+
+-- Atmos surveys for Large Area/Large Asset tests.
+UPDATE [dbo].[Survey] set Tag='AAATMPerf01' where [Id]='C344E4C0-EADB-26C2-5A3C-39D3C66D5D2D'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf02' where [Id]='A4BBAF2B-A645-5A46-2080-39D3C6A3B3AD'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf03' where [Id]='3676E227-E48E-E800-9D54-39D3C731365A'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf04' where [Id]='9FC1BE37-256F-0AD0-6427-39D3C73FFD0F'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf05' where [Id]='58A31948-6B0B-6B50-0FB5-39D3C782368B'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf06' where [Id]='8A820AAE-B663-97D6-0E28-39D3CBA3B0B7'
+-- Note: survey not detected in system and not used in tests.
+UPDATE [dbo].[Survey] set Tag='AAATMPerf07' where [Id]='FFD309B8-FC3D-8904-9C8B-39D1A98BDE65'
+UPDATE [dbo].[Survey] set Tag='AAATMPerf08' where [Id]='9DFE1519-E27A-9859-D993-39D3CB63D698'

@@ -118,6 +118,10 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			case UltraHigh:
 				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForUltraHighLoadReportJobPerfBaseline();
 				break;
+			case LargeArea:
+			case LargePipes:
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForLargeAreaPipesReportJobPerfBaseline();
+				break;
 			default:
 				break;
 			}
@@ -149,12 +153,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		for (int i=0; i<testExecutionTimes; i++) {
 			initializePageActions();
 
-			getLoginPageAction().open(EMPTY, NOTSET);
-			getLoginPageAction().login(EMPTY, userDataRowID);
-			getComplianceReportsPageAction().open(EMPTY, NOTSET);
-			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
-			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
-			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			createAndWaitForReportGeneration(userDataRowID, reportDataRowID);
 			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
 			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
@@ -171,6 +170,15 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		}
 
 		assertTrue(result);
+	}
+
+	protected void createAndWaitForReportGeneration(Integer userDataRowID, Integer reportDataRowID) throws Exception {
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);
+		getComplianceReportsPageAction().open(EMPTY, NOTSET);
+		getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
+		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
+		getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 	}
 
 	private void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {

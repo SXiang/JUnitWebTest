@@ -68,7 +68,8 @@ public class ReportsCompliance extends Reports {
 		DistrictPlat ("District Plat"),
 		BigBoundary ("Big Boundary"),
 		SmallBoundary ("Small Boundary"),
-		LeakSurveyArea ("Leak Survey Area");
+		LeakSurveyArea ("Leak Survey Area"),
+		Placemark ("Placemark");
 
 		private final String name;
 
@@ -494,6 +495,8 @@ public class ReportsCompliance extends Reports {
 			customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
 		} else if (custBoundaryType.equals("Leak Survey Area")) {
 			customerBoundaryFilterType = CustomerBoundaryFilterType.LeakSurveyArea;
+		} else if (custBoundaryType.equals("Placemark")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.Placemark;
 		}
 		return customerBoundaryFilterType;
 	}

@@ -149,6 +149,7 @@ public class TestSetup {
 	private Integer executionTimesForMediumLoadReportJobPerfBaseline;
 	private Integer executionTimesForHighLoadReportJobPerfBaseline;
 	private Integer executionTimesForUltraHighLoadReportJobPerfBaseline;
+	private Integer executionTimesForLargeAreaPipesBaselineCollection;
 
 	private boolean logCategorySSRSPdfContentEnabled;
 	private boolean logCategoryComplianceReportActionsEnabled;
@@ -456,6 +457,15 @@ public class TestSetup {
 	public void setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
 			Integer executionTimesForUltraHighLoadReportJobPerfBaseline) {
 		this.executionTimesForUltraHighLoadReportJobPerfBaseline = executionTimesForUltraHighLoadReportJobPerfBaseline;
+	}
+
+	public Integer getExecutionTimesForLargeAreaPipesReportJobPerfBaseline() {
+		return executionTimesForLargeAreaPipesBaselineCollection;
+	}
+
+	public void setExecutionTimesForLargeAreaPipesReportJobPerfBaseline(
+			Integer executionTimesForLargeAreaPipesBaselineCollection) {
+		this.executionTimesForLargeAreaPipesBaselineCollection = executionTimesForLargeAreaPipesBaselineCollection;
 	}
 
 	public boolean isLogCategorySSRSPdfContentEnabled() {
@@ -856,6 +866,13 @@ public class TestSetup {
 				&& executionTimesForUltraHighLoadBaselineCollection != "") {
 			this.setExecutionTimesForUltraHighLoadReportJobPerfBaseline(
 					Integer.valueOf(executionTimesForUltraHighLoadBaselineCollection));
+		}
+		String executionTimesForLargeAreaPipesBaselineCollection = this.testProp
+				.getProperty("complianceReport_executionTimesForLargeAreaPipesBaselineCollection");
+		if (executionTimesForLargeAreaPipesBaselineCollection != null
+				&& executionTimesForLargeAreaPipesBaselineCollection != "") {
+			this.setExecutionTimesForLargeAreaPipesReportJobPerfBaseline(
+					Integer.valueOf(executionTimesForLargeAreaPipesBaselineCollection));
 		}
 	}
 
