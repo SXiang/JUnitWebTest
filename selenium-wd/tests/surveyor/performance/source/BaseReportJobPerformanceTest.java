@@ -151,6 +151,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		// Run for specified number of times depending on whether we are generating baselines or not.
 		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
 		for (int i=0; i<testExecutionTimes; i++) {
+			Log.info(String.format("Executing test iteration - %d", i));
 			initializePageActions();
 
 			createAndWaitForReportGeneration(userDataRowID, reportDataRowID);
