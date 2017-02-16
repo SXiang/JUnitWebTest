@@ -12,7 +12,7 @@ import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
 import common.source.TestContext;
-import surveyor.scommon.source.Reports.ReportJobType;
+import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 

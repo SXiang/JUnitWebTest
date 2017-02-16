@@ -47,6 +47,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageAnalyzersPage;
 import surveyor.scommon.source.ManageCustomersPage;
@@ -56,7 +57,6 @@ import surveyor.scommon.source.ManageReleaseNotesPage;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
@@ -200,7 +200,7 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 		List<String> tagList=new ArrayList<String>();
 		tagList.add(SQACUSDRTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
 				SQACUSLOCSUR,tagList , viewList);
 		

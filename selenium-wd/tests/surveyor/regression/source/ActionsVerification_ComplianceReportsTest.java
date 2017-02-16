@@ -64,7 +64,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
 		
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifySurveyModeFiltersByReportMode(EMPTY, reportDataRowID1));
@@ -84,8 +84,8 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		loginPageAction.login(EMPTY, userDataRowID);
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
-		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		createNewReport(complianceReportsPageAction, reportDataRowID1);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerCloseButton(EMPTY, reportDataRowID1);
@@ -113,8 +113,8 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		loginPageAction.login(EMPTY, userDataRowID);
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
-		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		createNewReport(complianceReportsPageAction, reportDataRowID1);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
@@ -187,8 +187,8 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		loginPageAction.login(EMPTY, userDataRowID);
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
-		createNewComplianceReport(complianceReportsPageAction, reportDataRowID1);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
+		createNewReport(complianceReportsPageAction, reportDataRowID1);
+		waitForReportGenerationToComplete(complianceReportsPageAction, reportDataRowID1);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, reportDataRowID1);
@@ -213,7 +213,7 @@ public class ActionsVerification_ComplianceReportsTest extends BaseReportsPageAc
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.verifyPageLoaded(EMPTY, reportDataRowID1));
 		
-		complianceReportsPageAction.clickOnNewComplianceReport(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.selectReportMode(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);

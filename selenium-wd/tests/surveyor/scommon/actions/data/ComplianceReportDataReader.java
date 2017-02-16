@@ -1,15 +1,12 @@
 package surveyor.scommon.actions.data;
 
-import common.source.BaseHelper;
+import java.util.HashMap;
+import java.util.Map;
+
 import common.source.ExcelUtility;
 import common.source.Log;
-import surveyor.scommon.actions.ActionArguments;
 
-public class ComplianceReportDataReader extends BaseDataReader {
-
-	public ComplianceReportDataReader(ExcelUtility excelUtility) {
-		super(excelUtility);
-	}
+public class ComplianceReportDataReader extends ReportsCommonDataReader {
 
 	private static final String TESTDATA_SHEET_NAME = "Compliance Report Test Data";
 
@@ -37,29 +34,14 @@ public class ComplianceReportDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 21;
 	public static final int Excel_TestData__Col_SearchAreaPreference = 22;
 
-	public class ComplianceReportsDataRow {
-		public String rowID;
-		public String tCID;
-		public String title;
-		public String customerRowID;
-		public String timezone;
-		public String exclusionRadius;
+	public ComplianceReportDataReader(ExcelUtility excelUtility) {
+		super(excelUtility, () -> TESTDATA_SHEET_NAME, () -> buildColumnIndexMap());
+	}
+
+	public class ComplianceReportsDataRow extends ReportsCommonDataRow {
 		public String reportMode;
 		public String minAmplitude;
-		public String customBoundaryNELat;
-		public String customBoundaryNELong;
-		public String customBoundarySWLat;
-		public String customBoundarySWLong;
-		public String customerBoundaryType;
-		public String customerBoundaryName;
-		public String opacityFOV;
 		public String opacityLISA;
-		public String pDFImageOutputWidth;
-		public String pDFImageOutputHeight;
-		public String reportViewRowIDs;
-		public String reportOptViewLayerRowID;
-		public String reportOptTabularPDFContentRowID;
-		public String reportSurveyRowIDs;
 		public String searchAreaPreference;
 
 		public ComplianceReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
@@ -67,87 +49,71 @@ public class ComplianceReportDataReader extends BaseDataReader {
 				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV, String opacityLISA,
 				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID,
 				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs, String searchAreaPreference) {
-			this.rowID = rowID;
-			this.tCID = tCID;
-			this.title = title;
-			this.customerRowID = customerRowID;
-			this.timezone = timezone;
-			this.exclusionRadius = exclusionRadius;
+			super(rowID, tCID, title, customerRowID, timezone, exclusionRadius,customBoundaryNELat, customBoundaryNELong,
+					customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, pDFImageOutputWidth,
+					pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs);
 			this.reportMode = reportMode;
 			this.minAmplitude = minAmplitude;
-			this.customBoundaryNELat = customBoundaryNELat;
-			this.customBoundaryNELong = customBoundaryNELong;
-			this.customBoundarySWLat = customBoundarySWLat;
-			this.customBoundarySWLong = customBoundarySWLong;
-			this.customerBoundaryType = customerBoundaryType;
-			this.customerBoundaryName = customerBoundaryName;
-			this.opacityFOV = opacityFOV;
 			this.opacityLISA = opacityLISA;
-			this.pDFImageOutputWidth = pDFImageOutputWidth;
-			this.pDFImageOutputHeight = pDFImageOutputHeight;
-			this.reportViewRowIDs = reportViewRowIDs;
-			this.reportOptViewLayerRowID = reportOptViewLayerRowID;
-			this.reportOptTabularPDFContentRowID = reportOptTabularPDFContentRowID;
-			this.reportSurveyRowIDs = reportSurveyRowIDs;
 			this.searchAreaPreference = searchAreaPreference;
 		}
 	}
 
-	private ComplianceReportsDataRow dataRow = null;
-
-	public ComplianceReportsDataRow getDataRow() {
-		return dataRow;
-	}
-
-	public Integer getRowCount() {
-		return this.getRowCount(TESTDATA_SHEET_NAME);
+	private static Map<String, Integer> buildColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put("Col_RowID", Excel_TestData__Col_RowID);
+		columnIdxMap.put("Col_TCID", Excel_TestData__Col_TCID);
+		columnIdxMap.put("Col_Title", Excel_TestData__Col_Title);
+		columnIdxMap.put("Col_CustomerRowID", Excel_TestData__Col_CustomerRowID);
+		columnIdxMap.put("Col_Timezone", Excel_TestData__Col_Timezone);
+		columnIdxMap.put("Col_ExclusionRadius", Excel_TestData__Col_ExclusionRadius);
+		columnIdxMap.put("Col_ReportMode", Excel_TestData__Col_ReportMode);
+		columnIdxMap.put("Col_MinAmplitude", Excel_TestData__Col_MinAmplitude);
+		columnIdxMap.put("Col_CustomBoundaryNELat", Excel_TestData__Col_CustomBoundaryNELat);
+		columnIdxMap.put("Col_CustomBoundaryNELong", Excel_TestData__Col_CustomBoundaryNELong);
+		columnIdxMap.put("Col_CustomBoundarySWLat", Excel_TestData__Col_CustomBoundarySWLat);
+		columnIdxMap.put("Col_CustomBoundarySWLong", Excel_TestData__Col_CustomBoundarySWLong);
+		columnIdxMap.put("Col_CustomerBoundaryType", Excel_TestData__Col_CustomerBoundaryType);
+		columnIdxMap.put("Col_CustomerBoundaryName", Excel_TestData__Col_CustomerBoundaryName);
+		columnIdxMap.put("Col_OpacityFOV", Excel_TestData__Col_OpacityFOV);
+		columnIdxMap.put("Col_OpacityLISA", Excel_TestData__Col_OpacityLISA);
+		columnIdxMap.put("Col_PDFImageOutputWidth", Excel_TestData__Col_PDFImageOutputWidth);
+		columnIdxMap.put("Col_PDFImageOutputHeight", Excel_TestData__Col_PDFImageOutputHeight);
+		columnIdxMap.put("Col_ReportViewRowIDs", Excel_TestData__Col_ReportViewRowIDs);
+		columnIdxMap.put("Col_ReportOptViewLayerRowID", Excel_TestData__Col_ReportOptViewLayerRowID);
+		columnIdxMap.put("Col_ReportOptTabularPDFContentRowID", Excel_TestData__Col_ReportOptTabularPDFContentRowID);
+		columnIdxMap.put("Col_ReportSurveyRowIDs", Excel_TestData__Col_ReportSurveyRowIDs);
+		columnIdxMap.put("Col_SearchAreaPreference", Excel_TestData__Col_SearchAreaPreference);
+		return columnIdxMap;
 	}
 
 	public void setDataRow(ComplianceReportsDataRow dataRow) {
-		this.dataRow = dataRow;
+		super.setDataRow(dataRow);
 	}
 
 	public ComplianceReportsDataRow getDataRow(Integer dataRowID) throws Exception {
-		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
-		String tCID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_TCID, TESTDATA_SHEET_NAME);
-		String title = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Title, TESTDATA_SHEET_NAME);
-		title = ActionArguments.evaluateArgForFunction(title);
-		if (!BaseHelper.isNullOrEmpty(tCID)) {
-			title = String.format("%s-%s", tCID, title);
-		}
-		String customerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerRowID, TESTDATA_SHEET_NAME);
-		String timezone = excelUtility.getCellData(dataRowID, Excel_TestData__Col_Timezone, TESTDATA_SHEET_NAME);
-		String exclusionRadius = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ExclusionRadius, TESTDATA_SHEET_NAME);
+		ReportsCommonDataRow reportsDataRow = super.getDataRow(dataRowID);
 		String reportMode = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportMode, TESTDATA_SHEET_NAME);
 		String minAmplitude = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_MinAmplitude, TESTDATA_SHEET_NAME);
-		String customBoundaryNELat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELat, TESTDATA_SHEET_NAME);
-		String customBoundaryNELong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundaryNELong, TESTDATA_SHEET_NAME);
-		String customBoundarySWLat = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLat, TESTDATA_SHEET_NAME);
-		String customBoundarySWLong = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_CustomBoundarySWLong, TESTDATA_SHEET_NAME);
-		String customerBoundaryType = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryType, TESTDATA_SHEET_NAME);
-		String customerBoundaryName = excelUtility.getCellData(dataRowID, Excel_TestData__Col_CustomerBoundaryName, TESTDATA_SHEET_NAME);
-		String opacityFOV = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_OpacityFOV, TESTDATA_SHEET_NAME);
 		String opacityLISA = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_OpacityLISA, TESTDATA_SHEET_NAME);
-		String pDFImageOutputWidth = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_PDFImageOutputWidth, TESTDATA_SHEET_NAME);
-		String pDFImageOutputHeight = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_PDFImageOutputHeight, TESTDATA_SHEET_NAME);
-		String reportViewRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportViewRowIDs, TESTDATA_SHEET_NAME);
-		String reportOptViewLayerRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptViewLayerRowID, TESTDATA_SHEET_NAME);
-		String reportOptTabularPDFContentRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ReportOptTabularPDFContentRowID, TESTDATA_SHEET_NAME);
-		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReportSurveyRowIDs, TESTDATA_SHEET_NAME);
 		String searchAreaPreference = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SearchAreaPreference, TESTDATA_SHEET_NAME);
 
 		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
 				+ "reportMode=[%s], minAmplitude=[%s], customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
 				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], opacityLISA=[%s], pDFImageOutputWidth=[%s], "
 				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "
-				+ "reportSurveyRowIDs=[%s], searchAreaPreference=[%s]", rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat,
-				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA,
-				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID,
-				reportSurveyRowIDs, searchAreaPreference));
+				+ "reportSurveyRowIDs=[%s],searchAreaPreference=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
+				reportsDataRow.exclusionRadius, reportMode, minAmplitude, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,
+				reportsDataRow.customBoundarySWLat, reportsDataRow.customBoundarySWLong, reportsDataRow.customerBoundaryType, reportsDataRow.customerBoundaryName,
+				reportsDataRow.opacityFOV, opacityLISA, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
+				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs,
+				searchAreaPreference));
 
-		return new ComplianceReportsDataRow(rowID, tCID, title, customerRowID, timezone, exclusionRadius, reportMode, minAmplitude, customBoundaryNELat,
-				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, opacityLISA,
-				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID,
-				reportSurveyRowIDs, searchAreaPreference);
+		return new ComplianceReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
+				reportsDataRow.exclusionRadius, reportMode, minAmplitude, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,
+				reportsDataRow.customBoundarySWLat, reportsDataRow.customBoundarySWLong, reportsDataRow.customerBoundaryType, reportsDataRow.customerBoundaryName,
+				reportsDataRow.opacityFOV, opacityLISA, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
+				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs,
+				searchAreaPreference);
 	}
 }

@@ -47,9 +47,11 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class BaseTest {
@@ -416,11 +418,11 @@ public class BaseTest {
 			}
 
 			complianceReportsPageAction.open("", -1);
-			ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports(testRowID);
-			rpt.rptTitle += rm.toString()+sm.toString();
-			rpt.reportModeFilter = rm;
-			rpt.surveyModeFilter = sm;
-			rpt.strCreatedBy = userName;
+			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
+			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
+			rpt.setReportModeFilter(rm);
+			rpt.setSurveyModeFilter(sm);
+			rpt.setStrCreatedBy(userName);
 
 			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
 				if(smf!=null) {
@@ -430,10 +432,10 @@ public class BaseTest {
 					}
 				}
 			}
-			testReport.put(sm.toString()+"Title", rpt.rptTitle);
+			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
 
 			complianceReportsPage.addNewReport(rpt, true);
-			complianceReportsPage.waitForReportGenerationtoComplete(rpt.rptTitle, rpt.strCreatedBy);
+			complianceReportsPage.waitForReportGenerationtoComplete(rpt.getRptTitle(), rpt.getStrCreatedBy());
 		}
 
 		return Collections.synchronizedMap(testReport);
