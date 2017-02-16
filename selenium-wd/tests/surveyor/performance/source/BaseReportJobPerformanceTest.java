@@ -19,8 +19,8 @@ import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.ReportJobPerfDBStat;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportJobPerfDBStat;
 import surveyor.scommon.source.SurveyorConstants.Environment;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -179,8 +179,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			List<ReportJobPerfDBStat> postDBStatList = complianceReportsPageAction.getComplianceReportsPage().getPostDBStatList();
 			if (postDBStatList!=null && postDBStatList.size() > 0) {
 				Log.info(String.format("Found '%d' report jobs to post to DB.", postDBStatList.size()));
-				String reportTitle = complianceReportsPageAction.getComplianceReportsDataRow(reportDataRowID).title;
-				String testCaseID = complianceReportsPageAction.getComplianceReportsDataRow(reportDataRowID).tCID;
+				String reportTitle = complianceReportsPageAction.getReportsDataRow(reportDataRowID).title;
+				String testCaseID = complianceReportsPageAction.getReportsDataRow(reportDataRowID).tCID;
 				int i = 0;
 				for (ReportJobPerfDBStat reportJobPerfDBStat : postDBStatList) {
 					Log.info(String.format("Posting results for report job number=%d to DB.", (i+1)));

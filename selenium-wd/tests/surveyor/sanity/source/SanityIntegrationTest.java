@@ -56,6 +56,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -68,7 +69,6 @@ import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -265,7 +265,7 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		List<String> tagList=new ArrayList<String>();
 		tagList.add(SQACUSDRTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, SQACUSSU,
 				CUSNAMEBASE, TIMEZONEPT, "0", listBoundary, tablesList,
 				SQACUSLOCSUR,tagList , viewList);
 

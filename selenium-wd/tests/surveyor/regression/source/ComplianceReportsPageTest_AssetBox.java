@@ -2,12 +2,8 @@ package surveyor.regression.source;
 
 import common.source.Log;
 
-import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.*;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.testng.Assert;
 
@@ -15,13 +11,13 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ReportsCompliance;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTest {
@@ -88,8 +84,8 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewComplianceReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -125,10 +121,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -164,10 +160,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -203,10 +199,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
@@ -240,10 +236,10 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		ReportsCompliance rpt = complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
+		ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports( getReportRowID(reportDataRowID1));
 		rpt.setEthaneFilter(EthaneFilter.None);
 		complianceReportsPageAction.getComplianceReportsPage().addNewReport(rpt, true);
-		waitForComplianceReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));

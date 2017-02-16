@@ -15,6 +15,8 @@ import org.openqa.selenium.support.PageFactory;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.PageActionsStore;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
@@ -23,8 +25,6 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
-import surveyor.scommon.source.ReportsCompliance;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -275,7 +275,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, SQACUSSU, "sqacus", TIMEZONEET, "0", listBoundary,
 				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
@@ -452,7 +452,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, SQACUSUA, "sqacus", TIMEZONEET, "0", listBoundary,
 				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
@@ -635,7 +635,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, PICDFADMIN, "sqacus", TIMEZONEET, "0", listBoundary,
 				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);
@@ -791,7 +791,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(CUSDRVSTDTAG);
 
-		ReportsCompliance rpt = new ReportsCompliance(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary,
+		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, SQAPICSUP, "sqacus", TIMEZONEET, "0", listBoundary,
 				tablesList, "", tagList, "", "", viewList, SurveyModeFilter.Standard);
 
 		complianceReportsPage.addNewReport(rpt);

@@ -20,9 +20,9 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.ReportsCompliance.EthaneFilter;
-import surveyor.scommon.source.Reports.ReportModeFilter;
-import surveyor.scommon.source.Reports.SearchAreaPreference;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
+import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 
 public class ComplianceReportEthaneDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_ETHANE_REPORT_PROVIDER = "dataProviderEthaneComplianceReport";

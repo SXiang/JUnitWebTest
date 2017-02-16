@@ -55,7 +55,7 @@
   </target>
   <target name="compile_common" depends="init" description="Compile common source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api:${basedir}/tests/surveyor/parsers/source" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
+  	<javac srcdir="${basedir}/tests/common/source:${basedir}/tests/surveyor/dbseed/source:${basedir}/tests/surveyor/scommon/source:${basedir}/tests/surveyor/scommon/actions:${basedir}/tests/surveyor/scommon/actions/data:${basedir}/tests/surveyor/scommon/entities:${basedir}/tests/surveyor/scommon/generators:${basedir}/tests/surveyor/dataaccess/source:${basedir}/tests/surveyor/dataprovider:${basedir}/tests/surveyor/api:${basedir}/tests/surveyor/parsers/source:${basedir}/tests/surveyor/parsers/source" includeantruntime="false" destdir="${basedir}/tests/common/build" debug="true">
       <classpath>
         <fileset dir="${basedir}">
           <include name="**/*.jar" />
@@ -723,7 +723,9 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-					<include name="**/ComplianceReportsInvestigationPageTest.class" />
+				  <include name="**/AssessmentReportsPageTest.class" />
+		          <include name="**/ComplianceReportsPageTest.class" />
+		          <include name="**/ComplianceReportsPageTest6.class" />
 				</fileset>
 			</batchtest>
 		</junit>
