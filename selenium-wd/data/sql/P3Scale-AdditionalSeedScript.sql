@@ -22,14 +22,14 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C600',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'Seed_first',N'seed_last',NULL,NULL,N'0',N'AKTzRlmNPUItAmRzgnIjNThBDKrraxHuWD4Q6e6zVlC/Sk0Ya4ItdeT5eoii+7jg2w==',N'31facf51-53a8-44d7-bf92-828ea916693a',NULL,N'0',N'0',NULL,N'0',N'0','AutomationAdmin')
 
 -- Add 'autoCenterPtCustBoundaryPerfUser@picarro.com' user
-SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
+SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Centerpoint' 
 SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='CenterPointPerfTestLocation'
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'autoPicCustBoundary',[LastName]=N'PerfUser1',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AKTzRlmNPUItAmRzgnIjNThBDKrraxHuWD4Q6e6zVlC/Sk0Ya4ItdeT5eoii+7jg2w==',[SecurityStamp]=N'31facf51-53a8-44d7-bf92-828ea916693a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='autoCenterPtCustBoundaryPerfUser@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C711',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'autoPicCustBoundary',N'PerfUser1',NULL,NULL,N'0',N'AKTzRlmNPUItAmRzgnIjNThBDKrraxHuWD4Q6e6zVlC/Sk0Ya4ItdeT5eoii+7jg2w==',N'31facf51-53a8-44d7-bf92-828ea916693a',NULL,N'0',N'0',NULL,N'0',N'0','autoCenterPtCustBoundaryPerfUser@picarro.com')
 
 -- Add 'autoCenterPtCustBoundaryPerfUserAA@picarro.com' user
-SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
+SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Centerpoint' 
 SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Texas Region - Houston'
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0003-000000000000',[LocationId]=@locationID,[FirstName]=N'AutoCenterPoint',[LastName]=N'TestAA',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AKTzRlmNPUItAmRzgnIjNThBDKrraxHuWD4Q6e6zVlC/Sk0Ya4ItdeT5eoii+7jg2w==',[SecurityStamp]=N'31facf51-53a8-44d7-bf92-828ea916693a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='autoCenterPtCustBoundaryPerfUserAA@picarro.com'
 IF @@ROWCOUNT=0
