@@ -188,7 +188,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test /* Failed due to DE2745 Error Processing with Percent Coverage Forecast */
+	@Test /* Change to customer user after the fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340, location = ComplianceReportDataProvider.class)
 	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3) throws Exception {
@@ -246,7 +246,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
-	@Test /* Failed due to DE2745 Error Processing with Percent Coverage Forecast */
+	@Test /* Change to customer user after the fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
 	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -280,7 +280,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test /* Failed due to DE2745 Error Processing with Percent Coverage Forecast */
+	@Test /* Change to customer user after the fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363, location = ComplianceReportDataProvider.class)
 	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -465,7 +465,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test /* Failed due to DE2745 Error Processing with Percent Coverage Forecast */
+	@Test /* Change to customer user after the fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367, location = ComplianceReportDataProvider.class)
 	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
