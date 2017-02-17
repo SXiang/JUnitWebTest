@@ -110,6 +110,10 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int LARGE_PIPES2_REPORT_DATA_ROW_ID = 153;
 	private static final int LARGE_PIPES2_EXECUTIONS_FOR_BASELINES = 5;
 
+	private static final int LARGE_PIPES3_USER_ROW_ID = 25;
+	private static final int LARGE_PIPES3_REPORT_DATA_ROW_ID = 154;
+	private static final int LARGE_PIPES3_EXECUTIONS_FOR_BASELINES = 5;
+
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_WARMUP_SCRIPT = "dataProviderReportJobPerformanceWarmup";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LIGHT_LOAD = "dataProviderReportJobPerformanceLight";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_MEDIUM_LOAD = "dataProviderReportJobPerformanceMedium";
@@ -187,7 +191,7 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderReportJobPerformanceLargeArea() {
 
 		return new Object[][] {
-			// TODO: Disable test case until DE2750 is fixed.
+			// TODO: Disabled test case until DE2750 is fixed.
 			//{ "TC2315-1", LARGE_AREA1_USER_ROW_ID, LARGE_AREA1_REPORT_DATA_ROW_ID, LARGE_AREA1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
 			{ "TC2315-2", LARGE_AREA2_USER_ROW_ID, LARGE_AREA2_REPORT_DATA_ROW_ID, LARGE_AREA2_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
 			{ "TC2315-3", LARGE_AREA3_USER_ROW_ID, LARGE_AREA3_REPORT_DATA_ROW_ID, LARGE_AREA3_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
@@ -200,6 +204,7 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 		return new Object[][] {
 			{ "TC2316-1", LARGE_PIPES1_USER_ROW_ID, LARGE_PIPES1_REPORT_DATA_ROW_ID, LARGE_PIPES1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
 			{ "TC2316-2", LARGE_PIPES2_USER_ROW_ID, LARGE_PIPES2_REPORT_DATA_ROW_ID, LARGE_PIPES2_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
+			{ "TC2316-3", LARGE_PIPES3_USER_ROW_ID, LARGE_PIPES3_REPORT_DATA_ROW_ID, LARGE_PIPES3_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
 		};
 	}
 }
