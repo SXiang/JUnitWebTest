@@ -178,7 +178,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		getLoginPageAction().login(EMPTY, userDataRowID);
 		getComplianceReportsPageAction().open(EMPTY, NOTSET);
 		getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
-		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_30MIN_IN_SECONDS), reportDataRowID);
+		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
 		getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 	}
 
