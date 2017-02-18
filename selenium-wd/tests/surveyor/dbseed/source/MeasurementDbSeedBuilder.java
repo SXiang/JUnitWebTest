@@ -22,7 +22,7 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 	private boolean redate = false;
 	private double startEpoch;
 	private double endEpoch;
-	
+
 	public MeasurementDbSeedBuilder() {
 		setSeedFilePath(SEED_DATA_FOLDER, SEED_FILE_NAME);
 	}
@@ -35,18 +35,18 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 	public DbSeed build() throws FileNotFoundException, IOException {
 		String workingCSVFile = SeedDataFilePath;
 		DbSeed seedData = new DbSeed();
-		
-        try  
-        {              
+
+        try
+        {
     		CSVUtility csvUtility = new CSVUtility();
     		List<Map<String, String>> allRows = csvUtility.getAllRows(workingCSVFile);
 			Redater redater = null;
     		for (Map<String, String> rowItem : allRows) {
     			String analyzerId = rowItem.get("AnalyzerId");
-    			
+
     			// Initialize the redater once.
     			redater = checkAndInitializeRedater(allRows, redater, analyzerId);
-    			
+
     			String epochTime = isRedate() ? NumberUtility.formatString(redater.getNextUnixTime(), 3) : rowItem.get("EpochTime");
     			String createDate = rowItem.get("CreateDate");
     			String gpsLatitude = handleNullGetValue(rowItem.get("GpsLatitude"));
@@ -79,20 +79,20 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
     			String peakDetectorState = rowItem.get("PeakDetectorState");
     			String c2H6 = handleNullGetValue(rowItem.get("C2H6"));
     			String c2H4 = handleNullGetValue(rowItem.get("C2H4"));
-    			String analyzerEthaneConcentrationUncertainty = rowItem.get("AnalyzerEthaneConcentrationUncertainty");
+    			String analyzerEthaneConcentrationUncertainty = handleNullGetValue(rowItem.get("AnalyzerEthaneConcentrationUncertainty"));
 
     			seedData.addInsertStatement(String.format(INSERT_TEMPLATE, analyzerId, epochTime, createDate, gpsLatitude, gpsLongitude, gpsFit, shape, instrumentStatus, valveMask, carSpeedNorth, carSpeedEast, windSpeedNorth, windSpeedEast, windDirectionStdDev, weatherStationRotation, windSpeedLateral, windSpeedLongitudinal, chemDetect, species, cH4, cO2, h2OPercent, deltaCH4, peripheralStatus, analyzerStatus, cavityPressure, warmBoxTemperature, hotBoxTemperature, mobileFlowRate, analyzerMode, peakDetectorState, c2H6, c2H4, analyzerEthaneConcentrationUncertainty));
 			}
-    		
+
     		this.setStartEpoch(redater.getFirstTime());
     		this.setEndEpoch(redater.getLastTime());
 
             seedData.setDestinationTableName(TABLE_NAME);
         }
-        catch (Exception e)  
-        {  
-            Log.error(ExceptionUtility.getStackTraceString(e));  
-        }  
+        catch (Exception e)
+        {
+            Log.error(ExceptionUtility.getStackTraceString(e));
+        }
 		return seedData;
 	}
 
@@ -106,7 +106,7 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 			double baseUnixTime = DateUtility.getCurrentUnixEpochTime() - allRows.size() - bufferTime;
 			if (firstMeasurement != null) {
 				baseUnixTime = firstMeasurement.getEpochTime() - allRows.size() - bufferTime;
-			} 			
+			}
 			redater = new Redater(baseUnixTime);
 		}
 		return redater;
@@ -119,7 +119,7 @@ public class MeasurementDbSeedBuilder extends BaseDbSeedBuilder {
 	public void setRedate(boolean redate) {
 		this.redate = redate;
 	}
-	
+
 	public double getStartEpoch() {
 		return startEpoch;
 	}
