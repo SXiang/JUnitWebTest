@@ -27,7 +27,7 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	}
 
 	private static final int WARMUP_USER_ROW_ID = 10;
-	private static final int WARMUP_REPORT_DATA_ROW_ID = 154;
+	private static final int WARMUP_REPORT_DATA_ROW_ID = 155;
 	private static final int WARMUP_EXECUTIONS_FOR_BASELINES = 1;
 
 	private static final int LIGHT_LOAD3_USER_ROW_ID = 10;
