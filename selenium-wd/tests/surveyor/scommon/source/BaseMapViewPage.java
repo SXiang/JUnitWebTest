@@ -1566,7 +1566,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 * Wait for atleast one indication to shown up on map displayed on the page.
 	 */
 	public void waitForIndicationsToBeShownOnMap() {
-		(new WebDriverWait(driver, timeout * 20)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				Set<Indication> indicationsArray = new OLMapUtility(d).getIndicationsArray();
 				Log.info(String.format("[indicationsArray != null] = '%b'", indicationsArray != null));

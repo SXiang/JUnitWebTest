@@ -490,7 +490,7 @@
           <include name="**/ActionsExecutionDriver.class" />
           <include name="**/DriverViewPageTest.class" />
           <include name="**/DriverViewPageTest2.class" />
-          <include name="**/DriverViewPageTest3.class" />
+          <include name="**/DriverViewPageTests_PipelineRunner1.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
           <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
           <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
@@ -581,10 +581,10 @@
     </junit>
     <echo message="junit build : ${build}" />
   </target>
-  <target name="tc_localrun_simulatorcases" depends="compileregression" description="Run action execution test cases">
+  <target name="tc_localrun_simulatorcases" depends="compileregression" description="Run simulator test cases with local changes">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-      <sysproperty key="testReportCategory" value="Regression" />
-      <sysproperty key="test_run_id" value="${local_date}" />
+		<sysproperty key = "testReportCategory" value = "Regression" />
+		<sysproperty key = "test_run_id" value = "${local_date}" />
       <classpath>
         <pathelement path="${build}" />
         <fileset dir="${basedir}/lib">
@@ -594,9 +594,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-	          <include name="**/ObserverViewPageTest.class" />
-	          <include name="**/ObserverViewPageTest2.class" />
-	          <include name="**/ObserverViewPageStressTest.class" />
+	          <include name="**/DriverViewPageTests_PipelineRunner1.class" />
 			</fileset>
       </batchtest>
     </junit>
