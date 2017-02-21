@@ -684,7 +684,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="paralleltestcompliancereport" depends="compiletestsuite" description="Run compliance report test suite tests in parallel">
+  <target name="paralleltestcompliancereport" depends="compiletestsuite" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
       <sysproperty key="maxParallelTestThreads" value="3" />
@@ -711,7 +711,6 @@
 		<junit printsummary="yes" haltonerror="no" haltonfailure="no"
 					showoutput="yes">
 			<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
-			<sysproperty key="maxParallelTestThreads" value="3" />
 			<sysproperty key = "test_run_id" value = "${local_date}"/>
 			<classpath>
 				<pathelement path="${build}" />
@@ -723,9 +722,8 @@
 			<batchtest fork="yes" todir="${reports}/regression/xml">
 				<formatter type="xml" />
 				<fileset dir="${build}">
-				  <include name="**/AssessmentReportsPageTest.class" />
-		          <include name="**/ComplianceReportsPageTest.class" />
-		          <include name="**/ComplianceReportsPageTest6.class" />
+		          <include name="**/ComplianceReportsPageTest_Ethane.class" />
+		          <include name="**/ComplianceReportsPageTest4.class" />
 				</fileset>
 			</batchtest>
 		</junit>

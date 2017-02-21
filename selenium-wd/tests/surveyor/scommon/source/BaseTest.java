@@ -98,6 +98,7 @@ public class BaseTest {
 		 @Override
 		 protected void succeeded(Description description) {
 			BaseTest.reportTestSucceeded(description.getClassName());
+			postTestMethodProcessing();
 		}
 	};
 
