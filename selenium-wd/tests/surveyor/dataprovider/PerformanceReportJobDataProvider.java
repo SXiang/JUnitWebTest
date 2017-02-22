@@ -11,7 +11,9 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 		Light ("Light"),
 		Medium ("Medium"),
 		High ("High"),
-		UltraHigh ("UltraHigh");
+		UltraHigh ("UltraHigh"),
+		LargeArea ("LargeArea"),
+		LargePipes ("LargePipes");
 
 		private final String name;
 
@@ -23,6 +25,10 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 			return this.name;
 		}
 	}
+
+	private static final int WARMUP_USER_ROW_ID = 10;
+	private static final int WARMUP_REPORT_DATA_ROW_ID = 155;
+	private static final int WARMUP_EXECUTIONS_FOR_BASELINES = 1;
 
 	private static final int LIGHT_LOAD3_USER_ROW_ID = 10;
 	private static final int LIGHT_LOAD3_REPORT_DATA_ROW_ID = 10;
@@ -84,10 +90,38 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int ULTRA_HIGH_LOAD9_REPORT_DATA_ROW_ID = 148;
 	private static final int ULTRA_HIGH_LOAD9_EXECUTIONS_FOR_BASELINES = 5;
 
+	private static final int LARGE_AREA1_USER_ROW_ID = 23;
+	private static final int LARGE_AREA1_REPORT_DATA_ROW_ID = 149;
+	private static final int LARGE_AREA1_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_AREA2_USER_ROW_ID = 24;
+	private static final int LARGE_AREA2_REPORT_DATA_ROW_ID = 150;
+	private static final int LARGE_AREA2_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_AREA3_USER_ROW_ID = 23;
+	private static final int LARGE_AREA3_REPORT_DATA_ROW_ID = 151;
+	private static final int LARGE_AREA3_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_PIPES1_USER_ROW_ID = 24;
+	private static final int LARGE_PIPES1_REPORT_DATA_ROW_ID = 152;
+	private static final int LARGE_PIPES1_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_PIPES2_USER_ROW_ID = 25;
+	private static final int LARGE_PIPES2_REPORT_DATA_ROW_ID = 153;
+	private static final int LARGE_PIPES2_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_PIPES3_USER_ROW_ID = 25;
+	private static final int LARGE_PIPES3_REPORT_DATA_ROW_ID = 154;
+	private static final int LARGE_PIPES3_EXECUTIONS_FOR_BASELINES = 5;
+
+	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_WARMUP_SCRIPT = "dataProviderReportJobPerformanceWarmup";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LIGHT_LOAD = "dataProviderReportJobPerformanceLight";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_MEDIUM_LOAD = "dataProviderReportJobPerformanceMedium";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_HIGH_LOAD = "dataProviderReportJobPerformanceHigh";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_ULTRAHIGH_LOAD = "dataProviderReportJobPerformanceUltraHigh";
+
+	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEAREA = "dataProviderReportJobPerformanceLargeArea";
+	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEPIPES = "dataProviderReportJobPerformanceLargePipes";
 
 	public PerformanceReportJobDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -118,6 +152,14 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	}
 
 	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceWarmup() {
+
+		return new Object[][] {
+			{ "PerfWarmupScript", WARMUP_USER_ROW_ID, WARMUP_REPORT_DATA_ROW_ID, WARMUP_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.Medium.toString() },
+		};
+	}
+
+	@DataProvider
 	public static Object[][] dataProviderReportJobPerformanceHigh() {
 
 		return new Object[][] {
@@ -142,6 +184,27 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 			{ "TC1844-2", ULTRA_HIGH_LOAD5_USER_ROW_ID, ULTRA_HIGH_LOAD5_REPORT_DATA_ROW_ID, ULTRA_HIGH_LOAD5_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.UltraHigh.toString() },
 			{ "TC1844-1", ULTRA_HIGH_LOAD4_USER_ROW_ID, ULTRA_HIGH_LOAD4_REPORT_DATA_ROW_ID, ULTRA_HIGH_LOAD4_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.UltraHigh.toString() },
 			{ "TC1844", ULTRA_HIGH_LOAD1_USER_ROW_ID, ULTRA_HIGH_LOAD1_REPORT_DATA_ROW_ID, ULTRA_HIGH_LOAD1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.UltraHigh.toString() }
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceLargeArea() {
+
+		return new Object[][] {
+			// TODO: Disabled test case until DE2750 is fixed.
+			//{ "TC2315-1", LARGE_AREA1_USER_ROW_ID, LARGE_AREA1_REPORT_DATA_ROW_ID, LARGE_AREA1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+			{ "TC2315-2", LARGE_AREA2_USER_ROW_ID, LARGE_AREA2_REPORT_DATA_ROW_ID, LARGE_AREA2_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+			{ "TC2315-3", LARGE_AREA3_USER_ROW_ID, LARGE_AREA3_REPORT_DATA_ROW_ID, LARGE_AREA3_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceLargePipes() {
+
+		return new Object[][] {
+			{ "TC2316-1", LARGE_PIPES1_USER_ROW_ID, LARGE_PIPES1_REPORT_DATA_ROW_ID, LARGE_PIPES1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
+			{ "TC2316-2", LARGE_PIPES2_USER_ROW_ID, LARGE_PIPES2_REPORT_DATA_ROW_ID, LARGE_PIPES2_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
+			{ "TC2316-3", LARGE_PIPES3_USER_ROW_ID, LARGE_PIPES3_REPORT_DATA_ROW_ID, LARGE_PIPES3_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargePipes.toString() },
 		};
 	}
 }

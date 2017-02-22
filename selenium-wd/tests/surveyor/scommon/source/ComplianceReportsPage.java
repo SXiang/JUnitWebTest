@@ -2499,7 +2499,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
-	public void fillReportSpecific(BaseReportEntity reports) {
+	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity) reports;
 
 		// 1. Change customer if specified.
@@ -2535,7 +2535,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 						reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
 			}
 		} else {
-			fillCustomerBoundary(reportsCompliance);
+			if (isComplexBoundary(reportsCompliance)) {
+				fillCustomBoundaryUsingHiddenFields(reportsCompliance);
+			} else {
+				fillCustomerBoundary(reportsCompliance);
+			}
 		}
 
 		inputImageMapHeight(reportsCompliance.getImageMapHeight());

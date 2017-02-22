@@ -7,7 +7,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.dataprovider.PerformanceReportJobDataProvider;
 
-public class ReportJobPerformanceTestLight extends BaseReportJobPerformanceTest {
+public class ReportJobPerformanceTestLargePipes extends BaseReportJobPerformanceTest {
 
 	/**
 	 * Test Case ID: ReportJob_PerformanceTest
@@ -20,10 +20,10 @@ public class ReportJobPerformanceTestLight extends BaseReportJobPerformanceTest 
 	 *	- - Verify report job processing time values confirm to the baseline values.
 	 */
 	@Test
-	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_LIGHT_LOAD, location = PerformanceReportJobDataProvider.class)
+	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_LARGEPIPES, location = PerformanceReportJobDataProvider.class)
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] Performance Test LIGHT_LOAD ...", rallyTestCaseID));
+		Log.info(String.format("\nRunning [%s] Performance Test LARGEPIPES ...", rallyTestCaseID));
 
 		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
 	}

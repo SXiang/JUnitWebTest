@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.source.Log;
+import common.source.RegexUtility;
 
 public class ReportCommonEntity extends BaseReportEntity {
 	public static final String ASSET_PREFIX = "Asset_";
@@ -59,7 +60,8 @@ public class ReportCommonEntity extends BaseReportEntity {
 		DistrictPlat ("District Plat"),
 		BigBoundary ("Big Boundary"),
 		SmallBoundary ("Small Boundary"),
-		LeakSurveyArea ("Leak Survey Area");
+		LeakSurveyArea ("Leak Survey Area"),
+		Placemark ("Placemark");
 
 		private final String name;
 
@@ -476,6 +478,8 @@ public class ReportCommonEntity extends BaseReportEntity {
 			customerBoundaryFilterType = CustomerBoundaryFilterType.SmallBoundary;
 		} else if (custBoundaryType.equals("Leak Survey Area")) {
 			customerBoundaryFilterType = CustomerBoundaryFilterType.LeakSurveyArea;
+		} else if (custBoundaryType.equals("Placemark")) {
+			customerBoundaryFilterType = CustomerBoundaryFilterType.Placemark;
 		}
 		return customerBoundaryFilterType;
 	}

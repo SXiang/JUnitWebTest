@@ -48,9 +48,11 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
 import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity;
+import surveyor.scommon.entities.ReportCommonEntity.CustomerBoundaryFilterType;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
@@ -77,6 +79,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -264,6 +267,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	@FindBy(id = "dvAreaMode_Custom")
 	protected WebElement divCustomBoundarySection;
+
+	@FindBy(id = "boundary-selected-id")
+	private WebElement inputBoundarySelectedId;
+
+	@FindBy(id = "boundary-selected-text")
+	private WebElement inputBoundarySelectedText;
 
 	@FindBy(id = "report-survey-start-dt")
 	protected WebElement startDatePicker;
@@ -1261,6 +1270,50 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.info("Set survey username to '" + username + "'");
 		this.userName.clear();
 		this.userName.sendKeys(username);
+	}
+
+	public boolean isComplexBoundary(ReportCommonEntity reportsCompliance) {
+		return isComplexBoundary(reportsCompliance.getCustomerBoundaryFilterType(), reportsCompliance.getCustomerBoundaryName());
+	}
+
+	private boolean isComplexBoundary(CustomerBoundaryFilterType boundaryFilterType, String boundaryName) {
+		return BaseReportEntity.ComplexBoundaryNames.stream()
+			.anyMatch(b -> isComplexCustomerBoundaryMatch(boundaryFilterType, boundaryName, b));
+	}
+
+	private boolean isComplexCustomerBoundaryMatch(ReportCommonEntity reportsCompliance, String complexBoundary) {
+		return isComplexCustomerBoundaryMatch(reportsCompliance.getCustomerBoundaryFilterType(), reportsCompliance.getCustomerBoundaryName(), complexBoundary);
+	}
+
+	private boolean isComplexCustomerBoundaryMatch(CustomerBoundaryFilterType boundaryFilterType, String boundaryName, String complexBoundary) {
+		List<String> parts = RegexUtility.split(complexBoundary, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
+		return boundaryFilterType.toString().equals(parts.get(0)) && boundaryName.equals(parts.get(1));
+	}
+
+	private String getComplexCustomerBoundaryId(ReportCommonEntity reportsCompliance, String complexBoundary) {
+		return RegexUtility.split(complexBoundary, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN).get(2);
+	}
+
+	protected void fillCustomBoundaryUsingHiddenFields(ReportCommonEntity reportsCompliance) throws Exception {
+		this.selectCustomerBoundaryRadioButton();
+		this.waitForCustomerBoundarySectionToShow();
+		Optional<String> boundaryId = BaseReportEntity.ComplexBoundaryNames.stream()
+				.filter(b -> isComplexCustomerBoundaryMatch(reportsCompliance, b))
+				.map(b -> getComplexCustomerBoundaryId(reportsCompliance, b))
+				.findFirst();
+
+		if (!boundaryId.isPresent()) {
+			throw new Exception(String.format("No boundary ID present for complex CustomerBoundary - '%s'. ",
+					reportsCompliance.getCustomerBoundaryName()));
+		}
+
+		Log.info(String.format("Found boundary id - '%s' for complex CustomerBoundary - '%s'. ",
+				boundaryId.get(), reportsCompliance.getCustomerBoundaryName()));
+
+		Log.info("Setting boundarySelectedId value in input ...");
+		this.setInputBoundarySelectedIdValue(boundaryId.get());
+		Log.info("Setting boundarySelectedText value in input ...");
+		this.setInputBoundarySelectedTextValue(reportsCompliance.getCustomerBoundaryName());
 	}
 
 	public void fillCustomBoundaryTextFields(String neLat, String neLong, String swLat, String swLong) {
@@ -3564,6 +3617,22 @@ public class ReportsCommonPage extends ReportsBasePage {
 		By noResultBy = By.xpath("//ul[@id='ui-id-1']//div[text()='no results...']");
 		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
 		return noResult;
+	}
+
+	public String getInputBoundarySelectedIdValue() {
+		return inputBoundarySelectedId.getText();
+	}
+
+	public void setInputBoundarySelectedIdValue(String boundarySelectedId) {
+		WebElementExtender.executeScript(this.inputBoundarySelectedId, driver, String.format("arguments[0].value = '%s';", boundarySelectedId));
+	}
+
+	public String getInputBoundarySelectedTextValue() {
+		return inputBoundarySelectedText.getText();
+	}
+
+	public void setInputBoundarySelectedTextValue(String boundarySelectedText) {
+		WebElementExtender.executeScript(this.inputBoundarySelectedText, driver, String.format("arguments[0].value = '%s';", boundarySelectedText));
 	}
 
 	protected boolean useCustomBoundaryLatLongSelector(ReportCommonEntity reportsEntity) {

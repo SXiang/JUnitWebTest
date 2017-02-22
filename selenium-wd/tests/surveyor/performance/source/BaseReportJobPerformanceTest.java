@@ -118,6 +118,10 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			case UltraHigh:
 				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForUltraHighLoadReportJobPerfBaseline();
 				break;
+			case LargeArea:
+			case LargePipes:
+				executionTimesFromProperties = TestContext.INSTANCE.getTestSetup().getExecutionTimesForLargeAreaPipesReportJobPerfBaseline();
+				break;
 			default:
 				break;
 			}
@@ -147,14 +151,10 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		// Run for specified number of times depending on whether we are generating baselines or not.
 		Integer testExecutionTimes = getTestExecutionTimes(executionTimesForBaselines, ReportJobTestCategory.valueOf(category));
 		for (int i=0; i<testExecutionTimes; i++) {
+			Log.info(String.format("Executing test iteration - %d", i));
 			initializePageActions();
 
-			getLoginPageAction().open(EMPTY, NOTSET);
-			getLoginPageAction().login(EMPTY, userDataRowID);
-			getComplianceReportsPageAction().open(EMPTY, NOTSET);
-			getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
-			getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
-			getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+			createAndWaitForReportGeneration(userDataRowID, reportDataRowID);
 			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
 			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
@@ -171,6 +171,15 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		}
 
 		assertTrue(result);
+	}
+
+	protected void createAndWaitForReportGeneration(Integer userDataRowID, Integer reportDataRowID) throws Exception {
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);
+		getComplianceReportsPageAction().open(EMPTY, NOTSET);
+		getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
+		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
+		getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 	}
 
 	private void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
