@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 
 import common.source.ExceptionUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -172,7 +173,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		} finally {
 			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.
-			DbSeedExecutor.cleanUpGisSeed(customerId);
+			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
 		}
 	}
 
@@ -237,7 +238,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		} finally {
 			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.
-			DbSeedExecutor.cleanUpGisSeed(customerId);
+			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
 		}
 	}
 
@@ -302,7 +303,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 		} finally {
 			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.
-			DbSeedExecutor.cleanUpGisSeed(customerId);
+			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
 		}
 	}
 
