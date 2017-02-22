@@ -41,6 +41,7 @@ import surveyor.dataaccess.source.StoredProcComplianceAssessmentGetReportDriving
 import surveyor.dataaccess.source.StoredProcEQAddedSurveys;
 import surveyor.dataaccess.source.StoredProcEQGetEQData;
 import surveyor.scommon.entities.EQReportEntity;
+import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
@@ -74,73 +75,56 @@ public class EQReportsPage extends ReportsCommonPage {
 	public EQReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, STRURLPath, () -> getCommonResourceProvider());
 
-		Log.info(String.format("\nThe Assessment Reports Page URL is: %s\n", this.strPageURL));
+		Log.info(String.format("\nThe EQ Reports Page URL is: %s\n", this.strPageURL));
 	}
 
 	public String getFullReportName(String rptTitle) {
-		return "AS" + "-" + getReportName(rptTitle);
+		return getReportPrefix() + "-" + getReportName(rptTitle);
 	}
 
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) {
-		EQReportEntity reportsCompliance = (EQReportEntity) reports;
+		EQReportEntity reportsEQ = (EQReportEntity) reports;
 
-		// 1. Report general
-		if (reportsCompliance.getExclusionRadius() != null) {
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		// 1. EQ Location Parameter
+		if (reportsEQ.getEQLocationParameter() != null) {
+			selectEQLocationParameter(reportsEQ.getEQLocationParameter());
 		}
 
-		// 2. Area Selector
-		if (isCustomBoundarySpecified(reportsCompliance)) {
-			selectCustomBoundaryRadioButton();
-			if (useCustomBoundaryLatLongSelector(reportsCompliance)) {
-				fillCustomBoundaryUsingLatLongSelector(reportsCompliance);
-			} else {
-				fillCustomBoundaryTextFields(reportsCompliance.getNELat(), reportsCompliance.getNELong(),
-						reportsCompliance.getSWLat(), reportsCompliance.getSWLong());
-			}
-		} else {
-			fillCustomerBoundary(reportsCompliance);
-		}
-
-		inputImageMapHeight(reportsCompliance.getImageMapHeight());
-		inputImageMapWidth(reportsCompliance.getImageMapWidth());
-
-		// 3. Views
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
-
-		// 4. Optional Tabular PDF Content
-		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
-
-		if (tablesList.get(0).get(KEYPCA).equalsIgnoreCase("1")) {
-			selectPercentCoverageAssetCheckBox();
-		}
-		if (tablesList.get(0).get(KEYPCRA).equalsIgnoreCase("1")) {
-			selectPercentCoverageReportArea();
-		}
-
-		// 5. Optional View layers
-		List<Map<String, String>> viewLayersList = reportsCompliance.getViewLayersList();
-		if (viewLayersList != null && viewLayersList.size() > 0) {
-			handleOptionalDynamicViewLayersSection(viewLayersList);
-		}
+		// 2. Line Selector
+		selectLineSegments(reportsEQ);
 	}
 
 	@Override
 	public String getReportPrefix() {
-		return "AS";
+		return "EQ";
+	}
+
+	//TODO
+	protected void selectEQLocationParameter(String eqLocationParameter) {
+		
+	}
+
+	//TODO
+	protected void selectLineSegments(EQReportEntity reportEQ) {
+		
 	}
 
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
-		// No action in Assessment reports page.
+		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
+		if (surveyModeFilter != null) {
+			selectSurveyModeForSurvey(surveyModeFilter);
+		}
 	}
 
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) {
-		// No action in Assessment reports page.
+		if (surveyModeFilter != null) {
+			selectSurveyModeForSurvey(surveyModeFilter);
+		}
 	}
-
+	
 	private static ResourceProvider getCommonResourceProvider() {
 		return new ResourceProvider(() -> {
 			Map<String, String> resxMap = new HashMap<String, String>();

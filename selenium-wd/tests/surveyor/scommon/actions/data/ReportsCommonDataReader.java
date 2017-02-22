@@ -38,16 +38,22 @@ public class ReportsCommonDataReader extends BaseDataReader {
 		public String reportOptTabularPDFContentRowID;
 		public String reportSurveyRowIDs;
 
-		public ReportsCommonDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
-				String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat,
-				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV,
-				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID,
-				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs) {
+		public ReportsCommonDataRow(String rowID, String tCID, String title, String customerRowID, String timezone,
+				String reportSurveyRowIDs) {
 			this.rowID = rowID;
 			this.tCID = tCID;
 			this.title = title;
 			this.customerRowID = customerRowID;
 			this.timezone = timezone;
+			this.reportSurveyRowIDs = reportSurveyRowIDs;
+		}
+		
+		public ReportsCommonDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
+				String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat,
+				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV,
+				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID,
+				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs) {
+			this(rowID, tCID, title, customerRowID, timezone, reportSurveyRowIDs);
 			this.exclusionRadius = exclusionRadius;
 			this.customBoundaryNELat = customBoundaryNELat;
 			this.customBoundaryNELong = customBoundaryNELong;
@@ -61,7 +67,6 @@ public class ReportsCommonDataReader extends BaseDataReader {
 			this.reportViewRowIDs = reportViewRowIDs;
 			this.reportOptViewLayerRowID = reportOptViewLayerRowID;
 			this.reportOptTabularPDFContentRowID = reportOptTabularPDFContentRowID;
-			this.reportSurveyRowIDs = reportSurveyRowIDs;
 		}
 	}
 	private ReportsCommonDataRow dataRow = null;

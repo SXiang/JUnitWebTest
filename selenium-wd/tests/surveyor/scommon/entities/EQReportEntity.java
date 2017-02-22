@@ -4,6 +4,9 @@
 package surveyor.scommon.entities;
 
 import java.util.List;
+
+import com.sun.javafx.scene.paint.GradientUtils.Point;
+
 import surveyor.scommon.source.Coordinates;
 
 /**
@@ -11,35 +14,22 @@ import surveyor.scommon.source.Coordinates;
  *
  */
 public class EQReportEntity extends ReportCommonEntity {
-
-	protected List<List <Coordinates>> listOfCords;
-
-
-//	public EQReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList, List<List <Coordinates>> listOfCords) {
-//		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);
-//		this.listOfCords = listOfCords;
-//	}
-//
-//	public EQReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String startDate, String endDate, List<String> tagList, List<List <Coordinates>> listOfCords) {
-//		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate);
-//		this.listOfCords = listOfCords;
-//	}
-//
-//	public EQReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String startDate, String endDate, boolean geoFilter, List<String> tagList, List<List <Coordinates>> listOfCords) {
-//		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit, tagList, startDate, endDate, geoFilter);
-//		this.listOfCords = listOfCords;
-//	}
-//
-//	public EQReportEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit,String userName, String startDate, String endDate, boolean geoFilterOn, List<String> tagList, List<List <Coordinates>> listOfCords) {
-//		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,  startDate,endDate, userName, geoFilterOn,tagList);
-//		this.listOfCords = listOfCords;
-//	}
-
-	public  List<List<Coordinates>> getListOfCords() {
-		return listOfCords;
+	protected String eqLocationParameter;
+	protected List<List<Coordinates>> lineSegments;
+	public String getEQLocationParameter() {
+		return eqLocationParameter;
 	}
 
-	public void setListOfCords(List<List<Coordinates>> listOfCords) {
-		this.listOfCords = listOfCords;
+	public void setEQLocationParameter(String eqLocationParameter) {
+		this.eqLocationParameter = eqLocationParameter;
+	}
+	
+	public EQReportEntity(String rptTitle, String customer, String timeZone, String eqLocationParameter, List<List<Coordinates>> lineSegments){
+		this.setRptTitle(rptTitle);
+		this.setCustomer(customer);
+		this.timeZone = timeZone;
+
+		this.eqLocationParameter = eqLocationParameter;
+		this.lineSegments = lineSegments;
 	}
 }

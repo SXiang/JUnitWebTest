@@ -1,18 +1,36 @@
 package surveyor.scommon.actions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
+import com.sun.javafx.scene.paint.GradientUtils.Point;
+
+import common.source.BaseHelper;
+import common.source.ExcelUtility;
+import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.Customer;
+import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader;
+import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
+import surveyor.scommon.actions.data.ReportOptViewLayersDataReader;
+import surveyor.scommon.actions.data.ReportSurveyDataReader;
+import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
+import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
+import surveyor.scommon.actions.data.ReportViewsDataReader.ReportViewsDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
+import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.EQReportEntity;
+import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
@@ -96,18 +114,18 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		ReportsCommonDataRow compRptDataRow = null;
+	public EQReportsDataRow getReportsDataRow(Integer dataRowID) throws Exception {
+		EQReportsDataRow eqRptDataRow = null;
 		if (EQReportsPageActions.workingDataRow.get() != null) {
-			compRptDataRow = EQReportsPageActions.workingDataRow.get();
+			eqRptDataRow = EQReportsPageActions.workingDataRow.get();
 		} else {
-			compRptDataRow = getDataReader().getDataRow(dataRowID);
+			eqRptDataRow = getDataReader().getDataRow(dataRowID);
 		}
-		return compRptDataRow;
+		return eqRptDataRow;
 	}
 
 	@Override
-	public ReportCommonEntity getWorkingReportsEntity() throws Exception {
+	public EQReportEntity getWorkingReportsEntity() throws Exception {
 		return workingReportsEntity.get();
 	}
 
@@ -117,7 +135,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public ReportsCommonDataRow getWorkingReportsDataRow() throws Exception {
+	public EQReportsDataRow getWorkingReportsDataRow() throws Exception {
 		return workingDataRow.get();
 	}
 
@@ -127,10 +145,10 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public ReportsCommonPage createNewPageObject() {
-		ReportsCommonPage compReportsPage = new EQReportsPage(TestContext.INSTANCE.getDriver(),
+	public EQReportsPage createNewPageObject() {
+		EQReportsPage eqReportsPage = new EQReportsPage(TestContext.INSTANCE.getDriver(),
 				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		return compReportsPage;
+		return eqReportsPage;
 	}
 
 	@Override
@@ -138,27 +156,73 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		// No EQ reports specific action.
 	}
 
-	@Override
-	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
-			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewLayersList) {
-		
-		//TODO: need customization !!!
-		return new EQReportEntity();
+	protected EQReportEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String eqLocationParameter,
+			List<List<Coordinates>> lineSegments) {		
+		return new EQReportEntity(rptTitle, customer, timeZone, eqLocationParameter, lineSegments);
 	}
 
 	@Override
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
 		// No EQ reports specific action.
     }
+	
+	public EQReportEntity fillWorkingDataForReports(Integer dataRowID) throws Exception {
+		setWorkingReportsDataRow(getDataReader().getDataRow(dataRowID));
 
-	@Override
-	protected void selectReportSpecificTabularPDFContent(ReportOptTabularPDFContentDataRow pdfContentDataRow) {
-		// No EQ reports specific action.
+		String rptTitle = getWorkingReportsDataRow().title;
+		String customer = null;
+		String customerRowID = getWorkingReportsDataRow().customerRowID;
+		if (!BaseHelper.isNullOrEmpty(customerRowID)) {
+			if (ManageCustomerPageActions.workingDataRow.get() != null) {
+				customer = ManageCustomerPageActions.workingDataRow.get().name;
+			} else {
+				Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
+				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
+			}
+		}
+		String timeZone = getWorkingReportsDataRow().timezone;
+		String eqLocationParameter = getWorkingReportsDataRow().eqLocationParameter;
+
+		// Set survey info list.
+		List<ReportsSurveyInfo> reportsSurveyInfoList = super.buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
+		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(getWorkingReportsDataRow(), this.excelUtility);
+		// Create report specific Entity object.
+		EQReportEntity rpt = createNewReportsEntity(rptTitle, customer, timeZone, eqLocationParameter, lineSegments);
+
+		rpt.setSurveyInfoList(reportsSurveyInfoList);
+
+        // Fill report specific info.
+        fillReportSpecificWorkingDataForReports(rpt);
+
+        setWorkingReportsEntity(rpt);		// Store the working report properties.
+		return rpt;
+	}
+	
+	protected List<List<Coordinates>> buildLineSegmentInfoList(EQReportsDataRow dataRow, ExcelUtility excelUtility) throws Exception {
+		List<Integer> lineSegmentRowIDs = ActionArguments.getNumericList(dataRow.lineSegmentRowIDs);
+		List<List<Coordinates>> lineSegmentInfoList = getLineSegmentInfoList(excelUtility, lineSegmentRowIDs);
+		return lineSegmentInfoList;
 	}
 
-	@Override
-	protected boolean verifyReportsSpecificPageFieldsAreCorrect(ReportsCommonDataRow dataRow) throws Exception {
-		return true;
+	public static List<List<Coordinates>> getLineSegmentInfoList(ExcelUtility excelUtility, List<Integer> lineSegmentRowIDs) throws Exception {
+		List<List<Coordinates>> lineSegmentInfoList = new ArrayList<List<Coordinates>>();
+		List<Coordinates> lineSegment = new ArrayList<Coordinates>();
+		for (Integer rowID : lineSegmentRowIDs) {
+			if(rowID==0){
+				continue;
+			}
+			LineSegmentDataReader lineSegmentDataReader = new LineSegmentDataReader(excelUtility);
+			LinePointDataRow linePointDataRow = lineSegmentDataReader.getDataRow(rowID);
+			
+			reportsSurveyInfoList.add(new ReportsSurveyInfo(
+					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag,
+					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate,
+					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON),
+					NumberUtility.getIntegerValueOf(surveyDataRow.numberofSurveystoInclude),
+					Boolean.valueOf(surveyDataRow.selectAllSurveys)));
+		}
+		return reportsSurveyInfoList;
 	}
+
+
 }

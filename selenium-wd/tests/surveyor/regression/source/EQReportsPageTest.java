@@ -3,6 +3,13 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSUUSER;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +19,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.dataprovider.EQReportDataProvider;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -29,6 +37,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 		private static LoginPageActions loginPageAction;
 		private static EQReportsPageActions eqReportsPageAction;
+		private static EQReportsPage eqReportsPage;
 
 		@BeforeClass
 		public static void beforeClass() {
@@ -58,8 +67,10 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 * @throws Exception
 		 */
 		protected static void initializePageActions() throws Exception {
+			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
-			setReportsPage((EQReportsPage)eqReportsPageAction.getPageObject());
+			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
+			setReportsPage(eqReportsPage);
 		}
 
 		/**
@@ -80,7 +91,25 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.getEQReportsPage().open();
+			
+			eqReportsPageAction.open(EMPTY, NOTSET);
+
+			//TODO: implement eq new report
+			// Create some reports to ensure data table gets populated over multiple executions of the test.
+			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
+
+			String paginationSetting25 = "25";
+			String paginationSetting50 = "50";
+			String paginationSetting100 = "100";
+
+			assertTrue(eqReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting25));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting50));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting100));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
 		}
 
 		/**
@@ -99,9 +128,25 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC562_EQReportSortOnAttributes ...");
 
-			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.getEQReportsPage().open();
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+			
+			//TODO: implement eq new report
+			// Create some reports to ensure data table gets populated over multiple executions of the test.
+			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
+			
+			eqReportsPageAction.open(EMPTY, NOTSET);
+
+			assertTrue(eqReportsPage.isReportColumnSorted("Report Title","String"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertTrue(eqReportsPage.isReportColumnSorted("Created By","String"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertTrue(eqReportsPage.isReportColumnSorted("Date","Date"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertFalse(eqReportsPage.isReportColumnSorted("Report Name","String"));
 		}
 		
 		/**
@@ -123,9 +168,20 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC566_CancelButtonForNewAndCopyEQReport ...");
 
-			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.getEQReportsPage().open();
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPage.waitForCopyReportPagetoLoad();
+			eqReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPage.waitForCopyReportPagetoLoad();
+			eqReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		}
 
 		/**
@@ -148,9 +204,14 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC651_AlreadyAddedMessageForNewEQReport ...");
 
-			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.getEQReportsPage().open();
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /*SQACUS */
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			String rptTitle = EQReportsPageActions.workingDataRow.get().title;
+			eqReportsPage.clickOnCopyReport(rptTitle, SQACUSSUUSER);
+			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_SQACUS, PICADMNSTDTAG));
 		}
 		
 		/**
@@ -172,7 +233,22 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.getEQReportsPage().open();
+			
+			eqReportsPage.clickOnNewReportBtn();
+
+			String paginationSetting25 = "25";
+			String paginationSetting50 = "50";
+			String paginationSetting100 = "100";
+
+			//TODO:
+			assertTrue(eqReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting25));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting50));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting100));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
 		}		
 
 }

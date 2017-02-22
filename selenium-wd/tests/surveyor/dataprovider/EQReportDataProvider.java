@@ -28,13 +28,13 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC561() {
 		return new Object[][] {
-			{ "TC561" /*TestCaseID*/, 4 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC561" /*TestCaseID*/, 4 /*userDataRowID*/,  2 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC562() {
 		return new Object[][] {
-			{ "TC562" /*TestCaseID*/, 4 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC562" /*TestCaseID*/, 4 /*userDataRowID*/,  3 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
@@ -46,7 +46,7 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC651() {
 		return new Object[][] {
-			{ "TC651" /*TestCaseID*/, 4 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC651" /*TestCaseID*/, 4 /*userDataRowID*/,  4 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider

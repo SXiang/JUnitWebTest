@@ -3,8 +3,11 @@ package surveyor.scommon.actions.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.Log;
+import surveyor.scommon.actions.ActionArguments;
+import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 
 public class EQReportDataReader extends ReportsCommonDataReader {
 
@@ -15,37 +18,25 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 	public static final int Excel_TestData__Col_Title = 2;
 	public static final int Excel_TestData__Col_CustomerRowID = 3;
 	public static final int Excel_TestData__Col_Timezone = 4;
-	public static final int Excel_TestData__Col_ExclusionRadius = 5;
-	public static final int Excel_TestData__Col_CustomBoundaryNELat = 6;
-	public static final int Excel_TestData__Col_CustomBoundaryNELong = 7;
-	public static final int Excel_TestData__Col_CustomBoundarySWLat = 8;
-	public static final int Excel_TestData__Col_CustomBoundarySWLong = 9;
-	public static final int Excel_TestData__Col_CustomerBoundaryType = 10;
-	public static final int Excel_TestData__Col_CustomerBoundaryName = 11;
-	public static final int Excel_TestData__Col_OpacityFOV = 12;
-	public static final int Excel_TestData__Col_PDFImageOutputWidth = 13;
-	public static final int Excel_TestData__Col_PDFImageOutputHeight = 14;
-	public static final int Excel_TestData__Col_ReportViewRowIDs = 15;
-	public static final int Excel_TestData__Col_ReportOptViewLayerRowID = 16;
-	public static final int Excel_TestData__Col_ReportOptTabularPDFContentRowID = 17;
-	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 18;
+	public static final int Excel_TestData__Col_EQLocationParameter = 5;
+	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 6;
+	public static final int Excel_TestData__Col_LineSegmentRowIDs = 7;
 
 	public EQReportDataReader(ExcelUtility excelUtility) {
 		super(excelUtility, () -> TESTDATA_SHEET_NAME, () -> buildColumnIndexMap());
 	}
 
 	public class EQReportsDataRow extends ReportsCommonDataRow {
-		public EQReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
-				String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat,
-				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV,
-				String pDFImageOutputWidth, String pDFImageOutputHeight, String reportViewRowIDs, String reportOptViewLayerRowID,
-				String reportOptTabularPDFContentRowID, String reportSurveyRowIDs) {
-			super(rowID, tCID, title, customerRowID, timezone, exclusionRadius,customBoundaryNELat, customBoundaryNELong,
-					customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV, pDFImageOutputWidth,
-					pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs);
+		public String eqLocationParameter;
+		public String lineSegmentRowIDs;
+
+		public EQReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String eqLocationParameter,
+				String reportSurveyRowIDs, String lineSegmentRowIDs) {
+			super(tCID, title, customerRowID, timezone, lineSegmentRowIDs, reportSurveyRowIDs);
+			this.eqLocationParameter = eqLocationParameter;
+			this.lineSegmentRowIDs = lineSegmentRowIDs;
 		}
 	}
-
 	private static Map<String, Integer> buildColumnIndexMap() {
 		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
 		columnIdxMap.put("Col_RowID", Excel_TestData__Col_RowID);
@@ -53,40 +44,31 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 		columnIdxMap.put("Col_Title", Excel_TestData__Col_Title);
 		columnIdxMap.put("Col_CustomerRowID", Excel_TestData__Col_CustomerRowID);
 		columnIdxMap.put("Col_Timezone", Excel_TestData__Col_Timezone);
-		columnIdxMap.put("Col_ExclusionRadius", Excel_TestData__Col_ExclusionRadius);
-		columnIdxMap.put("Col_CustomBoundaryNELat", Excel_TestData__Col_CustomBoundaryNELat);
-		columnIdxMap.put("Col_CustomBoundaryNELong", Excel_TestData__Col_CustomBoundaryNELong);
-		columnIdxMap.put("Col_CustomBoundarySWLat", Excel_TestData__Col_CustomBoundarySWLat);
-		columnIdxMap.put("Col_CustomBoundarySWLong", Excel_TestData__Col_CustomBoundarySWLong);
-		columnIdxMap.put("Col_CustomerBoundaryType", Excel_TestData__Col_CustomerBoundaryType);
-		columnIdxMap.put("Col_CustomerBoundaryName", Excel_TestData__Col_CustomerBoundaryName);
-		columnIdxMap.put("Col_OpacityFOV", Excel_TestData__Col_OpacityFOV);
-		columnIdxMap.put("Col_PDFImageOutputWidth", Excel_TestData__Col_PDFImageOutputWidth);
-		columnIdxMap.put("Col_PDFImageOutputHeight", Excel_TestData__Col_PDFImageOutputHeight);
-		columnIdxMap.put("Col_ReportViewRowIDs", Excel_TestData__Col_ReportViewRowIDs);
-		columnIdxMap.put("Col_ReportOptViewLayerRowID", Excel_TestData__Col_ReportOptViewLayerRowID);
-		columnIdxMap.put("Col_ReportOptTabularPDFContentRowID", Excel_TestData__Col_ReportOptTabularPDFContentRowID);
+		columnIdxMap.put("Col_EQLocationParameter", Excel_TestData__Col_EQLocationParameter);
 		columnIdxMap.put("Col_ReportSurveyRowIDs", Excel_TestData__Col_ReportSurveyRowIDs);
+		columnIdxMap.put("Col_LineSegmentRowIDs", Excel_TestData__Col_LineSegmentRowIDs);
 		return columnIdxMap;
 	}
 
 	public EQReportsDataRow getDataRow(Integer dataRowID) throws Exception {
-		ReportsCommonDataRow reportsDataRow = super.getDataRow(dataRowID);
+			String rowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_RowID"), sheetName);
+			String tCID = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_TCID"), sheetName);
+			String title = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Title"), sheetName);
+			title = ActionArguments.evaluateArgForFunction(title);
+			if (!BaseHelper.isNullOrEmpty(tCID)) {
+				title = String.format("%s-%s", tCID, title);
+			}
+			String customerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_CustomerRowID"), sheetName);
+			String timezone = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Timezone"), sheetName);
+			String eqLocationParameter = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);
+			String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportSurveyRowIDs"), sheetName);
+			String lineSegmentRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_LineSegmentRowIDs"), sheetName);
 
-		Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], exclusionRadius=[%s], "
-				+ "customBoundaryNELat=[%s], customBoundaryNELong=[%s], customBoundarySWLat=[%s], customBoundarySWLong=[%s], "
-				+ "customerBoundaryType=[%s], customerBoundaryName=[%s], opacityFOV=[%s], pDFImageOutputWidth=[%s], "
-				+ "pDFImageOutputHeight=[%s], reportViewRowIDs=[%s], reportOptViewLayerRowID=[%s], reportOptTabularPDFContentRowID=[%s], "
-				+ "reportSurveyRowIDs=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
-				reportsDataRow.exclusionRadius, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,
-				reportsDataRow.customBoundarySWLat, reportsDataRow.customBoundarySWLong, reportsDataRow.customerBoundaryType, reportsDataRow.customerBoundaryName,
-				reportsDataRow.opacityFOV, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
-				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs));
+			Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], eqLocationParameter=[%s], "
+				
+				+ "reportSurveyRowIDs=[%s], lineSegmentRowIDs=[%s]", rowID, tCID, title, customerRowID, timezone,
+				eqLocationParameter, reportSurveyRowIDs, lineSegmentRowIDs));
 
-		return new EQReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
-				reportsDataRow.exclusionRadius, reportsDataRow.customBoundaryNELat, reportsDataRow.customBoundaryNELong,
-				reportsDataRow.customBoundarySWLat, reportsDataRow.customBoundarySWLong, reportsDataRow.customerBoundaryType, reportsDataRow.customerBoundaryName,
-				reportsDataRow.opacityFOV, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
-				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs);
+		return new EQReportsDataRow(rowID, tCID, title, customerRowID, timezone, eqLocationParameter, reportSurveyRowIDs, lineSegmentRowIDs);
 	}
 }

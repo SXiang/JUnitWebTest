@@ -80,6 +80,7 @@ import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
 import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.actions.data.ReportViewsDataReader.ReportViewsDataRow;
 import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
@@ -219,7 +220,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return true;
 	}
 
-	private List<ReportsSurveyInfo> buildReportSurveyInfoList(ReportsCommonDataRow dataRow, ExcelUtility excelUtility) throws Exception {
+	protected List<ReportsSurveyInfo> buildReportSurveyInfoList(ReportsCommonDataRow dataRow, ExcelUtility excelUtility) throws Exception {
 		List<Integer> reportSurveyRowIDs = ActionArguments.getNumericList(dataRow.reportSurveyRowIDs);
 		List<ReportsSurveyInfo> reportsSurveyInfoList = getReportSurveyInfoList(excelUtility, reportSurveyRowIDs);
 		return reportsSurveyInfoList;

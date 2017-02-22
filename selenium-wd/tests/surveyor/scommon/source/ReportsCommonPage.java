@@ -53,6 +53,7 @@ import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 
 import java.awt.Rectangle;
@@ -3701,6 +3702,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
 
+	public boolean isReportColumnSorted(String columnName, String type) {
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
+				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
+	}
+	
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
 			List<Map<String, String>> views) {
