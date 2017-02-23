@@ -1092,6 +1092,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	public DriverViewPage stopDrivingSurvey() {
 		Log.clickElementInfo("Stop Driving Survey");
+		this.waitForSignalRCallsToComplete();
 		this.waitForStopSurveyButtonToBeVisible();
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
