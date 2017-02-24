@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -29,54 +27,6 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 
-	private static HomePageActions homePageAction;
-	private static LoginPageActions loginPageAction;
-	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static TestEnvironmentActions testEnvironmentAction;
-
-	private static ComplianceReportsPage complianceReportsPage;
-
-	@BeforeClass
-	public static void beforeTestClass() throws Exception {
-		initializeTestObjects();
-	}
-
-	@Before
-	public void beforeTestMethod() throws Exception {
-		initializePageActions();
-
-		initializeProperties();
-	}
-
-	/**
-	 * Initializes the page action objects.
-	 */
-	protected static void initializePageActions() {
-		homePageAction = new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
-		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
-		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
-		testEnvironmentAction = new TestEnvironmentActions();
-
-		// initialize page object for post test processing.
-		initializePageObjects(complianceReportsPageAction.getComplianceReportsPage());
-	}
-
-	public HomePageActions getHomePageAction() {
-		return homePageAction;
-	}
-
-	public LoginPageActions getLoginPageAction() {
-		return loginPageAction;
-	}
-
-	public ComplianceReportsPageActions getComplianceReportsPageAction() {
-		return complianceReportsPageAction;
-	}
-
-	public TestEnvironmentActions getTestEnvironmentAction() {
-		return testEnvironmentAction;
-	}
-
 	public BaseReportJobPerformanceTest() {
 	}
 
@@ -88,12 +38,12 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	 */
 	@Ignore
 	public void UnitTest_compareReportJobPerfBaseline() throws Exception {
-		complianceReportsPage = new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), complianceReportsPage);
+		setComplianceReportsPage(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
+		PageFactory.initElements(getDriver(), getComplianceReportsPage());
 
 		String testCaseID = "PerfTest3";
 		String reportTitle = "9a231d51baa34934986b";
-		complianceReportsPage.compareReportJobPerfBaseline(testCaseID, reportTitle);
+		getComplianceReportsPage().compareReportJobPerfBaseline(testCaseID, reportTitle);
 	}
 
 	protected Integer getTestExecutionTimes(Integer executionTimesForBaselines, ReportJobTestCategory category) {
@@ -136,7 +86,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 	protected void checkAndGenerateReportJobBaselineCsv() throws IOException {
 		Log.method("checkAndGenerateReportJobBaselineCsv");
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
-			generateReportJobBaselineRunExecutionCsv(complianceReportsPageAction.workingDataRow.get().tCID);
+			generateReportJobBaselineRunExecutionCsv(getComplianceReportsPageAction().workingDataRow.get().tCID);
 		}
 	}
 
@@ -182,14 +132,14 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
 	}
 
-	private void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
+	protected void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
 		Log.method("postRunResultsToAutomationDB", reportDataRowID, startDate, endDate);
 		if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
-			List<ReportJobPerfDBStat> postDBStatList = complianceReportsPageAction.getComplianceReportsPage().getPostDBStatList();
+			List<ReportJobPerfDBStat> postDBStatList = getComplianceReportsPageAction().getComplianceReportsPage().getPostDBStatList();
 			if (postDBStatList!=null && postDBStatList.size() > 0) {
 				Log.info(String.format("Found '%d' report jobs to post to DB.", postDBStatList.size()));
-				String reportTitle = complianceReportsPageAction.getReportsDataRow(reportDataRowID).title;
-				String testCaseID = complianceReportsPageAction.getReportsDataRow(reportDataRowID).tCID;
+				String reportTitle = getComplianceReportsPageAction().getReportsDataRow(reportDataRowID).title;
+				String testCaseID = getComplianceReportsPageAction().getReportsDataRow(reportDataRowID).tCID;
 				int i = 0;
 				for (ReportJobPerfDBStat reportJobPerfDBStat : postDBStatList) {
 					Log.info(String.format("Posting results for report job number=%d to DB.", (i+1)));
@@ -199,8 +149,8 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 					LocalDateTime reportJobEndTime = reportJobPerfDBStat.getReportJobEndTime();
 					LocalDateTime testExecutionStartDate = startDate;
 					LocalDateTime testExecutionEndDate = endDate;
-					LocalDateTime reportStartTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportStartEpochTime());
-					LocalDateTime reportEndTime = DateUtility.fromUnixTime(complianceReportsPageAction.getComplianceReportsPage().getReportEndEpochTime());
+					LocalDateTime reportStartTime = DateUtility.fromUnixTime(getComplianceReportsPageAction().getComplianceReportsPage().getReportStartEpochTime());
+					LocalDateTime reportEndTime = DateUtility.fromUnixTime(getComplianceReportsPageAction().getComplianceReportsPage().getReportEndEpochTime());
 					String buildNumber = getComplianceReportsPageAction().getComplianceReportsPage().getWebAppVersion();
 					Environment environment = reportJobPerfDBStat.getEnvironment();
 					TestContext.INSTANCE.getTestSetup().postReportJobPerfStat(reportTitle, reportJobTypeId, reportJobTypeName, reportJobStartTime,
@@ -210,5 +160,33 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 				}
 			}
 		}
+	}
+
+	/** Method to be overridden by derived test class **/
+	protected void initializePageActions() {
+
+	}
+
+	protected HomePageActions getHomePageAction() {
+		return null;
+	}
+
+	protected LoginPageActions getLoginPageAction() {
+		return null;
+	}
+
+	protected TestEnvironmentActions getTestEnvironmentAction() {
+		return null;
+	}
+
+	protected ComplianceReportsPageActions getComplianceReportsPageAction() {
+		return null;
+	}
+
+	protected ComplianceReportsPage getComplianceReportsPage() {
+		return null;
+	}
+
+	protected void setComplianceReportsPage(ComplianceReportsPage cmpReportsPage) {
 	}
 }

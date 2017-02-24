@@ -313,6 +313,56 @@ public class BaseReportEntity {
 	private static void populateComplexBoundaryNames() {
 		ComplexBoundaryNames = Collections.synchronizedList(new ArrayList<String>());
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-SUGARLAND SEC 1|17ebfaad-3d00-473e-8ea9-8497ff487743");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31440728|00A913EF-AEA3-4FD7-8A44-ECCB11854980");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31320720|02F897B6-07D3-42DC-93E8-F8B8672C36A3");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 13|0A4E33D6-F18C-49BC-B4CF-200A3D5EDC69");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31200704|17482A7B-5650-4361-9000-B403932517B6");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 3|182E5B88-3359-4412-8FCB-1BC04F59FE68");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30840704|18854B21-0805-46A4-9E38-C3B3AEE64837");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560712|1FA750EE-A8DA-4438-87B9-809BA5AC7485");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30840752|21093670-6795-4959-AB3D-863891BBA372");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31680712|2496FEBA-BDAE-4334-8C3B-57EBB3BDECB8");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31320696|272AD8DD-1CDF-4424-80D7-D584B67AE700");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31800696|274CE8AA-FA42-4CCA-90CF-695146345364");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31680720|278BEFB5-6AB5-4AA9-8134-9AC967180D0C");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-BEAUMONT HP|2AEAA35C-BBE4-4840-81CA-C7A795040BFE");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31440696|32E882DA-B34C-415E-A7B4-9798EB06E763");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31320736|360C261B-FA0C-492E-A414-AD67463E6814");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31200688|37D977D1-E820-4928-97D3-B5CA6282DDC2");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 11|3847F66F-867E-43D8-83F9-F9B703FBBBEE");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560696|39B82B9C-4992-4736-9497-D916DDD6CB85");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560720|3ED3FF1D-50EE-4565-882D-85750271C3D5");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 12|4B967C3F-5BFD-4E57-A068-E339F0099409");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31440704|52BC9172-1156-4EE5-8750-8A235CA7EC51");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 15|5E1AA6BD-9C24-4039-A505-48D080D787EC");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 6|6433536D-9D24-4D24-8FB4-58B534037FBB");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560704|697D8884-8D44-40F4-9067-C2A09C2F19FB");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 9|6FFBD5ED-A92D-4181-8727-762394ED8713");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560736|7BF2034B-163F-49C9-AC3D-84EFF183AD9A");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30960704|7DCCD227-7A33-401F-92B4-2DCD9CA44B91");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31440688|92AB47B8-910B-4883-B1F0-65C8D741426A");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31800720|9E4F05AA-1AE9-4A10-A445-EEC2B2335B45");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 10|9E9AA9D5-C4CD-4043-9EFF-E84D8AE9B22C");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31440712|9EE036FB-1B21-4D42-9B20-64FA536CA100");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 7|A6298821-2B0E-460F-9414-3A5A223290AB");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31920704|AA3BD112-70BE-4E17-AB1C-93B5DFE4E1D1");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 17|AAA4BA5E-F7F1-495D-B86F-12FD1B8178EE");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31920848|AB330758-E326-46A7-9FB2-C70487D5BCFB");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 14|B07CA23F-B3D6-4DA7-94E9-BCFEAD8E9F78");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 16|B97D2C99-221D-4BB1-8C34-8695B3188B67");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-LAREDO HP|BCC3AA24-4C7D-4519-9E60-56803D273AFB");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30840728|BE5D115D-93BF-48AF-AA7C-32A55208217A");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 5|D58FCED1-E527-4F62-8AB8-44140D96211B");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560752|D734C85E-B968-4A8A-BC35-DABD95189CA7");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 1|DE320771-1A0B-470E-B5F9-2AB22B7AD355");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 4|DF11C0B3-867E-443C-94F6-2D3D9080BEB8");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31800704|E73F9375-394A-48B2-9252-22C4D6D9B2ED");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31320728|E87F91DE-6150-4E76-8968-318A98043C17");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31080752|E95A1542-A13C-4E53-AD75-96ABCDBD30E3");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 8|EA6DB438-58B7-40A4-BB2D-89EFE172D331");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-TYLER HP|F07A7A0C-C857-415B-A956-039FD0625908");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 2a|F46854AD-BB8C-4079-AE58-A803FC59A71C");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560688|F61533EC-AF68-4E3A-A8C3-A536E67A6120");
 	}
 
 	/**

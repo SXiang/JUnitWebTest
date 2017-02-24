@@ -14,7 +14,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ComplianceReportsPage;
 
-public class ReportJobPerformanceTestLight extends BaseReportJobPerformanceTest {
+public class ReportJobPerformanceAssetBoxHighlightTest5 extends BaseReportJobPerformanceAssetBoxHighlightTest {
 
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
@@ -78,23 +78,20 @@ public class ReportJobPerformanceTestLight extends BaseReportJobPerformanceTest 
 	protected void setComplianceReportsPage(ComplianceReportsPage cmpReportsPage) {
 		complianceReportsPage = cmpReportsPage;
 	}
-
 	/**
-	 * Test Case ID: ReportJob_PerformanceTest
+	 * Test Case ID: ReportJob_PerformanceAssetBoxHighlightTest
 	 * Script: -
 	 *	- - Login as specified user
-	 *	- - Create New Compliance Report with specified report data
+	 *	- - Create New Compliance Report with specified report data to trigger AssetboxHighlight job
 	 *  - - Wait for Report to be generated
-	 *  - - Query DB to find processing time for each report job
-	 * Results: -
-	 *	- - Verify report job processing time values confirm to the baseline values.
+	 *  - - Post report job statistics to automation reporting DB.
 	 */
 	@Test
-	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_LIGHT_LOAD, location = PerformanceReportJobDataProvider.class)
-	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
+	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_ASSETBOX5, location = PerformanceReportJobDataProvider.class)
+	public void ReportJob_PerformanceAssetBoxHighlightTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] Performance Test LIGHT_LOAD ...", rallyTestCaseID));
+		Log.info(String.format("\nRunning [%s] Performance Test ASSETBOX_HIGHLIGHT_JOB ...", rallyTestCaseID));
 
-		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
+		executeAssetBoxHighlightTest(userDataRowID, reportDataRowID);
 	}
 }
