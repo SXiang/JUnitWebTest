@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.entities;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +17,15 @@ public class BaseReportEntity {
 	 */
 	static {
 		populateGuidMaps();
+		populateComplexBoundaryNames();
 	}
 
 	public static Map<String, SurveyModeFilter> SurveyModeFilterGuids;
 	public static Map<String, ReportModeFilter> ReportSurveyModeFilterGuids;
 	public static Map<String, ReportJobType> ReportJobTypeGuids;
 	public static Map<ReportJobType, String> ReportJobTypeReverseGuids;
+
+	public static List<String> ComplexBoundaryNames;
 
 	private String rptTitle;
 	protected String strCreatedBy;
@@ -304,6 +308,11 @@ public class BaseReportEntity {
 
 	public void setSurveyInfoList(List<ReportsSurveyInfo> surveyInfoList) {
 		this.surveyInfoList = surveyInfoList;
+	}
+
+	private static void populateComplexBoundaryNames() {
+		ComplexBoundaryNames = Collections.synchronizedList(new ArrayList<String>());
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-SUGARLAND SEC 1|17ebfaad-3d00-473e-8ea9-8497ff487743");
 	}
 
 	/**

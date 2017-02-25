@@ -16,4 +16,13 @@ public class FunctionUtil {
 	public static Predicate<String> stringStartsWithPredicate(String prefix) {
 		return s -> s.startsWith(prefix);
 	}
+
+	public static void warnOnError(CheckedConsumer methodCall) {
+		try
+		{
+			methodCall.execute();
+		} catch (Exception ex) {
+			Log.warn(ExceptionUtility.getStackTraceString(ex));
+		}
+	}
 }

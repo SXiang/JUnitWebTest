@@ -23,7 +23,7 @@ public class ReportJobPerformanceTestUltraHigh extends BaseReportJobPerformanceT
 	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_ULTRAHIGH_LOAD, location = PerformanceReportJobDataProvider.class)
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
+		Log.info(String.format("\nRunning [%s] Performance Test ULTRAHIGH_LOAD ...", rallyTestCaseID));
 
 		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
 	}

@@ -11,13 +11,12 @@ import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.Timeout;
 import common.source.WebElementExtender;
-import groovy.swing.factory.ActionFactory;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.ActionBuilder;
 
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.WebElement;
 
@@ -230,6 +229,8 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	@FindBy(id = "btn_addupdate_annotation")
 	protected WebElement addUpdateNoteButton;
+
+	private boolean useAnalyzerReadyLongTimeout = false;
 
 	/**
 	 * @param driver
@@ -767,6 +768,14 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return startSurvey;
 	}
 
+	public boolean isUseAnalyzerReadyLongTimeout() {
+		return useAnalyzerReadyLongTimeout;
+	}
+
+	public void setUseAnalyzerReadyLongTimeout(boolean useAnalyzerReadyLongTimeout) {
+		this.useAnalyzerReadyLongTimeout = useAnalyzerReadyLongTimeout;
+	}
+
 	/**
 	 * Click on Start Survey Button in the Driver view page to open the modal
 	 * Start Survey dialog.
@@ -1083,6 +1092,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	public DriverViewPage stopDrivingSurvey() {
 		Log.clickElementInfo("Stop Driving Survey");
+		this.waitForSignalRCallsToComplete();
 		this.waitForStopSurveyButtonToBeVisible();
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
@@ -1287,7 +1297,11 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	 * Waits for StartSurvey button to be visible.
 	 */
 	public void waitForStartSurveyButtonToBeVisible() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
+		Integer readyTimeout = Timeout.ANALYZER_READY_DEFAULT_TIMEOUT;
+		if (isUseAnalyzerReadyLongTimeout()) {
+			readyTimeout = Timeout.ANALYZER_READY_LONG_TIMEOUT;
+		}
+		(new WebDriverWait(driver, readyTimeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return isStartSurveyButtonVisible();
 			}

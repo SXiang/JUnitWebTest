@@ -112,6 +112,7 @@ public final class SurveyorConstants {
 	public static final String FEDS2015ANZ = "FEDS2015";
 	public static final String FEDS2050ANZ = "FEDS2050";
 	public static final String FEDS2055ANZ = "FEDS2055";
+	public static final String FEDS2055PICARRO = "FEDS2055-PICARRO";
 
 	public static final String RFADS2004ANZ = "RFADS2004";
 	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
@@ -393,6 +394,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_BLACKDODGE3300 = "BlackDodgeP3300";
 	public static final String SURVEYOR_IGPSCAR = "iGPS car";
 	public static final String SURVEYOR_SQACUSUNIT1 = "SQACusSrvUnit-1";
+	public static final String SURVEYOR_NISSANROGUEPICARRO = "Nissan Rogue - Picarro";
 
 	/*
 	 * Compliance Report Surveyor Units

@@ -23,7 +23,7 @@ public class ReportJobPerformanceTestLight extends BaseReportJobPerformanceTest 
 	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_PROVIDER_LIGHT_LOAD, location = PerformanceReportJobDataProvider.class)
 	public void ReportJob_PerformanceTest(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
 			Integer executionTimesForBaselines, String category) throws Exception {
-		Log.info(String.format("\nRunning [%s] ReportJob_PerformanceTest ...", rallyTestCaseID));
+		Log.info(String.format("\nRunning [%s] Performance Test LIGHT_LOAD ...", rallyTestCaseID));
 
 		executePerformanceTest(userDataRowID, reportDataRowID, executionTimesForBaselines, category);
 	}

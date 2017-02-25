@@ -990,7 +990,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void selectSurveyInfoSurveyorUnit(String surveyor) {
-		if (surveyor != null && (!surveyor.isEmpty())) {
+		if (surveyor != null ) {
 			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
 			for (WebElement option : optionsSU) {
 				if (surveyor.equalsIgnoreCase(option.getText().trim())) {

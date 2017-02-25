@@ -36,7 +36,7 @@ public class DbSeedExecutor {
 	public static final String[] PICARRO_CUSTOMER_SURVEYS = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 			"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 			"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3"};
+			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1", "daysurvey7-1", "daysurvey8.2-1", "daysurvey8-1", "daysurvey8-2"};
 
 	public static final String[] SQACUS_CUSTOMER_SURVEYS = {"assessment-1-sqacus", "assessment-2-sqacus", "EthaneManual-sqacus","EthaneStnd3-sqacus","EthaneStnd2-sqacus","EthaneStnd-sqacus","EthaneRR-sqacus","EthaneOpertor2-sqacus",
 			"EthaneOpertor1-sqacus","Ethane1MinSurvey-sqacus", "iso-cap-1-sqacus", "iso-cap-2-sqacus", "man-pic-1-sqacus","man-pic-2-sqacus","op-pic-sqacus","op-sqacudr-sqacus","rr-pic-sqacus",

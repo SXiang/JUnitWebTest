@@ -1588,7 +1588,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 
 	public Set<OLMapEntities.Indication> collectIndicationsDuringSurvey(Integer surveyDurationInSeconds) {
 		Log.method("collectIndicationsDuringSurvey", surveyDurationInSeconds);
-		final Integer INCREMENT = 3;
+		final Integer INCREMENT = 1;
 		Integer durationInSec = 0;
 		Set<Indication> allIndications = new HashSet<Indication>();
 		while (durationInSec < surveyDurationInSeconds) {
@@ -1598,7 +1598,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			durationInSec += INCREMENT;
 		}
 
-		Log.info(String.format("Indications detected in Driver view = %d", allIndications.size()));
+		Log.info(String.format("Indications detected in view = %d", allIndications.size()));
 		allIndications.forEach(i -> Log.info(i.toString()));
 		return allIndications;
 	}

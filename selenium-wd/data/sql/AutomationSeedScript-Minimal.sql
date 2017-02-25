@@ -141,10 +141,10 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8CEF7673-80D2-407A-B833-F164C472CFDA', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
-IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
-    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
-IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
-    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'387D1519-64DA-4ABD-B947-1BCD72BD6CAA' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'387D1519-64DA-4ABD-B947-1BCD72BD6CAA', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'0F726186-19EE-4703-9C77-6EC6155AB255' AND [CustomerId]=N'B1252204-04FB-4A67-82D4-3F4666FD855C')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'0F726186-19EE-4703-9C77-6EC6155AB255', N'B1252204-04FB-4A67-82D4-3F4666FD855C')
 ---- sqaCus
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'00000000-0000-0000-0000-000000000002')
@@ -182,12 +182,12 @@ IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [Licen
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'8CEF7673-80D2-407A-B833-F164C472CFDA', N'00000000-0000-0000-0000-000000000002')
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'6A412F8C-E97F-4C88-B4D4-F2BCECBEABBB', N'00000000-0000-0000-0000-000000000002')
-IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
-    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'C8284DB6-CFDB-441E-9051-1FD0FB1BE732', N'00000000-0000-0000-0000-000000000002')
-IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
-    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'45BFBA8A-93E8-4199-B08D-BCF9BE8AE9AD', N'00000000-0000-0000-0000-000000000002')
-IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'1F91B807-DB58-45DD-A469-C46DF80F0B62' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
-    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'1F91B807-DB58-45DD-A469-C46DF80F0B62', N'00000000-0000-0000-0000-000000000002')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'387D1519-64DA-4ABD-B947-1BCD72BD6CAA' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'387D1519-64DA-4ABD-B947-1BCD72BD6CAA', N'00000000-0000-0000-0000-000000000002')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'0F726186-19EE-4703-9C77-6EC6155AB255' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'0F726186-19EE-4703-9C77-6EC6155AB255', N'00000000-0000-0000-0000-000000000002')
+IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'399900B5-E0C6-4B79-8F94-3EA7F00D879F' AND [CustomerId]=N'00000000-0000-0000-0000-000000000002')
+    INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'399900B5-E0C6-4B79-8F94-3EA7F00D879F', N'00000000-0000-0000-0000-000000000002')
 ---- sqaTest
 IF NOT EXISTS (SELECT * FROM [dbo].[CustomerLicensedFeatureOptions] WHERE [LicensedFeatureOptionId]=N'46FB8592-4477-4EE1-AB49-04A991036785' AND [CustomerId]=N'00000000-0000-0000-0000-000000000003')
     INSERT [dbo].[CustomerLicensedFeatureOptions] ([LicensedFeatureOptionId], [CustomerId]) VALUES (N'46FB8592-4477-4EE1-AB49-04A991036785', N'00000000-0000-0000-0000-000000000003')
@@ -403,6 +403,13 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='NolicenseLoc'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', @locationID, N'NoLicSur')
 END
+-- EQ Surveyor Unit
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', @locationID, N'Nissan Rogue - Picarro')
+END
+
 
 -- Analyzer
 -- NOTE: [SerialNumber] AND [SharedKey] are UNIQUE for Analyzer. 
@@ -513,6 +520,15 @@ IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='NoLicAna' AND [SharedKey]='NoLicAnaKey')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'AFBE9B5B-5222-C1C0-7D96-39DA80286015', N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', N'NoLicAna', N'NoLicAnaKey')
 END
+-- EQ Analyzer
+BEGIN
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', [SerialNumber]=N'FEDS2055-PICARRO', [SharedKey]=N'feds2055-picarro' WHERE [Id]='F5970731-CE37-F7F3-DB5F-39D7E2D02053'
+IF @@ROWCOUNT=0
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='FEDS2055-PICARRO' AND [SharedKey]='feds2055-picarro')
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'FEDS2055-PICARRO', N'feds2055-picarro')
+END
+
+
 
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
 -- RefGasBottle for 'SoftwareCar_2037_picarro' - 'Picarro'
@@ -583,6 +599,10 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='1E7426FF-6C7C-EFF3-303E-39DA802825EB', [BatchId]='NoLicSur-RefGasBottle1', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime) WHERE [Id]='24F12158-BB25-09EF-1DFA-39DA8028A2EA'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'24F12158-BB25-09EF-1DFA-39DA8028A2EA', N'1E7426FF-6C7C-EFF3-303E-39DA802825EB', N'NoLicSur-RefGasBottle1', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime))
+-- RefGasBottle for 'EQ SurveyorUnit'
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='C4890397-D624-7D79-CA78-39D895DB6962'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'C4890397-D624-7D79-CA78-39D895DB6962', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'109-56-12523', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime), 0.03)
 
 	
 -- Add AnalyzerHardwareCapabilityType
