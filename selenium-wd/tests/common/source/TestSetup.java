@@ -575,6 +575,20 @@ public class TestSetup {
 	public void setAndroidDeviceName(String androidDeviceName) {
 		this.androidDeviceName = androidDeviceName;
 	}
+
+	public static ExcelUtility getExcelUtility() {
+		ExcelUtility excelUtility = null;
+		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + TestSetup.DATA_FOLDER + File.separator + TestSetup.TEST_DATA_XLSX;
+		try {
+			excelUtility = new ExcelUtility();
+			excelUtility.setExcelFile(testDataExcelPath);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+
+		return excelUtility;
+	}
+
 	public void initialize() {
 		try {
 
