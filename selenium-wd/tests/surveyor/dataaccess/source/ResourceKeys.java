@@ -14,10 +14,9 @@ public class ResourceKeys {
 	public static final String AssessmentReports_PageTitle = "AssessmentReports_PageTitle";
 
 	// EQ report resource keys. //TODO: need customization !!!
+	public static final String EQReport_LineSelector = "EQReport_LineSelector";
+	public static final String EQReport_SelectLineSegments = "EQReport_SelectLineSegments";
 	public static final String EQReport_EQTablePDF = "EQReport_EQTablePDF";
-	public static final String EQReport_EQZipMeta = "EQReport_EQZipMeta";
-	public static final String EQReport_EQZipPDF = "EQReport_EQZipPDF";
-	public static final String EQReport_EQZipShape = "EQReport_EQZipShape";
 	public static final String EQReport_PageTitle = "EQReport_PageTitle";
 	public static final String EQReport_PageTitleNew = "EQReport_PageTitleNew";
 	public static final String EQReports_AddNew = "EQReports_AddNew";

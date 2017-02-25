@@ -20,6 +20,10 @@ public class EQReportEntity extends ReportCommonEntity {
 		return eqLocationParameter;
 	}
 
+	public List<List<Coordinates>> getLineSegments() {
+		return lineSegments;
+	}
+
 	public void setEQLocationParameter(String eqLocationParameter) {
 		this.eqLocationParameter = eqLocationParameter;
 	}

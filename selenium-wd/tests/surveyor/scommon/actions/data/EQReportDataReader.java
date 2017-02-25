@@ -32,7 +32,7 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 
 		public EQReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String eqLocationParameter,
 				String reportSurveyRowIDs, String lineSegmentRowIDs) {
-			super(tCID, title, customerRowID, timezone, lineSegmentRowIDs, reportSurveyRowIDs);
+			super(rowID, tCID, title, customerRowID, timezone, reportSurveyRowIDs);
 			this.eqLocationParameter = eqLocationParameter;
 			this.lineSegmentRowIDs = lineSegmentRowIDs;
 		}
@@ -60,7 +60,7 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 			}
 			String customerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_CustomerRowID"), sheetName);
 			String timezone = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Timezone"), sheetName);
-			String eqLocationParameter = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);
+			String eqLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);
 			String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportSurveyRowIDs"), sheetName);
 			String lineSegmentRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_LineSegmentRowIDs"), sheetName);
 

@@ -2544,9 +2544,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.waitForReportGenerationToComplete", data, dataRowID);
 		this.getReportsCommonPage().checkErrorMessages();
 		this.getReportsCommonPage().waitForPageLoad();
-		this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
+		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
 				TestContext.INSTANCE.getLoggedInUser());
-		return true;
 	}
 
 	/**

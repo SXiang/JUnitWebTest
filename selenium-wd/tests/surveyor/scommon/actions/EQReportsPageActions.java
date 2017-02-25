@@ -15,6 +15,8 @@ import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Customer;
+import surveyor.scommon.actions.data.CoordinateDataReader;
+import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
@@ -22,6 +24,8 @@ import surveyor.scommon.actions.data.ReportOptViewLayersDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
+import surveyor.scommon.actions.data.LineSegmentDataReader;
+import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
 import surveyor.scommon.actions.data.ReportViewsDataReader.ReportViewsDataRow;
@@ -212,17 +216,25 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 				continue;
 			}
 			LineSegmentDataReader lineSegmentDataReader = new LineSegmentDataReader(excelUtility);
-			LinePointDataRow linePointDataRow = lineSegmentDataReader.getDataRow(rowID);
+			LineSegmentDataRow lineSegmentDataRow = lineSegmentDataReader.getDataRow(rowID);
 			
-			reportsSurveyInfoList.add(new ReportsSurveyInfo(
-					surveyDataRow.surveySurveyor, surveyDataRow.surveyUsername, surveyDataRow.surveyTag,
-					surveyDataRow.surveyStartDate, surveyDataRow.surveyEndDate,
-					modeFilter, Boolean.valueOf(surveyDataRow.surveyGeoFilterON),
-					NumberUtility.getIntegerValueOf(surveyDataRow.numberofSurveystoInclude),
-					Boolean.valueOf(surveyDataRow.selectAllSurveys)));
+			List<Integer> coordinatesRowIDs = ActionArguments.getNumericList(lineSegmentDataRow.coordinatesRowIDs);
+			lineSegmentInfoList.add(getCoordinatesInfoList(excelUtility, coordinatesRowIDs));
 		}
-		return reportsSurveyInfoList;
+		return lineSegmentInfoList;
 	}
 
-
+	public static List<Coordinates> getCoordinatesInfoList(ExcelUtility excelUtility, List<Integer> coordinatesRowIDs) throws Exception {
+		List<Coordinates> coordinates = new ArrayList<Coordinates>();
+		for (Integer rowID : coordinatesRowIDs) {
+			if(rowID==0){
+				continue;
+			}
+			CoordinateDataReader coordinateDataReader = new CoordinateDataReader(excelUtility);
+			CoordinateDataRow coordinateDataRow = coordinateDataReader.getDataRow(rowID);
+			
+			coordinates.add(new Coordinates(coordinateDataRow.longitude, coordinateDataRow.latitude));
+		}
+		return coordinates;
+	}
 }

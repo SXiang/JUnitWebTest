@@ -278,6 +278,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
+	@FindBy(how = How.XPATH, using = "//table[@id='datatableSurveys']/tbody/tr")
+	protected List<WebElement> numberofSurveyRecords;
+	
 	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
@@ -360,7 +363,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	protected LatLongSelectionControl latLongSelectionControl = null;
-
+	protected BaseMapViewPage mapViewPage = null;
 	protected String pagination = "100";
 
 	public enum CustomerBoundaryType {
@@ -430,6 +433,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
+		mapViewPage = new BaseMapViewPage(driver, testSetup,  strBaseURL,strPageURL);
+		PageFactory.initElements(driver, mapViewPage);
 	}
 
 	@Override
@@ -1629,6 +1634,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return records.size();
 	}
 
+	public int getNumberofSurveyRecords() {
+		List<WebElement> records = this.numberofSurveyRecords;
+		return records.size();
+	}
+	
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 	}

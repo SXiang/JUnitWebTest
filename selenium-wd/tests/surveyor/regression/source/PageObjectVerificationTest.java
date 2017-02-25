@@ -1,7 +1,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -21,7 +20,6 @@ import common.source.OLMapUtility.IconColor;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.UserDataProvider;
-import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;

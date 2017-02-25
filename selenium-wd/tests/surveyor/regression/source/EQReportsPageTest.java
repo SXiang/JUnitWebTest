@@ -6,10 +6,9 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSUUSER;
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
-
+import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
+import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +18,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.dataprovider.EQReportDataProvider;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -94,7 +92,6 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 			
 			eqReportsPageAction.open(EMPTY, NOTSET);
 
-			//TODO: implement eq new report
 			// Create some reports to ensure data table gets populated over multiple executions of the test.
 			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
 
@@ -131,7 +128,6 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
 			
-			//TODO: implement eq new report
 			// Create some reports to ensure data table gets populated over multiple executions of the test.
 			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
 			
@@ -162,26 +158,25 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 * Results:
 		 *	- Report is not generated and user is navigated back to EQ report list page
 		 */
-		@Test
+		@Test/* Using Picarro admin now, and need to be changed to customer supervisor */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC566, location = EQReportDataProvider.class)
 		public void TC566_CancelButtonForNewAndCopyEQReport(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC566_CancelButtonForNewAndCopyEQReport ...");
 
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
-			eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1)));
+			
 			eqReportsPage.waitForCopyReportPagetoLoad();
-			eqReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 			eqReportsPage.waitForCopyReportPagetoLoad();
-			eqReportsPageAction.clickOnOKButton(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.clickOnOKButton(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
-			eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1));
-
-			assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1)));
 		}
 
 		/**
@@ -198,20 +193,20 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 *	- "Already Added" message is displayed on the search button
 		 *	- User is able to add the survey
 		 */
-		@Test
+		@Test /* Using Picarro admin now, and need to be changed to customer supervisor */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC651, location = EQReportDataProvider.class)
 		public void TC651_AlreadyAddedMessageForNewEQReport(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC651_AlreadyAddedMessageForNewEQReport ...");
 
 			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /*SQACUS */
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			String rptTitle = EQReportsPageActions.workingDataRow.get().title;
-			eqReportsPage.clickOnCopyReport(rptTitle, SQACUSSUUSER);
-			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_SQACUS, PICADMNSTDTAG));
+			eqReportsPage.clickOnCopyReport(rptTitle, SQAPICAD);
+			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_PICARRO, EQDAYSURVEY));
 		}
 		
 		/**
@@ -225,7 +220,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 * Results:
 		 *	- Selected number of records will be listed in the table
 		 */
-		@Test
+		@Test/* Using Picarro admin now, and need to be changed to customer supervisor */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC655, location = EQReportDataProvider.class)
 		public void TC655_EQSurveySelectorPagination(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -233,22 +228,22 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPage.openNewReportPage();
+			eqReportsPage.clickOnSearchSurveyButton();
 			
-			eqReportsPage.clickOnNewReportBtn();
-
 			String paginationSetting25 = "25";
 			String paginationSetting50 = "50";
 			String paginationSetting100 = "100";
 
-			//TODO:
-			assertTrue(eqReportsPage.checkPaginationSetting(PAGINATIONSETTING));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting25));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting50));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting100));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
+			eqReportsPage.setSurveyRowsPagination(PAGINATIONSETTING);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(PAGINATIONSETTING)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting25);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting25)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting50);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting50)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting100);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
 		}		
 
 }

@@ -1,8 +1,10 @@
 package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
+import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -25,6 +27,7 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,6 +54,7 @@ import common.source.DBConnection;
 import common.source.DateUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.OLMapUtility;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
@@ -67,6 +71,11 @@ public class EQReportsPage extends ReportsCommonPage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 
+	@FindBy(id = "report-locationID")
+	protected WebElement eqLocationSelector;
+
+	@FindBy(id = "btn-EQ-select-area")
+	protected WebElement lineSegmentsSelectorBtn;
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -86,13 +95,24 @@ public class EQReportsPage extends ReportsCommonPage {
 	public void fillReportSpecific(BaseReportEntity reports) {
 		EQReportEntity reportsEQ = (EQReportEntity) reports;
 
-		// 1. EQ Location Parameter
-		if (reportsEQ.getEQLocationParameter() != null) {
+		// 1. Change customer if specified.
+		if (reportsEQ.getCustomer() != null && !reportsEQ.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
+			Log.info("Select customer '"+reports.getCustomer()+"'");
+			selectCustomer(reportsEQ.getCustomer());
+			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
+			if (confirmed) {
+				inputReportTitle(reportsEQ.getRptTitle());
+			}
+		}
+		
+		// 2. EQ Location Parameter
+		if (!reportsEQ.getEQLocationParameter().isEmpty()) {
 			selectEQLocationParameter(reportsEQ.getEQLocationParameter());
 		}
 
-		// 2. Line Selector
-		selectLineSegments(reportsEQ);
+		// 3. Line Selector
+		List<List<Coordinates>> lineSegments = reportsEQ.getLineSegments();
+		selectLineSegments(lineSegments);
 	}
 
 	@Override
@@ -100,16 +120,29 @@ public class EQReportsPage extends ReportsCommonPage {
 		return "EQ";
 	}
 
-	//TODO
 	protected void selectEQLocationParameter(String eqLocationParameter) {
-		
+		selectDropdownItem(eqLocationSelector, eqLocationParameter);
 	}
 
-	//TODO
-	protected void selectLineSegments(EQReportEntity reportEQ) {
-		
+	protected void clickLineSegmentsSelectorBtn() {
+		Log.clickElementInfo("Line Segments Selector");
+		this.lineSegmentsSelectorBtn.click();
 	}
-
+	
+	protected void selectLineSegments(List<List<Coordinates>> lineSegments) {
+			clickLineSegmentsSelectorBtn();
+			latLongSelectionControl.waitForModalDialogOpen();
+			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+			latLongSelectionControl.waitForMapImageLoad();
+			mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
+			for(List<Coordinates> line:lineSegments){
+				latLongSelectionControl.selectSegment(line);
+			}
+			latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
+			latLongSelectionControl.waitForModalDialogToClose();
+	}
+	
+	
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
@@ -133,6 +166,15 @@ public class EQReportsPage extends ReportsCommonPage {
 			resxMap.put(ResourceTable.Key_CopyPageText, STRCopyPageTitle);
 			return new ResourceTable(resxMap);
 		});
+	}
+	
+	@Override
+	public void openNewReportPage() {
+		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewReport));
+		Log.clickElementInfo("New Report Button");
+		jsClick(this.btnNewReport);
+		String elementXPath = "//*[@id='btn-EQ-select-area']";
+		refreshPageUntilElementFound(elementXPath);
 	}
 }
 

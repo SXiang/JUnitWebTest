@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import common.source.OLMapEntities.Indication;
+import surveyor.scommon.source.Coordinates;
 
 public class OLMapUtility {
 
@@ -225,6 +226,14 @@ public class OLMapUtility {
 			+ "((gasType == 'VehicleExhaust') && (d.Disposition == 4))) { if (nodeCnt == 0) { text = d.text; } else { text += ',' + d.text; }; "
 			+ "nodeCnt++; } } }); }; return text; };";
 
+	private static final String SET_DEFAULT_POSITION_JS_FUNCTION = "function setDefaultPosition(defaultLongitude,defaultLatitude) { "
+            + "var eqSelectedShapesWKT = window.parent.document.getElementById('eq-selected-shapes-WKT').value; "
+            + "var eqMode = window.parent.document.getElementById('eq-mode').value; "
+            + "$.when(getResources(resourceNames)).then(function () { "
+            + "EQAreaSelection(defaultLatitude, defaultLongitude, eqSelectedShapesWKT, eqMode);});};";
+	
+	private static final String SET_DEFAULT_POSITION_JS_FUNCTION_CALL = "setDefaultPosition(%s,%s);";
+	
 	private static final String IS_MAP_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingRoads);";
 	private static final String IS_SATELLITE_VIEW_SHOWN = "return (mapLayer.getSource() == sourceBingArialWithStreets);";
 
@@ -729,6 +738,17 @@ public class OLMapUtility {
 		return false;
 	}
 
+	/*
+	 * set map default position.
+	 *
+	 */
+	public void setDefaultPosition(Coordinates point) {
+		String functionCall = SET_DEFAULT_POSITION_JS_FUNCTION +
+				String.format(SET_DEFAULT_POSITION_JS_FUNCTION_CALL, point.getY(), point.getX());
+				Log.info("Calling javascript function -> " + functionCall);
+				((JavascriptExecutor)this.driver).executeScript(functionCall);
+	}
+	
 	/*
 	 * Clicks on the specified indication on the Map.
 	 * If more than one indications are found the first indication matching the parameters is clicked.
