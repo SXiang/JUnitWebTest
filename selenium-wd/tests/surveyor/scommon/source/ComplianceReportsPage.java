@@ -2622,6 +2622,14 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 	}
 
+	public boolean isReportColumnSorted(String columnName, String type) {
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
+				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
+	}
+
 	public boolean isAmplitudeColumnSorted() {
 		Log.method("isAmplitudeColumnSorted");
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();

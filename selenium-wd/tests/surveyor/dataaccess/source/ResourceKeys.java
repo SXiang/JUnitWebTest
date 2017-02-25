@@ -13,7 +13,7 @@ public class ResourceKeys {
 	public static final String AssessmentReports_AddNew = "AssessmentReports_AddNew";
 	public static final String AssessmentReports_PageTitle = "AssessmentReports_PageTitle";
 
-	// EQ report resource keys. //TODO: need customization !!!
+	// EQ report resource keys.
 	public static final String EQReport_LineSelector = "EQReport_LineSelector";
 	public static final String EQReport_SelectLineSegments = "EQReport_SelectLineSegments";
 	public static final String EQReport_EQTablePDF = "EQReport_EQTablePDF";

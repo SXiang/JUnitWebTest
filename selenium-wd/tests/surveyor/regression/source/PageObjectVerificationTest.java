@@ -579,40 +579,6 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		TestSetup.stopAnalyzer();
 	}
 
-	//TODO: disable for investigation
-//	/**
-//	 * Test Case ID: <None>
-//	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for segment selection.
-//	 *  Actual automation tests that use EQ select area can use this method as a reference.
-//	 */
-//	@Test
-//	public void ReferenceOnly_EQSegmentSelectorTest() {
-//		System.out.format("\nRunning ReferenceOnly_EQSegmentSelectorTest... \n");
-//
-//		eqReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-//		eqReportsPage.open();
-//
-//		eqReportsPage.clickOnNewEQReportBtn();
-//		eqReportsPage.waitForNewPageLoad();
-//
-//		eqReportsPage.getSelectArea().click();
-//
-//		List <Coordinates> listOfCords = new ArrayList <Coordinates>();
-//		listOfCords.add(0, new Coordinates(200,200));
-//		listOfCords.add(1, new Coordinates(220,300));
-//		listOfCords.add(2, new Coordinates(240,400));
-//
-//		latLongSelectionControl.waitForModalDialogOpen()
-//								.switchMode(ControlMode.MapInteraction)
-//								.waitForMapImageLoad()
-//								.selectSegment(CANVAS_X_PATH, listOfCords)
-//								.switchMode(ControlMode.Default)
-//								.clickOkButton();
-//
-//		eqReportsPage.waitForPageToLoad();
-//		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Dialog_LineSelected)));
-//	}
-
 	/**
 	 * Use this test to change the default language for all users in automation to a specific language.
 	 * Change the 'cultureString' variable to appropriate dropdown text value to change culture for all
