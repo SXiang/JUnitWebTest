@@ -92,6 +92,6 @@ public class ReportJobPerformanceWarmupScript extends BaseReportJobPerformanceTe
 		Log.info("\nRunning Performance Warmup Script ...");
 
 		initializePageActions();
-		createAndWaitForReportGeneration(userDataRowID, reportDataRowID);;
+		createAndAssertOnReportGenerationComplete(userDataRowID, reportDataRowID);;
 	}
 }

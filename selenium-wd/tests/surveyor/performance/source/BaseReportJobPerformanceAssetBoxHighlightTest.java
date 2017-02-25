@@ -8,7 +8,7 @@ public class BaseReportJobPerformanceAssetBoxHighlightTest extends BaseReportJob
 
 	protected void executeAssetBoxHighlightTest(Integer userDataRowID, Integer reportDataRowID) throws Exception {
 		LocalDateTime startDate = LocalDateTime.now();
-		createAndWaitForReportGeneration(userDataRowID, reportDataRowID);
+		createAndAssertOnReportGenerationComplete(userDataRowID, reportDataRowID);
 		getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
 		// Post execution results to automation DB.
 		LocalDateTime endDate = LocalDateTime.now();

@@ -104,7 +104,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 			Log.info(String.format("Executing test iteration - %d", i));
 			initializePageActions();
 
-			createAndWaitForReportGeneration(userDataRowID, reportDataRowID);
+			createAndAssertOnReportGenerationComplete(userDataRowID, reportDataRowID);
 			getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());
 			result = result && getComplianceReportsPageAction().verifyReportJobBaselines(EMPTY, reportDataRowID);
 		}
@@ -123,13 +123,13 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		assertTrue(result);
 	}
 
-	protected void createAndWaitForReportGeneration(Integer userDataRowID, Integer reportDataRowID) throws Exception {
+	protected void createAndAssertOnReportGenerationComplete(Integer userDataRowID, Integer reportDataRowID) throws Exception {
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, userDataRowID);
 		getComplianceReportsPageAction().open(EMPTY, NOTSET);
 		getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
 		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
-		getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID);
+		assertTrue(getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID));
 	}
 
 	protected void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {
