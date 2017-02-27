@@ -776,12 +776,10 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</classpath>
-
 		<batchtest fork="yes" todir="${reports}/regression/xml">
 			<formatter type="xml" />
 			<fileset dir="${build}">
-	          <include name="**/ComplianceReportsPageTest_Ethane.class" />
-	          <include name="**/ComplianceReportsPageTest4.class" />
+	          <include name="**/AssessmentReportsPageTest.class" />
 			</fileset>
 		</batchtest>
 	</junit>
