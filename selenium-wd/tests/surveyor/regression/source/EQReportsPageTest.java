@@ -30,9 +30,6 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsPageTest extends BaseReportsPageActionTest {
 
-		private static final String EMPTY = "";
-		private static final Integer NOTSET = -1;
-
 		private static LoginPageActions loginPageAction;
 		private static EQReportsPageActions eqReportsPageAction;
 		private static EQReportsPage eqReportsPage;
