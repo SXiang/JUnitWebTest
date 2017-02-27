@@ -19,9 +19,9 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 
 	public BasePerformanceTest() {
 	}
-	
+
 	@After
-	public void afterTestMethod() {
+	public void afterTestMethodBasePerformanceTest() {
 		if (TestContext.INSTANCE.getTestSetup().isCollectReportJobPerfMetric()) {
 			logReportJobBaselineMetrics();
 		}
@@ -56,10 +56,10 @@ public class BasePerformanceTest extends BaseReportsPageTest {
 				}
 			}
 		}
-		
+
 		FileUtility.createTextFile(expectedFilePath, fileContent.toString());
 	}
-	
+
 	private void logReportJobBaselineMetrics() {
 		Log.info("----------------------------------------------------------------");
 		Log.info("Baseline Collection Metrics");
