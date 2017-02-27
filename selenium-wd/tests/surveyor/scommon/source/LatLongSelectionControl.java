@@ -394,7 +394,7 @@ public class LatLongSelectionControl extends BaseControl {
 		{
 			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
-//		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
+		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
 		Actions builder = new Actions(driver);
 		List<Point> coordinates = getScreenCoordinates(gpsPosition);
 		for (int i =0; i < coordinates.size(); i++)
