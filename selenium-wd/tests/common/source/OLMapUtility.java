@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import common.source.OLMapEntities.Indication;
+
 public class OLMapUtility {
 
 	private static final String BREADCRUMB_COLOR_RED = "#E31A1C";
@@ -182,6 +184,21 @@ public class OLMapUtility {
 			+ "if(!d.lat||!d.lon){isNodesShownOnMap=false;}}});return isIndicationsSwitchOn&&isLinksShownOnMap&&isNodesShownOnMap&&"
 			+ "(indLinksCount>0)&&(indNodesCount>0);};";
 
+	private static final String IS_3300_INDICATIONS_PRESENT_JS_FUNCTION = "function is3300IndicationsShownOnMap(){"
+			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();var indNodesCount=getIndicationNodesCount();"
+			+ "var ind_ctx=$('canvas.ol-unselectable')[0].getContext('2d');var lnkCnt=lastConstellation.links.length;var isLinksShownOnMap=false;"
+			+ "lastConstellation.links.forEach(function(d){if(d.source.type=='indication'){x1=d.source.x;y1=d.source.y;x2=d.target.x;y2=d.target.y;"
+			+ "cpoint=getCenterPoint(x1,y1,x2,y2);pixel=getPixelFromLatLong(d.source.lat,d.source.lon);"
+			+ "point1ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);pixel=getPixelFromLatLong(d.target.lat,d.target.lon);"
+			+ "point2ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);p=getPixelAfterTransform(d,cpoint.x,cpoint.y);"
+			+ "point3ImgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);isLinksShownOnMap=(point1ImgData!=null)&&(point2ImgData!=null)&&(point3ImgData!=null);"
+			+ "if(!isLinksShownOnMap){return false;}}});var isNodesShownOnMap=false;var imgData;lastConstellation.nodes.forEach(function(d){"
+			+ "if(d.type=='indication'){if(d.fixed){pixel=getPixelFromLatLong(d.lat,d.lon);imgData=ind_ctx.getImageData(pixel[0],pixel[1],1,1);"
+			+ "rgbaArray=getRGBAValues(indicationAnchorFillColor);isNodesShownOnMap=(rgbaArray!=null);}else{var isValidNodeDisposition=false;"
+			+ "if(d.Disposition==1||d.Disposition==2||d.Disposition==3||d.Disposition==4){isValidNodeDisposition=true;} "
+			+ "isNodesShownOnMap=isValidNodeDisposition;} if(!isNodesShownOnMap){return false;}}});"
+			+ "return isIndicationsSwitchOn&&isLinksShownOnMap&&isNodesShownOnMap&&(indLinksCount>0)&&(indNodesCount>0);};";
+
 	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION = "function getIndicationLinksCount(){var linksCnt=0;if(lastConstellation){"
 			+ "lastConstellation.links.forEach(function(d){linksCnt++;});};return linksCnt;};";
 
@@ -240,6 +257,8 @@ public class OLMapUtility {
 	private static final String GET_INDICATIONS_ARRAY_FUNCTION_JS_CALL = "return getIndicationsArray();";
 
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "return isIndicationsShownOnMap();";
+	private static final String IS_3300_INDICATIONS_PRESENT_JS_FUNCTION_CALL = "return is3300IndicationsShownOnMap();";
+
 	private static final String GET_INDICATION_LINK_COUNT_JS_FUNCTION_CALL = "return getIndicationLinksCount();";
 	private static final String GET_INDICATION_NODES_COUNT_JS_FUNCTION_CALL = "return getIndicationNodesCount();";
 	private static final String GET_INDICATION_NODES_TEXT_JS_FUNCTION_CALL = "return getIndicationNodesText();";
@@ -762,6 +781,7 @@ public class OLMapUtility {
 	 * Returns true if indication was found and clicked, false otherwise.
 	 *
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean clickFirstIndicationOnMap(String canvasXPath) {
 		return clickFirst3300IndicationOnMap(canvasXPath, null);
 	}
