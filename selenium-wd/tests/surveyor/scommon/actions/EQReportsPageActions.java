@@ -1,42 +1,27 @@
 package surveyor.scommon.actions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
-
-import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
-import surveyor.dataaccess.source.Customer;
 import surveyor.scommon.actions.data.CoordinateDataReader;
 import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader;
-import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader;
-import surveyor.scommon.actions.data.ReportOptViewLayersDataReader;
-import surveyor.scommon.actions.data.ReportSurveyDataReader;
-import surveyor.scommon.actions.data.ReportViewsDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
-import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
-import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
-import surveyor.scommon.actions.data.ReportViewsDataReader.ReportViewsDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EQReportsPage;
-import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
 /**
@@ -210,7 +195,6 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 
 	public static List<List<Coordinates>> getLineSegmentInfoList(ExcelUtility excelUtility, List<Integer> lineSegmentRowIDs) throws Exception {
 		List<List<Coordinates>> lineSegmentInfoList = new ArrayList<List<Coordinates>>();
-		List<Coordinates> lineSegment = new ArrayList<Coordinates>();
 		for (Integer rowID : lineSegmentRowIDs) {
 			if(rowID==0){
 				continue;
