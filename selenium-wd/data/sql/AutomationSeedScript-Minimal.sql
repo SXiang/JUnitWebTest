@@ -653,11 +653,15 @@ IF @@ROWCOUNT=0
 -- HardwareCapabilityType for RFADS2004-PICARRO
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'D2CCC285-2BD3-5D22-667E-39D823D4D255'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', 1)
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'D2CCC285-2BD3-5D22-667E-39D823D4D255', 0)
 -- HardwareCapabilityType for SQACUS2016-1
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'43A34021-8814-8A01-9183-39D4B4DE03EB'
 IF @@ROWCOUNT=0
-	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', 1)
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'43A34021-8814-8A01-9183-39D4B4DE03EB', 0)
+-- HardwareCapabilityType for FEDS2055-PICARRO
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'F5970731-CE37-F7F3-DB5F-39D7E2D02053'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', 1)
 
 
 --Users:
