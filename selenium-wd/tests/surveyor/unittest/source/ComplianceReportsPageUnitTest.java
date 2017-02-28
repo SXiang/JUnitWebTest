@@ -5,6 +5,8 @@ import common.source.LogHelper;
 import common.source.PDFUtility;
 import common.source.PDFTableUtility.PDFTable;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -72,13 +74,22 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		}
 	}
 
+
+
 	@Test
-	public void verifySSRSIsotopicAnalysisTable() throws IOException {
-		final String SAMPLE_REPORT_TITLE = "TC509-9794be9a5e664f52be67";
+	public void verifyGetSSRSPDFTableValues() throws IOException {
+		final String SAMPLE_REPORT_TITLE = "TC202 Report374876";
 		List<String[]> isotopicAnalysisTblList = complianceReportsPage.getSSRSPDFTableValues(
 				PDFTable.ISOTOPICANALYSISTABLE, SAMPLE_REPORT_TITLE);
 		Log.info(String.format("ReportIsotopic ArrayList Values : %s",
 				LogHelper.listOfArrayToString(isotopicAnalysisTblList)));
+	}
+
+	@Test
+	public void verifySSRSIsotopicAnalysisTable() throws IOException {
+		final String SAMPLE_REPORT_TITLE = "TC202 Report374876";
+		final String CSV_FILE_PATH = "C:\\temp\\TC202";
+		assertTrue(complianceReportsPage.verifyIsotopicAnalysisTable(CSV_FILE_PATH, SAMPLE_REPORT_TITLE));
 	}
 
 	@Test

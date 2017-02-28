@@ -46,6 +46,7 @@ import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.Constants;
 import common.source.DateUtility;
+import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.ImagingUtility;
@@ -61,6 +62,13 @@ import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.scommon.entities.ReportJobPerfDBStat;
+import surveyor.scommon.actions.data.AnalyzerDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
+import surveyor.scommon.actions.data.LocationDataReader;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.actions.data.SurveyorDataReader;
+import surveyor.scommon.actions.data.SurveyorDataReader.SurveyorDataRow;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
@@ -990,15 +998,45 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectSurveyInfoSurveyorUnit(String surveyor) {
 		if (surveyor != null ) {
-			List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
-			for (WebElement option : optionsSU) {
-				if (surveyor.equalsIgnoreCase(option.getText().trim())) {
-					Log.info(String.format("Select Surveyor Unit - '%s'", surveyor));
-					option.click();
-					break;
+			String selectionText = buildSurveyorUnitSelectionText(surveyor);
+			if (selectionText != null) {
+				List<WebElement> optionsSU = this.cbSurUnit.findElements(By.tagName("option"));
+				for (WebElement option : optionsSU) {
+					if (selectionText.equalsIgnoreCase(option.getText().trim())) {
+						Log.info(String.format("Select Surveyor Unit - '%s'", selectionText));
+						option.click();
+						break;
+					}
 				}
 			}
 		}
+	}
+
+	private String buildSurveyorUnitSelectionText(String surveyor) {
+		if(surveyor.isEmpty()){
+			return null;
+		}
+		try {
+			ExcelUtility excelUtility = getExcelUtility();
+			SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
+			Integer surveyorDataRowID = surveyorDataReader.getSurveyorDataRowID(surveyor);
+			SurveyorDataRow surveyorDataRow = surveyorDataReader.getDataRow(surveyorDataRowID);
+			Integer customerRowID = Integer.valueOf(surveyorDataRow.customerRowID);
+			Integer locationRowID = Integer.valueOf(surveyorDataRow.locationRowID);
+			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(customerRowID);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(locationRowID);
+
+			String customerName = customerDataRow.name;
+			String locationName = locationDataRow.name;
+
+			return String.format("%s - %s - %s", customerName, locationName, surveyor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public void checkErrorMessages() throws Exception {
