@@ -1013,6 +1013,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	private String buildSurveyorUnitSelectionText(String surveyor) {
+		if(surveyor.isEmpty()){
+			return null;
+		}
 		try {
 			ExcelUtility excelUtility = getExcelUtility();
 			SurveyorDataReader surveyorDataReader = new SurveyorDataReader(excelUtility);
