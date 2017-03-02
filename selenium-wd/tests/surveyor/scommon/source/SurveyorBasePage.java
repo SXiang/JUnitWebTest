@@ -725,10 +725,13 @@ public class SurveyorBasePage extends BasePage {
 		Log.method("waitForSearchResultsToLoad");
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
 		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
-				return (splitArgs.size()>0 && splitArgs.get(1)!="0");
+				boolean retVal = splitArgs.size()>0 && splitArgs.get(1)!="0";
+				Log.info(String.format("waitForSearchResultsToLoad - ExpectedCondition=[%b]. datatable_info text='%s'", retVal, tableInfoElement.getText()));
+				return retVal;
 			}
 		});
 	}

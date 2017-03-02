@@ -2244,7 +2244,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
 		this.inputSearchReport.sendKeys(reportTitle);
-		waitForTableDataToLoad();
+		waitForSearchResultsToLoad();
 
 		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
 			return false;
