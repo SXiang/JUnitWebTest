@@ -204,7 +204,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -266,7 +266,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -349,10 +349,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -442,7 +442,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -523,9 +523,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList1.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -604,9 +604,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList1.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -694,8 +694,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -766,8 +766,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(createViewsMapTable("Second View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -838,7 +838,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -933,10 +933,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1032,7 +1032,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1101,7 +1101,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1167,7 +1167,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1239,10 +1239,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1309,7 +1309,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1409,7 +1409,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1472,7 +1472,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1545,7 +1545,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1621,7 +1621,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1694,7 +1694,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList1 = new ArrayList<String>();
 		tagList1.add(PICADMNSTDTAG);
@@ -1744,139 +1744,6 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), NOTSET);
 		this.getComplianceReportsPage().clickOnCancelBtn();
-	}
-
-	/**
-	 * Test Case ID: TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast
-	 * Script: -
-	 *	- - Log in as Customer Admin (eg. PG&E util admin)
-	 *	- - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
-	 *	- - Time Zone : PST, Survey Mode: Standard
-	 *	- - Select Customer boundary and select any Plat
-	 *	- - Select Indication table, Isotopic Analysis table
-	 *	- - Select Percent Coverage Forecast check box
-	 *	- - Asset Layer : All (Eg. Copper and Protected Steel)
-	 *	- - Add View with base map value: map
-	 *	- - Click on OK and click Compliance Viewer button
-	 *	- - Download PDF, ZIP (PDF)
-	 *	- - Generate other report with same parameter as above but make sure you select only Copper Asset layer
-	 *	- - Generate other report with same parameter as above but make sure no assets are selected
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - Percent Coverage value is not dependent of Assets so value should not change
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-	 *  - - Additional Surveys , Probability to Obtain 70% Coverage
-	 */
-	@Test //using user as "picarro admin"
-	public void TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast() throws Exception {
-		Log.info("\nRunning TC1318_GenerateMultipleComplianceReportsDifferentAssetLayerIncludePercentCoverageForecast ...");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, 6);
-
-		String testCaseID = "TC1318";
-		String rptTitle = testCaseID + " Report" + getTestSetup().getRandomNumber();
-		String rptTitle2 = testCaseID + " Report" + getTestSetup().getRandomNumber();
-		String rptTitle3 = testCaseID + " Report" + getTestSetup().getRandomNumber();
-
-		this.getComplianceReportsPage().open();
-
-		List<String> listBoundary = new ArrayList<String>();
-		listBoundary.add(IMGMAPHEIGHT);
-		listBoundary.add(IMGMAPWIDTH);
-
-		List<String> listBoundary2 = new ArrayList<String>();
-		listBoundary2.add(IMGMAPHEIGHT);
-		listBoundary2.add(IMGMAPWIDTH);
-		listBoundary2.add(RNELAT);
-		listBoundary2.add(RNELON);
-		listBoundary2.add(RSWLAT);
-		listBoundary2.add(RSWLON);
-
-		List<Map<String, String>> tablesList = new ArrayList<Map<String, String>>();
-		Map<String, String> tableMap = new HashMap<String, String>();
-		tableMap.put(KEYINDTB, "1");
-		tableMap.put(KEYISOANA, "1");
-		tableMap.put(KEYGAPTB, "0");
-		tableMap.put(KEYPCA, "0");
-		tableMap.put(KEYPCRA, "0");
-		tableMap.put(KEYPCF, "1");
-		tablesList.add(tableMap);
-
-		List<Integer> assetRowIDs = Arrays.asList(8, 9, 10, 11, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList = new ArrayList<Map<String, String>>();
-		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
-
-		List<Integer> assetRowIDs2 = Arrays.asList(8, 9, 12, 13);    // Asset RowIDs from TestCaseData xlsx
-		List<Integer> boundaryRowIDs2 = Arrays.asList(3, 4);				 // Boundary RowIDs from TestCaseData xlsx
-		List<Map<String, String>> viewLayerList2 = new ArrayList<Map<String, String>>();
-		viewLayerList2.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs2, boundaryRowIDs2));
-
-
-		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList3.add(createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add(PICADMNSTDTAG);
-		tagList.add(CUSDRVETHSTDTAG);
-
-		ComplianceReportEntity rpt = new ComplianceReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt.setViewLayersList(viewLayerList);
-
-		rpt.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
-		this.getComplianceReportsPage().addNewReport(rpt);
-
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));
-				}
-			}
-		}
-		else
-			fail("\nTestcase TC1318 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		ComplianceReportEntity rpt2 = new ComplianceReportEntity(rptTitle2, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList1, SurveyModeFilter.Standard);
-		rpt2.setViewLayersList(viewLayerList2);
-		rpt2.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
-		this.getComplianceReportsPage().addNewReport(rpt2);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle2, getTestSetup().getLoginUser(), testCaseID+"_2"))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt2, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle2));
-				}
-			}
-		}
-		else
-			fail("\nTestcase TC1318 failed.\n");
-
-		this.getComplianceReportsPage().open();
-		ComplianceReportEntity rpt3 = new ComplianceReportEntity(rptTitle3, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "0", listBoundary, tablesList, "", tagList, "", "", viewList3, SurveyModeFilter.Standard);
-		rpt3.setCustomerBoundaryInfo(ComplianceReportEntity.CustomerBoundaryFilterType.SmallBoundary, "TESTPlat-Auto-1.5km");
-		this.getComplianceReportsPage().addNewReport(rpt3);
-		this.getComplianceReportsPage().waitForPageLoad();
-
-		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle3, getTestSetup().getLoginUser(), testCaseID+"_3"))) {
-			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt3, getTestSetup().getDownloadPath()));
-			if (tablesList != null) {
-				if ((tablesList.get(0).get(KEYPCF).equals("1"))) {
-					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle3));
-				}
-			}
-		}
-		else
-			fail("\nTestcase TC1318 failed.\n");
-
 	}
 
 	/**
@@ -1930,9 +1797,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		viewList.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
+		viewList.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1967,21 +1834,5 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 			fail("\nTestcase TC1090 failed.\n");
 
 
-	}
-
-	public static HashMap<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
-		HashMap<String, String> viewMap = new HashMap<String, String>();
-		viewMap.put(KEYVIEWNAME, viewName);
-		viewMap.put(KEYLISA, lisa);
-		viewMap.put(KEYFOV, fov);
-		viewMap.put(KEYBREADCRUMB, breadcrumb);
-		viewMap.put(KEYINDICATIONS, indications);
-		viewMap.put(KEYISOTOPICCAPTURE, isotopic);
-		viewMap.put(KEYANNOTATION, annotation);
-		viewMap.put(KEYGAPS, gap);
-		viewMap.put(KEYASSETS, asset);
-		viewMap.put(KEYBOUNDARIES, boundary);
-		viewMap.put(KEYBASEMAP, map);
-		return viewMap;
 	}
 }

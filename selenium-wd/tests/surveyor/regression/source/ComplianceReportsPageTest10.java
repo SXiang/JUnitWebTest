@@ -275,37 +275,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC238_SearchInvalidCustomerBoundaryBoundarySelectorScreen
-	 * Test Description: Search invalid customer boundary on boundary selector screen
-	 * Script: -
-	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
-	 *	- - Select 'Customer Boundary' and click on Boundary Selector button
-	 *	- - Search invalid boundary
-	 * Results: -
-	 *	- - Customer Boundaries are present on map
-	 *	- - Invalid boundary name is not present and user is notified that no such boundary exists
-	 */
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC238, location = ComplianceReportDataProvider.class)
-	public void TC238_SearchInvalidCustomerBoundaryBoundarySelectorScreen(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC238_SearchInvalidCustomerBoundaryBoundarySelectorScreen ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnNewReportButton(EMPTY, getReportRowID(reportDataRowID1));
-		boolean retVal = false;
-		try{
-			// NOTE: With invalid entry enterCustomerBoundaryUsingAreaSelector() return true only if 'invalid results' entry was found.
-			retVal = complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
-		}catch(Exception e){
-			Log.warn("Exception when selecting an invalid customer boundary name: "+e);
-		}
-		assertTrue(retVal == true);
-	}
-
-	/**
 	 * Test Case ID: TC243_GenerateMultipleComplianceReports4_5AtSameTime
 	 * Test Description: generate multiple compliance reports (4-5) at the same time
 	 * Script: -
