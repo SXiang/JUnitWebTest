@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import surveyor.scommon.actions.ActionArguments;
+import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 
 public class ReportsCommonDataReader extends BaseDataReader {
 	protected String sheetName;
@@ -38,6 +39,7 @@ public class ReportsCommonDataReader extends BaseDataReader {
 		public String reportOptTabularPDFContentRowID;
 		public String reportSurveyRowIDs;
 
+		/* Common data for All Reports */
 		public ReportsCommonDataRow(String rowID, String tCID, String title, String customerRowID, String timezone,
 				String reportSurveyRowIDs) {
 			this.rowID = rowID;
@@ -48,6 +50,7 @@ public class ReportsCommonDataReader extends BaseDataReader {
 			this.reportSurveyRowIDs = reportSurveyRowIDs;
 		}
 		
+		/* Common data for Compliance and Accessesment Reports */
 		public ReportsCommonDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String exclusionRadius,
 				String customBoundaryNELat, String customBoundaryNELong, String customBoundarySWLat,
 				String customBoundarySWLong, String customerBoundaryType, String customerBoundaryName, String opacityFOV,
@@ -83,7 +86,8 @@ public class ReportsCommonDataReader extends BaseDataReader {
 		this.dataRow = dataRow;
 	}
 
-	public ReportsCommonDataRow getDataRow(Integer dataRowID) throws Exception {
+	/* For All reports */
+	public ReportsCommonDataRow getCommonDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_RowID"), sheetName);
 		String tCID = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_TCID"), sheetName);
 		String title = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Title"), sheetName);
@@ -93,6 +97,15 @@ public class ReportsCommonDataReader extends BaseDataReader {
 		}
 		String customerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_CustomerRowID"), sheetName);
 		String timezone = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Timezone"), sheetName);
+		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportSurveyRowIDs"), sheetName);
+		
+		return new ReportsCommonDataRow(rowID, tCID, title, customerRowID, timezone, reportSurveyRowIDs);
+	}
+	
+	/* For Compliance and Assessment reports */
+	public ReportsCommonDataRow getDataRow(Integer dataRowID) throws Exception {
+		ReportsCommonDataRow reportsDataRow = getCommonDataRow(dataRowID);
+		
 		String exclusionRadius = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_ExclusionRadius"), sheetName);
 		String customBoundaryNELat = excelUtility.getNumericCellData(dataRowID, columnIndexMap.get("Col_CustomBoundaryNELat"), sheetName);
 		String customBoundaryNELong = excelUtility.getNumericCellData(dataRowID, columnIndexMap.get("Col_CustomBoundaryNELong"), sheetName);
@@ -106,10 +119,9 @@ public class ReportsCommonDataReader extends BaseDataReader {
 		String reportViewRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportViewRowIDs"), sheetName);
 		String reportOptViewLayerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_ReportOptViewLayerRowID"), sheetName);
 		String reportOptTabularPDFContentRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_ReportOptTabularPDFContentRowID"), sheetName);
-		String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportSurveyRowIDs"), sheetName);
 
-		return new ReportsCommonDataRow(rowID, tCID, title, customerRowID, timezone, exclusionRadius, customBoundaryNELat,
+		return new ReportsCommonDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone, exclusionRadius, customBoundaryNELat,
 				customBoundaryNELong, customBoundarySWLat, customBoundarySWLong, customerBoundaryType, customerBoundaryName, opacityFOV,
-				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportSurveyRowIDs);
+				pDFImageOutputWidth, pDFImageOutputHeight, reportViewRowIDs, reportOptViewLayerRowID, reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs);
 	}
 }

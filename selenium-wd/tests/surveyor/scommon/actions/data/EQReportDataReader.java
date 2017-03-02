@@ -51,24 +51,15 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 	}
 
 	public EQReportsDataRow getDataRow(Integer dataRowID) throws Exception {
-			String rowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_RowID"), sheetName);
-			String tCID = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_TCID"), sheetName);
-			String title = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Title"), sheetName);
-			title = ActionArguments.evaluateArgForFunction(title);
-			if (!BaseHelper.isNullOrEmpty(tCID)) {
-				title = String.format("%s-%s", tCID, title);
-			}
-			String customerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_CustomerRowID"), sheetName);
-			String timezone = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Timezone"), sheetName);
-			String eqLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);
-			String reportSurveyRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ReportSurveyRowIDs"), sheetName);
+			ReportsCommonDataRow reportsDataRow = getCommonDataRow(dataRowID);
+			String eqLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);			
 			String lineSegmentRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_LineSegmentRowIDs"), sheetName);
 
 			Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], eqLocationParameter=[%s], "
 				
-				+ "reportSurveyRowIDs=[%s], lineSegmentRowIDs=[%s]", rowID, tCID, title, customerRowID, timezone,
-				eqLocationParameter, reportSurveyRowIDs, lineSegmentRowIDs));
+				+ "reportSurveyRowIDs=[%s], lineSegmentRowIDs=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
+				eqLocationParameter, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs));
 
-		return new EQReportsDataRow(rowID, tCID, title, customerRowID, timezone, eqLocationParameter, reportSurveyRowIDs, lineSegmentRowIDs);
+		return new EQReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone, eqLocationParameter, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs);
 	}
 }

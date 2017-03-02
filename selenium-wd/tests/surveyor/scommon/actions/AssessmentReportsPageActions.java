@@ -13,7 +13,10 @@ import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.Report
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.AssessmentReportEntity;
+import surveyor.scommon.entities.ComplianceReportEntity;
+import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.AssessmentReportsPage;
+import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
@@ -139,6 +142,11 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		return new AssessmentReportEntity();
+	}
+	
+	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) {
@@ -148,7 +156,7 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
-		// No Assessment reports specific action.
+		addAdditionalWorkingDataForReports(reportEntity);
     }
 
 	@Override

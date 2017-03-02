@@ -379,7 +379,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	public ReportCommonEntity fillWorkingDataForReports(Integer dataRowID) throws Exception {
 		setWorkingReportsDataRow(getDataReader().getDataRow(dataRowID));
-
+		ReportCommonEntity rpt = createNewReportsEntity();
 		String rptTitle = getWorkingReportsDataRow().title;
 		String customer = null;
 		String customerRowID = getWorkingReportsDataRow().customerRowID;
@@ -391,11 +391,27 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
 			}
 		}
-		String timeZone = getWorkingReportsDataRow().timezone;
+		String timeZone = getWorkingReportsDataRow().timezone;	
+		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
+
+		// Set report common properties.
+		rpt.setRptTitle(rptTitle);
+		rpt.setCustomer(customer);
+		rpt.setTimeZone(timeZone);
+		rpt.setSurveyInfoList(reportsSurveyInfoList);
+
+        fillReportSpecificWorkingDataForReports(rpt);
+
+        setWorkingReportsEntity(rpt);		// Store the working report properties.
+        return rpt;
+	}
+
+	/* Working data for some reports - compliance and assessment */
+	protected void addAdditionalWorkingDataForReports(ReportCommonEntity rpt) throws Exception {
 		String exclusionRadius = getWorkingReportsDataRow().exclusionRadius;
 
 		List<String> listBoundary = new ArrayList<String>();
-		fillCustomBoundary(listBoundary, getDataReader(), dataRowID);
+		fillCustomBoundary(listBoundary, getWorkingReportsDataRow());
 
 		// Fill views list.
 		workingReportViewsDataRows.set(new ArrayList<ReportViewsDataRow>());
@@ -422,36 +438,25 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		List<Integer> reportOptVwLayersRowIDs = ActionArguments.getNumericList(getWorkingReportsDataRow().reportOptViewLayerRowID);
 		Map<String, String> viewLayerMap = new HashMap<String, String>();
 		fillViewLayersInfo(viewLayerMap, new ReportOptViewLayersDataReader(this.excelUtility),
-				Customer.getCustomer(customer), reportOptVwLayersRowIDs.get(0));
+				Customer.getCustomer(rpt.getCustomer()), reportOptVwLayersRowIDs.get(0));
 		if (viewLayerMap.size() > 0) {
 			viewLayersList.add(viewLayerMap);
 		}
-
-		// Set survey info list.
-		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
-
-		// Create report specific Entity object.
-		ReportCommonEntity rpt = createNewReportsEntity(rptTitle, customer, timeZone, exclusionRadius, listBoundary, viewList, tablesList,
-				viewLayersList);
-
-		rpt.setSurveyInfoList(reportsSurveyInfoList);
         rpt.setCustomerBoundaryInfo(getWorkingReportsDataRow().customerBoundaryType, getWorkingReportsDataRow().customerBoundaryName);
-
-        // Fill report specific info.
-        fillReportSpecificWorkingDataForReports(rpt);
-
-        setWorkingReportsEntity(rpt);		// Store the working report properties.
-		return rpt;
+        rpt.setExclusionRadius(exclusionRadius);
+		rpt.setListBoundary(listBoundary);
+		rpt.setTablesList(tablesList);
+		rpt.setViewList(viewList);
+		rpt.setViewLayersList(viewLayersList);
 	}
-
-	private void fillCustomBoundary(List<String> listBoundary, ReportsCommonDataReader reader,
-			Integer dataRowID) throws Exception {
-		String imgHeight = reader.getDataRow(dataRowID).pDFImageOutputHeight;
-		String imgWidth = reader.getDataRow(dataRowID).pDFImageOutputWidth;
-		String NELat = reader.getDataRow(dataRowID).customBoundaryNELat;
-		String NELong = reader.getDataRow(dataRowID).customBoundaryNELong;
-		String SWLat = reader.getDataRow(dataRowID).customBoundarySWLat;
-		String SWLong = reader.getDataRow(dataRowID).customBoundarySWLong;
+	
+	private void fillCustomBoundary(List<String> listBoundary, ReportsCommonDataRow dataRow) throws Exception {
+		String imgHeight = dataRow.pDFImageOutputHeight;
+		String imgWidth = dataRow.pDFImageOutputWidth;
+		String NELat = dataRow.customBoundaryNELat;
+		String NELong = dataRow.customBoundaryNELong;
+		String SWLat = dataRow.customBoundarySWLat;
+		String SWLong = dataRow.customBoundarySWLong;
 		listBoundary.add(imgHeight);
 		listBoundary.add(imgWidth);
 		listBoundary.add(NELat);
@@ -3467,6 +3472,10 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	/* Methods to be implemented by derived class. */
 
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		throw new Exception("This method to be implemented by derived class.");
+	}
+	
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) throws Exception {

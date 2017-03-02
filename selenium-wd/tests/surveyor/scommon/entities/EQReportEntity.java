@@ -5,8 +5,6 @@ package surveyor.scommon.entities;
 
 import java.util.List;
 
-import com.sun.javafx.scene.paint.GradientUtils.Point;
-
 import surveyor.scommon.source.Coordinates;
 
 /**
@@ -28,6 +26,14 @@ public class EQReportEntity extends ReportCommonEntity {
 		this.eqLocationParameter = eqLocationParameter;
 	}
 	
+	public void setLineSegments(List<List<Coordinates>> lineSegments) {
+		this.lineSegments = lineSegments;
+	}
+
+	public EQReportEntity() {
+		super();
+	}
+
 	public EQReportEntity(String rptTitle, String customer, String timeZone, String eqLocationParameter, List<List<Coordinates>> lineSegments){
 		this.setRptTitle(rptTitle);
 		this.setCustomer(customer);

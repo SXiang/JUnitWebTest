@@ -543,6 +543,11 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		return new ComplianceReportEntity();
+	}
+	
+	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) {
@@ -564,6 +569,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
         }
 
         reportEntity.setSearchAreaPreference(srchAreaPref);
+        addAdditionalWorkingDataForReports(reportEntity);
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.AssessmentReportEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EQReportsPage;
@@ -145,6 +146,11 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		// No EQ reports specific action.
 	}
 
+	@Override
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		return new EQReportEntity();
+	}
+	
 	protected EQReportEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String eqLocationParameter,
 			List<List<Coordinates>> lineSegments) {		
 		return new EQReportEntity(rptTitle, customer, timeZone, eqLocationParameter, lineSegments);
@@ -152,7 +158,12 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
-		// No EQ reports specific action.
+		EQReportEntity rpt = (EQReportEntity)reportEntity;
+		String eqLocationParameter = getWorkingReportsDataRow().eqLocationParameter;
+		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(getWorkingReportsDataRow(), this.excelUtility);
+		
+		rpt.setEQLocationParameter(eqLocationParameter);
+		rpt.setLineSegments(lineSegments);
     }
 	
 	public EQReportEntity fillWorkingDataForReports(Integer dataRowID) throws Exception {
