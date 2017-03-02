@@ -3,11 +3,33 @@ $script:DEBUG = $false
 
 <#--------------------------------------------------------------------------------------------------------------------------------
  DESCRIPTION: 
-  - Computes restamped timestamp value for the specified timestamp.
+  - Computes restamped timestamp value for the specified timestamp. Subtracts the specified offset from the restamped value.
 ----------------------------------------------------------------------------------------------------------------------------------#>
-function Get-AdjustedEpochTime($value) {
-    $adjustedValue = $script:adjustedStartEpoch + $value - $script:startEpoch
+function Get-AdjustedEpochTime($value, $offset) {
+    $adjustedValue = $script:adjustedStartEpoch + $value - $script:startEpoch - $offset
     $adjustedValue
+}
+
+<#--------------------------------------------------------------------------------------------------------------------------------
+ DESCRIPTION: 
+  - Converts specified unix date to a date string in 'yyyy-MM-dd HH:mm:ss.fff' format.
+----------------------------------------------------------------------------------------------------------------------------------#>
+function UnixDate-ToString($unixDate) {
+    $smDate = FromUnixTime -epochTime $unixDate
+    $dateStr = Date-ToString -value $smDate
+    $dateStr
+}
+
+<#--------------------------------------------------------------------------------------------------------------------------------
+ DESCRIPTION: 
+  - Converts a date to a date string in 'yyyy-MM-dd HH:mm:ss.fff' format.
+----------------------------------------------------------------------------------------------------------------------------------#>
+function Date-ToString($value) {
+    if ($value -eq $NULL -or $value.ToString() -eq "") {
+        "NULL"
+    } else {
+        [String]::Format("{0:yyyy-MM-dd HH:mm:ss.fff}", $value)
+    }
 }
 
 <#--------------------------------------------------------------------------------------------------------------------------------
@@ -44,7 +66,10 @@ function Restamp-EpochTimes() {
       [String] $fileExtFilter,
 
       [Parameter(Mandatory=$true)]
-      [String] $outDirectory
+      [String] $outDirectory,
+
+      [Parameter(Mandatory=$true)]
+      [int64] $offsetInRestamp
     )
 
     $script:replacedFilesList = New-Object System.Collections.ArrayList
@@ -56,6 +81,16 @@ function Restamp-EpochTimes() {
     # CONNECTION for new database where the survey is to be pushed.
     $newConnString = "Server=$newDatabaseIP;Database=$newDatabaseName;User Id=$newDatabaseUser;Password=$newDatabasePwd;"
 
+    # CREATE/CLEANUP out directory
+    if (-not (Test-Path -Path $outDirectory)) {
+        Write-host "Directory does NOT exist - $outDirectory . Creating NEW directory ..."
+        New-Item -ItemType Directory -Path $outDirectory
+    } else {
+        # Path already exists. Remove existing files.
+        Remove-Item "$outDirectory\*" -recurse
+    }
+
+    # Start RESTAMPING.
     $countOfSurveyFiles = 0
     Write-Host "[RESTAMP] -> Reading Survey StartEpoch and EndEpoch and computing adjusted EpochTime values ..."
     Get-ChildItem -Path $inDirectory -Filter $fileExtFilter | % { 
@@ -91,6 +126,7 @@ function Restamp-EpochTimes() {
 
             # Get Last Epoch Time in AnemometerRaw table for this Analyzer.
             $query = "SELECT TOP 1 [AnalyzerId],[EpochTime]  FROM [dbo].[AnemometerRaw] WHERE AnalyzerId='$analyzerId' ORDER BY EpochTime ASC"
+            $objResults = Get-DatabaseData -connectionString $newConnString -query $query -isSQLServer:$true
             $i = 0
             $anemometerRawEpoch = $script:startEpoch
             $objResults | foreach { 
@@ -103,6 +139,7 @@ function Restamp-EpochTimes() {
 
             # Get Last Epoch Time in GPSRaw table for this Analyzer.
             $query = "SELECT TOP 1 [AnalyzerId],[EpochTime]  FROM [dbo].[GPSRaw] WHERE AnalyzerId='$analyzerId' ORDER BY EpochTime ASC"
+            $objResults = Get-DatabaseData -connectionString $newConnString -query $query -isSQLServer:$true
             $i = 0
             $gpsRawEpoch = $script:startEpoch
             $objResults | foreach { 
@@ -115,6 +152,7 @@ function Restamp-EpochTimes() {
 
             # Use the lowest Epoch Time from the RAW tables as the REFERENCE Epoch time which we'll use for restamping.
             # Compute EpochTime Delta from the Reference. Each EpochTime will be restamped (adjusted) by using the DELTA value.
+            # NOTE: If there is NO RAW data for the Analyzer then smallest is pointing to Survey StartEpoch.
             $smallestEpoch = $measurementEpoch
             if ($anemometerRawEpoch -lt $smallestEpoch) {
                 $smallestEpoch = $anemometerRawEpoch
@@ -135,6 +173,15 @@ function Restamp-EpochTimes() {
     }
 
     Write-Host "[RESTAMP] -> Found Survey with StartEpoch='$script:startEpoch', EndEpoch='$script:endEpoch' ..."
+
+    # Debug print, startEpoch and endEpoch after restamping.
+    if ($script:DEBUG) {
+        $testValue1 = Get-AdjustedEpochTime -value $script:startEpoch -offset $offsetInRestamp
+        $testValue2 = Get-AdjustedEpochTime -value $script:endEpoch -offset $offsetInRestamp
+        $adjustedStartDatetime = UnixDate-ToString -unixDate $testValue1
+        $adjustedEndDatetime = UnixDate-ToString -unixDate $testValue2
+        Write-Host "[RESTAMP] -> ########### StartEpoch After Restamping=[$adjustedStartDatetime], EndEpoch After Restamping=[$adjustedEndDatetime]"
+    }
 
     Get-ChildItem -Path $inDirectory -Filter $fileExtFilter | % { 
         $file = $_
@@ -164,7 +211,8 @@ function Restamp-EpochTimes() {
             Write-Host "[RESTAMP] -> Adjust EpochTimes and start writing to fileContent for - '$fileFullPath'"
 
             $csvData = Import-Csv "$fileFullPath"
-            
+            $csvData = @($csvData)       # convert to array to handle single line files. 
+
             # get headers in the same order and Write header line to fileLinesList.
             $headers = $csvData[0].psObject.Properties | foreach { $_.Name }
             $len = $headers.Length   
@@ -204,8 +252,8 @@ function Restamp-EpochTimes() {
                     # Adjust StartEpoch and EndEpoch
                     $startEpoch = $line.StartEpoch
                     $endEpoch = $line.EndEpoch
-                    $adjustedStartEpoch = Get-AdjustedEpochTime -value $startEpoch
-                    $adjustedEndEpoch = Get-AdjustedEpochTime -value $endEpoch
+                    $adjustedStartEpoch = Get-AdjustedEpochTime -value $startEpoch -offset $offsetInRestamp
+                    $adjustedEndEpoch = Get-AdjustedEpochTime -value $endEpoch -offset $offsetInRestamp
                 
                     if ($script:DEBUG) {
                         Write-Host "[RESTAMP] -> ########### Adjusting Start EpochTime ############ Original Epoch=$startEpoch, Adjusted Epoch=$adjustedStartEpoch"
@@ -220,7 +268,7 @@ function Restamp-EpochTimes() {
 
                     # Adjust EpochTime
                     $epochTime = $line.EpochTime    
-                    $adjustedEpoch = Get-AdjustedEpochTime -value $epochTime
+                    $adjustedEpoch = Get-AdjustedEpochTime -value $epochTime -offset $offsetInRestamp
                 
                     if ($script:DEBUG) {
                         Write-Host "[RESTAMP] -> ########### Adjusting EpochTime ############ Original Epoch=$epochTime, Adjusted Epoch=$adjustedEpoch"
@@ -248,17 +296,22 @@ function Restamp-EpochTimes() {
             $fileLinesList = Read-FileLines -filePath $fileFullPath
         }
 
-        # Files with single line can get read as a string. Handle this case.
-        if ($fileLinesList.GetType().Name -eq "String") {
-            $fileLinesList = @($fileLinesList)       # convert to array if list is a string.
+        if ($fileLinesList -ne $NULL -and $fileLinesList.Count -gt 0) {
+            # Files with single line can get read as a string. Handle this case.
+            if ($fileLinesList.GetType().Name -eq "String") {
+                $fileLinesList = @($fileLinesList)       # convert to array if list is a string.
+            }
+
+            # Write back the replaced file content to the file.
+            $newFileFullPath = "$outDirectory\$filename"
+
+            Write-Host "[RESTAMP] -> Start writing replaced content to FILE for - '$newFileFullPath'"
+            Write-FileLines -filePath $newFileFullPath -fileContentLines $fileLinesList
+            Write-Host "[RESTAMP] -> DONE writing replaced content to FILE for - '$newFileFullPath'"
+
+        } else {
+            Write-Host "[RESTAMP] -> Nothing to write. SKIPPED for file - '$newFileFullPath'"
         }
-
-        # Write back the replaced file content to the file.
-        $newFileFullPath = "$outDirectory\$filename"
-
-        Write-Host "[RESTAMP] -> Start writing replaced content to FILE for - '$newFileFullPath'"
-        Write-FileLines -filePath $newFileFullPath -fileContentLines $fileLinesList
-        Write-Host "[RESTAMP] -> DONE writing replaced content to FILE for - '$newFileFullPath'"
     }
 
     if ($script:replacedFilesList.Count -gt 0) {
