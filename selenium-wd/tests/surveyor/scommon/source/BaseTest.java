@@ -170,7 +170,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-		Log.method("reportTestStarting", className, methodName, firstLogLine);
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
@@ -181,6 +180,7 @@ public class BaseTest {
 	}
 
 	public static void reportTestFinished(String className) {
+		Log.method("reportTestFinished", className);
 		ExtentReports report = getExtentReport(className);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
@@ -196,6 +196,7 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, String className) {
+		Log.method("reportTestFailed", e, className);
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
@@ -204,7 +205,9 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(String className) {
+		Log.method("reportTestSucceeded", className);
 		Log.info("_PASS_ ");
+		TestContext.INSTANCE.setTestStatus("PASS");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
 	}
 

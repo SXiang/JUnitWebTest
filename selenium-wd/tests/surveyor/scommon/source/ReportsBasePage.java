@@ -2049,6 +2049,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean deleteReportById(String reportId) throws Exception {
+		Log.method("deleteReportById", reportId);
 		String reportName = "CR-" + reportId.substring(0, 6).toUpperCase();
 		this.waitForPageLoad();
 		this.performSearch(reportName);
@@ -3059,6 +3060,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public String getReportPDFFileName(String rptTitle, boolean includeExtension) {
 		// Implementation to be provided by derived type.
 		return null;
+	}
+
+	public void deleteReportWithApiCall(String reportId) {
+		// Implementation to be provided by derived type.
 	}
 
 	/* Getters for Common resources on the page */

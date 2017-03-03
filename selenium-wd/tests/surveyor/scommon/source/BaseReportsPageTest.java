@@ -2,6 +2,7 @@ package surveyor.scommon.source;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
@@ -81,6 +83,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 
 	@Override
 	public void postTestMethodProcessing() {
+		Log.method("BaseReportsPageTest.postTestMethodProcessing");
 		try {
 			cleanUp();
 			getReportsPage().logout();
@@ -103,35 +106,50 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 	}
 
 	private void cleanUp() throws Exception {
+		Log.method("BaseReportsPageTest.cleanUp");
 		if(getReportsPage()==null||keepTestData()){
+			Log.info("Clearing test report set and RETURNING ..");
 			TestContext.INSTANCE.clearTestReportSet();
 			return;
 		}
-		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
-		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+
 		//Delete report and related downloads
-		getReportsPage().open();
-		for(String reportId:reportIdSet){
-			String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
-			FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
-			getReportsPage().deleteReportById(reportId);
+		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
+		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
+
+		//Synchronize iteration on the backed set.
+		synchronized(reportIdSet) {
+			Iterator<String> setIteration = reportIdSet.iterator();
+			while (setIteration.hasNext()) {
+				String reportId = setIteration.next();
+				String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
+				FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
+				getReportsPage().deleteReportWithApiCall(reportId);
+			}
 		}
-		getReportsPage().open();
+
+		Log.info("Clearing test report set ..");
 		TestContext.INSTANCE.clearTestReportSet();
 	}
 
-	private boolean keepTestData(){
+	private boolean keepTestData() {
+		Log.method("BaseReportsPageTest.keepTestData");
 		if(getTestRunMode() != ReportTestRunMode.FullTestRun){
+			Log.info("NOT FullTestRun -> [TRUE]");
 			return true;
 		}
 		int testCleanUpMode = TestContext.INSTANCE.getTestSetup().getTestCleanUpMode();
 		if(testCleanUpMode == 2){//# 2: keep all the test data in place
+			Log.info("TestCleanupMode=2 -> [TRUE]");
 			return true;
 		}else if(testCleanUpMode == 0){//# 0: clean up test data after each test
+			Log.info("TestCleanupMode=0 -> [FALSE]");
 			return false;
 		}else if(testCleanUpMode == 1){//# 1: clean up test data if test passed
 			String testStatus = TestContext.INSTANCE.getTestStatus();
-			return testStatus.equalsIgnoreCase("FAIL");
+			boolean retVal = testStatus.equalsIgnoreCase("FAIL");
+			Log.info(String.format("testStatus.equalsIgnoreCase(FAIL)==%b -> [%b]", retVal, retVal));
+			return retVal;
 		}
 		return false;
 	}

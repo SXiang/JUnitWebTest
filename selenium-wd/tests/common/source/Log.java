@@ -54,9 +54,8 @@ public class Log {
 		public String toString(){
 			return field;
 		}
-
-
 	}
+
 	public static void info(String message) {
 		log.info(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);

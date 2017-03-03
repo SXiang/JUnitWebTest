@@ -517,6 +517,7 @@ public class FileUtility {
 	 * Delete files in the specified directory and files that start with the specified filePrefix and match the specified extension.
 	 */
 	public static void deleteFilesAndSubFoldersInDirectory(String directory, String filePrefix, String fileExtension) throws IOException {
+		Log.method("deleteFilesAndSubFoldersInDirectory", directory, filePrefix, fileExtension);
 		DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(directory));
 		for (Path file: stream) {
 			String fileExt = FileUtility.getFileExtension(file.toString());

@@ -41,6 +41,7 @@ import surveyor.dataaccess.source.StoredProcEQGetEQData;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import common.source.ApiUtility;
 import common.source.BaseHelper;
 import common.source.DBConnection;
 import common.source.DateUtility;
@@ -109,7 +110,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Driving Surveys Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -170,7 +171,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Emission Quantification Data Table in SSRS
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
@@ -233,7 +234,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	/**
 	 * Method to verify the Views Images
-	 * 
+	 *
 	 * @param actualPath
 	 * @param reportTitle
 	 * @param expectedImage
@@ -264,7 +265,7 @@ public class EqReportsPage extends ReportsBasePage {
 					File outputfile = new File(testSetup.getSystemTempDirectory() + testCase + ".png");
 					ImageIO.write(image, "png", outputfile);
 					boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-					
+
 					if (!verifyActualImageWithBase(baseViewFile, actualViewPath, generateBaseline)) {
 						Files.delete(Paths.get(actualViewPath));
 						return false;
@@ -293,7 +294,7 @@ public class EqReportsPage extends ReportsBasePage {
 
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) {
-		EQReportEntity eqReports = (EQReportEntity) reports;		
+		EQReportEntity eqReports = (EQReportEntity) reports;
 		getSelectArea().click();
 		for (List<Coordinates> coordinates : eqReports.getListOfCords()) {
 			latLongSelectionControl.waitForModalDialogOpen().switchMode(ControlMode.MapInteraction).waitForMapImageLoad().selectSegment(CANVAS_X_PATH, coordinates).switchMode(ControlMode.Default);
@@ -309,7 +310,7 @@ public class EqReportsPage extends ReportsBasePage {
 		Report objReport = Report.getReport(rptTitle);
 		String reportId = objReport.getId();
 		reportId = reportId.substring(0, 6);
-		String reportName = "EQ-" + reportId;		
+		String reportName = "EQ-" + reportId;
 		clickOnPDFInReportViewer();
 		waitForPDFFileDownload(reportName);
 		Log.info("PDF file got downloaded");
@@ -318,9 +319,9 @@ public class EqReportsPage extends ReportsBasePage {
 		Log.info("View file got downloaded");
 		return true;
 	}
-	
+
 	@Override
-	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {		
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 	}
 
 	public void clickOnZIPInReportViewer() {
@@ -341,6 +342,12 @@ public class EqReportsPage extends ReportsBasePage {
 
 	public void waitForReportTIFFileDownload(String reportName) {
 		waitForFileDownload(reportName + "_EQ-View.pdf", testSetup.getDownloadPath());
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, reportId));
 	}
 
 	@Override

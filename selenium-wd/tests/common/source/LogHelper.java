@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class LogHelper {
 
 	public LogHelper() {
@@ -41,11 +44,11 @@ public class LogHelper {
 		}
 		return String.format("[List values] -> [%s]", builder.toString());
 	}
-	
+
 	public static String strListToString(List<String> values) {
 		return listToString(values);
 	}
-	
+
 	public static String intListToString(List<Integer> values) {
 		return listToString(values);
 	}
@@ -79,5 +82,9 @@ public class LogHelper {
 			}
 		}
 		return String.format("[List<Map> values] -> [%s]", builder.toString());
+	}
+
+	public static String objectToString(Object value) {
+		return ToStringBuilder.reflectionToString(value, ToStringStyle.DEFAULT_STYLE);
 	}
 }

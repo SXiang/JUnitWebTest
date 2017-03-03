@@ -26,6 +26,7 @@ public enum TestContext {
 	private TestSetup testSetup;
 	private String userCulture = null;
 	private String loggedInUserName;
+	private String loggedInPwd;
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
 	private Map<String,Object> testMap;
@@ -160,6 +161,14 @@ public enum TestContext {
 		this.loggedInUserName = loggedInUserName;
 	}
 
+	public String getLoggedInPassword() {
+		return loggedInPwd;
+	}
+
+	public void setLoggedInPassword(String loggedInPwd) {
+		this.loggedInPwd = loggedInPwd;
+	}
+
 	public String getLoggedInUserPassword() {
 		String loggedInUserPassword = null;
 		if (testSetup != null) {
@@ -220,7 +229,7 @@ public enum TestContext {
 		}
 		return appiumDriverFound;
 	}
-	
+
 	public String getBaseUrl() {
 		String baseUrl = null;
 		if (testSetup != null) {

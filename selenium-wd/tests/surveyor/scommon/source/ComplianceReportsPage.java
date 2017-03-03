@@ -66,6 +66,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.ApiUtility;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
@@ -2600,6 +2601,12 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@Override
 	public String getReportPrefix() {
 		return "CR";
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
 	}
 
 	public boolean areInvestigationTableColumnsSorted() {
