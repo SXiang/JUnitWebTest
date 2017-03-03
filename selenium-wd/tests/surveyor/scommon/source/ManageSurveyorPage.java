@@ -53,7 +53,7 @@ public class ManageSurveyorPage extends SurveyorBasePage {
 	@FindBy(id = "Description")
 	protected WebElement inputSurveyorDesc;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='LocationId']")
+	@FindBy(how = How.XPATH, using = "//*[@id='locationId']")
 	protected WebElement dropDownLocation;
 
 	@FindBy(id = "buttonOk")
