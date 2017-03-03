@@ -69,6 +69,11 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		super.run(notifier);
 	}
 
+	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset, String boundary, String map) {
+		return createViewsMapTable(viewName, lisa, fov, breadcrumb, indications, isotopic, annotation, gap, asset, boundary,
+				null /*highlightLisaAsset*/, null /*highlightGapAsset*/, null /*assetBoxNumber*/, map);
+	}
+
 	public static Map<String, String> createViewsMapTable(String viewName, String lisa, String fov, String breadcrumb, String indications, String isotopic, String annotation, String gap, String asset,
 			String boundary, String highlightLisaAsset, String highlightGapAsset, String assetBoxNumber, String map) {
 		Map<String, String> viewMap = Collections.synchronizedMap(new HashMap<String, String>());
@@ -82,9 +87,18 @@ public class ReportDataProvider extends SurveyorTestRunner {
 		viewMap.put(KEYGAPS, gap);
 		viewMap.put(KEYASSETS, asset);
 		viewMap.put(KEYBOUNDARIES, boundary);
-		viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAsset);
-		viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAsset);
-		viewMap.put(KEYASSETBOXNUMBER, assetBoxNumber);
+		if (highlightLisaAsset != null) {
+			viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAsset);
+		}
+
+		if (highlightGapAsset != null) {
+			viewMap.put(KEYHIGHLIGHTGAPASSETS, highlightGapAsset);
+		}
+
+		if (assetBoxNumber != null) {
+			viewMap.put(KEYASSETBOXNUMBER, assetBoxNumber);
+		}
+
 		viewMap.put(KEYBASEMAP, map);
 		return viewMap;
 	}

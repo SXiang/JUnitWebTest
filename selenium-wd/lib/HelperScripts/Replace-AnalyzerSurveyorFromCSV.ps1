@@ -60,7 +60,7 @@ param
   [String] $oldDatabaseIP="20.20.130.210",
 
   [Parameter(Mandatory=$false)]
-  [String] $oldDatabaseName="SurveyorSQAAuto_blankDB_20161202",
+  [String] $oldDatabaseName="SurveyorSQAAuto_blankDB_20170203",
 
   [Parameter(Mandatory=$false)]
   [String] $oldDatabaseUser="awssa",
@@ -89,20 +89,20 @@ param
   ####--------------------------------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $surveyIds = "43A218A4-00AE-F7BC-588A-39D15301044F,02510F74-5EE7-CD23-5C54-39D153175095,271D9DB6-C0BD-EB32-2B48-39D1531DC264,C8782024-CC65-B53A-5317-39D4B4F4731F,04B2FEDA-EE18-A49E-3208-39D4B50F48FE,1556AC85-A125-0347-2A02-39D4B529C6BD,4D7BF7AC-6CC2-9B18-1894-39D4B546927B,2278D26F-8D69-B070-56FD-39D4B552F8F2,8497A375-2D3A-94E7-7AD4-39D4B9762AB7,E15E6D60-F49B-0F45-C9FA-39D4B99D9FDC,BAAA0BF0-5D42-A94E-8311-39D4BED10910,D55FA29B-E69E-0F61-D00E-39D4BEEB76E5,18533532-4401-1F22-0EFD-39D60E1D0E2B,069DB64B-55D5-7522-48E4-39D61C888093,028F8FB7-8BA3-A44B-F778-39D626CD322B,8AF3B409-FAD3-9B1C-1846-39D6D20F64C6,7D502F69-0921-C3E8-22ED-39D76B1CAB8E,F0052077-F662-1C01-5654-39D76B475E9C,068F0961-32BC-D508-5DAB-39D76B9AB1EA,E0802F97-591D-4806-D48E-39D76BB73231,094EA028-139C-DC47-29F9-39D76BCB2F3C,946338AA-A24E-0E92-1DC3-39D76BD9F54D,4CE925C5-A081-319D-220A-39D83A6B8751,861905EE-400E-7FC8-558F-39D9FE5E5484,B1354DDD-DCF3-0550-B153-39D9FE6F86FB,50BEC7EF-AD37-8AD0-D604-39D9FE70AEBF,DC17FED5-F182-FFAA-F02B-39D9FE713CB5,31683DB5-3592-E0AC-3B49-39DA65CE0811,FA698FCA-CF41-0098-BD89-39D76B1412FA,B71A994A-7739-9239-3C7C-39D76B14D67D,C21B3872-23AF-DCE6-83C7-39D76B467FF1",
+  [String] $surveyIds = "DA2C4869-58DD-70FE-3B6A-39DD2C131AAA,A0EE2DB5-1B37-B1B0-554C-39DD2C1D41B5,F5D5BF4C-A286-BB4E-9C08-39DD2C310655,A498837C-1CA9-A783-9B7B-39DD2C3B429E,541567D0-A899-3418-8CE2-39DD2C61C355,D18273A3-B2B7-D015-CE7A-39DD2C75F210,BD897776-CFA5-80DF-2BD8-39DD2CB49FBC,22E12807-5514-DA0F-CC66-39DD2CB51E96",
 
   ####--------------------------------------------------------------####
   #### CSV file parameters                                          ####
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $inDirectory="C:\temp\SqaCusCSVs\csvs",
+  [String] $inDirectory="C:\temp\EQSurveys\csvs",
 
   [Parameter(Mandatory=$false)]
   [String] $fileExtFilter="*.csv",
 
   [Parameter(Mandatory=$false)]
-  [String] $outDirectory="C:\temp\SqaCusCSVs\csvs\Replaced",
+  [String] $outDirectory="C:\temp\EQSurveys\csvs\Replaced",
 
   [Parameter(Mandatory=$false)]
   [String] $outFileSuffix="sqacus",
@@ -112,13 +112,13 @@ param
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $newAnalyzerId="43A34021-8814-8A01-9183-39D4B4DE03EB",
+  [String] $newAnalyzerId="00000015-DB64-FDE7-7E67-39C8AC533D51",
 
   [Parameter(Mandatory=$false)]
-  [String] $newSurveyorUnitId="EDBACFF7-E103-C14C-9DF8-39CD7B5F2A1A",
+  [String] $newSurveyorUnitId="00000014-FB61-2EF6-5DD1-39C8AC533D41",
 
   [Parameter(Mandatory=$false)]
-  [String] $newReferenceGasBottleId="FA197B16-C53F-FF50-8056-39CEC9EA1F32",
+  [String] $newReferenceGasBottleId="00000015-DB64-FDE7-7E67-39C8AC544D61",
 
   [Parameter(Mandatory=$false)]
   [String] $newUserId="DE734DDF-363E-49FC-8DBC-39C8C221C572",
@@ -138,7 +138,7 @@ param
   ####       is ENABLED ensure ONLY 1 survey is specified in '$surveyIds' above    ####
   ####-----------------------------------------------------------------------------####
   [Parameter(Mandatory=$false)]
-  [switch] $restampCSVs = $false,
+  [switch] $restampCSVs = $true,
 
   ####-----------------------------------------------------------------------------####
   #### Specifies whether new survey IDs need to be generated in the CSV files      ####
@@ -267,6 +267,7 @@ $surveyIds -split "," | % {
                 $fileLinesList = New-Object System.Collections.ArrayList
             
                 $csvData = Import-Csv "$fileFullPath"
+                $csvData = @($csvData)       # convert to array to handle single line files. 
 
                 # get headers in the same order and Write header line to fileLinesList.
                 $headers = $csvData[0].psObject.Properties | foreach { $_.Name }
@@ -307,7 +308,9 @@ $surveyIds -split "," | % {
                     }            
 
                     # Replace old values with new values.
-                    $lineText = $lineText -replace $script:oldSurveyId, $newSurveyId
+                    if ($generateNewGuidsForSurvey) {
+                        $lineText = $lineText -replace $script:oldSurveyId, $newSurveyId
+                    }
                     $lineText = $lineText -replace $script:oldAnalyzerId, $newAnalyzerId
                     $lineText = $lineText -replace $script:oldSurveyorUnitId, $newSurveyorUnitId
                     $lineText = $lineText -replace $script:oldReferenceGasBottleId, $newReferenceGasBottleId
@@ -342,7 +345,9 @@ $surveyIds -split "," | % {
                 } 
 
                 # Replace old values with new values.
-                $fileContent = $fileContent -replace $script:oldSurveyId, $newSurveyId
+                if ($generateNewGuidsForSurvey) {
+                    $fileContent = $fileContent -replace $script:oldSurveyId, $newSurveyId
+                }
                 $fileContent = $fileContent -replace $script:oldAnalyzerId, $newAnalyzerId
                 $fileContent = $fileContent -replace $script:oldSurveyorUnitId, $newSurveyorUnitId
                 $fileContent = $fileContent -replace $script:oldReferenceGasBottleId, $newReferenceGasBottleId
@@ -356,14 +361,151 @@ $surveyIds -split "," | % {
             }
         }
     }
+}
 
-    if ($restampCSVs) {
-        #### Restamp Epoch times in CSV files. ####
-        Write-Host "####--------------------------------------------------------------####"
-        Write-Host "#### RESTAMP EPOCH TIMES                                          ####"
-        Write-Host "####--------------------------------------------------------------####"
+if ($restampCSVs) {
+        
+    # RESTAMP LOGIC: NOTE that we process one survey at a time in the Restamp script.	
+    #  1. Place files related to a survey in temp folder
+    #  2. Restamp survey files 
+    #  3. Move all restamped files back to an OUT directory 
 
-        Restamp-EpochTimes -newDatabaseIP $newDatabaseIP -newDatabaseName $newDatabaseName -newDatabaseUser $newDatabaseUser  `
-            -newDatabasePwd $newDatabasePwd -inDirectory $outDirectory -fileExtFilter $fileExtFilter -outDirectory $restampedDirectory
+    $TEMP_PATH = [System.IO.Path]::GetTempPath()
+
+    $surveyTempDirectoryMap = @{}
+
+    # Build [csv file suffix -> tempInDirectory] map
+    $surveyIds -split "," | % {
+        $surveyId = $_
+        $srvMapObject = $script:surveyTagFileMap.get_item($surveyId)
+        $srvFileSuffix = $srvMapObject.SurveyFileSuffix
+        if (([String]$srvFileSuffix).EndsWith("$")) {
+            $srvFileSuffix = $srvFileSuffix.Replace("$", "")
+        } 
+
+        $tempInDirForRestamp = "$TEMP_PATH\$srvFileSuffix"
+        $tempOutDirForRestamp = "$tempInDirForRestamp\Restamped"
+
+        $ensureExistDirs = @("$tempInDirForRestamp", "$tempOutDirForRestamp")
+        $ensureExistDirs | % {
+            $chkDir = $_
+            if (-not (Test-Path -Path $chkDir)) {
+                Write-host "Directory does NOT exist - $chkDir . Creating NEW directory ..."
+                New-Item -ItemType Directory -Path $chkDir
+            } else {
+                # Path already exists. Remove existing files.
+                Remove-Item "$chkDir\*" -recurse
+            }
+        }
+
+        # store csv file suffix in map.
+        if (-not $surveyTempDirectoryMap.ContainsKey($srvFileSuffix)) {
+            $surveyTempDirectoryMap.set_item($srvFileSuffix, $tempInDirForRestamp)
+        }
     }
+
+    # 1. Move files to temp IN folder.
+    Write-Host "####--------------------------------------------------------------------------####"
+    Write-Host "#### [RESTAMP-PREP] Copy Survey specific files to temporary folders.          ####"
+    Write-Host "####--------------------------------------------------------------------------####"
+    Get-ChildItem $outDirectory -filter "*.csv" | % {
+        $file = $_
+        $fileName = $file.Name
+        $fileNameWithoutExt = $fileName.Replace(".csv", "")
+        $fileFullName = $file.FullName
+    
+        $doneCopy = $false
+        $surveyTempDirectoryMap.Keys | % {
+            if (-not $doneCopy) {
+                $suffix = $_
+                $tempInDir = $surveyTempDirectoryMap.get_item($suffix)
+                if ($fileNameWithoutExt.EndsWith("$suffix-$outFileSuffix")) {
+                    Write-host "[COPYING] -> '$fileFullName' to '$tempInDir'"
+                    copy $fileFullName "$tempInDir"
+                    $doneCopy = $true
+                }
+            }
+        }
+    }
+
+    # 2. Restamp survey files
+    Write-Host "####--------------------------------------------------------------------------####"
+    Write-Host "#### [RESTAMP-PROCESS] Starting ...                                           ####"
+    Write-Host "####--------------------------------------------------------------------------####"
+    [int64]$offset = 0
+    $surveyTempDirectoryMap.Keys | % {
+        $suffix = $_
+        $tempInDir = $surveyTempDirectoryMap.get_item($suffix)
+        $tempOutDir = "$tempInDir\Restamped"
+
+        Get-ChildItem $tempInDir -filter "*.csv" | % {
+            $file = $_
+            $fileName = $file.Name
+            $fileFullName = $file.FullName
+
+            # incrementally build offset for each survey that is being processed.
+            if ($fileName.StartsWith("Survey-")) {
+                $csvData = Import-Csv $fileFullName
+                $csvData | % {
+                    $objSur = $_
+                    $startEpoch = $objSur.StartEpoch;        
+                    $endEpoch = $objSur.EndEpoch;
+
+                    $diff = $endEpoch - $startEpoch + 1200  # some buffer.
+                    $offset += $diff
+                }
+            }
+        }
+
+        Write-host "[RESTAMPING] -> newDatabaseIP=$newDatabaseIP, newDatabaseName=$newDatabaseName, newDatabaseUser=$newDatabaseUser, newDatabasePwd=$newDatabasePwd, inDirectory=$tempInDir, fileExtFilter=$fileExtFilter, outDirectory=$tempOutDir, offsetInRestamp=$offset"
+        Restamp-EpochTimes -newDatabaseIP $newDatabaseIP -newDatabaseName $newDatabaseName -newDatabaseUser $newDatabaseUser  `
+            -newDatabasePwd $newDatabasePwd -inDirectory $tempInDir -fileExtFilter $fileExtFilter -outDirectory $tempOutDir -offsetInRestamp $offset
+            
+    }
+
+    # 3. Move all restamped files to an OUT dir
+    Write-Host "####--------------------------------------------------------------------------####"
+    Write-Host "#### [RESTAMP-OUTPUT] Copying restamped files to output dir                   ####"
+    Write-Host "####--------------------------------------------------------------------------####"
+    $outRestampDir = "$outDirectory\Restamped"
+    if (-not (Test-Path -Path $outRestampDir)) {
+        Write-host "Directory does NOT exist - $outRestampDir . Creating NEW directory ..."
+        New-Item -ItemType Directory -Path $outRestampDir
+    } else {
+        # Path already exists. Remove existing files.
+        Remove-Item "$outRestampDir\*" -recurse
+    }
+
+    $surveyTempDirectoryMap.Keys | % {
+        $suffix = $_
+        $tempInDir = $surveyTempDirectoryMap.get_item($suffix)
+        $tempOutDir = "$tempInDir\Restamped"
+
+        Get-ChildItem $tempInDir -filter "*.csv" | % {
+            $file = $_
+            $fileFullName = $file.FullName
+
+            Write-host "[COPYING] -> '$fileFullName' to '$outRestampDir'"
+            copy $fileFullName $outRestampDir
+        }
+    }
+
+    # CLEANUP -> Remove temporary folders
+    Write-Host "####--------------------------------------------------------------------------####"
+    Write-Host "#### [RESTAMP-CLEANUP] Deleting temporary folders ...                         ####"
+    Write-Host "####--------------------------------------------------------------------------####"
+    $surveyTempDirectoryMap.Keys | % {
+        $suffix = $_
+        $tempInDir = $surveyTempDirectoryMap.get_item($suffix)
+        $tempOutDir = "$tempInDir\Restamped"
+
+        Write-host "[DELETING] -> Files from - '$tempInDir' "
+        Remove-Item "$tempInDir\*" -recurse
+        Remove-Item "$tempInDir"
+    }
+
+    Write-Host "####--------------------------------------------------------------####"
+    Write-Host "#### DONE RESTAMPING EPOCH TIMES                                  ####"
+    Write-Host "#### Restamped files located at -> $outRestampDir ####"
+    Write-Host "####--------------------------------------------------------------####"
 }

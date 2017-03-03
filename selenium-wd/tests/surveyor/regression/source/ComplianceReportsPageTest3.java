@@ -1014,7 +1014,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1496_AddLISABoxOptionExistingCustomer ..." +
 			 "\nTest Description: Add LISA Box option to existing customer");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* SQACus with lisabox 1.0*/
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
@@ -1049,7 +1049,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1497_RemoveLISABoxOptionFromExistingCustomer ..." +
 			 "\nTest Description: Remove LISA Box option from existing customer");
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro without Lisabox 1.0 */
 		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
