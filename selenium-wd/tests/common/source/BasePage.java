@@ -11,6 +11,7 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -548,7 +549,11 @@ public class BasePage {
     	return licenseMissingMsg;
     }
 
-	public DataTablePage buildDataTablePage(By tableBy) {
+	public ExcelUtility getExcelUtility() {
+		return TestSetup.getExcelUtility();
+	}
+
+    public DataTablePage buildDataTablePage(By tableBy) {
 		WebElement tableContext = driver.findElement(tableBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext,
 				this.testSetup, this.strBaseURL, this.strPageURL);

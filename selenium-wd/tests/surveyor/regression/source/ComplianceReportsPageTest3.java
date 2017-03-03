@@ -794,7 +794,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Test /* Input Custom Boundary manually */
+	@Test /* Input Custom Boundary manually *//* Change to customer user after the fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -1008,7 +1008,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test /* Without changing of licensed feature */
+	@Ignore /* Without changing of licensed feature *//* Enable this test and update base line files after fix of DE2745 */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
 	public void TC1496_AddLISABoxOptionExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

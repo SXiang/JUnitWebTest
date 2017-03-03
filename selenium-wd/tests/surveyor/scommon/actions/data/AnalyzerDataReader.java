@@ -54,6 +54,20 @@ public class AnalyzerDataReader extends BaseDataReader {
 		this.dataRow = dataRow;
 	}
 
+	public Integer getAnalyzerDataRowIDForSurveyor(Integer surveyorDataRowID) throws Exception {
+		Integer rowID = -1;
+		Integer rowCount = getRowCount();
+		for (int i = 1; i <= rowCount; i++) {
+			AnalyzerDataRow dataRow = getDataRow(i);
+			if (dataRow.surveyorRowID.equals(String.valueOf(surveyorDataRowID))) {
+				rowID = i;
+				break;
+			}
+		}
+
+		return rowID;
+	}
+
 	public AnalyzerDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String serialNumber = excelUtility.getCellData(dataRowID, Excel_TestData__Col_SerialNumber, TESTDATA_SHEET_NAME);

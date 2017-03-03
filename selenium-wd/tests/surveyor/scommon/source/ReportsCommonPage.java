@@ -2734,6 +2734,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_IsotopicAnalysisTable);
+
 		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		Log.info(String.format("Expected Strings in PDF Text Content : %s",
 				LogHelper.strListToString(expectedReportString)));

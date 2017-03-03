@@ -575,6 +575,20 @@ public class TestSetup {
 	public void setAndroidDeviceName(String androidDeviceName) {
 		this.androidDeviceName = androidDeviceName;
 	}
+
+	public static ExcelUtility getExcelUtility() {
+		ExcelUtility excelUtility = null;
+		String testDataExcelPath = TestContext.INSTANCE.getExecutionPath() + TestSetup.DATA_FOLDER + File.separator + TestSetup.TEST_DATA_XLSX;
+		try {
+			excelUtility = new ExcelUtility();
+			excelUtility.setExcelFile(testDataExcelPath);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+
+		return excelUtility;
+	}
+
 	public void initialize() {
 		try {
 
@@ -1020,10 +1034,10 @@ public class TestSetup {
 	}
 
 	public static void simulatorTestStarting(Description description) {
-		Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
-			Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
+			Log.info("Started executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			try {
+				Log.info("Installing simulator pre-reqs. Start Analyzer and Replay DB3 script.");
 				TestSetup.stopAnalyzerIfRunning();
 				TestSetup.updateAnalyzerConfiguration();
 				TestSetup.startAnalyzer();
@@ -1034,8 +1048,8 @@ public class TestSetup {
 	}
 
 	public static void simulatorTestFinishing(Description description) {
-		Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 		if (TestSetup.isExecutingSimulatorTestMethod(description.getMethodName())) {
+			Log.info("Finished executing " + description.getClassName() + "." + description.getMethodName() + "() test...");
 			Log.info("Stop Analyzer.");
 			TestSetup.stopAnalyzer();
 		}

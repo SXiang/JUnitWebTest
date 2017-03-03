@@ -338,38 +338,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1484_SearchValidCustomerBoundaryBoundarySelectorScreenOfAssessmentReport
-	 * Test Description: Search valid customer boundary on boundary selector screen of Assessment report
-	 * Script: -
-	 *	- - On Home Page, click Reports -&Assessment-& 'NewAssessmentReport' button
-	 *	- - Select 'Customer Boundary' and click on Boundary Selector button
-	 *	- - Search valid boundary using Select By Boundary Name
-	 *	- Eg. CNP customer - in Dallas area search 455
-	 *	- eg. PG&amp;E customer - search boundary as 52-
-	 * Results: -
-	 *	-
-	 *	- - Customer Boundaries are present on map
-	 *	- - Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
-	 *	- Eg. All boundaries in map area having 455 should be searched
-	 *	- eg. All boundaries in map area having *52- * should be searched
-	 */
-	// Verified.
-	@Test
-	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1484, location = AssessmentReportDataProvider.class)
-	public void TC1484_SearchValidCustomerBoundaryBoundarySelectorScreenOfAssessmentReport(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1484_SearchValidCustomerBoundaryBoundarySelectorScreenOfAssessmentReport ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-
-		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		assessmentReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
-		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
-		assertTrue(assessmentReportsPageAction.fillAndVerifyCustomerBoundaryNamesListInAreaSelectorIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt
 	 * Test Description: Generate assessment report with all default values/filters selected using custom boundary as customer supervisor user wtih non zero exclusion value and download it
 	 * Script: -
