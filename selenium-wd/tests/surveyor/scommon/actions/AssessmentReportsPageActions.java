@@ -10,13 +10,11 @@ import common.source.TestSetup;
 import surveyor.scommon.actions.data.AssessmentReportDataReader;
 import surveyor.scommon.actions.data.AssessmentReportDataReader.AssessmentReportsDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
+import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.AssessmentReportEntity;
-import surveyor.scommon.entities.ComplianceReportEntity;
-import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.AssessmentReportsPage;
-import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
@@ -125,7 +123,7 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+	public void setWorkingReportsDataRow(ReportsBaseDataRow dataRow) throws Exception {
 		workingDataRow.set((AssessmentReportsDataRow) dataRow);
 	}
 

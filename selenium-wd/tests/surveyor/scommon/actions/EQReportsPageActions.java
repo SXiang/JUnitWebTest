@@ -4,22 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 
-import common.source.BaseHelper;
 import common.source.ExcelUtility;
-import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
 import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
-import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
-import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
+import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
-import surveyor.scommon.entities.ReportsSurveyInfo;
-import surveyor.scommon.entities.AssessmentReportEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EQReportsPage;
@@ -76,7 +71,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	public boolean findReportByName(String data, Integer dataRowID) throws Exception {
 		logAction("EQReportsPageActions.findReportByName", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("findReportByName", ARG_DATA_ROW_ID, dataRowID);
-		ReportsCommonDataRow rptDataRow = getReportsDataRow(dataRowID);
+		EQReportsDataRow rptDataRow = getReportsDataRow(dataRowID);
 		return findReportInternal(this.getEQReportsPage().getFullReportName(rptDataRow.title), 2 /*colIdx = 2 for reportName*/);
 	}
 
@@ -130,7 +125,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+	public void setWorkingReportsDataRow(ReportsBaseDataRow dataRow) throws Exception {
 		workingDataRow.set((EQReportsDataRow) dataRow);
 	}
 
@@ -165,39 +160,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		rpt.setEQLocationParameter(eqLocationParameter);
 		rpt.setLineSegments(lineSegments);
     }
-	
-	public EQReportEntity fillWorkingDataForReports(Integer dataRowID) throws Exception {
-		setWorkingReportsDataRow(getDataReader().getDataRow(dataRowID));
 
-		String rptTitle = getWorkingReportsDataRow().title;
-		String customer = null;
-		String customerRowID = getWorkingReportsDataRow().customerRowID;
-		if (!BaseHelper.isNullOrEmpty(customerRowID)) {
-			if (ManageCustomerPageActions.workingDataRow.get() != null) {
-				customer = ManageCustomerPageActions.workingDataRow.get().name;
-			} else {
-				Integer custRowID = NumberUtility.getIntegerValueOf(customerRowID);
-				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
-			}
-		}
-		String timeZone = getWorkingReportsDataRow().timezone;
-		String eqLocationParameter = getWorkingReportsDataRow().eqLocationParameter;
-
-		// Set survey info list.
-		List<ReportsSurveyInfo> reportsSurveyInfoList = super.buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
-		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(getWorkingReportsDataRow(), this.excelUtility);
-		// Create report specific Entity object.
-		EQReportEntity rpt = createNewReportsEntity(rptTitle, customer, timeZone, eqLocationParameter, lineSegments);
-
-		rpt.setSurveyInfoList(reportsSurveyInfoList);
-
-        // Fill report specific info.
-        fillReportSpecificWorkingDataForReports(rpt);
-
-        setWorkingReportsEntity(rpt);		// Store the working report properties.
-		return rpt;
-	}
-	
 	protected List<List<Coordinates>> buildLineSegmentInfoList(EQReportsDataRow dataRow, ExcelUtility excelUtility) throws Exception {
 		List<Integer> lineSegmentRowIDs = ActionArguments.getNumericList(dataRow.lineSegmentRowIDs);
 		List<List<Coordinates>> lineSegmentInfoList = getLineSegmentInfoList(excelUtility, lineSegmentRowIDs);

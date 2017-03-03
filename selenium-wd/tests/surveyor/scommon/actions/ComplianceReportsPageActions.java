@@ -17,6 +17,7 @@ import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
+import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -511,7 +512,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+	public void setWorkingReportsDataRow(ReportsBaseDataRow dataRow) throws Exception {
 		workingDataRow.set((ComplianceReportsDataRow) dataRow);
 	}
 

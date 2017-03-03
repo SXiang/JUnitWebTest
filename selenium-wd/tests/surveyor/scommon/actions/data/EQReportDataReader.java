@@ -3,13 +3,10 @@ package surveyor.scommon.actions.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import common.source.BaseHelper;
 import common.source.ExcelUtility;
 import common.source.Log;
-import surveyor.scommon.actions.ActionArguments;
-import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 
-public class EQReportDataReader extends ReportsCommonDataReader {
+public class EQReportDataReader extends ReportsBaseDataReader {
 
 	private static final String TESTDATA_SHEET_NAME = "EQ Report Test Data";
 
@@ -26,7 +23,7 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 		super(excelUtility, () -> TESTDATA_SHEET_NAME, () -> buildColumnIndexMap());
 	}
 
-	public class EQReportsDataRow extends ReportsCommonDataRow {
+	public class EQReportsDataRow extends ReportsBaseDataRow {
 		public String eqLocationParameter;
 		public String lineSegmentRowIDs;
 
@@ -51,7 +48,7 @@ public class EQReportDataReader extends ReportsCommonDataReader {
 	}
 
 	public EQReportsDataRow getDataRow(Integer dataRowID) throws Exception {
-			ReportsCommonDataRow reportsDataRow = getCommonDataRow(dataRowID);
+			ReportsBaseDataRow reportsDataRow = super.getDataRow(dataRowID);
 			String eqLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);			
 			String lineSegmentRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_LineSegmentRowIDs"), sheetName);
 
