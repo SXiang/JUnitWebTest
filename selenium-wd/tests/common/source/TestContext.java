@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -39,9 +38,9 @@ public enum TestContext {
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
-		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
+		this.testMap = TestSetupFactory.getTestMap();
 		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
-		this.extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
+		this.extentTestMap = TestSetupFactory.getExtentTestMap();
 	}
 
 	public String getTestStatus() {
@@ -66,14 +65,17 @@ public enum TestContext {
 		this.currentTestStatus = testStatus;
 	}
 
-
 	public Map<String, Object> getTestMap() {
 		return testMap;
 	}
 
+	public void setTestMap(Map<String, Object> testMap) {
+		this.testMap = testMap;
+		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
+	}
 
 	public ExtentTest getExtentTest(String className) {
-		return extentTestMap.get(className);
+		return getExtentTestMap().get(className);
 	}
 
 	public void updateTestMessage(String message){
@@ -99,9 +101,16 @@ public enum TestContext {
 	    }catch(Exception e){
 	    	Log.warn(e.toString());
 	    }
-		this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
+
+	    this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
 		this.testMap.put(LogField.TEST_CLASS.toString(), className);
-		this.extentTestMap.put(className, extentTest);
+	    threadDebugPrint("TestContext :: TestMap values -> " + LogHelper.mapToString(TestContext.INSTANCE.getTestMap()));
+
+		this.getExtentTestMap().put(className, extentTest);
+	}
+
+	private void threadDebugPrint(String message) {
+		System.out.println(String.format("Thread=[%s], Message=[%s]", Thread.currentThread().getName(), message));
 	}
 
 	public String getDbIpAddress() {
@@ -294,5 +303,13 @@ public enum TestContext {
 
 	public void setTestClassName(String testClassName) {
 		this.testClassName = testClassName;
+	}
+
+	public Map<String, ExtentTest> getExtentTestMap() {
+		return extentTestMap;
+	}
+
+	public void setExtentTestMap(Map<String, ExtentTest> extentTestMap) {
+		this.extentTestMap = extentTestMap;
 	}
 }
