@@ -686,8 +686,6 @@ public class TestSetup {
 
 			// create thread specific objects.
 			TestContext.INSTANCE.setTestSetup(this);
-			TestContext.INSTANCE.setTestMap(TestSetupFactory.getTestMap());
-			TestContext.INSTANCE.setExtentTestMap(TestSetupFactory.getExtentTestMap());
 
 			// process the single execution method only once for all threads of execution.
 			if (singleExecutionUnitProcessed.compareAndSet(false, true)) {

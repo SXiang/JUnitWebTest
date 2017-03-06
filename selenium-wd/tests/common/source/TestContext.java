@@ -17,8 +17,6 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.model.ITest;
 
-import common.source.Log.LogField;
-
 public enum TestContext {
 	INSTANCE;
 
@@ -28,19 +26,20 @@ public enum TestContext {
 	private String loggedInPwd;
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
-	private Map<String,Object> testMap;
+//	private Map<String,Object> testMap;
 	private List<String> testMessage;
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
 	private String testClassName;
+	private ThreadLocalMap<LogData> threadLogData;
 
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
-		this.testMap = TestSetupFactory.getTestMap();
-		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
-		this.extentTestMap = TestSetupFactory.getExtentTestMap();
+		this.threadLogData = new ThreadLocalMap<LogData>(ThreadLocalStore.getLogData());
+		this.getLogData().setIndexID(getIndexIdForTestRun());
+		this.extentTestMap = ThreadLocalStore.getExtentTestMap();
 	}
 
 	public String getTestStatus() {
@@ -65,14 +64,14 @@ public enum TestContext {
 		this.currentTestStatus = testStatus;
 	}
 
-	public Map<String, Object> getTestMap() {
-		return testMap;
-	}
-
-	public void setTestMap(Map<String, Object> testMap) {
-		this.testMap = testMap;
-		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
-	}
+//	public Map<String, Object> getTestMap() {
+//		return testMap;
+//	}
+//
+//	public void setTestMap(Map<String, Object> testMap) {
+//		this.testMap = testMap;
+//		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
+//	}
 
 	public ExtentTest getExtentTest(String className) {
 		return getExtentTestMap().get(className);
@@ -102,9 +101,13 @@ public enum TestContext {
 	    	Log.warn(e.toString());
 	    }
 
-	    this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
-		this.testMap.put(LogField.TEST_CLASS.toString(), className);
-	    threadDebugPrint("TestContext :: TestMap values -> " + LogHelper.mapToString(TestContext.INSTANCE.getTestMap()));
+	    this.getLogData().setTestMethod(methodName);
+	    this.getLogData().setTestClass(className);
+
+//	    this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
+//		this.testMap.put(LogField.TEST_CLASS.toString(), className);
+
+	    threadDebugPrint("TestContext :: TestMap values -> " + TestContext.INSTANCE.getLogData().toString());
 
 		this.getExtentTestMap().put(className, extentTest);
 	}
@@ -156,9 +159,12 @@ public enum TestContext {
 	public void setTestSetup(TestSetup testSetup) {
 		this.testSetup = testSetup;
 		if (this.testSetup != null) {
-		    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
-		    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
-		    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
+			getLogData().setTestEnvironment(testSetup.getRunEnvironment());
+			getLogData().setTestBaseUrl(testSetup.getBaseUrl());
+			getLogData().setTestCategory(testSetup.getTestReportCategory());
+//		    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
+//		    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
+//		    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
 		}
 	}
 
@@ -311,5 +317,16 @@ public enum TestContext {
 
 	public void setExtentTestMap(Map<String, ExtentTest> extentTestMap) {
 		this.extentTestMap = extentTestMap;
+	}
+
+	public LogData getLogData() {
+		if (threadLogData.getObject() == null) {
+			// If thread specific LogData not present add new.
+			LogData data = ThreadLocalStore.getLogData();
+			data.setIndexID(getIndexIdForTestRun());
+			threadLogData.putObject(data);
+		}
+
+		return threadLogData.getObject();
 	}
 }

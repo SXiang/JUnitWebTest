@@ -14,28 +14,32 @@ import common.source.Log.LogField;
 public enum LogInternal {
 	INSTANCE;
 
+	private static final String COMMON_SOURCE_LOG = "common.source.Log";
+	private static final String COMMON_SOURCE_LOG_INTERNAL = "common.source.LogInternal";
+	private static final Boolean DEBUG = false;   // enabled DEBUG to print additional Thread specific logs.
+
 	public void info(String message) {
-		LogFactory.getLog().info(formatLogMessage(message));
+		ThreadLocalStore.getLog().info(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		LogFactory.getStashLog().info(formatLogstashMessage(message));
+		ThreadLocalStore.getStashLog().info(formatLogstashMessage(message));
 	}
 
 	public void warn(String message) {
-		LogFactory.getLog().warn(formatLogMessage(message));
+		ThreadLocalStore.getLog().warn(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		LogFactory.getStashLog().warn(formatLogstashMessage(message));
+		ThreadLocalStore.getStashLog().warn(formatLogstashMessage(message));
 	}
 
 	public void debug(String message) {
-		LogFactory.getLog().debug(formatLogMessage(message));
+		ThreadLocalStore.getLog().debug(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		LogFactory.getStashLog().debug(formatLogstashMessage(message));
+		ThreadLocalStore.getStashLog().debug(formatLogstashMessage(message));
 	}
 
 	public void error(String message) {
-		LogFactory.getLog().error(formatLogMessage(message, true /*debugPrint*/));
+		ThreadLocalStore.getLog().error(formatLogMessage(message));
 		TestContext.INSTANCE.updateTestMessage(message);
-		LogFactory.getStashLog().error(formatLogstashMessage(message));
+		ThreadLocalStore.getStashLog().error(formatLogstashMessage(message));
 	}
 
 	public void method(String methodName, Object... args) {
@@ -43,7 +47,7 @@ public enum LogInternal {
 	}
 
 	public String formatLogMessage(String msg){
-		return formatLogMessage(msg, false /*debugPrint*/);
+		return formatLogMessage(msg, DEBUG /*debugPrint*/);
 	}
 
 	public String getJSONMessage(String msg){
@@ -80,7 +84,7 @@ public enum LogInternal {
 		map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
 		map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());
 		map.put(LogField.MSG.toString(), msg);
-		map.putAll(TestContext.INSTANCE.getTestMap());
+		map.putAll(TestContext.INSTANCE.getLogData().toMap());
 		return map;
     }
 
@@ -104,18 +108,16 @@ public enum LogInternal {
 			return elements[0];
 		}
 
-		String logClass1 = "common.source.LogInternal";
-		String logClass2 = "common.source.Log";
 		for(int i=1; i<elements.length; i++){
 			String currentClass = elements[i].getClassName();
-			if(!currentClass.equals(logClass1) && !currentClass.equals(logClass2)
+			if(!currentClass.equals(COMMON_SOURCE_LOG) && !currentClass.equals(COMMON_SOURCE_LOG_INTERNAL)
 					&& !currentClass.contains("$")
 					&& !currentClass.contains("TestWatcher")
 					&& !currentClass.contains("org.junit")
 					){
 
 				if (debugPrint) {
-					threadDebugPrint("LogInternal :: TestMap values -> " + LogHelper.mapToString(TestContext.INSTANCE.getTestMap()));
+					threadDebugPrint("LogInternal :: TestMap values -> " + LogHelper.mapToString(TestContext.INSTANCE.getLogData().toMap()));
 					threadDebugPrint("currentClass=" + currentClass);
 					threadDebugPrint(ToStringBuilder.reflectionToString(elements[i], ToStringStyle.DEFAULT_STYLE));
 					threadDebugPrint("ELEMENT className=" + elements[i].getClassName());

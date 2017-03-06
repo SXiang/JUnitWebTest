@@ -37,9 +37,8 @@ import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
-import common.source.TestSetupFactory;
+import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
-import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.ActionBuilder;
@@ -117,7 +116,7 @@ public class BaseTest {
 
 	protected static void initializeTestObjects(boolean initializeDriver) {
 		if (getTestSetup()==null) {
-			setTestSetup(TestSetupFactory.getTestSetup());
+			setTestSetup(ThreadLocalStore.getTestSetup());
 			Log.info(String.format("[THREAD Debug Log].. Set TestSetup - '%s'", getTestSetup()));
 		}
 		if (getBaseURL() == null) {
@@ -146,7 +145,7 @@ public class BaseTest {
 		}
 
 		if (getScreenCapture() == null) {
-			ScreenShotOnFailure screenShotOnFailure = TestSetupFactory.getScreenShotOnFailure();
+			ScreenShotOnFailure screenShotOnFailure = ThreadLocalStore.getScreenShotOnFailure();
 			setScreenCapture(screenShotOnFailure);
 			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
