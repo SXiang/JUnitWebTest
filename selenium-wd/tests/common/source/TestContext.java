@@ -26,7 +26,6 @@ public enum TestContext {
 	private String loggedInPwd;
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
-//	private Map<String,Object> testMap;
 	private List<String> testMessage;
 	private Set<String> testReportIdSet;
 	private String currentTestStatus = "PASS";
@@ -64,15 +63,6 @@ public enum TestContext {
 		this.currentTestStatus = testStatus;
 	}
 
-//	public Map<String, Object> getTestMap() {
-//		return testMap;
-//	}
-//
-//	public void setTestMap(Map<String, Object> testMap) {
-//		this.testMap = testMap;
-//		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
-//	}
-
 	public ExtentTest getExtentTest(String className) {
 		return getExtentTestMap().get(className);
 	}
@@ -103,9 +93,6 @@ public enum TestContext {
 
 	    this.getLogData().setTestMethod(methodName);
 	    this.getLogData().setTestClass(className);
-
-//	    this.testMap.put(LogField.TEST_METHOD.toString(), methodName);
-//		this.testMap.put(LogField.TEST_CLASS.toString(), className);
 
 	    threadDebugPrint("TestContext :: TestMap values -> " + TestContext.INSTANCE.getLogData().toString());
 
@@ -162,9 +149,6 @@ public enum TestContext {
 			getLogData().setTestEnvironment(testSetup.getRunEnvironment());
 			getLogData().setTestBaseUrl(testSetup.getBaseUrl());
 			getLogData().setTestCategory(testSetup.getTestReportCategory());
-//		    testMap.put(LogField.TEST_ENVIROMENT.toString(), testSetup.getRunEnvironment());
-//		    testMap.put(LogField.TEST_URL.toString(), testSetup.getBaseUrl());
-//		    testMap.put(LogField.TEST_CATEGORY.toString(), testSetup.getTestReportCategory());
 		}
 	}
 

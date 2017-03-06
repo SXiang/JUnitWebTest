@@ -4,6 +4,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Used to store thread specific objects in a Map.
+ *
+ * @param <T>
+ */
 public class ThreadLocalMap<T> {
 	private Map<String, T> objMap = Collections.synchronizedMap(new HashMap<>());
 
