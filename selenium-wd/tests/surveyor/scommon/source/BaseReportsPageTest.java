@@ -14,6 +14,7 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.TestContext;
+import surveyor.dataaccess.source.Report;
 import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
@@ -124,7 +125,24 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 				String reportId = setIteration.next();
 				String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 				FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
+
+				// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
+				Report objReport = Report.getReportById(reportId);
+				if (objReport != null) {
+					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETING report -> ReportTitle=%s; ReportId=%s", objReport.getReportTitle(), reportId));
+				} else {
+					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETING report -> ReportTitle=%s; ReportId=%s", "NON-EXISTENT-IN-DB", reportId));
+				}
+
 				getReportsPage().deleteReportWithApiCall(reportId);
+
+				// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
+				objReport = Report.getReportById(reportId);
+				if (objReport != null) {
+					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETED report -> ReportTitle=%s; ReportId=%s", objReport.getReportTitle(), reportId));
+				} else {
+					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETED report -> ReportTitle=%s; ReportId=%s", "NON-EXISTENT-IN-DB", reportId));
+				}
 			}
 		}
 

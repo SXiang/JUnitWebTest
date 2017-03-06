@@ -131,6 +131,11 @@ public class Report extends BaseEntity {
 		return objReport;
 	}
 
+	public static Report getReportById(String reportId) {
+		Report objReport = new Report().getById(reportId);
+		return objReport;
+	}
+
 	public Report get(String reportTitle) {
 		Report objReport = null;
 
@@ -145,6 +150,17 @@ public class Report extends BaseEntity {
 				DBCache.INSTANCE.set(CACHE_KEY + reportTitle, objReport);
 			}
 		}
+		return objReport;
+	}
+
+	public Report getById(String reportId) {
+		Report objReport = null;
+		String SQL = "SELECT * FROM dbo.[Report] WHERE Id='" + reportId + "'";
+		ArrayList<Report> objReportList = load(SQL);
+		if (objReportList!=null && objReportList.size()>0) {
+			objReport = objReportList.get(0);
+		}
+
 		return objReport;
 	}
 
