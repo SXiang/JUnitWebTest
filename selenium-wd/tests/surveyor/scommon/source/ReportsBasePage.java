@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1201,7 +1202,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForSurveySelectorCheckBoxToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return checkboxSurFirst.isDisplayed();
+				boolean displayed = false;
+				try {
+					displayed = checkboxSurFirst.isDisplayed();
+				}catch(StaleElementReferenceException e){
+					displayed = false;
+				}
+				return displayed;
 			}
 		});
 	}
@@ -1209,7 +1216,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForSurveySelectorCheckBoxToBeEnabled() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return checkboxSurFirst.isEnabled();
+				boolean enabled = false;
+				try {
+					enabled = checkboxSurFirst.isEnabled();
+				}catch(StaleElementReferenceException e){
+					enabled = false;
+				}
+				return enabled;
 			}
 		});
 	}
