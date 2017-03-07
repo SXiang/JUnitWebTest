@@ -142,6 +142,7 @@ public class DataTablePage extends SurveyorBasePage {
 		}while(!done&&toNextPage());
         return columnValues;
    }
+
 	/**
 	 * Find records in this data table, page by page
 	 *
@@ -336,7 +337,6 @@ public class DataTablePage extends SurveyorBasePage {
 		}
 		return false;
 	}
-
 
 	/**
 	 * To find the index number of a column
