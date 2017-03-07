@@ -37,8 +37,6 @@ import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSDRTAG;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSMNTAG;
 import static surveyor.scommon.source.SurveyorConstants.SQAPICSUP;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
@@ -47,31 +45,22 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
-import common.source.CryptoUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.dataprovider.ComplianceReportEthaneDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
 import surveyor.scommon.entities.ComplianceReportEntity;
-import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
-import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
-import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.source.BaseReportsPageTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -81,7 +70,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
  *
  */
 @RunWith(SurveyorTestRunner.class)
-public class ComplianceReportsPageTest_Ethane extends BaseComplianceReportPageProviderTest {
+public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 	private String STRReportAreaTooLargeMsg = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
 	private String STRReportAssetNotSelectedMsg = Resources.getResource(ResourceKeys.ComplianceReport_InvalidAssetTypeMessage);
@@ -90,8 +79,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseComplianceReportPagePr
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
-
-		createTestCaseMap();
 	}
 
 	@Before
@@ -99,6 +86,10 @@ public class ComplianceReportsPageTest_Ethane extends BaseComplianceReportPagePr
 		initializeTestObjects();
 
 		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
+	}
+
+	protected ComplianceReportsPage getComplianceReportsPage() {
+		return (ComplianceReportsPage)getReportsPage();
 	}
 
 	/**
@@ -334,32 +325,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseComplianceReportPagePr
 		assertTrue(this.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Manual, SurveyModeFilter.Manual));
 
 	}
-
-	// Using data provider 12 test cases-generate reports with different report mode and different ethane checkbox selection
-	// (TC1638, TC1642, TC1737 TC1658, TC1710, TC1712, TC1716, TC1714, TC1709, TC1711, TC1715, TC1713)
-
-	@Test
-	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_REPORT_PROVIDER_01, location = ComplianceReportEthaneDataProvider.class)
-	public void ComplianceReportTest_VerifyEthaneSTDRRReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
-		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
-				exclusionRadius, surveyorUnit, userName, startDate, endDate,
-				fovOpacity, lisaOpacity, geoFilter, reportMode,
-				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList, srchAreaPref);
-	}
-
-	@Test
-	@UseDataProvider(value = ComplianceReportEthaneDataProvider.COMPLIANCE_ETHANE_MANUAL_REPORT_PROVIDER, location = ComplianceReportEthaneDataProvider.class)
-	public void ComplianceReportTest_VerifyEthaneManualReport(String index, String strCreatedBy, String password, String cutomer, String timeZone, String exclusionRadius, String surveyorUnit, String userName, String startDate, String endDate, String fovOpacity, String lisaOpacity, Boolean geoFilter, ReportModeFilter reportMode, SurveyModeFilter surveyModeFilter, EthaneFilter ethaneFilter, List<String> listBoundary, List<String> tagList, List<Map<String, String>> tablesList,
-			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
-		executeVerifyEthaneReportTest(index, strCreatedBy, password, cutomer, timeZone,
-				exclusionRadius, surveyorUnit, userName, startDate, endDate,
-				fovOpacity, lisaOpacity, geoFilter, reportMode,
-				surveyModeFilter, ethaneFilter, listBoundary, tagList,
-				tablesList, viewList, viewLayersList, srchAreaPref);
-	}
-
 
 	/**
 	 * Test Case ID:TC1717 Test Description: Compliance Report Generation : Remove user selection color for Indications
