@@ -338,7 +338,6 @@ public class DataTablePage extends SurveyorBasePage {
 		return false;
 	}
 
-
 	/**
 	 * To find the index number of a column
 	 *
@@ -405,6 +404,7 @@ public class DataTablePage extends SurveyorBasePage {
 	public void waitForTableToLoad() {
 		Log.method("waitForTableToLoad");
 		waitForPageLoad();
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return WebElementExtender.isElementPresentAndDisplayed(dataTable);
