@@ -142,7 +142,6 @@ public class DataTablePage extends SurveyorBasePage {
 		}while(!done&&toNextPage());
         return columnValues;
    }
-
 	/**
 	 * Find records in this data table, page by page
 	 *
@@ -405,6 +404,7 @@ public class DataTablePage extends SurveyorBasePage {
 	public void waitForTableToLoad() {
 		Log.method("waitForTableToLoad");
 		waitForPageLoad();
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return WebElementExtender.isElementPresentAndDisplayed(dataTable);
