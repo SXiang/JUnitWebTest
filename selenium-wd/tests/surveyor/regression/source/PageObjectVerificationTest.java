@@ -1,7 +1,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -21,7 +20,6 @@ import common.source.OLMapUtility.IconColor;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.UserDataProvider;
-import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
@@ -38,7 +36,7 @@ import surveyor.scommon.source.DriverViewPage.SolarRadiation;
 import surveyor.scommon.source.DriverViewPage.SurveyTime;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
-import surveyor.scommon.source.EqReportsPage;
+import surveyor.scommon.source.EQReportsPage;
 import surveyor.scommon.source.HomePage;
 
 
@@ -58,7 +56,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	private static DriverViewPage driverViewPage = null;
 	private static LatLongSelectionControl latLongSelectionControl = null;
 	private static ManageLocationsPage manageLocationsPage = null;
-	private static EqReportsPage eqReportsPage = null;
+	private static EQReportsPage eqReportsPage = null;
 	private static PreferencesPage preferencesPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
@@ -579,39 +577,6 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.stopDrivingSurvey();
 
 		TestSetup.stopAnalyzer();
-	}
-
-	/**
-	 * Test Case ID: <None>
-	 * NOTE: This is a test method to demonstrate the usage of LatLongSelector Control for segment selection.
-	 *  Actual automation tests that use EQ select area can use this method as a reference.
-	 */
-	@Test
-	public void ReferenceOnly_EQSegmentSelectorTest() {
-		System.out.format("\nRunning ReferenceOnly_EQSegmentSelectorTest... \n");
-
-		eqReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		eqReportsPage.open();
-
-		eqReportsPage.clickOnNewEQReportBtn();
-		eqReportsPage.waitForNewPageLoad();
-
-		eqReportsPage.getSelectArea().click();
-
-		List <Coordinates> listOfCords = new ArrayList <Coordinates>();
-		listOfCords.add(0, new Coordinates(200,200));
-		listOfCords.add(1, new Coordinates(220,300));
-		listOfCords.add(2, new Coordinates(240,400));
-
-		latLongSelectionControl.waitForModalDialogOpen()
-								.switchMode(ControlMode.MapInteraction)
-								.waitForMapImageLoad()
-								.selectSegment(CANVAS_X_PATH, listOfCords)
-								.switchMode(ControlMode.Default)
-								.clickOkButton();
-
-		eqReportsPage.waitForPageToLoad();
-		assertTrue(eqReportsPage.getEqRptArea().getAttribute("value").contains(Resources.getResource(ResourceKeys.Dialog_LineSelected)));
 	}
 
 	/**

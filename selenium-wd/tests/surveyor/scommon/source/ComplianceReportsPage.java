@@ -4,7 +4,6 @@
 package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
-import common.source.DateUtility;
 import common.source.NumberUtility;
 
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
@@ -42,19 +41,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -2620,14 +2613,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		if (reportsCompliance.getSearchAreaPreference() != null) {
 			selectHighlightingAlgorithmDropdown(reportsCompliance.getSearchAreaPreference().toString());
 		}
-	}
-
-	public boolean isReportColumnSorted(String columnName, String type) {
-		Log.method("isReportColumnSorted");
-		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
-		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
-		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
-				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
 
 	public boolean isAmplitudeColumnSorted() {

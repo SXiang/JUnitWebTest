@@ -1,5 +1,7 @@
 package surveyor.scommon.source;
 
+import org.openqa.selenium.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +20,8 @@ import org.openqa.selenium.interactions.Actions;
 
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.NumberUtility;
+import common.source.OLMapUtility;
 import common.source.Timeout;
 import common.source.WebElementExtender;
 import common.source.WebElementFunctionUtil;
@@ -57,6 +62,9 @@ public class LatLongSelectionControl extends BaseControl {
 	@FindBy(id = "longitude")
 	private WebElement longitude;
 
+	@FindBy(id = "legend-container")
+	private WebElement legendContainer;
+	
 	@FindBy(id = "zoom-level")
 	private WebElement zoomLevel;
 
@@ -66,6 +74,15 @@ public class LatLongSelectionControl extends BaseControl {
 	@FindBy(id = "myModal")
 	private WebElement mapModalDialog;
 
+	@FindBy(id = "map")
+	private WebElement canvas;
+	
+	@FindBy(id = "DefaultLatitude")
+	private WebElement defaultLatitudeInput;
+	
+	@FindBy(id = "DefaultLongitude")
+	private WebElement defaultLongitudeInput;
+	
 	public LatLongSelectionControl(WebDriver driver) {
 		super(driver);
 	}
@@ -372,26 +389,25 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl selectSegment(String canvasXPath, List<Coordinates> coordinates) {
-		WebElement canvas = driver.findElement(By.xpath(canvasXPath));
+	public LatLongSelectionControl selectSegment(List<Coordinates> gpsPosition) {
 		if (canvas != null && canvas.isDisplayed())
 		{
 			Log.info("[LatLongSelectionControl]: Found canvas element");
 		}
 		Log.info("[LatLongSelectionControl]: Performing click Action on the canvas element");
 		Actions builder = new Actions(driver);
-
+		List<Point> coordinates = getScreenCoordinates(gpsPosition);
 		for (int i =0; i < coordinates.size(); i++)
 		{
-			Coordinates cord = coordinates.get(i);
-			builder.moveToElement(canvas, cord.getX(), cord.getY())
+			Point coord = coordinates.get(i);
+			builder.moveToElement(canvas, coord.x, coord.y)
 			.click()
 			.build()
 			.perform();
 
 			if (i == coordinates.size()-1)
 			{
-				builder.moveToElement(canvas, cord.getX(), cord.getY())
+				builder.moveToElement(canvas, coord.x, coord.y)
 				.doubleClick()
 				.build()
 				.perform();
@@ -401,6 +417,42 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
+	/**
+	 *
+	 *
+	 * @return the screen coordinates for the input gps positions.
+	 */
+	public List<Point> getScreenCoordinates(List<Coordinates> gpsPosition) {
+		List<Point> coordinates = new ArrayList<Point>();
+
+		Dimension dimension = canvas.getSize();
+		int div = 1, buttomdiv = 100;
+		int legendHight = legendContainer.getSize().height;
+
+		Coordinates lt = getGPSPosition(canvas, 0+div, legendHight+div);
+		Coordinates rb = getGPSPosition(canvas, dimension.width-div, dimension.height-buttomdiv);
+		double longWidth = Math.abs(rb.getX() - lt.getX());
+		double latHeight = Math.abs(rb.getY() - lt.getY());
+		
+		double longRatio = (dimension.width-2*div) / longWidth;
+		double latRatio = (dimension.height-legendHight-div-buttomdiv) / latHeight;
+		
+		for (int i =0; i < gpsPosition.size(); i++)
+		{
+			Coordinates coord = gpsPosition.get(i);
+			int x = (int) ((coord.getX() - lt.getX()) * longRatio);
+			int y = (int) ((coord.getY() - lt.getY())* latRatio);
+			coordinates.add(new Point(Math.abs(x)+div, Math.abs(y)+legendHight+div));
+		}
+		return coordinates;
+	}
+	
+	public Coordinates getGPSPosition(WebElement canvas, int x, int y){
+		Actions builder = new Actions(driver);
+		builder.moveToElement(canvas, x, y).build().perform();
+		return new Coordinates(NumberUtility.getDoubleValueOf(getLongitude()), NumberUtility.getDoubleValueOf(getLatitude()));
+	}
+	
 	public boolean verifyNoBoundaryNameSearchResult() {
 		Log.method("verifyNoBoundaryNameSearchResult");
 		By noResultBy = By.xpath(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "//div[text()='no results...']");

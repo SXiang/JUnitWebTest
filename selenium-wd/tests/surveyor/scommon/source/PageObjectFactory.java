@@ -7,7 +7,7 @@ import common.source.TestContext;
 import surveyor.scommon.source.AdministrationPage;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
-import surveyor.scommon.source.EqReportsPage;
+import surveyor.scommon.source.EQReportsPage;
 import surveyor.scommon.source.EULAPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
@@ -55,9 +55,9 @@ public class PageObjectFactory {
 	    }
 	};
 
-	private ThreadLocal<EqReportsPage> threadLocalEqReportsPage = new ThreadLocal<EqReportsPage>() {
+	private ThreadLocal<EQReportsPage> threadLocalEqReportsPage = new ThreadLocal<EQReportsPage>() {
 	    @Override 
-	    protected EqReportsPage initialValue() {
+	    protected EQReportsPage initialValue() {
 	    	return createNewEqReportsPage();
 	    }
 	};
@@ -251,9 +251,9 @@ public class PageObjectFactory {
 		return driverViewPage;
 	}
 
-	protected EqReportsPage createNewEqReportsPage() {
+	protected EQReportsPage createNewEqReportsPage() {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
-		EqReportsPage eqReportsPage = new EqReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		EQReportsPage eqReportsPage = new EQReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
 		PageFactory.initElements(driver, eqReportsPage);
 		return eqReportsPage;
 	}
@@ -438,7 +438,7 @@ public class PageObjectFactory {
 		return threadLocalDriverViewPage.get();
 	}
 
-	public EqReportsPage getEqReportsPage() {
+	public EQReportsPage getEqReportsPage() {
 		return threadLocalEqReportsPage.get();
 	}
 

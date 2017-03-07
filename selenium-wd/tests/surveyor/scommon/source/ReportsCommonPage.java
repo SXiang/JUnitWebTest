@@ -55,6 +55,7 @@ import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportCommonEntity.CustomerBoundaryFilterType;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 
 import java.awt.Rectangle;
@@ -286,6 +287,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
 
+	@FindBy(how = How.XPATH, using = "//table[@id='datatableSurveys']/tbody/tr")
+	protected List<WebElement> numberofSurveyRecords;
+	
 	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
@@ -368,7 +372,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	protected LatLongSelectionControl latLongSelectionControl = null;
-
+	protected BaseMapViewPage mapViewPage = null;
 	protected String pagination = "100";
 
 	public enum CustomerBoundaryType {
@@ -438,6 +442,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
+		mapViewPage = new BaseMapViewPage(driver, testSetup,  strBaseURL,strPageURL);
+		PageFactory.initElements(driver, mapViewPage);
 	}
 
 	@Override
@@ -1681,6 +1687,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return records.size();
 	}
 
+	public int getNumberofSurveyRecords() {
+		List<WebElement> records = this.numberofSurveyRecords;
+		return records.size();
+	}
+	
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 	}
@@ -3771,6 +3782,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
 
+	public boolean isReportColumnSorted(String columnName, String type) {
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
+				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
+	}
+	
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
 			List<Map<String, String>> views) {

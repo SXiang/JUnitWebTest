@@ -13,6 +13,15 @@ public class ResourceKeys {
 	public static final String AssessmentReports_AddNew = "AssessmentReports_AddNew";
 	public static final String AssessmentReports_PageTitle = "AssessmentReports_PageTitle";
 
+	// EQ report resource keys.
+	public static final String EQReport_LineSelector = "EQReport_LineSelector";
+	public static final String EQReport_SelectLineSegments = "EQReport_SelectLineSegments";
+	public static final String EQReport_EQTablePDF = "EQReport_EQTablePDF";
+	public static final String EQReport_PageTitle = "EQReport_PageTitle";
+	public static final String EQReport_PageTitleNew = "EQReport_PageTitleNew";
+	public static final String EQReports_AddNew = "EQReports_AddNew";
+	public static final String EQReports_PageTitle = "EQReports_PageTitle";
+	
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";

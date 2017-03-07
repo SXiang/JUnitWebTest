@@ -10,6 +10,7 @@ import common.source.TestSetup;
 import surveyor.scommon.actions.data.AssessmentReportDataReader;
 import surveyor.scommon.actions.data.AssessmentReportDataReader.AssessmentReportsDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
+import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.AssessmentReportEntity;
@@ -122,7 +123,7 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+	public void setWorkingReportsDataRow(ReportsBaseDataRow dataRow) throws Exception {
 		workingDataRow.set((AssessmentReportsDataRow) dataRow);
 	}
 
@@ -139,6 +140,11 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		return new AssessmentReportEntity();
+	}
+	
+	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) {
@@ -148,7 +154,7 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
-		// No Assessment reports specific action.
+		addAdditionalWorkingDataForReports(reportEntity);
     }
 
 	@Override
