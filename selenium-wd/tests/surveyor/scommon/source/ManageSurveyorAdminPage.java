@@ -32,6 +32,10 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/thead/tr/th")
 	protected List<WebElement> tableHeader;
 
+	// Overridden webElement to handle id case difference.
+	@FindBy(how = How.XPATH, using = "//*[@id='LocationId']")
+	protected WebElement dropDownLocation;
+
 	/**
 	 * @param driver
 	 * @param baseURL
