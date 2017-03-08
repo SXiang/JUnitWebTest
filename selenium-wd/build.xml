@@ -767,8 +767,7 @@
     </junit>
   </target>
   <target name="tc_localrun" depends="compiletestsuite" description="Run test suite tests">
-	<junit printsummary="yes" haltonerror="no" haltonfailure="no"
-				showoutput="yes">
+	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
 		<sysproperty key = "testReportCategory" value = "LocalBranchTest" />
 		<sysproperty key = "test_run_id" value = "${local_date}"/>
 		<classpath>
@@ -780,8 +779,8 @@
 		<batchtest fork="yes" todir="${reports}/regression/xml">
 			<formatter type="xml" />
 			<fileset dir="${build}">
-				<include name="**/ComplianceReportsPageTest4.class" />
-				<include name="**/ComplianceReportsPageTest6.class" />
+	          <include name="**/ManageSurveyorPageTest.class" />
+	          <include name="**/ManageSurveyorAdminPageTest.class" />
 			</fileset>
 		</batchtest>
 	</junit>
