@@ -64,7 +64,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "legend-container")
 	private WebElement legendContainer;
-	
+
 	@FindBy(id = "zoom-level")
 	private WebElement zoomLevel;
 
@@ -76,13 +76,13 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "map")
 	private WebElement canvas;
-	
+
 	@FindBy(id = "DefaultLatitude")
 	private WebElement defaultLatitudeInput;
-	
+
 	@FindBy(id = "DefaultLongitude")
 	private WebElement defaultLongitudeInput;
-	
+
 	public LatLongSelectionControl(WebDriver driver) {
 		super(driver);
 	}
@@ -267,8 +267,8 @@ public class LatLongSelectionControl extends BaseControl {
 	 */
 	public LatLongSelectionControl selectCustomerBoundaryType(String filterByTypeValue) {
 		Log.info("Select customer boundary type '"+filterByTypeValue+"'");
-		waitForElementToBeEnabled(filterByTypeDropDown);
-		selectDropdownOption(filterByTypeDropDown, filterByTypeValue);
+		waitForElementToBeEnabled(getFilterByTypeDropDown());
+		selectDropdownOption(getFilterByTypeDropDown(), filterByTypeValue);
 		return this;
 	}
 
@@ -433,10 +433,10 @@ public class LatLongSelectionControl extends BaseControl {
 		Coordinates rb = getGPSPosition(canvas, dimension.width-div, dimension.height-buttomdiv);
 		double longWidth = Math.abs(rb.getX() - lt.getX());
 		double latHeight = Math.abs(rb.getY() - lt.getY());
-		
+
 		double longRatio = (dimension.width-2*div) / longWidth;
 		double latRatio = (dimension.height-legendHight-div-buttomdiv) / latHeight;
-		
+
 		for (int i =0; i < gpsPosition.size(); i++)
 		{
 			Coordinates coord = gpsPosition.get(i);
@@ -446,13 +446,17 @@ public class LatLongSelectionControl extends BaseControl {
 		}
 		return coordinates;
 	}
-	
+
 	public Coordinates getGPSPosition(WebElement canvas, int x, int y){
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, x, y).build().perform();
 		return new Coordinates(NumberUtility.getDoubleValueOf(getLongitude()), NumberUtility.getDoubleValueOf(getLatitude()));
 	}
-	
+
+	public WebElement getFilterByTypeDropDown() {
+		return filterByTypeDropDown;
+	}
+
 	public boolean verifyNoBoundaryNameSearchResult() {
 		Log.method("verifyNoBoundaryNameSearchResult");
 		By noResultBy = By.xpath(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "//div[text()='no results...']");

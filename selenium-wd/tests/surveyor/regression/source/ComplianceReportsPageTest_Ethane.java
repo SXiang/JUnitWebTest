@@ -88,7 +88,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
-	protected ComplianceReportsPage getComplianceReportsPage() {
+	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
 

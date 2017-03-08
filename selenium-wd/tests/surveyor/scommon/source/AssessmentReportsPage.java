@@ -43,7 +43,7 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
-	public void fillReportSpecific(BaseReportEntity reports) {
+	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		AssessmentReportEntity reportsCompliance = (AssessmentReportEntity) reports;
 
 		// 1. Report general

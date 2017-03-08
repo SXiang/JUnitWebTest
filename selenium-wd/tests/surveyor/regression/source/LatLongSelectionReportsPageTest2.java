@@ -57,7 +57,7 @@ public class LatLongSelectionReportsPageTest2 extends BaseReportsPageTest {
 		initializePageObjects(new ComplianceReportsPage(getDriver(), getBaseURL(), getTestSetup()));
 	}
 
-	protected ComplianceReportsPage getComplianceReportsPage() {
+	private ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)getReportsPage();
 	}
 
