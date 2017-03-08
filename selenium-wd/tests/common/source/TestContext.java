@@ -20,6 +20,8 @@ import com.relevantcodes.extentreports.model.ITest;
 public enum TestContext {
 	INSTANCE;
 
+	private static final String DEFAULT_TEST_STATUS = "FAIL";
+
 	private TestSetup testSetup;
 	private String userCulture = null;
 	private String loggedInUserName;
@@ -28,21 +30,31 @@ public enum TestContext {
 	private Map<String, ExtentTest> extentTestMap;
 	private List<String> testMessage;
 	private Set<String> testReportIdSet;
-	private String currentTestStatus = "PASS";
 	private int numTestMessagesToRetain = 5;
 	private String testClassName;
 	private ThreadLocalMap<LogData> threadLogData;
+	private ThreadLocalMap<String> threadTestStatus;
 
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
 		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
 		this.threadLogData = new ThreadLocalMap<LogData>(ThreadLocalStore.getLogData());
+		this.threadTestStatus = new ThreadLocalMap<String>(DEFAULT_TEST_STATUS);
 		this.getLogData().setIndexID(getIndexIdForTestRun());
 		this.extentTestMap = ThreadLocalStore.getExtentTestMap();
 	}
 
 	public String getTestStatus() {
-		return currentTestStatus;
+		String status = threadTestStatus.getObject();
+		if (status != null) {
+			return status;
+		}
+
+		return DEFAULT_TEST_STATUS;
+	}
+
+	public void setTestStatus(String testStatus) {
+		this.threadTestStatus.putObject(testStatus);
 	}
 
 	public Set<String> getTestReportIdSet(){
@@ -57,10 +69,6 @@ public enum TestContext {
 			return false;
 		}
 		return this.testReportIdSet.add(reportId.trim());
-	}
-
-	public void setTestStatus(String testStatus) {
-		this.currentTestStatus = testStatus;
 	}
 
 	public ExtentTest getExtentTest(String className) {
