@@ -210,6 +210,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public boolean searchInvestigationReport(String reportTitle, String reportCreatedBy) {
 		this.inputInvestigationSearchReport.sendKeys(reportTitle);
+		this.waitForAJAXCallsToComplete();
 		if (this.tdInvReportTitle.getText().contentEquals(reportTitle)) {
 			if (this.tdInvReportCreatedBy.getText().contentEquals(reportCreatedBy))
 				return true;
