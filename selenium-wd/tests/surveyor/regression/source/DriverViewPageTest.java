@@ -126,7 +126,7 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	 * 6. Status is red and on expanding flow, temp gauges are also red
 	 * @throws Exception
 	 */
-	@Ignore
+	@Test
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() throws Exception {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
