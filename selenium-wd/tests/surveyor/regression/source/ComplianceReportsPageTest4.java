@@ -133,9 +133,9 @@ public class ComplianceReportsPageTest4 extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, 8);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 8);
 		complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, NOTSET);
-		complianceReportsPageAction.selectReportMode("Standard", 7);
-		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 7);
-		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 7));
+		complianceReportsPageAction.selectReportMode("Standard", 9);
+		complianceReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, 9);
+		assertTrue(complianceReportsPageAction.verifySearchedSurveysMatchSelectedMode(EMPTY, 9));
 		modifyReport(complianceReportsPageAction, 9);
 		waitForReportGenerationToComplete(complianceReportsPageAction, 9);
 		assertTrue(complianceReportsPageAction.verifyReportFilesArePresent(EMPTY, 9));

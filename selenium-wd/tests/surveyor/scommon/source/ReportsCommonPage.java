@@ -3816,4 +3816,18 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public String getSurveyMissingMessage() {
 		return ComplianceReport_SurveyMissingMessage;
 	}
+
+	public boolean isSurveyModesValidForReportMode(String reportMode, List<String> distinctSurveyModes) {
+		if(distinctSurveyModes==null){
+			return false;
+		}
+		for(String surveyMode:distinctSurveyModes){
+			if(!isSurveyModeValidForReportMode(reportMode, surveyMode)){
+				Log.warn(String.format("SurveyMode '%s' is not valid for ReportMode '%s'", surveyMode, reportMode));
+				return false;
+			}
+			Log.info(String.format("SurveyMode '%s' is valid for ReportMode '%s'", surveyMode, reportMode));
+		}
+		return true;
+	}
 }
