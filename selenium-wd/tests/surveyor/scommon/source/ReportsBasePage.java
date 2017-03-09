@@ -3003,6 +3003,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			validSurveyType.add(SurveyModeFilter.Operator.toString());
 			break;
 		case RapidResponse:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
 			validSurveyType.add(SurveyModeFilter.RapidResponse.toString());
 			break;
 		case Manual:
