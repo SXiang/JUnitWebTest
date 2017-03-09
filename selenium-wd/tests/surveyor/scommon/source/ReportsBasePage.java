@@ -740,7 +740,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		addReport();
 
 		// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
-		Report objReport = Report.getReport(reports.getRptTitle());
+		int attempts = 5;
+		Report objReport = null;
+		do {
+			objReport = Report.getReport(reports.getRptTitle());
+			TestContext.INSTANCE.stayIdle(1);
+		} while (objReport == null && attempts-- > 0);
+
 		if (objReport != null) {
 			Log.info(String.format("DE2762-ReportCleanupPostTestFix: CREATED report -> ReportTitle=%s; ReportId=%s", reports.getRptTitle(), objReport.getId()));
 		} else {

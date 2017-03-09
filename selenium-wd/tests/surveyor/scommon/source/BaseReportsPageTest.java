@@ -118,6 +118,8 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		String downloadDirectory = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		Set<String> reportIdSet = TestContext.INSTANCE.getTestReportIdSet();
 
+		getReportsPage().open();
+
 		//Synchronize iteration on the backed set.
 		synchronized(reportIdSet) {
 			Iterator<String> setIteration = reportIdSet.iterator();
@@ -145,6 +147,8 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 				}
 			}
 		}
+
+		getReportsPage().open();
 
 		Log.info("Clearing test report set ..");
 		TestContext.INSTANCE.clearTestReportSet();
