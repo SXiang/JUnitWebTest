@@ -2,8 +2,8 @@
 <Configuration>
   <Appenders>
     <!-- Time and size based triggering policies. Create upto 7 archives on same day (1-7), stored in directory based on  current year and month, compress each archive using zip -->	
-	<RollingRandomAccessFile name="RollingRandomAccessFile" fileName=".\logs\qaauto.log"
-						append="true" filePattern=".\logs\$${date:yyyy-MM}\qaauto-%d{yyyy-MM-dd}-%i.log.zip">
+	<RollingRandomAccessFile name="RollingRandomAccessFile" fileName="C:\qalogs\qaauto.log"
+						append="true" filePattern="C:\qalogs\$${date:yyyy-MM}\qaauto-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
 			<Pattern>%d{dd MMM yyyy HH:mm:ss,SSS} - [%t] %p %m%n</Pattern>
 		</PatternLayout>

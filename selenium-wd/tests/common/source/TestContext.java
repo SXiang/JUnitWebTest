@@ -29,15 +29,15 @@ public enum TestContext {
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
 	private List<String> testMessage;
-	private Set<String> testReportIdSet;
 	private int numTestMessagesToRetain = 5;
 	private String testClassName;
+	private ThreadLocalMap<Set<String>> threadReportIdSet;
 	private ThreadLocalMap<LogData> threadLogData;
 	private ThreadLocalMap<String> threadTestStatus;
 
 	private TestContext() {
 		this.testMessage = Collections.synchronizedList(new ArrayList<String>(numTestMessagesToRetain));
-		this.testReportIdSet = Collections.synchronizedSet(new HashSet<String>());
+		this.threadReportIdSet = new ThreadLocalMap<Set<String>>(Collections.synchronizedSet(new HashSet<String>()));
 		this.threadLogData = new ThreadLocalMap<LogData>(ThreadLocalStore.getLogData());
 		this.threadTestStatus = new ThreadLocalMap<String>(DEFAULT_TEST_STATUS);
 		this.getLogData().setIndexID(getIndexIdForTestRun());
@@ -58,17 +58,44 @@ public enum TestContext {
 	}
 
 	public Set<String> getTestReportIdSet(){
-		return testReportIdSet;
+		Set<String> reportIdSet = threadReportIdSet.getObject();
+		if (reportIdSet != null) {
+			return reportIdSet;
+		}
+
+		threadReportIdSet.putObject(Collections.synchronizedSet(new HashSet<String>()));;
+		return threadReportIdSet.getObject();
 	}
+
 	public void clearTestReportSet() {
-		testReportIdSet.clear();
+		Set<String> testReportIdSet = getTestReportIdSet();
+		if (testReportIdSet != null) {
+			testReportIdSet.clear();
+		}
 	}
 
 	public boolean addReportId(String reportId) {
 		if(reportId==null||reportId.isEmpty()){
 			return false;
 		}
-		return this.testReportIdSet.add(reportId.trim());
+
+		Set<String> testReportIdSet = getTestReportIdSet();
+		if (testReportIdSet != null) {
+			return testReportIdSet.add(reportId.trim());
+		}
+
+		return false;
+	}
+
+	public LogData getLogData() {
+		if (threadLogData.getObject() == null) {
+			// If thread specific LogData not present add new.
+			LogData data = ThreadLocalStore.getLogData();
+			data.setIndexID(getIndexIdForTestRun());
+			threadLogData.putObject(data);
+		}
+
+		return threadLogData.getObject();
 	}
 
 	public ExtentTest getExtentTest(String className) {
@@ -309,16 +336,5 @@ public enum TestContext {
 
 	public void setExtentTestMap(Map<String, ExtentTest> extentTestMap) {
 		this.extentTestMap = extentTestMap;
-	}
-
-	public LogData getLogData() {
-		if (threadLogData.getObject() == null) {
-			// If thread specific LogData not present add new.
-			LogData data = ThreadLocalStore.getLogData();
-			data.setIndexID(getIndexIdForTestRun());
-			threadLogData.putObject(data);
-		}
-
-		return threadLogData.getObject();
 	}
 }
