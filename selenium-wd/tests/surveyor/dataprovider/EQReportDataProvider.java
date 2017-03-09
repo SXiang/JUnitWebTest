@@ -39,20 +39,20 @@ public class EQReportDataProvider extends ReportDataProvider {
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC566() {
-		return new Object[][] {// * Need customer su */
-			{ "TC566" /*TestCaseID*/, 4 /*userDataRowID*/,  1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		return new Object[][] {
+			{ "TC566" /*TestCaseID*/, 2 /*userDataRowID*/,  1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC651() {
-		return new Object[][] {// * Need customer su */
-			{ "TC651" /*TestCaseID*/, 4 /*userDataRowID*/,  4 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		return new Object[][] {
+			{ "TC651" /*TestCaseID*/, 2 /*userDataRowID*/,  4 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC655() {
-		return new Object[][] {// * Need customer su */
-			{ "TC655" /*TestCaseID*/, 4 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		return new Object[][] {
+			{ "TC655" /*TestCaseID*/, 2 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }
