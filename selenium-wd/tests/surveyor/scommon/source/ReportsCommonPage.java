@@ -224,9 +224,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	protected static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
-	public static List<String[]> preCoverageForecastTo70;
-	public static List<String[]> preCoverageForecast;
-
 	@FindBy(how = How.ID, using = "compliance-zip-pdf-download")
 	protected WebElement zipImg;
 
