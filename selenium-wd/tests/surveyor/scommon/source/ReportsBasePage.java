@@ -1728,12 +1728,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-				WebElement reportViewer;
+				WebElement reportViewerOrError;
+
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							Log.info("RowSize == 1. Getting ReportViewer button(Or error) element...");
+							reportViewerOrError = getTable().findElement(By.xpath("tr/td[5]/a[@title='Report Viewer']|tr/td[5]/*[@class='error-processing'] "));
 						} else {
 							Log.info("First call -> skipNewlyAddedRows()");
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1741,8 +1742,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							reportViewer = getTable().findElement(
-									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							reportViewerOrError = getTable().findElement(
+									By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']|tr[" + rowNum + "]/td[5]/*[@class='error-processing'] "));
 							//* Double check the correctness of the rowNum
 							Log.info("Second call -> skipNewlyAddedRows()");
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,

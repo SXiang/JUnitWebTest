@@ -6,8 +6,8 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -155,7 +155,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 * Results:
 		 *	- Report is not generated and user is navigated back to EQ report list page
 		 */
-		@Test/* Using Picarro admin now, and need to be changed to customer supervisor */
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC566, location = EQReportDataProvider.class)
 		public void TC566_CancelButtonForNewAndCopyEQReport(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -190,7 +190,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 *	- "Already Added" message is displayed on the search button
 		 *	- User is able to add the survey
 		 */
-		@Test /* Using Picarro admin now, and need to be changed to customer supervisor */
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC651, location = EQReportDataProvider.class)
 		public void TC651_AlreadyAddedMessageForNewEQReport(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -202,8 +202,8 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			String rptTitle = EQReportsPageActions.workingDataRow.get().title;
-			eqReportsPage.clickOnCopyReport(rptTitle, SQAPICAD);
-			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_PICARRO, EQDAYSURVEY));
+			eqReportsPage.clickOnCopyReport(rptTitle, SQACUSSU);
+			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_SQACUS, EQDAYSURVEY));
 		}
 		
 		/**
@@ -217,7 +217,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		 * Results:
 		 *	- Selected number of records will be listed in the table
 		 */
-		@Test/* Using Picarro admin now, and need to be changed to customer supervisor */
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC655, location = EQReportDataProvider.class)
 		public void TC655_EQSurveySelectorPagination(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
