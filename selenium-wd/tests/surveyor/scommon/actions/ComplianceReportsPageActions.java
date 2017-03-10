@@ -432,10 +432,10 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.get().title,withPredication);
 	}
-	public boolean verifySSRSCoverageForecastTableInfoWithPreviousResult(String data, Integer dataRowID) throws Exception {
+	public Map<String, List<String[]>> getSSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfoWithPreviousResult", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().verifyCoverageForecastValuesTableWithPreviousResult(downloadPath, workingDataRow.get().title);
+		return this.getComplianceReportsPage().getSSRSCoverageForecastTableInfo(downloadPath, workingDataRow.get().title);
 	}
 
 	/* Invoke action using specified ActionName */
@@ -466,7 +466,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifySSRSCoverageForecastTableInfoWithPreviousResult")) { return this.verifySSRSCoverageForecastTableInfoWithPreviousResult(data, dataRowID); }
 		return false;
 	}
 

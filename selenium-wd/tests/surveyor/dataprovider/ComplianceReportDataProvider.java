@@ -585,7 +585,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "9", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEET, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList9, tablesList9, viewList9, viewLayerList9, srchAreaPref9 },
 				{ "10", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMT, "0", null, null, null, null, null, null, null, ReportModeFilter.Manual, SurveyModeFilter.Manual, null, createMapAndBoundaryList(), tagList10, tablesList10, viewList10, viewLayerList10, srchAreaPref10 },
 				{ "12", SQAPICSUP, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", SQACUSSURVEYOR /*surveyorUnit*/, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList12, tablesList12, viewList12, viewLayerList12, srchAreaPref12 },
-				{ "13", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList13, tablesList13, viewList13, viewLayerList13, srchAreaPref13 },
+				{ "13", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", SQACUSSURVEYOR /*surveyorUnit*/, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList13, tablesList13, viewList13, viewLayerList13, srchAreaPref13 },
 				{ "14", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList14, tablesList14, viewList14, viewLayerList14, srchAreaPref14 },
 				{ "15", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, null, null, createMapAndBoundaryList(), tagList15, tablesList15, viewList15, viewLayerList15, srchAreaPref15 }, // Include Date filter for 30 days
 				{ "16", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONECT, "150", SQACUSSURVEYOR /*surveyorUnit*/, null, null, null, null, null, true, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList16, tablesList16, viewList16, viewLayerList16, srchAreaPref16 },
@@ -595,7 +595,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 				{ "20", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEMT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList20, tablesList20, viewList20, viewLayerList20, srchAreaPref20 }, // include dates
 				{ "21", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList21, tablesList21, viewList21, viewLayerList21, srchAreaPref21 },
 				{ "22", PICDFADMIN, USERPASSWORDHASH, "Picarro", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList22, tablesList22, viewList22, viewLayerList22, srchAreaPref22 },
-				{ "23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", null, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23, srchAreaPref23 }
+				{ "23", SQACUSSU, USERPASSWORDHASH, "sqacus", TIMEZONEPT, "0", SQACUSSURVEYOR /*surveyorUnit*/, null, null, null, null, null, null, null, SurveyModeFilter.Standard, null, createMapAndBoundaryList(), tagList23, tablesList23, viewList23, viewLayerList23, srchAreaPref23 }
 				};
 	}
 

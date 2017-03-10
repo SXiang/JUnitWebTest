@@ -1306,27 +1306,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return true;
 	}
 
-	public boolean verifyCoverageForecastValuesTableWithPreviousResult(String actualPath, String reportTitle)
-			throws IOException {
-		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTableWithPreviousResult", actualPath,
-				reportTitle);
-		PDFTableUtility pdfTableUtility = new PDFTableUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
-		String reportName = "CR-" + reportId;
-		setReportName(reportName);
-		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
-		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport,
-				PDFTable.COVERAGEFORECASTTO70);
-
-		boolean result = pdfTableUtility.areTablesEqual(coverageForecast, preCoverageForecast)
-				&& pdfTableUtility.areTablesEqual(coverageForecastTo70, preCoverageForecastTo70);
-		preCoverageForecast = coverageForecast;
-		preCoverageForecastTo70 = coverageForecastTo70;
-		return result;
-	}
-
 	/**
 	 * Method to verify the show Coverage Forecast Table in SSRS
 	 *
@@ -1343,17 +1322,13 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public boolean verifyCoverageForecastValuesTable(String actualPath, String reportTitle, boolean withPrediction)
 			throws IOException {
 		Log.method("ComplianceReportsPage.verifyCoverageForecastValuesTable", actualPath, reportTitle, withPrediction);
-		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
 		String reportName = "CR-" + reportId;
 		setReportName(reportName);
-		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
-		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport,
-				PDFTable.COVERAGEFORECASTTO70);
-		preCoverageForecast = coverageForecast;
-		preCoverageForecastTo70 = coverageForecastTo70;
+		Map<String, List<String[]>> coverageForecastMap = getSSRSCoverageForecastTableInfo(actualPath, reportTitle);
+		List<String[]> coverageForecast = coverageForecastMap.get("coverageForecast");
+		List<String[]> coverageForecastTo70 = coverageForecastMap.get("coverageForecastTo70");
 		if (!withPrediction && !coverageForecastTo70.isEmpty()) {
 			return false;
 		}
@@ -1361,6 +1336,20 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 				withPrediction);
 	}
 
+	public Map<String, List<String[]>> getSSRSCoverageForecastTableInfo(String actualPath, String reportTitle) throws IOException{
+		Map<String, List<String[]>> coverageForecastMap = new HashMap<String, List<String[]>>();
+		PDFTableUtility pdfTableUtility = new PDFTableUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6) + ".pdf";
+		List<String[]> coverageForecast = pdfTableUtility.extractPDFTable(actualReport, PDFTable.COVERAGEFORECAST);
+		List<String[]> coverageForecastTo70 = pdfTableUtility.extractPDFTable(actualReport,
+				PDFTable.COVERAGEFORECASTTO70);
+		coverageForecastMap.put("coverageForecast", coverageForecast);
+		coverageForecastMap.put("coverageForecastTo70", coverageForecastTo70);
+		return coverageForecastMap;
+	}
+	
 	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast,
 			List<String[]> coverageForecastTo70, boolean withPrediction) {
 		int startIndex = 0;
