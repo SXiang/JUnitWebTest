@@ -107,6 +107,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogCategory;
 import common.source.LogHelper;
@@ -136,6 +137,7 @@ import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.ShapeFileUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
@@ -286,7 +288,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatableSurveys']/tbody/tr")
 	protected List<WebElement> numberofSurveyRecords;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
 	protected String btnDeleteConfirmXpath = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]";
@@ -1688,7 +1690,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<WebElement> records = this.numberofSurveyRecords;
 		return records.size();
 	}
-	
+
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 	}
@@ -1793,6 +1795,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
 		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
@@ -3580,24 +3584,37 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return new PDFUtility().extractPDFText(pdfFilePath);
 	}
 
-	protected boolean fillCustomerBoundary(ReportCommonEntity reportsEntity) {
+	protected boolean fillCustomerBoundary(ReportCommonEntity reportsEntity) throws Exception {
 		return fillCustomerBoundary(reportsEntity.getCustomerBoundaryFilterType().toString(),
 				reportsEntity.getCustomerBoundaryName());
 	}
 
-	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
-		return fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/);
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) throws Exception {
+		// Try few times before failure
+		boolean actionSuccess = RetryUtil.retryOnException(
+				() -> { return fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/); },
+				() -> { return true; },
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+
+		if (!actionSuccess) {
+			Log.error(String.format("fillCustomerBoundary() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
+			throw new Exception("Failure when executing fillCustomerBoundary.");
+		}
+
+		return actionSuccess;
 	}
 
-	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> outBoundaryNames) {
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> boundaryNamesToVerify) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
+		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 		boolean setSuccess = false;
-		if (outBoundaryNames != null) {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		if (boundaryNamesToVerify != null) {
+			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
 		} else {
 			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
 		}
@@ -3786,7 +3803,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
 				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
-	
+
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
 			List<Map<String, String>> views) {
