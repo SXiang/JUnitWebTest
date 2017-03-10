@@ -609,7 +609,7 @@ public class PDFTableUtility extends PDFUtility{
 		Assert.assertTrue(value1.equals(expectedTable[rowNum][colNum])||value1.matches(expectedTable[rowNum][colNum]));
 	}
 
-	public boolean areTablesEqual(List<String[]> currentTable, List<String[]> expectedTable){
+	public static boolean areTablesEqual(List<String[]> currentTable, List<String[]> expectedTable){
 	         if(currentTable.size()!=expectedTable.size()){
 	        	 return false;
 	         }
