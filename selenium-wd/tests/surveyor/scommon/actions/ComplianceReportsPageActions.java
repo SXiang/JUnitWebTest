@@ -17,6 +17,7 @@ import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
+import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -369,10 +370,8 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		Log.info(String.format("All Survey mode values found -> ", LogHelper.listToString(surveyModes)));
 		List<String> distinctSurveyModes = ArrayUtility.getDistinctValues(surveyModes);
 		Log.info(String.format("Distinct Survey mode values found -> ", LogHelper.listToString(distinctSurveyModes)));
-		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
-		Log.info(String.format("distinctSurveyModes.size() = %d", distinctSurveyModes.size()));
-		Log.info(String.format("Comparing survey mode values. Expected (distinctSurveyModes.get(0)) -'%s'. Actual (reportsDataRow.reportMode) -'%s'", distinctSurveyModes.get(0), reportsDataRow.reportMode));
-		return (distinctSurveyModes != null && distinctSurveyModes.size()==1 && distinctSurveyModes.get(0).equalsIgnoreCase(reportsDataRow.reportMode));
+		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);		
+		return  this.getReportsCommonPage().isSurveyModesValidForReportMode(reportsDataRow.reportMode, distinctSurveyModes);
 	}
 
 	/**
@@ -431,10 +430,10 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getComplianceReportsPage().verifyCoverageForecastValuesTable(downloadPath, workingDataRow.get().title,withPredication);
 	}
-	public boolean verifySSRSCoverageForecastTableInfoWithPreviousResult(String data, Integer dataRowID) throws Exception {
+	public Map<String, List<String[]>> getSSRSCoverageForecastTableInfo(String data, Integer dataRowID) throws Exception {
 		logAction("ComplianceReportsPageActions.verifySSRSCoverageForecastTableInfoWithPreviousResult", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getComplianceReportsPage().verifyCoverageForecastValuesTableWithPreviousResult(downloadPath, workingDataRow.get().title);
+		return this.getComplianceReportsPage().getSSRSCoverageForecastTableInfo(downloadPath, workingDataRow.get().title);
 	}
 
 	/* Invoke action using specified ActionName */
@@ -465,7 +464,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
-		else if (actionName.equals("verifySSRSCoverageForecastTableInfoWithPreviousResult")) { return this.verifySSRSCoverageForecastTableInfoWithPreviousResult(data, dataRowID); }
 		return false;
 	}
 
@@ -489,10 +487,11 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		ReportsCommonDataRow compRptDataRow = null;
 		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
 			compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
-		} else {
-			compRptDataRow = getDataReader().getDataRow(dataRowID);
-		}
-		return compRptDataRow;
+			if(compRptDataRow.rowID.equals(dataRowID.toString())){
+				return compRptDataRow;
+			}
+		} 
+		return getDataReader().getDataRow(dataRowID);
 	}
 
 	@Override
@@ -511,7 +510,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	public void setWorkingReportsDataRow(ReportsCommonDataRow dataRow) throws Exception {
+	public void setWorkingReportsDataRow(ReportsBaseDataRow dataRow) throws Exception {
 		workingDataRow.set((ComplianceReportsDataRow) dataRow);
 	}
 
@@ -543,6 +542,11 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	protected ReportCommonEntity createNewReportsEntity() throws Exception {
+		return new ComplianceReportEntity();
+	}
+	
+	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) {
@@ -564,6 +568,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
         }
 
         reportEntity.setSearchAreaPreference(srchAreaPref);
+        addAdditionalWorkingDataForReports(reportEntity);
 	}
 
 	@Override

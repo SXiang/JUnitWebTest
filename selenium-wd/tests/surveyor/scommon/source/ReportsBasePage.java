@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1219,7 +1220,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForSurveySelectorCheckBoxToLoad() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return checkboxSurFirst.isDisplayed();
+				boolean displayed = false;
+				try {
+					displayed = checkboxSurFirst.isDisplayed();
+				}catch(StaleElementReferenceException e){
+					displayed = false;
+				}
+				return displayed;
 			}
 		});
 	}
@@ -1227,7 +1234,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForSurveySelectorCheckBoxToBeEnabled() {
 		(new WebDriverWait(driver, timeout + 15)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return checkboxSurFirst.isEnabled();
+				boolean enabled = false;
+				try {
+					enabled = checkboxSurFirst.isEnabled();
+				}catch(StaleElementReferenceException e){
+					enabled = false;
+				}
+				return enabled;
 			}
 		});
 	}
@@ -1733,12 +1746,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				long startTime = System.currentTimeMillis();
 				long elapsedTime = 0;
 				boolean bContinue = true;
-				WebElement reportViewer;
+				WebElement reportViewerOrError;
+
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
-							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							Log.info("RowSize == 1. Getting ReportViewer button(Or error) element...");
+							reportViewerOrError = getTable().findElement(By.xpath("tr/td[5]/a[@title='Report Viewer']|tr/td[5]/*[@class='error-processing'] "));
 						} else {
 							Log.info("First call -> skipNewlyAddedRows()");
 							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -1746,8 +1760,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if (rowNum > maxRows) {
 								break;
 							}
-							reportViewer = getTable().findElement(
-									By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							reportViewerOrError = getTable().findElement(
+									By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']|tr[" + rowNum + "]/td[5]/*[@class='error-processing'] "));
 							//* Double check the correctness of the rowNum
 							Log.info("Second call -> skipNewlyAddedRows()");
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, rowNum,
@@ -2994,7 +3008,36 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return !findInvalidSurveyType(validType);
 
 	}
-
+	
+	/**
+	 * Validate survey mode for specific report mode
+	 * @param reportMode
+	 * @param surveyMode
+	 * @return
+	 */
+	public boolean isSurveyModeValidForReportMode(String reportMode, String surveyMode) {
+		List<String> validSurveyType = new ArrayList<String>();
+		switch (ReportModeFilter.valueOf(reportMode)) {
+		case Standard:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			break;
+		case RapidResponse:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			validSurveyType.add(SurveyModeFilter.RapidResponse.toString());
+			break;
+		case Manual:
+			validSurveyType.add(SurveyModeFilter.Manual.toString());
+			break;
+		default:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			break;
+		}
+		return validSurveyType.contains(surveyMode);
+	}
+	
 	/**
 	 * Click on close button in report viewer.
 	 */

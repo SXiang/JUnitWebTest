@@ -205,6 +205,10 @@ public class ReportCommonEntity extends BaseReportEntity {
 		}
 	}
 
+	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String surveyorUnit, List<String> tagList) {
+		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);
+	}
+	
 	public ReportCommonEntity(String rptTitle, String strCreatedBy, String customer, String timeZone, String exclusionRadius, List<String> listBoundary,
 			List<Map<String, String>> tablesList, String surveyorUnit, List<String> tagList, List<Map<String, String>> viewList) {
 		super(rptTitle, strCreatedBy, customer, timeZone, surveyorUnit,tagList);

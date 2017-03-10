@@ -3,19 +3,24 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEMT;
-import java.util.ArrayList;
-import java.util.List;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
+import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-import surveyor.scommon.source.Coordinates;
-import surveyor.scommon.source.EqReportsPage;
-import surveyor.scommon.source.LatLongSelectionControl;
-import surveyor.scommon.entities.EQReportEntity;
-import surveyor.scommon.source.BaseReportsPageTest;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import common.source.Log;
+import surveyor.scommon.source.EQReportsPage;
+import surveyor.dataprovider.EQReportDataProvider;
+import surveyor.scommon.actions.EQReportsPageActions;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /**
@@ -23,62 +28,219 @@ import surveyor.scommon.source.SurveyorTestRunner;
  *
  */
 @RunWith(SurveyorTestRunner.class)
-public class EQReportsPageTest extends BaseReportsPageTest {
-	private static EqReportsPage eqReportsPage = null;
-	private static LatLongSelectionControl latLongSelectionControl = null;
+public class EQReportsPageTest extends BaseReportsPageActionTest {
 
-	@BeforeClass
-	public static void setupComplianceReportsPageTest() {
-		initializePageObjects();
+		private static LoginPageActions loginPageAction;
+		private static EQReportsPageActions eqReportsPageAction;
+		private static EQReportsPage eqReportsPage;
 
-	}
-
-	private static void initializePageObjects() {
-		eqReportsPage = new EqReportsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), eqReportsPage);
-		latLongSelectionControl = new LatLongSelectionControl(getDriver());
-		PageFactory.initElements(getDriver(), latLongSelectionControl);
-	}
-
-	/**
-	 * Unit Test
-	 *
-	 *
-	 */
-	@Test
-	public void ComplianceReportTest_VerifyNonEthaneReport() throws Exception {
-		eqReportsPage.login(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		eqReportsPage.open();
-		String testCaseName = "EQUnitTest";
-
-		List<List<Coordinates>> coordList = new ArrayList<List<Coordinates>>();
-		List<Coordinates> listOfCords = new ArrayList<Coordinates>();
-		List<Coordinates> listOfCords1 = new ArrayList<Coordinates>();
-		listOfCords.add(0, new Coordinates(200, 200));
-		listOfCords.add(1, new Coordinates(220, 300));
-		listOfCords.add(2, new Coordinates(240, 400));
-		listOfCords1.add(0, new Coordinates(100, 200));
-		listOfCords1.add(1, new Coordinates(120, 300));
-		listOfCords1.add(2, new Coordinates(140, 400));
-		coordList.add(listOfCords);
-		coordList.add(listOfCords1);
-
-		String rptTitle = "Report" + getTestSetup().getRandomNumber();
-
-		List<String> tagList = new ArrayList<String>();
-		tagList.add("EQGPSoffset");
-
-		EQReportEntity eqRpt = new EQReportEntity(rptTitle, getTestSetup().getLoginUser(), "Picarro", TIMEZONEMT, "", tagList, coordList);
-
-		eqReportsPage.addNewReport(eqRpt);
-
-		if ((eqReportsPage.checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseName))) {
-			assertTrue(eqReportsPage.validatePdfFiles(rptTitle, getTestSetup().getDownloadPath()));
+		@BeforeClass
+		public static void beforeClass() {
+			initializeTestObjects();
 		}
-		assertTrue(eqReportsPage.verifyDrivingSurveysTable(rptTitle, getTestSetup().getDownloadPath()));
-		assertTrue(eqReportsPage.verifyEmissionQuantificationDataTable(rptTitle, getTestSetup().getDownloadPath()));
-		assertTrue(eqReportsPage.verifyViewsImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName, testCaseName));
 
-	}
+		@Before
+		public void beforeTest() throws Exception {
+			initializeTestObjects();
+
+			initializePageActions();
+
+			// Select run mode here.
+			setPropertiesForTestRunMode();
+		}
+
+		private static void setPropertiesForTestRunMode() throws Exception {
+			setTestRunMode(ReportTestRunMode.FullTestRun);
+
+			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+				eqReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+			}
+		}
+
+		/**
+		 * Initializes the page action objects.
+		 * @throws Exception
+		 */
+		protected static void initializePageActions() throws Exception {
+			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
+			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
+			setReportsPage(eqReportsPage);
+		}
+
+		/**
+		 * Test Case ID: TC561_EQReportPagination
+		 * Test Description: Pagination - EQ Report - Picarro Admin user
+		 * Script:
+		 *	- Login as Picarro Admin user
+		 *	- On Home Page, click Reports -> EQ 
+		 *	- 10,25,50 and 100 Reports selection on EQ report screen
+		 * Results:
+		 *	- Selected number of reports will be listed in the table
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC561, location = EQReportDataProvider.class)
+		public void TC561_EQReportPagination(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC561_EQReportPagination ...");
+
+			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			
+			eqReportsPageAction.open(EMPTY, NOTSET);
+
+			// Create some reports to ensure data table gets populated over multiple executions of the test.
+			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
+
+			String paginationSetting25 = "25";
+			String paginationSetting50 = "50";
+			String paginationSetting100 = "100";
+
+			assertTrue(eqReportsPage.checkPaginationSetting(PAGINATIONSETTING));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting25));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting50));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
+			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting100));
+			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
+		}
+
+		/**
+		 * Test Case ID: TC562_EQReportSortOnAttributes
+		 * Test Description: Picarro Admin user - Sort EQ Report list based on Title, Created by, date and other attibutes if any
+		 * Script:
+		 *	- Login as Picarro Admin user
+		 *	- On Home Page, click Reports -> EQ 
+		 *	- Sort report list by report title or created by or date attributes
+		 * Results:
+		 *	- User is able to sort the list of reports based on selected attribute
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC562, location = EQReportDataProvider.class)
+		public void TC562_EQReportSortOnAttributes(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC562_EQReportSortOnAttributes ...");
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, 6);   /* Picarro Admin */
+			
+			// Create some reports to ensure data table gets populated over multiple executions of the test.
+			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
+			
+			eqReportsPageAction.open(EMPTY, NOTSET);
+
+			assertTrue(eqReportsPage.isReportColumnSorted("Report Title","String"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertTrue(eqReportsPage.isReportColumnSorted("Created By","String"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertTrue(eqReportsPage.isReportColumnSorted("Date","Date"));
+
+			eqReportsPageAction.open(EMPTY, NOTSET);
+			assertFalse(eqReportsPage.isReportColumnSorted("Report Name","String"));
+		}
+		
+		/**
+		 * Test Case ID: TC566_CancelButtonForNewAndCopyEQReport
+		 * Test Description: check Cancel button present on new and copy EQ report screens
+		 * Script:
+		 *	- Login as Customer Supervisor user
+		 *	- On Home Page, click Reports -> EQ -> 'New EQ Report' button
+		 *	- Provide report title
+		 *	- Click on Cancel button
+		 *	- Click on 'Copy EQ Report' button
+		 *	- Click on Cancel button
+		 * Results:
+		 *	- Report is not generated and user is navigated back to EQ report list page
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC566, location = EQReportDataProvider.class)
+		public void TC566_CancelButtonForNewAndCopyEQReport(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC566_CancelButtonForNewAndCopyEQReport ...");
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1)));
+			
+			eqReportsPage.waitForCopyReportPagetoLoad();
+			eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPage.waitForCopyReportPagetoLoad();
+			eqReportsPageAction.clickOnOKButton(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.verifyPageLoaded(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.cancelInProgressReport(EMPTY, getReportRowID(reportDataRowID1)));
+		}
+
+		/**
+		 * Test Case ID: TC651_AlreadyAddedMessageForNewEQReport
+		 * Test Description: verify "Already Added" message is displayed if user tries to add the same survey again on New EQ report survey selector section
+		 * Script:
+		 *	- Login as Customer Supervisor user
+		 *	- On Home Page, click Reports -> EQ -> 'New EQ Report' button
+		 *	- Search the Survey and add one of the survey
+		 *	- Now try to add the same survey again
+		 *	- Delete the survey and try to add the same survey
+		 * Results:
+		 *	- Only EQ customer's surveys should be present in the searched list
+		 *	- "Already Added" message is displayed on the search button
+		 *	- User is able to add the survey
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC651, location = EQReportDataProvider.class)
+		public void TC651_AlreadyAddedMessageForNewEQReport(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC651_AlreadyAddedMessageForNewEQReport ...");
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			String rptTitle = EQReportsPageActions.workingDataRow.get().title;
+			eqReportsPage.clickOnCopyReport(rptTitle, SQACUSSU);
+			assertTrue(eqReportsPage.verifySurveyAlreadyAdded(CUSTOMER_SQACUS, EQDAYSURVEY));
+		}
+		
+		/**
+		 * Test Case ID: TC655_EQSurveySelectorPagination
+		 * Test Description: Pagination - EQ Survey Selector Section
+		 * Script:
+		 *	- Login as Customer Supervisor user
+		 *	- On Home Page, click Reports -> EQ -> 'New EQ Report' button
+		 *	- Click on Search button
+		 *	- 10,25,50 and 100 records per page in survey selector section
+		 * Results:
+		 *	- Selected number of records will be listed in the table
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC655, location = EQReportDataProvider.class)
+		public void TC655_EQSurveySelectorPagination(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC655_EQSurveySelectorPagination ...");
+
+			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPage.openNewReportPage();
+			eqReportsPage.clickOnSearchSurveyButton();
+			
+			String paginationSetting25 = "25";
+			String paginationSetting50 = "50";
+			String paginationSetting100 = "100";
+
+			eqReportsPage.setSurveyRowsPagination(PAGINATIONSETTING);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(PAGINATIONSETTING)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting25);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting25)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting50);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting50)));
+			eqReportsPage.setSurveyRowsPagination(paginationSetting100);
+			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
+		}		
 
 }

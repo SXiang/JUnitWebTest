@@ -26,7 +26,7 @@ public class DriverViewPageTests_PipelineRunner2 extends DriverViewPageTests_Pip
 	}
 
 	/**
-	 * Test Case ID: TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3
+	 * Test Case ID: TC2327_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3
 	 * Script: -
 	 *	- Start a survey using Methane Analyzer with appropriate survey details in the dialog, select Survey Type "Standard" and click OK
 	 *	- Run survey for about a minute.
@@ -42,10 +42,10 @@ public class DriverViewPageTests_PipelineRunner2 extends DriverViewPageTests_Pip
  	 **/
 	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_START_STOP_SURVEY_METH_LONGDB3_PROVIDER, location = DriverViewDataProvider.class)
-	public void TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3(Integer userDataRowID,
+	public void TC2327_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3(Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer[] surveyDataRowIDs, Integer surveyRuntimeInSeconds,
 			Integer numberOfSurveys) throws Exception {
-		Log.info("\nRunning TC_TBD_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3");
+		Log.info("\nRunning TC2327_ActionTest_DriverViewStartSurveyMultipleTimesMethaneSurveys_LongDB3");
 
 		executeReplayWithLongDB3(userDataRowID, analyzerDb3DataRowID, surveyDataRowIDs, surveyRuntimeInSeconds, numberOfSurveys);
 	}

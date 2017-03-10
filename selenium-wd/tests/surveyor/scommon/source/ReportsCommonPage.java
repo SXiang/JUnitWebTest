@@ -55,6 +55,7 @@ import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportCommonEntity.CustomerBoundaryFilterType;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 
 import java.awt.Rectangle;
@@ -106,6 +107,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogCategory;
 import common.source.LogHelper;
@@ -135,6 +137,7 @@ import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
 import common.source.PDFUtility;
 import common.source.ProcessUtility;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.ShapeFileUtility;
 import common.source.SortHelper;
 import common.source.TestContext;
@@ -223,9 +226,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	protected static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
 	public static final String RatioSdevMetaPattern = "\\+/\\-";
 
-	public static List<String[]> preCoverageForecastTo70;
-	public static List<String[]> preCoverageForecast;
-
 	@FindBy(how = How.ID, using = "compliance-zip-pdf-download")
 	protected WebElement zipImg;
 
@@ -285,6 +285,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	@FindBy(how = How.XPATH, using = "//table[@id='datatable']/tbody/tr")
 	protected List<WebElement> numberofRecords;
+
+	@FindBy(how = How.XPATH, using = "//table[@id='datatableSurveys']/tbody/tr")
+	protected List<WebElement> numberofSurveyRecords;
 
 	@FindBy(how = How.XPATH, using = "//a[starts-with(@href,'/Reports/DeleteReport?reportType=ComplianceReports')]")
 	protected WebElement btnDeleteConfirm;
@@ -368,7 +371,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	protected LatLongSelectionControl latLongSelectionControl = null;
-
+	protected BaseMapViewPage mapViewPage = null;
 	protected String pagination = "100";
 
 	public enum CustomerBoundaryType {
@@ -438,6 +441,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		latLongSelectionControl = new LatLongSelectionControl(driver);
 		PageFactory.initElements(driver, latLongSelectionControl);
+		mapViewPage = new BaseMapViewPage(driver, testSetup,  strBaseURL,strPageURL);
+		PageFactory.initElements(driver, mapViewPage);
 	}
 
 	@Override
@@ -1681,6 +1686,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return records.size();
 	}
 
+	public int getNumberofSurveyRecords() {
+		List<WebElement> records = this.numberofSurveyRecords;
+		return records.size();
+	}
+
 	public String getAreaErrorText() {
 		return this.areaErrorText.getText();
 	}
@@ -1785,6 +1795,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
 		latLongSelectionControl.selectCustomerBoundaryType(boundaryFilterType);
 
 		// Type customer boundary name and verify the autocomplete list. If not
@@ -3572,24 +3584,37 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return new PDFUtility().extractPDFText(pdfFilePath);
 	}
 
-	protected boolean fillCustomerBoundary(ReportCommonEntity reportsEntity) {
+	protected boolean fillCustomerBoundary(ReportCommonEntity reportsEntity) throws Exception {
 		return fillCustomerBoundary(reportsEntity.getCustomerBoundaryFilterType().toString(),
 				reportsEntity.getCustomerBoundaryName());
 	}
 
-	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) {
-		return fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/);
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName) throws Exception {
+		// Try few times before failure
+		boolean actionSuccess = RetryUtil.retryOnException(
+				() -> { return fillCustomerBoundary(customerBoundaryFilterType, customerBoundaryName, null /*outBoundaryNames*/); },
+				() -> { return true; },
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+
+		if (!actionSuccess) {
+			Log.error(String.format("fillCustomerBoundary() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
+			throw new Exception("Failure when executing fillCustomerBoundary.");
+		}
+
+		return actionSuccess;
 	}
 
-	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> outBoundaryNames) {
+	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> boundaryNamesToVerify) {
 		openCustomerBoundarySelector();
 		latLongSelectionControl.waitForModalDialogOpen();
 		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 		latLongSelectionControl.waitForMapImageLoad();
+		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
 		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 		boolean setSuccess = false;
-		if (outBoundaryNames != null) {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, outBoundaryNames);
+		if (boundaryNamesToVerify != null) {
+			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
 		} else {
 			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
 		}
@@ -3771,6 +3796,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 		selectViewLayerAssets(ReportDataProvider.getAllViewLayerAssetsForCustomer(customer));
 	}
 
+	public boolean isReportColumnSorted(String columnName, String type) {
+		Log.method("isReportColumnSorted");
+		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
+		columnMap.put(columnName, TableColumnType.getTableColumnType(type));
+		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
+				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
+	}
+
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
 			List<Map<String, String>> views) {
@@ -3796,5 +3829,19 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@Override
 	public String getSurveyMissingMessage() {
 		return ComplianceReport_SurveyMissingMessage;
+	}
+
+	public boolean isSurveyModesValidForReportMode(String reportMode, List<String> distinctSurveyModes) {
+		if(distinctSurveyModes==null){
+			return false;
+		}
+		for(String surveyMode:distinctSurveyModes){
+			if(!isSurveyModeValidForReportMode(reportMode, surveyMode)){
+				Log.warn(String.format("SurveyMode '%s' is not valid for ReportMode '%s'", surveyMode, reportMode));
+				return false;
+			}
+			Log.info(String.format("SurveyMode '%s' is valid for ReportMode '%s'", surveyMode, reportMode));
+		}
+		return true;
 	}
 }
