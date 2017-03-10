@@ -3153,8 +3153,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyReportFilesArePresent(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyReportFilesArePresent", data, dataRowID);
 		ReportsBaseDataRow reportsDataRow = this.getReportsDataRow(dataRowID);
-		return this.getReportsCommonPage().checkActionStatus(reportsDataRow.title,
+		boolean successed = this.getReportsCommonPage().checkActionStatus(reportsDataRow.title,
 				LoginPageActions.workingDataRow.get().username, reportsDataRow.tCID);
+		if(successed){
+			 this.getReportsCommonPage().clickOnReportViewerCloseButton();
+		}
+		return successed;
 	}
 
 	/**

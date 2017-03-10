@@ -370,10 +370,8 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		Log.info(String.format("All Survey mode values found -> ", LogHelper.listToString(surveyModes)));
 		List<String> distinctSurveyModes = ArrayUtility.getDistinctValues(surveyModes);
 		Log.info(String.format("Distinct Survey mode values found -> ", LogHelper.listToString(distinctSurveyModes)));
-		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
-		Log.info(String.format("distinctSurveyModes.size() = %d", distinctSurveyModes.size()));
-		Log.info(String.format("Comparing survey mode values. Expected (distinctSurveyModes.get(0)) -'%s'. Actual (reportsDataRow.reportMode) -'%s'", distinctSurveyModes.get(0), reportsDataRow.reportMode));
-		return (distinctSurveyModes != null && distinctSurveyModes.size()==1 && distinctSurveyModes.get(0).equalsIgnoreCase(reportsDataRow.reportMode));
+		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);		
+		return  this.getReportsCommonPage().isSurveyModesValidForReportMode(reportsDataRow.reportMode, distinctSurveyModes);
 	}
 
 	/**
@@ -489,10 +487,11 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		ReportsCommonDataRow compRptDataRow = null;
 		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
 			compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
-		} else {
-			compRptDataRow = getDataReader().getDataRow(dataRowID);
-		}
-		return compRptDataRow;
+			if(compRptDataRow.rowID.equals(dataRowID.toString())){
+				return compRptDataRow;
+			}
+		} 
+		return getDataReader().getDataRow(dataRowID);
 	}
 
 	@Override

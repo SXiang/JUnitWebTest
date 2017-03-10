@@ -2989,7 +2989,36 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return !findInvalidSurveyType(validType);
 
 	}
-
+	
+	/**
+	 * Validate survey mode for specific report mode
+	 * @param reportMode
+	 * @param surveyMode
+	 * @return
+	 */
+	public boolean isSurveyModeValidForReportMode(String reportMode, String surveyMode) {
+		List<String> validSurveyType = new ArrayList<String>();
+		switch (ReportModeFilter.valueOf(reportMode)) {
+		case Standard:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			break;
+		case RapidResponse:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			validSurveyType.add(SurveyModeFilter.RapidResponse.toString());
+			break;
+		case Manual:
+			validSurveyType.add(SurveyModeFilter.Manual.toString());
+			break;
+		default:
+			validSurveyType.add(SurveyModeFilter.Standard.toString());
+			validSurveyType.add(SurveyModeFilter.Operator.toString());
+			break;
+		}
+		return validSurveyType.contains(surveyMode);
+	}
+	
 	/**
 	 * Click on close button in report viewer.
 	 */
