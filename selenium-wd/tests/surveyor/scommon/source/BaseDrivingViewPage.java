@@ -4,20 +4,22 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.OLMapUtility;
 import common.source.TestSetup;
 
 public class BaseDrivingViewPage extends BaseMapViewPage {
+	private static final String IMG_DATA_VAR_NAME = "imgData";
 	private static final String IMG_DATA_DATA_0 = "return imgData.data[0];";
 	private static final String IMG_DATA_DATA_1 = "return imgData.data[1];";
 	private static final String IMG_DATA_DATA_2 = "return imgData.data[2];";
 	private static final String[] GreenRGBPixels = new String[] { "21", "255", "0" };
 	private static final String[] RedRGBPixels = new String[] { "255", "2", "0" };
+	private static final String[] GreyRGBPixels = new String[] { "153", "153", "153" };
 
 	public static final String STATUS_PRESSURE_CANVAS_CTX = "test_ctx = $(\"#status_pressure_canvas\")[0].getContext('2d');";
 	public static final String STATUS_WARM_CANVAS_CTX = "test_ctx = $(\"#status_warm_canvas\")[0].getContext('2d');";
@@ -27,6 +29,8 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public static final String STATUS_ANEMOMETER_CANVAS_CTX = "test_ctx = $(\"#status_anemometer_canvas\")[0].getContext('2d');";
 	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
 
+	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_DATA = "var IMG_WIDTH=80;var IMG_HEIGHT=74;var imgData=test_ctx.getImageData(0,0,IMG_WIDTH,IMG_HEIGHT);";
+
 	@FindBy(id = "header_info_box_upper_left")
 	private WebElement divHeaderInfoBox;
 
@@ -35,13 +39,13 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 
 	@FindBy(id = "bottom_button_status")
 	private WebElement statusButton;
-	
+
 	@FindBy(id = "no_analyzer")
 	private WebElement divNoAnalyzer;
-	
+
 	@FindBy(id = "canvas_rose")
 	private WebElement windRose;
-	
+
 	@FindBy(id = "canvas_rose_arrow")
 	private WebElement windRoseArrow;
 
@@ -51,7 +55,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 
 	public BaseDrivingViewPage clickHeaderInfoBox() {
 		Log.clickElementInfo("HeaderInfo", ElementType.DIVISION);
-		this.divHeaderInfoBox.click();		
+		this.divHeaderInfoBox.click();
 		return this;
 	}
 
@@ -60,13 +64,13 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 		this.positionButton.click();
 		return this;
 	}
-	
+
 	public BaseDrivingViewPage clickStatusButton() {
 		Log.clickElementInfo("Status");
 		this.statusButton.click();
 		return this;
 	}
-	
+
 	public String getTagLabelText() {
 		return driver.findElement(By.id("tag")).getText();
 	}
@@ -97,12 +101,12 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 
 	public WebElement getTimeLabel() {
 		return driver.findElement(By.id("currentTime"));
-	}	
+	}
 
 	public String getTimeLabelText() {
 		return driver.findElement(By.id("currentTime")).getText();
-	}	
-	
+	}
+
 	public WebElement getTimeRemainingLabel() {
 		return driver.findElement(By.id("timeRemaining"));
 	}
@@ -231,6 +235,10 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
 	}
 
+	public boolean isRedArcShownOnFlowButton() {
+		return new OLMapUtility(driver).isRedArcShownOnButton(STATUS_FLOW_CANVAS_CTX + IS_RED_ARC_SHOWN_ON_BUTTON_DATA, IMG_DATA_VAR_NAME);
+	}
+
 	public boolean isFlowButtonRed() {
 		Object pixelRed = ((JavascriptExecutor) driver)
 				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
@@ -251,6 +259,17 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
 		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
 				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+	}
+
+	public boolean isFlowButtonGrey() {
+		Object pixelRed = ((JavascriptExecutor) driver)
+				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
+		Object pixelGreen = ((JavascriptExecutor) driver)
+				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
+		Object pixelBlue = ((JavascriptExecutor) driver)
+				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
+		return pixelRed.toString().equals(GreyRGBPixels[0]) && pixelGreen.toString().equals(GreyRGBPixels[1])
+				&& pixelBlue.toString().equals(GreyRGBPixels[2]);
 	}
 
 	public boolean isGPSButtonRed() {
@@ -311,7 +330,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 			}
 		});
 	}
-	
+
 	/**
 	 * Verifies that the page is done Connecting dialog is shown.
 	 */

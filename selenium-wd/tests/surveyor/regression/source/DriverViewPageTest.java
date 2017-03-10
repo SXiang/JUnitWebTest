@@ -196,18 +196,13 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
 		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
 
-		Log.info("Clicking on STATUS button");
-		driverViewPage.clickStatusButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-
 		// Verify 6.
 		assertTrue(driverViewPage.isStatusButtonRed());
 		assertTrue(driverViewPage.isPressureButtonRed());
 		assertTrue(driverViewPage.isHBTempButtonRed());
 		assertTrue(driverViewPage.isWBTempButtonRed());
-		assertTrue(driverViewPage.isFlowButtonRed());
-		assertTrue(driverViewPage.isGPSButtonRed());
-		assertTrue(driverViewPage.isAnemometerButtonRed());
+		assertTrue(driverViewPage.isFlowButtonGrey());
+		assertTrue(driverViewPage.isRedArcShownOnFlowButton());
 	}
 
 	/**
@@ -318,8 +313,6 @@ public class DriverViewPageTest extends BaseMapViewTest {
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		// Verify 6.
-		// TODO: Check may not be accurate anymore.
-		//assertTrue(driverViewPage.isStatusButtonOpen());
 		assertTrue(driverViewPage.isPressureButtonGreen());
 		assertTrue(driverViewPage.isHBTempButtonGreen());
 		assertTrue(driverViewPage.isWBTempButtonGreen());

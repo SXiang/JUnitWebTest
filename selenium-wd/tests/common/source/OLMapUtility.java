@@ -37,6 +37,13 @@ public class OLMapUtility {
 		Gray
 	}
 
+	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS = "function isRedArcShownOnButton(imgData){var len=imgData.data.length;"
+			+ "var rPixelCount=0;var gPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
+			+ "if(imgData.data[i+1]==255){gPixelCount++;}};console.log(rPixelCount);console.log(gPixelCount);"
+			+ "return(rPixelCount>500)&&(rPixelCount<600)&&(gPixelCount>200)&&(gPixelCount<300);};";
+
+	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_CALL = "%s;return isRedArcShownOnButton(%s);";
+
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels(){"
 			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){for(var i=0;i<lastConstellation.nodes.length;i++){"
 			+ "node=lastConstellation.nodes[i];if(node.type=='indication' && node.fixed == false){"
@@ -698,6 +705,20 @@ public class OLMapUtility {
 		String jsScript = IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION + String.format(IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL, result);
 		Object captureResultShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
 		if (captureResultShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+
+	/*
+	 * Checks whether red arc is shown on a button.
+	 * Returns true if red arc is shown on the button, false otherwise.
+	 */
+	public boolean isRedArcShownOnButton(String imgDataScript, String imgDataVarName) {
+		String jsScript = IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS + String.format(IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_CALL, imgDataScript, imgDataVarName);
+		Object redArcShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (redArcShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;
