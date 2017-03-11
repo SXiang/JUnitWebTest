@@ -22,8 +22,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,7 +38,6 @@ import org.openqa.selenium.WebElement;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.ExcelUtility;
-import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;

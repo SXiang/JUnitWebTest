@@ -2331,7 +2331,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportDrivingObj.setPreferredEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
 			reportDrivingObj.setUserName(csvRow.get("UserName").trim());
 			reportDrivingObj.setDescription(csvRow.get("Surveyor").trim());
-			reportDrivingObj.setAnalyzerId(csvRow.get("AnMetaDataFilealyzer").trim());
+			reportDrivingObj.setAnalyzerId(csvRow.get("Analyzer").trim());
 			reportDrivingObj.setTag(csvRow.get("Tag").trim());
 			reportDrivingObj.setStabilityClass(csvRow.get("StabilityClass").trim());
 			reportList.add(reportDrivingObj);

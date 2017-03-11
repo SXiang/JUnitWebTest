@@ -1,15 +1,9 @@
 package surveyor.scommon.actions;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-
 import org.openqa.selenium.WebDriver;
 
-import common.source.ExceptionUtility;
-import common.source.FunctionUtil;
-import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.AssessmentReportDataReader;
