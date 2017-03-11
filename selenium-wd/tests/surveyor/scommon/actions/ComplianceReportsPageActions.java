@@ -1,12 +1,17 @@
 package surveyor.scommon.actions;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.openqa.selenium.WebDriver;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
+import common.source.ExceptionUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
@@ -370,7 +375,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		Log.info(String.format("All Survey mode values found -> ", LogHelper.listToString(surveyModes)));
 		List<String> distinctSurveyModes = ArrayUtility.getDistinctValues(surveyModes);
 		Log.info(String.format("Distinct Survey mode values found -> ", LogHelper.listToString(distinctSurveyModes)));
-		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);		
+		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
 		return  this.getReportsCommonPage().isSurveyModesValidForReportMode(reportsDataRow.reportMode, distinctSurveyModes);
 	}
 
@@ -483,6 +488,11 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
+	public Predicate<ReportsCommonPage> getReportSpecificVerifyMetadataFilesPredicate(String downloadPath, String reportTitle) {
+		return reportsPage -> verifyComplianceReportMetadataFiles(reportsPage, downloadPath, reportTitle);
+	}
+
+	@Override
 	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
 		ReportsCommonDataRow compRptDataRow = null;
 		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
@@ -490,7 +500,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 			if(compRptDataRow.rowID.equals(dataRowID.toString())){
 				return compRptDataRow;
 			}
-		} 
+		}
 		return getDataReader().getDataRow(dataRowID);
 	}
 
@@ -545,7 +555,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		return new ComplianceReportEntity();
 	}
-	
+
 	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
@@ -587,5 +597,9 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		boolean reportModeMatches = (cmpRptDataRow.reportMode.equals(actualReportModeFilter));
 		boolean lisaOpacityMatches = (cmpRptDataRow.opacityLISA.equals(actualLISAOpacity));
 		return reportModeMatches && lisaOpacityMatches;
+	}
+
+	private boolean verifyComplianceReportMetadataFiles(ReportsCommonPage reportsPage, String downloadPath, String reportTitle) {
+		return FunctionUtil.wrapException(reportsPage, r -> reportsPage.verifyIsotopicMetaDataFile(downloadPath, reportTitle));
 	}
 }

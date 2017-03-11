@@ -48,7 +48,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
 import surveyor.scommon.entities.BaseReportEntity;
-import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -1526,20 +1525,20 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean validateReportCreationDate(String actualPath) throws IOException {
+	public boolean validateReportCreationDate(String reportTitle, String actualPath) throws IOException {
 		Log.method("ReportsCommonPage.validateReportCreationDate", actualPath);
 		String reportDate = null;
-		String actualReport = actualPath + getReportName().trim() + ".pdf";
+		String actualReport = actualPath + getReportPDFFileName(reportTitle, true /*includeExtension*/);
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
 		String[] lines = actualReportString.split("\\n");
-		Pattern pattertoMatch = Pattern.compile("Report Creation Date");
+		Pattern patternToMatch = Pattern.compile("Report Creation Date");
 		for (String line : lines) {
-			String formatteLine = line.trim();
-			if (pattertoMatch.matcher(line).find()) {
-				Matcher matcher = pattertoMatch.matcher(formatteLine);
+			String formattedLine = line.trim();
+			if (patternToMatch.matcher(line).find()) {
+				Matcher matcher = patternToMatch.matcher(formattedLine);
 				matcher.find();
-				reportDate = formatteLine.substring(matcher.end() + 1).trim();
+				reportDate = formattedLine.substring(matcher.end() + 1).trim();
 			}
 		}
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm a zzz");
@@ -2059,7 +2058,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		Log.info("Layers Table data verification passed");
 		return true;
-
 	}
 
 	/**
@@ -2085,29 +2083,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ViewTable);
 		expectedReportString.add(ComplianceReportSSRS_ViewName);
-		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
 		expectedReportString.add(ComplianceReportSSRS_ShowFOV);
 		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
-		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
-		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
-		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightGAPAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
 		expectedReportString.add(ComplianceReportSSRS_BaseMap);
 
-		// Look for AssetBoxNumber static string if there is a view with AssetBox.
-		boolean assetBxNumViewPresent = false;
-		for (Map<String, String> viewMap : viewsList) {
-			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
-				assetBxNumViewPresent = true;
-				break;
-			}
-		}
-		if (assetBxNumViewPresent) {
-			expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
+		Supplier<List<String>> expectedTextSupplier = supplyViewsTableExpectedStaticText(viewsList);
+		if (expectedTextSupplier.get() != null) {
+			expectedReportString.addAll(expectedTextSupplier.get());
 		}
 
 		String textWithoutLineEndings = actualReportString.replace("\r\n", "");
@@ -2345,7 +2331,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportDrivingObj.setPreferredEndDateTimeWithTZ(csvRow.get("SurveyEndDateTime").trim());
 			reportDrivingObj.setUserName(csvRow.get("UserName").trim());
 			reportDrivingObj.setDescription(csvRow.get("Surveyor").trim());
-			reportDrivingObj.setAnalyzerId(csvRow.get("Analyzer").trim());
+			reportDrivingObj.setAnalyzerId(csvRow.get("AnMetaDataFilealyzer").trim());
 			reportDrivingObj.setTag(csvRow.get("Tag").trim());
 			reportDrivingObj.setStabilityClass(csvRow.get("StabilityClass").trim());
 			reportList.add(reportDrivingObj);
@@ -3691,11 +3677,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	private Map<String, Boolean> getStringMatchResultMap(String reportTitle, List<String> expectedReportString) throws IOException {
 		String actualPath = testSetup.getDownloadPath();
+		String actualReport = actualPath + getReportPDFFileName(reportTitle, true /*includeExtension*/);
 		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf";
-		setReportName(getReportName());
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		return matchSinglePattern(actualReportString, expectedReportString);
 	}
@@ -3803,6 +3786,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
 				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
+
+	/* Methods with implementation provided by derived class */
+
+	public Supplier<List<String>> supplyViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
+		return (() -> null);
+	}
+
+	/* Overridden methods */
 
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,

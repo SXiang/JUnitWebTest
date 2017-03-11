@@ -2393,22 +2393,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.waitForCopyReportPagetoLoad();
 	}
 
-	@Override
-	public void waitForPageLoad() {
-		waitForAJAXCallsToComplete();
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				boolean result = false;
-				try {
-					result = d.getPageSource().contains(getStrPageText());
-				} catch (Exception e) {
-					Log.error(e.toString());
-				}
-				return result;
-			}
-		});
-	}
-
 	public void waitForCopyReportPagetoLoad() {
 		super.waitForPageToLoad();
 		waitForAJAXCallsToComplete();
@@ -2529,6 +2513,23 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			}
 		});
+	}
+
+	public boolean isReportViewerDialogOpen() {
+		Log.method("isReportViewerDialogOpen");
+		boolean retVal = false;
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
+		if (divModalcontent != null && divModalcontent.isDisplayed()) {
+			retVal = divModalcontent.getAttribute("style").contains("display:block") || divModalcontent.getAttribute("style").contains("display: block");
+		}
+
+		Log.info(String.format("ReportViewer dialog OPEN = [%b]", retVal));
+		return retVal;
+	}
+
+	public void closeReportViewerDialog() {
+		Log.method("closeReportViewerDialog");
+		clickOnReportViewerCloseButton();
 	}
 
 	public void waitForReportViewerDialogToOpen() {
@@ -2989,7 +2990,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return !findInvalidSurveyType(validType);
 
 	}
-	
+
 	/**
 	 * Validate survey mode for specific report mode
 	 * @param reportMode
@@ -3018,7 +3019,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return validSurveyType.contains(surveyMode);
 	}
-	
+
 	/**
 	 * Click on close button in report viewer.
 	 */
@@ -3116,5 +3117,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public String getStrCopyPageText() {
 		return resxProvider.getResource(ResourceTable.Key_CopyPageText);
+	}
+
+	/* Overridden methods */
+	@Override
+	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getStrPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+			}
+		});
+	}
+
+	@Override
+	public LoginPage logout() {
+		// Check if report viewer is open. Close if open.
+		if (isReportViewerDialogOpen()) {
+			closeReportViewerDialog();
+		}
+
+		return super.logout();
 	}
 }

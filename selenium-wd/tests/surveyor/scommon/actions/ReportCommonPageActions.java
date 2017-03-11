@@ -21,6 +21,9 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,6 +40,7 @@ import org.openqa.selenium.WebElement;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.ExcelUtility;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
@@ -384,7 +390,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
 			}
 		}
-		String timeZone = getWorkingReportsDataRow().timezone;	
+		String timeZone = getWorkingReportsDataRow().timezone;
 		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
 
 		// Set report common properties.
@@ -442,7 +448,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		rpt.setViewList(viewList);
 		rpt.setViewLayersList(viewLayersList);
 	}
-	
+
 	private void fillCustomBoundary(List<String> listBoundary, ReportsCommonDataRow dataRow) throws Exception {
 		String imgHeight = dataRow.pDFImageOutputHeight;
 		String imgWidth = dataRow.pDFImageOutputWidth;
@@ -1998,11 +2004,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyReportCreationInSSRSPDFIsCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyReportCreationInSSRSPDFIsCorrect", ARG_DATA_ROW_ID, dataRowID);
 
-		if (getWorkingReportsEntity() == null) {
+		ReportCommonEntity workingReportsEntity = getWorkingReportsEntity();
+		if (workingReportsEntity == null) {
 			throw new Exception("Create new report before verifying report PDF files. Report has not been created.");
 		}
 
-		return getReportsCommonPage().validateReportCreationDate(TestContext.INSTANCE.getTestSetup().getDownloadPath());
+		return getReportsCommonPage().validateReportCreationDate(workingReportsEntity.getRptTitle(), TestContext.INSTANCE.getTestSetup().getDownloadPath());
 	}
 
 	/**
@@ -2720,11 +2727,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
-		boolean verifyIsotopicMetaDataFile = this.getReportsCommonPage().verifyIsotopicMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
-		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyIsotopicMetaDataFile = %b; verifyLISASMetaDataFile = %b",
-				verifyReportSurveyMetaDataFile, verifyIsotopicMetaDataFile, verifyLISASMetaDataFile));
-		return verifyReportSurveyMetaDataFile && verifyIsotopicMetaDataFile && verifyLISASMetaDataFile;
+		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
+		boolean verifyReportSpecificMetadataFiles = verifyMetadataFilesPredicate.test(getReportsCommonPage());
+		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyReportSpecificMetadataFiles = %b",
+				verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile, verifyReportSpecificMetadataFiles));
+		return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile && verifyReportSpecificMetadataFiles;
 	}
 
 	/**
@@ -3457,7 +3465,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		throw new Exception("This method to be implemented by derived class.");
 	}
-	
+
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) throws Exception {
@@ -3494,6 +3502,10 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	public void setWorkingReportsEntity(ReportCommonEntity reportsEntity) throws Exception {
 		throw new Exception("This method should be implemented by specific class.");
+	}
+
+	public Predicate<ReportsCommonPage> getReportSpecificVerifyMetadataFilesPredicate(String downloadPath, String reportTitle) throws Exception {
+		return r -> true;
 	}
 
 	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
@@ -3565,11 +3577,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 		return retSuccess;
 	}
-	
+
 	private ReportsCommonDataRow getWorkingReportsCommonDataRow() throws Exception{
 		return (ReportsCommonDataRow) getWorkingReportsDataRow();
 	}
-	
+
 	private ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}

@@ -406,6 +406,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 
 		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
@@ -413,9 +414,8 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
-		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
-		/* TURN ON THESE ASSERTS after local verification.
+		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// (PDF should have survey details, view details and assets)
 		assertTrue(assessmentReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
@@ -426,6 +426,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		// date printed -> verified in Footer verification.
 		// survey start/end date -> verified in verifySSRSDrivingSurveyTableInfo
 		assertTrue(assessmentReportsPageAction.verifyReportCreationInSSRSPDFIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+
 		assertTrue(assessmentReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
@@ -443,8 +444,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		// All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
 		// Data present in ReportLisa.csv should be same as SSRS PDF indication table.
 
-		//assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-		*/
+		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

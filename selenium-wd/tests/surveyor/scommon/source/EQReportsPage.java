@@ -6,6 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -63,7 +65,7 @@ public class EQReportsPage extends ReportsCommonPage {
 				inputReportTitle(reportsEQ.getRptTitle());
 			}
 		}
-		
+
 		// 2. EQ Location Parameter
 		if (!reportsEQ.getEQLocationParameter().isEmpty()) {
 			selectEQLocationParameter(reportsEQ.getEQLocationParameter());
@@ -87,7 +89,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		Log.clickElementInfo("Line Segments Selector");
 		this.lineSegmentsSelectorBtn.click();
 	}
-	
+
 	protected void selectLineSegments(List<List<Coordinates>> lineSegments) {
 			clickLineSegmentsSelectorBtn();
 			latLongSelectionControl.waitForModalDialogOpen();
@@ -100,8 +102,8 @@ public class EQReportsPage extends ReportsCommonPage {
 			latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
 			latLongSelectionControl.waitForModalDialogToClose();
 	}
-	
-	
+
+
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
@@ -116,7 +118,7 @@ public class EQReportsPage extends ReportsCommonPage {
 			selectSurveyModeForSurvey(surveyModeFilter);
 		}
 	}
-	
+
 	private static ResourceProvider getCommonResourceProvider() {
 		return new ResourceProvider(() -> {
 			Map<String, String> resxMap = new HashMap<String, String>();
@@ -126,7 +128,7 @@ public class EQReportsPage extends ReportsCommonPage {
 			return new ResourceTable(resxMap);
 		});
 	}
-	
+
 	@Override
 	public void openNewReportPage() {
 		waitUntilPresenceOfElementLocated(By.xpath(strBtnNewReport));
