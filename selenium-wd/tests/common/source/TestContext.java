@@ -16,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.model.ITest;
 
 import common.source.Log.LogField;
@@ -41,6 +42,12 @@ public enum TestContext {
 		this.testMap = Collections.synchronizedMap(new HashMap<String, Object>());
 		this.testMap.put(LogField.INDEX_ID.toString(), getIndexIdForTestRun());
 		this.extentTestMap = Collections.synchronizedMap(new HashMap<String, ExtentTest>());
+	}
+
+	public void captureScreenshot() {
+		Log.method("captureScreenshot");
+		TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
+				TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
 	}
 
 	public String getTestStatus() {
@@ -220,7 +227,7 @@ public enum TestContext {
 		}
 		return appiumDriverFound;
 	}
-	
+
 	public String getBaseUrl() {
 		String baseUrl = null;
 		if (testSetup != null) {
