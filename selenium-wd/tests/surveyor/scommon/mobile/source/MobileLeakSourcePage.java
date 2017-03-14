@@ -1,5 +1,8 @@
 package surveyor.scommon.mobile.source;
 
+import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -103,6 +106,10 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-header > button.close[ng-click='cancel()']")
 	protected WebElement buttonCloseAddSource;
+
+	@FindBy(how = How.XPATH, using = ".modal-dialog .row .list-group-item-text")
+	protected WebElement investigateTime;
+	private String investigationTime = "";
 	
 	public MobileLeakSourcePage(){
 		super(STRURLPath);
@@ -153,10 +160,10 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		selectDropdownItem(leakSourceTypeDropdown, leakSourceType);
 	}
 
-
 	public void clickOkButton() {
 		this.buttonOk.click();
 		waitForPageToLoad();
+		this.investigationTime = getElementText(investigateTime);
 	}
 
 
@@ -380,6 +387,18 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	public void setAdditionalNotes(String additionalNotes) {
 		this.additionalNotes = additionalNotes;
 		textareaAdditionalNotes.sendKeys(additionalNotes);
+	}
+
+
+	public boolean verifyPDFLeakDetials(List<String> list) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean verifyMetaLeakDetials(List<String> list) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
