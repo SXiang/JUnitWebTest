@@ -736,24 +736,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		fillReport(reports);
 
-		// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
-		Log.info(String.format("DE2762-ReportCleanupPostTestFix: CREATING report -> ReportTitle=%s; ReportId=%s", reports.getRptTitle(), "NON-YET-CREATED"));
-
 		addReport();
 
-		// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
 		int attempts = 5;
 		Report objReport = null;
 		do {
 			objReport = Report.getReport(reports.getRptTitle());
 			TestContext.INSTANCE.stayIdle(1);
 		} while (objReport == null && attempts-- > 0);
-
-		if (objReport != null) {
-			Log.info(String.format("DE2762-ReportCleanupPostTestFix: CREATED report -> ReportTitle=%s; ReportId=%s", reports.getRptTitle(), objReport.getId()));
-		} else {
-			Log.info(String.format("DE2762-ReportCleanupPostTestFix: CREATED report -> ReportTitle=%s; ReportId=%s", reports.getRptTitle(), "NON-EXISTENT-IN-DB"));
-		}
 	}
 
 	public void selectFOVColor(ReportColorOption... colors){

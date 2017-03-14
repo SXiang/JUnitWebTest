@@ -87,7 +87,9 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 		Log.method("BaseReportsPageTest.postTestMethodProcessing");
 		try {
 			cleanUp();
-			getReportsPage().logout();
+			if (getReportsPage() != null) {
+				getReportsPage().logout();
+			}
 		} catch (Exception e) {
 			Log.warn(String.format("Exception in BaseReportsPageTest.postTestMethodProcessing(). Exception message: %s",
 					ExceptionUtility.getStackTraceString(e)));
@@ -127,24 +129,7 @@ public class BaseReportsPageTest extends SurveyorBaseTest {
 				String reportId = setIteration.next();
 				String reportName = "CR-" + reportId.substring(0,6).toUpperCase();
 				FileUtility.deleteFilesAndSubFoldersInDirectory(downloadDirectory, reportName);
-
-				// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
-				Report objReport = Report.getReportById(reportId);
-				if (objReport != null) {
-					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETING report -> ReportTitle=%s; ReportId=%s", objReport.getReportTitle(), reportId));
-				} else {
-					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETING report -> ReportTitle=%s; ReportId=%s", "NON-EXISTENT-IN-DB", reportId));
-				}
-
 				getReportsPage().deleteReportWithApiCall(reportId);
-
-				// TODO: Remove before commit. DEBUGGING log added to test Report cleanup code.
-				objReport = Report.getReportById(reportId);
-				if (objReport != null) {
-					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETED report -> ReportTitle=%s; ReportId=%s", objReport.getReportTitle(), reportId));
-				} else {
-					Log.info(String.format("DE2762-ReportCleanupPostTestFix: DELETED report -> ReportTitle=%s; ReportId=%s", "NON-EXISTENT-IN-DB", reportId));
-				}
 			}
 		}
 
