@@ -74,7 +74,7 @@ public enum TestContext {
 		}
 	}
 
-	public boolean addReportId(String reportId) {
+	public boolean addReportId(String reportTitle, String reportId) {
 		if(reportId==null||reportId.isEmpty()){
 			return false;
 		}

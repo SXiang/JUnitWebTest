@@ -788,8 +788,6 @@
             <include name="**/ComplianceReportsTestSuite4.class" />
             <include name="**/ComplianceReportsTestSuite5.class" />
             <include name="**/ComplianceReportsTestSuite6.class" />
-            <include name="**/LatLongSelectionReportsPageTest.class" />
-            <include name="**/LatLongSelectionReportsPageTest2.class" />
         </fileset>
       </batchtest>
     </junit>
