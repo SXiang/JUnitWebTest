@@ -23,6 +23,7 @@ import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -168,8 +169,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			clickOnComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer);
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 		} catch (Exception ex) {
-			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-
+			BaseTest.reportTestFailed(ex, ComplianceReportsNewCustomerShapeMetadataTest.class.getName());
 		} finally {
 			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.
@@ -233,8 +233,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
 
 		} catch (Exception ex) {
-			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-
+			BaseTest.reportTestFailed(ex, ComplianceReportsNewCustomerShapeMetadataTest.class.getName());
 		} finally {
 			cleanupReports(rptTitle, strCreatedBy);
 			// Remove GIS seed from the customer.

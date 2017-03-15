@@ -176,10 +176,13 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.open();
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
-		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
-		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
+		// add couple of notes
+		for (int i = 0; i < 3; i++) {
+			String note = "Automation Test Note " + getTestSetup().getNewFixedSizeRandomNumber(10);
+			manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
+			assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
+		}
 
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
 		systemHistoryReportsPage.open();
@@ -365,7 +368,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		int currentMonth = cal.get(Calendar.MONTH);
 		cal.add(Calendar.DATE, -10);
 		int startMonth = cal.get(Calendar.MONTH);
-		
+
 		int startNumOfPreMonths = currentMonth - startMonth;
 		int endNumOfPreMonths = 0;
 		String startDate = dateFormat.format(cal.getTime());

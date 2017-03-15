@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.grid.poc.source;
 
@@ -28,7 +28,7 @@ import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
-import common.source.TestSetupFactory;
+import common.source.ThreadLocalStore;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.HomePage;
@@ -42,27 +42,27 @@ import surveyor.scommon.source.PageObjectFactory;
 public class GridPOCBaseTest {
 
 	private static List<WebDriver> spawnedWebDrivers = new ArrayList<WebDriver>();
-	
-	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();     
+
+	private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<WebDriver>();
 	private static ThreadLocal<TestSetup> testSetupThreadLocal = new ThreadLocal<TestSetup>();
 	private static ThreadLocal<LoginPage> loginPageThreadLocal = new ThreadLocal<LoginPage>();
 	private static ThreadLocal<HomePage> homePageThreadLocal = new ThreadLocal<HomePage>();
 	private static ThreadLocal<ScreenShotOnFailure> screenCaptureThreadLocal = new ThreadLocal<ScreenShotOnFailure>();
 	private static ThreadLocal<String> baseURLThreadLocal = new ThreadLocal<String>();
 
-	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>(); 
+	private static ThreadLocal<ExtentTest> extentTestThreadLocal = new ThreadLocal<ExtentTest>();
 	private static ThreadLocal<StringBuilder> extentReportFilePathThreadLocal = new ThreadLocal<StringBuilder>();
 
 	private static Boolean debug;
-	
+
 	private static ThreadLocal<Boolean> isTestRunningThreadLocal = new ThreadLocal<Boolean>();
 
 	protected static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
-	
+
 	// JUnit does NOT give a good way to detect which TestClass is executing.
 	// So we watch for the Test method under execution and install simulator pre-reqs
 	// if the test under execution is a Simulator test.
-	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_* 
+	// NOTE that all simulator tests MUST follow this naming pattern: TC*_SimulatorTest_*
 	@Rule
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
@@ -92,14 +92,14 @@ public class GridPOCBaseTest {
 
 	/**
 	 * This method is called by the 'main' thread.
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		Log.info("[THREAD Debug Log] - Calling setUpBeforeClass()");
 		setIsTestRunning(true);
-		
+
 		if (!TestSetup.isParallelBuildEnabled()) {
 			TestSetup.stopChromeProcesses();
 		}
@@ -108,7 +108,7 @@ public class GridPOCBaseTest {
 
 	/**
 	 * This method is called by the 'main' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@AfterClass
@@ -116,38 +116,38 @@ public class GridPOCBaseTest {
 		Log.info("[THREAD Debug Log] - Calling tearDownAfterClass()");
 		setIsTestRunning(false);
 
-		logoutQuitDriver();		
-		
+		logoutQuitDriver();
+
 		// Post run result to DB if enabled.
 		postResultsToAutomationAPI();
 	}
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		Log.info("[THREAD Debug Log] - Calling setup beforeTest()");
 		PageActionsStore.INSTANCE.clearStore();
-		
+
 		initializeTestObjects();
 	}
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@After
 	public void tearDown() throws Exception {
 		Log.info("[THREAD Debug Log] - Calling tearDown afterTest()");
 	}
-	
+
 	protected static void initializeTestObjects() throws IOException {
 		if (getTestSetup()==null) {
-			setTestSetup(TestSetupFactory.getTestSetup());
+			setTestSetup(ThreadLocalStore.getTestSetup());
 			Log.info(String.format("[THREAD Debug Log].. Set TestSetup - '%s'", getTestSetup()));
 		}
 		if (getBaseURL() == null) {
@@ -155,9 +155,9 @@ public class GridPOCBaseTest {
 			Log.info(String.format("[THREAD Debug Log].. Set BaseURL - '%s'", getBaseURL()));
 		}
 		setIsDebug(getTestSetup().isRunningDebug());
-		
+
 		TestContext.INSTANCE.setTestSetup(getTestSetup());
-		
+
 		// Store webdriver instances that are spawned.
 		WebDriver webDriver = getTestSetup().getDriver();
 		List<WebDriver> list = Collections.synchronizedList(spawnedWebDrivers);
@@ -167,15 +167,15 @@ public class GridPOCBaseTest {
 				list.add(webDriver);
 			}
 		}
-		
+
 		if (getDriver() == null) {
 			driverThreadLocal.set(webDriver);
 			getDriver().manage().deleteAllCookies();
 			Log.info(String.format("[THREAD Debug Log].. Set WebDriver - '%s'", getDriver()));
 		}
 
-		if (TestSetupFactory.getScreenShotOnFailure() == null) {
-			screenCaptureThreadLocal.set(TestSetupFactory.getScreenShotOnFailure());
+		if (ThreadLocalStore.getScreenShotOnFailure() == null) {
+			screenCaptureThreadLocal.set(ThreadLocalStore.getScreenShotOnFailure());
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
 		}
 
@@ -185,11 +185,11 @@ public class GridPOCBaseTest {
 
 	private static void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-		if (getLoginPage() == null) {		
+		if (getLoginPage() == null) {
 			setLoginPage(pageObjectFactory.getLoginPage());
 			Log.info(String.format("[THREAD Debug Log].. Set LoginPage - '%s'", getLoginPage()));
 		}
-		
+
 		if (getHomePage() == null) {
 			setHomePage(pageObjectFactory.getHomePage());
 			Log.info(String.format("[THREAD Debug Log].. Set HomePage - '%s'", getHomePage()));
@@ -202,13 +202,13 @@ public class GridPOCBaseTest {
 		String pageTitle = getDriver().getTitle();
 		if (pageTitle != null && !pageTitle.trim().equals("") && !pageTitle.trim().equalsIgnoreCase("Login")) {
 			Log.info(String.format("getDriver().getTitle()=%s", pageTitle), LogCategory.VerboseLogging);
-			Log.info(String.format("getDriver().getTitle().equalsIgnoreCase('Login')=%b", pageTitle.equalsIgnoreCase("Login")), 
+			Log.info(String.format("getDriver().getTitle().equalsIgnoreCase('Login')=%b", pageTitle.equalsIgnoreCase("Login")),
 					LogCategory.VerboseLogging);
 			Log.info("NOT at Login page. Navigating to Home page...");
 			getHomePage().open();
 			getHomePage().logout();
 		}
-		
+
 		getDriver().quit();
 	}
 
@@ -268,7 +268,7 @@ public class GridPOCBaseTest {
 	protected static StringBuilder getExtentReportFilePath() {
 		return extentReportFilePathThreadLocal.get();
 	}
-	
+
 	protected static ScreenShotOnFailure getScreenCapture() {
 		return screenCaptureThreadLocal.get();
 	}
@@ -276,11 +276,11 @@ public class GridPOCBaseTest {
 	protected static TestSetup getTestSetup() {
 		return testSetupThreadLocal.get();
 	}
-	
+
 	protected static ExtentTest getExtentTest() {
 		return extentTestThreadLocal.get();
 	}
-	
+
 	private static Boolean isTestRunning() {
 		return isTestRunningThreadLocal.get();
 	}
@@ -288,7 +288,7 @@ public class GridPOCBaseTest {
 	private static void setIsTestRunning(Boolean isRunning) {
 		isTestRunningThreadLocal.set(isRunning);
 	}
-	
+
 	private static void setTestSetup(TestSetup tstSetup) {
 		testSetupThreadLocal.set(tstSetup);
 	}
@@ -309,7 +309,7 @@ public class GridPOCBaseTest {
 		}
 		return extentReport;
 	}
-	
+
 	protected static void reportTestStarting(Description description) {
 		Log.info("[THREAD Debug Log] - calling reportTestStarting()");
 		reportTestStarting(description.getClassName(), description.getMethodName(), description.toString());
@@ -320,14 +320,14 @@ public class GridPOCBaseTest {
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest().assignCategory(TestContext.INSTANCE.getTestRunCategory());
 		getExtentTest().log(LogStatus.INFO, firstLogLine);
-		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]", 
+		getExtentTest().log(LogStatus.INFO, String.format("Starting test.. [Start Time:%s]",
 				DateUtility.getCurrentDate()));
 	}
 
 	protected static void reportTestFinished(String className) {
 		Log.info("[THREAD Debug Log] - calling reportTestFinished()");
 		ExtentReports report = getExtentReport(className);
-		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]", 
+		getExtentTest().log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
 		report.endTest(getExtentTest());
 		report.flush();
@@ -340,7 +340,7 @@ public class GridPOCBaseTest {
 			getExtentTest().log(LogStatus.WARNING, "Extra messages before the failure", "Log Message: " + message);
 		}
 	}
-	
+
 	protected static void reportTestFailed(Throwable e) {
 		Log.info("[THREAD Debug Log] - calling reportTestFailed()");
 		getExtentTest().log(LogStatus.FAIL, "FAILURE: " + e.getMessage());

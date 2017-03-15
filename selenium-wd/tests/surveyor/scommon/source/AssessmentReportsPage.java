@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.ApiUtility;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -100,6 +101,12 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) {
 		// No action in Assessment reports page.
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_ASSESSMENT_REPORTS_RELATIVE_URL, reportId));
 	}
 
 	private static ResourceProvider getCommonResourceProvider() {

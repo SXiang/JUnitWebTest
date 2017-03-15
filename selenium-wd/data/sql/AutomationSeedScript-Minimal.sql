@@ -723,6 +723,66 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'23bebf59-bb6e-85c9-c889-39dd83bd36e5', 0, -3.6, 1, 2, 0)	
+
+-- Calibration record for 'SoftwareCar_2037_cust'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1486498358.94,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='09FD8BE0-98B1-480A-BEC6-54AC5847E141'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('09FD8BE0-98B1-480A-BEC6-54AC5847E141','00000014-FB61-2EF6-5DD1-39C8AC533D41',1486498358.94,0,0,-4)
+
+-- Inlet entry for 'SoftwareCar_2037_cust' calibration record
+UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 0,0.625)
+UPDATE [dbo].[Inlet] SET [Height]=0.75 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=1
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 1,0.75)
+UPDATE [dbo].[Inlet] SET [Height]=0.875 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=2
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 2,0.875)
+UPDATE [dbo].[Inlet] SET [Height]=1 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=3
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 3,1)
+UPDATE [dbo].[Inlet] SET [Height]=1.125 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=4
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 4,1.125)
+UPDATE [dbo].[Inlet] SET [Height]=1.25 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=5
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 5,1.25)
+UPDATE [dbo].[Inlet] SET [Height]=1.375 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=6
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 6,1.375)
+UPDATE [dbo].[Inlet] SET [Height]=1.5 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=7
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 7,1.5)
+UPDATE [dbo].[Inlet] SET [Height]=1.625 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=8
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 8,1.625)
+UPDATE [dbo].[Inlet] SET [Height]=1.75 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=9
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 9,1.75)
+UPDATE [dbo].[Inlet] SET [Height]=1.875 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=10
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 10,1.875)
+UPDATE [dbo].[Inlet] SET [Height]=2 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=11
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 11,2)
+UPDATE [dbo].[Inlet] SET [Height]=2.125 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=12
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 12,2.125)
+UPDATE [dbo].[Inlet] SET [Height]=2.25 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=13
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 13,2.25)
+UPDATE [dbo].[Inlet] SET [Height]=2.375 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=14
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 14,2.375)
+UPDATE [dbo].[Inlet] SET [Height]=2.5 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=15
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 15,2.5)
+
+-- Anemometer entry for 'SoftwareCar_2037_cust' calibration record
+UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 0, -3.6, 1, 2, 0)
 	
 
 --Users:
