@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.source;
 
@@ -35,9 +35,9 @@ public class LoginPage extends BasePage {
 
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnAccept;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
-	private WebElement txtAccountDisabled;	
+	private WebElement txtAccountDisabled;
 
 	/**
 	 * @param driver
@@ -63,7 +63,7 @@ public class LoginPage extends BasePage {
 	public boolean checkIfAtLoginPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+
 		return false;
 	}
 
@@ -72,7 +72,7 @@ public class LoginPage extends BasePage {
 
 		waitForPageToLoad();
 		handleEULA();
-		
+
 		waitForPageToLoad();
 		HomePage homePage = new HomePage(this.driver, this.strBaseURL,
 				this.testSetup);
@@ -82,8 +82,9 @@ public class LoginPage extends BasePage {
 
 		while (true) {
 			if (homePage.checkIfAtHomePage()) {
-				// Set LoggedInUser and Culture to context.
+				// Set LoggedInUser/Pwd and Culture to context.
 				TestContext.INSTANCE.setLoggedInUser(userName);
+				TestContext.INSTANCE.setLoggedInPassword(password);
 				User loggedInUser = User.getUser(userName);
 				if (loggedInUser != null) {
 					TestContext.INSTANCE.setUserCulture(loggedInUser.getCultureId());
@@ -93,15 +94,15 @@ public class LoginPage extends BasePage {
 					&& driver.getTitle().equalsIgnoreCase(
 							LoginPage.STRPageTitle)) {
 				return null;
-			} 
-			
+			}
+
 			elapsedTime = System.currentTimeMillis() - startTime;
 			if (elapsedTime >= (30 * 1000)) {
 				return null;
 			}
 		}
 	}
-	
+
 	public void login(String userName, String password) {
 		Log.info("Input username as '"+userName+"'");
 		this.tbUserName.sendKeys(userName);

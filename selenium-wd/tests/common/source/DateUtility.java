@@ -405,7 +405,8 @@ public class DateUtility {
 		int diff = 0;
 		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormatComp()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(),
 				DateTimeFormat.forPattern("dd/MM/yyyy HH:mm zzz").getParser(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm zzz").getParser(),
-				DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a zzz").getParser()};
+				DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a zzz").getParser(),
+				DateTimeFormat.forPattern("MM/dd/yyyy hh:mm a").getParser()};
 		org.joda.time.format.DateTimeFormatter formatter = new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
 		Long epoch1 = formatter.parseDateTime(dateTime1).getMillis() / 1000;
 		Long epoch2 = formatter.parseDateTime(dateTime2).getMillis() / 1000;

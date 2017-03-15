@@ -16,6 +16,7 @@ public class ApiUtility {
 	public static final String ENVIRONMENT_BUILD_API_RELATIVE_URL = "api/EnvironmentBuilds?environmentName=%s";
 	public static final String DELETE_MEASUREMENT_SESSION_RELATIVE_URL = "Home/DeleteSession/%s";
 	public static final String DELETE_COMPLIANCE_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=ComplianceReports&reportId=%s";
+	public static final String DELETE_ASSESSMENT_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=AssessmentReports&reportId=%s";
 	public static final String DELETE_EQ_REPORTS_RELATIVE_URL = "/Reports/DeleteReport?reportType=EQReports&reportId=%s";
 	private static final String GET_API_RESPONSE_CMD = "GetAPIResponse.cmd";
 	private static final String GET_AUTOMATION_API_RESPONSE_CMD = "Get-ReportingAPIResponse.cmd";
@@ -25,7 +26,7 @@ public class ApiUtility {
 
 	public static String getApiResponse(String apiRelativePath) {
 		String loginUser = TestContext.INSTANCE.getLoggedInUser();
-		String loginPwd = TestContext.INSTANCE.getLoggedInUserPassword();
+		String loginPwd = TestContext.INSTANCE.getLoggedInPassword();
 
 		// If API is invoked before login in UI, use default credentials.
 		if (BaseHelper.isNullOrEmpty(loginUser) || BaseHelper.isNullOrEmpty(loginPwd)) {

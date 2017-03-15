@@ -37,9 +37,8 @@ import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
-import common.source.TestSetupFactory;
+import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
-import surveyor.dataaccess.source.Location;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.scommon.actions.ActionBuilder;
@@ -117,7 +116,7 @@ public class BaseTest {
 
 	protected static void initializeTestObjects(boolean initializeDriver) {
 		if (getTestSetup()==null) {
-			setTestSetup(TestSetupFactory.getTestSetup());
+			setTestSetup(ThreadLocalStore.getTestSetup());
 			Log.info(String.format("[THREAD Debug Log].. Set TestSetup - '%s'", getTestSetup()));
 		}
 		if (getBaseURL() == null) {
@@ -146,7 +145,7 @@ public class BaseTest {
 		}
 
 		if (getScreenCapture() == null) {
-			ScreenShotOnFailure screenShotOnFailure = TestSetupFactory.getScreenShotOnFailure();
+			ScreenShotOnFailure screenShotOnFailure = ThreadLocalStore.getScreenShotOnFailure();
 			setScreenCapture(screenShotOnFailure);
 			getTestSetup().setScreenCapture(screenShotOnFailure);
 			Log.info(String.format("[THREAD Debug Log].. Set ScreenCapture - '%s'", getScreenCapture()));
@@ -170,7 +169,6 @@ public class BaseTest {
 	}
 
 	public static void reportTestStarting(String className, String methodName, String firstLogLine) {
-		Log.method("reportTestStarting", className, methodName, firstLogLine);
 		ExtentReports report = getExtentReport(className);
 		setExtentTest(report.startTest(methodName), className);
 		getExtentTest(className).assignCategory(TestContext.INSTANCE.getTestRunCategory());
@@ -181,6 +179,7 @@ public class BaseTest {
 	}
 
 	public static void reportTestFinished(String className) {
+		Log.method("reportTestFinished", className);
 		ExtentReports report = getExtentReport(className);
 		getExtentTest(className).log(LogStatus.INFO, String.format("Finished test. [End Time:%s]",
 				DateUtility.getCurrentDate()));
@@ -196,6 +195,7 @@ public class BaseTest {
 	}
 
 	public static void reportTestFailed(Throwable e, String className) {
+		Log.method("reportTestFailed", e, className);
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
@@ -204,7 +204,9 @@ public class BaseTest {
 	}
 
 	public static void reportTestSucceeded(String className) {
+		Log.method("reportTestSucceeded", className);
 		Log.info("_PASS_ ");
+		TestContext.INSTANCE.setTestStatus("PASS");
 		getExtentTest(className).log(LogStatus.PASS, "PASSED");
 	}
 
