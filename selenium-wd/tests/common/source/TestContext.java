@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
 import com.relevantcodes.extentreports.model.ITest;
 
 public enum TestContext {
@@ -42,6 +43,12 @@ public enum TestContext {
 		this.threadTestStatus = new ThreadLocalMap<String>(DEFAULT_TEST_STATUS);
 		this.getLogData().setIndexID(getIndexIdForTestRun());
 		this.extentTestMap = ThreadLocalStore.getExtentTestMap();
+	}
+
+	public void captureScreenshot() {
+		Log.method("captureScreenshot");
+		TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
+				TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
 	}
 
 	public String getTestStatus() {

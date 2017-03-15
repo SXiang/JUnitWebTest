@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package surveyor.regression.source;
 
@@ -18,6 +18,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.CryptoUtility;
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.RunAs;
@@ -40,7 +41,7 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 public class ManageUsersPageTest extends SurveyorBaseTest {
 	private static final String FN_TC71_TC473_USER_RESET_PWD = "TC71_TC473_User_ResetPwd";
 	private static final String SQAPICAD_AND_SQAPICSUP = "sqapicad@picarro.com,sqapicsup@picarro.com";
-	
+
 	private static ManageUsersPage manageUsersPage;
 	private static ManageCustomersPage manageCustomersPage;
 	private static ManageLocationsPage manageLocationsPage;
@@ -61,13 +62,13 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * This method is called by the 'worker' thread
-	 * 
+	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
 		homePage = pageObjectFactory.getHomePage();
@@ -128,7 +129,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC68 Test Description: Picarro Admin - Add New Picarro User
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
@@ -160,7 +161,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 	/**
 	 * Test Case ID: TC69_TC471 Test Description: Picarro Admin - Add New Customer User
-	 * 
+	 *
 	 */
 	@Test
 	@UseDataProvider(value = "dataProviderPicarroAdminSupportRoleInfo", location = UserDataProvider.class)
@@ -805,7 +806,10 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		// Picarro user
 		manageUsersPage.addNewPicarroUser(email, USERPASSWORD, USERPASSWORD + " ", CUSUSERROLEDR, locationDesc, TIMEZONECT);
-		assertEquals(manageUsersPage.getConfirmPasswordError(), errorMsg);
+		String confirmPasswordError = manageUsersPage.getConfirmPasswordError();
+		Log.info(String.format("Picarro User error message comparison: Expected='%s', Actual='%s'", errorMsg, confirmPasswordError));
+		Log.info(String.format("Resource 'Validation_EnterSameValueAgain' value='%s'", Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain)));
+		assertEquals(errorMsg, confirmPasswordError);
 
 		manageUsersPage.clickOnCancelAddBtn();
 
@@ -813,7 +817,12 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		customerName = SQACUS;
 		location = SQACUSLOC;
 		manageUsersPage.addNewCustomerUser(customerName, email, "_" + USERPASSWORD, USERPASSWORD, CUSUSERROLEDR, location, true);
-		assertEquals(manageUsersPage.getConfirmPasswordError(), errorMsg);
+		confirmPasswordError = manageUsersPage.getConfirmPasswordError();
+		Log.info(String.format("Customer User error message comparison: Expected='%s', Actual='%s'", errorMsg, confirmPasswordError));
+		Log.info(String.format("Resource 'Validation_EnterSameValueAgain' value='%s'", Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain)));
+		TestContext.INSTANCE.captureScreenshot();
+
+		assertEquals(errorMsg, confirmPasswordError);
 
 		manageUsersPage.clickOnCancelAddBtn();
 	}
@@ -923,7 +932,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		Log.info("\nRunning TC132_ManageUsers_SortColumns");
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		manageUsersPage.open();		
+		manageUsersPage.open();
 		assertTrue(manageUsersPage.areTableColumnsSorted());
 	}
 }
