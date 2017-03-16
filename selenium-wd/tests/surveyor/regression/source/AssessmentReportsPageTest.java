@@ -23,6 +23,7 @@ import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
 import surveyor.scommon.source.AssessmentReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ReportsCommonPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
@@ -57,7 +58,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
-		setTestRunMode(ReportTestRunMode.FullTestRun);
+		setTestRunMode(ReportTestRunMode.UnitTestRun);
 
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			assessmentReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
@@ -358,23 +359,22 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Generate report with same parameters except exclusion radius (set it to 50 or 100) ad compare results of 2 reports
 	 * Results: -
 	 *	-
-	 *	- - Report generated successfully
-	 *	- - Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
+	 *	[Y] - - Report generated successfully
+	 *	[Y] - Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
 	 *	-
-	 *	- -Assessment report SSRS PDF should have survey details, view details and assets
+	 *	[Y] -Assessment report SSRS PDF should have survey details, view details and assets
 	 *	-
-	 *	- - LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
-	 *	- - SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc.
-	 *	- - Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
-	 *	- - Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected
+	 *	[Y] LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
+	 *	[Y] - SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc.
+	 *	[Y] - Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
+	 *	[Y] - Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected
 	 *	-
-	 *	- -The Shapefile zip should download. Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
-	 *	- - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
-	 *	- - Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+	 *	[Y] -The Shapefile zip should download. Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
+	 *	[Y] - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
+	 *	[Y] - Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
 	 *	- - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	- - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
-	// Verified (some methods remaining to be verified)
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
 	public void TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt(
@@ -408,6 +408,8 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 
+		assessmentReportsPageAction.verifyStaticTextInSSRSPDF(EMPTY, getReportRowID(reportDataRowID1));
+
 		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 
@@ -431,20 +433,29 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
 		String notContainsText = "Indications:LISA:Isotopic Analysis:Field Notes:Report Mode";
+		// LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
+		notContainsText += String.format("%s:%s:%s", ReportsCommonPage.ComplianceReportSSRS_LISAInvestigationComplete,
+				ReportsCommonPage.ComplianceReportSSRS_GAPInvestigationComplete, ReportsCommonPage.ComplianceReportSSRS_CGIInvestigationComplete);
+
 		assertTrue(assessmentReportsPageAction.verifyPDFDoesNotContainInputtedInformation(notContainsText, getReportRowID(reportDataRowID1)));
 
 		// Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 
-		// All the information present in ReportLISA.csv file
-		//   ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
-		// Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
-		// All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
-		// Data present in ReportLisa.csv should be same as SSRS PDF indication table.
+		// [Metadata verifications] ->
+		//   i. All the information present in ReportLISA.csv file
+		//  ii. ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+		// iii. Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+		//  iv. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+		//   v. Data present in ReportLisa.csv should be same as SSRS PDF indication table.
 
-		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		// TODO: Pending following:-
+		// i.  Pending query to QA team on when 'N/A' vs BLANK should show in metadata csv files.
+		// ii. Pending implementation for verification c. and d. for metadata files
+		// assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

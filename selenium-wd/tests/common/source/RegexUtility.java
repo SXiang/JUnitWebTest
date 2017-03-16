@@ -70,18 +70,37 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static List<String> getMatchingGroups(String inputString, String regexPattern) {
+		return getMatchingGroups(inputString, regexPattern, false /*matchMultiple*/);
+	}
+
+	/**
+	 * Gets matching groups from the specified regex pattern.
+	 *
+	 * @param inputString
+	 *            - string to match.
+	 * @param regexPattern
+	 *            - regex pattern.
+	 * @param matchMultiple
+	 *            - whether or not to match multiple strings.
+	 * @return
+	 */
+	public static List<String> getMatchingGroups(String inputString, String regexPattern, Boolean matchMultiple) {
 		List<String> output = Collections.synchronizedList(new ArrayList<String>());
 		Pattern pattern = Pattern.compile(regexPattern, flags);
 		Matcher matcher = pattern.matcher(inputString);
-		if (matcher.find()) {
+		boolean continueMatch = true;
+		while (continueMatch && matcher.find()) {
 			int count = matcher.groupCount();
 			for (int i = 0; i <= count; i++) {
 				output.add(matcher.group(i));
 			}
+
+			continueMatch = matchMultiple;
 		}
 
 		return output;
 	}
+
 
 	/**
 	 * Returns a list of String with matching parts after split. If parts are empty then they are not returned in the output

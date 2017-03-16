@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
   <Appenders>
-    <!-- Time and size based triggering policies. Create upto 7 archives on same day (1-7), stored in directory based on  current year and month, compress each archive using zip -->	
+    <!-- Time and size based triggering policies. Create upto 7 archives on same day (1-7), stored in directory based on  current year and month, compress each archive using zip -->
 	<RollingRandomAccessFile name="RollingRandomAccessFile" fileName="C:\QATestLogs\logs\qaauto.log"
 						append="true" filePattern="C:\QATestLogs\logs\$${date:yyyy-MM}\qaauto-%d{yyyy-MM-dd}-%i.log.zip">
 		<PatternLayout>
@@ -23,17 +23,17 @@
 	</Console>
 
   </Appenders>
-  
+
   <Loggers>
 	<Logger name="common.source" level="debug"  additivity="false">
 	  <AppenderRef ref="STDOUT"/>
 	</Logger>
-	<Root level="info">	
+	<Root level="info">
 	  <AppenderRef ref="STDOUT"/>
 	</Root>
 	<Logger name="logstash.json" level="debug" additivity="false">
 	  <AppenderRef ref="RollingRandomAccessFile"/>
 	</Logger>
   </Loggers>
-  
+
 </Configuration>

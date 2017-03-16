@@ -5,17 +5,20 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.testng.Assert;
-
 import common.source.BasePage.ElementType;
 
 public class Log {
+
+	private static final String COMMON_SOURCE_LOG = "common.source.Log";
+	private static final Boolean DEBUG = false;   // enabled DEBUG to print additional Thread specific logs.
+
 	private static Logger log = null;
 	private static Logger stashLog  = null;
 	private static String logFilePath;
@@ -131,7 +134,18 @@ public class Log {
 	}
 
 	public static String formatLogMessage(String msg){
-		StackTraceElement caller = getStackTraceElement();
+		return formatLogMessage(msg, DEBUG /*debugPrint*/);
+	}
+
+	public static String getJSONMessage(String msg){
+		Map<String, ?> msgMap = getMessageMap(msg);
+		String jsonString = new JSONObject(msgMap).toString();
+		jsonString = new JSONObject(msgMap).toString();
+		return jsonString;
+	}
+
+	private static String formatLogMessage(String msg, boolean debugPrint){
+		StackTraceElement caller = getStackTraceElement(debugPrint);
 		String logMessage = "["+caller.getClassName() + " -> " +caller.getMethodName() +
 		", Line: "+caller.getLineNumber() +"]: "
 		+msg.replaceAll(System.lineSeparator(), "").replaceAll("\\n", "");
@@ -150,13 +164,6 @@ public class Log {
 		return logstashMessage;
 	}
 
-	public static String getJSONMessage(String msg){
-		Map<String, ?> msgMap = getMessageMap(msg);
-		String jsonString = new JSONObject(msgMap).toString();
-		jsonString = new JSONObject(msgMap).toString();
-		return jsonString;
-	}
-
 	private static Map<String, ?> getMessageMap(String msg) {
 		Map<String, Object> map = Collections.synchronizedMap(new HashMap<>());
 		StackTraceElement caller = getStackTraceElement();
@@ -164,112 +171,55 @@ public class Log {
 		map.put(LogField.MSG_METHOD.toString(), caller.getMethodName());
 		map.put(LogField.MSG_LINE.toString(), caller.getLineNumber());
 		map.put(LogField.MSG.toString(), msg);
-		map.putAll(TestContext.INSTANCE.getTestMap());
+		map.putAll(TestContext.INSTANCE.getLogData().toMap());
 		return map;
     }
 
-	public static StackTraceElement getStackTraceElement(){
+	private static StackTraceElement getStackTraceElement(){
+		return getStackTraceElement(false);
+	}
+
+	private static StackTraceElement getStackTraceElement(boolean debugPrint){
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
 		if(elements.length<1){
 			return null;
-		}else if(elements.length<2){
+		}
+
+		if (debugPrint) {
+			Arrays.asList(elements).stream().forEach(
+				s -> threadDebugPrint(ToStringBuilder.reflectionToString(s, ToStringStyle.DEFAULT_STYLE))
+			);
+		}
+
+		if(elements.length<2){
 			return elements[0];
 		}
-		String logClass = elements[1].getClassName();
+
 		for(int i=1; i<elements.length; i++){
 			String currentClass = elements[i].getClassName();
-			if(!currentClass.equals(logClass)
+			if(!currentClass.equals(COMMON_SOURCE_LOG)
 					&& !currentClass.contains("$")
 					&& !currentClass.contains("TestWatcher")
 					&& !currentClass.contains("org.junit")
 					){
+
+				if (debugPrint) {
+					threadDebugPrint("LogInternal :: TestMap values -> " + LogHelper.mapToString(TestContext.INSTANCE.getLogData().toMap()));
+					threadDebugPrint("currentClass=" + currentClass);
+					threadDebugPrint(ToStringBuilder.reflectionToString(elements[i], ToStringStyle.DEFAULT_STYLE));
+					threadDebugPrint("ELEMENT className=" + elements[i].getClassName());
+					threadDebugPrint("ELEMENT methodName=" + elements[i].getMethodName());
+					threadDebugPrint("ELEMENT lineNumber=" + elements[i].getLineNumber());
+				}
+
 				return elements[i];
 			}
 		}
 		return elements[0];
 	}
 
-	/* Unit test */
-	public static void main(String[] args) throws IOException {
-		logFilePath = TestSetup.getRootPath() + File.separator + "logs" + File.separator + "log.log";
-
-		test_LogInfo_WithMessage();
-		test_LogWarn_WithMessage();
-		test_LogDebug_WithMessage();
-		test_LogError_WithMessage();
-		test_LogInfo_NoMessage();
-		test_LogWarn_NoMessage();
-		test_LogDebug_NoMessage();
-		test_LogError_NoMessage();
+	private static void threadDebugPrint(String message) {
+		System.out.println(String.format("Thread=[%s], Message=[%s]", Thread.currentThread().getName(), message));
 	}
 
-	private static void assertLogLastEntryContains(String[] messages) {
-		try {
-			List<String> contents = FileUtility.readFileLinesToList(logFilePath);
-			String lastLine = contents.get(contents.size()-1);
-			for (String msg : messages) {
-				if (msg != "") {
-					Assert.assertTrue(lastLine.contains(msg));
-				}
-			}
-		} catch (IOException e) {
-			Log.error(e.toString());
-		}
-	}
-
-	private static void test_LogInfo_WithMessage() {
-		Log.info("Executing test_LogInfo_WithMessage() ...");
-		String message = "Log Info";
-		Log.info(message);
-		assertLogLastEntryContains(new String[] {"INFO", message});
-	}
-
-	private static void test_LogWarn_WithMessage() {
-		Log.info("Executing test_LogWarn_WithMessage() ...");
-		String message = "Log Warn";
-		Log.warn(message);
-		assertLogLastEntryContains(new String[] {"WARN", message});
-	}
-
-	private static void test_LogDebug_WithMessage() {
-		Log.info("Executing test_LogDebug_WithMessage() ...");
-		String message = "Log Debug";
-		Log.debug(message);
-		assertLogLastEntryContains(new String[] {"DEBUG", message});
-	}
-
-	private static void test_LogError_WithMessage() {
-		Log.info("Executing test_LogError_WithMessage() ...");
-		String message = "Log Error";
-		Log.error(message);
-		assertLogLastEntryContains(new String[] {"ERROR", message});
-	}
-
-	private static void test_LogInfo_NoMessage() {
-		Log.info("Executing test_LogInfo_NoMessage() ...");
-		String message = "";
-		Log.info(message);
-		assertLogLastEntryContains(new String[] {"INFO", message});
-	}
-
-	private static void test_LogWarn_NoMessage() {
-		Log.info("Executing test_LogWarn_NoMessage() ...");
-		String message = "";
-		Log.warn(message);
-		assertLogLastEntryContains(new String[] {"WARN", message});
-	}
-
-	private static void test_LogDebug_NoMessage() {
-		Log.info("Executing test_LogDebug_NoMessage() ...");
-		String message = "";
-		Log.debug(message);
-		assertLogLastEntryContains(new String[] {"DEBUG", message});
-	}
-
-	private static void test_LogError_NoMessage() {
-		Log.info("Executing test_LogError_NoMessage() ...");
-		String message = "";
-		Log.error(message);
-		assertLogLastEntryContains(new String[] {"ERROR", message});
-	}
 }

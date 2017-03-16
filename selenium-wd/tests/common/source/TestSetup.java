@@ -684,6 +684,7 @@ public class TestSetup {
 
 			inputStream.close();
 
+			// create thread specific objects.
 			TestContext.INSTANCE.setTestSetup(this);
 
 			// process the single execution method only once for all threads of execution.

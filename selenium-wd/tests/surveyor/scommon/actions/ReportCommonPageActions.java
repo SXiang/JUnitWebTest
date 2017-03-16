@@ -1786,21 +1786,44 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	/**
 	 * Executes verifyMetaDataZIPFilesAreCorrect action.
 	 * Verifies that correct files are present in the Metadata ZIP.
-	 * NOTE: This method does NOT verify the content within the Metadata Zip file.
+	 * NOTE:
+	 * 1) This method looks at ReportViews test data to determine which metadata files should be present in MetaData zip.
+	 * 2) This method does NOT verify the content within the Metadata Zip file.
+	 * ASSUMPTIONS:
+	 * 1) Metadata zip files are extracted before invoking this method.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
-	public boolean verifyMetaDataZIPFilesAreCorrect(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesAreCorrect", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
-		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
-		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
+	public boolean verifyMetaDataZIPFilesArePresent(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesArePresent", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesArePresent", ARG_DATA_ROW_ID, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		boolean verifyGapMetaPresent = false;
+		boolean verifyLisaMetaPresent = false;
+		boolean verifySurveyMetaPresent = false;
+		boolean verifyIsotopicMetaPresent = false;
 
-		// TODO: Check for specific metadata files in the ZIP.
-		return false;
+		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
+		if (!ActionArguments.isEmpty(reportsDataRow.reportSurveyRowIDs)) {
+			verifySurveyMetaPresent = true;
+		}
+
+		List<Integer> viewRowIDs = ActionArguments.getNumericList(reportsDataRow.reportViewRowIDs);
+		for (int i=0; i<viewRowIDs.size(); i++) {
+			ReportViewsDataRow reportViewsDataRow = workingReportViewsDataRows.get().get(i);
+			if (reportViewsDataRow.gaps.equalsIgnoreCase(BaseActions.TRUE)) {
+				verifyGapMetaPresent = true;
+			} else if (reportViewsDataRow.lISAs.equalsIgnoreCase(BaseActions.TRUE)) {
+				verifyLisaMetaPresent = true;
+			} else if (reportViewsDataRow.isotopicCapture.equalsIgnoreCase(BaseActions.TRUE)) {
+				verifyIsotopicMetaPresent = true;
+			}
+		}
+
+		return this.getReportsCommonPage().verifyMetaDataFilesArePresent(downloadPath, getWorkingReportsDataRow().title,
+				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 	}
 
 	/**
@@ -2884,6 +2907,18 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyStaticTextInSSRSPDF action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyStaticTextInSSRSPDF(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyStaticTextInSSRSPDF", data, dataRowID);
+		return this.getReportsCommonPage().verifyReportStaticText(getWorkingReportsEntity());
+	}
+
+	/**
 	 * Executes verifySSRSCoverageTableInfo action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -3381,7 +3416,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyLISAsIndicationTableSortedAscByColumn")) { return this.verifyLISAsIndicationTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyLISAsIndicationTableSortedDescByColumn")) { return this.verifyLISAsIndicationTableSortedDescByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
-		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
+		else if (actionName.equals("verifyMetaDataZIPFilesArePresent")) { return this.verifyMetaDataZIPFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailIsShownInComplianceViewer")) { return this.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPaginationAndSortingOnAllColumns")) { return this.verifyPaginationAndSortingOnAllColumns(data, dataRowID); }
@@ -3438,6 +3473,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysAreForSelectedArea")) { return this.verifySearchedSurveysAreForSelectedArea(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSpecifiedCustomer")) { return this.verifySearchedSurveysAreForSpecifiedCustomer(data, dataRowID); }
 		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
+		else if (actionName.equals("verifyStaticTextInSSRSPDF")) { return this.verifyStaticTextInSSRSPDF(data, dataRowID); }
 		else if (actionName.equals("verifySurveyGreaterThan100HoursCannotBeAdded")) { return this.verifySurveyGreaterThan100HoursCannotBeAdded(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToClose")) { return this.waitForComplianceViewerDialogToClose(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToOpen")) { return this.waitForComplianceViewerDialogToOpen(data, dataRowID); }

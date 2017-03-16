@@ -2,34 +2,43 @@ node meas_generator target=jukebox.play_records
      out=meas_out
      args='[{
      "_obj_type"	: "measurement",
-     "CAR_VEL_E"	: "NaN",
-     "CAR_VEL_N"	: "NaN",
-     "CH4"		: "NaN",
-     "co2_conc"		: "NaN",
-     "HP_Delta_iCH4_Raw"   : "NaN",
-     "EPOCH_TIME"	: 1423167409.552,
-     "GPS_FIT"		: 2,
-     "GPS_ABS_LAT"	: "37.3917479",
-     "GPS_ABS_LONG"	: "-121.9871106",
-     "h2o_conc_pct"		: "NaN",
-     "species"		: 25,
+     "EPOCH_TIME"	: 1485288907,
+     "GPS_ABS_LAT"	: 37.43146651,
+     "GPS_ABS_LONG"	: -121.9640698,
+     "GPS_FIT"	: 2,
+     "INST_STATUS"	: 0,
      "ValveMask"	: 16,
-     "WIND_DIR_SDEV"	: "NaN",
-     "WIND_N"		: "NaN",
-     "WIND_E"		: "NaN",
-     "WS_WIND_LAT"	: "NaN",
-     "WS_WIND_LON"	: "NaN",
-     "CavityPressure"   : 120,
+     "CAR_VEL_N"	: 0,
+     "CAR_VEL_E"	: 0,
+     "WIND_N"	: 0,
+     "WIND_E"	: 0,
+     "WIND_DIR_SDEV"	: 0,
+     "WS_ROTATION"	: 0,
+     "WS_WIND_LAT"	: 0,
+     "WS_WIND_LON"	: 0,
+     "CHEM_DETECT"	: 0,
+     "species"	: 25,
+     "CH4"	: 0.0,
+     "co2_conc"	: 0,
+     "h2o_conc_pct"	: 0,
+     "HP_Delta_iCH4_Raw"	: 0,
+     "PeripheralStatus"	: 0,
+	 "PeakDetectorState" : 0,
+     "AnalyzerStatus"	: 0,
+	 "SystemStatus"	: 0,
      "CavityTemp"	: 40,
-     "DasTemp"		: 41.25,
-     "MOBILE_FLOW"	: 3.2,
-     "PeripheralStatus" : 0, 
-     "AnalyzerStatus"   : 902182,
-     "WarmBoxTemp"	: 44}]',True
+     "WarmBoxTemp"	: 44,
+     "CavityPressure"	: 120,
+     "DasTemp"	: 38.375,
+     "MOBILE_FLOW"	: 0,
+     "AnalyzerMode"	: 5,
+     "C2H6"	: 0,
+     "C2H4_PF"	: 0,
+     "C2H6_nominal_sdev"	: 0}]',True
 node merger target=stream_merger.stream_merger 
      in=meas_out out=merge_out
 node zmq_pub target=zmqsender.zmq_sender in=merge_out 
-     args=True
+     args=True,30,warming_mode,True
 
 
 
