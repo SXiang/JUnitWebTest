@@ -449,7 +449,8 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
+		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
+		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
 
 		// [Metadata verifications] ->
 		// - All the information present in ReportLISA.csv file

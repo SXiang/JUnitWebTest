@@ -1784,14 +1784,15 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyMetaDataZIPFilesAreCorrect action.
-	 * Verifies that correct files are present in the Metadata ZIP.
+	 * Executes verifyMetaDataZIPFilesAreCorrect action.Verifies that correct files are present in the Metadata ZIP.
 	 * NOTE:
 	 * 1) This method looks at ReportViews test data to determine which metadata files should be present in MetaData zip.
 	 * 2) This method does NOT verify the content within the Metadata Zip file.
 	 * ASSUMPTIONS:
 	 * 1) Metadata zip files are extracted before invoking this method.
-	 * @param data - specifies the input data passed to the action.
+	 * @param data - specifies the verifications to be performed in the following format:
+	 * 				 {verifyGapMetaPresent:verifyLisaMetaPresent:verifySurveyMetaPresent:verifyIsotopicMetaPresent}
+	 *               eg. - True:True:False:True
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
@@ -1800,28 +1801,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesArePresent", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesArePresent", ARG_DATA_ROW_ID, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
-		boolean verifyGapMetaPresent = false;
-		boolean verifyLisaMetaPresent = false;
-		boolean verifySurveyMetaPresent = false;
-		boolean verifyIsotopicMetaPresent = false;
-
-		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
-		if (!ActionArguments.isEmpty(reportsDataRow.reportSurveyRowIDs)) {
-			verifySurveyMetaPresent = true;
-		}
-
-		List<Integer> viewRowIDs = ActionArguments.getNumericList(reportsDataRow.reportViewRowIDs);
-		for (int i=0; i<viewRowIDs.size(); i++) {
-			ReportViewsDataRow reportViewsDataRow = workingReportViewsDataRows.get().get(i);
-			if (reportViewsDataRow.gaps.equalsIgnoreCase(BaseActions.TRUE)) {
-				verifyGapMetaPresent = true;
-			} else if (reportViewsDataRow.lISAs.equalsIgnoreCase(BaseActions.TRUE)) {
-				verifyLisaMetaPresent = true;
-			} else if (reportViewsDataRow.isotopicCapture.equalsIgnoreCase(BaseActions.TRUE)) {
-				verifyIsotopicMetaPresent = true;
-			}
-		}
-
+		List<String> verifications = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		boolean verifyGapMetaPresent = Boolean.parseBoolean(verifications.get(0));
+		boolean verifyLisaMetaPresent = Boolean.parseBoolean(verifications.get(1));
+		boolean verifySurveyMetaPresent = Boolean.parseBoolean(verifications.get(2));
+		boolean verifyIsotopicMetaPresent = Boolean.parseBoolean(verifications.get(3));
 		return this.getReportsCommonPage().verifyMetaDataFilesArePresent(downloadPath, getWorkingReportsDataRow().title,
 				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 	}

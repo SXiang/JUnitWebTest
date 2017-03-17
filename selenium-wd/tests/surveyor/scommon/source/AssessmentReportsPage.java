@@ -6,8 +6,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
 import org.openqa.selenium.WebDriver;
 
 import common.source.ApiUtility;

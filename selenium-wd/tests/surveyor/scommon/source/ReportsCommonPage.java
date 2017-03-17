@@ -3437,8 +3437,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 
 		int actualNumLisas = 0;
-
-		// Assert all shape files in the folders are the same.
 		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
 		List<String> shpFilesInDirectory = FileUtility.getFilesInDirectory(Paths.get(actualDataFolderPath), "*.shp");
 		for (String filePath : shpFilesInDirectory) {
