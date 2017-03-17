@@ -325,7 +325,10 @@ public class BasePage {
 
 	protected void sendKeysToElement(WebElement element, String key) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls.
-		// Use Actions workaround to send keys instead.
+		// Use set text in the following order of precedence:
+		//  1. JS set value
+		//  2. Actions sendKeys
+		//  3. WebElement sendKeys
 		if(key == null){
 			return;
 		}
