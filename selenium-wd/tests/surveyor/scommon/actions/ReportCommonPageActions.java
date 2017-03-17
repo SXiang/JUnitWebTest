@@ -2893,17 +2893,33 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyShapeFilesWithBaselines action.
+	 * Executes verifyNumberOfLISAsInShapeFilesEquals action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
-	public boolean verifyNumberOfLisasInShapeFilesEquals(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyNumberOfLisasInShapeFilesEquals", data, dataRowID);
+	public boolean verifyNumberOfLISAsInShapeFilesEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyNumberOfLISAsInShapeFilesEquals", data, dataRowID);
 		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
-		return this.getReportsCommonPage().verifyShapeFilesWithBaselines(reportsDataRow.title,
-				reportsDataRow.tCID, 0);
+		Integer expectedNumLisas = NumberUtility.getIntegerValueOf(data);
+		String downloadPath = getDownloadPath(ReportFileType.ShapeZIP);
+		return this.getReportsCommonPage().verifyNumberOfLisasInShapeFiles(downloadPath, reportsDataRow.title, 0, expectedNumLisas);
+	}
+
+	/**
+	 * Executes verifyNumberOfLISAsInMetaDataFileEquals action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyNumberOfLISAsInMetaDataFileEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyNumberOfLISAsInMetaDataFileEquals", data, dataRowID);
+		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		Integer expectedNumLisas = NumberUtility.getIntegerValueOf(data);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		return this.getReportsCommonPage().verifyNumberOfLISAsInMetaDataFile(downloadPath, reportsDataRow.title, expectedNumLisas);
 	}
 
 	/**
@@ -3433,6 +3449,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyMetaDataZIPFilesArePresent")) { return this.verifyMetaDataZIPFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailIsShownInComplianceViewer")) { return this.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
+		else if (actionName.equals("verifyNumberOfLISAsInMetaDataFileEquals")) { return this.verifyNumberOfLISAsInMetaDataFileEquals(data, dataRowID); }
+		else if (actionName.equals("verifyNumberOfLISAsInShapeFilesEquals")) { return this.verifyNumberOfLISAsInShapeFilesEquals(data, dataRowID); }
 		else if (actionName.equals("verifyPaginationAndSortingOnAllColumns")) { return this.verifyPaginationAndSortingOnAllColumns(data, dataRowID); }
 		else if (actionName.equals("verifyPDFContainsInputtedInformation")) { return this.verifyPDFContainsInputtedInformation(data, dataRowID); }
 		else if (actionName.equals("verifyPDFThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFThumbnailDownloadFromComplianceViewer(data, dataRowID); }

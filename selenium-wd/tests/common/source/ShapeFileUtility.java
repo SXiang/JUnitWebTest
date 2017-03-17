@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 import org.nocrala.tools.gis.data.esri.shapefile.ShapeFileReader;
 import org.nocrala.tools.gis.data.esri.shapefile.ValidationPreferences;
@@ -52,10 +53,10 @@ public class ShapeFileUtility {
 		return new GeoJsonShapeFileComparer();
 	}
 
-	public int getNumberOfLisasFromGeojson(String shapeFilePath) {
+	public int getNumberOfLisas(String shapeFilePath) {
 		String jsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFilePath);
-		// TODO: Implement method to retrieve number of lisas from geojson.
-		return 0;
+		Set<String> labelSet = GeoJsonShapeFileComparer.extractLabels(jsonString);
+		return (labelSet == null) ? 0 : labelSet.size();
 	}
 
 	public void assertEquals(String shapeFilePath1, String shapeFilePath2) throws Exception {

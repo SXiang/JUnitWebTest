@@ -3,6 +3,7 @@ package common.source;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,29 +50,43 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
 	}
 
-	private static boolean compareLabels(String jsonString1, String jsonString2) {
-		List<String> matchingGroups1 = RegexUtility.getMatchingGroups(jsonString1, LABEL_MATCH_REGEX, true /*matchMultiple*/);
-		List<String> matchingGroups2 = RegexUtility.getMatchingGroups(jsonString2, LABEL_MATCH_REGEX, true /*matchMultiple*/);
+	public static Set<String> extractLabels(String jsonString) {
+		List<String> matchingGroups = RegexUtility.getMatchingGroups(jsonString, LABEL_MATCH_REGEX, true /*matchMultiple*/);
 
-		if (matchingGroups1.size() != matchingGroups2.size()) {
+		if (matchingGroups.size() <= 1) {
+			return null;
+		}
+
+		Set<String> groupSet = Collections.synchronizedSet(new HashSet<String>());
+
+		for (int i = 1; i < matchingGroups.size(); i+=2) {
+			groupSet.add(matchingGroups.get(i));
+		}
+
+		return groupSet;
+	}
+
+	private static boolean compareLabels(String jsonString1, String jsonString2) {
+		Set<String> labelSet1 = extractLabels(jsonString1);
+		Set<String> labelSet2 = extractLabels(jsonString2);
+
+		if (labelSet1==null && labelSet2== null) {
+			return true;
+		}
+
+		if ((labelSet1==null) || (labelSet2==null)) {
+			Log.info(String.format("One label set EMPTY. Other is NOT. Empty label set=%d", (labelSet1==null) ? 1 : 2));
 			return false;
 		}
 
-		// Odd indices have matching group string.
-		// Label ordering can be different. Build sets of labels and compare sets.
-		Set<String> groupSet1 = new HashSet<String>();
-		Set<String> groupSet2 = new HashSet<String>();
-		if (matchingGroups1.size() > 1 && matchingGroups2.size() > 1) {
-			for (int i = 1; i < matchingGroups1.size(); i+=2) {
-				groupSet1.add(matchingGroups1.get(i));
-				groupSet2.add(matchingGroups2.get(i));
-			}
+		if (labelSet1.size() != labelSet2.size()) {
+			Log.info(String.format("Sizes for labels do NOT match. Label set1 size=%d. Label set2 size=%d.", labelSet1.size(), labelSet2.size()));
+			return false;
 		}
 
-		Log.info(String.format("Labels detected in jsonString1 - '%s', ", LogHelper.setToString(groupSet1)));
-		Log.info(String.format("Labels detected in jsonString2 - '%s', ", LogHelper.setToString(groupSet2)));
-
-		return groupSet1.equals(groupSet2);
+		Log.info(String.format("Labels detected in jsonString1 - '%s', ", LogHelper.setToString(labelSet1)));
+		Log.info(String.format("Labels detected in jsonString2 - '%s', ", LogHelper.setToString(labelSet2)));
+		return labelSet1.equals(labelSet2);
 	}
 
 	public static String removeIncomparableShapeValue(String jsonString){

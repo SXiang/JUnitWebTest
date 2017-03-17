@@ -74,7 +74,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -86,8 +85,6 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import javax.imageio.ImageIO;
 
 import org.jsoup.Jsoup;
@@ -142,7 +139,6 @@ import common.source.ProcessUtility;
 import common.source.RegexUtility;
 import common.source.RetryUtil;
 import common.source.ShapeFileUtility;
-import common.source.ShapeToGeoJsonConverter;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -2514,7 +2510,19 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
+	public boolean verifyNumberOfLISAsInMetaDataFile(String actualPath, String reportTitle, Integer expectedLISACount)
+			throws Exception {
+		List<String> outLISAs = new ArrayList<String>();
+		verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId(), outLISAs);
+		return (outLISAs.size() == expectedLISACount);
+	}
+
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
+			throws Exception {
+		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/);
+	}
+
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs)
 			throws Exception {
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
 		CSVUtility csvUtility = new CSVUtility();
@@ -2530,8 +2538,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
 
-		// LISAs list. Used to verify LISA numbers sequential ordering.
-		List<String> lisasList = new ArrayList<String>();
+		// LISAs list. Used to verify LISA numbers sequential ordering. If provided, use Collection from caller.
+		List<String> lisasList = outLISAs;
+		if (lisasList == null) {
+			lisasList = new ArrayList<String>();
+		}
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			Map<String, String> csvRow = csvIterator.next();
@@ -2560,7 +2571,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
 			String aggregatedClassificationconfidence = "N/A";
 			try {
-				// Handle BLANK values while waiting to hear from team on when BLANK vs. N/A should be displayed.
 				if (!BaseHelper.isNullOrEmpty(csvRow.get("ConfidenceInDisposition").trim())) {
 					int aggregatedClassificationconfidenceFloat = (int) (Float
 							.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
@@ -3419,10 +3429,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
-	public boolean verifyNumberOfLisasInShapeFiles(String reportTitle, String testCaseID, int zipIndex, int expectedLisasCount) throws Exception {
-		Log.method("verifyNumberOfLisasInShapeFiles", reportTitle, testCaseID, zipIndex, expectedLisasCount);
+	public boolean verifyNumberOfLisasInShapeFiles(String actualDataFolderPath, String reportTitle, int zipIndex, int expectedLisasCount) throws Exception {
+		Log.method("verifyNumberOfLisasInShapeFiles", reportTitle, zipIndex, expectedLisasCount);
 		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
-		String actualDataFolderPath = Paths.get(testSetup.getDownloadPath(), shapeZipFileName).toString();
 		if (!FileUtility.directoryExists(actualDataFolderPath)) {
 			BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
 		}
@@ -3435,10 +3444,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		for (String filePath : shpFilesInDirectory) {
 			String fileName = Paths.get(filePath).getFileName().toString();
 			if (fileName.endsWith("-LISA.shp")) {
-				actualNumLisas = shapeFileUtility.getNumberOfLisasFromGeojson(filePath);
+				actualNumLisas = shapeFileUtility.getNumberOfLisas(filePath);
 			}
 		}
 
+		Log.info(String.format("Expected LISAs count=%d, Found LISAs in shape file=%d", expectedLisasCount, actualNumLisas));
 		return (actualNumLisas == expectedLisasCount);
 	}
 

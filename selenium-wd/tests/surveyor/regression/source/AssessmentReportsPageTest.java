@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 
+import java.util.function.Predicate;
+
+import common.source.FunctionUtil;
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,6 +19,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.ReportCommonPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
@@ -58,7 +62,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
-		setTestRunMode(ReportTestRunMode.UnitTestRun);
+		setTestRunMode(ReportTestRunMode.FullTestRun);
 
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			assessmentReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
@@ -376,7 +380,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *  [Y] - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
 	 *  [Y] - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
 	 *  [Y] - Data present in ReportLisa.csv should be same as SSRS PDF indication table
-	 *	- - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
+	 *	[Y] - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
@@ -411,6 +415,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 
+		// Report in zipped folder contain 8.5 X 11 reports
 		assessmentReportsPageAction.verifyStaticTextInSSRSPDF(EMPTY, getReportRowID(reportDataRowID1));
 
 		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
@@ -419,7 +424,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
-
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// (PDF should have survey details, view details and assets)
@@ -431,7 +435,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		// date printed -> verified in Footer verification.
 		// survey start/end date -> verified in verifySSRSDrivingSurveyTableInfo
 		assertTrue(assessmentReportsPageAction.verifyReportCreationInSSRSPDFIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
-
 		assertTrue(assessmentReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
@@ -442,7 +445,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		assertTrue(assessmentReportsPageAction.verifyPDFDoesNotContainInputtedInformation(notContainsText, getReportRowID(reportDataRowID1)));
 
-		// Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
+		// Download report in zipped folder which will reports and full size maps present in PDF format
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
@@ -455,6 +458,8 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		// - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
 		// - Data present in ReportLisa.csv should be same as SSRS PDF indication table.
 		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+
+		assertTrue(runTestCaseSpecificVerifications(assessmentReportsPageAction, testCaseID, getReportRowID(reportDataRowID1)).test(assessmentReportsPageAction));
 	}
 
 	/**
@@ -545,5 +550,21 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+
+	// Executes specific to testcaseID verifications.
+	public Predicate<ReportCommonPageActions> runTestCaseSpecificVerifications(ReportCommonPageActions reportsPageAction, String testCaseID, Integer reportDataRowID) throws Exception {
+		return r -> {
+			if (testCaseID.equals("TC1488-1")) {
+				return FunctionUtil.wrapException(reportsPageAction, r1 -> {
+					boolean retVal = false;
+					final Integer expectedLisasCount = 1;
+					retVal = reportsPageAction.verifyNumberOfLISAsInShapeFilesEquals(String.valueOf(expectedLisasCount), reportDataRowID);
+					retVal = retVal && reportsPageAction.verifyNumberOfLISAsInMetaDataFileEquals(String.valueOf(expectedLisasCount), reportDataRowID);
+					return retVal;
+				});
+			}
+			return true;
+		};
 	}
 }
