@@ -372,7 +372,10 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	[Y] -The Shapefile zip should download. Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
 	 *	[Y] - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
 	 *	[Y] - Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-	 *	- - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)Data present in ReportLisa.csv should be same as SSRS PDF indication table
+	 *	[Y] - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+	 *  [Y] - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+	 *  [Y] - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+	 *  [Y] - Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	- - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
 	@Test
@@ -446,16 +449,12 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// [Metadata verifications] ->
-		//   i. All the information present in ReportLISA.csv file
-		//  ii. ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
-		// iii. Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
-		//  iv. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
-		//   v. Data present in ReportLisa.csv should be same as SSRS PDF indication table.
-
-		// TODO: Pending following:-
-		// i.  Pending query to QA team on when 'N/A' vs BLANK should show in metadata csv files.
-		// ii. Pending implementation for verification c. and d. for metadata files
-		// assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		// - All the information present in ReportLISA.csv file
+		// - ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+		// - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+		// - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+		// - Data present in ReportLisa.csv should be same as SSRS PDF indication table.
+		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**

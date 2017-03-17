@@ -2899,6 +2899,20 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
+	public boolean verifyNumberOfLisasInShapeFilesEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyNumberOfLisasInShapeFilesEquals", data, dataRowID);
+		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		return this.getReportsCommonPage().verifyShapeFilesWithBaselines(reportsDataRow.title,
+				reportsDataRow.tCID, 0);
+	}
+
+	/**
+	 * Executes verifyShapeFilesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
 	public boolean verifyShapeFilesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyShapeFilesWithBaselines", data, dataRowID);
 		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
