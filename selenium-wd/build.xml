@@ -771,7 +771,6 @@
   <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="LocalBranchTest" />
-      <sysproperty key="maxParallelTestThreads" value="3" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
@@ -782,12 +781,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-            <include name="**/ComplianceReportsTestSuite1.class" />
-            <include name="**/ComplianceReportsTestSuite2.class" />
-            <include name="**/ComplianceReportsTestSuite3.class" />
-            <include name="**/ComplianceReportsTestSuite4.class" />
-            <include name="**/ComplianceReportsTestSuite5.class" />
-            <include name="**/ComplianceReportsTestSuite6.class" />
+            <include name="**/AssessmentReportsPageTest.class" />
+            <include name="**/ComplianceReportsPageTest3.class" />
         </fileset>
       </batchtest>
     </junit>
