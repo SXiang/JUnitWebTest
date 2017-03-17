@@ -144,7 +144,8 @@ public class TestSetup {
 	private boolean generateBaselineSSRSImages;
 	private boolean generateBaselineViewImages;
 	private boolean generateBaselineShapeFiles;
-
+	private boolean generateBaselineScreenshots;
+	
 	private Integer executionTimesForLightLoadReportJobPerfBaseline;
 	private Integer executionTimesForMediumLoadReportJobPerfBaseline;
 	private Integer executionTimesForHighLoadReportJobPerfBaseline;
@@ -398,15 +399,23 @@ public class TestSetup {
 	public void setGenerateBaselineShapeFiles(boolean generateBaselineShapeFiles) {
 		this.generateBaselineShapeFiles = generateBaselineShapeFiles;
 	}
-
+	
 	public boolean isGenerateBaselineViewImages() {
 		return generateBaselineViewImages;
 	}
-
+	
 	public void setGenerateBaselineViewImages(boolean generateBaselineViewImages) {
 		this.generateBaselineViewImages = generateBaselineViewImages;
 	}
 
+	public boolean isGenerateBaselineScreenshots() {
+		return generateBaselineScreenshots;
+	}
+	
+	public void setGenerateBaselineScreenshots(boolean generateBaselineScreenshots) {
+		this.generateBaselineScreenshots = generateBaselineScreenshots;
+	}
+	
 	public boolean isGenerateBaselineSSRSImages() {
 		return generateBaselineSSRSImages;
 	}
@@ -834,6 +843,10 @@ public class TestSetup {
 		String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
 		if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
 			this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
+		}
+		String generateBaselineScreenshots = this.testProp.getProperty("complianceReport_generateBaselineScreenshots");
+		if (generateBaselineScreenshots != null && generateBaselineScreenshots != "") {
+			this.setGenerateBaselineScreenshots(Boolean.valueOf(generateBaselineScreenshots));
 		}
 	}
 

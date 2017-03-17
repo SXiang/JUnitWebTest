@@ -5,11 +5,13 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
@@ -88,8 +90,15 @@ public class ScreenShotOnFailure{
 	}
 
 	public void captureBrowserScreenShot(String fileName) {
+		captureBrowserScreenShot(driver, fileName, null);
+	}
+	
+	public static void captureBrowserScreenShot(WebDriver driver, String fileName, Point pt) {
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			if(pt!=null){
+				scrFile = getSubImage(scrFile, pt);
+			}
 			FileUtils.copyFile(scrFile, new File(fileName));
 			Log.info("A browser screenshot saved! - '"+fileName+"'");
 		}catch(Exception e){
@@ -97,6 +106,14 @@ public class ScreenShotOnFailure{
 		}
 	}
 
+	public static File getSubImage(File scrFile, Point pt) throws IOException{
+		BufferedImage img = ImageIO.read(scrFile);
+		int width = img.getWidth() - 2* pt.x;
+		int height = img.getHeight() - 2*pt.y;
+		BufferedImage dest = img.getSubimage(pt.x, pt.y, width, height);
+		ImageIO.write(dest, "png", scrFile);
+		return scrFile;
+	}
 	public void captureDesktopScreenShot(String fileName) {
 		try{
 			Robot robot = new Robot();

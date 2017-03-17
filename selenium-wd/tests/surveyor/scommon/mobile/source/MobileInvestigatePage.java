@@ -1,13 +1,18 @@
 package surveyor.scommon.mobile.source;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.Log;
+import common.source.WebElementExtender;
+import surveyor.scommon.entities.InvestigationEntity;
+import surveyor.scommon.entities.LeakDetailEntity;
 
 /**
  * @author sxiang
@@ -44,9 +49,15 @@ public class MobileInvestigatePage extends MobileBasePage {
 	protected WebElement buttonAddLeak;
 	@FindBy(how = How.XPATH, using = "//*[@class='modal-dialog ']//button[text()='Add Other Source']")
 	protected WebElement buttonAddOtherSource;
+
+	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.ok()']")
+	protected WebElement confirmYes;
+	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.cancel()']")
+	protected WebElement confirmNo;
 	
 	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
+	protected By mapKey = By.cssSelector(".map[id='map']>.ol-viewport > canvas");
 	
 	public MobileInvestigatePage(){
 		super(STRURLPath);
@@ -60,20 +71,35 @@ public class MobileInvestigatePage extends MobileBasePage {
 		waitUntilPageLoad();
 	}
 	
-	public void clickOnInvestigate(){
+	public void clickOnInvestigate(InvestigationEntity investigationEntity){
 		buttonInvestigate.click();
+		investigationEntity.setInvestigationStatus(false);
 	}
 	
 	public void clickOnAddSource(){
 		buttonAddSource.click();
 	}
 	
-	public void clickOnMarkAsComplete(){
+	public void clickOnMarkAsComplete(InvestigationEntity investigationEntity){
+		clickOnMarkAsComplete(investigationEntity, true);
+	}
+	
+	public void clickOnMarkAsComplete(InvestigationEntity investigationEntity, boolean gasSourceFound){
 		buttonComplete.click();
+		if(WebElementExtender.isElementPresentAndDisplayed(confirmYes)){
+			if(gasSourceFound){
+				confirmYes.click();
+			}else{
+				confirmNo.click();
+			}
+			investigationEntity.setSourceConfirmed(gasSourceFound);
+		}
+		investigationEntity.setInvestigationStatus(true);
 	}
 
 	public void clickOnFollow(){
 		buttonFollow.click();
+		waitUntilPageLoad(mapKey);
 	}
 	
 	public void clickOnDirections(){
@@ -92,5 +118,9 @@ public class MobileInvestigatePage extends MobileBasePage {
 		MobileLeakSourcePage otherSourcePage = new MobileLeakSourcePage();
 		otherSourcePage.waitUntilPageLoad();
 		return otherSourcePage;
+	}
+	
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
+		return verifyScreenshotWithBaseline(testCaseID, name, new Point(0,200));
 	}
 }

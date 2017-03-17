@@ -8,8 +8,6 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -50,21 +48,17 @@ import common.source.DateUtility;
 import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
-import common.source.ImagingUtility;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.PDFUtility;
 import common.source.PollManager;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
-import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.scommon.entities.ReportJobPerfDBStat;
-import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
@@ -2376,27 +2370,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 		return false;
-	}
-
-	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
-		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
-		return dest;
-	}
-
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
-		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
-	}
-
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
-		if(generateBaseline){
-			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
-			return true;
-		}
-		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
-			return false;
-		}
-		return true;
 	}
 
 	public String getSTRSurveyIncludedMsg() throws Exception {

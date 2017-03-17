@@ -25,9 +25,12 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.entities.LeakDetailEntity;
+import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
 import surveyor.scommon.mobile.source.MobileLeakSourcePage;
@@ -38,7 +41,7 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportInvestigationsPage;
-import surveyor.scommon.source.ReportInvestigationsPage.LisaStatus;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 /**
  *
@@ -142,34 +145,40 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
-		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
 		// Mobile - add leak
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
+		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
-		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
 
 		// Mobile - add other source
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
+		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3);
-		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
-		mobileLeakSourcePage.addOtherSource();
+		sourceDetails.setDefaultTestData();
+		mobileLeakSourcePage.addOtherSource(sourceDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
 
 		mobileLoginPage.logout();
 
@@ -177,9 +186,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), LisaStatus.FOUNDGASLEAK.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), LisaStatus.INPROGRESS.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), LisaStatus.FOUNDOTHERSOURCE.toString());
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), IndicationStatus.FOUNDGASLEAK.toString());
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), IndicationStatus.INPROGRESS.toString());
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), IndicationStatus.FOUNDOTHERSOURCE.toString());
 	}
 
 	/**
@@ -268,66 +277,68 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 			 "\nTest Description: Investigate Lisa as new user");
 //		1. TC807, TC 1553: verification of investigation PDF and CSV with data entered in mobile view
 //		2. TC1628, TC1629: verification of investigation map with 'Follow' on mobile side
-//		loginPageAction.open(EMPTY, NOTSET);
-//		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-//
-//		// Create a new user
-//		String userName = getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
-//		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-//		PageFactory.initElements(getDriver(), manageUsersPage);
-//		manageUsersPage.open();
-//		if(!manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
-//				CUSUSERROLEDR, "Picarro - Default", TIMEZONECT)){
-//			fail(String.format("Failed to add a new picarro user %s, %s",userName, USERPASSWORD));
-//		}
-//
-//		// Generate report
-//		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
-//		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
-//		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
-//				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		// Create a new user
+		String userName = "548641@picarro.com";//getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
+		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
+				CUSUSERROLEDR, "Picarro - Default", TIMEZONECT)){
+			fail(String.format("Failed to add a new picarro user %s, %s",userName, USERPASSWORD));
+		}
+
+		// Generate report
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 		// Assign Lisas to user
-//		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
-//		String lisaNumberPrefix = reportName+"-LISA-";
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 4;
-//		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-//		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
-//		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
-//		reportInvestigationsPage.assignPeaks(userName);
-//
-//		// Mobile - login and investigate lisas
-//		mobileLoginPage.open();
-//		mobileReportsPage = mobileLoginPage.loginNormalAs(userName, USERPASSWORD);
-//		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
-//
-//		// Mobile - add leak and complete
-//		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
-//		mobileInvestigatePage.clickOnInvestigate();
-//		mobileInvestigatePage.clickOnAddSource();
-//		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-//		mobileLeakSourcePage.addLeakDetails();
-//		mobileLeakSourcePage.closeAddSourceDialog();
-//		mobileInvestigatePage.clickOnMarkAsComplete();
-//		
-//		mobileLoginPage.logout();
-//
-//		/* Need verification of PDF and CSV*/
-//		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-//		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
-//		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
-//		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
-//		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
-//		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
-//		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.assignPeaks(userName);
 
-		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetials(complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
-		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetials(complianceReportsPageAction.getLISAInvestigationMetaData(workingLisa,reportDataRowID)));
+		// Mobile - login and investigate lisas
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(userName, USERPASSWORD);
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+
+		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(userName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
+		
+		mobileLoginPage.logout();
+
+		/* Need verification of PDF and CSV*/
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(workingLisa,reportDataRowID)));
 		// Verify investigation status
-//		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-//		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-//		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());
-//		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
+		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), IndicationStatus.FOUNDGASLEAK.toString());
+		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
 	}
 
 	/**
@@ -401,13 +412,15 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
-		mobileInvestigatePage.clickOnInvestigate();
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
 		mobileLoginPage.logout();
 
@@ -416,7 +429,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
-		/* Need verification of PDF */
+		/* Verification of Investigation PDF */
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
 	}
 
 	/**
@@ -584,10 +598,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
 
-		/* Need more verifications */
 		mobileLoginPage.logout();
-		/* Need verification of PDF */
 	}
 
 	/**
@@ -650,10 +663,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
 
-		/* Need more verifications */
 		mobileLoginPage.logout();
-		/* Need verification of PDF */
 	}
 
 }

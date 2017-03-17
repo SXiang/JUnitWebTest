@@ -11,7 +11,12 @@ import static surveyor.scommon.source.SurveyorConstants.LOGINTITLE;
 import static surveyor.scommon.source.SurveyorConstants.SUBTITLE;
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +26,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -30,6 +36,9 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.relevantcodes.extentreports.LogStatus;
+
+import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.scommon.source.DataTablePage;
 
 /**
@@ -574,5 +583,56 @@ public class BasePage {
 		} finally {
 			webDriver.switchTo().window(parentWindow);
 		}
+	}
+	
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
+		return verifyScreenshotWithBaseline(testCaseID, name, null);
+	}
+	
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Point pt) throws IOException{
+		String baseFile = Paths
+				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
+				.toString() + File.separator + testCaseID + File.separator + name + ".png";
+		String actualFile = Paths
+				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-data\\screenshots")
+				.toString() + File.separator + testCaseID + File.separator + name + ".png";
+		
+		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, pt);
+		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
+		
+		if (!verifyActualImageWithBase(actualFile, baseFile, generateBaseline)) {
+			Files.delete(Paths.get(actualFile));
+			return false;
+		}
+		Files.delete(Paths.get(actualFile));
+		return true;
+	}
+	
+	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
+		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
+		return dest;
+	}
+
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
+		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
+	}
+
+	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+		if(generateBaseline){
+			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
+			return true;
+		}
+		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
+		String error = result.getFailureMessage();
+		if(error!=null){
+			Log.error("Images comparison error: "+error);
+			return false;
+		}
+		boolean  isEqual = result.isEqual();
+		if(!isEqual){
+			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+			return false;
+		}
+		return true;
 	}
 }

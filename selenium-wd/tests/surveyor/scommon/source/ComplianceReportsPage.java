@@ -2475,8 +2475,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);
 
 		PDFUtility pdfUtility = new PDFUtility();
-//		Report reportObj = Report.getReport(reportTitle);
-String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";//reportObj.getId();
+		Report reportObj = Report.getReport(reportTitle);
+//String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";
+		String reportId = reportObj.getId();
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6).toUpperCase() + "-Investigation.pdf";
 		String reportName = reportId;
 		setReportName(reportName);
@@ -2522,20 +2523,15 @@ String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";//reportObj.getId();
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<String> getLISAInvestigationMetaData(Integer lisaNumber, String reportTitle) throws Exception {
+	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, String reportTitle) throws Exception {
 		Log.method("ComplianceReportsPage.getLISAInvestigationMetaData", lisaNumber, reportTitle);
 		String actualPath =  getDownloadPath(ReportFileType.InvestigationCSV, reportTitle);
 		Report reportObj = Report.getReport(reportTitle);
+//String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";//
 		String reportId = reportObj.getId();
 		
 		CSVUtility csvUtility = new CSVUtility();
-		String pathToMetaDataUnZip = actualPath;
-		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
-		String unZipFolder = File.separator + metaDataZipFileName;
-		if (!actualPath.endsWith(unZipFolder))
-			pathToMetaDataUnZip += unZipFolder;
-
-		String pathToCsv = pathToMetaDataUnZip + File.separator + "CR-" + reportId.substring(0, 6).toUpperCase() + "-ReportInvestigations.csv";
+		String pathToCsv = actualPath + File.separator + "CR-" + reportId.substring(0, 6).toUpperCase() + "-ReportInvestigations.csv";
 		String reportName = "CR-" + reportId;
 		if (actualPath.endsWith("-ReportInvestigations.csv")) {
 			pathToCsv = actualPath;
@@ -2544,43 +2540,15 @@ String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";//reportObj.getId();
 		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
-		List<String> lisaInvestigationDetails = new ArrayList<String>();
-		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
+		Map<String, String > lisaInvestigationDetails = null;
+
 		while (csvIterator.hasNext()) {
-			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			Map<String, String> csvRow = csvIterator.next();
-//			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
-//				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
-//				return false;
-//			}
-//			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
-//				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
-//				return false;
-//			}
-			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim().replaceAll("LISA", ""));
-			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
-			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
-
-			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
-			reportIndObj.setAmplitude((float) amp);
-			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
-			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
-
-			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
-			// indication
-			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
-			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
-			String aggregatedClassificationconfidence = "N/A";
-			try {
-				int aggregatedClassificationconfidenceFloat = (int) (Float
-						.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
-				aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
-			} catch (Exception e) {
-				Log.warn(e.toString());
+			String lisaNum = csvRow.get("LISANumber");
+			if(lisaNum.equalsIgnoreCase("LISA "+lisaNumber)){
+				lisaInvestigationDetails = csvRow;
+				break;
 			}
-			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
-			reportList.add(reportIndObj);
 		}
 
 
