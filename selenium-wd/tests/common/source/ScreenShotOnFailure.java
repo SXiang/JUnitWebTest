@@ -93,11 +93,11 @@ public class ScreenShotOnFailure{
 		captureBrowserScreenShot(driver, fileName, null);
 	}
 	
-	public static void captureBrowserScreenShot(WebDriver driver, String fileName, Point pt) {
+	public static void captureBrowserScreenShot(WebDriver driver, String fileName, Rectangle rect) {
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-			if(pt!=null){
-				scrFile = getSubImage(scrFile, pt);
+			if(rect!=null){
+				scrFile = getSubImage(scrFile, rect);
 			}
 			FileUtils.copyFile(scrFile, new File(fileName));
 			Log.info("A browser screenshot saved! - '"+fileName+"'");
@@ -106,14 +106,13 @@ public class ScreenShotOnFailure{
 		}
 	}
 
-	public static File getSubImage(File scrFile, Point pt) throws IOException{
+	public static File getSubImage(File scrFile, Rectangle rect) throws IOException{
 		BufferedImage img = ImageIO.read(scrFile);
-		int width = img.getWidth() - 2* pt.x;
-		int height = img.getHeight() - 2*pt.y;
-		BufferedImage dest = img.getSubimage(pt.x, pt.y, width, height);
+		BufferedImage dest = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		ImageIO.write(dest, "png", scrFile);
 		return scrFile;
 	}
+	
 	public void captureDesktopScreenShot(String fileName) {
 		try{
 			Robot robot = new Robot();

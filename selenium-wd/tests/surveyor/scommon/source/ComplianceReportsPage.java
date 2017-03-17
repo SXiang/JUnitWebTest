@@ -32,8 +32,6 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -2476,7 +2474,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
-//String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";
 		String reportId = reportObj.getId();
 		String actualReport = actualPath + "CR-" + reportId.substring(0, 6).toUpperCase() + "-Investigation.pdf";
 		String reportName = reportId;
@@ -2527,9 +2524,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		Log.method("ComplianceReportsPage.getLISAInvestigationMetaData", lisaNumber, reportTitle);
 		String actualPath =  getDownloadPath(ReportFileType.InvestigationCSV, reportTitle);
 		Report reportObj = Report.getReport(reportTitle);
-//String reportId="5f6d2f1d-115c-1d2a-ad73-39ddcc88d53d";//
 		String reportId = reportObj.getId();
-		
+
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToCsv = actualPath + File.separator + "CR-" + reportId.substring(0, 6).toUpperCase() + "-ReportInvestigations.csv";
 		String reportName = "CR-" + reportId;

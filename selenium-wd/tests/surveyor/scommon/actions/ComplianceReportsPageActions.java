@@ -470,14 +470,12 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
 	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, Integer dataRowID) throws Exception{
 		return this.getComplianceReportsPage().getLISAInvestigationPDFData(lisaNumber, workingDataRow.get().title);
-//		return this.getComplianceReportsPage().getLISAInvestigationPDFData(4, "TC807-aedee41bdbcb4c98a22d");
 	}
-	
+
 	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, Integer dataRowID) throws Exception{
 		return this.getComplianceReportsPage().getLISAInvestigationMetaData(lisaNumber, workingDataRow.get().title);
-//		return this.getComplianceReportsPage().getLISAInvestigationMetaData(4, "TC807-aedee41bdbcb4c98a22d");
-	}	
-	
+	}
+
 	public ComplianceReportDataReader getDataReader() {
 		if (dataReader == null) {
 			setDataReader(new ComplianceReportDataReader(this.excelUtility));

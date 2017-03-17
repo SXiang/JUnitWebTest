@@ -1,9 +1,11 @@
 package surveyor.scommon.mobile.source;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.HashMap;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -121,6 +123,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 	}
 	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
-		return verifyScreenshotWithBaseline(testCaseID, name, new Point(0,200));
+		Dimension dim = getBrowserSize();
+		return verifyScreenshotWithBaseline(testCaseID, name, new Rectangle(0,200,dim.width, dim.height));
 	}
 }

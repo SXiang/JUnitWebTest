@@ -25,7 +25,6 @@ import java.util.function.BooleanSupplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,8 +34,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.relevantcodes.extentreports.LogStatus;
 
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.scommon.source.DataTablePage;
@@ -589,15 +586,14 @@ public class BasePage {
 		return verifyScreenshotWithBaseline(testCaseID, name, null);
 	}
 	
-	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Point pt) throws IOException{
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";
 		String actualFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";
-		
-		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, pt);
+		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		
 		if (!verifyActualImageWithBase(actualFile, baseFile, generateBaseline)) {
@@ -608,6 +604,9 @@ public class BasePage {
 		return true;
 	}
 	
+	public Dimension getBrowserSize(){
+		return driver.manage().window().getSize();
+	}
 	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
 		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		return dest;

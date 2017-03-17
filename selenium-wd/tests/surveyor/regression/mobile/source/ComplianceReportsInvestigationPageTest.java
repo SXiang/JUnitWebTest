@@ -5,12 +5,10 @@ package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,14 +16,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
@@ -269,19 +264,17 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Investigation status, Leak found, Date values should be updated
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, etc
 	 */
-	@Test /* Need verification of PDF and csv data */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC807, location = ComplianceReportDataProvider.class)
 	public void TC807_InvestigateLisaAsNewUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC807_InvestigateLisaAsNewUser ..." +
 			 "\nTest Description: Investigate Lisa as new user");
-//		1. TC807, TC 1553: verification of investigation PDF and CSV with data entered in mobile view
-//		2. TC1628, TC1629: verification of investigation map with 'Follow' on mobile side
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
 		// Create a new user
-		String userName = "548641@picarro.com";//getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
+		String userName = getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
 		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageUsersPage);
 		manageUsersPage.open();
@@ -319,10 +312,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
-		
+
 		mobileLoginPage.logout();
 
-		/* Need verification of PDF and CSV*/
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
@@ -333,6 +325,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(workingLisa,reportDataRowID)));
+
 		// Verify investigation status
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -382,7 +375,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is logged out successfully
 	 * - Investigation report SSRS PDF is displaying correct LISA investigation status.  Lisa investigated: Yes  Leak Found: Yes
 	 */
-	@Test /* Need verification of PDF */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1553, location = ComplianceReportDataProvider.class)
 	public void TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -566,7 +559,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, assets intersecting Classic LISAs are highlighted
 	 */
-	@Test /* Need map verification */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
 	public void TC1628_MobileViewClassicLISAshape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -629,7 +622,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, LISA Boxes are displayed and assets intersecting Lisa are highlighted
 	 */
-	@Test /* Need map verification */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1629, location = ComplianceReportDataProvider.class)
 	public void TC1629_MobileViewWithLISABoxShape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
