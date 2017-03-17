@@ -330,7 +330,10 @@ public class BasePage {
 
 	protected void sendKeysToElement(WebElement element, String key) {
 		// Chromedriver does NOT send keys correctly to TextArea for some controls.
-		// Use Actions workaround to send keys instead.
+		// Use set text in the following order of precedence:
+		//  1. JS set value
+		//  2. Actions sendKeys
+		//  3. WebElement sendKeys
 		if(key == null){
 			return;
 		}
@@ -345,16 +348,21 @@ public class BasePage {
 		}
 
 		try {
-			Log.info("Send '"+key+"' to text element(field/area) using Actions");
-			Actions actions = new Actions(driver);
-			actions.moveToElement(element);
-			actions.click();
-			actions.sendKeys(key);
-			actions.build().perform();
-		} catch (InvalidElementStateException ex) {
-			Log.warn("Caught exception when sending keys to element using Actions. Exception message -> " + ex.getMessage());
-			Log.info("Send '"+key+"' to text element(field/area) using element.sendKeys()");
-			element.sendKeys(key);
+			Log.info(String.format("Send keys to element using JS set value - '%s'", key));
+			jsSendKeys(element, key);
+		} catch (Exception e) {
+			try {
+				Log.info("Send '"+key+"' to text element(field/area) using Actions");
+				Actions actions = new Actions(driver);
+				actions.moveToElement(element);
+				actions.click();
+				actions.sendKeys(key);
+				actions.build().perform();
+			} catch (InvalidElementStateException ex) {
+				Log.warn("Caught exception when sending keys to element using Actions. Exception message -> " + ex.getMessage());
+				Log.info("Send '"+key+"' to text element(field/area) using element.sendKeys()");
+				element.sendKeys(key);
+			}
 		}
 	}
 
@@ -414,12 +422,22 @@ public class BasePage {
 	public void waitForPageLoad() {
 		waitForPageToLoad();
 	}
+
 	/**
 	 * Javascript Click
 	 * @param element - element to be clicked
 	 */
 	public void jsClick(WebElement element){
 		WebElementExtender.executeScript(element, driver, "arguments[0].click();");
+	}
+
+	/**
+	 * Javascript Click
+	 * @param element - element to send keys to.
+	 * @param value - value to set in the element.
+	 */
+	public void jsSendKeys(WebElement element, String value) {
+		WebElementExtender.executeScript(element, driver, String.format("arguments[0].value = '%s';", value));
 	}
 
 	/**
