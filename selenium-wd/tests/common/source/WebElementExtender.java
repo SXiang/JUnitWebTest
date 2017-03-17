@@ -96,12 +96,7 @@ public class WebElementExtender {
 
 	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		try{
-			js.executeScript(jsScript, element);
-		}catch(Exception e){
-			Log.method("WebElementExtender.executeScript", element, driver, jsScript);
-			Log.warn("Failed to click on the WebElement: "+e.toString());
-		}
+		js.executeScript(jsScript, element);
 	}
 
 	public static boolean findElementBy(WebDriver driver, By by) {
