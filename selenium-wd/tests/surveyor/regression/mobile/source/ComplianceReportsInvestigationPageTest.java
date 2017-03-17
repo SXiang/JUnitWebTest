@@ -141,7 +141,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -154,7 +154,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -166,7 +166,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, sourceDetails);
 		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
@@ -304,7 +304,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(userName, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -406,7 +406,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		// Mobile - add leak and complete
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();

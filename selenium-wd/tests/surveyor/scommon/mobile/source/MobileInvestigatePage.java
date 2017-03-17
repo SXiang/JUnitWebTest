@@ -2,11 +2,8 @@ package surveyor.scommon.mobile.source;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.HashMap;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -14,7 +11,6 @@ import org.openqa.selenium.support.How;
 import common.source.Log;
 import common.source.WebElementExtender;
 import surveyor.scommon.entities.InvestigationEntity;
-import surveyor.scommon.entities.LeakDetailEntity;
 
 /**
  * @author sxiang

@@ -90,7 +90,8 @@ public class TestSetup {
 
 	private String firstTimeLoginUser;
 	private String firstTimeLoginPwd;
-
+	private String loginUser0000;
+	private String loginPwd0000;
 	private String loginUserDisplayName;
 
 	private String appiumServerHost;
@@ -104,7 +105,6 @@ public class TestSetup {
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
-
 	private String runEnvironment;
 	private String testRunCategory;
 
@@ -113,6 +113,7 @@ public class TestSetup {
 	private String implicitlyWaitSpecialTimeOutInMS;
 
 	private String culture;
+	private String language;
 	private boolean debug;
 
 	private DateFormat dateFormat;
@@ -627,8 +628,8 @@ public class TestSetup {
 			this.setIsLocalGridRun(this.testProp.getProperty("isLocalGridRun"));
 			this.loginUser = this.testProp.getProperty("loginUser");
 			this.loginPwd = this.testProp.getProperty("loginPwd");
-			this.testProp.getProperty("loginUser0000");
-			this.testProp.getProperty("loginPwd0000");
+			this.loginUser0000 = this.testProp.getProperty("loginUser0000");
+			this.loginPwd0000 = this.testProp.getProperty("loginPwd0000");
 			this.loginUserDisplayName = this.testProp.getProperty("loginUserDisplayName");
 
 			this.firstTimeLoginUser = this.testProp.getProperty("firstTimeLoginUser");
@@ -658,7 +659,7 @@ public class TestSetup {
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
 
-			this.testProp.getProperty("language");
+			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
 			this.softwareVersion = this.testProp.getProperty("softwareVersion");
 			this.setPlatform(this.testProp.getProperty("platform"));

@@ -7,10 +7,6 @@ import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 public class OtherSourceEntity extends InvestigationEntity{
 	public OtherSourceEntity(String userName, int indicationNumber){
-		this("LISA", userName, indicationNumber);
-	}
-	public OtherSourceEntity(String boxType, String userName, int indicationNumber){
-		setBoxType(boxType);
 		setUserName(userName);
 		setIndicationNumber(indicationNumber);
 	}

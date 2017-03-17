@@ -29,10 +29,6 @@ public class LeakDetailEntity extends InvestigationEntity{
 		private String leakLocationRemarks;
 
 		public LeakDetailEntity(String userName, int indicationNumber){
-			this("LISA", userName, indicationNumber);
-		}
-		public LeakDetailEntity(String boxType, String userName, int indicationNumber){
-			setBoxType(boxType);
 			setUserName(userName);
 			setIndicationNumber(indicationNumber);
 		}
