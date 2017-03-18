@@ -51,9 +51,9 @@ public class AssessmentReportsPageUnitTest  extends BaseReportsPageActionTest {
 	@Test
 	public void verifyNumberOfLisasInShapeFiles() throws Exception {
 		// NOTE: Update report title and place shape files in SHP file path for a valid report in DB when executing this test.
-		final String SAMPLE_REPORT_TITLE = "TC1488-0-9d9902621a134047b5ed";
-		final String SHP_FILE_PATH = "C:\\temp\\AS-1A3A7F-Shape";
-		final Integer EXPECTED_LISA_COUNT = 9;
+		final String SAMPLE_REPORT_TITLE = "TC1488-1-28be5bc9144846e48335";
+		final String SHP_FILE_PATH = "C:\\temp\\AS-2E7EE6-Shape";
+		final Integer EXPECTED_LISA_COUNT = 1;
 		assertTrue(assessmentReportsPage.verifyNumberOfLisasInShapeFiles(SHP_FILE_PATH, SAMPLE_REPORT_TITLE, 0, EXPECTED_LISA_COUNT));
 	}
 }
