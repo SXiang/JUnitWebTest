@@ -107,6 +107,13 @@ public class ScreenShotOnFailure{
 
 	public static File getSubImage(File scrFile, Rectangle rect) throws IOException{
 		BufferedImage img = ImageIO.read(scrFile);
+		/* if(width/height is <=0, they represent the deviations on width/height */ 
+		if(rect.width<=0){
+			rect.width = img.getWidth() - rect.x + rect.width;
+		}
+		if(rect.height<=0){
+			rect.height = img.getHeight() - rect.y + rect.height;
+		}
 		BufferedImage dest = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		ImageIO.write(dest, "png", scrFile);
 		return scrFile;

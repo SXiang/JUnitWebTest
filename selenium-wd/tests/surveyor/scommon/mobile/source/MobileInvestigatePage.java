@@ -119,7 +119,6 @@ public class MobileInvestigatePage extends MobileBasePage {
 	}
 	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
-		Dimension dim = getBrowserSize();
-		return verifyScreenshotWithBaseline(testCaseID, name, new Rectangle(0,200,dim.width, dim.height));
+		return verifyScreenshotWithBaseline(testCaseID, name, new Rectangle(0,200,0,0));
 	}
 }

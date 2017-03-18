@@ -614,7 +614,6 @@ public class BasePage {
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		
 		if (!verifyActualImageWithBase(actualFile, baseFile, generateBaseline)) {
-			Files.delete(Paths.get(actualFile));
 			return false;
 		}
 		Files.delete(Paths.get(actualFile));
@@ -639,16 +638,9 @@ public class BasePage {
 			return true;
 		}
 		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		String error = result.getFailureMessage();
-		if(error!=null){
-			Log.error("Images comparison error: "+error);
-			return false;
-		}
-		boolean  isEqual = result.isEqual();
-		if(!isEqual){
-			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
 			return false;
 		}
 		return true;
-	}
+}
 }

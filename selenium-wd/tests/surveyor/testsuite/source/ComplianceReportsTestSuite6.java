@@ -13,7 +13,7 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
 	EQReportsPageTest.class,
-	/* Put only one mobile test class in each suite */
+	/* !Don't Put more than one mobile test class in each suite */
 	ComplianceReportsInvestigationPageTest.class
 })
 public class ComplianceReportsTestSuite6 {
