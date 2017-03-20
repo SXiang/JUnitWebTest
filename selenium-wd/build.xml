@@ -112,7 +112,7 @@
   </target>
   <target name="compileregression" depends="compile_scommon" description="Compile regression source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
+    <javac srcdir="${basedir}/tests/surveyor/regression/mobile/source:${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
       <classpath>
         <fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
