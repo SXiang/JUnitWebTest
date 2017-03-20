@@ -11,7 +11,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
+
+// TODO: Fix JAR dependency issue.
+//import org.json.JSONObject;
+
 import common.source.BasePage.ElementType;
 
 public class Log {
@@ -139,9 +142,12 @@ public class Log {
 
 	public static String getJSONMessage(String msg){
 		Map<String, ?> msgMap = getMessageMap(msg);
-		String jsonString = new JSONObject(msgMap).toString();
-		jsonString = new JSONObject(msgMap).toString();
-		return jsonString;
+
+		//String jsonString = new JSONObject(msgMap).toString();
+		//jsonString = new JSONObject(msgMap).toString();
+		//return jsonString;
+
+		return "";
 	}
 
 	private static String formatLogMessage(String msg, boolean debugPrint){

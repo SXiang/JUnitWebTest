@@ -48,7 +48,7 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/httpcore-4.4.3.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpmime-4.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.42.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.53.1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/gson-2.6.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/log4j-core-2.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/log4j-api-2.5.jar"/>
@@ -56,5 +56,7 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-toolbox-2.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/java-client-4.1.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-android-driver-2.39.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
