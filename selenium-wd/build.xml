@@ -768,6 +768,25 @@
       </batchtest>
     </junit>
   </target>
+  <target name="parallel_tc_localrun" depends="compiletestsuite" description="Local test suite tests in parallel">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="LocalBranchTest" />
+      <sysproperty key="maxParallelTestThreads" value="5" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/RegressionTestSuite5.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
   <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="LocalBranchTest" />
