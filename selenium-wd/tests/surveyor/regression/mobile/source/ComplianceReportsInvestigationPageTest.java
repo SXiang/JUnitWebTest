@@ -181,9 +181,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), IndicationStatus.FOUNDGASLEAK.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), IndicationStatus.INPROGRESS.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), IndicationStatus.FOUNDOTHERSOURCE.toString());
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1));
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3));
 	}
 
 	/**
@@ -330,8 +330,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), IndicationStatus.FOUNDGASLEAK.toString());
-		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa));
+		assertNotEquals(dateValue, reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa));
 	}
 
 	/**
@@ -528,7 +528,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 
-		assertEquals(mobileReportsPage.performSearch(reportTitle+"InvalidTitle"), NOMATCHINGSEARCH);
+		assertEquals(NOMATCHINGSEARCH, mobileReportsPage.performSearch(reportTitle+"InvalidTitle"));
 
 		mobileLoginPage.logout();
 	}
