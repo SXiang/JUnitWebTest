@@ -166,7 +166,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, sourceDetails);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3, sourceDetails);
 		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
@@ -175,8 +175,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
 
-		mobileLoginPage.logout();
-
 		// Verify investigation status
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
@@ -184,6 +182,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1));
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3));
+		
+		mobileLoginPage.logout();
 	}
 
 	/**
