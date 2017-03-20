@@ -33,6 +33,7 @@ import common.source.DBConnection;
 import common.source.DateUtility;
 import common.source.Log;
 import common.source.PDFUtility;
+import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -90,7 +91,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 				if ((surUnit).equalsIgnoreCase(option.getText().trim())) {
 					Log.info("Select Survey Unit - '"+surUnit+"'");
 					option.click();
-					
+
 					break;
 				}
 			}
@@ -101,6 +102,9 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 
 		dateSetting.setDay("start", startNumOfPreMonths, startDate, false);
 		dateSetting.setDay("end", endNumOfPreMonths, endDate, false);
+
+		// Add screenshot for debugging.
+		TestContext.INSTANCE.captureScreenshot();
 
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
@@ -119,7 +123,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public void addNewPDReport(String reportTitle, String timezone, String surveyor, int startNumOfPreMonths, int endNumOfPreMonths, String startDate, String endDate) {
 		this.addNewReport(reportTitle, timezone, surveyor, startNumOfPreMonths, endNumOfPreMonths, startDate, endDate);
 	}
-	
+
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy) {
 		this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 
