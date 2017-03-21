@@ -13,8 +13,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.testng.Assert;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
@@ -91,10 +89,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 
@@ -126,10 +124,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 
@@ -265,10 +263,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1),false));
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1),false));
 
-		Assert.assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(CR_NOCOVERAGEFORECASTAVAILABLE_MESSAGE, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -313,10 +311,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
+		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
 	}
 
 	/**
@@ -362,10 +360,10 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
+		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
 	}
 
 	/**
@@ -414,8 +412,8 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
 	}
 
 	/**
@@ -459,8 +457,8 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 
 Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
 	}
 
 	/**
@@ -507,8 +505,8 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.getSSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1));
 		
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
-		Assert.assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecast"), coverageForecastMap.get("coverageForecast")));
+		assertTrue(PDFTableUtility.areTablesEqual(preCoverageForecastMap.get("coverageForecastTo70"), coverageForecastMap.get("coverageForecastTo70")));
 	}
 
 	/**
@@ -549,7 +547,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -591,7 +589,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -633,8 +631,8 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -678,7 +676,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 
-		Assert.assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -703,7 +701,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
@@ -732,7 +730,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		Assert.assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyCancelButtonIsDisplayed(EMPTY,getReportRowID(reportDataRowID1)));
 
 		complianceReportsPageAction.copyInProgressReport(EMPTY,getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
@@ -933,10 +931,10 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
         complianceReportsPageAction.clickOnComplianceViewerViewByIndex("3", getReportRowID(reportDataRowID1));
         complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("3", getReportRowID(reportDataRowID1));
 
-        Assert.assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.get().timezone, getReportRowID(reportDataRowID1)));
-        Assert.assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		Assert.assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-        Assert.assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.get().timezone, getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+        assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 
 
 	}
