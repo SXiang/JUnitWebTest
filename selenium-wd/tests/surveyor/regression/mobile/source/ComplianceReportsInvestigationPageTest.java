@@ -219,28 +219,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	}
 
 	/**
-	 * Test Case ID: TC695_VerifyMobileIsNotPreFetchingMap.
-	 * Test Description: Verify that Mobile is not pre fetching map always and data usage is minimized.
-	 * Script:
-	 * - In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools)
-	 * - Turn on device mode by pressing the Toggle device mode  icon (When device mode         is enabled, the icon turns blue and the viewport transforms into a device emulator.)
-	 * - Switch to Network tab on developer tool.
-	 *- Login as Driver to Pcubed site in required environment.
-	 * -
-	 * Results:
-	 * -  verify that the network activity is stalled when the map is already rendered and you are not moving the screen. (Today the network activity keeps on happening in loop.)
-	 * - data activity is not happening in the console.
-	 */
-	@Ignore /* Not automatable */
-	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = ComplianceReportDataProvider.class)
-	public void TC695_VerifyMobileIsNotPreFetchingMap(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC695_VerifyMobileIsNotPreFetchingMap ..." +
-			 "\nTest Description: Verify that Mobile is not pre fetching map always and data usage is minimized.");
-	}
-
-
-	/**
 	 * Test Case ID: TC807_InvestigateLisaAsNewUser
 	 * Test Description: Investigate Lisa as new user
 	 * Script:
@@ -332,29 +310,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa));
 		assertNotEquals(dateValue, reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa));
-	}
-
-	/**
-	 * Test Case ID: TC1378_MobileAppMapDoesNotAutoRotate
-	 * Test Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.
-	 * Script:
-	 * - On the Compliance Reports page, select a report that has LISAs and click the Investigate button
-	 * - Click on one or more of the checkboxes on the far right
-	 * - Find the two Assign Investigators buttons on the right and click on the one to the left (with the square icon)
-	 * - From the dropdown menu, select a user to assign for investigation and click OK
-	 * - On a mobile app, log into pcubed as the user in the previous step
-	 * - From the list of reports that appears on the mobile device, select the report in the first step and click on it
-	 * - Select a LISA and click on it
-	 * - Walk around in different directions
-	 * Results:
-	 * - While walking around and viewing the map on the mobile device, the orientation should consistently show the map with North at the top of the screen. The Map should not rotate, regardless of the direction in which the user is moving
-	 */
-	@Ignore /* Not automatable */
-	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1378, location = ComplianceReportDataProvider.class)
-	public void TC1378_MobileAppMapDoesNotAutoRotate(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC1378_MobileAppMapDoesNotAutoRotate ..." +
-			 "\nTest Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.");
 	}
 
 	/**
