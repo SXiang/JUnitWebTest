@@ -1196,8 +1196,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.method("waitForSurveyTabletoLoad");
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				Log.info(String.format("surveysTable.isDisplayed()=%b", surveysTable.isDisplayed()));
-				return surveysTable.isDisplayed();
+				boolean displayed = false;
+				try {
+					displayed = surveysTable.isDisplayed();
+					Log.info(String.format("surveysTable.isDisplayed()=%b",displayed));
+				}catch(StaleElementReferenceException e){
+					displayed = false;
+					Log.warn(String.format("surveysTable.isDisplayed()=%b",e.toString()));
+				}
+				return displayed;
 			}
 		});
 	}
