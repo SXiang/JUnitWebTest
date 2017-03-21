@@ -768,7 +768,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run compliance report test class ">
+  <target name="tc_localrun" depends="compileregression" description="Run compliance report test classes">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="LocalBranchTest" />
       <sysproperty key="test_run_id" value="${local_date}" />
