@@ -103,9 +103,6 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 		dateSetting.setDay("start", startNumOfPreMonths, startDate, false);
 		dateSetting.setDay("end", endNumOfPreMonths, endDate, false);
 
-		// Add screenshot for debugging.
-		TestContext.INSTANCE.captureScreenshot();
-
 		if (testSetup.isRunningDebug())
 			testSetup.slowdownInSeconds(3);
 		Log.clickElementInfo("Ok");
