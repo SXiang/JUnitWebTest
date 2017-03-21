@@ -31,6 +31,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.BasePage;
 import common.source.ExceptionUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.RegexUtility;
@@ -327,7 +328,7 @@ public class SurveyorBasePage extends BasePage {
 		if(firstPage){
 			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			if (WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
-				jsClick(firstBtn);
+				FunctionUtil.warnOnError(() -> jsClick(firstBtn));
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 			}
 		}

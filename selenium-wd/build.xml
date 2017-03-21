@@ -768,7 +768,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run compliance report test suite tests ">
+  <target name="tc_localrun" depends="compileregression" description="Run compliance report test classes ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="LocalBranchTest" />
       <sysproperty key="test_run_id" value="${local_date}" />
@@ -781,7 +781,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-            <include name="**/ComplianceReportsPageTest3.class" />
+          <include name="**/ComplianceReportsPageTest3.class" />
         	<include name="**/ComplianceReportsPageTest4.class" />
         	<include name="**/ComplianceReportsPageTest12.class" />
         	<include name="**/AssessmentReportsPageTest.class" />
