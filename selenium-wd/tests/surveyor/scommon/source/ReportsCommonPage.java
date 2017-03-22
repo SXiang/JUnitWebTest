@@ -211,6 +211,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
 	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
+	public static final String _HEADERS_Investigator = Resources.getResource(ResourceKeys._HEADERS_Investigator);
+	public static final String _HEADERS_Duration = Resources.getResource(ResourceKeys._HEADERS_Duration);
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
 	public static final String LisaInvestigations_PageTitle = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 

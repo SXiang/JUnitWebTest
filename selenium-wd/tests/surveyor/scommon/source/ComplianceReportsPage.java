@@ -2484,8 +2484,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		BufferedReader bufferReader = null;
 		try {
 			String investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
-					"Investigator Duration",
-					"Investigation Marker Results");
+					_HEADERS_Investigator + " "+ _HEADERS_Duration,
+					LisaInvestigationReportSSRS_InvestigationReport);
 			InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
 			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 			String line = null;
