@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
@@ -18,6 +19,7 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.Log;
 import common.source.TestSetup;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.AutomationName;
@@ -75,8 +77,23 @@ public class MainScreenTest {
 
 	@Test
 	public void test_MainScreenInteractions() {
+		Log.info(String.format("Found [%d] list view elements", mainScreen.listViewElements.size()));
+
+		String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
+		for (WebElement el : mainScreen.listViewElements) {
+			Log.info("[ITERATING child elements] : ");
+			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
+			if (findElements != null) {
+				for (WebElement childElement : findElements) {
+					Log.info("[Found child] : %s" + childElement.getText());
+				}
+			}
+		}
+
+		Log.info("Clicking on the first textView ... ");
+		mainScreen.listViewElements.get(0).click();
 		assertTrue("Object should NOT be NULL", mainScreen.mainFrameLayout != null);
-		assertTrue("Object should NOT be NULL", mainScreen.mainViewGroups != null);
+		assertTrue("Object should NOT be NULL", mainScreen.listViewElements != null);
 		assertTrue("Object should NOT be NULL", mainScreen.scrollableView != null);
 	}
 }

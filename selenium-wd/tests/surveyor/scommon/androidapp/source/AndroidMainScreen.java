@@ -11,9 +11,10 @@ public class AndroidMainScreen extends AndroidBaseScreen {
 	@AndroidFindBy(className = "android.widget.ScrollView")
 	public WebElement scrollableView;
 
-	@AndroidFindBy(className = "android.view.ViewGroup")
-	public List<WebElement> mainViewGroups;
-
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"android:id/content\")")
 	public WebElement mainFrameLayout;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
+	public List<WebElement> listViewElements;
+
 }
