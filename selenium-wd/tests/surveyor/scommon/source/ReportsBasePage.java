@@ -1202,8 +1202,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.method("waitForSurveyTabletoLoad");
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				Log.info(String.format("surveysTable.isDisplayed()=%b", surveysTable.isDisplayed()));
-				return surveysTable.isDisplayed();
+			boolean displayed = false;
+			try {
+				displayed = surveysTable.isDisplayed();
+				Log.info(String.format("surveysTable.isDisplayed()=%b",displayed));
+			}catch(StaleElementReferenceException e){
+				displayed = false;
+				Log.warn(String.format("surveysTable.isDisplayed()=%b",e.toString()));
+			}
+			return displayed;
 			}
 		});
 	}
@@ -1579,9 +1586,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								Log.info("[Check 2]: rowNum > maxRows.. Break...");
 								break;
 							}
-
 							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
-
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
 							// If current rowNum doesn't match the new rowNum continue.
@@ -1595,6 +1600,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
 							this.waitForPdfReportIcontoAppear();

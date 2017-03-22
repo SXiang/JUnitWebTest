@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -176,10 +177,16 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		manageSurveyorHistoriesPage.open();
 
 		String surveyorUnit = SQACUS + " - " + SQACUSLOC + " - " + SQACUSLOCSUR;
-		String note = "Automation Test Note " + getTestSetup().getRandomNumber();
 
-		manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
-		assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
+		// add couple of notes
+		for (int i = 0; i < 3; i++) {
+			String note = "Automation Test Note " + getTestSetup().getNewFixedSizeRandomNumber(10);
+			manageSurveyorHistoriesPage.addNewHistoryNote(surveyorUnit, note);
+			assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
+		}
+
+		// report will be generated with current time as end time. allow 1-min time gap to include newly created notes.
+		TestContext.INSTANCE.stayIdle(60);
 
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
 		systemHistoryReportsPage.open();
@@ -197,7 +204,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		inputList.add(startDate);
 		inputList.add(endDate);
 
-		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate);
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT, surveyorUnit, startDate, endDate);
 
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
@@ -365,7 +372,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		int currentMonth = cal.get(Calendar.MONTH);
 		cal.add(Calendar.DATE, -10);
 		int startMonth = cal.get(Calendar.MONTH);
-		
+
 		int startNumOfPreMonths = currentMonth - startMonth;
 		int endNumOfPreMonths = 0;
 		String startDate = dateFormat.format(cal.getTime());

@@ -45,7 +45,8 @@ public class BasePage {
 	protected TestSetup testSetup;
 
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
-
+	protected int numRetryOnFailure = 3;
+	
 	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
 	public WebElement siteLogo;
 
