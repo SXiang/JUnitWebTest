@@ -651,10 +651,7 @@
       <batchtest fork="yes" todir="${reports}/performance/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportJobPerformanceTestLight.class" />
-          <include name="**/ReportJobPerformanceTestMedium.class" />
-          <include name="**/ReportJobPerformanceTestHigh.class" />
-          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+          <include name="**/ReportJobPerformanceTestLargeArea.class" />
         </fileset>
       </batchtest>
     </junit>
