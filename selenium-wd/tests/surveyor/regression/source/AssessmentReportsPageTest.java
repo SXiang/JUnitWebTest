@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 
+import java.util.function.Predicate;
+
+import common.source.FunctionUtil;
 import common.source.Log;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,6 +19,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.ReportCommonPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
@@ -23,6 +27,7 @@ import surveyor.scommon.actions.AssessmentReportsPageActions;
 import surveyor.dataprovider.AssessmentReportDataProvider;
 import surveyor.scommon.source.AssessmentReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ReportsCommonPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
@@ -358,23 +363,25 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Generate report with same parameters except exclusion radius (set it to 50 or 100) ad compare results of 2 reports
 	 * Results: -
 	 *	-
-	 *	- - Report generated successfully
-	 *	- - Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
+	 *	[Y] - - Report generated successfully
+	 *	[Y] - Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
 	 *	-
-	 *	- -Assessment report SSRS PDF should have survey details, view details and assets
+	 *	[Y] -Assessment report SSRS PDF should have survey details, view details and assets
 	 *	-
-	 *	- - LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
-	 *	- - SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc.
-	 *	- - Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
-	 *	- - Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected
+	 *	[Y] LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
+	 *	[Y] - SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc.
+	 *	[Y] - Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
+	 *	[Y] - Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected
 	 *	-
-	 *	- -The Shapefile zip should download. Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
-	 *	- - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
-	 *	- - Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
-	 *	- - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number. All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)Data present in ReportLisa.csv should be same as SSRS PDF indication table
-	 *	- - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
+	 *	[Y] -The Shapefile zip should download. Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
+	 *	[Y] - LISA shape file's attribute table should have Label (LISA 1, LISA 2, etc), Lat and Long Co-ordinates
+	 *	[Y] - Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+	 *	[Y] - All the information present in ReportLISA.csv file ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+	 *  [Y] - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+	 *  [Y] - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+	 *  [Y] - Data present in ReportLisa.csv should be same as SSRS PDF indication table
+	 *	[Y] - ReportLisa.csv and Lisa shape file should have suppressed LISAs for report having exclusion radius parameter value non zero (50 or 100)
 	 */
-	// Verified (some methods remaining to be verified)
 	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1488, location = AssessmentReportDataProvider.class)
 	public void TC1488_GenerateAssessmentReportAllDefaultValuesFiltersSelectedUsingCustomBoundaryCustomerSupervisorUserWtihNonZeroExclusionValueDownloadIt(
@@ -406,6 +413,10 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
 		assessmentReportsPageAction.extractShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+		// Report in zipped folder contain 8.5 X 11 reports
+		assessmentReportsPageAction.verifyStaticTextInSSRSPDF(EMPTY, getReportRowID(reportDataRowID1));
 
 		// Maps should have Breadcrumb, FOV, Assets, Boundaries and gap data
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
@@ -414,8 +425,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-
-		/* TURN ON THESE ASSERTS after local verification.
 
 		// (PDF should have survey details, view details and assets)
 		assertTrue(assessmentReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
@@ -430,21 +439,28 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
 		String notContainsText = "Indications:LISA:Isotopic Analysis:Field Notes:Report Mode";
+		// LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
+		notContainsText += String.format("%s:%s:%s", ReportsCommonPage.ComplianceReportSSRS_LISAInvestigationComplete,
+				ReportsCommonPage.ComplianceReportSSRS_GAPInvestigationComplete, ReportsCommonPage.ComplianceReportSSRS_CGIInvestigationComplete);
+
 		assertTrue(assessmentReportsPageAction.verifyPDFDoesNotContainInputtedInformation(notContainsText, getReportRowID(reportDataRowID1)));
 
-		// Download report in zipped folder which will contain 8.5 X 11 reports and full size maps present in PDF format
+		// Download report in zipped folder which will reports and full size maps present in PDF format
 		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
 
 		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
+		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
 
-		// All the information present in ReportLISA.csv file
-		//   ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
-		// Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
-		// All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
-		// Data present in ReportLisa.csv should be same as SSRS PDF indication table.
+		// [Metadata verifications] ->
+		// - All the information present in ReportLISA.csv file
+		// - ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+		// - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+		// - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+		// - Data present in ReportLisa.csv should be same as SSRS PDF indication table.
+		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
-		//assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
-		*/
+		assertTrue(runTestCaseSpecificVerifications(assessmentReportsPageAction, testCaseID, getReportRowID(reportDataRowID1)).test(assessmentReportsPageAction));
 	}
 
 	/**
@@ -535,5 +551,21 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+
+	// Executes specific to testcaseID verifications.
+	public Predicate<ReportCommonPageActions> runTestCaseSpecificVerifications(ReportCommonPageActions reportsPageAction, String testCaseID, Integer reportDataRowID) throws Exception {
+		return r -> {
+			if (testCaseID.equals("TC1488-1")) {
+				return FunctionUtil.wrapException(reportsPageAction, r1 -> {
+					boolean retVal = false;
+					final Integer expectedLisasCount = 1;
+					retVal = reportsPageAction.verifyNumberOfLISAsInShapeFilesEquals(String.valueOf(expectedLisasCount), reportDataRowID);
+					retVal = retVal && reportsPageAction.verifyNumberOfLISAsInMetaDataFileEquals(String.valueOf(expectedLisasCount), reportDataRowID);
+					return retVal;
+				});
+			}
+			return true;
+		};
 	}
 }

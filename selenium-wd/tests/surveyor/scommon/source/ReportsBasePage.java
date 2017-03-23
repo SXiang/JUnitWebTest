@@ -8,8 +8,6 @@ import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -50,21 +48,17 @@ import common.source.DateUtility;
 import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
-import common.source.ImagingUtility;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.PDFUtility;
 import common.source.PollManager;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
-import net.avh4.util.imagecomparison.ImageComparisonResult;
 import surveyor.api.source.ReportJobsStat;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
 import surveyor.scommon.entities.ReportJobPerfDBStat;
-import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
@@ -1202,8 +1196,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.method("waitForSurveyTabletoLoad");
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				Log.info(String.format("surveysTable.isDisplayed()=%b", surveysTable.isDisplayed()));
-				return surveysTable.isDisplayed();
+				boolean displayed = false;
+				try {
+					displayed = surveysTable.isDisplayed();
+					Log.info(String.format("surveysTable.isDisplayed()=%b",displayed));
+				}catch(StaleElementReferenceException e){
+					displayed = false;
+					Log.warn(String.format("surveysTable.isDisplayed()=%b",e.toString()));
+				}
+				return displayed;
 			}
 		});
 	}
@@ -1579,9 +1580,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								Log.info("[Check 2]: rowNum > maxRows.. Break...");
 								break;
 							}
-
 							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
-
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
 							// If current rowNum doesn't match the new rowNum continue.
@@ -1595,6 +1594,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
 							this.waitForPdfReportIcontoAppear();
@@ -2378,27 +2378,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return false;
 	}
 
-	public BufferedImage cropImage(BufferedImage src, Rectangle rect) {
-		BufferedImage dest = src.getSubimage(rect.x, rect.y, rect.width, rect.height);
-		return dest;
-	}
-
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
-		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
-	}
-
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
-		if(generateBaseline){
-			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
-			return true;
-		}
-		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
-			return false;
-		}
-		return true;
-	}
-
 	public String getSTRSurveyIncludedMsg() throws Exception {
 		throw new Exception("Not implemented");
 	}
@@ -2435,22 +2414,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.clickElementInfo("Copy", ElementType.ICON);
 		this.btnFirstCopyCompliance.click();
 		this.waitForCopyReportPagetoLoad();
-	}
-
-	@Override
-	public void waitForPageLoad() {
-		waitForAJAXCallsToComplete();
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				boolean result = false;
-				try {
-					result = d.getPageSource().contains(getStrPageText());
-				} catch (Exception e) {
-					Log.error(e.toString());
-				}
-				return result;
-			}
-		});
 	}
 
 	public void waitForCopyReportPagetoLoad() {
@@ -2573,6 +2536,23 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			}
 		});
+	}
+
+	public boolean isReportViewerDialogOpen() {
+		Log.method("isReportViewerDialogOpen");
+		boolean retVal = false;
+		WebElement divModalcontent = this.driver.findElement(By.id("reportViewer"));
+		if (divModalcontent != null && divModalcontent.isDisplayed()) {
+			retVal = divModalcontent.getAttribute("style").contains("display:block") || divModalcontent.getAttribute("style").contains("display: block");
+		}
+
+		Log.info(String.format("ReportViewer dialog OPEN = [%b]", retVal));
+		return retVal;
+	}
+
+	public void closeReportViewerDialog() {
+		Log.method("closeReportViewerDialog");
+		clickOnReportViewerCloseButton();
 	}
 
 	public void waitForReportViewerDialogToOpen() {
@@ -3159,5 +3139,32 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public String getStrCopyPageText() {
 		return resxProvider.getResource(ResourceTable.Key_CopyPageText);
+	}
+
+	/* Overridden methods */
+	@Override
+	public void waitForPageLoad() {
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean result = false;
+				try {
+					result = d.getPageSource().contains(getStrPageText());
+				} catch (Exception e) {
+					Log.error(e.toString());
+				}
+				return result;
+			}
+		});
+	}
+
+	@Override
+	public LoginPage logout() {
+		// Check if report viewer is open. Close if open.
+		if (isReportViewerDialogOpen()) {
+			closeReportViewerDialog();
+		}
+
+		return super.logout();
 	}
 }

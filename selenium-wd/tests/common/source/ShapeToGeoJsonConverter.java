@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Hashtable;
 import java.util.List;
 
 public class ShapeToGeoJsonConverter {
 
 	private static final String CONVERT_SHAPE_TO_GEOJSON_CMD = "ConvertShapeToGeoJson.cmd";
-	
+
 	public ShapeToGeoJsonConverter() {
 	}
 
@@ -25,23 +23,23 @@ public class ShapeToGeoJsonConverter {
 		}
 		return builder.toString();
 	}
-	
+
 	public static List<String> convertToList(String shapeFileFullPath) {
 		List<String> geoJsonFileLines = null;
-		
-		try {			
+
+		try {
 			// Create the .geojson file in the same folder as the .shp file. Build path.
 			String shapeFileName = FileUtility.getFileName(shapeFileFullPath);
 			String geojsonFileName = shapeFileName.replace(".shp", ".geojson");
 			Path pathGeoJsonFile = Paths.get(Paths.get(shapeFileFullPath).getParent().toString(), geojsonFileName);
 			String geoJsonFileFullPath = pathGeoJsonFile.toString();
-			
+
 			// Execute shape to geojson cmd with parameters.
-			String shpToJsonCmdFullPath = CONVERT_SHAPE_TO_GEOJSON_CMD + " \"" + geoJsonFileFullPath +"\" \"" + shapeFileFullPath+"\"";					
+			String shpToJsonCmdFullPath = CONVERT_SHAPE_TO_GEOJSON_CMD + " \"" + geoJsonFileFullPath +"\" \"" + shapeFileFullPath+"\"";
 			executeShapeToGeoJsonCmd(shpToJsonCmdFullPath);
 			// Get the lines from .geojson as list of strings.
 			geoJsonFileLines = Files.readAllLines(pathGeoJsonFile);
-			
+
 			// Delete the working copy of the .geojson file.
 			Files.delete(pathGeoJsonFile);
 		} catch (IOException e) {
@@ -50,7 +48,7 @@ public class ShapeToGeoJsonConverter {
 
 		return geoJsonFileLines;
 	}
-	
+
 	private static void executeShapeToGeoJsonCmd(String workingShpToJsonCmd) {
 		// Execute update analyzer configuration script from the contained folder.
 		try {

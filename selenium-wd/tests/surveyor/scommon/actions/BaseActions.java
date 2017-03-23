@@ -9,6 +9,7 @@ public class BaseActions implements IActions {
 	protected static final String ARG_DATA_ROW_ID = "dataRowID";
 	protected static final String ARG_DATA = "data";
 	public static final String EMPTY = "";
+	public static final String TRUE = "TRUE";
 	public static final Integer NOTSET = -1;
 
 	protected ExcelUtility excelUtility = null;

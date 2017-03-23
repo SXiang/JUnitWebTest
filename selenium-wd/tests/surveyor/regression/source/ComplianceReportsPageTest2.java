@@ -279,7 +279,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
+			assertTrue(this.getComplianceReportsPage().verifyReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1")) {
 					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
@@ -779,7 +779,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
+			assertTrue(this.getComplianceReportsPage().verifyReportStaticText(rpt));
 			if (tablesList != null) {
 				if (tablesList.get(0).get(KEYINDTB).equals("1") || tablesList.get(0).get(KEYISOANA).equals("1")) {
 					assertTrue(this.getComplianceReportsPage().verifyIndicationTable(getTestSetup().getDownloadPath(), rptTitle));
@@ -850,7 +850,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, getTestSetup().getLoginUser(), testCaseID))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
+			assertTrue(this.getComplianceReportsPage().verifyReportStaticText(rpt));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {
 					assertTrue(this.getComplianceReportsPage().verifyShowCoverageTable(getTestSetup().getDownloadPath(), rptTitle));

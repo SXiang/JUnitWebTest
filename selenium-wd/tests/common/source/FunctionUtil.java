@@ -25,4 +25,16 @@ public class FunctionUtil {
 			Log.warn(ExceptionUtility.getStackTraceString(ex));
 		}
 	}
+
+	public static <T> boolean wrapException(T arg, CheckedPredicate<T> predicate) {
+		try
+		{
+			return predicate.test(arg);
+		} catch (Exception ex) {
+			Log.error(ExceptionUtility.getStackTraceString(ex));
+		}
+
+		return false;
+	}
+
 }

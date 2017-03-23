@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
@@ -184,6 +185,9 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 			assertTrue("Administrator not able to add new history note!", manageSurveyorHistoriesPage.findExistingHistoryNote(SQACUS, SQACUSLOC, SQACUSLOCSUR, note));
 		}
 
+		// report will be generated with current time as end time. allow 1-min time gap to include newly created notes.
+		TestContext.INSTANCE.stayIdle(60);
+
 		systemHistoryReportsPage.login(SQACUSUA, USERPASSWORD);
 		systemHistoryReportsPage.open();
 
@@ -200,7 +204,7 @@ public class SystemHistoryReportsPageTest extends SurveyorBaseTest {
 		inputList.add(startDate);
 		inputList.add(endDate);
 
-		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEET, surveyorUnit, startDate, endDate);
+		systemHistoryReportsPage.addNewPDReport(rptTitle, TIMEZONEPT, surveyorUnit, startDate, endDate);
 
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 

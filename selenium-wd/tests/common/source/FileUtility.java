@@ -436,6 +436,14 @@ public class FileUtility {
 	}
 
 	/*
+	 * Verifies whether a directory exists or not.
+	 */
+	public static boolean directoryExists(String directoryPath) {
+		File newDir = new File(directoryPath);
+		return newDir.exists();
+	}
+
+	/*
 	 * Checks and creates the specified directory if it does NOT exist.
 	 */
 	public static void createDirectoryIfNotExists(String directoryPath) {

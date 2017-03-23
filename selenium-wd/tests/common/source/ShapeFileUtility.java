@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 import org.nocrala.tools.gis.data.esri.shapefile.ShapeFileReader;
 import org.nocrala.tools.gis.data.esri.shapefile.ValidationPreferences;
@@ -24,14 +25,14 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolygonShape;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.PolylineShape;
 
 /**
- * *** NOTES ***: 
+ * *** NOTES ***:
  * We have integrated 2 mechanisms for comparing Shape files:
  * 1. By converting shape files to geojson and then asserting that the json created is equal.
  * 2. By integrating a ShapeFile reader and checking different properties of the geometries in the shape file.
- * 
+ *
  * When the Shape file for comparison is BIG (~ > 100MB), use Method 2.
  * For smaller shape file (< 100MB) comparison use Method 1.
- * 
+ *
  * @author spulikkal
  *
  */
@@ -47,15 +48,21 @@ public class ShapeFileUtility {
 	public ShapeFileUtility(IShapeFileComparer shapeFileComparer) {
 		this.shapeFileComparer = shapeFileComparer;
 	}
-	
+
 	private static GeoJsonShapeFileComparer getDefaultComparer() {
 		return new GeoJsonShapeFileComparer();
 	}
-	
+
+	public int getNumberOfLisas(String shapeFilePath) {
+		String jsonString = ShapeToGeoJsonConverter.convertToJsonString(shapeFilePath);
+		Set<String> labelSet = GeoJsonShapeFileComparer.extractLabels(jsonString);
+		return (labelSet == null) ? 0 : labelSet.size();
+	}
+
 	public void assertEquals(String shapeFilePath1, String shapeFilePath2) throws Exception {
 		shapeFileComparer.assertEquals(shapeFilePath1, shapeFilePath2);
 	}
-	
+
 	public void assertDirectoryEquals(String shapeFolder1, String shapeFolder2) throws Exception {
 		Log.info(String.format("Calling assertDirectoryEquals() --> shapeFolder1 = [%s], shapeFolder2 = [%s], ", shapeFolder1, shapeFolder2));
 		List<String> shpFilesInDirectory = FileUtility.getFilesInDirectory(Paths.get(shapeFolder1), "*.shp");
@@ -65,7 +72,7 @@ public class ShapeFileUtility {
 			String shapeFilePath2 = Paths.get(shapeFolder2, fileName).toString();
 			Log.info(String.format("Assert shape files are same. [%s] <==> [%s]", shapeFilePath1, shapeFilePath2));
 			shapeFileComparer.assertEquals(shapeFilePath1, shapeFilePath2);
-		}	
+		}
 	}
 
 	public static void main(String[] args) throws IOException, InvalidShapeFileException {
@@ -74,17 +81,17 @@ public class ShapeFileUtility {
 		Log.info("**********************************************************");
 		Log.info(" Applying Reading Method 1: ");
 		for (String filePath : shpFilesInDirectory) {
-			testShapeFileReading1(filePath);	
+			testShapeFileReading1(filePath);
 		}
 
 		Log.info("");
 		Log.info("**********************************************************");
 		Log.info(" Applying Reading Method 2: ");
 		for (String filePath : shpFilesInDirectory) {
-			testShapeFileReading2(filePath);	
+			testShapeFileReading2(filePath);
 		}
 	}
-	
+
 	private static void testShapeFileReading1(String filePath) throws FileNotFoundException, InvalidShapeFileException, IOException {
 		Log.info("---------------------------------------------------");
 		Log.info("Reading file - " + filePath);
@@ -136,7 +143,7 @@ public class ShapeFileUtility {
           case MULTIPOINT_Z:
       	  	Log.info("Found a MULTIPOINT_Z");
       	  MultiPointMShape aMultiPointM = (MultiPointMShape) s;
-            // Do something with the MultiPointZ shape...	
+            // Do something with the MultiPointZ shape...
             break;
           case POLYGON:
             PolygonShape aPolygon = (PolygonShape) s;
@@ -156,14 +163,14 @@ public class ShapeFileUtility {
         }
 
         Log.info("Total shapes read: " + total);
-        is.close();	
+        is.close();
     }
 
 	private static void testShapeFileReading2(String filePath) throws FileNotFoundException, InvalidShapeFileException, IOException {
 		Log.info("---------------------------------------------------");
 		Log.info("Reading file - " + filePath);
 		FileInputStream is = new FileInputStream(filePath);
-		
+
 		// This file has shapes with more than 10000 points each. Therefore, we need
 		// to change the validation preferences to increase the limit of points per
 		// shape beyond that number. If we don't use the customized preferences, the
@@ -171,14 +178,14 @@ public class ShapeFileUtility {
 		ValidationPreferences prefs = new ValidationPreferences();
 		prefs.setMaxNumberOfPointsPerShape(16650);
 		ShapeFileReader r = new ShapeFileReader(is, prefs);
-	
+
 		ShapeFileHeader h = r.getHeader();
 		Log.info("The shape type of this files is " + h.getShapeType());
-	
+
 		int total = 0;
 		AbstractShape s;
 		while ((s = r.next()) != null) {
-	
+
 		  switch (s.getShapeType()) {
 		  case POLYLINE:
 		    PolylineShape aPolyline = (PolylineShape) s;
@@ -196,9 +203,9 @@ public class ShapeFileUtility {
 		  }
 		  total++;
 		}
-	
+
 		Log.info("Total shapes read: " + total);
-	
+
 		is.close();
 	}
 }

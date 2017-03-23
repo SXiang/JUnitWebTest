@@ -2,7 +2,6 @@ package surveyor.scommon.actions;
 
 import java.util.List;
 import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
 
 import common.source.TestContext;
@@ -143,7 +142,7 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		return new AssessmentReportEntity();
 	}
-	
+
 	@Override
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,

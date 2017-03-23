@@ -41,6 +41,10 @@ public class MobileBasePage extends BasePage {
 	}
 
 	public boolean waitUntilPageLoad(){
+		return waitUntilPageLoad(pageKey);
+	}
+	
+	public boolean waitUntilPageLoad(By pageKey){
 		WebElement pageKeyElement = null;
 		try{
 			pageKeyElement = waitUntilPresenceOfElementLocated(pageKey);
