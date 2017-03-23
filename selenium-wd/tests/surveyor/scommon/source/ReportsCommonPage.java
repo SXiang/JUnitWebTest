@@ -773,7 +773,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public void clickBoundarySelectorBtn() {
 		Log.clickElementInfo("Boundary Selector");
-		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; ){
+		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; i++){
 			try{
 				this.boundarySelectorBtn.click();
 				return;
@@ -1726,7 +1726,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 	
 	public void selectCustomerBoundaryRadioButton() {
-		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; ){
+		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; i++){
 			try{
 				jsClick(this.customerBoundaryRadioButton);
 				this.waitForCustomerBoundarySectionToShow();
