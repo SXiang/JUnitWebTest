@@ -5,12 +5,10 @@ package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,8 +16,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
@@ -28,6 +24,8 @@ import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.entities.LeakDetailEntity;
+import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
 import surveyor.scommon.mobile.source.MobileLeakSourcePage;
@@ -38,7 +36,7 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportInvestigationsPage;
-import surveyor.scommon.source.ReportInvestigationsPage.LisaStatus;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 /**
  *
@@ -142,44 +140,50 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
-		mobileInvestigatePage.clickOnInvestigate();
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
 		// Mobile - add leak
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
-		mobileInvestigatePage.clickOnInvestigate();
+		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
 
 		// Mobile - add other source
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3);
-		mobileInvestigatePage.clickOnInvestigate();
+		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3, sourceDetails);
+		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
-		mobileLeakSourcePage.addOtherSource();
+		sourceDetails.setDefaultTestData();
+		mobileLeakSourcePage.addOtherSource(sourceDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
-
-		mobileLoginPage.logout();
+		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
 
 		// Verify investigation status
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1), LisaStatus.FOUNDGASLEAK.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2), LisaStatus.INPROGRESS.toString());
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3), LisaStatus.FOUNDOTHERSOURCE.toString());
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1));
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3));
+		
+		mobileLoginPage.logout();
 	}
 
 	/**
@@ -215,28 +219,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	}
 
 	/**
-	 * Test Case ID: TC695_VerifyMobileIsNotPreFetchingMap.
-	 * Test Description: Verify that Mobile is not pre fetching map always and data usage is minimized.
-	 * Script:
-	 * - In Chrome, got to developer tool (Click on 'Customize and control Google Chrome' (top right corner) -> More Tools -> Developer Tools)
-	 * - Turn on device mode by pressing the Toggle device mode  icon (When device mode         is enabled, the icon turns blue and the viewport transforms into a device emulator.)
-	 * - Switch to Network tab on developer tool.
-	 *- Login as Driver to Pcubed site in required environment.
-	 * -
-	 * Results:
-	 * -  verify that the network activity is stalled when the map is already rendered and you are not moving the screen. (Today the network activity keeps on happening in loop.)
-	 * - data activity is not happening in the console.
-	 */
-	@Ignore /* Not automatable */
-	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC219, location = ComplianceReportDataProvider.class)
-	public void TC695_VerifyMobileIsNotPreFetchingMap(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC695_VerifyMobileIsNotPreFetchingMap ..." +
-			 "\nTest Description: Verify that Mobile is not pre fetching map always and data usage is minimized.");
-	}
-
-
-	/**
 	 * Test Case ID: TC807_InvestigateLisaAsNewUser
 	 * Test Description: Investigate Lisa as new user
 	 * Script:
@@ -260,13 +242,12 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - Investigation status, Leak found, Date values should be updated
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, etc
 	 */
-	@Test /* Need verification of PDF and csv data */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC807, location = ComplianceReportDataProvider.class)
 	public void TC807_InvestigateLisaAsNewUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC807_InvestigateLisaAsNewUser ..." +
 			 "\nTest Description: Investigate Lisa as new user");
-
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 
@@ -285,7 +266,6 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
@@ -301,17 +281,18 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
-		mobileInvestigatePage.clickOnInvestigate();
+		LeakDetailEntity leakDetails = new LeakDetailEntity(userName, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
 		mobileLoginPage.logout();
 
-		/* Need verification of PDF and CSV*/
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
@@ -320,35 +301,15 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
 
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(workingLisa,reportDataRowID)));
+
 		// Verify investigation status
-//		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
-		assertEquals(reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa), LisaStatus.FOUNDGASLEAK.toString());
-		assertNotEquals(reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa), dateValue);
-	}
-
-	/**
-	 * Test Case ID: TC1378_MobileAppMapDoesNotAutoRotate
-	 * Test Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.
-	 * Script:
-	 * - On the Compliance Reports page, select a report that has LISAs and click the Investigate button
-	 * - Click on one or more of the checkboxes on the far right
-	 * - Find the two Assign Investigators buttons on the right and click on the one to the left (with the square icon)
-	 * - From the dropdown menu, select a user to assign for investigation and click OK
-	 * - On a mobile app, log into pcubed as the user in the previous step
-	 * - From the list of reports that appears on the mobile device, select the report in the first step and click on it
-	 * - Select a LISA and click on it
-	 * - Walk around in different directions
-	 * Results:
-	 * - While walking around and viewing the map on the mobile device, the orientation should consistently show the map with North at the top of the screen. The Map should not rotate, regardless of the direction in which the user is moving
-	 */
-	@Ignore /* Not automatable */
-	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1378, location = ComplianceReportDataProvider.class)
-	public void TC1378_MobileAppMapDoesNotAutoRotate(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC1378_MobileAppMapDoesNotAutoRotate ..." +
-			 "\nTest Description: Map on mobile device should not rotate as user walks in different directions. Map should always be oriented so that North is at the top of the screen.");
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa));
+		assertNotEquals(dateValue, reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa));
 	}
 
 	/**
@@ -369,7 +330,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is logged out successfully
 	 * - Investigation report SSRS PDF is displaying correct LISA investigation status.  Lisa investigated: Yes  Leak Found: Yes
 	 */
-	@Test /* Need verification of PDF */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1553, location = ComplianceReportDataProvider.class)
 	public void TC1553_CheckCustomerDriverCanLogoutFromMapPageInMobileView(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -399,13 +360,15 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
 
 		// Mobile - add leak and complete
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
-		mobileInvestigatePage.clickOnInvestigate();
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		mobileLeakSourcePage.addLeakDetails();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
 		mobileLoginPage.logout();
 
@@ -414,7 +377,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
-		/* Need verification of PDF */
+		/* Verification of Investigation PDF */
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
 	}
 
 	/**
@@ -519,7 +483,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
 
-		assertEquals(mobileReportsPage.performSearch(reportTitle+"InvalidTitle"), NOMATCHINGSEARCH);
+		assertEquals(NOMATCHINGSEARCH, mobileReportsPage.performSearch(reportTitle+"InvalidTitle"));
 
 		mobileLoginPage.logout();
 	}
@@ -550,7 +514,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, assets intersecting Classic LISAs are highlighted
 	 */
-	@Test /* Need map verification */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
 	public void TC1628_MobileViewClassicLISAshape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -582,10 +546,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
 
-		/* Need more verifications */
 		mobileLoginPage.logout();
-		/* Need verification of PDF */
 	}
 
 	/**
@@ -614,7 +577,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 	 * - User is navigated to a map showing user's location
 	 * - On map, LISA Boxes are displayed and assets intersecting Lisa are highlighted
 	 */
-	@Test /* Need map verification */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1629, location = ComplianceReportDataProvider.class)
 	public void TC1629_MobileViewWithLISABoxShape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
@@ -648,10 +611,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		// Mobile - add leak and complete
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa);
 		mobileInvestigatePage.clickOnFollow();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigationMap"));
 
-		/* Need more verifications */
 		mobileLoginPage.logout();
-		/* Need verification of PDF */
 	}
 
 }

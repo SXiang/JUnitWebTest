@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import common.source.Log;
-import common.source.WebElementExtender;
+import surveyor.scommon.entities.InvestigationEntity;
 
 /**
  * @author sxiang
@@ -39,14 +39,28 @@ public class MobileInvestigationPage extends MobileBasePage {
 	}
 	
 	public MobileInvestigatePage clickOnLisa(String lisaNumber){
+		return clickOnLisa(lisaNumber, null);
+	}
+	
+	public MobileInvestigatePage clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
+		if(investigationEntity!=null){
+			investigationEntity.setBoxType(boxType);
+		}
 		return clickOnMarker(lisaNumber);
 	}
 
 	public MobileInvestigatePage clickOnGap(String gapNumber){
+		return clickOnGap(gapNumber, null);
+	}
+	
+	public MobileInvestigatePage clickOnGap(String gapNumber, InvestigationEntity investigationEntity){
 		String boxType = "Gap";
 		selectDropdownItem(boxTypeDropdown, boxType);
+		if(investigationEntity!=null){
+			investigationEntity.setBoxType(boxType);
+		}
 		return clickOnMarker(gapNumber);
 	}
 	

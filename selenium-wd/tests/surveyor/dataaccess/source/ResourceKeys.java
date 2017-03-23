@@ -208,8 +208,11 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
 	public static final String LisaInvestigations_PageTitle = "LisaInvestigations_PageTitle";
 
-	public static final String Constant_Offline = "Constant_Offline";
+//  Constants for _HEADERs
+	public static final String _HEADERS_Investigator = "_HEADERS_Investigator";
+	public static final String _HEADERS_Duration = "_HEADERS_Duration";
 
+	public static final String Constant_Offline = "Constant_Offline";
 
 	// Constants for Capture results.
 	public static final String Survey_Rerun = "Survey_Rerun";

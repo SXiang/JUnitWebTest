@@ -494,21 +494,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	protected String getDownloadPath(ReportFileType fileType) throws Exception {
-		String fileName = "";
-
-		if (fileType == ReportFileType.PDF || fileType == ReportFileType.InvestigationPDF) {
-			return TestContext.INSTANCE.getTestSetup().getDownloadPath();
-		} else if (fileType == ReportFileType.ZIP) {
-			fileName = this.getReportsCommonPage().getReportPDFZipFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
-		} else if (fileType == ReportFileType.MetaDataZIP) {
-			fileName = this.getReportsCommonPage().getReportMetaZipFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
-		} else if (fileType == ReportFileType.ShapeZIP) {
-			fileName = this.getReportsCommonPage().getReportShapeZipFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
-		}
-
-		String downloadPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), fileName).toString();
-		return downloadPath;
+	protected String getDownloadPath(ReportFileType fileType) throws Exception {	
+		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
 
 	private void clickComplianceReportButton(Integer dataRowID, ReportsButtonType buttonType) throws Exception {
