@@ -467,6 +467,14 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		return false;
 	}
 
+	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, Integer dataRowID) throws Exception{
+		return this.getComplianceReportsPage().getLISAInvestigationPDFData(lisaNumber, workingDataRow.get().title);
+	}
+
+	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, Integer dataRowID) throws Exception{
+		return this.getComplianceReportsPage().getLISAInvestigationMetaData(lisaNumber, workingDataRow.get().title);
+	}
+
 	public ComplianceReportDataReader getDataReader() {
 		if (dataReader == null) {
 			setDataReader(new ComplianceReportDataReader(this.excelUtility));

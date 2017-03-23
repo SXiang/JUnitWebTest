@@ -32,7 +32,6 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -2467,6 +2466,97 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		Log.info("Indication table verification passed");
 		return true;
+	}
+
+	/**
+	 * Method to verify LISA Investigation PDF Data
+	 *
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, String reportTitle) throws Exception {
+		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);		
+		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);
+
+		PDFUtility pdfUtility = new PDFUtility();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		String actualReport = actualPath + "CR-" + reportId.substring(0, 6).toUpperCase() + "-Investigation.pdf";
+		String reportName = reportId;
+		setReportName(reportName);
+		String actualReportString = pdfUtility.extractPDFText(actualReport);
+
+		List<String> lisaInvestigationDetails = new ArrayList<String>();
+		BufferedReader bufferReader = null;
+		try {
+			String investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
+					_HEADERS_Investigator + " "+ _HEADERS_Duration,
+					LisaInvestigationReportSSRS_InvestigationReport);
+			InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
+			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			boolean detailsFound = false;
+			while ((line = bufferReader.readLine()) != null) {
+				if (!line.isEmpty()){
+					if(!detailsFound){
+						if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
+							lisaInvestigationDetails.add(line.trim());
+							detailsFound = true;
+						}
+					}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
+						lisaInvestigationDetails.add(line.trim());
+					}else{
+						detailsFound = false;
+						break;
+					}
+				}
+			}
+		} finally {
+			bufferReader.close();
+		}
+		Log.info("Investigation Lisa details in PDF: "+lisaInvestigationDetails);
+		return lisaInvestigationDetails;
+	}
+
+	/**
+	 * Method to verify LISA Investigation PDF Data
+	 *
+	 * @param actualPath
+	 * @param reportTitle
+	 * @return
+	 * @throws Exception 
+	 */
+	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, String reportTitle) throws Exception {
+		Log.method("ComplianceReportsPage.getLISAInvestigationMetaData", lisaNumber, reportTitle);
+		String actualPath =  getDownloadPath(ReportFileType.InvestigationCSV, reportTitle);
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToCsv = actualPath + File.separator + "CR-" + reportId.substring(0, 6).toUpperCase() + "-ReportInvestigations.csv";
+		String reportName = "CR-" + reportId;
+		if (actualPath.endsWith("-ReportInvestigations.csv")) {
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		Map<String, String > lisaInvestigationDetails = null;
+
+		while (csvIterator.hasNext()) {
+			Map<String, String> csvRow = csvIterator.next();
+			String lisaNum = csvRow.get("LISANumber");
+			if(lisaNum.equalsIgnoreCase("LISA "+lisaNumber)){
+				lisaInvestigationDetails = csvRow;
+				break;
+			}
+		}
+
+
+		return lisaInvestigationDetails;
 	}
 
 	public void waitForInvestigationPDFFileDownload(String reportName) {

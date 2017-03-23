@@ -90,7 +90,6 @@ public class TestSetup {
 
 	private String firstTimeLoginUser;
 	private String firstTimeLoginPwd;
-
 	private String loginUser0000;
 	private String loginPwd0000;
 	private String loginUserDisplayName;
@@ -106,7 +105,6 @@ public class TestSetup {
 	private String browser;
 	private String chromeDriverPath;
 	private String ieDriverPath;
-
 	private String runEnvironment;
 	private String testRunCategory;
 
@@ -144,6 +142,7 @@ public class TestSetup {
 	private boolean generateBaselineSSRSImages;
 	private boolean generateBaselineViewImages;
 	private boolean generateBaselineShapeFiles;
+	private boolean generateBaselineScreenshots;
 
 	private Integer executionTimesForLightLoadReportJobPerfBaseline;
 	private Integer executionTimesForMediumLoadReportJobPerfBaseline;
@@ -405,6 +404,14 @@ public class TestSetup {
 
 	public void setGenerateBaselineViewImages(boolean generateBaselineViewImages) {
 		this.generateBaselineViewImages = generateBaselineViewImages;
+	}
+
+	public boolean isGenerateBaselineScreenshots() {
+		return generateBaselineScreenshots;
+	}
+
+	public void setGenerateBaselineScreenshots(boolean generateBaselineScreenshots) {
+		this.generateBaselineScreenshots = generateBaselineScreenshots;
 	}
 
 	public boolean isGenerateBaselineSSRSImages() {
@@ -834,6 +841,10 @@ public class TestSetup {
 		String generateBaselineShapeFiles = this.testProp.getProperty("complianceReport_generateBaselineShapeFiles");
 		if (generateBaselineShapeFiles != null && generateBaselineShapeFiles != "") {
 			this.setGenerateBaselineShapeFiles(Boolean.valueOf(generateBaselineShapeFiles));
+		}
+		String generateBaselineScreenshots = this.testProp.getProperty("complianceReport_generateBaselineScreenshots");
+		if (generateBaselineScreenshots != null && generateBaselineScreenshots != "") {
+			this.setGenerateBaselineScreenshots(Boolean.valueOf(generateBaselineScreenshots));
 		}
 	}
 

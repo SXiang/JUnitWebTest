@@ -57,6 +57,7 @@ import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -210,6 +211,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
 	public static final String LisaInvestigationReportSSRS_Investigator = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Investigator);
+	public static final String _HEADERS_Investigator = Resources.getResource(ResourceKeys._HEADERS_Investigator);
+	public static final String _HEADERS_Duration = Resources.getResource(ResourceKeys._HEADERS_Duration);
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_InvestigationReport);
 	public static final String LisaInvestigations_PageTitle = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 
@@ -3843,5 +3846,21 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.info(String.format("SurveyMode '%s' is valid for ReportMode '%s'", surveyMode, reportMode));
 		}
 		return true;
+	}
+	
+	public String getDownloadPath(ReportFileType fileType, String reportTitle) throws Exception {
+		String fileName = "";
+		if (fileType == ReportFileType.PDF || fileType == ReportFileType.InvestigationPDF) {
+			return TestContext.INSTANCE.getTestSetup().getDownloadPath();
+		} else if (fileType == ReportFileType.ZIP) {
+			fileName = getReportPDFZipFileName(reportTitle, false /*includeExtension*/);
+		} else if (fileType == ReportFileType.MetaDataZIP) {
+			fileName = getReportMetaZipFileName(reportTitle, false /*includeExtension*/);
+		} else if (fileType == ReportFileType.ShapeZIP) {
+			fileName = getReportShapeZipFileName(reportTitle, false /*includeExtension*/);
+		}
+
+		String downloadPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), fileName).toString();
+		return downloadPath;
 	}
 }
