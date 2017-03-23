@@ -8,6 +8,7 @@ import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -267,6 +268,16 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
 		return createTestAccount(testCase, null, addTestSurveyor);
 	}
+
+	public Map<String, String> createTestSupervisorAccount(String testCase, LicensedFeatures[] lfsToExclude){
+		String userRole = CUSUSERROLESU;
+		return createTestAccount(testCase, userRole, lfsToExclude, true);
+	}
+
+	public Map <String, String> createTestSupervisorAccount(String testCase){
+		return createTestSupervisorAccount(testCase, null);
+	}
+
 
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		return createTestAccount(testCase, null, addTestSurveyor, fetchAnalyzerFromPool);
