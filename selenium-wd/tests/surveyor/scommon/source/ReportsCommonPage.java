@@ -1724,7 +1724,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void selectCustomBoundaryRadioButton() {
 		this.customBoundaryRadioButton.click();
 	}
-	
+
 	public void selectCustomerBoundaryRadioButton() {
 		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; i++){
 			try{
