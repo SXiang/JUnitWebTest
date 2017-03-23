@@ -36,8 +36,7 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		Log.info("jsonString1=" + jsonString1);
 		Log.info("jsonString2=" + jsonString2);
 
-		// TODO: Fix JAR dependency issue.
-		//JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
 	}
 
 	public static String removeIncomparableShapeValue(String jsonString){
@@ -83,30 +82,30 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String idOrderCoordChangeJsonString = FileUtility.readFileContents(idOrderCoordChangeJsonFile, true);
 
 		// TODO: Fix JAR dependency issue.
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(jsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(jsonString), JSONCompareMode.NON_EXTENSIBLE);
 
 		Log.info("Equals: Shape file -> Json String - convered" );
 
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Json String - converted -> Json String" );
 
 		//
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String" );
 
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(orderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(orderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - order changed" );
 
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - id changed" );
 
-		//JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - id and order changed" );
 
 		/* Negative tests - find unmatched element */
-		//JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(coordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(coordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Not Equals: Shape file -> Json String - coordinates changed" );
-		//JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderCoordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
+		JSONAssert.assertNotEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderCoordChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Not Equals: Shape file -> Json String - id and label and coordinates changed" );
 	}
 	private static void testGeoJsonFileComparison_assertEquals_Success() throws Exception {

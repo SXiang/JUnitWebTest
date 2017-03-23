@@ -11,6 +11,7 @@ $NODEJS_INSTALL_VERSION = '4.1.2'
 $NODEJS_INSTALL_TEXT = $NODEJS_INSTALL_VERSION
 $APPIUM_INSTALL_TEXT = 'appium'
 $APPIUM_DOCTOR_INSTALL_TEXT = 'appium-doctor'
+$HAXM_INSTALL_TEXT = 'HAXM is installed'
 $INSTALLED_NPM_VERSION = '2.'
 $CURL_APP_INSTALL_TEXT1 = 'curl'
 $CURL_APP_INSTALL_TEXT2 = 'Protocols'
@@ -46,26 +47,15 @@ function IsInstalled($application) {
         $appCmd = npm --version 2>&1
         $appVer = $appCmd.ToString()
         $isInstalled = $appVer.StartsWith($INSTALLED_NPM_VERSION)
-    } elseif ($application -eq 'appium-doctor') {
-        $appCmd = npm list -g 2>&1
-        $found = $false
-        $appCmd | % {
-            [string]$line = [string]$_
-            if ($line.Contains($APPIUM_DOCTOR_INSTALL_TEXT)) {
-                $found = $true
-            }
-        }
-        $isInstalled = $found
     } elseif ($application -eq 'appium') {
         $appCmd = npm list -g 2>&1
-        $found = $false
-        $appCmd | % {
-            [string]$line = [string]$_
-            if ($line.Contains($APPIUM_INSTALL_TEXT) -and (-not $line.Contains("doctor"))) {
-                $found = $true
-            }
-        }
-        $isInstalled = $found
+        $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$APPIUM_INSTALL_TEXT" -negativematchText "doctor"
+    } elseif ($application -eq 'appium-doctor') {
+        $appCmdLines = npm list -g 2>&1
+        $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$APPIUM_DOCTOR_INSTALL_TEXT"
+    } elseif ($application -eq 'haxm') {
+        $appCmd = . "$ANDROIDHOME\tools\emulator" -accel-check 2>&1
+        $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$HAXM_INSTALL_TEXT"
     } elseif ($application -eq 'android-sdk') {
         $uiautomatorPresent = (Test-Path "$LOCALAPPDATA\Android\sdk\tools\bin\uiautomatorviewer.bat") `
             -or (Test-Path "$PROGRAMFILES\Android\android-sdk\tools\uiautomatorviewer.bat") `
@@ -121,15 +111,21 @@ function InstallApplication($application, $param) {
     } elseif ($application -eq 'nodejs') {
         choco install nodejs.install --version $NODEJS_INSTALL_VERSION -y --force
     } elseif ($application -eq 'appium') {
+        # Update package manager in case of issues => 'npm i -g npm'
         npm install -g appium
     } elseif ($application -eq 'appium-doctor') {
         npm install -g appium-doctor
+    } elseif ($application -eq 'haxm') {
+        $haxmPackageID = $param
+        "Installing HAXM. Android Package ID - $haxmPackageID"
+        echo y | . "$ANDROIDHOME\tools\android.bat" update sdk -u -a -t $haxmPackageID
+        "Done installing HAXM"
     } elseif ($application -eq 'android-sdk') {
-        choco install android-sdk --version $ANDROID_SDK_INSTALL_VERSION -y --force
+        choco install android-sdk --version $ANDROID_SDK_INSTALL_VERSION -y
     } elseif ($application -eq 'android-sdk-packages') {
         $androidSDKPackageIDs = $param
         "Installing Android SDK packages. Package IDs - $androidSDKPackageIDs"
-        echo y | . "$ANDROIDHOME\tools\android.bat" update sdk -u -a -t $androidSDKPackageIDs --force  # Build tools
+        echo y | . "$ANDROIDHOME\tools\android.bat" update sdk -u -a -t $androidSDKPackageIDs
         "Done installing Android SDK packages"
     } elseif ($application -eq 'android-system-image') {
         $systemImage = $param
@@ -188,4 +184,25 @@ function InstallApplications-FromDictTable($installAppsDictTable) {
             }
         }
     }
+}
+
+# NOTE: Restart-Computer is needed after disabling user access control.
+function Windows-DisableUserAccessControl() {
+    "Windows - Disabling user access control."
+    Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 0
+    "Windows - User access control disabled."
+}
+
+function Array-Contains($arrayLines, $positivematchText, $negativematchText) {
+    "Invoking Array-Contains ..."
+    $found = $false
+    $arrayLines | % {
+        [string]$line = [string]$_
+        if ($line.Contains($positivematchText) -and (($negativematchText -eq $null) -or (-not $line.Contains($negativematchText)))) {
+            "Detected FOUND = $found"
+            $found = $true
+        }
+    }
+    "Returning found =$found"
+    $found
 }
