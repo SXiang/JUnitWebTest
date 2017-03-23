@@ -3974,7 +3974,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 	
-	/* Override the method in ReportsBasePage to share the code we are using by other report tests */
+	/* Override the method in ReportsBasePage to share common code used by other report tests */
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
 		Log.method("ReportsCommonPage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
 
