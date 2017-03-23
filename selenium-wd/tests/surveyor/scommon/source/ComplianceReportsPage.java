@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -1174,9 +1175,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ComplianceReportEntity reportsCompliance) throws IOException {
-		Log.method("ComplianceReportsPage.verifyComplianceReportStaticText", reportsCompliance);
-		return verifyComplianceReportStaticText(reportsCompliance, testSetup.getDownloadPath());
+	@Override
+	public boolean verifyReportStaticText(ReportCommonEntity reportsEntity) throws IOException {
+		Log.method("ComplianceReportsPage.verifyReportStaticText", reportsEntity);
+		return verifyReportStaticText(reportsEntity, testSetup.getDownloadPath());
 	}
 
 	/**
@@ -1187,8 +1189,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ComplianceReportEntity reportsCompliance, String actualPath)
+	@Override
+	public boolean verifyReportStaticText(ReportCommonEntity reportsEntity, String actualPath)
 			throws IOException {
+		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity)reportsEntity;
 		Log.method("ComplianceReportsBasePage.verifyComplianceReportStaticText", reportsCompliance, actualPath);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportsCompliance.getRptTitle());
@@ -1339,7 +1343,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		coverageForecastMap.put("coverageForecastTo70", coverageForecastTo70);
 		return coverageForecastMap;
 	}
-	
+
 	private boolean verifyCoverageForecastValuesTableWithDBData(String reportId, List<String[]> coverageForecast,
 			List<String[]> coverageForecastTo70, boolean withPrediction) {
 		int startIndex = 0;
@@ -2647,6 +2651,22 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
+	public Supplier<List<String>> supplyViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
+		return (() -> getViewsTableExpectedStaticText(viewsList));
+	}
+
+	@Override
+	public Supplier<List<String>> supplySSRSPDFExpectedStaticText(ReportCommonEntity reportsEntity) {
+		return (() -> {
+			List<String> expectedReportString = new ArrayList<String>();
+			expectedReportString.add(RegexUtility.removeSpecialChars(ComplianceReportSSRS_LISAInvestigationComplete));
+			expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
+			expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
+			return expectedReportString;
+		});
+	}
+
+	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
 		if (surveyModeFilter != null) {
@@ -2670,6 +2690,30 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void deleteReportWithApiCall(String reportId) {
 		Log.method("deleteReportWithApiCall", reportId);
 		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	}
+
+	public List<String> getViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
+		List<String> expectedReportString = new ArrayList<String>();
+		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
+		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
+		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
+		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
+		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
+
+		// Look for AssetBoxNumber static string if there is a view with AssetBox.
+		boolean assetBxNumViewPresent = false;
+		for (Map<String, String> viewMap : viewsList) {
+			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
+				assetBxNumViewPresent = true;
+				break;
+			}
+		}
+
+		if (assetBxNumViewPresent) {
+			expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
+		}
+
+		return expectedReportString;
 	}
 
 	public boolean areInvestigationTableColumnsSorted() {

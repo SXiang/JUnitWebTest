@@ -21,6 +21,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYPCF;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static common.source.RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -384,7 +387,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 				customer = (new CustomerDataReader(this.excelUtility)).getDataRow(custRowID).name;
 			}
 		}
-		String timeZone = getWorkingReportsDataRow().timezone;	
+		String timeZone = getWorkingReportsDataRow().timezone;
 		List<ReportsSurveyInfo> reportsSurveyInfoList = buildReportSurveyInfoList(getWorkingReportsDataRow(), this.excelUtility);
 
 		// Set report common properties.
@@ -442,7 +445,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		rpt.setViewList(viewList);
 		rpt.setViewLayersList(viewLayersList);
 	}
-	
+
 	private void fillCustomBoundary(List<String> listBoundary, ReportsCommonDataRow dataRow) throws Exception {
 		String imgHeight = dataRow.pDFImageOutputHeight;
 		String imgWidth = dataRow.pDFImageOutputWidth;
@@ -1768,23 +1771,30 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyMetaDataZIPFilesAreCorrect action.
-	 * Verifies that correct files are present in the Metadata ZIP.
-	 * NOTE: This method does NOT verify the content within the Metadata Zip file.
-	 * @param data - specifies the input data passed to the action.
+	 * Executes verifyMetaDataZIPFilesAreCorrect action.Verifies that correct files are present in the Metadata ZIP.
+	 * NOTE:
+	 * 1) This method looks at ReportViews test data to determine which metadata files should be present in MetaData zip.
+	 * 2) This method does NOT verify the content within the Metadata Zip file.
+	 * ASSUMPTIONS:
+	 * 1) Metadata zip files are extracted before invoking this method.
+	 * @param data - specifies the verifications to be performed in the following format:
+	 * 				 {verifyGapMetaPresent:verifyLisaMetaPresent:verifySurveyMetaPresent:verifyIsotopicMetaPresent}
+	 *               eg. - True:True:False:True
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
-	public boolean verifyMetaDataZIPFilesAreCorrect(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesAreCorrect", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesAreCorrect", ARG_DATA_ROW_ID, dataRowID);
-		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
-		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
-		waitForReportFileDownload(dataRowID, ReportFileType.MetaDataZIP, -1);
-
-		// TODO: Check for specific metadata files in the ZIP.
-		return false;
+	public boolean verifyMetaDataZIPFilesArePresent(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesArePresent", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesArePresent", ARG_DATA_ROW_ID, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		List<String> verifications = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+		boolean verifyGapMetaPresent = Boolean.parseBoolean(verifications.get(0));
+		boolean verifyLisaMetaPresent = Boolean.parseBoolean(verifications.get(1));
+		boolean verifySurveyMetaPresent = Boolean.parseBoolean(verifications.get(2));
+		boolean verifyIsotopicMetaPresent = Boolean.parseBoolean(verifications.get(3));
+		return this.getReportsCommonPage().verifyMetaDataFilesArePresent(downloadPath, getWorkingReportsDataRow().title,
+				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 	}
 
 	/**
@@ -1985,11 +1995,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyReportCreationInSSRSPDFIsCorrect", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyReportCreationInSSRSPDFIsCorrect", ARG_DATA_ROW_ID, dataRowID);
 
-		if (getWorkingReportsEntity() == null) {
+		ReportCommonEntity workingReportsEntity = getWorkingReportsEntity();
+		if (workingReportsEntity == null) {
 			throw new Exception("Create new report before verifying report PDF files. Report has not been created.");
 		}
 
-		return getReportsCommonPage().validateReportCreationDate(TestContext.INSTANCE.getTestSetup().getDownloadPath());
+		return getReportsCommonPage().validateReportCreationDate(workingReportsEntity.getRptTitle(), TestContext.INSTANCE.getTestSetup().getDownloadPath());
 	}
 
 	/**
@@ -2707,11 +2718,12 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
-		boolean verifyIsotopicMetaDataFile = this.getReportsCommonPage().verifyIsotopicMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
-		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyIsotopicMetaDataFile = %b; verifyLISASMetaDataFile = %b",
-				verifyReportSurveyMetaDataFile, verifyIsotopicMetaDataFile, verifyLISASMetaDataFile));
-		return verifyReportSurveyMetaDataFile && verifyIsotopicMetaDataFile && verifyLISASMetaDataFile;
+		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
+		boolean verifyReportSpecificMetadataFiles = verifyMetadataFilesPredicate.test(getReportsCommonPage());
+		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyReportSpecificMetadataFiles = %b",
+				verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile, verifyReportSpecificMetadataFiles));
+		return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile && verifyReportSpecificMetadataFiles;
 	}
 
 	/**
@@ -2852,6 +2864,36 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyNumberOfLISAsInShapeFilesEquals action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyNumberOfLISAsInShapeFilesEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyNumberOfLISAsInShapeFilesEquals", data, dataRowID);
+		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		Integer expectedNumLisas = NumberUtility.getIntegerValueOf(data);
+		String downloadPath = getDownloadPath(ReportFileType.ShapeZIP);
+		return this.getReportsCommonPage().verifyNumberOfLisasInShapeFiles(downloadPath, reportsDataRow.title, 0, expectedNumLisas);
+	}
+
+	/**
+	 * Executes verifyNumberOfLISAsInMetaDataFileEquals action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyNumberOfLISAsInMetaDataFileEquals(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyNumberOfLISAsInMetaDataFileEquals", data, dataRowID);
+		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		Integer expectedNumLisas = NumberUtility.getIntegerValueOf(data);
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		return this.getReportsCommonPage().verifyNumberOfLISAsInMetaDataFile(downloadPath, reportsDataRow.title, expectedNumLisas);
+	}
+
+	/**
 	 * Executes verifyShapeFilesWithBaselines action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2863,6 +2905,18 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
 		return this.getReportsCommonPage().verifyShapeFilesWithBaselines(reportsDataRow.title,
 				reportsDataRow.tCID, 0);
+	}
+
+	/**
+	 * Executes verifyStaticTextInSSRSPDF action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyStaticTextInSSRSPDF(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyStaticTextInSSRSPDF", data, dataRowID);
+		return this.getReportsCommonPage().verifyReportStaticText(getWorkingReportsEntity());
 	}
 
 	/**
@@ -3363,9 +3417,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyLISAsIndicationTableSortedAscByColumn")) { return this.verifyLISAsIndicationTableSortedAscByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyLISAsIndicationTableSortedDescByColumn")) { return this.verifyLISAsIndicationTableSortedDescByColumn(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataFilesHaveCorrectData")) { return this.verifyMetaDataFilesHaveCorrectData(data, dataRowID); }
-		else if (actionName.equals("verifyMetaDataZIPFilesAreCorrect")) { return this.verifyMetaDataZIPFilesAreCorrect(data, dataRowID); }
+		else if (actionName.equals("verifyMetaDataZIPFilesArePresent")) { return this.verifyMetaDataZIPFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyMetaDataZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyMetaDataZIPThumbnailIsShownInComplianceViewer")) { return this.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
+		else if (actionName.equals("verifyNumberOfLISAsInMetaDataFileEquals")) { return this.verifyNumberOfLISAsInMetaDataFileEquals(data, dataRowID); }
+		else if (actionName.equals("verifyNumberOfLISAsInShapeFilesEquals")) { return this.verifyNumberOfLISAsInShapeFilesEquals(data, dataRowID); }
 		else if (actionName.equals("verifyPaginationAndSortingOnAllColumns")) { return this.verifyPaginationAndSortingOnAllColumns(data, dataRowID); }
 		else if (actionName.equals("verifyPDFContainsInputtedInformation")) { return this.verifyPDFContainsInputtedInformation(data, dataRowID); }
 		else if (actionName.equals("verifyPDFThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFThumbnailDownloadFromComplianceViewer(data, dataRowID); }
@@ -3420,6 +3476,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifySearchedSurveysAreForSelectedArea")) { return this.verifySearchedSurveysAreForSelectedArea(data, dataRowID); }
 		else if (actionName.equals("verifySearchedSurveysAreForSpecifiedCustomer")) { return this.verifySearchedSurveysAreForSpecifiedCustomer(data, dataRowID); }
 		else if (actionName.equals("verifySSRSPDFFooter")) { return this.verifySSRSPDFFooter(data, dataRowID); }
+		else if (actionName.equals("verifyStaticTextInSSRSPDF")) { return this.verifyStaticTextInSSRSPDF(data, dataRowID); }
 		else if (actionName.equals("verifySurveyGreaterThan100HoursCannotBeAdded")) { return this.verifySurveyGreaterThan100HoursCannotBeAdded(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToClose")) { return this.waitForComplianceViewerDialogToClose(data, dataRowID); }
 		else if (actionName.equals("waitForComplianceViewerDialogToOpen")) { return this.waitForComplianceViewerDialogToOpen(data, dataRowID); }
@@ -3444,7 +3501,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		throw new Exception("This method to be implemented by derived class.");
 	}
-	
+
 	protected ReportCommonEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String exclusionRadius,
 			List<String> listBoundary, List<Map<String, String>> viewList, List<Map<String, String>> tablesList,
 			List<Map<String, String>> viewLayersList) throws Exception {
@@ -3481,6 +3538,10 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	public void setWorkingReportsEntity(ReportCommonEntity reportsEntity) throws Exception {
 		throw new Exception("This method should be implemented by specific class.");
+	}
+
+	public Predicate<ReportsCommonPage> getReportSpecificVerifyMetadataFilesPredicate(String downloadPath, String reportTitle) throws Exception {
+		return r -> true;
 	}
 
 	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
@@ -3552,11 +3613,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 		return retSuccess;
 	}
-	
+
 	private ReportsCommonDataRow getWorkingReportsCommonDataRow() throws Exception{
 		return (ReportsCommonDataRow) getWorkingReportsDataRow();
 	}
-	
+
 	private ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}

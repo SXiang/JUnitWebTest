@@ -96,8 +96,7 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 	public void verifyLISASMetaDataFile() throws FileNotFoundException, IOException {
 		final String SAMPLE_REPORT_TITLE = "TC1389-1a5eb25d4cec40c89c8e";
 		final String CSV_FILE_PATH = "C:\\temp\\CR-0F737A-Meta";
-		boolean verificationStatus = complianceReportsPage.verifyLISASMetaDataFile(CSV_FILE_PATH, SAMPLE_REPORT_TITLE);
-		Log.info(String.format("LISAMetaData file verification status : %b",verificationStatus));
+		assertTrue(complianceReportsPage.verifyLISASMetaDataFile(CSV_FILE_PATH, SAMPLE_REPORT_TITLE));
 	}
 
 	@Test

@@ -105,7 +105,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 		if ((complianceReportsPage.checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			complianceReportsPage.clickOnReportViewerCloseButton();
 			assertTrue(complianceReportsPage.validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(complianceReportsPage.verifyComplianceReportStaticText(rpt));
+			assertTrue(complianceReportsPage.verifyReportStaticText(rpt));
 			assertTrue(complianceReportsPage.verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
 			if (!testCaseName.equals("TC192")) {
 				if (tablesList != null) {

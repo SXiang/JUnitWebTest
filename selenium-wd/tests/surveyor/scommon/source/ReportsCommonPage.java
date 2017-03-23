@@ -48,7 +48,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
 
 import surveyor.scommon.entities.BaseReportEntity;
-import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -86,6 +85,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import org.jsoup.Jsoup;
@@ -1536,20 +1536,20 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 
-	public boolean validateReportCreationDate(String actualPath) throws IOException {
+	public boolean validateReportCreationDate(String reportTitle, String actualPath) throws IOException {
 		Log.method("ReportsCommonPage.validateReportCreationDate", actualPath);
 		String reportDate = null;
-		String actualReport = actualPath + getReportName().trim() + ".pdf";
+		String actualReport = actualPath + getReportPDFFileName(reportTitle, true /*includeExtension*/);
 		PDFUtility pdfUtility = new PDFUtility();
 		String actualReportString = pdfUtility.extractPDFText(actualReport, 0, 1);
 		String[] lines = actualReportString.split("\\n");
-		Pattern pattertoMatch = Pattern.compile("Report Creation Date");
+		Pattern patternToMatch = Pattern.compile("Report Creation Date");
 		for (String line : lines) {
-			String formatteLine = line.trim();
-			if (pattertoMatch.matcher(line).find()) {
-				Matcher matcher = pattertoMatch.matcher(formatteLine);
+			String formattedLine = line.trim();
+			if (patternToMatch.matcher(line).find()) {
+				Matcher matcher = patternToMatch.matcher(formattedLine);
 				matcher.find();
-				reportDate = formatteLine.substring(matcher.end() + 1).trim();
+				reportDate = formattedLine.substring(matcher.end() + 1).trim();
 			}
 		}
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm a zzz");
@@ -1836,9 +1836,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ReportCommonEntity reportsEntity) throws IOException {
-		Log.method("ReportsCommonPage.verifyComplianceReportStaticText", reportsEntity);
-		return verifyComplianceReportStaticText(reportsEntity, testSetup.getDownloadPath());
+	public boolean verifyReportStaticText(ReportCommonEntity reportsEntity) throws IOException {
+		Log.method("ReportsCommonPage.verifyReportStaticText", reportsEntity);
+		return verifyReportStaticText(reportsEntity, testSetup.getDownloadPath());
 	}
 
 	/**
@@ -1849,9 +1849,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyComplianceReportStaticText(ReportCommonEntity reportsEntity, String actualPath)
+	public boolean verifyReportStaticText(ReportCommonEntity reportsEntity, String actualPath)
 			throws IOException {
-		Log.method("ReportsCommonPage.verifyComplianceReportStaticText", reportsEntity, actualPath);
+		Log.method("ReportsCommonPage.verifyReportStaticText", reportsEntity, actualPath);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportsEntity.getRptTitle());
 		String reportId = reportObj.getId();
@@ -1863,9 +1863,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.info(String.format("PDF Text Content : %s", actualReportString));
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(STRReportTitle);
-		expectedReportString.add(RegexUtility.removeSpecialChars(ComplianceReportSSRS_LISAInvestigationComplete));
-		expectedReportString.add(ComplianceReportSSRS_GAPInvestigationComplete);
-		expectedReportString.add(ComplianceReportSSRS_CGIInvestigationComplete);
 		expectedReportString.add(ComplianceReportSSRS_MapHeightWidth);
 		if (isCustomBoundarySpecified(reportsEntity)) {
 			if (!BaseHelper.isNullOrEmpty(reportsEntity.getNELat())
@@ -1882,16 +1879,19 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 		}
 
-		Log.info(String.format("Expected Strings in PDF Text Content : %s",
-				LogHelper.strListToString(expectedReportString)));
+		Supplier<List<String>> suppliedStaticText = supplySSRSPDFExpectedStaticText(reportsEntity);
+		if (suppliedStaticText.get() != null) {
+			expectedReportString.addAll(suppliedStaticText.get());
+		}
 
+		Log.info(String.format("Expected Strings in PDF Text Content : %s", LogHelper.strListToString(expectedReportString)));
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value)
 				return false;
 		}
-		return true;
 
+		return true;
 	}
 
 	/**
@@ -2076,7 +2076,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		Log.info("Layers Table data verification passed");
 		return true;
-
 	}
 
 	/**
@@ -2102,29 +2101,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ViewTable);
 		expectedReportString.add(ComplianceReportSSRS_ViewName);
-		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
 		expectedReportString.add(ComplianceReportSSRS_ShowFOV);
 		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
-		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
-		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
-		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightGAPAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowBoundaries);
 		expectedReportString.add(ComplianceReportSSRS_BaseMap);
 
-		// Look for AssetBoxNumber static string if there is a view with AssetBox.
-		boolean assetBxNumViewPresent = false;
-		for (Map<String, String> viewMap : viewsList) {
-			if (selectView(viewMap, KEYASSETBOXNUMBER)) {
-				assetBxNumViewPresent = true;
-				break;
-			}
-		}
-		if (assetBxNumViewPresent) {
-			expectedReportString.add(ComplianceReportSSRS_ShowAssetBoxNumber);
+		Supplier<List<String>> expectedTextSupplier = supplyViewsTableExpectedStaticText(viewsList);
+		if (expectedTextSupplier.get() != null) {
+			expectedReportString.addAll(expectedTextSupplier.get());
 		}
 
 		String textWithoutLineEndings = actualReportString.replace("\r\n", "");
@@ -2309,20 +2296,61 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
-	public void verifyMetaDataFiles() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	public boolean verifyMetaDataFilesArePresent(String downloadPath, String reportTitle,
+			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent, boolean verifyIsotopicMetaPresent) throws IOException {
+		Log.method("verifyMetaDataFilesArePresent", downloadPath, reportTitle,
+				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 
-	public void verifyMetaDataFilesData() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
+		Boolean present = false;
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(downloadPath, reportTitle);
+		List<String> filesInDirectory = FileUtility.getFilesInDirectory(Paths.get(pathToMetaDataUnZip), false /*includeFullPath*/);
+
+		String reportID = getReportName(reportTitle);
+		String reportPrefix = getReportPrefix();
+		String metaFile = String.format("%s-%s-Report.csv", reportPrefix, reportID);
+		String metaJsonFile = String.format("%s-%s-Report.json", reportPrefix, reportID);
+		String metaGapFile = String.format("%s-%s-ReportGAP.csv", reportPrefix, reportID);
+		String metaLISAFile = String.format("%s-%s-ReportLISAS.csv", reportPrefix, reportID);
+		String metaSurveyFile = String.format("%s-%s-ReportSurvey.csv", reportPrefix, reportID);
+		String metaIsoCaptureFile = String.format("%s-%s-ReportIsotopicCapture.csv", reportPrefix, reportID);
+
+		Log.info(String.format("Files found in MetaData ZIP -> %s", LogHelper.listToString(filesInDirectory)));
+		if (filesInDirectory != null && filesInDirectory.size() > 0) {
+			present = filesInDirectory.contains(metaFile) && filesInDirectory.contains(metaJsonFile);
+			if (!present) {
+				Log.error("*Report.csv && *Report.json NOT found in Metadata ZIP");
+			}
+
+			if (verifyGapMetaPresent) {
+				present = present && filesInDirectory.contains(metaGapFile);
+				if (!present) {
+					Log.error("*ReportGAP.csv NOT found in Metadata ZIP");
+				}
+			}
+
+			if (verifyLisaMetaPresent) {
+				present = present && filesInDirectory.contains(metaLISAFile);
+				if (!present) {
+					Log.error("*ReportLISAS.csv NOT found in Metadata ZIP");
+				}
+			}
+
+			if (verifySurveyMetaPresent) {
+				present = present && filesInDirectory.contains(metaSurveyFile);
+				if (!present) {
+					Log.error("*ReportSurvey.csv NOT found in Metadata ZIP");
+				}
+			}
+
+			if (verifyIsotopicMetaPresent) {
+				present = present && filesInDirectory.contains(metaIsoCaptureFile);
+				if (!present) {
+					Log.error("*ReportIsotopicCapture.csv NOT found in Metadata ZIP");
+				}
+			}
 		}
+
+		return present;
 	}
 
 	public boolean verifyReportSurveyMetaDataFile(String actualPath, String reportTitle)
@@ -2331,11 +2359,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
-		String pathToMetaDataUnZip = actualPath;
-		String unZipFolder = File.separator + metaDataZipFileName;
-		if (!actualPath.endsWith(unZipFolder))
-			pathToMetaDataUnZip += unZipFolder;
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
 
 		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportSurvey.csv";
@@ -2381,17 +2405,22 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
+	private String getReportMetaUnzipFolder(String actualPath, String reportTitle) {
+		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
+		String pathToMetaDataUnZip = actualPath;
+		String unZipFolder = File.separator + metaDataZipFileName;
+		if (!actualPath.endsWith(unZipFolder))
+			pathToMetaDataUnZip += unZipFolder;
+		return pathToMetaDataUnZip;
+	}
+
 	public boolean verifyIsotopicMetaDataFile(String actualPath, String reportTitle)
 			throws FileNotFoundException, IOException {
 		Log.method("ReportsCommonPage.verifyIsotopicMetaDataFile", actualPath, reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
-		String pathToMetaDataUnZip = actualPath;
-		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
-		String unZipFolder = File.separator + metaDataZipFileName;
-		if (!actualPath.endsWith(unZipFolder))
-			pathToMetaDataUnZip += unZipFolder;
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
 
 		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportIsotopicCapture.csv";
@@ -2444,8 +2473,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.method("ReportsCommonPage.verifyEthaneCaptureMetaDataFile", actualPath, reportTitle, reportId);
 
 		CSVUtility csvUtility = new CSVUtility();
-		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
-		String pathToMetaDataUnZip = actualPath + File.separator + metaDataZipFileName;
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
+
 		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6)
 				+ "-ReportEthaneCapture.csv";
 		String reportName = getReportPrefix() + "-" + reportId;
@@ -2493,20 +2522,28 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
-			throws FileNotFoundException, IOException {
+			throws Exception {
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle);
 		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
+	public boolean verifyNumberOfLISAsInMetaDataFile(String actualPath, String reportTitle, Integer expectedLISACount)
+			throws Exception {
+		List<String> outLISAs = new ArrayList<String>();
+		verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId(), outLISAs);
+		return (outLISAs.size() == expectedLISACount);
+	}
+
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
-			throws FileNotFoundException, IOException {
+			throws Exception {
+		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/);
+	}
+
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs)
+			throws Exception {
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
 		CSVUtility csvUtility = new CSVUtility();
-		String pathToMetaDataUnZip = actualPath;
-		String metaDataZipFileName = getReportMetaZipFileName(reportTitle, false /* includeExtension */);
-		String unZipFolder = File.separator + metaDataZipFileName;
-		if (!actualPath.endsWith(unZipFolder))
-			pathToMetaDataUnZip += unZipFolder;
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
 
 		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS.csv";
 		String reportName = getReportPrefix() + "-" + reportId;
@@ -2517,6 +2554,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
+
+		// LISAs list. Used to verify LISA numbers sequential ordering. If provided, use Collection from caller.
+		List<String> lisasList = outLISAs;
+		if (lisasList == null) {
+			lisasList = new ArrayList<String>();
+		}
 		while (csvIterator.hasNext()) {
 			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
 			Map<String, String> csvRow = csvIterator.next();
@@ -2528,7 +2571,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
 				return false;
 			}
-			reportIndObj.setPeakNumber(csvRow.get("LISANumber").trim().replaceAll("LISA", ""));
+			String lisaNumber = csvRow.get("LISANumber").trim();
+			reportIndObj.setPeakNumber(lisaNumber.replaceAll("LISA", ""));
 			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
 			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
 
@@ -2544,14 +2588,28 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
 			String aggregatedClassificationconfidence = "N/A";
 			try {
-				int aggregatedClassificationconfidenceFloat = (int) (Float
-						.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
-				aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+				if (!BaseHelper.isNullOrEmpty(csvRow.get("ConfidenceInDisposition").trim())) {
+					int aggregatedClassificationconfidenceFloat = (int) (Float
+							.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
+					aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+				} else {
+					aggregatedClassificationconfidence = "0%";
+				}
 			} catch (Exception e) {
 				Log.warn(e.toString());
 			}
 			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
 			reportList.add(reportIndObj);
+
+			lisasList.add(lisaNumber);
+		}
+
+		if (!verifyLisasAreUpperCase(lisasList)) {
+			throw new Exception("Incorrect LISA label casing detected.");
+		}
+
+		if (!verifyLisaNumbersAreInSequentialOrder(lisasList)) {
+			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
 		}
 
 		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications
@@ -2623,6 +2681,41 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.info(String.format("Isotopic value:[%s] NOT in format {00[.00]}. " + "Found more than 2 decimal places",
 					isotopicValue));
 			return false;
+		}
+
+		return true;
+	}
+
+	private boolean verifyLisasAreUpperCase(List<String> lisasList) {
+		Log.method("verifyLisasAreUpperCase", lisasList);
+		if (lisasList == null || lisasList.size() == 0) {
+			return true;
+		}
+
+		// Verify all LISA instances are in Caps.
+		Set<String> lisaCollection = lisasList.stream()
+				.map(l -> RegexUtility.getMatchingGroups(l, RegexUtility.LISA_REGEX).get(1))
+				.collect(Collectors.toSet());
+
+		Log.info(String.format("LISA labels set retrieved from metadata is -> %s", LogHelper.setToString(lisaCollection)));
+		return (lisaCollection.size()==1) && (lisaCollection.toArray(new String[1])[0].equals("LISA"));
+	}
+
+	private boolean verifyLisaNumbersAreInSequentialOrder(List<String> lisasList) {
+		Log.method("verifyLisaNumbersAreInSequentialOrder", lisasList);
+		if (lisasList == null || lisasList.size() == 0) {
+			return true;
+		}
+
+		List<Integer> lisaNumbers = lisasList.stream()
+			.map(l -> Integer.valueOf(l.replace("LISA", "").trim()))
+			.collect(Collectors.toList());
+		Log.info(String.format("LISA numbers retrieved from metadata are -> %s", LogHelper.listToString(lisaNumbers)));
+		for (int i = 1; i <= lisaNumbers.size(); i++) {
+			if (i != lisaNumbers.get(i-1)) {
+				Log.error(String.format("LISA number sequential order mismatch at index-%d. NOT matching LISA number is - %d", i-1, lisaNumbers.get(i)));
+				return false;
+			}
 		}
 
 		return true;
@@ -3327,15 +3420,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyShapeFilesWithBaselines(String reportTitle, String testCaseID, int zipIndex) throws Exception {
-		Log.info(String.format(
-				"Calling verifyShapeFilesWithBaselines() -> reportTitle=[%s], testCaseID=[%s], downloadIndex=[%d]",
-				reportTitle, testCaseID, zipIndex));
+		Log.method("verifyShapeFilesWithBaselines", reportTitle, testCaseID, zipIndex);
 		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
 		BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
 		if (checkAndGenerateBaselineShapeFiles(TestContext.INSTANCE.getTestSetup().getDownloadPath() + shapeZipFileName,
 				testCaseID)) {
-			Log.info("Shape Files created as a baseline for '" + testCaseID
-					+ "', verification will be done on your next test run");
+			Log.info("Shape Files created as a baseline for '" + testCaseID + "', verification will be done on your next test run");
 			return true;
 		}
 
@@ -3356,12 +3446,25 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
-	public void verifyShapeFilesData() {
-		try {
-			throw new Exception("Not implemented");
-		} catch (Exception e) {
-			e.printStackTrace();
+	public boolean verifyNumberOfLisasInShapeFiles(String actualDataFolderPath, String reportTitle, int zipIndex, int expectedLisasCount) throws Exception {
+		Log.method("verifyNumberOfLisasInShapeFiles", reportTitle, zipIndex, expectedLisasCount);
+		String shapeZipFileName = getReportShapeZipFileName(reportTitle, zipIndex, false /* includeExtension */);
+		if (!FileUtility.directoryExists(actualDataFolderPath)) {
+			BaseHelper.deCompressZipFile(shapeZipFileName, testSetup.getDownloadPath());
 		}
+
+		int actualNumLisas = 0;
+		ShapeFileUtility shapeFileUtility = new ShapeFileUtility();
+		List<String> shpFilesInDirectory = FileUtility.getFilesInDirectory(Paths.get(actualDataFolderPath), "*.shp");
+		for (String filePath : shpFilesInDirectory) {
+			String fileName = Paths.get(filePath).getFileName().toString();
+			if (fileName.endsWith("-LISA.shp")) {
+				actualNumLisas = shapeFileUtility.getNumberOfLisas(filePath);
+			}
+		}
+
+		Log.info(String.format("Expected LISAs count=%d, Found LISAs in shape file=%d", expectedLisasCount, actualNumLisas));
+		return (actualNumLisas == expectedLisasCount);
 	}
 
 	public void verifyDeleteModalMessageIsCorrect(String reportTitle) {
@@ -3708,11 +3811,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	private Map<String, Boolean> getStringMatchResultMap(String reportTitle, List<String> expectedReportString) throws IOException {
 		String actualPath = testSetup.getDownloadPath();
+		String actualReport = actualPath + getReportPDFFileName(reportTitle, true /*includeExtension*/);
 		PDFUtility pdfUtility = new PDFUtility();
-		Report reportObj = Report.getReport(reportTitle);
-		String reportId = reportObj.getId();
-		String actualReport = actualPath + getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf";
-		setReportName(getReportName());
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 		return matchSinglePattern(actualReportString, expectedReportString);
 	}
@@ -3820,6 +3920,19 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return checkTableSort("datatable_wrapper", columnMap, pagination, getPaginationOption(),
 				SurveyorConstants.NUM_RECORDS_TOBEVERIFIED);
 	}
+
+	/* Methods with implementation provided by derived class */
+
+	public Supplier<List<String>> supplyViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
+		return (() -> null);
+	}
+
+	public Supplier<List<String>> supplySSRSPDFExpectedStaticText(ReportCommonEntity reportsEntity) {
+		return (() -> null);
+	}
+
+
+	/* Overridden methods */
 
 	@Override
 	public void addReportSpecificSurveys(String customer, String NELat, String NELong, String SWLat, String SWLong,
