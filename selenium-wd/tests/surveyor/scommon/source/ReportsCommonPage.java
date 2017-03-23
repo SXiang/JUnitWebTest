@@ -3634,7 +3634,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 
 		boolean invalidResults = false;
-		if (setSuccess) {
+		if (!setSuccess) {
 			// If value not set, check if noResults entry has been found.
 			Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
 			invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
