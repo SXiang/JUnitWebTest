@@ -122,7 +122,7 @@ public class LatLongSelectionReportsPageTest2 extends BaseReportsPageTest {
 
 		if ((this.getComplianceReportsPage().checkActionStatus(rptTitle, strCreatedBy, testCaseName))) {
 			assertTrue(this.getComplianceReportsPage().validatePdfFiles(rpt, getTestSetup().getDownloadPath()));
-			assertTrue(this.getComplianceReportsPage().verifyComplianceReportStaticText(rpt));
+			assertTrue(this.getComplianceReportsPage().verifyReportStaticText(rpt));
 			assertTrue(this.getComplianceReportsPage().verifySSRSImages(getTestSetup().getDownloadPath(), rptTitle, testCaseName));
 			if (tablesList != null) {
 				if ((tablesList.get(0).get(KEYPCA).equals("1")) || (tablesList.get(0).get(KEYPCRA).equals("1"))) {

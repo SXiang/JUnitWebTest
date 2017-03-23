@@ -42,6 +42,7 @@ public class RegexUtility {
 	public static final String VIEWS_TABLE_LINE_REGEX_PATTERN = ".* (Satellite|Map|None)$";
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
+	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
@@ -70,18 +71,37 @@ public class RegexUtility {
 	 * @return
 	 */
 	public static List<String> getMatchingGroups(String inputString, String regexPattern) {
+		return getMatchingGroups(inputString, regexPattern, false /*matchMultiple*/);
+	}
+
+	/**
+	 * Gets matching groups from the specified regex pattern.
+	 *
+	 * @param inputString
+	 *            - string to match.
+	 * @param regexPattern
+	 *            - regex pattern.
+	 * @param matchMultiple
+	 *            - whether or not to match multiple strings.
+	 * @return
+	 */
+	public static List<String> getMatchingGroups(String inputString, String regexPattern, Boolean matchMultiple) {
 		List<String> output = Collections.synchronizedList(new ArrayList<String>());
 		Pattern pattern = Pattern.compile(regexPattern, flags);
 		Matcher matcher = pattern.matcher(inputString);
-		if (matcher.find()) {
+		boolean continueMatch = true;
+		while (continueMatch && matcher.find()) {
 			int count = matcher.groupCount();
 			for (int i = 0; i <= count; i++) {
 				output.add(matcher.group(i));
 			}
+
+			continueMatch = matchMultiple;
 		}
 
 		return output;
 	}
+
 
 	/**
 	 * Returns a list of String with matching parts after split. If parts are empty then they are not returned in the output

@@ -48,15 +48,16 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
 	protected String itemDateXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[4]";
 
-	public static enum LisaStatus {
+	public static enum IndicationStatus {
 		FOUNDGASLEAK ("Found Gas Leak"),
 		INPROGRESS ("In Progress"),
 		NOTINVESTIGATED ("Not Investigated"),
-		FOUNDOTHERSOURCE ("Found Other Source");
+		FOUNDOTHERSOURCE ("Found Other Source"),
+		NOGASFOUND("No Gas Found");
 
 		private String status;
 
-		LisaStatus(String status){
+		IndicationStatus(String status){
 			this.status = status;
 		}
 

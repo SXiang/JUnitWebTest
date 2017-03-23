@@ -112,7 +112,7 @@
   </target>
   <target name="compileregression" depends="compile_scommon" description="Compile regression source code">
     <buildnumber file="build.number" />
-    <javac srcdir="${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
+    <javac srcdir="${basedir}/tests/surveyor/regression/mobile/source:${basedir}/tests/surveyor/regression/source" includeantruntime="false" destdir="${build}" debug="true">
       <classpath>
         <fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
@@ -768,7 +768,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run compliance report test classes ">
+  <target name="tc_localrun" depends="compileregression" description="Run compliance report test classes">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="LocalBranchTest" />
       <sysproperty key="test_run_id" value="${local_date}" />
@@ -781,8 +781,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ComplianceReportsPageTest3.class" />
         	<include name="**/ComplianceReportsPageTest.class" />
+            <include name="**/ComplianceReportsPageTest3.class" />
         </fileset>
       </batchtest>
     </junit>
