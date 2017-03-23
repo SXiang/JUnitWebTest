@@ -14,6 +14,7 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.INVALIDUSERPASS;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
