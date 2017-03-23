@@ -891,12 +891,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return actualMsg;
 	}
 
-	public void openCustomerBoundarySelector() {
-		this.selectCustomerBoundaryRadioButton();
-		this.waitForCustomerBoundarySectionToShow();
-		this.clickBoundarySelectorBtn();
-	}
-
 	public void openCustomBoundarySelector() {
 		this.selectCustomBoundaryRadioButton();
 		this.waitForCustomBoundarySectionToShow();
@@ -939,18 +933,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public void selectCustomBoundaryRadioButton() {
 		this.customBoundaryRadioButton.click();
-	}
-
-	public void selectCustomerBoundaryRadioButton() {
-		for(int i=0;i<numRetryOnFailure; ){
-			try{
-				jsClick(this.customerBoundaryRadioButton);
-				this.waitForCustomerBoundarySectionToShow();
-				return;
-			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button");
-			}
-		}
 	}
 
 	@Override

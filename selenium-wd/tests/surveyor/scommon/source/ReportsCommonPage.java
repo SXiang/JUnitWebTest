@@ -776,7 +776,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public void clickBoundarySelectorBtn() {
 		Log.clickElementInfo("Boundary Selector");
-		this.boundarySelectorBtn.click();
+		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; i++){
+			try{
+				this.boundarySelectorBtn.click();
+				return;
+			}catch(Exception e){
+				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button");
+			}
+		}
 	}
 
 	public void clickOnConfirmInDeleteReportPopup() {
@@ -1674,7 +1681,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public void openCustomerBoundarySelector() {
 		this.selectCustomerBoundaryRadioButton();
-		this.waitForCustomerBoundarySectionToShow();
 		this.clickBoundarySelectorBtn();
 	}
 
@@ -1723,7 +1729,15 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public void selectCustomerBoundaryRadioButton() {
-		jsClick(this.customerBoundaryRadioButton);
+		for(int i=0;i<Constants.DEFAULT_MAX_RETRIES; i++){
+			try{
+				jsClick(this.customerBoundaryRadioButton);
+				this.waitForCustomerBoundarySectionToShow();
+				return;
+			}catch(Exception e){
+				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button");
+			}
+		}
 	}
 
 	public void selectViewLayerAssets(Map<String, String> viewLayerMap) {
