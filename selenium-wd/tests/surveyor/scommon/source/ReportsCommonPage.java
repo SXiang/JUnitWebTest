@@ -57,6 +57,7 @@ import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -3857,5 +3858,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.info(String.format("SurveyMode '%s' is valid for ReportMode '%s'", surveyMode, reportMode));
 		}
 		return true;
+	}
+	
+	/* Override the method in ReportsBasePage to share the code we are using by other report tests */
+	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		Log.method("ReportsCommonPage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
+
+		if(waitForReportGenerationtoComplete(rptTitle, strCreatedBy)){
+			clickComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer,false /*confirmAction*/); 
+			return handleFileDownloads(rptTitle, testCaseID);
+		}
+		return false;
 	}
 }
