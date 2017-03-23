@@ -128,6 +128,16 @@ public class LoginPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
+	public void loginTest_TC27_InvalidCredLogin() {
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, "1234");
+		loginPage.waitForPageLoad();
+		assertTrue(loginPage.getTxtErrLogin().getText().equalsIgnoreCase(INVALIDUSERPASS));
+	}
+
+	
+	@Test
 	public void loginTest_TC29_DriverLogin() {
 		String customerName = SQACUS;
 
