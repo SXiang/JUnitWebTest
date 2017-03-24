@@ -3157,14 +3157,4 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		});
 	}
-
-	@Override
-	public LoginPage logout() {
-		// Check if report viewer is open. Close if open.
-		if (isReportViewerDialogOpen()) {
-			closeReportViewerDialog();
-		}
-
-		return super.logout();
-	}
 }
