@@ -7,6 +7,7 @@ import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
 import common.source.Downloader;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.NumberUtility;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
@@ -3960,6 +3961,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return ComplianceReport_SurveyMissingMessage;
 	}
 
+	@Override
+	public LoginPage logout() {
+		// Check if report viewer is open. Close if open.
+		FunctionUtil.warnOnError(() -> { if (isReportViewerDialogOpen()) {
+			closeReportViewerDialog();
+		}});
+
+		return super.logout();
+	}
+
 	public boolean isSurveyModesValidForReportMode(String reportMode, List<String> distinctSurveyModes) {
 		if(distinctSurveyModes==null){
 			return false;
@@ -3984,7 +3995,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		return false;
 	}
-	
+
 	public String getDownloadPath(ReportFileType fileType, String reportTitle) throws Exception {
 		String fileName = "";
 		if (fileType == ReportFileType.PDF || fileType == ReportFileType.InvestigationPDF) {
