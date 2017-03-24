@@ -3,12 +3,12 @@ package surveyor.scommon.source;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEUA;
+import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -265,8 +265,22 @@ public class BaseTest {
 		return createTestAccount(testCase, null);
 	}
 
+	public Map <String, String> createTestSupervisorAccount(String testCase){
+		return createTestSupervisorAccount(testCase, null);
+	}
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
-		return createTestAccount(testCase, null, addTestSurveyor);
+		String userRole = CUSUSERROLEUA;
+		return createTestAccount(testCase, userRole, null, addTestSurveyor);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+		String userRole = CUSUSERROLEUA;
+		return createTestAccount(testCase, userRole, null, addTestSurveyor, fetchAnalyzerFromPool);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
+		String userRole = CUSUSERROLEUA;
+		return createTestAccount(testCase, userRole, lfsToExclude, true);
 	}
 
 	public Map<String, String> createTestSupervisorAccount(String testCase, LicensedFeatures[] lfsToExclude){
@@ -274,28 +288,15 @@ public class BaseTest {
 		return createTestAccount(testCase, userRole, lfsToExclude, true);
 	}
 
-	public Map <String, String> createTestSupervisorAccount(String testCase){
-		return createTestSupervisorAccount(testCase, null);
+	public Map<String, String> createTestAccount(String testCase, String userRole, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
+		return createTestAccount(testCase, userRole, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
 
-
-	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
-		return createTestAccount(testCase, null, addTestSurveyor, fetchAnalyzerFromPool);
-	}
-
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
-		return createTestAccount(testCase, lfsToExclude, true);
-	}
-
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
-		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
-	}
-
-	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+	public Map<String, String> createTestAccount(String testCase, String userRole, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
-		String userRole = CUSUSERROLEUA;
+		//String userRole = CUSUSERROLEUA;
 		String userPassword = USERPASSWORD;
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
@@ -369,12 +370,16 @@ public class BaseTest {
 		PageFactory.initElements(getDriver(),  manageAnalyzersPage);
 		ManageRefGasBottlesPage manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(), getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(),  manageRefGasBottlesPage);
+		ManageSurveyorAdminPage manageSurveyorAdminPage = new ManageSurveyorAdminPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageSurveyorAdminPage);
 
 		manageSurveyorPage.open();
 		if(!manageSurveyorPage.addNewSurveyor(surveyorName, locationName, customerName)){
 			fail(String.format("Failed to add a new Surveyor %s, %s, %s",surveyorName, locationName, customerName));
 		}
-
+		
+		manageSurveyorAdminPage.editExistingSurveyor(customerName, locationName, surveyorName, locationName, surveyorName, true);
+	
 		manageAnalyzersPage.open();
 		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
@@ -553,7 +558,7 @@ public class BaseTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@After
+	//@After
 	public void tearDown() throws Exception {
 	}
 
