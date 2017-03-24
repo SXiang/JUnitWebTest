@@ -34,11 +34,11 @@ import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
-import surveyor.scommon.source.Reports.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 
 @RunWith(SurveyorTestRunner.class)
 public class SimulatorGeneralTests extends SurveyorBaseTest {
