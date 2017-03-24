@@ -41,7 +41,8 @@ public class MobileLoginPage extends MobileBasePage {
 	
 	private void handleEULA() {
 		waitForPageToLoad();
-		if (!driver.getCurrentUrl().contains("/Reports")&&driver.getCurrentUrl().contains("/Eula")) {
+		waitForAJAXCallsToComplete();
+		if (driver.getCurrentUrl().contains("/Eula")) {
 			// If user is redirected to EULA then click on Accept.
 			EULAPage eulaPage = new EULAPage(driver, this.strBaseURL, testSetup);
 			PageFactory.initElements(driver, eulaPage);
