@@ -89,6 +89,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[@title='Delete Survey']/img")
 	private WebElement firstSurveyDeleteLink;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> tableRows;
+
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
+
 	public void clickOnFirstSurveyDeleteLink() {
 		Log.clickElementInfo("Delete",ElementType.LINK);
 		this.firstSurveyDeleteLink.click();
