@@ -783,6 +783,7 @@
         <fileset dir="${build}">
         	<include name="**/ComplianceReportsPageTest.class" />
             <include name="**/ComplianceReportsPageTest3.class" />
+        	<include name="**/ComplianceReportsInvestigationPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

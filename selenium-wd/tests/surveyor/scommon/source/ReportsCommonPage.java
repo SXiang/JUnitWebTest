@@ -3718,7 +3718,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		if (!actionSuccess) {
 			Log.error(String.format("fillCustomerBoundary() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
-			throw new Exception("Failure when executing fillCustomerBoundary.");
 		}
 
 		return actionSuccess;
