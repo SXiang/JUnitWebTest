@@ -3984,17 +3984,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
-	/* Override the method in ReportsBasePage to share common code used by other report tests */
-	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
-		Log.method("ReportsCommonPage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
-
-		if(waitForReportGenerationtoComplete(rptTitle, strCreatedBy)){
-			clickComplianceReportButton(rptTitle, strCreatedBy, ReportsButtonType.ReportViewer,false /*confirmAction*/); 
-			return handleFileDownloads(rptTitle, testCaseID);
-		}
-		return false;
-	}
 
 	public String getDownloadPath(ReportFileType fileType, String reportTitle) throws Exception {
 		String fileName = "";
