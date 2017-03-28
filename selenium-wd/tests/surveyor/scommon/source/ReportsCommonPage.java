@@ -256,7 +256,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(css = "input[name='rdAreaMode'][value='Custom']")
 	protected WebElement customBoundaryRadioButton;
 
-	@FindBy(css = "input[type='radio'][name='rdAreaMode'][value='Customer']")
+	@FindBy(css = "input[name='rdAreaMode'][value='Customer']")
 	protected WebElement customerBoundaryRadioButton;
 
 	@FindBy(css = "input[name='rdAreaMode'][value='FreeForm']")
