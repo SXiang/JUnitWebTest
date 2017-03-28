@@ -35,198 +35,205 @@ import surveyor.scommon.source.SystemHistoryReportsPage;
 
 public class PageObjectFactory {
 	private ThreadLocal<AdministrationPage> threadLocalAdministrationPage = new ThreadLocal<AdministrationPage>() {
-	    @Override 
+	    @Override
 	    protected AdministrationPage initialValue() {
 	    	return createNewAdministrationPage();
 	    }
 	};
 
 	private ThreadLocal<ComplianceReportsPage> threadLocalComplianceReportsPage = new ThreadLocal<ComplianceReportsPage>() {
-	    @Override 
+	    @Override
 	    protected ComplianceReportsPage initialValue() {
 	    	return createNewComplianceReportsPage();
 	    }
 	};
 
 	private ThreadLocal<DriverViewPage> threadLocalDriverViewPage = new ThreadLocal<DriverViewPage>() {
-	    @Override 
+	    @Override
 	    protected DriverViewPage initialValue() {
 	    	return createNewDriverViewPage();
 	    }
 	};
 
 	private ThreadLocal<EQReportsPage> threadLocalEqReportsPage = new ThreadLocal<EQReportsPage>() {
-	    @Override 
+	    @Override
 	    protected EQReportsPage initialValue() {
 	    	return createNewEqReportsPage();
 	    }
 	};
 
 	private ThreadLocal<EULAPage> threadLocalEULAPage = new ThreadLocal<EULAPage>() {
-	    @Override 
+	    @Override
 	    protected EULAPage initialValue() {
 	    	return createNewEULAPage();
 	    }
 	};
 
 	private ThreadLocal<FleetMapPage> threadLocalFleetMapPage = new ThreadLocal<FleetMapPage>() {
-	    @Override 
+	    @Override
 	    protected FleetMapPage initialValue() {
 	    	return createNewFleetMapPage();
 	    }
 	};
 
 	private ThreadLocal<HomePage> threadLocalHomePage = new ThreadLocal<HomePage>() {
-	    @Override 
+	    @Override
 	    protected HomePage initialValue() {
 	    	return createNewHomePage();
 	    }
 	};
 
 	private ThreadLocal<LoginPage> threadLocalLoginPage = new ThreadLocal<LoginPage>() {
-	    @Override 
+	    @Override
 	    protected LoginPage initialValue() {
 	    	return createNewLoginPage();
 	    }
 	};
 
 	private ThreadLocal<ManageAnalyzersPage> threadLocalManageAnalyzersPage = new ThreadLocal<ManageAnalyzersPage>() {
-	    @Override 
+	    @Override
 	    protected ManageAnalyzersPage initialValue() {
 	    	return createNewManageAnalyzersPage();
 	    }
 	};
 
 	private ThreadLocal<ManageCustomersPage> threadLocalManageCustomersPage = new ThreadLocal<ManageCustomersPage>() {
-	    @Override 
+	    @Override
 	    protected ManageCustomersPage initialValue() {
 	    	return createNewManageCustomersPage();
 	    }
 	};
 
 	private ThreadLocal<ManageLocationsAdminPage> threadLocalManageLocationsAdminPage = new ThreadLocal<ManageLocationsAdminPage>() {
-	    @Override 
+	    @Override
 	    protected ManageLocationsAdminPage initialValue() {
 	    	return createNewManageLocationsAdminPage();
 	    }
 	};
 
 	private ThreadLocal<ManageLocationsPage> threadLocalManageLocationsPage = new ThreadLocal<ManageLocationsPage>() {
-	    @Override 
+	    @Override
 	    protected ManageLocationsPage initialValue() {
 	    	return createNewManageLocationsPage();
 	    }
 	};
 
 	private ThreadLocal<ManageRefGasBottlesAdminPage> threadLocalManageRefGasBottlesAdminPage = new ThreadLocal<ManageRefGasBottlesAdminPage>() {
-	    @Override 
+	    @Override
 	    protected ManageRefGasBottlesAdminPage initialValue() {
 	    	return createNewManageRefGasBottlesAdminPage();
 	    }
 	};
 
 	private ThreadLocal<ManageRefGasBottlesPage> threadLocalManageRefGasBottlesPage = new ThreadLocal<ManageRefGasBottlesPage>() {
-	    @Override 
+	    @Override
 	    protected ManageRefGasBottlesPage initialValue() {
 	    	return createNewManageRefGasBottlesPage();
 	    }
 	};
 
 	private ThreadLocal<ManageReleaseNotesPage> threadLocalManageReleaseNotesPage = new ThreadLocal<ManageReleaseNotesPage>() {
-	    @Override 
+	    @Override
 	    protected ManageReleaseNotesPage initialValue() {
 	    	return createNewManageReleaseNotesPage();
 	    }
 	};
 
 	private ThreadLocal<ManageSurveyorAdminPage> threadLocalManageSurveyorAdminPage = new ThreadLocal<ManageSurveyorAdminPage>() {
-	    @Override 
+	    @Override
 	    protected ManageSurveyorAdminPage initialValue() {
 	    	return createNewManageSurveyorAdminPage();
 	    }
 	};
 
 	private ThreadLocal<ManageSurveyorHistoriesAdminPage> threadLocalManageSurveyorHistoriesAdminPage = new ThreadLocal<ManageSurveyorHistoriesAdminPage>() {
-	    @Override 
+	    @Override
 	    protected ManageSurveyorHistoriesAdminPage initialValue() {
 	    	return createNewManageSurveyorHistoriesAdminPage();
 	    }
 	};
 
 	private ThreadLocal<ManageSurveyorHistoriesPage> threadLocalManageSurveyorHistoriesPage = new ThreadLocal<ManageSurveyorHistoriesPage>() {
-	    @Override 
+	    @Override
 	    protected ManageSurveyorHistoriesPage initialValue() {
 	    	return createNewManageSurveyorHistoriesPage();
 	    }
 	};
 
 	private ThreadLocal<ManageSurveyorPage> threadLocalManageSurveyorPage = new ThreadLocal<ManageSurveyorPage>() {
-	    @Override 
+	    @Override
 	    protected ManageSurveyorPage initialValue() {
 	    	return createNewManageSurveyorPage();
 	    }
 	};
 
 	private ThreadLocal<ManageUsersAdminPage> threadLocalManageUsersAdminPage = new ThreadLocal<ManageUsersAdminPage>() {
-	    @Override 
+	    @Override
 	    protected ManageUsersAdminPage initialValue() {
 	    	return createNewManageUsersAdminPage();
 	    }
 	};
 
 	private ThreadLocal<ManageUsersPage> threadLocalManageUsersPage = new ThreadLocal<ManageUsersPage>() {
-	    @Override 
+	    @Override
 	    protected ManageUsersPage initialValue() {
 	    	return createNewManageUsersPage();
 	    }
 	};
 
 	private ThreadLocal<MeasurementSessionsPage> threadLocalMeasurementSessionsPage = new ThreadLocal<MeasurementSessionsPage>() {
-	    @Override 
+	    @Override
 	    protected MeasurementSessionsPage initialValue() {
 	    	return createNewMeasurementSessionsPage();
 	    }
 	};
 
 	private ThreadLocal<ObserverViewPage> threadLocalObserverViewPage = new ThreadLocal<ObserverViewPage>() {
-	    @Override 
+	    @Override
 	    protected ObserverViewPage initialValue() {
 	    	return createNewObserverViewPage();
 	    }
 	};
 
 	private ThreadLocal<PreferencesPage> threadLocalPreferencesPage = new ThreadLocal<PreferencesPage>() {
-	    @Override 
+	    @Override
 	    protected PreferencesPage initialValue() {
 	    	return createNewPreferencesPage();
 	    }
 	};
 
 	private ThreadLocal<ReferenceGasReportsPage> threadLocalReferenceGasReportsPage = new ThreadLocal<ReferenceGasReportsPage>() {
-	    @Override 
+	    @Override
 	    protected ReferenceGasReportsPage initialValue() {
 	    	return createNewReferenceGasReportsPage();
 	    }
 	};
 
 	private ThreadLocal<SurveyorSystemsPage> threadLocalSurveyorSystemsPage = new ThreadLocal<SurveyorSystemsPage>() {
-	    @Override 
+	    @Override
 	    protected SurveyorSystemsPage initialValue() {
 	    	return createNewSurveyorSystemsPage();
 	    }
 	};
 
 	private ThreadLocal<SurveyViewPage> threadLocalSurveyViewPage = new ThreadLocal<SurveyViewPage>() {
-	    @Override 
+	    @Override
 	    protected SurveyViewPage initialValue() {
 	    	return createNewSurveyViewPage();
 	    }
 	};
 
 	private ThreadLocal<SystemHistoryReportsPage> threadLocalSystemHistoryReportsPage = new ThreadLocal<SystemHistoryReportsPage>() {
-	    @Override 
+	    @Override
 	    protected SystemHistoryReportsPage initialValue() {
 	    	return createNewSystemHistoryReportsPage();
+	    }
+	};
+
+	private ThreadLocal<ServerLogPage> threadLocalServerLogPage = new ThreadLocal<ServerLogPage>() {
+	    @Override
+	    protected ServerLogPage initialValue() {
+	    	return createNewServerLogPage();
 	    }
 	};
 
@@ -426,6 +433,13 @@ public class PageObjectFactory {
 		return systemHistoryReportsPage;
 	}
 
+	protected ServerLogPage createNewServerLogPage() {
+		WebDriver driver = TestContext.INSTANCE.getDriver();
+		ServerLogPage serverLogPage = new ServerLogPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, serverLogPage);
+		return serverLogPage;
+	}
+
 	public AdministrationPage getAdministrationPage() {
 		return threadLocalAdministrationPage.get();
 	}
@@ -536,5 +550,9 @@ public class PageObjectFactory {
 
 	public SystemHistoryReportsPage getSystemHistoryReportsPage() {
 		return threadLocalSystemHistoryReportsPage.get();
+	}
+
+	public ServerLogPage getServerLogPage() {
+		return threadLocalServerLogPage.get();
 	}
 }

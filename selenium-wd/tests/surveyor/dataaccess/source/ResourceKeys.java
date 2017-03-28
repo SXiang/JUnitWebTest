@@ -21,7 +21,7 @@ public class ResourceKeys {
 	public static final String EQReport_PageTitleNew = "EQReport_PageTitleNew";
 	public static final String EQReports_AddNew = "EQReports_AddNew";
 	public static final String EQReports_PageTitle = "EQReports_PageTitle";
-	
+
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
@@ -207,6 +207,7 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
 	public static final String LisaInvestigations_PageTitle = "LisaInvestigations_PageTitle";
+	public static final String ServerLog_PageTitle = "ServerLog_PageTitle";
 
 //  Constants for _HEADERs
 	public static final String _HEADERS_Investigator = "_HEADERS_Investigator";
@@ -318,4 +319,6 @@ public class ResourceKeys {
 
 	// Modal dialog constant.
 	public static final String Dialog_ProceedMessage = "Dialog_ProceedMessage";
+
+	public static final String Reports_ErrorProcessing = "Reports_ErrorProcessing";
 }

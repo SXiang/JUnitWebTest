@@ -261,6 +261,7 @@ public final class SurveyorConstants {
 	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
 
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
+	public static final String REPORTERRORPROCESSING = Resources.getResource(ResourceKeys.Reports_ErrorProcessing);
 
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
@@ -273,10 +274,12 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 	public static final int LINE_SELECTOR_ZOOMLEVEL = 15;
-	
+
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
 	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+
+	public static final String MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG = "More than 10000 Assets found in the report area";
 
 	/*
 	 * Survey View constants

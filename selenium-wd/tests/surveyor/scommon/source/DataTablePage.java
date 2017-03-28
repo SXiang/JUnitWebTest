@@ -1,6 +1,8 @@
 package surveyor.scommon.source;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.CollectionsUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.RegexUtility;
@@ -121,27 +124,52 @@ public class DataTablePage extends SurveyorBasePage {
 	 * @return all the records in the specified column in the table.
 	 */
     public List<String> getRecords(String columnName, Integer numRecords){
-		setPagination(pagination);
-		waitForTableToLoad();
+    	Map<String, List<String>> records = getRecords(Arrays.asList(columnName), null /*tableContext*/, numRecords);
+    	if (records.containsKey(columnName)) {
+    		return records.get(columnName);
+    	}
 
-		int colIdx = getColumnIndex(columnName);
-		List<String> columnValues = new ArrayList<String>();
+    	return null;
+	}
+
+	/**
+     * Get all records for specified column names in this data table, page by page
+	 * @param columnNames - list of column names to get values for.
+     * @param numRecords - the max number of records to be matched, search for all if it's -1
+	 * @return all the records in the specified columns of the table.
+	 */
+	public Map<String, List<String>> getRecords(List<String> columnNames, WebElement tableContext, Integer numRecords) {
+		setPagination(pagination);
+		if (tableContext == null) {
+			waitForTableToLoad();
+		}
+
+		List<Integer> colIndices = getColumnIndices(columnNames);
+		Map<Integer, String> colIdxNmMap = CollectionsUtil.toMap(colIndices, columnNames);
+		Map<String, List<String>> recordsMap = Collections.synchronizedMap(new HashMap<String, List<String>>());
 		int numFound = 0;
 		boolean done = false;
-		do{
+		do {
+			if (tableContext != null) {
+				this.tableRow = tableContext.findElements(By.xpath("tbody/tr"));
+			}
+
+			Integer tableSize = this.tableRow.size();
 			for(WebElement row: tableRow){
 				List<WebElement> field = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
 						(parentEl) -> parentEl.findElements(By.cssSelector("td")));
-				columnValues.add(getElementText(field.get(colIdx)));
-            	numFound++;
-				if(numRecords>-1 && numFound >= numRecords){
+				colIndices.forEach(idx -> CollectionsUtil.populateListMap(recordsMap, colIdxNmMap.get(idx), getElementText(field.get(idx))));
+				numFound++;
+				if(numRecords>-1 && ((numFound >= tableSize) || (numFound >= numRecords))){
 					done = true;
 					break;
 				}
 			}
-		}while(!done&&toNextPage());
-        return columnValues;
-   }
+
+		} while (!done&&toNextPage());
+
+		return recordsMap;
+	}
 
 	/**
 	 * Find records in this data table, page by page
@@ -349,18 +377,44 @@ public class DataTablePage extends SurveyorBasePage {
 	}
 
 	public int getColumnIndex(WebElement tableContext, String columnName) {
-		if (tableContext != null) {
-			tableHeader = tableContext.findElements(By.xpath("thead/tr/th"));
+		List<Integer> colIndices = getColumnIndices(tableContext, Arrays.asList(columnName));
+		if (colIndices != null && colIndices.size()>0) {
+			return colIndices.get(0);
 		}
 
-		for (int i = 0; i < tableHeader.size(); i++) {
-			String columnText = tableHeader.get(i).getText();
-			if (columnText != null && columnText.trim().equals(columnName)) {
-				return i;
+		return -1;
+	}
+
+	private List<Integer> getColumnIndices(List<String> columnNames) {
+		return getColumnIndices(null /*tableContext*/, columnNames);
+	}
+
+	private List<Integer> getColumnIndices(WebElement tableContext, List<String> columnNames) {
+		List<Integer> indices = null;
+		if (columnNames != null && columnNames.size() > 0) {
+			indices = new ArrayList<Integer>(columnNames.size());
+			if (tableContext != null) {
+				tableHeader = tableContext.findElements(By.xpath("thead/tr/th"));
+			}
+
+			for (String colName : columnNames) {
+				boolean foundColName = false;
+				for (int i = 0; i < tableHeader.size(); i++) {
+					String columnText = tableHeader.get(i).getText();
+					if (columnText != null && columnText.trim().equals(colName)) {
+						foundColName = true;
+						indices.add(i);
+						break;
+					}
+				}
+
+				if (!foundColName) {
+					Log.warn("Not found: Column '" + colName + "'");
+				}
 			}
 		}
-		Log.warn("Not found: Column '" + columnName + "'");
-		return -1;
+
+		return indices;
 	}
 
 	/**

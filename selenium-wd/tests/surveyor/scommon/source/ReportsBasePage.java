@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
@@ -67,6 +68,7 @@ import surveyor.scommon.actions.data.SurveyorDataReader;
 import surveyor.scommon.actions.data.SurveyorDataReader.SurveyorDataRow;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.ServerLogEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.ReportStatusType;
@@ -1695,7 +1697,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) {
+		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
+				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
+		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
+		if (reportName == null) {
+			return false;
+		}
+		return true;
+	}
+
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
+		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*expectedErrorMsg*/, null /*checkErrorMessage*/);
+	}
+
+	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) {
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1762,12 +1778,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 				long elapsedTime = 0;
 				boolean bContinue = true;
 				WebElement reportViewerOrError;
-
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
 							Log.info("RowSize == 1. Getting ReportViewer button(Or error) element...");
-							reportViewerOrError = getTable().findElement(By.xpath("tr/td[5]/a[@title='Report Viewer']|tr/td[5]/*[@class='error-processing'] "));
+							reportViewerOrError = getTable().findElement(By.xpath(
+									getReportViewerButtonXPath(rowNum, true /*singleRowDisplayed*/, true /*includeErrorProcessingXPath*/)));
 						} else {
 							Log.info("First call -> skipNewlyAddedRows()");
 							int currRowNum = rowNum;
@@ -1784,8 +1800,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 								break;
 							}
 
-							reportViewerOrError = getTable().findElement(
-									By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']|tr[" + rowNum + "]/td[5]/*[@class='error-processing'] "));
+							reportViewerOrError = getTable().findElement(By.xpath(
+									getReportViewerButtonXPath(rowNum, false /*singleRowDisplayed*/, true /*includeErrorProcessingXPath*/)));
 							//* Double check the correctness of the rowNum
 							Log.info("Second call -> skipNewlyAddedRows()");
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum,
@@ -1794,12 +1810,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 								continue;
 							}
 						}
+
+						if (allowedErrorCheck != null && reportViewerOrError.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
+							boolean errorCheckSuccess = allowedErrorCheck.test(allowedErrorMsg);
+							this.open();
+							if (errorCheckSuccess) {
+								return reportId;
+							} else {
+								Log.error(String.format("Report failed to generate. Expected error message was NOT found.", allowedErrorMsg));
+								return null;
+							}
+						}
+
 						return reportId;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
 							return null;
 						}
+
 						continue;
 					} catch (NullPointerException ne) {
 						Log.info("Null Pointer Exception: " + ne);
@@ -1827,6 +1856,27 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		return null;
+	}
+
+	private String getReportViewerButtonXPath(int rowNum, boolean singleRowDisplayed, boolean includeErrorProcessingXPath) {
+		StringBuilder xPathBuilder = new StringBuilder();
+		xPathBuilder.append("tr");
+		if (!singleRowDisplayed) {
+			xPathBuilder.append("[");
+			xPathBuilder.append(rowNum);
+			xPathBuilder.append("]");
+		}
+		xPathBuilder.append("/td[5]/a[@title='Report Viewer']");
+		if (includeErrorProcessingXPath) {
+			xPathBuilder.append("|tr");
+			if (!singleRowDisplayed) {
+				xPathBuilder.append("[");
+				xPathBuilder.append(rowNum);
+				xPathBuilder.append("]");
+			}
+			xPathBuilder.append("/td[5]/*[@class='error-processing']");
+		}
+		return xPathBuilder.toString();
 	}
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
@@ -3156,5 +3206,28 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return result;
 			}
 		});
+	}
+
+	private static Predicate<String> getCheckAllowedErrorsPredicate(String searchTerm) {
+		Predicate<String> predicate = msg -> {
+			boolean allowedErrorFound = false;
+			Log.info(String.format("Checking presence of server log error - '%s'", msg));
+			List<ServerLogEntity> serverLogs = CommonPageFunctions.getServerLog(searchTerm, 10);
+			allowedErrorFound = hasOnlyMoreAssetsThanSupportedErrorMessages(serverLogs);
+			Log.info(String.format("Found matching server log='%b'", allowedErrorFound));
+			return allowedErrorFound;
+		};
+
+		return predicate;
+	}
+
+	private static boolean hasOnlyMoreAssetsThanSupportedErrorMessages(List<ServerLogEntity> serverLogs) {
+		boolean matchSuccess = false;
+		if (serverLogs != null && serverLogs.size() > 0) {
+			matchSuccess = serverLogs.stream()
+				.allMatch(s -> s.getMessage().contains(SurveyorConstants.MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG));
+		}
+
+		return matchSuccess;
 	}
 }

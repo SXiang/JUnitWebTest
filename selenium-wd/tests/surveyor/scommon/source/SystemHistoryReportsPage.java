@@ -62,7 +62,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public SystemHistoryReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
-		System.out.format("\nThe System History Report Page URL is: %s\n", this.strPageURL);
+		Log.info(String.format("\nThe System History Report Page URL is: %s\n", this.strPageURL));
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
