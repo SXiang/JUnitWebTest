@@ -540,6 +540,24 @@
       </batchtest>
     </junit>
   </target>
+  <target name="testsimulatorcases_longtests" depends="compileregression" description="Run action execution test cases">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="Regression" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/DriverViewPageTests_PipelineRunner2.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
   <target name="testregression" depends="compileregression" description="Run regression test suite">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="Regression" />
@@ -652,10 +670,7 @@
       <batchtest fork="yes" todir="${reports}/performance/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportJobPerformanceTestLight.class" />
-          <include name="**/ReportJobPerformanceTestMedium.class" />
-          <include name="**/ReportJobPerformanceTestHigh.class" />
-          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+          <include name="**/ReportJobPerformanceTestLargeArea.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -784,6 +799,8 @@
         <fileset dir="${build}">
             <include name="**/AssessmentReportsPageTest.class" />
             <include name="**/ComplianceReportsPageTest3.class" />
+        	<include name="**/ReferenceGasReportsPageTest.class" />
+        	<include name="**/SystemHistoryReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -2460,10 +2460,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, String reportTitle) throws Exception {
-		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);		
+		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);
 		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);
 
 		PDFUtility pdfUtility = new PDFUtility();
@@ -2512,7 +2512,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, String reportTitle) throws Exception {
 		Log.method("ComplianceReportsPage.getLISAInvestigationMetaData", lisaNumber, reportTitle);
@@ -2528,7 +2528,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		setReportName(reportName);
 		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		
+
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		Map<String, String > lisaInvestigationDetails = null;
 
