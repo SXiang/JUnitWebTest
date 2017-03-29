@@ -651,8 +651,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-	          <include name="**/SimulatorGeneralTests.java" />
-			  <include name="**/LoginPageTest.java" />
+	          <include name="**/SimulatorGeneralTests.class" />
+			  <include name="**/LoginPageTest.class" />
 			</fileset>
       </batchtest>
     </junit>
