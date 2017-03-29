@@ -136,23 +136,4 @@ public class LoginPageTest extends SurveyorBaseTest {
 		loginPage.waitForPageLoad();
 		assertTrue(loginPage.getTxtErrLogin().getText().equalsIgnoreCase(INVALIDUSERPASS));
 	}
-
-	
-	@Test
-	public void loginTest_TC29_DriverLogin() {
-		String customerName = SQACUS;
-
-		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUSLOC;
-
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		homePage.waitForPageLoad();
-		manageUsersPage.open();
-		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
-		assertTrue(homePage.checkIfAtHomePage());
-	}
 }
