@@ -78,7 +78,7 @@ public class DbSeedExecutor {
 			}
 
 			Log.info("Automation DB seed NOT found. Executing SQL script to push automation DB seed...");
-			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(),"logs", String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 			String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-Minimal.sql").toString();
 			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
 					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
@@ -403,7 +403,7 @@ public class DbSeedExecutor {
 			}
 
 			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
-			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(),"logs", String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 
 			Log.info("[Step-1] Preparing pre-GIS push steps ...");
 			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();

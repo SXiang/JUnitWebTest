@@ -42,6 +42,6 @@ $seedFileDestFolder = "$BuildWorkingDir\$SeedDataFolder"
 $seedFileDownloadPath = "$seedFileDestFolder\$SeedDataFile"
 
 $downloadURL = "$ArtifactoryBaseUrl/$ArtifactoryRepository/$ArtifactoryFileRelativeUrl"
-"Start downloading JAR file from->[$downloadURL], to->[$seedFileDownloadPath]"
+"Start downloading GIS seed data zip file from->[$downloadURL], to->[$seedFileDownloadPath]"
 Invoke-WebRequest -Uri $downloadURL -Headers $Headers -OutFile $seedFileDownloadPath
 "DONE downloading GIS seed data file."
