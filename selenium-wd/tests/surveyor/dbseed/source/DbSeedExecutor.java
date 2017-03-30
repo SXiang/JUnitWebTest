@@ -58,10 +58,8 @@ public class DbSeedExecutor {
 		DbSeedExecutor.executeGenericDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeGisRefreshDataSeed();
-
-		// TODO: Commented for testing.
-		//DbSeedExecutor.executeSurveyDataSeed();
-		//DbSeedExecutor.executeSurveyDataSeed(SQACUS_CUSTOMER_SURVEYS);
+		DbSeedExecutor.executeSurveyDataSeed();
+		DbSeedExecutor.executeSurveyDataSeed(SQACUS_CUSTOMER_SURVEYS);
 	}
 
 	/* Method for pushing generic automation seed data (Users, Customers, Locations, Analyzers, etc.) */
