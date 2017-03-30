@@ -17,6 +17,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
+import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.dataprovider.EQReportDataProvider;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -88,32 +89,26 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - PDF will have Emission Ranking table with list of Pipe Segment IDs, Emissions ranked highest to lowest, emission rate,emission range, segment length, emission factor, estimated # of leaks, # leaks / ft, Emission Rate / Leak *NOTE - there should be no Fractional Uncertainty column
 		 * - Map View should display the selected line segments with numbers.
 		 */
-		@Test
+		@Test /* Need EQ records in PDF and verification */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC532, location = EQReportDataProvider.class)
 		public void TC532_GenerateEQReportAsCustomerSupervisorWhenOverlappingMultiSegments(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC532_GenerateEQReportAsCustomerSupervisorWhenOverlappingMultiSegments ...");
 
-			loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			
-			eqReportsPageAction.open(EMPTY, NOTSET);
-
-			// Create some reports to ensure data table gets populated over multiple executions of the test.
-			createMultipleReports(eqReportsPageAction, reportDataRowID1, 3 /*numReportsToCreate*/);
-
-			String paginationSetting25 = "25";
-			String paginationSetting50 = "50";
-			String paginationSetting100 = "100";
-
-			assertTrue(eqReportsPage.checkPaginationSetting(PAGINATIONSETTING));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(PAGINATIONSETTING)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting25));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting25)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting50));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting50)));
-			assertTrue(eqReportsPage.checkPaginationSetting(paginationSetting100));
-			assertTrue(!(eqReportsPage.getNumberofRecords() > Integer.parseInt(paginationSetting100)));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
+			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+//			eqReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID1));
+//			assertTrue(eqReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID1));
+			eqReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
 		}
 
 		/**
@@ -461,5 +456,47 @@ OR "No EQ Records present"
 			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting50)));
 			eqReportsPage.setSurveyRowsPagination(paginationSetting100);
 			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
-		}	
+		}
+//		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+//
+//		assertTrue(assessmentReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		// Shape files should be present for FOV, LISA, GAP, BreadCrumb, PipeAll, PipesIntersectingLISA and PipesIntersectionGAP
+//		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		// (PDF should have survey details, view details and assets)
+//		assertTrue(assessmentReportsPageAction.verifySSRSDrivingSurveyTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+//		assertTrue(assessmentReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+//		assertTrue(assessmentReportsPageAction.verifySSRSLayersTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		//(Report creation date, date printed, Survey Start/End time details displayed in SSRS PDF is as expected)
+//		// date printed -> verified in Footer verification.
+//		// survey start/end date -> verified in verifySSRSDrivingSurveyTableInfo
+//		assertTrue(assessmentReportsPageAction.verifyReportCreationInSSRSPDFIsCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+//		assertTrue(assessmentReportsPageAction.verifySSRSPDFFooter(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		// SSRS should not have anything related to Indications, LISA, Isotopic Analysis, Field Notes, Report Mode etc
+//		String notContainsText = "Indications:LISA:Isotopic Analysis:Field Notes:Report Mode";
+//		// LISA, CGI and Gap Investigation Complete labels should not be present on first page of PDF
+//		notContainsText += String.format("%s:%s:%s", ReportsCommonPage.ComplianceReportSSRS_LISAInvestigationComplete,
+//				ReportsCommonPage.ComplianceReportSSRS_GAPInvestigationComplete, ReportsCommonPage.ComplianceReportSSRS_CGIInvestigationComplete);
+//
+//		assertTrue(assessmentReportsPageAction.verifyPDFDoesNotContainInputtedInformation(notContainsText, getReportRowID(reportDataRowID1)));
+//
+//		// Download report in zipped folder which will reports and full size maps present in PDF format
+//		assertTrue(assessmentReportsPageAction.verifyPDFZipFilesAreCorrect(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		// Meta Data zip should download. Report.csv,ReportSurvey.csv,ReportIsotopic.csv,ReportLISAS.csv,ReportGap.csv files are present.
+//		String metadataZipFileVerifications = "True:True:True:False";  // "verifyGapMetaPresent=[TRUE]:verifyLisaMetaPresent=[TRUE]:verifySurveyMetaPresent=[TRUE]:verifyIsotopicMetaPresent=[FALSE]"
+//		assertTrue(assessmentReportsPageAction.verifyMetaDataZIPFilesArePresent(metadataZipFileVerifications, getReportRowID(reportDataRowID1)));
+//
+//		// [Metadata verifications] ->
+//		// - All the information present in ReportLISA.csv file
+//		// - ReportId, ReportName, LISAId, LISANumber,Surveyor,LISADate/Time,Amplitude,Concentration,Field Notes, IndicationCoordinates, LatCoord, LongCoordis correct and matches report PDF.
+//		// - Verify that unique LISA numbers in the format of XXXXXX-L#, where XXXXXX is the sequentially auto-incrementing Report ID and # is the sequential LISA number.
+//		// - All Lisa instances should be in Caps (Eg. LISANumber values shuold be LISA 1, LISA 2, etc.)
+//		// - Data present in ReportLisa.csv should be same as SSRS PDF indication table.
+//		assertTrue(assessmentReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+//
+//		assertTrue(runTestCaseSpecificVerifications(assessmentReportsPageAction, testCaseID, getReportRowID(reportDataRowID1)).test(assessmentReportsPageAction));
 }

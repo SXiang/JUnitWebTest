@@ -68,63 +68,63 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC532() {
 		return new Object[][] {
-			{ "TC532" /*TestCaseID*/, 2 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC532" /*TestCaseID*/, 2 /*userDataRowID*/,  5 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC535() {
 		return new Object[][] {
-			{ "TC535" /*TestCaseID*/, 4 /*userDataRowID*/,  2 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC535" /*TestCaseID*/, 2 /*userDataRowID*/,  6 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC537() {
 		return new Object[][] {
-			{ "TC537" /*TestCaseID*/, 4 /*userDataRowID*/,  3 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC537" /*TestCaseID*/, 1 /*userDataRowID*/,  7 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC542() {
 		return new Object[][] {
-			{ "TC542" /*TestCaseID*/, 2 /*userDataRowID*/,  1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC542" /*TestCaseID*/, 11 /*userDataRowID*/,  8 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC544() {
 		return new Object[][] {
-			{ "TC544" /*TestCaseID*/, 2 /*userDataRowID*/,  4 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC544" /*TestCaseID*/, 4 /*userDataRowID*/,  9 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC554() {
 		return new Object[][] {
-			{ "TC554" /*TestCaseID*/, 2 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC554" /*TestCaseID*/, 11 /*userDataRowID*/,  10 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC556() {
 		return new Object[][] {
-			{ "TC556" /*TestCaseID*/, 4 /*userDataRowID*/,  2 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC556" /*TestCaseID*/, 4 /*userDataRowID*/,  11 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC557() {
 		return new Object[][] {
-			{ "TC557" /*TestCaseID*/, 4 /*userDataRowID*/,  3 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC557" /*TestCaseID*/, 2 /*userDataRowID*/, 12 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC558() {
 		return new Object[][] {
-			{ "TC558" /*TestCaseID*/, 2 /*userDataRowID*/,  1 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC558" /*TestCaseID*/, 2 /*userDataRowID*/,  13 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC559() {
 		return new Object[][] {
-			{ "TC559" /*TestCaseID*/, 2 /*userDataRowID*/,  4 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC559" /*TestCaseID*/, 4 /*userDataRowID*/,  14 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }
