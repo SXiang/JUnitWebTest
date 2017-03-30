@@ -97,6 +97,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 			manageCustomersPage.open();
 			manageCustomersPage.editAndSelectLicensedFeatures(testSupervisorAccount.get("customerName"), LicensedFeatures.values());
+			manageCustomersPage.waitForPageLoad();
 		}
 	}
 
@@ -161,7 +162,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(getHomePage().getLinkReports().isEnabled());
 		getHomePage().getLinkReports().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		getHomePage().getLinkReports().click();
 
 		assertTrue(getHomePage().getLinkCusAdmin().isEnabled());
 		getHomePage().getLinkCusAdmin().click();
@@ -175,7 +175,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		homePage.getLinkSurveyors().click();
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
-		surveyorsPage.getTxtSurveyorSearch().sendKeys(testAccount.get("surveyorName"));
+		surveyorsPage.performSearch(testAccount.get("surveyorName"));
+		//surveyorsPage.getTxtSurveyorSearch().sendKeys(testAccount.get("surveyorName"));
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
 
@@ -183,7 +184,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		getHomePage().clickOnDrivingSurveyLink();
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
-		measurementSessionsPage.getInputSearch().sendKeys(testAccount.get("surveyorName"));
+		measurementSessionsPage.performSearch(testAccount.get("surveyorName"));
+		//measurementSessionsPage.getInputSearch().sendKeys(testAccount.get("surveyorName"));
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
 
@@ -195,7 +197,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
 		surveyViewPage.clickGisButton();
-		surveyViewPage.waitForPageLoad();
 
 		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();
