@@ -786,25 +786,24 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run compliance report test classes">
+  <target name="tc_localrun" depends="compileregression" description="Run local test classes">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-      <sysproperty key="testReportCategory" value="LocalBranchTest" />
-      <sysproperty key="test_run_id" value="${local_date}" />
-      <classpath>
-        <pathelement path="${build}" />
-        <fileset dir="${basedir}/lib">
-          <include name="**/*.jar" />
-        </fileset>
-      </classpath>
-      <batchtest fork="yes" todir="${reports}/regression/xml">
-        <formatter type="xml" />
-        <fileset dir="${build}">
-            <include name="**/AssessmentReportsPageTest.class" />
-            <include name="**/ComplianceReportsPageTest3.class" />
-        	<include name="**/ReferenceGasReportsPageTest.class" />
-        	<include name="**/SystemHistoryReportsPageTest.class" />
-        </fileset>
-      </batchtest>
+	    <sysproperty key="testReportCategory" value="LocalBranchTest" />
+	    <sysproperty key="maxParallelTestThreads" value="3" />
+	    <sysproperty key="test_run_id" value="${local_date}" />
+	    <classpath>
+	      <pathelement path="${build}" />
+	      <fileset dir="${basedir}/lib">
+	        <include name="**/*.jar" />
+	      </fileset>
+	    </classpath>
+	    <batchtest fork="yes" todir="${reports}/regression/xml">
+	      <formatter type="xml" />
+	      <fileset dir="${build}">
+	        <include name="**/ComplianceReportsTestSuite1.class" />
+	        <include name="**/ComplianceReportsTestSuite2.class" />
+	      </fileset>
+	    </batchtest>
     </junit>
   </target>
   <target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
