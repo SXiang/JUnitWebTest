@@ -671,7 +671,7 @@ public class TestSetup {
 			}
 
 			if (!isRunningLocally()) {
-				this.downloadPath = this.testProp.getProperty("downloadPath");
+				this.downloadPath = this.testProp.getProperty("downloadPath") + File.separator;
 			} else {
 				this.downloadPath = System.getProperty("user.home") + File.separator + "Downloads" + File.separator;
 			}
