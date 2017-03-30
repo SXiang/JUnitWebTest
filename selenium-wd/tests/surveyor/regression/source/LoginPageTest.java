@@ -15,6 +15,7 @@ import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
 import static surveyor.scommon.source.SurveyorConstants.INVALIDUSERPASS;
+import static surveyor.scommon.source.SurveyorConstants.INVALIDPSWD;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -132,7 +133,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 	public void loginTest_TC27_InvalidCredLogin() {
 
 		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, "1234");
+		loginPage.loginNormalAs(PICDFADMIN, INVALIDPSWD);
 		loginPage.waitForPageLoad();
 		assertTrue(loginPage.getTxtErrLogin().getText().equalsIgnoreCase(INVALIDUSERPASS));
 	}
