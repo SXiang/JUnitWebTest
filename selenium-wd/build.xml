@@ -669,10 +669,7 @@
       <batchtest fork="yes" todir="${reports}/performance/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportJobPerformanceTestLight.class" />
-          <include name="**/ReportJobPerformanceTestMedium.class" />
-          <include name="**/ReportJobPerformanceTestHigh.class" />
-          <include name="**/ReportJobPerformanceTestUltraHigh.class" />
+          <include name="**/ReportJobPerformanceTestLargeArea.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -786,24 +783,24 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run local test classes">
+  <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-	    <sysproperty key="testReportCategory" value="LocalBranchTest" />
-	    <sysproperty key="maxParallelTestThreads" value="3" />
-	    <sysproperty key="test_run_id" value="${local_date}" />
-	    <classpath>
-	      <pathelement path="${build}" />
-	      <fileset dir="${basedir}/lib">
-	        <include name="**/*.jar" />
-	      </fileset>
-	    </classpath>
-	    <batchtest fork="yes" todir="${reports}/regression/xml">
-	      <formatter type="xml" />
-	      <fileset dir="${build}">
-	        <include name="**/ComplianceReportsTestSuite1.class" />
-	        <include name="**/ComplianceReportsTestSuite2.class" />
-	      </fileset>
-	    </batchtest>
+      <sysproperty key="testReportCategory" value="JUnitParallel" />
+      <sysproperty key="maxParallelTestThreads" value="3" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ComplianceReportsTestSuite1.class" />
+          <include name="**/ComplianceReportsTestSuite2.class" />
+        </fileset>
+      </batchtest>
     </junit>
   </target>
   <target name="report_injection" depends="compileregression" description="Run test to inject test object for API testing">
