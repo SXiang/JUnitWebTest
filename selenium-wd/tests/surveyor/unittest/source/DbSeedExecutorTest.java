@@ -4,18 +4,15 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 
-import java.io.IOException;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.source.BaseTest;
 
 public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	private static LoginPageActions loginPageAction;
@@ -26,16 +23,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@BeforeClass
 	public static void BeforeClass()	{
-		TestSetup testSetup = new TestSetup(true /* initialize */);
-		String rootPath;
-		try {
-			rootPath = TestSetup.getRootPath();
-			testSetup.loadTestProperties(rootPath);
-		} catch (IOException e) {
-			Log.error(e.getMessage());
-		}
-		testSetup.initializeDBProperties();
-		TestContext.INSTANCE.setTestSetup(testSetup);
+		BaseTest.initializeTestObjects();
 
 		loginPageAction = ActionBuilder.createLoginPageAction();
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
@@ -51,9 +39,6 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	public void execute02_GisDataSeedTest() throws Exception {
 		// By default is no customerId is specified the GIS data is pushed for Picarro customer.
 		DbSeedExecutor.executeGisSeed();
-		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PICARRO).getId());
-		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
-		verifyGisSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
 	}
 
 	@Test
@@ -134,6 +119,20 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 		String customerId = "E871C797-B62D-EF28-0EA7-39CAE44E5C19";
 		DbSeedExecutor.executeGisSeed(customerId);
 		verifyGisSeedDataIsPresent(customerId);
+	}
+
+	@Test
+	public void execute07_executeGISRefreshSeed_AllCustomers() throws Exception {
+		DbSeedExecutor.executeGisRefreshDataSeed();
+		verifyGisRefreshSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PICARRO).getId());
+		verifyGisRefreshSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		verifyGisRefreshSeedDataIsPresent(Customer.getCustomer(CUSTOMER_PGE).getId());
+	}
+
+	@Test
+	public void execute07_executeGISRefreshSeed_SingleCustomer() throws Exception {
+		DbSeedExecutor.executeGisRefreshDataSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		verifyGisRefreshSeedDataIsPresent(Customer.getCustomer(CUSTOMER_SQACUS).getId());
 	}
 
 	@Test
