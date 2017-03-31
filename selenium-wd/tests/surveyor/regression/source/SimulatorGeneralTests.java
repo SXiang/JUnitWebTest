@@ -2,14 +2,11 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.ADMINISTRATORUSER;
+import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SUR;
-import static surveyor.scommon.source.SurveyorConstants.SQAPICLOC4SURANA;
+import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 
 import java.util.Map;
@@ -19,15 +16,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-import common.source.Log;
-import surveyor.dataaccess.source.Customer;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.EULAPage;
@@ -41,11 +31,8 @@ import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
-import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
-import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
@@ -65,7 +52,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 	private static SurveyViewPage surveyViewPage;
 	private static ComplianceReportsPage complinaceReportsPage;
 	private static Map<String, String> testAccount;
-	private static Map<String, String> testSupervisorAccount;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -88,17 +74,9 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 			manageCustomersPage.open();
 			manageCustomersPage.editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
-		}
-
-		if(testSupervisorAccount == null){
-			testSupervisorAccount = createTestAccount("TC29Cus2");
-		}else{
-			loginPage.open();
-			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-			manageCustomersPage.open();
-			manageCustomersPage.editAndSelectLicensedFeatures(testSupervisorAccount.get("customerName"), LicensedFeatures.values());
 			manageCustomersPage.waitForPageLoad();
 		}
+
 	}
 
 	private void initializePageObjects() {
@@ -149,11 +127,14 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		Customer customer = Customer.getCustomer(customerName);
-		String customerId = customer.getId();
-		String supervisorName = testSupervisorAccount.get("userName");
-		String supervisorPassword = testSupervisorAccount.get("userPassword");
 
+		LicensedFeatures[] lfs = LicensedFeatures.values(null);
+		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
+		String customer2Name = CUSTOMERNAMEPREFIX + uniqueNumber + "TC29";
+		String eula = customer2Name + ": " + EULASTRING;
+		String cityName = "Santa Clara";
+		String location2Name = uniqueNumber + "Loc2";
+		String supervisorUserName = uniqueNumber + REGBASEUSERNAME;
 
 		loginPage.open();
 		loginPage.loginNormalAs(userName, userPassword);
@@ -162,7 +143,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(getHomePage().getLinkReports().isEnabled());
 		getHomePage().getLinkReports().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-
+		
 		assertTrue(getHomePage().getLinkCusAdmin().isEnabled());
 		getHomePage().getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
@@ -175,8 +156,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		homePage.getLinkSurveyors().click();
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
-		surveyorsPage.performSearch(testAccount.get("surveyorName"));
 		//surveyorsPage.getTxtSurveyorSearch().sendKeys(testAccount.get("surveyorName"));
+		surveyorsPage.performSearch(testAccount.get("surveyorName"));
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
 
@@ -184,8 +165,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		getHomePage().clickOnDrivingSurveyLink();
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
-		measurementSessionsPage.performSearch(testAccount.get("surveyorName"));
 		//measurementSessionsPage.getInputSearch().sendKeys(testAccount.get("surveyorName"));
+		measurementSessionsPage.performSearch(testAccount.get("surveyorName"));
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
 
@@ -197,7 +178,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
 		surveyViewPage.clickGisButton();
-
+		
 		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
@@ -213,12 +194,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		homePage.logout();
 
 		loginPage.open();
-		loginPage.loginNormalAs(supervisorName, supervisorPassword);
-		homePage.waitForPageLoad();
-		assertTrue (homePage.checkIfAtHomePage());
-		homePage.logout();
-
-		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		homePage.waitForPageLoad();
 		assertTrue (homePage.checkIfAtHomePage());
@@ -227,5 +202,28 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		assertTrue(getHomePage().getLinkPicAdminViewAnlLogs().isEnabled());
 		assertTrue(getHomePage().getLinkPicAdminViewSurLogs().isEnabled());
+
+		manageCustomersPage.open();
+		if(!manageCustomersPage.addNewCustomer(customer2Name, eula, true,lfs)){
+			fail(String.format("Failed to add a new customer %s, %s, %s",customer2Name, eula, true));
+		}
+
+		manageLocationsPage.open();
+		if(!manageLocationsPage.addNewLocation(location2Name, customer2Name, cityName)){
+			fail(String.format("Failed to add a new location %s, %s, %s",location2Name, customer2Name, cityName));
+		}
+
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewCustomerUser(customer2Name, supervisorUserName, userPassword, CUSUSERROLESU, location2Name)){
+			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, supervisorUserName, userPassword, CUSUSERROLESU, location2Name));
+		}	
+
+		homePage.logout();
+
+		loginPage.open();
+		loginPage.loginNormalAs(supervisorUserName, userPassword);
+		homePage.waitForPageLoad();
+		assertTrue (homePage.checkIfAtHomePage());
+		homePage.logout();
 	}
 }

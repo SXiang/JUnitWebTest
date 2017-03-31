@@ -109,7 +109,7 @@ public class ResourceKeys {
 	public static final String Constant_Map = "Constant_Map";
 	public static final String Constant_Name = "Constant_Name";
 	public static final String Constant_NoMatchingRecordsFound = "Constant_NoMatchingRecordsFound";
-	public static final String Account_NotRecognized = "Username or password not recognized";
+	public static final String Account_NotRecognized = "Account_NotRecognized";
 	public static final String Constant_Observer = "Constant_Observer";
 	public static final String Constant_Password = "Constant_Password";
 	public static final String Constant_Satellite = "Constant_Satellite";
