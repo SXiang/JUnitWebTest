@@ -653,7 +653,6 @@
         <formatter type="xml" />
 			<fileset dir="${build}">
 	          <include name="**/SimulatorGeneralTests.class" />
-			  <include name="**/LoginPageTest.class" />
 			</fileset>
       </batchtest>
     </junit>
