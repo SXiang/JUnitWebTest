@@ -1712,6 +1712,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) {
+		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
+				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1812,6 +1814,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						}
 
 						if (allowedErrorCheck != null && reportViewerOrError.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
+							Log.info(String.format("[Check Allowed Errors] : Expecting error message - %s", allowedErrorMsg));
 							boolean errorCheckSuccess = allowedErrorCheck.test(allowedErrorMsg);
 							this.open();
 							if (errorCheckSuccess) {
@@ -1826,6 +1829,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
+							Log.info(String.format("Timeout: Report took more longer than expected. Elapsed time=%d; Set ReportGenerationTimeout=%d",
+									((int)(elapsedTime/1000)), getReportGenerationTimeout()));
 							return null;
 						}
 
@@ -1855,6 +1860,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}
 		}
 
+		Log.info("Did NOT find the expected report. Returning NULL.");
 		return null;
 	}
 
