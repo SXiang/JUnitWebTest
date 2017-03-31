@@ -460,7 +460,6 @@ public class DbSeedExecutor {
 		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
 		CustomerMaterialTypeDbSeedBuilder customerMaterialTypeDbSeedBuilder = null;
 		BoundaryDbSeedBuilder boundaryDbSeedBuilder = null;
-		AssetDbSeedBuilder assetDbSeedBuilder = null;
 
 		try
         {
@@ -474,16 +473,12 @@ public class DbSeedExecutor {
         	boundaryDbSeedBuilder = new BoundaryDbSeedBuilder();
         	boundaryDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
 
-        	assetDbSeedBuilder = new AssetDbSeedBuilder();
-        	assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
-
 			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
-			DbSeed assetDbSeed = assetDbSeedBuilder.build(customerId);
 			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
 
-			int expectedAssetCount = assetDbSeed.getInsertStatements().size();
+			int expectedAssetCount = 0;   // 0 - to ignore pushing assets from obsolete seed data.
 			int expectedBoundaryCount = boundaryDbSeed.getInsertStatements().size();
 
 			// check if GIS seed is present in database for this customer.
@@ -521,6 +516,8 @@ public class DbSeedExecutor {
 				return;
 			}
 
+			executeSeed(connection, boundaryDbSeed);
+
         } catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeGisSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
         } finally {
@@ -528,6 +525,7 @@ public class DbSeedExecutor {
             // cleanup seed builders.
             closeDbSeedBuilder(customerBoundaryTypeDbSeedBuilder);
             closeDbSeedBuilder(customerMaterialTypeDbSeedBuilder);
+            closeDbSeedBuilder(boundaryDbSeedBuilder);
         }
 	}
 
