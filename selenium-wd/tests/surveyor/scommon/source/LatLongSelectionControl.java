@@ -460,7 +460,8 @@ public class LatLongSelectionControl extends BaseControl {
 	public boolean verifyNoBoundaryNameSearchResult() {
 		Log.method("verifyNoBoundaryNameSearchResult");
 		By noResultBy = By.xpath(BOUNDARY_NAME_DROPDOWNLIST_UL_XPATH + "//div[text()='no results...']");
-		boolean noResult = WebElementExtender.findElementBy(driver, noResultBy);
+		WebElement noResultDiv =  WebElementExtender.findElementIfExists(driver, noResultBy);
+		boolean noResult = WebElementExtender.isElementPresentAndDisplayed(noResultDiv);
 		return noResult;
 	}
 

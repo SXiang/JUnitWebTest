@@ -536,6 +536,7 @@
           <include name="**/ObserverViewPageTest.class" />
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
+          <include name="**/SimulatorGeneralTests.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -651,7 +652,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-	          <include name="**/DriverViewPageTests_PipelineRunner1.class" />
+	          <include name="**/SimulatorGeneralTests.class" />
 			</fileset>
       </batchtest>
     </junit>

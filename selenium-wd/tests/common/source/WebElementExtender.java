@@ -118,11 +118,15 @@ public class WebElementExtender {
 	}
 
 	public static WebElement findElementIfExists(WebDriver driver, String elementId) {
+		return findElementIfExists(driver, By.id(elementId));
+	}
+	
+	public static WebElement findElementIfExists(WebDriver driver, By elementBy) {
 		WebElement element = null;
 		try {
-			element = driver.findElement(By.id(elementId));
+			element = driver.findElement(elementBy);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			Log.warn(String.format("Element with ID='%s' was NOT found", elementId));;
+			Log.warn(String.format("Element with By='%s' was NOT found: "+e, elementBy));
 		}
 
 		return element;
