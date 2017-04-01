@@ -19,6 +19,7 @@ import org.testng.Assert;
  */
 public class RegexUtility {
 	public static final String DOT_SPLIT_REGEX_PATTERN = "\\.";
+	public static final String TAB_SPLIT_REGEX_PATTERN = "\\t";
 	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
