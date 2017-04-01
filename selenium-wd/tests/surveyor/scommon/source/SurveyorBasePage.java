@@ -133,6 +133,12 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-locations']/a")
+	protected WebElement linkCusManageLocations;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-ref-gas-bottles']/a")
+	protected WebElement linkCusManageRefGasBottles;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
 	protected WebElement linkPicAdminManageUsers;
 
@@ -363,6 +369,14 @@ public class SurveyorBasePage extends BasePage {
 
 	public WebElement getLinkAdminManageUsers() {
 		return this.linkAdminManageUsers;
+	}
+
+	public WebElement getLinkCusManageLocations() {
+		return this.linkCusManageLocations;
+	}
+
+	public WebElement getLinkCusManageRefGasBottles() {
+		return this.linkCusManageRefGasBottles;
 	}
 
 	public WebElement getLabelPageTableInfo() {
