@@ -49,6 +49,7 @@ import common.source.DateUtility;
 import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.PDFUtility;
 import common.source.PollManager;
@@ -1488,6 +1489,56 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
+		return waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, testCaseID, null, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/,
+				(str) -> FunctionUtil.wrapException(str, (s) -> handleFileDownloads(rptTitle, testCaseID)));
+	}
+
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+		return waitForReportGenerationToComplete(rptTitle, strCreatedBy, null /*rptNameBuilder*/);
+	}
+
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) {
+		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
+				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
+		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
+		if (reportName == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) {
+		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
+				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
+
+		StringBuilder rptNameBuilder = new StringBuilder();
+		boolean retVal = waitForReportGenerationToComplete(rptTitle, strCreatedBy, rptNameBuilder);
+		if (retVal) {
+			return rptNameBuilder.toString();
+		}
+
+		return null;
+	}
+
+	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy)  {
+		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
+	}
+
+	private boolean waitForReportGenerationToComplete(String rptTitle, String strCreatedBy, StringBuilder rptNameBuilder) {
+		return FunctionUtil.wrapException(rptTitle, (s1) ->
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/, rptNameBuilder, null/*allowedErrorMsg*/, null /*allowedErrorCheck*/,
+				(s2) -> {
+					FunctionUtil.warnOnError(() -> {
+						if (isReportViewerDialogOpen()) {
+							closeReportViewerDialog();
+						}
+					});
+					return true;
+			}));
+	}
+
+	private boolean waitForReportGenerationToCompleteAndExecuteAction(String rptTitle, String strCreatedBy, String testCaseID, StringBuilder outReportId, String allowedErrorMsg,
+			Predicate<String> allowedErrorCheck, Predicate<String> actionOnReportFound) throws Exception {
 		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
@@ -1513,8 +1564,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 
-		reportId = getReportId(rptTitle);
-		String strReportName = getReportFileName(rptTitle);
+		try{
+			reportId = Report.getReport(rptTitle).getId();
+		}catch(Exception e){
+			ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+			reportId = reportJobsStatObj.Id;
+		}
+
+		if (outReportId != null) {
+			outReportId.append(reportId);
+		}
+
+		String strReportName = getReportPrefix() + reportId.substring(0, 6);
 
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
@@ -1548,8 +1609,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				lastSeenDateCellText = dateCellText.trim();
 
 				Log.info(String.format("Setting reportId to TestContext. ReportId='%s'", reportId));
-				reportId = getReportId(rptTitle);
-
 				TestContext.INSTANCE.addReportId(rptTitle, reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1602,7 +1661,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 							this.waitForPdfReportIcontoAppear();
 						}
 
-						return handleFileDownloads(rptTitle, testCaseID);
+						// Caller provided checks.
+						if (actionOnReportFound != null) {
+							return actionOnReportFound.test(rptTitle);
+						}
+
+						// Additional error checking.
+						if (allowedErrorCheck != null && reportViewer.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
+							Log.info(String.format("[Check Allowed Errors] : Expecting error message - %s", allowedErrorMsg));
+							boolean errorCheckSuccess = allowedErrorCheck.test(allowedErrorMsg);
+							this.open();
+							if (errorCheckSuccess) {
+								return true;
+							} else {
+								Log.error(String.format("Report failed to generate. Expected error message was NOT found.", allowedErrorMsg));
+								return false;
+							}
+						}
+
+						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
@@ -1644,6 +1721,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+
 		return false;
 	}
 
@@ -1687,181 +1765,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong)
 			throws Exception {
 		throw new Exception("Not implemented");
-	}
-
-	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
-		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy);
-		if (reportName == null) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) {
-		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
-				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
-		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
-		if (reportName == null) {
-			return false;
-		}
-		return true;
-	}
-
-	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
-		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*expectedErrorMsg*/, null /*checkErrorMessage*/);
-	}
-
-	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) {
-		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
-				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
-		setPagination(PAGINATIONSETTING_100);
-		this.waitForPageLoad();
-		String reportTitleXPath;
-		String createdByXPath;
-		String dateXPath;
-
-		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		// Keep track of the last matching row that we processed.
-		String lastSeenTitleCellText = "";
-		String lastSeenCreatedByCellText = "";
-		String lastSeenDateCellText = "";
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
-		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
-
-		Log.info(String.format("Looking for report: Title=[%s], CreatedBy=[%s]", rptTitle, strCreatedBy));
-
-		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
-		int pageCounter = 0;
-
-		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
-			dateXPath = "tr[" + rowNum + "]/td[4]";
-
-			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
-			String createdByCellText = getReportTableCellText(createdByXPath);
-			String dateCellText = getReportTableCellText(dateXPath);
-			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s], dateCellText=[%s]",
-					rptTitleCellText.trim(), createdByCellText.trim(), dateCellText.trim()));
-
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-
-				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
-						rptTitleCellText.trim(), createdByCellText.trim()));
-
-				lastSeenTitleCellText = rptTitleCellText.trim();
-				lastSeenCreatedByCellText = createdByCellText.trim();
-				lastSeenDateCellText = dateCellText.trim();
-
-				// Use API call for environments where direct DB access is not available (eg P3Scale).
-				/* DE2331 created: This method is not stable and throwing exceptions - need to be fixed
-				 * The try catch block could be removed after the fix
-				 */
-				try{
-					reportId = Report.getReport(rptTitle).getId();
-				}catch(Exception e){
-					ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
-					reportId = reportJobsStatObj.Id;
-				}
-
-				TestContext.INSTANCE.addReportId(rptTitle, reportId);
-
-				long startTime = System.currentTimeMillis();
-				long elapsedTime = 0;
-				boolean bContinue = true;
-				WebElement reportViewerOrError;
-				while (bContinue) {
-					try {
-						if (rowSize == 1) {
-							Log.info("RowSize == 1. Getting ReportViewer button(Or error) element...");
-							reportViewerOrError = getTable().findElement(By.xpath(
-									getReportViewerButtonXPath(rowNum, true /*singleRowDisplayed*/, true /*includeErrorProcessingXPath*/)));
-						} else {
-							Log.info("First call -> skipNewlyAddedRows()");
-							int currRowNum = rowNum;
-							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum,
-									maxRows);
-
-							if (rowNum != currRowNum && rowNum == 1) {
-								Log.info("[Check 1]: rowNum reset.. Continue...");
-								continue;
-							}
-
-							if (rowNum > maxRows) {
-								Log.info("[Check 2]: rowNum > maxRows.. Break...");
-								break;
-							}
-
-							reportViewerOrError = getTable().findElement(By.xpath(
-									getReportViewerButtonXPath(rowNum, false /*singleRowDisplayed*/, true /*includeErrorProcessingXPath*/)));
-							//* Double check the correctness of the rowNum
-							Log.info("Second call -> skipNewlyAddedRows()");
-							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum,
-									maxRows)){
-								Log.info("[Check 3]: rowNum != rowNumPostCheck.. Continue...");
-								continue;
-							}
-						}
-
-						if (allowedErrorCheck != null && reportViewerOrError.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
-							Log.info(String.format("[Check Allowed Errors] : Expecting error message - %s", allowedErrorMsg));
-							boolean errorCheckSuccess = allowedErrorCheck.test(allowedErrorMsg);
-							this.open();
-							if (errorCheckSuccess) {
-								return reportId;
-							} else {
-								Log.error(String.format("Report failed to generate. Expected error message was NOT found.", allowedErrorMsg));
-								return null;
-							}
-						}
-
-						return reportId;
-					} catch (org.openqa.selenium.NoSuchElementException e) {
-						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							Log.info(String.format("Timeout: Report took more longer than expected. Elapsed time=%d; Set ReportGenerationTimeout=%d",
-									((int)(elapsedTime/1000)), getReportGenerationTimeout()));
-							return null;
-						}
-
-						continue;
-					} catch (NullPointerException ne) {
-						Log.info("Null Pointer Exception: " + ne);
-						fail("Report failed to generate!!");
-					}
-				}
-			}
-
-			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				Log.clickElementInfo("Next");
-				toNextPage();
-				pageCounter++;
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
-				rowNum = 0;
-			}
-		}
-
-		Log.info("Did NOT find the expected report. Returning NULL.");
-		return null;
 	}
 
 	private String getReportViewerButtonXPath(int rowNum, boolean singleRowDisplayed, boolean includeErrorProcessingXPath) {
