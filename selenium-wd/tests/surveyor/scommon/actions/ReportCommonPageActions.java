@@ -2759,7 +2759,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyAllSSRSTableInfos(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllSSRSTableInfos", data, dataRowID);
-		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		String downloadPath = "C:\\Users\\sxiang\\Desktop\\TESTDATA";//getDownloadPath(ReportFileType.PDF);
 		return verifySSRSTableInfos(downloadPath);
 	}
 
@@ -3568,7 +3568,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return r -> true;
 	}
 
-	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
 		boolean retSuccess = true;
 		boolean verifyCoverageValuesTable = false;
 		boolean verifyShowCoverageTable = false;

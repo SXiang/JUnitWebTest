@@ -10,16 +10,19 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
 import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
+import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.EQReportsPage;
+import surveyor.scommon.source.SurveyorConstants;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
 /**
@@ -117,7 +120,39 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		return  this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
 					reportsDataRow.title, reportsDataRow.tCID, ReportFileType.EQView.toString(), false);
 	}
+
+	@Override
+	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+		Log.info("Executing verifyDrivingSurveysTable()...");
+		boolean verifyDrivingSurveysTable = true;//this.getReportsCommonPage().verifyDrivingSurveysTable(downloadPath, getWorkingReportsDataRow().title);
+		Log.info(String.format("verifyDrivingSurveysTable() returned - '%b'", verifyDrivingSurveysTable));
+
+		Log.info("Executing verifyEmissionsQuantificationTable()...");
+		boolean verifyEmissionsQuantificationTable = this.getEQReportsPage().verifyEmissionsQuantificationTable(downloadPath, "");//getWorkingReportsDataRow().title);
+		Log.info(String.format("verifyEmissionsQuantificationTable() returned - '%b'", verifyEmissionsQuantificationTable));
+		
+		Log.info(String.format("verifyEmissionsQuantificationTable = %b; verifyDrivingSurveysTable = %b",
+				verifyEmissionsQuantificationTable, verifyDrivingSurveysTable));
+		return verifyEmissionsQuantificationTable && verifyDrivingSurveysTable;
+	}
 	
+	/**
+	 * Executes verifyViewsImagesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	@Override
+	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
+		boolean retVal = true;
+		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
+		retVal = retVal && this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+					reportsDataRow.title, reportsDataRow.tCID, ReportFileType.EQView.toString(), false);
+		return retVal;
+	}
+
 	/* END - Actions on the Page*/
 
 	/* Invoke action using specified ActionName */

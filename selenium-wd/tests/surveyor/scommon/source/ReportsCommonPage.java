@@ -791,7 +791,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				this.boundarySelectorBtn.click();
 				return;
 			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button");
+				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button: "+e);
 			}
 		}
 	}
@@ -3691,7 +3691,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public List<String[]> getSSRSPDFTableValues(PDFTable pdfTable, String reportTitle) throws IOException {
-		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
+		String pdfFilename = "EQ-c6696d.pdf";
+		//this.getReportPDFFileName(reportTitle, true /* includeExtension */);
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);

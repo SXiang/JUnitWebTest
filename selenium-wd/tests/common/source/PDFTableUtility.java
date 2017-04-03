@@ -30,7 +30,8 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
 		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(�"+wordSeparator+"Field Notes",1,"",true,-1),
-		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
+		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false),
+		EQDATATABLE ("# Leaks / ft"+wordSeparator+"Emission Rate "+wordSeparator+"/ Leak",0,"",false,-1,9);
 
 		private final String tableID;	          //1. tableID, indicator of start of a table, required
 		private final int startLine;              //2. num of lines  after 'tableID' - inclusive, optional, default to 0
@@ -149,6 +150,8 @@ public class PDFTableUtility extends PDFUtility{
 			int numWords = line.split(wordSeparatorPattern).length;
 			int combinedLine = 0;
 			int validNumFields = pTable.numFields;
+			if(line.contains("Emission Rate")) 
+				Log.warn("Stop");
 			while(numWords<numTableNameWords){
 				if(++combinedLine%maxWordNumLine==1){
 					line += wordSeparator;

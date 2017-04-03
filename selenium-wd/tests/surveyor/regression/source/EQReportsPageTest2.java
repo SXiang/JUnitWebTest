@@ -106,9 +106,8 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
 			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
-//			eqReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID1));
-//			assertTrue(eqReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID1));
-			eqReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
+//			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
+//			eqReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
 		}
 
 		/**
