@@ -402,6 +402,7 @@ public class DateUtility {
 	 * @return
 	 */
 	public static int compareDatesWithTZ(String dateTime1, boolean daylight1, String dateTime2, boolean daylight2) {
+		Log.method("compareDatesWithTZ", dateTime1, daylight1, dateTime2, daylight2);
 		int diff = 0;
 		DateTimeParser[] parsers = { DateTimeFormat.forPattern(getLongDateFormatComp()).getParser(), DateTimeFormat.forPattern("MM/dd/yyyy hh:mm aa zzz").getParser(),
 				DateTimeFormat.forPattern("dd/MM/yyyy HH:mm zzz").getParser(), DateTimeFormat.forPattern("YYYY/MM/dd HH:mm zzz").getParser(),
@@ -425,6 +426,8 @@ public class DateUtility {
 		if (dateTimeAfterConv1.isAfter(dateTimeAfterConv2)) {
 			diff = 1;
 		}
+
+		Log.info(String.format("compareDatesWithTZ method returned - %d", diff));
 		return diff;
 	}
 
