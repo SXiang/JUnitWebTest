@@ -68,6 +68,7 @@ public final class SurveyorConstants {
 	public static final String ADMINISTRATORUSER = "Administrator";    // NOTE: This user is required for cases where the data pushed into environment has been pushed as Administrator User.
 	public static final String PICDFADMIN = "AutomationAdmin";
 	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
+	public static final String INVALIDPSWD ="1234";
 	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
@@ -259,9 +260,9 @@ public final class SurveyorConstants {
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
 	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
-
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 	public static final String REPORTERRORPROCESSING = Resources.getResource(ResourceKeys.Reports_ErrorProcessing);
+	public static final String INVALIDUSERPASS = Resources.getResource(ResourceKeys.Account_NotRecognized);
 
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";

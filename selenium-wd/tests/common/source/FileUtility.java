@@ -3,10 +3,14 @@ package common.source;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -19,10 +23,15 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.UnaryOperator;
+
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 
 public class FileUtility {
+
+	public static final String ENCODING_UTF16LE = "UTF-16LE";
+
 	/**
 	 * Checks whether a file exists at the specified path.
 	 * @param filePath - Path of the file.
@@ -64,6 +73,31 @@ public class FileUtility {
 			buffReader.close();
 		}
 		return builder.toString();
+	}
+
+	/**
+	 * Reads text at specified line number from the file.
+	 * @param filePath - Path of the file.
+	 * @param lineNumber - Line number at which to read file text from. 1-based index (first line starts with 1).
+	 * @return - file text at specified line.
+	 * @throws IOException
+	 */
+	public static String readFileLine(String filePath, Integer lineNumber, String fileEncoding) throws IOException {
+		String lineText = null;
+		BufferedReader buffReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), fileEncoding));
+		Integer idx = 0;
+		try {
+			while ((lineText = buffReader.readLine()) != null) {
+				idx++;
+				if (idx == lineNumber) {
+					break;
+				}
+			}
+		} finally {
+			buffReader.close();
+		}
+
+		return lineText;
 	}
 
 	/**
@@ -115,24 +149,46 @@ public class FileUtility {
 		}
 	}
 
+	public static void updateFile(String filePath, Hashtable<String,String> placeholderMap) throws IOException {
+		updateFile(filePath, placeholderMap, null /*fileEncoding*/, null /*lineTransformOperator*/);
+	}
+
 	/*
 	 * Searches the specified file for 'searchForText' and replaces it with 'replaceWithText'
 	 * Creates a copy with the updated content and replaces the source file with the copy file.
 	 */
-	public static void updateFile(String filePath, Hashtable<String,String> placeholderMap) throws IOException {
+	public static void updateFile(String filePath, Hashtable<String,String> placeholderMap, String fileEncoding,
+			UnaryOperator<String> lineTransformOperator) throws IOException {
 		String workingFile = TestSetup.getUUIDString() + "_" + Paths.get(filePath).getFileName();
 		String workingFullPath = Paths.get(TestSetup.getSystemTempDirectory(), workingFile).toString();
 		File writeFile = new File(workingFullPath);
 		String lineText = null;
-		BufferedReader buffReader = new BufferedReader(new FileReader(filePath));
-		BufferedWriter buffWriter = new BufferedWriter(new FileWriter(writeFile));
+		BufferedReader buffReader = null;
+		BufferedWriter buffWriter = null;
+		if (!BaseHelper.isNullOrEmpty(fileEncoding)) {
+			buffReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), fileEncoding));
+			buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(writeFile), fileEncoding));
+		} else {
+			buffReader = new BufferedReader(new FileReader(filePath));
+			buffWriter = new BufferedWriter(new FileWriter(writeFile));
+		}
+
 		try {
 			while ((lineText = buffReader.readLine()) != null) {
 				for (Entry<String, String> entry : placeholderMap.entrySet()) {
 					lineText = lineText.replace(entry.getKey(), entry.getValue());
 				}
+
+				if (lineTransformOperator != null) {
+					lineText = lineTransformOperator.apply(lineText);
+				}
+
 				buffWriter.write(lineText);
-				buffWriter.newLine();
+				if (!BaseHelper.isNullOrEmpty(fileEncoding) && fileEncoding.contains("UTF")) {
+					buffWriter.write(UnicodeChars.lineSeperator());
+				} else {
+					buffWriter.newLine();
+				}
 			}
 		} finally {
 			buffWriter.close();
@@ -308,6 +364,10 @@ public class FileUtility {
 	}
 
 	public static Integer getLineCountInFile(Path filePath) throws IOException {
+		return getLineCountInFile(filePath, null /*fileEncoding*/);
+	}
+
+	public static Integer getLineCountInFile(Path filePath, String fileEncoding) throws IOException {
 		Integer totalNumberOfLines = 0;
 		if (!FileUtility.fileExists(filePath.toString())) {
 			return 0;
@@ -315,7 +375,12 @@ public class FileUtility {
 
 		LineNumberReader lineReader = null;
 		try {
-			lineReader = new LineNumberReader(new FileReader(filePath.toFile()));
+			if (!BaseHelper.isNullOrEmpty(fileEncoding)) {
+				lineReader = new LineNumberReader(new InputStreamReader(new FileInputStream(filePath.toFile()), fileEncoding));
+			} else {
+				lineReader = new LineNumberReader(new FileReader(filePath.toFile()));
+			}
+
 		    lineReader.skip(Long.MAX_VALUE);
 		    totalNumberOfLines = lineReader.getLineNumber() + 1;
 		} finally {

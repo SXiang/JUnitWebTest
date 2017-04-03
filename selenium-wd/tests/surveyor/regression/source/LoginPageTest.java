@@ -14,6 +14,8 @@ import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSDRUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
+import static surveyor.scommon.source.SurveyorConstants.INVALIDUSERPASS;
+import static surveyor.scommon.source.SurveyorConstants.INVALIDPSWD;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -128,20 +130,11 @@ public class LoginPageTest extends SurveyorBaseTest {
 	}
 
 	@Test
-	public void loginTest_TC29_DriverLogin() {
-		String customerName = SQACUS;
-
-		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
-		String location = SQACUSLOC;
+	public void loginTest_TC27_InvalidCredLogin() {
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
-		homePage.waitForPageLoad();
-		manageUsersPage.open();
-		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewCustomerUser(customerName, userName, USERPASSWORD, CUSUSERROLEDR, location);
-		loginPage.open();
-		loginPage.loginNormalAs(userName, USERPASSWORD);
-		assertTrue(homePage.checkIfAtHomePage());
+		loginPage.loginNormalAs(PICDFADMIN, INVALIDPSWD);
+		loginPage.waitForPageLoad();
+		assertTrue(loginPage.getTxtErrLogin().getText().equalsIgnoreCase(INVALIDUSERPASS));
 	}
 }

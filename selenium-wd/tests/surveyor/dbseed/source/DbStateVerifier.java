@@ -136,6 +136,17 @@ public class DbStateVerifier {
 	}
 
 	/**
+	 * Checks if DB has automation refreshed GIS seed data.
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean isGisRefreshSeedPresent(String customerId, Integer expectedAssetCount, Integer expectedBoundaryCount) throws Exception {
+		Log.method("DbStateVerifier.isGisRefreshSeedPresent");
+		return isGISSeedPresent(customerId, expectedAssetCount, expectedBoundaryCount);
+	}
+
+	/**
 	 * Checks if DB has GIS seed data for the specified customer.
 	 *
 	 * @param customerId

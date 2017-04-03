@@ -16,6 +16,7 @@ import common.source.CSVUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.NumberUtility;
+import common.source.TestSetup;
 import surveyor.dataaccess.source.Asset;
 import surveyor.dataaccess.source.Boundary;
 import surveyor.dataaccess.source.ConnectionFactory;
@@ -53,6 +54,23 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 			connection.close();
 		}
 		Assert.assertTrue(isGenericSeedPresent);
+	}
+
+	protected void verifyGisRefreshSeedDataIsPresent(String customerId) throws Exception {
+		Connection connection = null;
+		boolean isGisSeedPresent = false;
+		try {
+			connection = ConnectionFactory.createConnection();
+			String datFolder = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql").toString();
+			int expectedAssetCount = FileUtility.getLineCountInFile(Paths.get(datFolder, DbSeedExecutor.ASSET_DAT_FILE), FileUtility.ENCODING_UTF16LE) - 1;
+			int expectedBoundaryCount = FileUtility.getLineCountInFile(Paths.get(datFolder, DbSeedExecutor.BOUNDARY_DAT_FILE), FileUtility.ENCODING_UTF16LE) - 1;
+			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
+			isGisSeedPresent = dbStateVerifier.isGisRefreshSeedPresent(customerId, expectedAssetCount, expectedBoundaryCount);
+		} finally {
+			connection.close();
+		}
+
+		Assert.assertTrue(isGisSeedPresent);
 	}
 
 	protected void verifyGisSeedDataIsPresent(String customerId) throws Exception {
