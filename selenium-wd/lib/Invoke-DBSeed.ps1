@@ -3,7 +3,7 @@
 #   .\Invoke-DBSeed.ps1 -BuildWorkingDir "C:\Repositories\surveyor-qa" `
 #       -AutomationReportingAPIBaseUrl "http://localhost:63087" `
 #       -ArtifactoryBaseUrl "http://picarro.artifactoryonline.com/picarro" `
-#       -ArtifactoryAPIKey "AKCp2VoGPeRruh1fKTMx8K99yceZRay15wBQHHuoFoDuAgib16cSrM8VuKaTtjznPeEC9QXGL" `
+#       -ArtifactoryAPIKey "AKCp2VoGPeRruh1fKTMx8K99yceZRay15wBQHHuoFoDuAgib16cSrM8VuKaTtjznPeEC9QXGL" `   # NOTE: Not valid key. Replace with a valid API key.
 #       -ArtifactoryRepository "picarro-generic-private-qa" `
 #       -ArtifactoryFolder "2.4" `
 #       -BinaryVersionToUse "2.4.0.5a4erf2" `   

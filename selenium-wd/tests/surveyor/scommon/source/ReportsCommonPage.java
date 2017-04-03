@@ -57,7 +57,6 @@ import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -1745,7 +1744,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				this.waitForCustomerBoundarySectionToShow();
 				return;
 			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button");
+				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button "+e.toString());
 			}
 		}
 	}
@@ -3730,7 +3729,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		if (!actionSuccess) {
 			Log.error(String.format("fillCustomerBoundary() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
-			throw new Exception("Failure when executing fillCustomerBoundary.");
 		}
 
 		return actionSuccess;
@@ -3738,35 +3736,36 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> boundaryNamesToVerify) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen();
-		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
-		latLongSelectionControl.waitForMapImageLoad();
-		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
-		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 		boolean setSuccess = false;
-		if (boundaryNamesToVerify != null) {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
-		} else {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
-		}
-
 		boolean invalidResults = false;
-		if (!setSuccess) {
-			// If value not set, check if noResults entry has been found.
-			Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
-			invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
-			Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+		try{
+			latLongSelectionControl.waitForModalDialogOpen();
+			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+			latLongSelectionControl.waitForMapImageLoad();
+			focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
+			latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+
+			if (boundaryNamesToVerify != null) {
+				setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
+			} else {
+				setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
+			}
+			if (!setSuccess) {
+				// If value not set, check if noResults entry has been found.
+				Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
+				invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
+				Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+			}
+		}finally{
+			latLongSelectionControl.switchMode(ControlMode.Default);
+			if (setSuccess) {
+				latLongSelectionControl.clickOkButton();
+			} else {
+				latLongSelectionControl.clickCancelButton();
+			}
+
+			latLongSelectionControl.waitForModalDialogToClose();
 		}
-
-		latLongSelectionControl.switchMode(ControlMode.Default);
-		if (setSuccess) {
-			latLongSelectionControl.clickOkButton();
-		} else {
-			latLongSelectionControl.clickCancelButton();
-		}
-
-		latLongSelectionControl.waitForModalDialogToClose();
-
 		return setSuccess || invalidResults;
 	}
 

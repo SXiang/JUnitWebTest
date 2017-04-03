@@ -79,6 +79,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[11]/a[1]/img")
 	private WebElement linkViewSurvey;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[10]/a[1]/img")
+	private WebElement firstViewSurvey;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td")
 	private WebElement tableData;
 
@@ -88,6 +91,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[11]/a[@title='Delete Survey']/img")
 	private WebElement firstSurveyDeleteLink;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> tableRows;
+
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
 
 	public void clickOnFirstSurveyDeleteLink() {
 		Log.clickElementInfo("Delete",ElementType.LINK);
@@ -588,6 +598,11 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		this.linkViewSurvey.click();
 	}
 
+	public void clickOnFirstViewSurvey() {
+		Log.clickElementInfo("View Survey",ElementType.LINK);
+		this.firstViewSurvey.click();
+	}
+	
 	public void clickOnConfirmInDeletePopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
 		Log.clickElementInfo("Confirm Deletion",ElementType.LINK);

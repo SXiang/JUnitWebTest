@@ -40,6 +40,8 @@ public class MobileLoginPage extends MobileBasePage {
 	}
 	
 	private void handleEULA() {
+		waitForPageToLoad();
+		waitForAJAXCallsToComplete();
 		if (driver.getCurrentUrl().contains("/Eula")) {
 			// If user is redirected to EULA then click on Accept.
 			EULAPage eulaPage = new EULAPage(driver, this.strBaseURL, testSetup);
@@ -59,7 +61,7 @@ public class MobileLoginPage extends MobileBasePage {
 	public MobileReportsPage loginNormalAs(String userName, String password) {
 		login(userName, password);
 		MobileReportsPage reportsPage = new MobileReportsPage();
-		handleEULA();	
+		handleEULA();
 		reportsPage.waitUntilPageLoad();
 		reportsPage.clearFilter();
 		return reportsPage;
