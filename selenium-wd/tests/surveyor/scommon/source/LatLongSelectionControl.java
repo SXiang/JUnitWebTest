@@ -45,7 +45,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "boundary-feature-class")
 	private WebElement filterByTypeDropDown;
-	private String filterByTypeId = "boundary-feature-class";
+	public By filterByTypeBy = By.id("boundary-feature-class");
 
 	@FindBy(id = "boundary-search-text")
 	private WebElement selectByNameTextField;
@@ -73,7 +73,8 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "myModal")
 	private WebElement mapModalDialog;
-
+	private By mpaModalDialogBy = By.id("myModal");
+	
 	@FindBy(id = "map")
 	private WebElement canvas;
 
@@ -339,7 +340,7 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl waitForModalDialogOpen() {
 		Log.info("Wait for map modal dialog to open.");
 		WebDriverWait wait = new WebDriverWait(driver, timeout * 3);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(mpaModalDialogBy));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !mapModalDialog.getAttribute("style").contains("display:none") && !mapModalDialog.getAttribute("style").contains("display: none");
@@ -356,10 +357,10 @@ public class LatLongSelectionControl extends BaseControl {
 	public LatLongSelectionControl waitForModalDialogToClose() {
 		Log.info("Wait for map modal dialog to close.");
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		WebElement myModal = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("myModal")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(mpaModalDialogBy));
 		(new WebDriverWait(driver, timeout * 3)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return myModal.getAttribute("style").contains("display:none") || myModal.getAttribute("style").contains("display: none");
+				return mapModalDialog.getAttribute("style").contains("display:none") || mapModalDialog.getAttribute("style").contains("display: none");
 			}
 		});
 		return this;

@@ -2759,7 +2759,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean verifyAllSSRSTableInfos(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllSSRSTableInfos", data, dataRowID);
-		String downloadPath = "C:\\Users\\sxiang\\Desktop\\TESTDATA";//getDownloadPath(ReportFileType.PDF);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return verifySSRSTableInfos(downloadPath);
 	}
 

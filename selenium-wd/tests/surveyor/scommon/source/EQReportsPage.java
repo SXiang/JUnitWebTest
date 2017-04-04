@@ -171,8 +171,8 @@ public class EQReportsPage extends ReportsCommonPage {
 	public boolean verifyEmissionsQuantificationTable(String actualPath, String reportTitle) throws IOException {
 		Log.method("EQReportsPage.verifyEmissionsQuantificationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
-//		Report reportObj = Report.getReport(reportTitle);
-		String reportId = "c6696d0b-c5cf-2044-70e2-39dccc8a10db";//reportObj.getId();
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
 		String actualReport = Paths.get(actualPath, getReportPrefix() + "-" + reportId.substring(0, 6) + ".pdf").toString();
 		String reportName = getReportPrefix() + "-" + reportId;
 		setReportName(reportName);
@@ -186,7 +186,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
-				Log.error("Emissions Quantification table static text verification failed");
+				//Log.error("Emissions Quantification table static text verification failed");
 				return false;
 			}
 		}

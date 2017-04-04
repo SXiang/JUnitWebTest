@@ -323,7 +323,7 @@ public class OLMapUtility {
 	public int getMapZoomLevel() {
 		String functionCall = GET_MAP_ZOOMLEVEL_JS_FUNCTION +  GET_MAP_ZOOMLEVEL_JS_FUNCTION_CALL;
 		Log.info("Calling javascript function -> " + functionCall);
-		return (int)(long)(((JavascriptExecutor)driver).executeScript(functionCall));
+		return (int)(long) (((JavascriptExecutor)driver).executeScript(functionCall));
 	}
 
 	/*

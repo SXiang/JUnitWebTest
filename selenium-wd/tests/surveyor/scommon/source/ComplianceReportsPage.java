@@ -2757,6 +2757,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
+	public boolean isSurveyTableEmpty() {
+		Log.method("isSurveyTableEmpty");
+		return WebElementExtender.isElementPresentAndDisplayed(dataTableEmpty);
+	}
+	
 	public WebElement getBtnAssignInvestigators() {
 		return btnAssignInvestigators;
 	}

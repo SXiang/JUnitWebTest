@@ -124,11 +124,11 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	@Override
 	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
 		Log.info("Executing verifyDrivingSurveysTable()...");
-		boolean verifyDrivingSurveysTable = true;//this.getReportsCommonPage().verifyDrivingSurveysTable(downloadPath, getWorkingReportsDataRow().title);
+		boolean verifyDrivingSurveysTable = this.getReportsCommonPage().verifyDrivingSurveysTable(downloadPath, getWorkingReportsDataRow().title);
 		Log.info(String.format("verifyDrivingSurveysTable() returned - '%b'", verifyDrivingSurveysTable));
 
 		Log.info("Executing verifyEmissionsQuantificationTable()...");
-		boolean verifyEmissionsQuantificationTable = this.getEQReportsPage().verifyEmissionsQuantificationTable(downloadPath, "");//getWorkingReportsDataRow().title);
+		boolean verifyEmissionsQuantificationTable = this.getEQReportsPage().verifyEmissionsQuantificationTable(downloadPath, getWorkingReportsDataRow().title);
 		Log.info(String.format("verifyEmissionsQuantificationTable() returned - '%b'", verifyEmissionsQuantificationTable));
 		
 		Log.info(String.format("verifyEmissionsQuantificationTable = %b; verifyDrivingSurveysTable = %b",
@@ -147,7 +147,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
 		logAction("EQReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
 		boolean retVal = true;
-		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
+		EQReportsDataRow reportsDataRow = getReportsDataRow(dataRowID);
 		retVal = retVal && this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
 					reportsDataRow.title, reportsDataRow.tCID, ReportFileType.EQView.toString(), false);
 		return retVal;

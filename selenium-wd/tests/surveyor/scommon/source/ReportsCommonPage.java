@@ -1588,6 +1588,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return done;
 	}
 
+	public boolean isInputTitleHighlightedInRed(){
+		return isHighlightedInRed(inputTitle);
+	}
+	
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
 		String border = "border: 1px solid red;";
@@ -3414,7 +3418,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				}
 
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
+				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, !generateBaseline)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}
@@ -3690,8 +3694,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public List<String[]> getSSRSPDFTableValues(PDFTable pdfTable, String reportTitle) throws IOException {
-		String pdfFilename = "EQ-c6696d.pdf";
-		//this.getReportPDFFileName(reportTitle, true /* includeExtension */);
+		String pdfFilename = this.getReportPDFFileName(reportTitle, true /* includeExtension */);
 		String pdfFilePath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), pdfFilename).toString();
 		PDFTableUtility pdfTableUtility = new PDFTableUtility();
 		List<String[]> pdfTableList = pdfTableUtility.extractPDFTable(pdfFilePath, pdfTable);
@@ -3742,7 +3745,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 			latLongSelectionControl.waitForModalDialogOpen();
 			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 			latLongSelectionControl.waitForMapImageLoad();
-			focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
+			waitForAJAXCallsToComplete();
+			focusOnPage(latLongSelectionControl.filterByTypeBy);
 			latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 
 			if (boundaryNamesToVerify != null) {
@@ -3756,6 +3760,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 				invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
 				Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
 			}
+		}catch(Exception e){
+			Log.warn("Exception thrown when filling customer boundary: "+e);
 		}finally{
 			latLongSelectionControl.switchMode(ControlMode.Default);
 			if (setSuccess) {

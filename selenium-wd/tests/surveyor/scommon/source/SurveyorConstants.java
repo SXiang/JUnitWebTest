@@ -458,6 +458,8 @@ public final class SurveyorConstants {
 	public static final String DIALOG_SELECTEDAREALSTOOLARGE_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooLarge);
 	public static final String DIALOG_SELECTEDAREALSTOOSMALL_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooSmall);
 	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+	public static final String CR_VALUEMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_ValueMissingMessage);
+	public static final String CR_EQLINES_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_EQLinesMessage);
 
 	/*
 	 * Analyzer and surveyor constants.
