@@ -145,6 +145,7 @@ public class DataTablePage extends SurveyorBasePage {
 		}
 
 		List<Integer> colIndices = getColumnIndices(columnNames);
+		Log.info(String.format("Column header indices list is - %s", LogHelper.collectionToString(colIndices, "colIndices")));
 		Map<Integer, String> colIdxNmMap = CollectionsUtil.toMap(colIndices, columnNames);
 		Map<String, List<String>> recordsMap = Collections.synchronizedMap(new HashMap<String, List<String>>());
 		int numFound = 0;
@@ -155,10 +156,23 @@ public class DataTablePage extends SurveyorBasePage {
 			}
 
 			Integer tableSize = this.tableRow.size();
+
+			// Check for table EMPTY.
+			if (tableSize == 1) {
+				if (this.tableRow.get(0).getAttribute("class").equals("dataTables_empty")) {
+					Log.info("EMPTY datatable encountered!");
+					break;
+				}
+			}
+
 			for(WebElement row: tableRow){
-				List<WebElement> field = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
+				List<WebElement> colFields = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
 						(parentEl) -> parentEl.findElements(By.cssSelector("td")));
-				colIndices.forEach(idx -> CollectionsUtil.populateListMap(recordsMap, colIdxNmMap.get(idx), getElementText(field.get(idx))));
+				for (Integer idx : colIndices) {
+					Log.info(String.format("Column fields webElement list -> colFields.size()=%d; idx=%d", colFields.size(), idx));
+					CollectionsUtil.populateListMap(recordsMap, colIdxNmMap.get(idx), getElementText(colFields.get(idx)));
+				}
+
 				numFound++;
 				if(numRecords>-1 && ((numFound >= tableSize) || (numFound >= numRecords))){
 					done = true;

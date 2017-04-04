@@ -91,7 +91,7 @@ public class ServerLogEntity {
 
 	public static List<ServerLogEntity> toList(Map<String, List<String>> mapData) {
 		List<ServerLogEntity> logEntities = null;
-		if (mapData != null) {
+		if (mapData != null && mapData.keySet().size() > 0) {
 			logEntities = new ArrayList<ServerLogEntity>();
 			String firstKey = mapData.keySet().iterator().next();
 			List<String> listValues = mapData.get(firstKey);

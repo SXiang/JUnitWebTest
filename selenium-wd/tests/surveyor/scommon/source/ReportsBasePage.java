@@ -3149,7 +3149,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 			boolean allowedErrorFound = false;
 			Log.info(String.format("Checking presence of server log error - '%s'", msg));
 			List<ServerLogEntity> serverLogs = CommonPageFunctions.getServerLog(searchTerm, 10);
-			allowedErrorFound = hasOnlyMoreAssetsThanSupportedErrorMessages(serverLogs);
+			if (serverLogs != null && serverLogs.size() > 0) {
+				allowedErrorFound = hasOnlyMoreAssetsThanSupportedErrorMessages(serverLogs);
+			}
 			Log.info(String.format("Found matching server log='%b'", allowedErrorFound));
 			return allowedErrorFound;
 		};
