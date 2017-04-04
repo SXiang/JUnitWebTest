@@ -14,23 +14,23 @@
 
 param
 (
-  [Parameter(Mandatory=$true)]
-  [String] $surveyIDs,               # Comma-seperated list of survey id guids (ie [ID] from Survey table in DB)
+  [Parameter(Mandatory=$false)]
+  [String] $surveyIDs = "2B690480-BC87-8C19-4B32-39DBF7ED8628",               # Comma-seperated list of survey id guids (ie [ID] from Survey table in DB)
 
-  [Parameter(Mandatory=$true)]
-  [String] $databaseIPAddress,       # Database where the surveys are located. eg. 20.20.130.238
+  [Parameter(Mandatory=$false)]
+  [String] $databaseIPAddress = "20.20.180.115",       # Database where the surveys are located. eg. 20.20.130.238
 
-  [Parameter(Mandatory=$true)]
-  [String] $databaseName,            # Database name. eg. SurveyorSQA
+  [Parameter(Mandatory=$false)]
+  [String] $databaseName = "SurveyorP3ENGSQA2",            # Database name. eg. SurveyorSQA
 
-  [Parameter(Mandatory=$true)]
-  [String] $databaseUser,            # User with access to DB. Eg awssa
+  [Parameter(Mandatory=$false)]
+  [String] $databaseUser = "awssa",            # User with access to DB. Eg awssa
 
-  [Parameter(Mandatory=$true)]
-  [String] $databasePassword,        # DB user password
+  [Parameter(Mandatory=$false)]
+  [String] $databasePassword = "j!RuL1Gd7A",        # DB user password
 
-  [Parameter(Mandatory=$true)]
-  [String] $outputFolder             # Folder where Survey CSV files will be generated. Eg. 'C:\temp\SurveyCSVs'. NOTE: Existing files in this folder will be deleted.
+  [Parameter(Mandatory=$false)]
+  [String] $outputFolder = "C:\temp\TC624Survey"            # Folder where Survey CSV files will be generated. Eg. 'C:\temp\SurveyCSVs'. NOTE: Existing files in this folder will be deleted.
 )
 
 # Load helper functions.
@@ -41,7 +41,7 @@ $connString = "Server=$databaseIPAddress;Database=$databaseName;User Id=$databas
 $counter = 1
 $currSurveyTag = ""
 $idsArr = $surveyIDs -split ","
-$surveyIDArr = @($idsArr)
+$surveyIDArr = @($surveyIDs)
 
 "Removing files from output folder -> $outputFolder ..."
 Get-ChildItem "$outputFolder" -Filter "*.csv" | Remove-Item
