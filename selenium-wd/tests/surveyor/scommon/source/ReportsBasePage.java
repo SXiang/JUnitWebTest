@@ -1635,12 +1635,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> First Call : RowNum=%d", rowNum));
 
 							if (rowNum != currRowNum && rowNum == 1) {
-								Log.info("[Check 1]: rowNum reset.. Continue...");
+								Log.info("[Check 1a]: rowNum reset.. Continue...");
 								continue;
 							}
 
 							if (rowNum > maxRows) {
-								Log.info("[Check 2]: rowNum > maxRows.. Break...");
+								Log.info("[Check 1b]: rowNum > maxRows.. Break...");
 								break;
 							}
 
@@ -1652,7 +1652,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Second call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
-								Log.info("[Check 3]: rowNum != rowNumPostSkip.. Continue...");
+								Log.info("[Check 2]: rowNum != rowNumPostSkip.. Continue...");
 								continue;
 							}
 
@@ -1678,8 +1678,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 					} catch (org.openqa.selenium.NoSuchElementException e) {
 						boolean foundErrorLabel = false;
 						try {
-							reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/*[@class='error-processing']"));
-							foundErrorLabel = true;
+							// Row entries could have changed by the point execution reaches here.
+							Log.info(String.format("Third call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
+							if(rowNum == skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
+								Log.info("[Check 3]: rowNum has NOT changed. Looking for error label");
+								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/*[@class='error-processing']"));
+								foundErrorLabel = true;
+							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
 							Log.info("Did NOT find error processing label");
 						}
