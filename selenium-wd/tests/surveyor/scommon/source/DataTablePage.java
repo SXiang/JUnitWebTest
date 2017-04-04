@@ -156,18 +156,19 @@ public class DataTablePage extends SurveyorBasePage {
 			}
 
 			Integer tableSize = this.tableRow.size();
-
-			// Check for table EMPTY.
-			if (tableSize == 1) {
-				if (this.tableRow.get(0).getAttribute("class").equals("dataTables_empty")) {
-					Log.info("EMPTY datatable encountered!");
-					break;
-				}
-			}
-
 			for(WebElement row: tableRow){
 				List<WebElement> colFields = WebElementFunctionUtil.waitAndTryFindElements(row, driver, Timeout.TEN,
 						(parentEl) -> parentEl.findElements(By.cssSelector("td")));
+
+				// Check for table EMPTY.
+				if (colFields.size() == 1) {
+					if (colFields.get(0).getAttribute("class").equals("dataTables_empty")) {
+						Log.info("EMPTY datatable encountered!");
+						done = true;
+						break;
+					}
+				}
+
 				for (Integer idx : colIndices) {
 					Log.info(String.format("Column fields webElement list -> colFields.size()=%d; idx=%d", colFields.size(), idx));
 					CollectionsUtil.populateListMap(recordsMap, colIdxNmMap.get(idx), getElementText(colFields.get(idx)));
