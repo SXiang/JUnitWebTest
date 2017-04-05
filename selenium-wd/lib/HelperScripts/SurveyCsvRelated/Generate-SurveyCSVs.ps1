@@ -14,23 +14,23 @@
 
 param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $surveyIDs = "2B690480-BC87-8C19-4B32-39DBF7ED8628",               # Comma-seperated list of survey id guids (ie [ID] from Survey table in DB)
+  [Parameter(Mandatory=$true)]
+  [String] $surveyIDs,               # Comma-seperated list of survey id guids (ie [ID] from Survey table in DB)
 
-  [Parameter(Mandatory=$false)]
-  [String] $databaseIPAddress = "20.20.180.115",       # Database where the surveys are located. eg. 20.20.130.238
+  [Parameter(Mandatory=$true)]
+  [String] $databaseIPAddress,       # Database where the surveys are located. eg. 20.20.130.238
 
-  [Parameter(Mandatory=$false)]
-  [String] $databaseName = "SurveyorP3ENGSQA2",            # Database name. eg. SurveyorSQA
+  [Parameter(Mandatory=$true)]
+  [String] $databaseName,            # Database name. eg. SurveyorSQA
 
-  [Parameter(Mandatory=$false)]
-  [String] $databaseUser = "awssa",            # User with access to DB. Eg awssa
+  [Parameter(Mandatory=$true)]
+  [String] $databaseUser,            # User with access to DB. Eg awssa
 
-  [Parameter(Mandatory=$false)]
-  [String] $databasePassword = "j!RuL1Gd7A",        # DB user password
+  [Parameter(Mandatory=$true)]
+  [String] $databasePassword,        # DB user password
 
-  [Parameter(Mandatory=$false)]
-  [String] $outputFolder = "C:\temp\TC624Survey"            # Folder where Survey CSV files will be generated. Eg. 'C:\temp\SurveyCSVs'. NOTE: Existing files in this folder will be deleted.
+  [Parameter(Mandatory=$true)]
+  [String] $outputFolder             # Folder where Survey CSV files will be generated. Eg. 'C:\temp\SurveyCSVs'. NOTE: Existing files in this folder will be deleted.
 )
 
 # Load helper functions.
@@ -119,7 +119,7 @@ $surveyIDArr | % {
                     
                     $objCap = $_;
                     $capAnalyzerId = Null-ToValue -value $objCap.AnalyzerId;
-                    $capCaptureType = Null-ToValue -value $objCap.CaptureType;
+                    $capCaptureType = Bool-ToBit -value $objCap.CaptureType;
                     $capClassificationConfidence = $objCap.ClassificationConfidence;
                     $capConcentration = Null-ToValue -value $objCap.Concentration;
                     $capDateTime = Date-ToString -value $objCap.DateTime;
@@ -232,7 +232,7 @@ $surveyIDArr | % {
                     $meaCarSpeedNorth = $objMea.CarSpeedNorth;
                     $meaCavityPressure = Null-ToValue -value $objMea.CavityPressure;
                     $meaCH4 = $objMea.CH4;
-                    $meaChemDetect = $objMea.ChemDetect;
+                    $meaChemDetect = Bool-ToBit -value $objMea.ChemDetect;
                     $meaCO2 = $objMea.CO2;
                     $meaCreateDate = Date-ToString -value $objMea.CreateDate;
                     $meaDeltaCH4 = $objMea.DeltaCH4;

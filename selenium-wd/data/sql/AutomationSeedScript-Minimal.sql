@@ -409,6 +409,12 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', @locationID, N'Nissan Rogue - Picarro')
 END
+-- SurveyorUnit - (Black Rhino FEQ)
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='58c51edd-51a4-1266-1159-39dbd3f3366c')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'58c51edd-51a4-1266-1159-39dbd3f3366c', @locationID, N'Black Rhino FEQ')
+END
 
 
 -- Analyzer
@@ -527,7 +533,13 @@ IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='FEDS2055-PICARRO' AND [SharedKey]='feds2055-picarro')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'FEDS2055-PICARRO', N'feds2055-picarro')
 END
-
+-- Analyzer - (RFADS2004-FEQ)
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-FEQ' AND [SharedKey]=N'rfads2004-feq')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'58c51edd-51a4-1266-1159-39dbd3f3366c', [SerialNumber]=N'RFADS2004-FEQ', [SharedKey]=N'rfads2004-feq' WHERE [Id]='88cfc43e-9005-03e1-1d7a-39dbd3f483de'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'88cfc43e-9005-03e1-1d7a-39dbd3f483de', N'58c51edd-51a4-1266-1159-39dbd3f3366c', N'RFADS2004-FEQ', N'rfads2004-feq')
+END
 
 
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
@@ -603,6 +615,10 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='C4890397-D624-7D79-CA78-39D895DB6962'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'C4890397-D624-7D79-CA78-39D895DB6962', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'109-56-12523', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime), 0.03)
+-- RefGasBottle - (RFADS2004-FEQ)
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='58c51edd-51a4-1266-1159-39dbd3f3366c', [BatchId]='A', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-12-02 23:04:27.220' AS DateTime) WHERE [Id]='49ef9ff8-c480-632d-8202-39dbd3f4f555'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'49ef9ff8-c480-632d-8202-39dbd3f4f555', N'58c51edd-51a4-1266-1159-39dbd3f3366c', N'A', -32.7, CAST(N'2016-12-02 23:04:27.220' AS DateTime))
 
 	
 -- Add AnalyzerHardwareCapabilityType
@@ -662,13 +678,27 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'F5970731-CE37-F7F3-DB5F-39D7E2D02053'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', 1)
+-- AnalyzerHardwareCapabilityType for Surveyor - ''
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'88cfc43e-9005-03e1-1d7a-39dbd3f483de'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'88cfc43e-9005-03e1-1d7a-39dbd3f483de', 0)
 
+	
 -- CalibrationRecords
 -- Add calibration record for EQ Surveyor - Nissan Rogue
 UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899',[StartEpoch]=1479538985.544,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='23BEBF59-BB6E-85C9-C889-39DD83BD36E5'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('23BEBF59-BB6E-85C9-C889-39DD83BD36E5','BFEEA4F3-093D-B963-4AE6-39D7B44D9899',1479538985.544,0,0,-4)
-
+-- Calibration record for 'SoftwareCar_2037_cust'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1486498358.94,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='09FD8BE0-98B1-480A-BEC6-54AC5847E141'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('09FD8BE0-98B1-480A-BEC6-54AC5847E141','00000014-FB61-2EF6-5DD1-39C8AC533D41',1486498358.94,0,0,-4)
+-- Calibration record for 'Black Rhino FEQ'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1486498358.94,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='c9cf29da-0f18-0782-e93c-39dbd3f8f705'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('c9cf29da-0f18-0782-e93c-39dbd3f8f705','00000014-FB61-2EF6-5DD1-39C8AC533D41',1486498358.94,0,0,-4)
+	
+	
 -- Inlet entries for EQ Surveyor - Nissan Rogue, calibration record
 UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0
 IF @@ROWCOUNT=0
@@ -718,17 +748,13 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[Inlet] SET [Height]=2.5 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=15
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'23bebf59-bb6e-85c9-c889-39dd83bd36e5', 15,2.5)
-
+	
 -- Anemometer entry for EQ Surveyor - Nissan Rogue, calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'23bebf59-bb6e-85c9-c889-39dd83bd36e5', 0, -3.6, 1, 2, 0)	
 
--- Calibration record for 'SoftwareCar_2037_cust'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1486498358.94,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='09FD8BE0-98B1-480A-BEC6-54AC5847E141'
-IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('09FD8BE0-98B1-480A-BEC6-54AC5847E141','00000014-FB61-2EF6-5DD1-39C8AC533D41',1486498358.94,0,0,-4)
-
+	
 -- Inlet entry for 'SoftwareCar_2037_cust' calibration record
 UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=0
 IF @@ROWCOUNT=0
@@ -784,7 +810,62 @@ UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotat
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 0, -3.6, 1, 2, 0)
 	
+-- Inlet entry for 'Black Rhino FEQ' calibration record
+UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 0,0.625)
+UPDATE [dbo].[Inlet] SET [Height]=0.75 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=1
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 1,0.75)
+UPDATE [dbo].[Inlet] SET [Height]=0.875 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=2
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 2,0.875)
+UPDATE [dbo].[Inlet] SET [Height]=1 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=3
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 3,1)
+UPDATE [dbo].[Inlet] SET [Height]=1.125 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=4
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 4,1.125)
+UPDATE [dbo].[Inlet] SET [Height]=1.25 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=5
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 5,1.25)
+UPDATE [dbo].[Inlet] SET [Height]=1.375 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=6
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 6,1.375)
+UPDATE [dbo].[Inlet] SET [Height]=1.5 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=7
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 7,1.5)
+UPDATE [dbo].[Inlet] SET [Height]=1.625 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=8
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 8,1.625)
+UPDATE [dbo].[Inlet] SET [Height]=1.75 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=9
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 9,1.75)
+UPDATE [dbo].[Inlet] SET [Height]=1.875 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=10
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 10,1.875)
+UPDATE [dbo].[Inlet] SET [Height]=2 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=11
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 11,2)
+UPDATE [dbo].[Inlet] SET [Height]=2.125 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=12
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 12,2.125)
+UPDATE [dbo].[Inlet] SET [Height]=2.25 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=13
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 13,2.25)
+UPDATE [dbo].[Inlet] SET [Height]=2.375 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=14
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 14,2.375)
+UPDATE [dbo].[Inlet] SET [Height]=2.5 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=15
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 15,2.5)
 
+-- Anemometer entry for 'Black Rhino FEQ', calibration record
+UPDATE [dbo].[Anemometer] SET [Offset]=0, [SpeedFactor]=1, [Height]=0, [Rotation]=0 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=3
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 3, 0, 1, 0, 0)	
+	
+	
 --Users:
 --Users for manual
 -- Users assigned to Location='Santa Clara', Customer='Picarro'
