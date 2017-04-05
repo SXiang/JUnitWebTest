@@ -3,6 +3,7 @@ package common.source;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class CollectionsUtil {
 				valuesList.add(value);
 				listMap.replace(key, valuesList);
 			} else {
-				listMap.put(key, Arrays.asList(value));
+				listMap.put(key, Collections.synchronizedList(new LinkedList<V>(Arrays.asList(value))));
 			}
 		}
 	}
