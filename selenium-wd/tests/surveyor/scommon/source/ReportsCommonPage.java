@@ -353,6 +353,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(id = "boundary-selected-text")
 	protected WebElement boundarySelectedText;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr")
+	protected List<WebElement> tableRows;
+
+	public List<WebElement> getTableRows() {
+		return tableRows;
+	}
+	
 	public WebElement getBoundarySelectedText() {
 		return this.boundarySelectedText;
 	}
