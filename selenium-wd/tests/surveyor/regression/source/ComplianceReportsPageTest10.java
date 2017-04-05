@@ -353,7 +353,7 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	 * Test Case ID: TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis
 	 * Test Description: Compliance Report with Red Trace and Isotopic Capture Analysis
 	 * Script: -
-	 *	-      - Create a Compliance Report using a survey that includes red trace and Isotopic Capture, selecting Breadcrumbs and   FOV
+	 *	-      - Create a Compliance Report using a ethane and non-ethane survey that includes red trace and Isotopic Capture
 	 * Results: -
 	 *	- - The   Compliance Report view should exactly match the Driver View, including red   trace and Isotopic Capture
 	 *  - - Ethane Capture and Isotopic Capture Tables should be present in SSRS. SSRS should be:
@@ -382,9 +382,15 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
         complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
         complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
 
-        assertTrue(complianceReportsPageAction.verifyPDFContainsInputtedInformation(ComplianceReportsPageActions.workingDataRow.get().timezone, getReportRowID(reportDataRowID1)));
         assertTrue(complianceReportsPageAction.verifySSRSViewsTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+
+        if (testCaseID.equals("TC624-01")) {
+        	assertTrue(complianceReportsPageAction.verifyEthaneAnalysisTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+        } else if (testCaseID.equals("TC624-02")) {
+        	assertTrue(complianceReportsPageAction.verifyIsotopicAnalysisTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+    		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+        }
+
         assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 	}
 

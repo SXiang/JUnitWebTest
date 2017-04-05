@@ -118,6 +118,7 @@ public class DbSeedExecutor {
 
 		try {
 			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
 			for (String surveyTag : surveyTags) {
 				try
 		        {
@@ -313,6 +314,7 @@ public class DbSeedExecutor {
 					surveySeedBuilderCache.addDbSeedBuilder(surveySeedKey, surveyDbSeedBuilder);
 
 					Log.info(String.format("----- Done processing survey with tag - '%s' -----", surveyTag));
+					connection.commit();
 
 		        } catch (Exception ex) {
 		        	Log.error(String.format("EXCEPTION in executeSurveyDataSeed(), tag='%s'. ERROR: %s", surveyTag, ExceptionUtility.getStackTraceString(ex)));
@@ -334,6 +336,7 @@ public class DbSeedExecutor {
 		} catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeSurveyDataSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
 		} finally {
+			connection.setAutoCommit(true);
             connection.close();
 		}
 	}
@@ -381,6 +384,7 @@ public class DbSeedExecutor {
 		DatFileBuilder datFileBuilder = null;
 		try {
 			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
 
 			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
 			ensureGISDatFilesArePresent();
@@ -430,7 +434,10 @@ public class DbSeedExecutor {
 			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
 					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
 
+			connection.commit();
+
 		} finally {
+			connection.setAutoCommit(true);
 			connection.close();
 			if (datFileBuilder != null) {
 				datFileBuilder.close();
@@ -465,6 +472,8 @@ public class DbSeedExecutor {
 		try
         {
 			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
+
         	customerBoundaryTypeDbSeedBuilder = new CustomerBoundaryTypeDbSeedBuilder();
         	customerBoundaryTypeDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
 
@@ -519,9 +528,12 @@ public class DbSeedExecutor {
 
 			executeSeed(connection, boundaryDbSeed);
 
+			connection.commit();
+
         } catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeGisSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
         } finally {
+        	connection.setAutoCommit(true);
             connection.close();
             // cleanup seed builders.
             closeDbSeedBuilder(customerBoundaryTypeDbSeedBuilder);

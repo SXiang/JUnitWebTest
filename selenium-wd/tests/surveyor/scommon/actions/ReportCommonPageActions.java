@@ -494,7 +494,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	protected String getDownloadPath(ReportFileType fileType) throws Exception {	
+	protected String getDownloadPath(ReportFileType fileType) throws Exception {
 		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
 
@@ -2769,6 +2769,19 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes verifyEthaneAnalysisTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyEthaneAnalysisTableInfo(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyEthaneAnalysisTableInfo", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		return this.getReportsCommonPage().verifyEthaneAnalysisTable(downloadPath, getWorkingReportsDataRow().title);
+	}
+
+	/**
 	 * Executes verifyIsotopicAnalysisTableInfo action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -3401,6 +3414,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyComplianceViewerViewCountEquals")) { return this.verifyComplianceViewerViewCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyCopyButtonIsDisplayed")) { return this.verifyCopyButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyEthaneAnalysisTableInfo")) { return this.verifyEthaneAnalysisTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
