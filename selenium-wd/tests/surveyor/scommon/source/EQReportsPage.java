@@ -113,10 +113,13 @@ public class EQReportsPage extends ReportsCommonPage {
 	}
 
 	protected void selectLineSegments(List<List<Coordinates>> lineSegments) {
+			if(lineSegments.isEmpty())
+				return;
 			clickLineSegmentsSelectorBtn();
 			latLongSelectionControl.waitForModalDialogOpen();
 			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 			latLongSelectionControl.waitForMapImageLoad();
+			waitForAJAXCallsToComplete();
 			mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
 			for(List<Coordinates> line:lineSegments){
 				latLongSelectionControl.selectSegment(line);

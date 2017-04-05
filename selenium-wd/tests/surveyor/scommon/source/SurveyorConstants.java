@@ -273,7 +273,7 @@ public final class SurveyorConstants {
 	public static final String SUBTITLE = " - Surveyor";
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
-	public static final int LINE_SELECTOR_ZOOMLEVEL = 15;
+	public static final int LINE_SELECTOR_ZOOMLEVEL = 13;
 	
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");

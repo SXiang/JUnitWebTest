@@ -142,6 +142,6 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.getComplianceReportsPage().inputSurveyTag(EQDAYSURVEY);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
 		complianceReportsPageAction.getComplianceReportsPage().waitForSurveyTabletoLoad();
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isSurveyTableEmpty());
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isSurveyTableEmpty());
 	}
 }

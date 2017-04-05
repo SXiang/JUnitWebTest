@@ -27,7 +27,11 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
+import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.dataprovider.EQReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -52,7 +56,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		private static EQReportsPageActions eqReportsPageAction;
 		private static EQReportsPage eqReportsPage;
 		private static ManageCustomerPageActions manageCustomerPageAction;
-		private static ManageUsersAdminPage manageUsersAdminPage;
+		private static ManageUsersPage manageUsersPage;
 		private static Map<String, String> testAccount;
 		@BeforeClass
 		public static void beforeClass() {
@@ -69,7 +73,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			setPropertiesForTestRunMode();
 			
 			if(testAccount == null){
-				testAccount = createTestAccount("EQ_LicFeature");
+				testAccount = createTestAccount("EQ_LicFeature", false, false);
 			}else{
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -94,7 +98,11 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 			manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
-			manageUsersAdminPage = new ManageUsersAdminPage(getDriver(), getBaseURL(), getTestSetup());
+			
+			PageObjectFactory pageObjectFactory = new PageObjectFactory();
+			manageUsersPage = pageObjectFactory.getManageUsersPage();
+			setLoginPage(pageObjectFactory.getLoginPage());
+			setHomePage(pageObjectFactory.getHomePage());
 			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
 			setReportsPage(eqReportsPage);
 		}
@@ -119,12 +127,8 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC558_EQReportIsNotAccessibleWithoutEQPrivilege ...");
 
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
-			assertTrue(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
-
+			/* Escaped positive test as it's a common case already covered in other tests */
+			
 			String userName = testAccount.get("userName");
 			String userPassword = testAccount.get("userPassword");
 			String customerName = testAccount.get("customerName");
@@ -133,7 +137,8 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 			manageCustomerPageAction.open(EMPTY, NOTSET);
 			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
-			manageUsersAdminPage.editUser(userName, CUSUSERROLESU, TIMEZONEET,true, true);
+			manageUsersPage.open();
+			manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEET,true, false);
 			getHomePage().logout();
 
 			/* Without License */
