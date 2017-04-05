@@ -41,7 +41,7 @@ $connString = "Server=$databaseIPAddress;Database=$databaseName;User Id=$databas
 $counter = 1
 $currSurveyTag = ""
 $idsArr = $surveyIDs -split ","
-$surveyIDArr = @($surveyIDs)
+$surveyIDArr = @($idsArr)
 
 "Removing files from output folder -> $outputFolder ..."
 Get-ChildItem "$outputFolder" -Filter "*.csv" | Remove-Item
