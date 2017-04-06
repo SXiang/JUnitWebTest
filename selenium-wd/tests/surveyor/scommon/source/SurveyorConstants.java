@@ -261,9 +261,10 @@ public final class SurveyorConstants {
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
 	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
-
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
+	public static final String REPORTERRORPROCESSING = Resources.getResource(ResourceKeys.Reports_ErrorProcessing);
 	public static final String INVALIDUSERPASS = Resources.getResource(ResourceKeys.Account_NotRecognized);
+
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";
@@ -279,6 +280,8 @@ public final class SurveyorConstants {
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
 	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+
+	public static final String MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG = "More than 10000 Assets found in the report area";
 
 	/*
 	 * Survey View constants

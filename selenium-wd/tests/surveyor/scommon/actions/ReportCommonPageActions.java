@@ -2538,6 +2538,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes waitForReportGenerationToCompleteWithErrorChecks action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForReportGenerationToCompleteWithErrorChecks(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForReportGenerationToCompleteWithErrorChecks", data, dataRowID);
+		this.getReportsCommonPage().checkErrorMessages();
+		this.getReportsCommonPage().waitForPageLoad();
+		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
+				TestContext.INSTANCE.getLoggedInUser(), data);
+	}
+
+	/**
 	 * Executes waitForComplianceViewerDialogToOpen action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -3498,6 +3513,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForReportGenerationToCompleteWithErrorChecks")) { return this.waitForReportGenerationToCompleteWithErrorChecks(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
