@@ -111,7 +111,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 			Log.info("\nRunning TC558_EQReportIsNotAccessibleWithoutEQPrivilege ...");
 
-			/* Escaped positive test as it's a common case already covered in other tests */
+			/* Skipped positive test as it's a common case already covered in other tests */
 			
 			String userName = testAccount.get("userName");
 			String userPassword = testAccount.get("userPassword");
