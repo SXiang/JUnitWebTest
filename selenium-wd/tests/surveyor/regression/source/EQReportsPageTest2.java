@@ -3,6 +3,7 @@
  */
 package surveyor.regression.source;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
@@ -316,7 +317,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
-			assertTrue(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
+			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
 		}
 
 		
