@@ -203,7 +203,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		try {
-			WebElement row = dataTable.getMatchingRow(userIndexMap);
+			WebElement row = dataTable.getMatchingRow(userIndexMap);		
 			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
 				Log.clickElementInfo(buttonType.toString());
@@ -253,7 +253,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		String buttonXPath;
 		switch (buttonType) {
 		case ViewSurvey:
-			buttonXPath = "td[11]/a[1]/img";
+			buttonXPath = "td/a[@title='View Survey']/img";
 			break;
 		case ExportSurvey:
 			buttonXPath = "td[11]/a[2]/img";

@@ -1,7 +1,6 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
@@ -67,8 +66,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		if(testAccount == null){
 			testAccount = createTestAccount("TC29");
 			addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("driverUserName"), testAccount.get("userPassword"), SurveyType.Standard);
-			addTestReport(testAccount.get("utilityAdminUserName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
+					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+			addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
 
 		}else{
 			loginPage.open();
@@ -144,7 +143,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(getHomePage().getLinkReports().isEnabled());
 		getHomePage().getLinkReports().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		
+
 		assertTrue(getHomePage().getLinkCusAdmin().isEnabled());
 		getHomePage().getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
@@ -177,7 +176,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
 		surveyViewPage.clickGisButton();
-		
+
 		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());
@@ -217,92 +216,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, supervisorUserName, userPassword, CUSUSERROLESU, location2Name));
 		}	
 
-		homePage.logout();
-
-		loginPage.open();
-		loginPage.loginNormalAs(supervisorUserName, userPassword);
-		homePage.waitForPageLoad();
-		assertTrue (homePage.checkIfAtHomePage());
-		homePage.logout();
-	}
-	
-	
-	@Test
-	public void loginTest_TC36_VerifyCustomerSupervisorLoginProfile() throws Exception {
-
-		String utilityAdminUserName = testAccount.get("utilityAdminUserName");
-		String supervisorUserName = testAccount.get("supervisorUserName");
-		String driverUserName = testAccount.get("driverUserName");
-		String userPassword = testAccount.get("userPassword");
-		String customerName = testAccount.get("customerName");
-
-		loginPage.open();
-		loginPage.loginNormalAs(supervisorUserName, userPassword);
-		homePage.waitForPageLoad();
-		assertFalse(homePage.getLinkCusAdmin().isEnabled());
-		assertFalse(homePage.getLinkPicarroAdmin().isEnabled());
-		
-		assertTrue(homePage.getLinkReports().isEnabled());
-		homePage.getLinkReports().click();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		homePage.getLinkCompliance().click();
-		complinaceReportsPage.waitForPageLoad();
-		String createdByXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]";
-		String createdByCellText = complinaceReportsPage.getTable().findElement(By.xpath(createdByXPath)).getText().trim();
-		assertTrue(createdByCellText.equals(testAccount.get("utilityAdminUserName")));
-	
-		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[1]/td[1]";
-		String reportTitleCellText = complinaceReportsPage.getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
-		System.out.println("!!!!!!!!!!!!!!!!!!!!" + reportTitleCellText);
-		complinaceReportsPage.deleteReport(reportTitleCellText, testAccount.get(utilityAdminUserName));
-
-		complinaceReportsPage.getInputSearch().sendKeys(reportTitleCellText);
-		complinaceReportsPage.waitForSearchResultsToLoad();
-		assertFalse(complinaceReportsPage.getTableRows().size() >0);
-		
-		
-		getHomePage().clickOnDrivingSurveyLink();
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
-		measurementSessionsPage.performSearch(testAccount.get("surveyorName"));
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
-
-		homePage.getLinkDrivingSurveys().click();
-		measurementSessionsPage.waitForPageLoad();
-
-		measurementSessionsPage.clickOnFirstViewSurvey();
-		surveyViewPage.waitForPageLoad();
-		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
-
-		surveyViewPage.clickGisButton();
-		
-		surveyViewPage.clickPicarroLogoButton();
-		homePage.waitForPageLoad();
-		assertTrue(homePage.checkIfAtHomePage());
-
-		homePage.getLinkReports().click();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		homePage.getLinkCompliance().click();
-		complinaceReportsPage.waitForPageLoad();
-	//	String createdByXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]";
-	//	String createdByCellText = complinaceReportsPage.getTable().findElement(By.xpath(createdByXPath)).getText().trim();
-		assertTrue(createdByCellText.equals(testAccount.get("userName")));
-		homePage.logout();
-
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		homePage.waitForPageLoad();
-		assertTrue (homePage.checkIfAtHomePage());
-		assertTrue (homePage.getLinkPicarroAdmin().isEnabled());
-		homePage.clickOnPicarroAdminLink();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		assertTrue(getHomePage().getLinkPicAdminViewAnlLogs().isEnabled());
-		assertTrue(getHomePage().getLinkPicAdminViewSurLogs().isEnabled());
-
-		
 		homePage.logout();
 
 		loginPage.open();

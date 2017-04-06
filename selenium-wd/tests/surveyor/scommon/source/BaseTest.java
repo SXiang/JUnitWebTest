@@ -3,8 +3,6 @@ package surveyor.scommon.source;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEUA;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
@@ -285,12 +283,8 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
-		String utilityAdminUserName = uniqueNumber + "UA" + REGBASEUSERNAME;
-		String supervisorUserName = uniqueNumber + "Super"  + REGBASEUSERNAME;
-		String driverUserName = uniqueNumber + "Driver"  + REGBASEUSERNAME;
-		String userUARole = CUSUSERROLEUA;
-		String userSuperRole = CUSUSERROLESU;
-		String userDriverRole = CUSUSERROLEDR;
+		String userName = uniqueNumber + REGBASEUSERNAME;
+		String userRole = CUSUSERROLEUA;
 		String userPassword = USERPASSWORD;
 		String eula = customerName + ": " + EULASTRING;
 		String cityName = "Santa Clara";
@@ -318,15 +312,11 @@ public class BaseTest {
 
 		HashMap<String, String> testAccount = new HashMap<String, String>();
 		testAccount.put("customerName", customerName);
-		testAccount.put("utilityAdminUserName", utilityAdminUserName);
-		testAccount.put("supervisorUserName", supervisorUserName);
-		testAccount.put("driverUserName", driverUserName);
+		testAccount.put("userName", userName);
 		testAccount.put("locationName", locationName);
 		testAccount.put("cityName", cityName);
 		testAccount.put("userPassword", userPassword);
-		testAccount.put("userUARole", userUARole);
-		testAccount.put("userSuperRole", userSuperRole);
-		testAccount.put("userDriverRole", userDriverRole);
+		testAccount.put("userRole", userRole);
 		testAccount.put("eula", eula);
 
 		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
@@ -350,20 +340,10 @@ public class BaseTest {
 		}
 
 		manageUsersPage.open();
-		if(!manageUsersPage.addNewCustomerUser(customerName, utilityAdminUserName, userPassword, userUARole, locationName)){
-			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, utilityAdminUserName, userPassword, userUARole, locationName));
+		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
+			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
-		
-		manageUsersPage.open();
-		if(!manageUsersPage.addNewCustomerUser(customerName, supervisorUserName, userPassword, userSuperRole, locationName)){
-			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, supervisorUserName, userPassword, userSuperRole, locationName));
-		}
-		
-		manageUsersPage.open();
-		if(!manageUsersPage.addNewCustomerUser(customerName, driverUserName, userPassword, userDriverRole, locationName)){
-			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, driverUserName, userPassword, userDriverRole, locationName));
-		}
-		
+
 		if(!addTestSurveyor){
 			return testAccount;
 		}
