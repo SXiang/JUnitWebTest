@@ -119,7 +119,7 @@ $surveyIDArr | % {
                     
                     $objCap = $_;
                     $capAnalyzerId = Null-ToValue -value $objCap.AnalyzerId;
-                    $capCaptureType = Null-ToValue -value $objCap.CaptureType;
+                    $capCaptureType = Bool-ToBit -value $objCap.CaptureType;
                     $capClassificationConfidence = $objCap.ClassificationConfidence;
                     $capConcentration = Null-ToValue -value $objCap.Concentration;
                     $capDateTime = Date-ToString -value $objCap.DateTime;
@@ -232,7 +232,7 @@ $surveyIDArr | % {
                     $meaCarSpeedNorth = $objMea.CarSpeedNorth;
                     $meaCavityPressure = Null-ToValue -value $objMea.CavityPressure;
                     $meaCH4 = $objMea.CH4;
-                    $meaChemDetect = $objMea.ChemDetect;
+                    $meaChemDetect = Bool-ToBit -value $objMea.ChemDetect;
                     $meaCO2 = $objMea.CO2;
                     $meaCreateDate = Date-ToString -value $objMea.CreateDate;
                     $meaDeltaCH4 = $objMea.DeltaCH4;

@@ -494,7 +494,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	protected String getDownloadPath(ReportFileType fileType) throws Exception {	
+	protected String getDownloadPath(ReportFileType fileType) throws Exception {
 		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
 
@@ -2549,6 +2549,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes waitForReportGenerationToCompleteWithErrorChecks action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForReportGenerationToCompleteWithErrorChecks(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForReportGenerationToCompleteWithErrorChecks", data, dataRowID);
+		this.getReportsCommonPage().checkErrorMessages();
+		this.getReportsCommonPage().waitForPageLoad();
+		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
+				TestContext.INSTANCE.getLoggedInUser(), data);
+	}
+
+	/**
 	 * Executes waitForComplianceViewerDialogToOpen action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2790,6 +2805,19 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyGapsTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getReportsCommonPage().verifyGapsTable(downloadPath, getWorkingReportsDataRow().title);
+	}
+
+	/**
+	 * Executes verifyEthaneAnalysisTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyEthaneAnalysisTableInfo(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyEthaneAnalysisTableInfo", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		return this.getReportsCommonPage().verifyEthaneAnalysisTable(downloadPath, getWorkingReportsDataRow().title);
 	}
 
 	/**
@@ -3425,6 +3453,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyComplianceViewerViewCountEquals")) { return this.verifyComplianceViewerViewCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyCopyButtonIsDisplayed")) { return this.verifyCopyButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyEthaneAnalysisTableInfo")) { return this.verifyEthaneAnalysisTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
@@ -3508,6 +3537,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForReportGenerationToCompleteWithErrorChecks")) { return this.waitForReportGenerationToCompleteWithErrorChecks(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
