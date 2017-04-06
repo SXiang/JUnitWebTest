@@ -117,6 +117,7 @@ public final class SurveyorConstants {
 
 	public static final String RFADS2004ANZ = "RFADS2004";
 	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
+	public static final String RFADS2004FEQ = "RFADS2004-FEQ";
 
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
@@ -274,7 +275,7 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 	public static final int LINE_SELECTOR_ZOOMLEVEL = 15;
-	
+
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
 	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
@@ -396,6 +397,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_IGPSCAR = "iGPS car";
 	public static final String SURVEYOR_SQACUSUNIT1 = "SQACusSrvUnit-1";
 	public static final String SURVEYOR_NISSANROGUEPICARRO = "Nissan Rogue - Picarro";
+	public static final String SURVEYOR_BLACKRHINOFEQ = "Black Rhino FEQ";
 
 	/*
 	 * Compliance Report Surveyor Units

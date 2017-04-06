@@ -57,16 +57,16 @@ param
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $oldDatabaseIP="20.20.130.210",
+  [String] $oldDatabaseIP="20.20.180.115",
 
   [Parameter(Mandatory=$false)]
-  [String] $oldDatabaseName="SurveyorSQAAuto_blankDB_20170203",
+  [String] $oldDatabaseName="SurveyorP3ENGSQA2",
 
   [Parameter(Mandatory=$false)]
   [String] $oldDatabaseUser="awssa",
 
   [Parameter(Mandatory=$false)]
-  [String] $oldDatabasePwd="3Vf763pSg2",
+  [String] $oldDatabasePwd="j!RuL1Gd7A",
 
   ####--------------------------------------------------------------####
   #### New Database -> Database to where the survey is to be PUSHED ####
@@ -76,7 +76,7 @@ param
   [String] $newDatabaseIP="20.20.130.210",
 
   [Parameter(Mandatory=$false)]
-  [String] $newDatabaseName="SurveyorSQAAuto_blankDB_20161202",
+  [String] $newDatabaseName="SurveyorSQAAuto_blankDB_20170330",
 
   [Parameter(Mandatory=$false)]
   [String] $newDatabaseUser="awssa",
@@ -89,42 +89,42 @@ param
   ####--------------------------------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $surveyIds = "DA2C4869-58DD-70FE-3B6A-39DD2C131AAA,A0EE2DB5-1B37-B1B0-554C-39DD2C1D41B5,F5D5BF4C-A286-BB4E-9C08-39DD2C310655,A498837C-1CA9-A783-9B7B-39DD2C3B429E,541567D0-A899-3418-8CE2-39DD2C61C355,D18273A3-B2B7-D015-CE7A-39DD2C75F210,BD897776-CFA5-80DF-2BD8-39DD2CB49FBC,22E12807-5514-DA0F-CC66-39DD2CB51E96",
+  [String] $surveyIds = "2B690480-BC87-8C19-4B32-39DBF7ED8628",
 
   ####--------------------------------------------------------------####
   #### CSV file parameters                                          ####
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $inDirectory="C:\temp\EQSurveys\csvs",
+  [String] $inDirectory="C:\temp\TC624Survey",
 
   [Parameter(Mandatory=$false)]
   [String] $fileExtFilter="*.csv",
 
   [Parameter(Mandatory=$false)]
-  [String] $outDirectory="C:\temp\EQSurveys\csvs\Replaced",
+  [String] $outDirectory="C:\temp\TC624Survey\Replaced",
 
   [Parameter(Mandatory=$false)]
-  [String] $outFileSuffix="sqacus",
+  [String] $outFileSuffix="",      
 
   ####--------------------------------------------------------------####
   #### New IDs to be used in the survey data CSV files              ####
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
-  [String] $newAnalyzerId="00000015-DB64-FDE7-7E67-39C8AC533D51",
+  [String] $newAnalyzerId="88cfc43e-9005-03e1-1d7a-39dbd3f483de",
 
   [Parameter(Mandatory=$false)]
-  [String] $newSurveyorUnitId="00000014-FB61-2EF6-5DD1-39C8AC533D41",
+  [String] $newSurveyorUnitId="58c51edd-51a4-1266-1159-39dbd3f3366c",
 
   [Parameter(Mandatory=$false)]
-  [String] $newReferenceGasBottleId="00000015-DB64-FDE7-7E67-39C8AC544D61",
+  [String] $newReferenceGasBottleId="49ef9ff8-c480-632d-8202-39dbd3f4f555",
 
   [Parameter(Mandatory=$false)]
-  [String] $newUserId="DE734DDF-363E-49FC-8DBC-39C8C221C572",
+  [String] $newUserId="DE734DDF-363E-49FC-8DBC-39C8C221C562",
 
   [Parameter(Mandatory=$false)]
-  [String] $newLocationId = "DE13ACD0-C158-ECAC-7F48-39D18113D702",
+  [String] $newLocationId = "00000000-0000-0000-0001-000000000000",
 
   ####--------------------------------------------------------------####
   #### Survey Tag/File map CSV                                      ####
@@ -149,7 +149,7 @@ param
 
 . C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\FileReadWriteHelper.ps1
 . C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\DatabaseHelpers.ps1
-. C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\Restamp-EpochTimesInCSV.ps1
+. C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\SurveyCsvRelated\Restamp-EpochTimesInCSV.ps1
 
 # Populate the surveyMap object with SurveyId -> {SurveyTag, SurveyFileSuffix} info
 $script:surveyTagFileMap = @{}
