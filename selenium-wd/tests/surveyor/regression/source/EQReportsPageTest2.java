@@ -87,7 +87,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - PDF will have Emission Ranking table with list of Pipe Segment IDs, Emissions ranked highest to lowest, emission rate,emission range, segment length, emission factor, estimated # of leaks, # leaks / ft, Emission Rate / Leak *NOTE - there should be no Fractional Uncertainty column
 		 * - Map View should display the selected line segments with numbers.
 		 */
-		@Ignore  /*SQACus SU failed on report job - need further investigation *//* Need surveys with indications */
+		@Test/* Need surveys with indications */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC532, location = EQReportDataProvider.class)
 		public void TC532_GenerateEQReportAsCustomerSupervisorWhenOverlappingMultiSegments(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -163,7 +163,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Map should display the selected line segments with numbers
 		 * - Validate report creation date, date printed, Survey Start/End time present in SSRS PDF is as expected
 		 */
-		@Ignore  /*SQACus UA failed on report job - need further investigation *//* Need surveys with indications */
+		@Test /* Need surveys with indications */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC537, location = EQReportDataProvider.class)
 		public void TC537_GenerateEQReportAsCustomerAdminWhenOverlappingMultiSegments(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

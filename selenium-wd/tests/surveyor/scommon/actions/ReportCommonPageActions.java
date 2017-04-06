@@ -655,7 +655,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		ActionArguments.verifyNotNullOrEmpty(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_WAIT_FOR_VIEW_DOWNLOAD_TO_COMPLETE_BY_VIEW_INDEX, ARG_DATA, viewIdx);
-		waitForReportFileDownload(dataRowID, ReportFileType.EQView, viewIdx);
+		waitForReportFileDownload(dataRowID, ReportFileType.View, viewIdx);
 	}
 
 	/**

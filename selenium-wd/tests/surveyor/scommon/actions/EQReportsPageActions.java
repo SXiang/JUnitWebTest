@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 import common.source.ExcelUtility;
 import common.source.Log;
+import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
@@ -213,7 +214,14 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			break;
 		}
 	}
-
+	
+	@Override
+	public boolean waitForViewDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageActions.waitForViewDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.EQView, 1);
+		return true;
+	}
+	
 	@Override
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		return new EQReportEntity();
