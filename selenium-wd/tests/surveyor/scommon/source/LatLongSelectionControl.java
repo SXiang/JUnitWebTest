@@ -21,7 +21,6 @@ import org.openqa.selenium.interactions.Actions;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.NumberUtility;
-import common.source.OLMapUtility;
 import common.source.Timeout;
 import common.source.WebElementExtender;
 import common.source.WebElementFunctionUtil;
@@ -45,7 +44,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 	@FindBy(id = "boundary-feature-class")
 	private WebElement filterByTypeDropDown;
-	public By filterByTypeBy = By.id("boundary-feature-class");
+	public By filterByTypeId = By.id("boundary-feature-class");
 
 	@FindBy(id = "boundary-search-text")
 	private WebElement selectByNameTextField;

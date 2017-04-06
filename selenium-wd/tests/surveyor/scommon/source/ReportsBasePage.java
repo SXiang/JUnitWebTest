@@ -2945,7 +2945,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
-	
+
 	public boolean isOperatorSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterOperator);
 	}

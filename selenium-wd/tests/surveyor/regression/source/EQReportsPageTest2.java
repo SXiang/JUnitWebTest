@@ -16,7 +16,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
-import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.dataprovider.EQReportDataProvider;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;

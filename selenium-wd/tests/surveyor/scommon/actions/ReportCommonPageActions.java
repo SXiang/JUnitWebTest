@@ -2448,7 +2448,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		this.getReportsCommonPage().invokePDFFileDownload(reportsDataRow.title);
 		return true;
 	}
-	
+
 	/**
 	 * Executes clickOnComplianceViewerPDFZIP action.
 	 * @param data - specifies the input data passed to the action.

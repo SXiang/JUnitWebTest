@@ -3418,7 +3418,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				}
 
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, !generateBaseline)) {
+				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}
@@ -3746,7 +3746,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 			latLongSelectionControl.waitForMapImageLoad();
 			waitForAJAXCallsToComplete();
-			focusOnPage(latLongSelectionControl.filterByTypeBy);
+			focusOnPage(latLongSelectionControl.filterByTypeId);
 			latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 
 			if (boundaryNamesToVerify != null) {

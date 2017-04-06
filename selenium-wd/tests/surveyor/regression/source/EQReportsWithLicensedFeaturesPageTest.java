@@ -4,45 +4,29 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSLOC;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 
 import java.util.Map;
 
-import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
-import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
-import surveyor.scommon.source.HomePage;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
-import surveyor.scommon.source.ReportsCommonPage;
 import surveyor.dataprovider.EQReportDataProvider;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**

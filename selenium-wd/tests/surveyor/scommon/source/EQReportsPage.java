@@ -4,19 +4,13 @@ import static common.source.BaseHelper.matchSinglePattern;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,23 +19,19 @@ import org.openqa.selenium.support.FindBy;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.dataaccess.source.StoredProcComplianceGetIndications;
 import surveyor.dataaccess.source.StoredProcEQGetEQData;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.entities.EQReportEntity.EmissionsQuantificationTableColumns;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
-import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.ArrayUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFUtility;
-import common.source.RegexUtility;
 import common.source.SortHelper;
 import common.source.TestSetup;
-import common.source.TextUtility;
 import common.source.PDFTableUtility.PDFTable;
 
 /**
@@ -189,7 +179,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		Map<String, Boolean> actualFirstPage = matchSinglePattern(actualReportString, expectedReportString);
 		for (Boolean value : actualFirstPage.values()) {
 			if (!value) {
-				//Log.error("Emissions Quantification table static text verification failed");
+				Log.error("Emissions Quantification table static text verification failed");
 				return false;
 			}
 		}
