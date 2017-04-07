@@ -1548,7 +1548,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private boolean waitForReportGenerationToCompleteAndExecuteAction(String rptTitle, String strCreatedBy, String testCaseID, StringBuilder outReportId, String allowedErrorMsg,
 			Predicate<String> allowedErrorCheck, Predicate<String> actionOnReportFound) throws Exception {
-		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
+		Log.method("ReportsBasePage.waitForReportGenerationToCompleteAndExecuteAction", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
