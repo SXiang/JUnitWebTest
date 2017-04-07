@@ -72,7 +72,6 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.ReportDataProvider;
-import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SearchAreaPreference;
