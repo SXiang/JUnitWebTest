@@ -6,24 +6,26 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
-import surveyor.regression.source.ReferenceGasReportsPageTest;
-import surveyor.regression.source.SystemHistoryReportsPageTest;
+import surveyor.regression.source.EQReportsPageTest;
+import surveyor.regression.source.EQReportsPageTest2;
+import surveyor.regression.source.EQReportsWithLicensedFeaturesPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
-	ReferenceGasReportsPageTest.class
-	,SystemHistoryReportsPageTest.class
+	EQReportsPageTest.class
+	,EQReportsPageTest2.class
+	,EQReportsWithLicensedFeaturesPageTest.class
 })
-public class ReportsTestSuite1 {
+public class ReportsTestSuite2 {
 
 	@BeforeClass
     public static void setUpClass() {
-        Log.info("Setup for ReportsTestSuite1 executing...");
+        Log.info("Setup for ReportsTestSuite2 executing...");
     }
 
     @AfterClass
     public static void tearDownClass() {
-    	Log.info("Teardown for ReportsTestSuite1 executing...");
+    	Log.info("Teardown for ReportsTestSuite2 executing...");
     }
 }

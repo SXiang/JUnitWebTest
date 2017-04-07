@@ -415,7 +415,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
 	protected WebElement msgEmptySurvey;
 
-	@FindBy(how = How.ID, using = "compliance-table-pdf-download")
+	@FindBy(how = How.XPATH, using = "//*[contains(@id,'-table-pdf-download')]")
 	protected WebElement pdfImg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
