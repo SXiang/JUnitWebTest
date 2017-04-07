@@ -95,6 +95,16 @@ import common.source.TestContext;
  */
 public class ComplianceReportsPage extends ReportsCommonPage {
 
+	protected static final String COL_HEADER_REPORT_MODE = "Report Mode";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_REPORT_MODE = 3;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
+
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
@@ -2667,6 +2677,17 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
+	public String getReportPrefix() {
+		return "CR";
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	}
+
+	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
 		if (surveyModeFilter != null) {
@@ -2682,14 +2703,16 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
-	public String getReportPrefix() {
-		return "CR";
-	}
-
-	@Override
-	public void deleteReportWithApiCall(String reportId) {
-		Log.method("deleteReportWithApiCall", reportId);
-		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_REPORT_MODE, COL_IDX_REPORT_MODE);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		columnIdxMap.put(COL_HEADER_UPLOAD_STATUS, COL_IDX_UPLOAD_STATUS);
+		return columnIdxMap;
 	}
 
 	public List<String> getViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
