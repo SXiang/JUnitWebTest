@@ -1529,18 +1529,26 @@ public class ReportsBasePage extends SurveyorBasePage {
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 
 		StringBuilder rptNameBuilder = new StringBuilder();
-		boolean retVal = waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
-				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, null /*actionOnReportFound*/);
+		boolean retVal = FunctionUtil.wrapException(rptTitle, (s1) ->
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
+				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, 
+				(s2) -> {
+					FunctionUtil.warnOnError(() -> {
+						if (isReportViewerDialogOpen()) {
+							closeReportViewerDialog();
+						}
+					});
+					return true;
+			}));
 		if (retVal) {
 			return rptNameBuilder.toString();
 		}
-
 		return null;
 	}
 
 	private boolean waitForReportGenerationToCompleteAndExecuteAction(String rptTitle, String strCreatedBy, String testCaseID, StringBuilder outReportId, String allowedErrorMsg,
 			Predicate<String> allowedErrorCheck, Predicate<String> actionOnReportFound) throws Exception {
-		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
+		Log.method("ReportsBasePage.waitForReportGenerationToCompleteAndExecuteAction", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;

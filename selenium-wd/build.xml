@@ -801,7 +801,7 @@
         <fileset dir="${build}">
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/ComplianceReportsPageTest12.class" />
-          <include name="**/ComplianceReportsPageTest7.class" />
+          <include name="**/AnalyticReportsPageUnitTest.class" />
         </fileset>
       </batchtest>
     </junit>
