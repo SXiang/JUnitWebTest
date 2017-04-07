@@ -82,6 +82,19 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
+
+	protected static final String COL_HEADER_REPORT_TITLE = "Report Title";
+	protected static final String COL_HEADER_REPORT_NAME = "Report Name";
+	protected static final String COL_HEADER_CREATED_BY = "Created By";
+	protected static final String COL_HEADER_DATE = "Date";
+	protected static final String COL_HEADER_ACTION = "Action";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_CREATED_BY = 3;
+	private static final Integer COL_IDX_DATE = 4;
+	private static final Integer COL_IDX_ACTION = 5;
+
 	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -1089,20 +1102,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
-	/**
-	 * Implementation to be provided by Derived classes.
-	 */
-	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
-		throw new Exception("Not implemented");
-	}
-
-	/**
-	 * Implementation to be provided by Derived classes.
-	 */
-	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) throws Exception {
-		throw new Exception("Not implemented");
-	}
-
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
@@ -1153,10 +1152,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return result;
 			}
 		});
-	}
-
-	protected boolean handleFileDownloads(int rowNum) throws Exception {
-		throw new Exception("Not implemented");
 	}
 
 	public void inputReportTitle(String rptTitle) {
@@ -1584,10 +1579,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info(String.format("Looking for Report Title='%s', Report Name='%s', Created By='%s'",
 				rptTitle.trim(), strReportName.trim(), strCreatedBy.trim()));
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			reportNameXPath = "tr[" + rowNum + "]/td[2]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
-			dateXPath = "tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			reportNameXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+			dateXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -1623,7 +1618,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					try {
 						if (rowSize == 1) {
 							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
@@ -1644,7 +1639,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								break;
 							}
 
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
@@ -1659,7 +1654,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
@@ -1683,7 +1678,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if(rowNum == skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
 								Log.info("[Check 3]: rowNum has NOT changed. Looking for error label");
-								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/*[@class='error-processing']"));
+								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
 								foundErrorLabel = true;
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
@@ -1813,7 +1808,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			xPathBuilder.append(rowNum);
 			xPathBuilder.append("]");
 		}
-		xPathBuilder.append("/td[5]/a[@title='Report Viewer']");
+		xPathBuilder.append("/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']");
 		if (includeErrorProcessingXPath) {
 			xPathBuilder.append("|tr");
 			if (!singleRowDisplayed) {
@@ -1821,7 +1816,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				xPathBuilder.append(rowNum);
 				xPathBuilder.append("]");
 			}
-			xPathBuilder.append("/td[5]/*[@class='error-processing']");
+			xPathBuilder.append("/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']");
 		}
 		return xPathBuilder.toString();
 	}
@@ -1849,14 +1844,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		this.waitForPageLoad();
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't
+				copyImgXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']"; // Don't
 																			// use
 																			// index
 																			// for
@@ -1911,8 +1906,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
@@ -1972,7 +1967,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			this.waitForPageLoad();
 			reportTitleXPath = "tr[" + rowNum + "]/td[" + String.valueOf(searchKeywordColIdx) + "]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(searchKeyword)
@@ -2050,14 +2045,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
+				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 				deleteImg = getReportTableCell(deleteImgXPath);
 				Log.clickElementInfo("Delete", ElementType.ICON);
 				deleteImg.click();
@@ -2153,14 +2148,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 				Log.clickElementInfo("Copy", ElementType.ICON);
 				copyImg.click();
@@ -2220,14 +2215,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 				Log.clickElementInfo("Copy", ElementType.ICON);
 				copyImg.click();
@@ -2801,10 +2796,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String lastSeenCreatedByCellText, String lastSeenDateCellText, int rowNum, int maxRows) {
 		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenReportNameCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 
-		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-		String reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-		String dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+		String reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+		String dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 		String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 		String rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -2833,10 +2828,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			Log.info(String.format("Processing row number - %d", rowNum));
 
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-			dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+			dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 			rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -3148,6 +3143,38 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return result;
 			}
 		});
+	}
+
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	protected boolean handleFileDownloads(int rowNum) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	protected Integer getColumnIndex(String columnHeader) {
+		return getColumnIndexMap().get(columnHeader);
+	}
+
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		return columnIdxMap;
 	}
 
 	private static Predicate<String> getCheckAllowedErrorsPredicate(String searchTerm) {
