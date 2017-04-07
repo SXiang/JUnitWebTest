@@ -275,7 +275,7 @@ public final class SurveyorConstants {
 	public static final String SUBTITLE = " - Surveyor";
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
-	public static final int LINE_SELECTOR_ZOOMLEVEL = 15;
+	public static final int LINE_SELECTOR_ZOOMLEVEL = 13;
 
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
@@ -463,6 +463,8 @@ public final class SurveyorConstants {
 	public static final String DIALOG_SELECTEDAREALSTOOLARGE_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooLarge);
 	public static final String DIALOG_SELECTEDAREALSTOOSMALL_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooSmall);
 	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+	public static final String CR_VALUEMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_ValueMissingMessage);
+	public static final String CR_EQLINES_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_EQLinesMessage);
 
 	/*
 	 * Analyzer and surveyor constants.

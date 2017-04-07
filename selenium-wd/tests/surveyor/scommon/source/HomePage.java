@@ -112,6 +112,16 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-compliance']")
 	private WebElement linkCompliance;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='report-investigation']")
+	private WebElement linkEQ;
+	private By linkEQBy = By.id("report-investigation");
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-facility-EQ']")
+	private WebElement linkFacilityEQ;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='report-asssessment']")
+	private WebElement linkAssessment;
+	
 	// Link may NOT be present for all users. Conditionally detect this link.
 	private WebElement linkInvestigation;
 
@@ -829,6 +839,18 @@ public class HomePage extends SurveyorBasePage {
 		return firstSurvey;
 	}
 
+	public void clickOnReport(){
+		linkReports.click();
+	}
+
+	public void clickOnEQ(){
+		linkEQ.click();
+	}
+
+	public boolean isEQLinkVisible(){
+		return this.isElementPresent(linkEQBy);
+	}
+	
 	public void clickOnFirstMatchingDrivingSurvey(String surveyTag) {
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 

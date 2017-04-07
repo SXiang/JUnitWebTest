@@ -162,6 +162,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String XPATH_DELETE_MODAL_DELETE_CONFIRMATION = "//*[@id='deleteReportModal']/div/div/div[2]/p[3]";
 
 	private static final String PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Compliance";
+	private static final String EQ_PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=EQ";
 	private static final String INVESTIGATION_PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Investigation";
 	private static final String INVESTIGATION_CSV_FILE_DOWNLOAD_URL = "../Reports/DownloadInvestigationData?reportId=%s";
 	private static final String PDF_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadPdf?reportId=%s&ReportType=Compliance";
@@ -254,10 +255,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(css = "#reportViewer > .modal-dialog button.close")
 	protected WebElement modalX;
 
-	@FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+	@FindBy(css = "#ImageList > li .image a[href*='DownloadReportView']")
 	protected List<WebElement> pdfViews;
 
-	@FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+	@FindBy(css = "#ImageList > li .image a[href*='DownloadReportView']")
 	protected WebElement firstPdfView;
 
 	@FindBy(name = "rdAreaMode")
@@ -426,8 +427,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public enum ReportFileType {
-		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), ZIP("ZIP"), MetaDataZIP(
-				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View");
+		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), EQPDF("EQPDF"), ZIP("ZIP"), MetaDataZIP(
+				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View");
 
 		private final String name;
 
@@ -731,6 +732,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.PDF);
 	}
 
+	public void invokeEQPDFFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeEQPDFFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.EQPDF);
+	}
+	
 	public void invokePDFZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokePDFZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ZIP);
@@ -755,7 +761,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		if (fileType == ReportFileType.PDF) {
 			downloadFileRelativeUrl = String.format(PDF_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportPDFFileName(rptTitle, true /* includeExtension */);
-		} else if (fileType == ReportFileType.InvestigationPDF) {
+		} else if (fileType == ReportFileType.EQPDF) {
+			downloadFileRelativeUrl = String.format(EQ_PDF_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportPDFFileName(rptTitle, true /* includeExtension */);
+		}else if (fileType == ReportFileType.InvestigationPDF) {
 			downloadFileRelativeUrl = String.format(INVESTIGATION_PDF_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getInvestigationPDFFileName(rptTitle, true /* includeExtension */);
 		} else if (fileType == ReportFileType.InvestigationCSV) {
@@ -791,7 +800,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				this.boundarySelectorBtn.click();
 				return;
 			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button");
+				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button: "+e);
 			}
 		}
 	}
@@ -1589,6 +1598,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return done;
 	}
 
+	public boolean isInputTitleHighlightedInRed(){
+		return isHighlightedInRed(inputTitle);
+	}
+	
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
 		String border = "border: 1px solid red;";
@@ -3742,7 +3755,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 			latLongSelectionControl.waitForModalDialogOpen();
 			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 			latLongSelectionControl.waitForMapImageLoad();
-			focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
+			waitForAJAXCallsToComplete();
+			focusOnPage(latLongSelectionControl.filterByTypeId);
 			latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 
 			if (boundaryNamesToVerify != null) {
@@ -3756,6 +3770,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 				invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
 				Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
 			}
+		}catch(Exception e){
+			Log.warn("Exception thrown when filling customer boundary: "+e);
 		}finally{
 			latLongSelectionControl.switchMode(ControlMode.Default);
 			if (setSuccess) {

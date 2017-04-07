@@ -42,4 +42,36 @@ public class EQReportEntity extends ReportCommonEntity {
 		this.eqLocationParameter = eqLocationParameter;
 		this.lineSegments = lineSegments;
 	}
+	
+	public enum EmissionsQuantificationTableColumns {
+		SegmentID ("Segment ID", 0),
+		SegmentRank ("Segment Rank", 1),
+		EmissionRate ("Emission Rate (SCFH)", 2),
+		EmissionRange ("Emission range(confidence)", 3),
+		EmissionLength ("Segment Length (ft)", 4),
+		EmissionsFactor ("Emissions Factor (SCFH/ft)", 5),
+		EstimatedLeaks ("Estimated # of leaks", 6),
+		Leaks ("#Leaks/ft", 7),
+		EmissionRateLeak ("Emission Rate/Leak", 8);
+
+		private final String name;
+		private final Integer colIndex;
+
+		EmissionsQuantificationTableColumns(String nm) {
+			this(nm, -1);
+		}
+
+		EmissionsQuantificationTableColumns(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
 }
