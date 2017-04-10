@@ -175,7 +175,7 @@ public class DbStateVerifier {
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
 				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName, expectedAssetCount,
 						count));
-				if (expectedAssetCount != count) {
+				if (expectedAssetCount > count) {
 					Log.info("isGISSeedPresent = FALSE");
 					return false;
 				}
@@ -194,7 +194,7 @@ public class DbStateVerifier {
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
 				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
 						expectedBoundaryCount, count));
-				if (expectedBoundaryCount != count) {
+				if (expectedBoundaryCount > count) {
 					Log.info("isGISSeedPresent = FALSE");
 					return false;
 				}

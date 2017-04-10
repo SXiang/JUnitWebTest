@@ -799,8 +799,6 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportsTestSuite2.class" />
-          <include name="**/ComplianceReportsPageTest12.class" />
           <include name="**/AnalyticReportsPageUnitTest.class" />
         </fileset>
       </batchtest>

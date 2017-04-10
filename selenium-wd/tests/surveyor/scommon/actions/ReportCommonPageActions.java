@@ -1669,8 +1669,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	public boolean verifyCancelButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyCopyButtonIsDisplayed", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyCopyButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
+		logAction("ReportsCommonPageActions.verifyCancelButtonIsDisplayed", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyCancelButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
 		return verifyPresenceOfButton(dataRowID, ReportsButtonType.Cancel);
 	}
 	/**
