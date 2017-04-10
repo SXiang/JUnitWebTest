@@ -124,6 +124,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Manual']")
 	protected WebElement checkBoxManualRptMode;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='Analytics']")
+	protected WebElement checkBoxAnalyticsRptMode;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeRptMode;
 
@@ -955,6 +958,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		case Manual:
 			radioButton = checkBoxManualRptMode;
 			break;
+		case Analytics:
+			radioButton = checkBoxAnalyticsRptMode;
+			break;
 		default:
 			break;
 		}
@@ -969,6 +975,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return checkBoxRRRptMode.isSelected();
 		case Manual:
 			return checkBoxManualRptMode.isSelected();
+		case Analytics:
+			return checkBoxAnalyticsRptMode.isSelected();
 		default:
 			return false;
 		}
@@ -2569,7 +2577,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity) reports;
-
+		boolean isAnalyticsReport = false;
 		// 1. Change customer if specified.
 		if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
 			Log.info("Select customer '"+reports.getCustomer()+"'");
@@ -2581,16 +2589,20 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 
 		// 2. Report general
-		if (reportsCompliance.getEthaneFilter() != null) {
-			selectEthaneFilter(reportsCompliance.getEthaneFilter());
-		}
-
 		if (reportsCompliance.getReportModeFilter() != null) {
+			isAnalyticsReport = reportsCompliance.getReportModeFilter().equals(ReportModeFilter.Analytics);
 			selectReportMode(reportsCompliance.getReportModeFilter());
 		}
 
-		if (reportsCompliance.getExclusionRadius() != null) {
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		// 2.1 Non Analytics
+		if(!isAnalyticsReport){
+			if (reportsCompliance.getEthaneFilter() != null) {
+				selectEthaneFilter(reportsCompliance.getEthaneFilter());
+			}
+
+			if (reportsCompliance.getExclusionRadius() != null) {
+				inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			}
 		}
 
 		// 3. Area Selector
@@ -2615,7 +2627,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		// 4. SearchAreaPreference and Views
 		selectSearchPreferenceArea(reportsCompliance);
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList(), isAnalyticsReport);
 
 		// 5. Optional Tabular PDF Content
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();

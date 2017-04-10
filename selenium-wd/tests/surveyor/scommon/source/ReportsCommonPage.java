@@ -514,7 +514,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 				RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addViews(String customer, List<Map<String, String>> viewList) {
+	public void addViews(String customer, List<Map<String, String>> viewList){
+		addViews(customer, viewList, false);
+	}
+	
+	public void addViews(String customer, List<Map<String, String>> viewList, boolean isAnalyticsReport) {
 		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
 		int colNum;
@@ -569,18 +573,21 @@ public class ReportsCommonPage extends ReportsBasePage {
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
-				colNum = 7;
-				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-			}
+			// Non Analytics
+			if(!isAnalyticsReport){
+				if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
+					colNum = 7;
+					Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 
-			if (selectView(viewMap, KEYANNOTATION)) {
-				colNum = 8;
-				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				if (selectView(viewMap, KEYANNOTATION)) {
+					colNum = 8;
+					Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
@@ -3879,6 +3886,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 			break;
 		case Manual:
 			radioBox = this.inputSurModeFilterManual;
+			break;
+		case Analytics:
+			radioBox = this.inputSurModeFilterAnalytics;
 			break;
 		default:
 			break;
