@@ -85,7 +85,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	protected static final String COL_HEADER_REPORT_TITLE = "Report Title";
 	protected static final String COL_HEADER_REPORT_NAME = "Report Name";
-	protected static final String COL_HEADER_REPORT_MODE = "Report Mode";
 	protected static final String COL_HEADER_CREATED_BY = "Created By";
 	protected static final String COL_HEADER_DATE = "Date";
 	protected static final String COL_HEADER_ACTION = "Action";
