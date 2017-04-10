@@ -55,25 +55,23 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast
-	 * Test Description: - Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast
+	 * Test Case ID: UnitTest001_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast
+	 * Test Description: - Generate Analytics Report as Picarro admin user
 	 * Script: -
-	 *	- - Log in as Picarro Support user
+	 *	- - Log in as Picarro admin user
 	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
-	 *	- - Select 2 or 3 surveys with different tag values
-	 *	- - Add View with base map value: map
+	 *	- - Select Analytics report and select a survey
+	 *	- - Add View with no map: none
 	 *	- - Click on OK and click Compliance Viewer button
 	 * Results: -
 	 *	- - Report generated successfully
-	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
-     *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST001, location = AnalyticReportDataProvider.class)
-	public void UnitTest001_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast(
+	public void UnitTest001_GenerateAnalyticReportPicarroAdminUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
+		Log.info("\nRunning UnitTest001_GenerateAnalyticReportPicarroAdminUser ..." +
+			 "\nTest Description: UnitTest001_GenerateAnalyticReportPicarroAdminUser");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -85,12 +83,25 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 	}
+	
+	/**
+	 * Test Case ID: UnitTest002_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast
+	 * Test Description: - Generate Analytics Report as Picarro admin user
+	 * Script: -
+	 *	- - Log in as Picarro admin user
+	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
+	 *	- - Select Analytics report and select a survey
+	 *	- - Add 2 Views with base map value, satellite map
+	 *	- - Click on OK and click Compliance Viewer button
+	 * Results: -
+	 *	- - Report generated successfully
+	 */
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST002, location = AnalyticReportDataProvider.class)
-	public void UnitTest002_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast(
+	public void UnitTest002_GenerateAnalyticReportPicarroAdminUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast ..." +
-			 "\nTest Description: Generate Compliance Report as Picarro Support user and include Percent Coverage Forecast");
+		Log.info("\nRunning UnitTest002_GenerateAnalyticReportPicarroAdminUser ..." +
+			 "\nTest Description: UnitTest002_GenerateAnalyticReportPicarroAdminUser");
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
