@@ -152,6 +152,9 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_type_assessment")
 	private WebElement assessment;
 
+	@FindBy(id = "survey_type_analytics")
+	private WebElement analytics;
+	
 	@FindBy(id = "survey_radiation_overcast")
 	private WebElement overcast;
 
@@ -748,6 +751,26 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		return this;
 	}
 
+	/**
+	 * Get Analytics Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getAnalyticsButton() {
+		return analytics;
+	}
+
+	/**
+	 * Click on Analytics Button.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickAnalyticsButton() {
+		Log.clickElementInfo("Analytics");
+		analytics.click();
+		return this;
+	}
+	
 	/**
 	 * Click on Start Survey Button inside the Survey modal dialog.
 	 *
