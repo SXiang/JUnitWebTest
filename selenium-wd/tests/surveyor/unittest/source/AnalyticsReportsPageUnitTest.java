@@ -55,7 +55,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: UnitTest001_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast
+	 * Test Case ID: UnitTest001_GenerateAnalyticReportPicarroAdminUser
 	 * Test Description: - Generate Analytics Report as Picarro admin user
 	 * Script: -
 	 *	- - Log in as Picarro admin user
@@ -85,7 +85,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 	}
 	
 	/**
-	 * Test Case ID: UnitTest002_GenerateAnalyticReportPicarroSupportUserIncludePercentCoverageForecast
+	 * Test Case ID: UnitTest002_GenerateAnalyticReportPicarroAdminUser
 	 * Test Description: - Generate Analytics Report as Picarro admin user
 	 * Script: -
 	 *	- - Log in as Picarro admin user
