@@ -613,7 +613,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
 		ReportsBaseDataRow compRptDataRow = getReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
-		String reportName = "";
+		String reportName = "", viewName = "";
 
 		switch(fileType) {
 		case PDF:
@@ -641,9 +641,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		case View:
 			reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
 			List<Map<String, String>> viewList = getWorkingReportsEntity().getViewList();
-
 			Map<String, String> map = viewList.get(fileIndex-1);
-			String viewName = map.get(KEYVIEWNAME);
+			viewName = map.get(KEYVIEWNAME);
 			this.getReportsCommonPage().waitForViewFileDownload(reportName, viewName);
 			break;
 		default:
@@ -1670,8 +1669,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	public boolean verifyCancelButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyCopyButtonIsDisplayed", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyCopyButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
+		logAction("ReportsCommonPageActions.verifyCancelButtonIsDisplayed", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyCancelButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
 		return verifyPresenceOfButton(dataRowID, ReportsButtonType.Cancel);
 	}
 	/**
@@ -2493,6 +2492,18 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes clickOnReportViewerView action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean clickOnReportViewerView(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.clickOnReportViewerView", data, dataRowID);
+		return clickComplianceViewerViewByIndex("1", dataRowID);
+	}
+	
+	/**
 	 * Executes clickOnComplianceViewerViewByIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2630,6 +2641,19 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	/**
 	 * Executes waitForView1DownloadToComplete action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForViewDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForViewDownloadToComplete", data, dataRowID);
+		waitForViewDownloadByViewIndex("1", dataRowID);
+		return true;
+	}
+	
+	/**
+	 * Executes waitForView1DownloadToCompleteByViewIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
@@ -3574,7 +3598,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return r -> true;
 	}
 
-	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
 		boolean retSuccess = true;
 		boolean verifyCoverageValuesTable = false;
 		boolean verifyShowCoverageTable = false;
@@ -3648,7 +3672,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return (ReportsCommonDataRow) getWorkingReportsDataRow();
 	}
 
-	private ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
+	protected ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}
 }

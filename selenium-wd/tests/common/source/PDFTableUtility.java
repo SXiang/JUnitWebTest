@@ -30,6 +30,7 @@ public class PDFTableUtility extends PDFUtility{
 		COVERAGEFORECASTTO70(".*Probability to Obtain 70% Coverage",0,"",true,4),
 		DRIVINGSURVEYTABLE("Indication Table",0,"LISA",true,-1),
 		ISOTOPICANALYSISTABLE("Surveyor"+wordSeparator+"Date/Time"+wordSeparator+"Result"+wordSeparator+"Isotopic Value/ Uncertainty(�"+wordSeparator+"Field Notes",1,"",true,-1),
+		EQDATATABLE ("# Leaks / ft"+wordSeparator+"Emission Rate "+wordSeparator+"/ Leak",0,"",false,-1,9),
 		VIEWSTABLE (".*\\| (Map|Satellite|None)\\s?",0,"View Table",false);
 
 		private final String tableID;	          //1. tableID, indicator of start of a table, required

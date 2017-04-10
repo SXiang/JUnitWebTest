@@ -6,15 +6,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
-import surveyor.regression.source.EQReportsPageTest;
 import surveyor.regression.source.ReferenceGasReportsPageTest;
 import surveyor.regression.source.SystemHistoryReportsPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
-	EQReportsPageTest.class
-	,ReferenceGasReportsPageTest.class
+	ReferenceGasReportsPageTest.class
 	,SystemHistoryReportsPageTest.class
 })
 public class ReportsTestSuite1 {
