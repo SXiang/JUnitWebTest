@@ -296,33 +296,33 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[6]/a[1]";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[6]/a[@title='Copy']";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[@title='Copy']";
 			removeDBCache = true;
 			break;
 		case ReportViewer:
-			buttonXPath = "td[6]/a[3]";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[6]/a[4]";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[6]/a[@title='Resubmit']";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[@title='Resubmit']";
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
 								// 1st button.
-			buttonXPath = "td[6]/a[@title='Copy']";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
 						// button.
-			buttonXPath = "td[6]/a[@title='Cancel Report']";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
 			// cancelled or report error.
-			buttonXPath = "td[6]/span";
+			buttonXPath = "td["+COL_IDX_ACTION+"]/span";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
@@ -343,8 +343,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1, numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "tr[" + rowNum + "]/td["+COL_IDX_REPORT_TITLE+"]";
+			createdByXPath = "tr[" + rowNum + "]/td["+COL_IDX_CREATED_BY+"]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
@@ -573,15 +573,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_REPORT_TITLE+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_CREATED_BY+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]/a[4]/img";
+				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_ACTION+"]/a[4]/img";
 				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
 				Log.clickElementInfo("Investigate", ElementType.ICON);
 				investigateImg.click();
@@ -635,15 +635,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_REPORT_TITLE+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_CREATED_BY+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[6]/a[2]/img";
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_ACTION+"]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 				Log.clickElementInfo("Resubmit", ElementType.ICON);
 				resubmitImg.click();

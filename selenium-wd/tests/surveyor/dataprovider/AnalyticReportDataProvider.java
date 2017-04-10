@@ -5,10 +5,6 @@ import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 
-import surveyor.scommon.entities.CustomerSurveyInfoEntity;
-import surveyor.scommon.generators.CustomerSurveyInfoBuilder;
-import surveyor.scommon.generators.TestDataGenerator;
-
 public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST001 = "dataProviderAnalyticReports_UnitTest001";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST002 = "dataProviderAnalyticReports_UnitTest002";
