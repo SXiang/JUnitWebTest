@@ -25,14 +25,14 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_UnitTest001() {
 		return new Object[][] {
-			{ "ARUnitTest001" /*TestCaseID*/, 4 /*userDataRowID*/,  230 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "ARUnitTest001" /*TestCaseID*/, 4 /*userDataRowID*/,  208 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_UnitTest002() {
 		return new Object[][] {
-			{ "ARUnitTest001" /*TestCaseID*/, 4 /*userDataRowID*/,  231 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "ARUnitTest001" /*TestCaseID*/, 4 /*userDataRowID*/,  209 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }
