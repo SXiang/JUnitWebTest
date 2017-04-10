@@ -22,13 +22,6 @@ public class ResourceKeys {
 	public static final String EQReports_AddNew = "EQReports_AddNew";
 	public static final String EQReports_PageTitle = "EQReports_PageTitle";
 
-	// Analytic report resource keys.
-	public static final String AnalyticReport_AnalyticTablePDF = "AnalyticReport_AnalyticTablePDF";
-	public static final String AnalyticReport_PageTitle = "AnalyticReport_PageTitle";
-	public static final String AnalyticReport_PageTitleNew = "AnalyticReport_PageTitleNew";
-	public static final String AnalyticReports_AddNew = "AnalyticReports_AddNew";
-	public static final String AnalyticReports_PageTitle = "AnalyticReports_PageTitle";
-	
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
