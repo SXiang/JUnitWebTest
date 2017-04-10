@@ -523,13 +523,16 @@ public final class SurveyorConstants {
 	}
 
 	public enum LicensedFeatures {
+		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
 		ASSETBOX ("Asset Box Highlight"),
 		CURTAINVIEW ("Curtain View"),
 		CUSTOMCOLORS ("Custom Colors"),
 		EQ ("EQ"),
+		FEQ ("Facility EQ"),
 		FLEETMAPVIEW ("FleetMap View"),
-		GAPGRID10 ("FTP Upload"),
+		FTP ("FTP Upload"),
+		//GAPGRID10 ("FTP Upload"),
 		GISLAYERS ("GIS Layers"),
 		LISAASSET("LISA Asset Highlight"),
 		LISABOX10 ("LISA Box 1.0"),
