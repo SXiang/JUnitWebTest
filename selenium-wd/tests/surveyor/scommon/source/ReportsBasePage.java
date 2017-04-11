@@ -266,13 +266,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
 	protected WebElement paginationInput;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/img")
 	protected WebElement actionStatus;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[3]")
 	protected WebElement btnReportViewer;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/span")
 	protected WebElement errorSpan;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
@@ -309,7 +309,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor']")
 	protected WebElement cbSurveyUnit;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[2]")
 	protected WebElement btnDownload;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -345,7 +345,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
 	protected WebElement tdReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]")
 	protected WebElement tdReportCreatedBy;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
@@ -379,7 +379,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[6]/a[@title='Copy']")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.ID, using = "report-FOV-opacity")
@@ -409,7 +409,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
 	protected WebElement tdCReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]")
 	protected WebElement tdCReportCreatedBy;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
