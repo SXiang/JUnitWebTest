@@ -49,7 +49,8 @@ public class BaseReportEntity {
 		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
-		Assessment ("Assessment");
+		Assessment ("Assessment"),
+		Analytics ("Analytics");
 
 		private final String name;
 
@@ -69,8 +70,9 @@ public class BaseReportEntity {
 		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
-		Assessment ("Assessment");
-
+		Assessment ("Assessment"),
+		Analytics ("Analytics");
+		
 		private final String name;
 		ReportModeFilter(String nm) {
 			name = nm;

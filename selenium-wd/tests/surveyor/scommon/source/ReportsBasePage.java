@@ -122,6 +122,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
 
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Analytics")
+	protected WebElement inputReportModeAnalytics;
+
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 
@@ -187,6 +190,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Rapid Response']")
 	protected WebElement inputSurModeFilterRapidResponse;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Analytics']")
+	protected WebElement inputSurModeFilterAnalytics;
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
 	protected WebElement inputSurModeFilterManual;
@@ -2937,6 +2943,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
 	}
 
+	public boolean isAnalyticsReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeAnalytics);
+	}
+
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
@@ -2947,6 +2957,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isRapidResponseSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterRapidResponse);
+	}
+
+	public boolean isAnalyticsSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAnalytics);
 	}
 
 	public boolean isManualSurveyModeShown() {

@@ -156,7 +156,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		homePage.getLinkSurveyors().click();
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
-		//surveyorsPage.getTxtSurveyorSearch().sendKeys(testAccount.get("surveyorName"));
 		surveyorsPage.performSearch(testAccount.get("surveyorName"));
 		surveyorsPage.waitForDataTabletoLoad();
 		assertTrue(surveyorsPage.getTableRows().size() > 0);
@@ -165,7 +164,6 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		getHomePage().clickOnDrivingSurveyLink();
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);
-		//measurementSessionsPage.getInputSearch().sendKeys(testAccount.get("surveyorName"));
 		measurementSessionsPage.performSearch(testAccount.get("surveyorName"));
 		measurementSessionsPage.waitForTableDataToLoad();
 		assertTrue(measurementSessionsPage.getTableRows().size() > 0);

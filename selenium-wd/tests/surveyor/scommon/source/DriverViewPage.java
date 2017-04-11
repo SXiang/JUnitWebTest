@@ -44,7 +44,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	public enum SurveyType {
-		Standard, RapidResponse, Operator, Manual, Assessment
+		Standard, RapidResponse, Operator, Manual, Assessment, Analytics
 	}
 
 	private Map<String, String> data;
