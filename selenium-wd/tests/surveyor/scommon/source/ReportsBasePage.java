@@ -91,9 +91,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private static final Integer COL_IDX_REPORT_TITLE = 1;
 	private static final Integer COL_IDX_REPORT_NAME = 2;
-	private static final Integer COL_IDX_CREATED_BY = 3;
-	private static final Integer COL_IDX_DATE = 4;
-	private static final Integer COL_IDX_ACTION = 5;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
 
 	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
