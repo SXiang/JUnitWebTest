@@ -129,7 +129,7 @@ public class BaseReportJobPerformanceTest extends BasePerformanceTest {
 		getComplianceReportsPageAction().open(EMPTY, NOTSET);
 		getComplianceReportsPageAction().createNewReport(EMPTY, reportDataRowID);
 		getComplianceReportsPageAction().setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS), reportDataRowID);
-		assertTrue(getComplianceReportsPageAction().waitForReportGenerationToComplete(EMPTY, reportDataRowID));
+		assertTrue(getComplianceReportsPageAction().waitForReportGenerationToCompleteWithErrorChecks(EMPTY, reportDataRowID));
 	}
 
 	protected void postRunResultsToAutomationDB(Integer reportDataRowID, LocalDateTime startDate, LocalDateTime endDate) throws Exception {

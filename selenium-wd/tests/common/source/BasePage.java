@@ -450,10 +450,18 @@ public class BasePage {
 		WebElementExtender.executeScript(element, driver, "arguments[0].scrollIntoView();");
 	}
 
+	public void focusOnPage(By locator){
+		WebElement element = waitUntilPresenceOfElementLocated(locator);
+		focusOnPage(element);
+	}
 	public void focusOnPage(WebElement element){
 		Actions action = new Actions(driver);
-		action.moveToElement(element).click().click().perform();
-		action.moveToElement(element).click().click().perform();
+		try{
+			action.moveToElement(element).click().click().perform();
+			action.moveToElement(element).click().click().perform();
+		}catch(Exception e){
+			Log.warn("Failed to focusOnPage by clicking on element: "+e);
+		}
 	}
 
 	public void minimizeBrowserWindow(){

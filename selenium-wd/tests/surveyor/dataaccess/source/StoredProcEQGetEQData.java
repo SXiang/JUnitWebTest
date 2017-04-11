@@ -2,7 +2,9 @@ package surveyor.dataaccess.source;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 
 import common.source.Log;
@@ -22,6 +24,20 @@ public class StoredProcEQGetEQData extends BaseEntity {
 		super();
 	}
 
+	public String toString() {
+		DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+		String emissionRate = decimalFormat.format(this.getEmissionRate());
+		String length = decimalFormat.format(this.getLength());
+		String emissionFactor = decimalFormat.format(this.getEmissionFactor());
+		String numLeaks = decimalFormat.format(this.getNumLeaks());
+		String leaksPerFt = decimalFormat.format(this.getLeaksPerFt());
+		String ratePerLeak = decimalFormat.format(this.getRatePerLeak());
+		return this.getName().concat(this.getEmissionRank().concat(emissionRate)
+				.concat(this.getConfideneceGroup().concat(length)
+				.concat(emissionFactor+"").concat(numLeaks)
+				.concat(leaksPerFt).concat(ratePerLeak)));
+	}
+	
 	public String getName() {
 		return name;
 	}

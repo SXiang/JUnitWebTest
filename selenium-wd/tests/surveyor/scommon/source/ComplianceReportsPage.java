@@ -95,6 +95,16 @@ import common.source.TestContext;
  */
 public class ComplianceReportsPage extends ReportsCommonPage {
 
+	protected static final String COL_HEADER_REPORT_MODE = "Report Mode";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_REPORT_MODE = 3;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
+
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_AddNew);
@@ -267,7 +277,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		Log.method("ComplianceReportsPage.checkComplianceReportButtonPresenceAndClick", rptTitle, strCreatedBy,
+		Log.method("ComplianceReportsPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
 				buttonType.name(), clickButton, confirmAction);
 
 		setPagination(PAGINATIONSETTING);
@@ -283,33 +293,33 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[5]/a[1]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			removeDBCache = true;
 			break;
 		case ReportViewer:
-			buttonXPath = "td[5]/a[3]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[5]/a[4]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[5]/a[@title='Resubmit']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Resubmit']";
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
 								// 1st button.
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
 						// button.
-			buttonXPath = "td[5]/a[@title='Cancel Report']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
 			// cancelled or report error.
-			buttonXPath = "td[5]/span";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/span";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
@@ -330,8 +340,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1, numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
@@ -2667,6 +2677,17 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
+	public String getReportPrefix() {
+		return "CR";
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	}
+
+	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
 		if (surveyModeFilter != null) {
@@ -2682,14 +2703,16 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
-	public String getReportPrefix() {
-		return "CR";
-	}
-
-	@Override
-	public void deleteReportWithApiCall(String reportId) {
-		Log.method("deleteReportWithApiCall", reportId);
-		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_REPORT_MODE, COL_IDX_REPORT_MODE);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		columnIdxMap.put(COL_HEADER_UPLOAD_STATUS, COL_IDX_UPLOAD_STATUS);
+		return columnIdxMap;
 	}
 
 	public List<String> getViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
@@ -2755,6 +2778,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		HashMap<String, TableColumnType> columnMap = new HashMap<String, TableColumnType>();
 		columnMap.put(Constant_Investigator, TableColumnType.String);
 		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
+	}
+
+	public boolean isSurveyTableEmpty() {
+		Log.method("isSurveyTableEmpty");
+		return WebElementExtender.isElementPresentAndDisplayed(dataTableEmpty);
 	}
 
 	public WebElement getBtnAssignInvestigators() {

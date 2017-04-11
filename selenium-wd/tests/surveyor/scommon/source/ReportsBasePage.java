@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.commons.io.FileUtils;
@@ -48,6 +49,7 @@ import common.source.DateUtility;
 import common.source.ExcelUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.PDFUtility;
 import common.source.PollManager;
@@ -67,6 +69,7 @@ import surveyor.scommon.actions.data.SurveyorDataReader;
 import surveyor.scommon.actions.data.SurveyorDataReader.SurveyorDataRow;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.ServerLogEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportJobType;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.ReportStatusType;
@@ -79,6 +82,19 @@ import surveyor.scommon.source.SurveyorConstants.ReportColorOption;
  *
  */
 public class ReportsBasePage extends SurveyorBasePage {
+
+	protected static final String COL_HEADER_REPORT_TITLE = "Report Title";
+	protected static final String COL_HEADER_REPORT_NAME = "Report Name";
+	protected static final String COL_HEADER_CREATED_BY = "Created By";
+	protected static final String COL_HEADER_DATE = "Date";
+	protected static final String COL_HEADER_ACTION = "Action";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_CREATED_BY = 3;
+	private static final Integer COL_IDX_DATE = 4;
+	private static final Integer COL_IDX_ACTION = 5;
+
 	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -399,7 +415,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li")
 	protected WebElement msgEmptySurvey;
 
-	@FindBy(how = How.ID, using = "compliance-table-pdf-download")
+	@FindBy(how = How.XPATH, using = "//*[contains(@id,'-table-pdf-download')]")
 	protected WebElement pdfImg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
@@ -1086,20 +1102,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return true;
 	}
 
-	/**
-	 * Implementation to be provided by Derived classes.
-	 */
-	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
-		throw new Exception("Not implemented");
-	}
-
-	/**
-	 * Implementation to be provided by Derived classes.
-	 */
-	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) throws Exception {
-		throw new Exception("Not implemented");
-	}
-
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
@@ -1150,10 +1152,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return result;
 			}
 		});
-	}
-
-	protected boolean handleFileDownloads(int rowNum) throws Exception {
-		throw new Exception("Not implemented");
 	}
 
 	public void inputReportTitle(String rptTitle) {
@@ -1486,7 +1484,66 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean checkActionStatus(String rptTitle, String strCreatedBy, String testCaseID) throws Exception {
-		Log.method("ReportsBasePage.checkActionStatus", rptTitle, strCreatedBy, testCaseID);
+		return waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, testCaseID, null, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/,
+				(str) -> FunctionUtil.wrapException(str, (s) -> handleFileDownloads(rptTitle, testCaseID)));
+	}
+
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
+		return waitForReportGenerationToComplete(rptTitle, strCreatedBy, null /*rptNameBuilder*/);
+	}
+
+	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy, String allowedErrorMsg) throws Exception {
+		Predicate<String> allowedMoreThanSupportedAssetsErrorCheck = getCheckAllowedErrorsPredicate(
+				String.format("report id=%s", getReportJobStat(rptTitle).Id.toUpperCase()));
+		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, allowedErrorMsg, allowedMoreThanSupportedAssetsErrorCheck);
+		if (reportName == null) {
+			return false;
+		}
+		return true;
+	}
+
+	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) throws Exception  {
+		return waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy, null /*allowedErrorMsg*/, null /*allowedErrorCheck*/);
+	}
+
+	private boolean waitForReportGenerationToComplete(String rptTitle, String strCreatedBy, StringBuilder rptNameBuilder) {
+		return FunctionUtil.wrapException(rptTitle, (s1) ->
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/, rptNameBuilder, null/*allowedErrorMsg*/, null /*allowedErrorCheck*/,
+				(s2) -> {
+					FunctionUtil.warnOnError(() -> {
+						if (isReportViewerDialogOpen()) {
+							closeReportViewerDialog();
+						}
+					});
+					return true;
+			}));
+	}
+
+	private String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
+				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
+
+		StringBuilder rptNameBuilder = new StringBuilder();
+		boolean retVal = FunctionUtil.wrapException(rptTitle, (s1) ->
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
+				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, 
+				(s2) -> {
+					FunctionUtil.warnOnError(() -> {
+						if (isReportViewerDialogOpen()) {
+							closeReportViewerDialog();
+						}
+					});
+					return true;
+			}));
+		if (retVal) {
+			return rptNameBuilder.toString();
+		}
+		return null;
+	}
+
+	private boolean waitForReportGenerationToCompleteAndExecuteAction(String rptTitle, String strCreatedBy, String testCaseID, StringBuilder outReportId, String allowedErrorMsg,
+			Predicate<String> allowedErrorCheck, Predicate<String> actionOnReportFound) throws Exception {
+		Log.method("ReportsBasePage.waitForReportGenerationToCompleteAndExecuteAction", rptTitle, strCreatedBy, testCaseID);
 		setPagination(PAGINATIONSETTING_100);
 		this.waitForPageLoad();
 		String reportTitleXPath;
@@ -1511,8 +1568,18 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
 
-		reportId = getReportId(rptTitle);
-		String strReportName = getReportFileName(rptTitle);
+		try{
+			reportId = Report.getReport(rptTitle).getId();
+		}catch(Exception e){
+			ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
+			reportId = reportJobsStatObj.Id;
+		}
+
+		if (outReportId != null) {
+			outReportId.append(reportId);
+		}
+
+		String strReportName = getReportPrefix() + "-" + reportId.substring(0, 6).toUpperCase();
 
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
@@ -1520,10 +1587,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info(String.format("Looking for Report Title='%s', Report Name='%s', Created By='%s'",
 				rptTitle.trim(), strReportName.trim(), strCreatedBy.trim()));
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			reportNameXPath = "tr[" + rowNum + "]/td[2]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
-			dateXPath = "tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			reportNameXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+			dateXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -1546,8 +1613,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 				lastSeenDateCellText = dateCellText.trim();
 
 				Log.info(String.format("Setting reportId to TestContext. ReportId='%s'", reportId));
-				reportId = getReportId(rptTitle);
-
 				TestContext.INSTANCE.addReportId(rptTitle, reportId);
 
 				long startTime = System.currentTimeMillis();
@@ -1555,12 +1620,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 				boolean bContinue = true;
 				final int MAX_RETRIES_FOR_NULL_ERROR = 5;
 				int numRetriesForNullError = 0;
-				WebElement reportViewer;
+				WebElement reportViewer = null;
+				WebElement reportError = null;
 				while (bContinue) {
 					try {
 						if (rowSize == 1) {
 							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForPdfReportIcontoAppear();
@@ -1572,42 +1638,93 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> First Call : RowNum=%d", rowNum));
 
 							if (rowNum != currRowNum && rowNum == 1) {
-								Log.info("[Check 1]: rowNum reset.. Continue...");
+								Log.info("[Check 1a]: rowNum reset.. Continue...");
 								continue;
 							}
 
 							if (rowNum > maxRows) {
-								Log.info("[Check 2]: rowNum > maxRows.. Break...");
+								Log.info("[Check 1b]: rowNum > maxRows.. Break...");
 								break;
 							}
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
 							// If current rowNum doesn't match the new rowNum continue.
 							Log.info(String.format("Second call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
 							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
-								Log.info("[Check 3]: rowNum != rowNumPostSkip.. Continue...");
+								Log.info("[Check 2]: rowNum != rowNumPostSkip.. Continue...");
 								continue;
 							}
 
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[5]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
 							this.waitForPdfReportIcontoAppear();
 						}
 
-						return handleFileDownloads(rptTitle, testCaseID);
+						// Caller provided checks.
+						if (actionOnReportFound != null) {
+							Log.info("[Predicate-01] - Action on Report found predicate specified. Calling Predicate method.");
+							boolean retVal = actionOnReportFound.test(rptTitle);
+							Log.info(String.format("[Predicate-01] - Predicate method returned - %b", retVal));
+							return retVal;
+						}
+
+						return true;
 					} catch (org.openqa.selenium.NoSuchElementException e) {
+						boolean foundErrorLabel = false;
+						try {
+							// Row entries could have changed by the point execution reaches here.
+							Log.info(String.format("Third call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
+							if(rowNum == skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
+									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
+								Log.info("[Check 3]: rowNum has NOT changed. Looking for error label");
+								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
+								foundErrorLabel = true;
+							}
+						} catch (org.openqa.selenium.NoSuchElementException e1) {
+							Log.info("Did NOT find error processing label");
+						}
+
+						if (foundErrorLabel) {
+							if (allowedErrorCheck == null) {
+								// If report has error and not looking for errors return.
+								if (reportError.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
+									Log.error("[Returning FALSE] - Report generation failed.");
+									return false;
+								}
+							} else {
+								// Additional error checking.
+								Log.info("[Allowed Errors Check] Looking for allowed errors");
+								if (reportError.getText().contains(SurveyorConstants.REPORTERRORPROCESSING)) {
+									Log.info(String.format("[Predicate-02] - [Check Allowed Errors] : Expecting error message - %s", allowedErrorMsg));
+									boolean errorCheckSuccess = allowedErrorCheck.test(allowedErrorMsg);
+									this.open();
+									if (errorCheckSuccess) {
+										Log.info("[Predicate-02] - [Returning TRUE] - Allowed error check succeeded.");
+										return true;
+									} else {
+										Log.error(String.format("[Predicate-02] - [Returning FALSE] - Report failed to generate. Expected error message was NOT found.", allowedErrorMsg));
+										return false;
+									}
+								}
+							}
+						}
+
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							Log.info(String.format("wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
+							Log.error(String.format("Wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
 									elapsedTime));
 							return false;
 						}
+
 						continue;
 					} catch (NullPointerException ne) {
 						numRetriesForNullError++;
@@ -1615,6 +1732,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("RETRY attempt-[%d]. Null Pointer Exception Encountered : %s",
 									numRetriesForNullError, ExceptionUtility.getStackTraceString(ne)));
 							if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
+								Log.error(String.format("[Returning FALSE] - Report generation timeout exceeded. Elapsed time=%d, ReportGenerationTimeout=%d",
+										elapsedTime, getReportGenerationTimeout()));
 								return false;
 							}
 							continue;
@@ -1642,6 +1761,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 				rowNum = 0;
 			}
 		}
+
+		Log.error("[Returning FALSE] - Report NOT found.");
 		return false;
 	}
 
@@ -1687,146 +1808,25 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public boolean waitForReportGenerationtoComplete(String rptTitle, String strCreatedBy) {
-		String reportName = waitForReportGenerationtoCompleteAndGetReportName(rptTitle, strCreatedBy);
-		if (reportName == null) {
-			return false;
+	private String getReportViewerButtonXPath(int rowNum, boolean singleRowDisplayed, boolean includeErrorProcessingXPath) {
+		StringBuilder xPathBuilder = new StringBuilder();
+		xPathBuilder.append("tr");
+		if (!singleRowDisplayed) {
+			xPathBuilder.append("[");
+			xPathBuilder.append(rowNum);
+			xPathBuilder.append("]");
 		}
-		return true;
-	}
-
-	public String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy) {
-		setPagination(PAGINATIONSETTING_100);
-		this.waitForPageLoad();
-		String reportTitleXPath;
-		String createdByXPath;
-		String dateXPath;
-
-		List<WebElement> rows = getTable().findElements(By.xpath("tr"));
-
-		int rowSize = rows.size();
-		int loopCount = 0;
-
-		// Keep track of the last matching row that we processed.
-		String lastSeenTitleCellText = "";
-		String lastSeenCreatedByCellText = "";
-		String lastSeenDateCellText = "";
-
-		if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-			loopCount = rowSize;
-		else
-			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
-		int maxRows = Integer.parseInt(PAGINATIONSETTING_100);
-
-		Log.info(String.format("Looking for report: Title=[%s], CreatedBy=[%s]", rptTitle, strCreatedBy));
-
-		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
-		int pageCounter = 0;
-
-		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
-			dateXPath = "tr[" + rowNum + "]/td[4]";
-
-			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
-			String createdByCellText = getReportTableCellText(createdByXPath);
-			String dateCellText = getReportTableCellText(dateXPath);
-			Log.info(String.format("Found cell : rptTitleCellText=[%s], createdByCellText=[%s], dateCellText=[%s]",
-					rptTitleCellText.trim(), createdByCellText.trim(), dateCellText.trim()));
-
-			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
-					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-
-				Log.info(String.format("Found matching row for rptTitleCellText=[%s], createdByCellText=[%s]",
-						rptTitleCellText.trim(), createdByCellText.trim()));
-
-				lastSeenTitleCellText = rptTitleCellText.trim();
-				lastSeenCreatedByCellText = createdByCellText.trim();
-				lastSeenDateCellText = dateCellText.trim();
-
-				// Use API call for environments where direct DB access is not available (eg P3Scale).
-				/* DE2331 created: This method is not stable and throwing exceptions - need to be fixed
-				 * The try catch block could be removed after the fix
-				 */
-				try{
-					reportId = Report.getReport(rptTitle).getId();
-				}catch(Exception e){
-					ReportJobsStat reportJobsStatObj = getReportJobStat(rptTitle);
-					reportId = reportJobsStatObj.Id;
-				}
-
-				TestContext.INSTANCE.addReportId(rptTitle, reportId);
-
-				long startTime = System.currentTimeMillis();
-				long elapsedTime = 0;
-				boolean bContinue = true;
-				WebElement reportViewerOrError;
-
-				while (bContinue) {
-					try {
-						if (rowSize == 1) {
-							Log.info("RowSize == 1. Getting ReportViewer button(Or error) element...");
-							reportViewerOrError = getTable().findElement(By.xpath("tr/td[5]/a[@title='Report Viewer']|tr/td[5]/*[@class='error-processing'] "));
-						} else {
-							Log.info("First call -> skipNewlyAddedRows()");
-							int currRowNum = rowNum;
-							rowNum = skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum,
-									maxRows);
-
-							if (rowNum != currRowNum && rowNum == 1) {
-								Log.info("[Check 1]: rowNum reset.. Continue...");
-								continue;
-							}
-
-							if (rowNum > maxRows) {
-								Log.info("[Check 2]: rowNum > maxRows.. Break...");
-								break;
-							}
-
-							reportViewerOrError = getTable().findElement(
-									By.xpath("tr[" + rowNum + "]/td[5]/a[@title='Report Viewer']|tr[" + rowNum + "]/td[5]/*[@class='error-processing'] "));
-							//* Double check the correctness of the rowNum
-							Log.info("Second call -> skipNewlyAddedRows()");
-							if(rowNum != skipNewlyAddedRows(lastSeenTitleCellText, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum,
-									maxRows)){
-								Log.info("[Check 3]: rowNum != rowNumPostCheck.. Continue...");
-								continue;
-							}
-						}
-						return reportId;
-					} catch (org.openqa.selenium.NoSuchElementException e) {
-						elapsedTime = System.currentTimeMillis() - startTime;
-						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							return null;
-						}
-						continue;
-					} catch (NullPointerException ne) {
-						Log.info("Null Pointer Exception: " + ne);
-						fail("Report failed to generate!!");
-					}
-				}
+		xPathBuilder.append("/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']");
+		if (includeErrorProcessingXPath) {
+			xPathBuilder.append("|tr");
+			if (!singleRowDisplayed) {
+				xPathBuilder.append("[");
+				xPathBuilder.append(rowNum);
+				xPathBuilder.append("]");
 			}
-
-			if (rowNum >= Integer.parseInt(PAGINATIONSETTING_100)
-					&& !this.nextBtn.getAttribute("class").contains("disabled")) {
-				Log.clickElementInfo("Next");
-				toNextPage();
-				pageCounter++;
-				this.waitForPageLoad();
-
-				List<WebElement> newRows = getTable().findElements(By.xpath("tr"));
-				rowSize = newRows.size();
-				if (rowSize < Integer.parseInt(PAGINATIONSETTING_100))
-					loopCount = rowSize;
-				else
-					loopCount = Integer.parseInt(PAGINATIONSETTING_100);
-
-				rowNum = 0;
-			}
+			xPathBuilder.append("/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']");
 		}
-
-		return null;
+		return xPathBuilder.toString();
 	}
 
 	public boolean copyReport(String rptTitle, String strCreatedBy) {
@@ -1852,14 +1852,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		this.waitForPageLoad();
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "tr[" + rowNum + "]/td[5]/a[@title='Copy']"; // Don't
+				copyImgXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']"; // Don't
 																			// use
 																			// index
 																			// for
@@ -1914,8 +1914,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
@@ -1975,7 +1975,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
 			this.waitForPageLoad();
 			reportTitleXPath = "tr[" + rowNum + "]/td[" + String.valueOf(searchKeywordColIdx) + "]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(searchKeyword)
@@ -2053,14 +2053,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[1]";
+				deleteImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 				deleteImg = getReportTableCell(deleteImgXPath);
 				Log.clickElementInfo("Delete", ElementType.ICON);
 				deleteImg.click();
@@ -2156,14 +2156,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 				Log.clickElementInfo("Copy", ElementType.ICON);
 				copyImg.click();
@@ -2223,14 +2223,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			String createdByCellText = getReportTableCellText(createdByXPath);
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
-				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]";
+				copyImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[2]";
 				copyImg = getReportTableCell(copyImgXPath);
 				Log.clickElementInfo("Copy", ElementType.ICON);
 				copyImg.click();
@@ -2800,19 +2800,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return reportJobsStatObj;
 	}
 
-	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenCreatedByCellText, String lastSeenDateCellText, int rowNum,
-			int maxRows) {
-		return skipNewlyAddedRows(lastSeenTitleCellText, "" /*lastSeenReportNameCellText*/, lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows);
-	}
-
 	private int skipNewlyAddedRows(String lastSeenTitleCellText, String lastSeenReportNameCellText,
 			String lastSeenCreatedByCellText, String lastSeenDateCellText, int rowNum, int maxRows) {
 		Log.method("skipNewlyAddedRows", lastSeenTitleCellText, lastSeenReportNameCellText, lastSeenCreatedByCellText, rowNum, maxRows);
 
-		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-		String reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-		String dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+		String reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+		String reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+		String createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+		String dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 		String rptTitleCellText = getReportTableCellText(reportTitleXPath);
 		String rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -2830,7 +2825,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					rptTitleCellText.trim(), rptNameCellText.trim(), createdByCellText.trim()));
 
 			// If report in past encountered, reset rowNum to 1.
-			if (DateUtility.compareDatesWithTZ(lastSeenDateCellText, false, dateCellText, false)<0) {
+			if (DateUtility.compareDatesWithTZ(lastSeenDateCellText, false, dateCellText, false)>0) {
 				Log.info(String.format("Encountered report in past. Resetting row number to 1. lastSeenDateCellText='%s', dateCellText='%s'", lastSeenDateCellText, dateCellText));
 				return 1;
 			}
@@ -2841,10 +2836,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 			Log.info(String.format("Processing row number - %d", rowNum));
 
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[2]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
-			dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			reportNameXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_NAME) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
+			dateXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_DATE) + "]";
 
 			rptTitleCellText = getReportTableCellText(reportTitleXPath);
 			rptNameCellText = getReportTableCellText(reportNameXPath);
@@ -3156,5 +3151,62 @@ public class ReportsBasePage extends SurveyorBasePage {
 				return result;
 			}
 		});
+	}
+
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	/**
+	 * Implementation to be provided by Derived classes.
+	 */
+	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	protected boolean handleFileDownloads(int rowNum) throws Exception {
+		throw new Exception("Not implemented");
+	}
+
+	protected Integer getColumnIndex(String columnHeader) {
+		return getColumnIndexMap().get(columnHeader);
+	}
+
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		return columnIdxMap;
+	}
+
+	private static Predicate<String> getCheckAllowedErrorsPredicate(String searchTerm) {
+		Predicate<String> predicate = msg -> {
+			boolean allowedErrorFound = false;
+			Log.info(String.format("Checking presence of server log error - '%s'", msg));
+			List<ServerLogEntity> serverLogs = CommonPageFunctions.getServerLog(searchTerm, 10);
+			if (serverLogs != null && serverLogs.size() > 0) {
+				allowedErrorFound = hasOnlyMoreAssetsThanSupportedErrorMessages(serverLogs);
+			}
+			Log.info(String.format("Found matching server log='%b'", allowedErrorFound));
+			return allowedErrorFound;
+		};
+
+		return predicate;
+	}
+
+	private static boolean hasOnlyMoreAssetsThanSupportedErrorMessages(List<ServerLogEntity> serverLogs) {
+		boolean matchSuccess = false;
+		if (serverLogs != null && serverLogs.size() > 0) {
+			matchSuccess = serverLogs.stream()
+				.allMatch(s -> s.getMessage().contains(SurveyorConstants.MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG));
+		}
+
+		return matchSuccess;
 	}
 }

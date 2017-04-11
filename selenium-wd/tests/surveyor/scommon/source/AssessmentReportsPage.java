@@ -22,6 +22,13 @@ import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
  */
 public class AssessmentReportsPage extends ReportsCommonPage {
 
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
+
 	public static final String STRURLPath = "/Reports/AssessmentReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.AssessmentReports_PageTitle);
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.AssessmentReports_AddNew);
@@ -100,6 +107,18 @@ public class AssessmentReportsPage extends ReportsCommonPage {
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(SurveyModeFilter surveyModeFilter) {
 		// No action in Assessment reports page.
+	}
+
+	@Override
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		columnIdxMap.put(COL_HEADER_UPLOAD_STATUS, COL_IDX_UPLOAD_STATUS);
+		return columnIdxMap;
 	}
 
 	@Override

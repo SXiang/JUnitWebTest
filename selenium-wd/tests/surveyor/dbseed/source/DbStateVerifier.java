@@ -95,11 +95,12 @@ public class DbStateVerifier {
 		Analyzer rfads2004Picarro = Analyzer.getAnalyzerBySerialNumber(RFADS2004PICARRO);
 		Analyzer sqacus2016_1 = Analyzer.getAnalyzerBySerialNumber(SQACUS20161);
 		Analyzer feds2055Picarro = Analyzer.getAnalyzerBySerialNumber(FEDS2055PICARRO);
+		Analyzer rfAds2004FEQ = Analyzer.getAnalyzerBySerialNumber(RFADS2004FEQ);
 
 		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null
 				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null
 				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || rfads2004Picarro == null
-				|| sqacus2016_1 == null || feds2055Picarro == null) {
+				|| sqacus2016_1 == null || feds2055Picarro == null || rfAds2004FEQ == null) {
 			return false;
 		}
 
@@ -122,13 +123,14 @@ public class DbStateVerifier {
 		SurveyorUnit surveyorIGPSCar = SurveyorUnit.getSurveyorUnit(SURVEYOR_IGPSCAR);
 		SurveyorUnit surveyorSqacus1 = SurveyorUnit.getSurveyorUnit(SURVEYOR_SQACUSUNIT1);
 		SurveyorUnit surveyorNissanRoguePicarro = SurveyorUnit.getSurveyorUnit(SURVEYOR_NISSANROGUEPICARRO);
+		SurveyorUnit surveyorBlackRhinoFEQ = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKRHINOFEQ);
 
 		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null
 				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
 				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null
 				|| simautoSurveyor5 == null || whiteDodge == null || surveyorIGPSCar == null
-				|| surveyorSqacus1 == null || surveyorNissanRoguePicarro == null) {
+				|| surveyorSqacus1 == null || surveyorNissanRoguePicarro == null || surveyorBlackRhinoFEQ == null) {
 			return false;
 		}
 
@@ -173,7 +175,7 @@ public class DbStateVerifier {
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
 				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName, expectedAssetCount,
 						count));
-				if (expectedAssetCount != count) {
+				if (expectedAssetCount > count) {
 					Log.info("isGISSeedPresent = FALSE");
 					return false;
 				}
@@ -192,7 +194,7 @@ public class DbStateVerifier {
 				Log.info(String.format("%s table row count for Customer[Id=%s] = %d", tableName, customerId, count));
 				Log.info(String.format("Expected %s row count=%d, Actual row count=%d", tableName,
 						expectedBoundaryCount, count));
-				if (expectedBoundaryCount != count) {
+				if (expectedBoundaryCount > count) {
 					Log.info("isGISSeedPresent = FALSE");
 					return false;
 				}
