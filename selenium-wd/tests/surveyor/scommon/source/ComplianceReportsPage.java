@@ -176,7 +176,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
