@@ -164,7 +164,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[4]")
 	protected WebElement btnFirstInvestigateCompliance;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
@@ -176,7 +176,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[4]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
