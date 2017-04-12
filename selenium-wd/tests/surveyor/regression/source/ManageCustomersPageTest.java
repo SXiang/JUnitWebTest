@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataprovider.DataGenerator;
@@ -24,6 +26,7 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import static surveyor.scommon.source.SurveyorConstants.*;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author zlu
@@ -36,7 +39,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	private static ManageLocationsPage manageLocationsPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
-	
+	protected static WebDriver driver;
 	@BeforeClass
 	public static void setupManageCustomersPageTest() {
 		initializeTestObjects(); // ensures TestSetup and TestContext are initialized before Page object creation.
@@ -55,6 +58,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		initializeTestObjects();
 
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		
 		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
 		PageFactory.initElements(getDriver(),  manageCustomersPage);
 
@@ -278,14 +282,13 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * - Click on 'Add New Customer' button
 	 * - Provide required customer details and click OK	 
 	 * Results: - 
-	 * - User is navigated to Manage Customers page and new customer entry is present in the table
-	 * 
+	 * - Duplicate Customer creation not allowed
 	 */
-	@Ignore   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
+	@Test   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");
-
+		
 		String eula = customerName + ": " + EULASTRING;
 
 		loginPage.open();
@@ -297,8 +300,30 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
+		manageCustomersPage.btnAddNewCustomer.click();
+		manageCustomersPage.waitForPageLoad();
+		
+		assertTrue( manageCustomersPage.getInputCustomerName().isDisplayed());
+		//manageCustomersPage.inputCustomerName = driver.findElement(By.id("name"));
+		System.out.println("!!!!!!!!!!!!");
+		
+		if (manageCustomersPage.inputCustomerName == null) {
+			Log.info("Did NOT find this.inputCustomerName element");
+		}
+		if (!manageCustomersPage.inputCustomerName.isDisplayed()) {
+			Log.info("this.inputCustomerName is NOT displayed");
+		}
+
+
+		manageCustomersPage.inputCustomerName.sendKeys(customerName);
+
+		manageCustomersPage.setEULAText(eula);
+		
+		assertTrue(manageCustomersPage.getLblNameError().getText()
+				.equalsIgnoreCase(ManageCustomer_ErrorMsg));
+		
 		// Verify cannot create duplicate customer.
-		assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
+		//assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
 	}
 
 	/**

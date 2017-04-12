@@ -260,4 +260,56 @@ public class LoginPageTest extends SurveyorBaseTest {
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 	}
+	
+	@Test
+	public void loginTest_TC37_VerifyCustomerUtilityAdminLoginProfile() throws Exception {
+
+		List<String> strListTagCus = new ArrayList<String> ();
+		List<String> strListTagPic = new ArrayList<String> ();
+			
+		testReport = addTestReport(SQACUSSU, USERPASSWORD,
+				SurveyModeFilter.Standard);
+		String rptTitle = testReport.get(SurveyType.Standard + "Title");
+		String strCreatedBy = testReport.get("userName");
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(homePage.getLinkPicarroAdmin()));
+
+		complinaceReportsPage.open();
+		complinaceReportsPage.waitForPageLoad();
+		complinaceReportsPage.searchAndDeleteReport(rptTitle, strCreatedBy);
+		
+		homePage.open();
+		homePage.waitForPageLoad();
+		homePage.getDropDownLoginUser().click();
+		homePage.getLinkPreference().click();
+		preferencesPage.waitForPageLoad();
+		assertTrue(preferencesPage.getSelectedTimeZone().getText().equalsIgnoreCase(TIMEZONE));
+		assertTrue(preferencesPage.getSelectedLocation().getText().equalsIgnoreCase(SQACUSLOC));
+		homePage.getLinkFleetMap().click();
+		fleetMapPage.waitForPageLoad();
+		fleetMapPage.waitForFleetMaptoLoad();
+		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
+		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
+		homePage.getLinkSurveyors().click();
+		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.waitForDataTabletoLoad();
+		assertTrue(surveyorPage.getTableRows().size() > 0);
+		
+		measurementSessionsPage.open();
+
+		strListTagCus.add(CUSDRVSTDTAG3200);
+		
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
+
+		try {
+			measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+		surveyViewPage.waitForPageLoad();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
+	}
+
 }

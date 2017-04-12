@@ -137,7 +137,7 @@ public class ResourceKeys {
 	public static final String Constant_DateTime = "Constant_DateTime";
 	public static final String Constant_Investigator="Constant_Investigator";
 	public static final String Constant_Date="Constant_Date";
-
+	public static final String ManageCustomer_ErrorMsg = "ManageCustomer_ErrorMsg";
 	public static final String ReportSSRS_StartDateTime = "ReportSSRS_StartDateTime";
 	public static final String ReportSSRS_EndDateTime = "ReportSSRS_EndDateTime";
 	public static final String Constant_ShowingStartToEndOfTotalEntries = "Constant_ShowingStartToEndOfTotalEntries";
