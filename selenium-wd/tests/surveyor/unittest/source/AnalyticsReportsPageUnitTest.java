@@ -82,7 +82,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
 		
-		/*Update  survey data an enable following verifications */
+		/*Update  survey data and enable following verifications */
 //		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 //
 //		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
@@ -115,7 +115,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
 		
-		/*Update  survey data an enable following verifications */
+		/*Update  survey data and enable following verifications */
 //		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 //
 //		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
