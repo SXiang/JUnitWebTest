@@ -3,6 +3,7 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.sql.CallableStatement;
 
 import common.source.BaseHelper;
@@ -115,15 +116,41 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
+		return get(reportId, false);
+	}
+
+	public ArrayList<StoredProcComplianceGetIndications> get(String reportId, boolean checkPSFilter) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
+		applyPSFilter(objReportList, checkPSFilter);
 		return objReportList;
 	}
 
+	public void applyPSFilter(ArrayList<StoredProcComplianceGetIndications> objReportList, boolean checkPSFilter){
+		Iterator<StoredProcComplianceGetIndications> it = objReportList.iterator();
+		while(it.hasNext()){
+			StoredProcComplianceGetIndications indication = it.next();
+			String surveyorUnitName = indication.getSurveyorUnitName();
+			try{
+				float psFilterThreshold = getPSFilterThreshold(surveyorUnitName);
+				float ch4 = indication.getCh4();
+				if(ch4 < psFilterThreshold){
+					it.remove();
+					Log.warn("Removed indication: "+indication+" based on psShreshold '"+psFilterThreshold+"' for surveyor '"+surveyorUnitName+"'");
+				}
+			}catch(Exception e){
+				Log.error("Failed to get psFilterTreshold for "+surveyorUnitName);
+			}
+		}
+	}
 	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId) {
-		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId);
-		return objStoredProcComplianceGetIndications;
+		return getReportIndications(reportId, false);
 	}
 
+	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId, boolean checkPSFilter) {
+		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId, checkPSFilter);
+		return objStoredProcComplianceGetIndications;
+	}
+	
 	public boolean isEquals(StoredProcComplianceGetIndications obj) {
 		Log.method("StoredProcComplianceGetIndications.isEquals", obj.toString());
 		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
@@ -192,6 +219,14 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return objReport;
 	}
 
+	public float getPSFilterThreshold(String surveyorUnitName) throws SQLException{
+		String sql = "Select PriorityScoreFilterThreshold from dbo.LocationAnalyticsParameter, dbo.SurveyorUnit "+
+					"Where LocationAnalyticsParameter.LocationId = SurveyorUnit.LocationId And SurveyorUnit.Description = '" + surveyorUnitName+"'";
+		ResultSet rs = executeQuery(sql);
+		float psFilterThreshold = rs.getFloat("PriorityScoreFilterThreshold");
+		return psFilterThreshold;
+	}
+	
 	public ArrayList<StoredProcComplianceGetIndications> load(String reportId) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = new ArrayList<StoredProcComplianceGetIndications>();
 
