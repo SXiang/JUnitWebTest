@@ -176,7 +176,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[1]")
 	protected WebElement tdInvReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableBoxes']/tbody/tr/td[3]")
 	protected WebElement tdInvReportCreatedBy;
 
 	@FindBy(id = "report-assethighlighting")
@@ -573,15 +573,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_REPORT_TITLE+"]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_CREATED_BY+"]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_ACTION+"]/a[4]/img";
+				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[4]/img";
 				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
 				Log.clickElementInfo("Investigate", ElementType.ICON);
 				investigateImg.click();
@@ -635,15 +635,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_REPORT_TITLE+"]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_CREATED_BY+"]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+COL_IDX_ACTION+"]/a[2]/img";
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 				Log.clickElementInfo("Resubmit", ElementType.ICON);
 				resubmitImg.click();
