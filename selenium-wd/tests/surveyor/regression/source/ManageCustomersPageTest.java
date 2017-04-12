@@ -284,7 +284,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 	 * Results: - 
 	 * - Duplicate Customer creation not allowed
 	 */
-	@Test   // Ignoring. Validation message NOT showing correctly in Product. Check if SEED script update is needed.
+	@Test
 	public void TC88_DuplicateCustomerNotAllowed_PicAdmin() {
 		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getRandomNumber() + "TC88";
 		Log.info("\nRunning TC88_DuplicateCustomerNotAllowed_PicAdmin - Test Description: Admin not allowed to create duplicate Customer");
@@ -300,30 +300,8 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
 		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
 
-		manageCustomersPage.btnAddNewCustomer.click();
-		manageCustomersPage.waitForPageLoad();
-		
-		assertTrue( manageCustomersPage.getInputCustomerName().isDisplayed());
-		//manageCustomersPage.inputCustomerName = driver.findElement(By.id("name"));
-		System.out.println("!!!!!!!!!!!!");
-		
-		if (manageCustomersPage.inputCustomerName == null) {
-			Log.info("Did NOT find this.inputCustomerName element");
-		}
-		if (!manageCustomersPage.inputCustomerName.isDisplayed()) {
-			Log.info("this.inputCustomerName is NOT displayed");
-		}
-
-
-		manageCustomersPage.inputCustomerName.sendKeys(customerName);
-
-		manageCustomersPage.setEULAText(eula);
-		
-		assertTrue(manageCustomersPage.getLblNameError().getText()
-				.equalsIgnoreCase(ManageCustomer_ErrorMsg));
-		
 		// Verify cannot create duplicate customer.
-		//assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
+		assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
 	}
 
 	/**

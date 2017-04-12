@@ -50,9 +50,9 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='name']")
 	public WebElement inputCustomerName;
 
-	@FindBy(id = "name-error")
-	private WebElement lblNameError;
-
+	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
+	public WebElement lblNameError;
+	
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
@@ -192,7 +192,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg))) {
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
 				return false;
