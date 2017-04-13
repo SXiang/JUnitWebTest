@@ -305,47 +305,47 @@ $surveyIDArr | % {
 
             $i7=0
             Write-Host "Fetching Peak values for Survey Tag: $tag"
-            "SELECT [AnalyzerId],[EpochTime],[Amplitude],[CH4],CONVERT(VARBINARY(MAX), [Position]) AS Position,CONVERT(VARBINARY(MAX), [Lisa]) AS Lisa,[LisaOpeningAngle],[LisaBearing],[CarBearing],[Major],[Minor],[CarSpeedNorth],[CarSpeedEast],[WindDirectionStdDev],[WindSpeedNorth],[WindSpeedEast],[Sigma],[Distance],[GpsLatitude],[GpsLongitude],[PassedAutoThreshold],[SurveyId],[EthaneRatio],[EthaneRatioSdevRaw],[EthaneRatioSdev],[EthaneConcentrationSdev],[EthyleneRatio],[EthyleneRatioSdevRaw],[EthyleneRatioSdev],[EthyleneConcentrationSdev],[PipEnergy],[MethanePeaktoPeak],[Disposition],[ClassificationConfidence] FROM [$databaseName].[dbo].[Peak] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId' AND SurveyId='$id'"
+            $query = "SELECT [AnalyzerId],[EpochTime],[Amplitude],[CH4],CONVERT(VARBINARY(MAX), [Position]) AS Position,CONVERT(VARBINARY(MAX), [Lisa]) AS Lisa,[LisaOpeningAngle],[LisaBearing],[CarBearing],[Major],[Minor],[CarSpeedNorth],[CarSpeedEast],[WindDirectionStdDev],[WindSpeedNorth],[WindSpeedEast],[Sigma],[Distance],[GpsLatitude],[GpsLongitude],[PassedAutoThreshold],[SurveyId],[EthaneRatio],[EthaneRatioSdevRaw],[EthaneRatioSdev],[EthaneConcentrationSdev],[EthyleneRatio],[EthyleneRatioSdevRaw],[EthyleneRatioSdev],[EthyleneConcentrationSdev],[PipEnergy],[MethanePeaktoPeak],[Disposition],[ClassificationConfidence] FROM [$databaseName].[dbo].[Peak] WHERE EpochTime >= $startEpoch AND EpochTime <= $endEpoch AND AnalyzerId='$analyzerId' AND SurveyId='$id'"
             $objPeak = Get-DatabaseData -connectionString $connString -query $query -isSQLServer:$true
             $objPeak | foreach {
                 if ($i7 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Peak, Survey Tag -> $tag - Processing row - $i7"
                     
                     $objPea = $_;
-                    $peaAmplitude = Null-ToValue -value $objPea.Amplitude;
-                    $peaAnalyzerId = Null-ToValue -value $objPea.AnalyzerId;
-                    $peaCarBearing = Null-ToValue -value $objPea.CarBearing;
-                    $peaCarSpeedEast = $objPea.CarSpeedEast;
-                    $peaCarSpeedNorth = $objPea.CarSpeedNorth;
-                    $peaCH4 = Null-ToValue -value $objPea.CH4;
-                    $peaClassificationConfidence = $objPea.ClassificationConfidence;
-                    $peaDisposition = Null-ToValue -value $objPea.Disposition;
-                    $peaDistance = Null-ToValue -value $objPea.Distance;
-                    $peaEpochTime = Null-ToValue -value $objPea.EpochTime;
-                    $peaEthaneConcentrationSdev = $objPea.EthaneConcentrationSdev;
-                    $peaEthaneRatio = $objPea.EthaneRatio;
-                    $peaEthaneRatioSdev = $objPea.EthaneRatioSdev;
-                    $peaEthaneRatioSdevRaw = $objPea.EthaneRatioSdevRaw;
-                    $peaEthyleneConcentrationSdev = $objPea.EthyleneConcentrationSdev;
-                    $peaEthyleneRatio = $objPea.EthyleneRatio;
-                    $peaEthyleneRatioSdev = $objPea.EthyleneRatioSdev;
-                    $peaEthyleneRatioSdevRaw = $objPea.EthyleneRatioSdevRaw;
-                    $peaGpsLatitude = Null-ToValue -value $objPea.GpsLatitude;
-                    $peaGpsLongitude = Null-ToValue -value $objPea.GpsLongitude;
+                    $peaAmplitude = $objPea.Amplitude;
+                    $peaAnalyzerId = $objPea.AnalyzerId;
+                    $peaCarBearing = $objPea.CarBearing;
+                    $peaCarSpeedEast = Null-ToValue -value $objPea.CarSpeedEast;
+                    $peaCarSpeedNorth = Null-ToValue -value $objPea.CarSpeedNorth;
+                    $peaCH4 = $objPea.CH4;
+                    $peaClassificationConfidence = Null-ToValue -value $objPea.ClassificationConfidence;
+                    $peaDisposition = $objPea.Disposition;
+                    $peaDistance = $objPea.Distance;
+                    $peaEpochTime = $objPea.EpochTime;
+                    $peaEthaneConcentrationSdev = Null-ToValue -value $objPea.EthaneConcentrationSdev;
+                    $peaEthaneRatio = Null-ToValue -value $objPea.EthaneRatio;
+                    $peaEthaneRatioSdev = Null-ToValue -value $objPea.EthaneRatioSdev;
+                    $peaEthaneRatioSdevRaw = Null-ToValue -value $objPea.EthaneRatioSdevRaw;
+                    $peaEthyleneConcentrationSdev = Null-ToValue -value $objPea.EthyleneConcentrationSdev;
+                    $peaEthyleneRatio = Null-ToValue -value $objPea.EthyleneRatio;
+                    $peaEthyleneRatioSdev = Null-ToValue -value $objPea.EthyleneRatioSdev;
+                    $peaEthyleneRatioSdevRaw = Null-ToValue -value $objPea.EthyleneRatioSdevRaw;
+                    $peaGpsLatitude = $objPea.GpsLatitude;
+                    $peaGpsLongitude = $objPea.GpsLongitude;
                     $peaLisa = Geometry-ToText -value $objPea.Lisa;
-                    $peaLisaBearing = Null-ToValue -value $objPea.LisaBearing;
-                    $peaLisaOpeningAngle = Null-ToValue -value $objPea.LisaOpeningAngle;
-                    $peaMajor = Null-ToValue -value $objPea.Major;
-                    $peaMethanePeaktoPeak = $objPea.MethanePeaktoPeak;
-                    $peaMinor = Null-ToValue -value $objPea.Minor;
-                    $peaPassedAutoThreshold = Null-ToValue -value $objPea.PassedAutoThreshold;
-                    $peaPipEnergy = $objPea.PipEnergy;
+                    $peaLisaBearing = $objPea.LisaBearing;
+                    $peaLisaOpeningAngle = $objPea.LisaOpeningAngle;
+                    $peaMajor = $objPea.Major;
+                    $peaMethanePeaktoPeak = Null-ToValue -value $objPea.MethanePeaktoPeak;
+                    $peaMinor = $objPea.Minor;
+                    $peaPassedAutoThreshold = Bool-ToBit -value $objPea.PassedAutoThreshold;
+                    $peaPipEnergy = Null-ToValue -value $objPea.PipEnergy;
                     $peaPosition = Geometry-ToText -value $objPea.Position;
-                    $peaSigma = Null-ToValue -value $objPea.Sigma;
-                    $peaSurveyId = $objPea.SurveyId;
-                    $peaWindDirectionStdDev = $objPea.WindDirectionStdDev;
-                    $peaWindSpeedEast = $objPea.WindSpeedEast;
-                    $peaWindSpeedNorth = $objPea.WindSpeedNorth;
+                    $peaSigma = $objPea.Sigma;
+                    $peaSurveyId = Null-ToValue -value $objPea.SurveyId;
+                    $peaWindDirectionStdDev = Null-ToValue -value $objPea.WindDirectionStdDev;
+                    $peaWindSpeedEast = Null-ToValue -value $objPea.WindSpeedEast;
+                    $peaWindSpeedNorth = Null-ToValue -value $objPea.WindSpeedNorth;
 
                     Add-Content $OUTCSV "$peaAnalyzerId,$peaEpochTime,$peaAmplitude,$peaCH4,$peaPosition,$peaLisa,$peaLisaOpeningAngle,$peaLisaBearing,$peaCarBearing,$peaMajor,$peaMinor,$peaCarSpeedNorth,$peaCarSpeedEast,$peaWindDirectionStdDev,$peaWindSpeedNorth,$peaWindSpeedEast,$peaSigma,$peaDistance,$peaGpsLatitude,$peaGpsLongitude,$peaPassedAutoThreshold,$peaSurveyId,$peaEthaneRatio,$peaEthaneRatioSdevRaw,$peaEthaneRatioSdev,$peaEthaneConcentrationSdev,$peaEthyleneRatio,$peaEthyleneRatioSdevRaw,$peaEthyleneRatioSdev,$peaEthyleneConcentrationSdev,$peaPipEnergy,$peaMethanePeaktoPeak,$peaDisposition,$peaClassificationConfidence"
                 }
