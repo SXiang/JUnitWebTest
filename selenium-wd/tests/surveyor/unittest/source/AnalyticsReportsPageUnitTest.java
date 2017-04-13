@@ -3,6 +3,9 @@ package surveyor.unittest.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -77,11 +80,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
 	}
 	
 	/**
@@ -107,12 +106,8 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-	}
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
+		}
 
 	/**
 	 * As a user, I want the pdf reports to suppress some indications (LISAs or asset boxes) 
