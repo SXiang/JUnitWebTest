@@ -298,4 +298,56 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		getHomePage().logout();
 	}
 
+	/* * Test Case ID: TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled
+	 * Script:
+	 * - Generate Analytics report
+	 * - Disable analytics license feature for above customer
+	 * - Click on Copy button
+	 * - Click OK
+	 * Results:
+	 * - Validation message is displayed
+	 * - Missing License
+	 * - The original report was created with the following survey mode licenses: Analytics. Your account currently does not have access to these modes.
+	 */
+
+	@Test 
+	public void TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled() throws Exception{
+		Log.info("\nTestcase - TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled\n");
+
+		String userName = testAccount.get("userName");
+		String userPassword = testAccount.get("userPassword");
+		String customerName = testAccount.get("customerName");
+		Map<String, String> testSurvey, testReport;
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		
+		testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+				,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
+		
+		String rptTitle = testReport.get(SurveyType.Standard+"Title");
+		String strCreatedBy = testReport.get("userName");
+
+		getHomePage().logout();
+		
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		/* Unselect Anaytics*/
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
+
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+		assertTrue(complianceReportsPageAction.waitForLicenseMissingPopupToShow(EMPTY, NOTSET));
+		complianceReportsPageAction.waitForOkMissingLicensePopupToClose(EMPTY, NOTSET);
+	
+		getHomePage().logout();
+	}
 }

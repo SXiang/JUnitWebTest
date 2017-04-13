@@ -235,6 +235,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);
 	public static final String ComplianceReport_LicenseMissing = Resources.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
 
+	
+	private static final String OK_lICENSE_MISSING_BUTTON_XPATH = "//*[@id='licenseMissingModal']/div/div/div[3]/a";
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 	protected static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
@@ -816,7 +818,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.clickElementInfo("Cancel of deletion");
 		cancelDelete.click();
 	}
-
+	
+	public void clickOnOKMissingLicensePopup() {
+		WebElement OKMissingLicense = this.driver.findElement(By.xpath(OK_lICENSE_MISSING_BUTTON_XPATH));
+		Log.clickElementInfo("Confirm of deletion");
+		OKMissingLicense.click();
+	}
 	public boolean clickOnButtonInReportPage(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType) throws Exception {
 		return checkButtonOnReportsPageAndClick(rptTitle, strCreatedBy, buttonType, true,
@@ -3594,6 +3601,30 @@ public class ReportsCommonPage extends ReportsBasePage {
 		});
 	}
 
+	public void waitForLicenseMissingPopupToShow() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("licenseMissingModal")));
+				WebElement MissingLicensePopupSection = d.findElement(By.id("licenseMissingModal"));
+				return MissingLicensePopupSection.getAttribute("style").contains("display:block")
+						|| MissingLicensePopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	public void waitForConfirmLicenseMissingPopupToClose() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("licenseMissingModal")));
+				WebElement confirmLicenseMissingPopupSection = d.findElement(By.id("licenseMissingModal"));
+				return confirmLicenseMissingPopupSection.getAttribute("style").contains("display:none")
+						|| confirmLicenseMissingPopupSection.getAttribute("style").contains("display: none");
+			}
+		});
+	}
+	
 	protected void waitForCustomerBoundarySectionToShow() {
 		WebElement dvAreaModeCustomer = this.divCustomerBoundarySection;
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
