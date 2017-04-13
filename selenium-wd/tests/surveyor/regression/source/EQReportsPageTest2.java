@@ -30,9 +30,9 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 
-		private static LoginPageActions loginPageAction;
-		private static EQReportsPageActions eqReportsPageAction;
-		private static EQReportsPage eqReportsPage;
+		private LoginPageActions loginPageAction;
+		private EQReportsPageActions eqReportsPageAction;
+		private EQReportsPage eqReportsPage;
 
 		@BeforeClass
 		public static void beforeClass() {
@@ -49,7 +49,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			setPropertiesForTestRunMode();
 		}
 
-		private static void setPropertiesForTestRunMode() throws Exception {
+		private void setPropertiesForTestRunMode() throws Exception {
 			setTestRunMode(ReportTestRunMode.FullTestRun);
 
 			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
@@ -61,7 +61,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * Initializes the page action objects.
 		 * @throws Exception
 		 */
-		protected static void initializePageActions() throws Exception {
+		protected void initializePageActions() throws Exception {
 			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();

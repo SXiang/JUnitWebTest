@@ -799,12 +799,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/AnalyticsReportsPageUnitTest.class" />
         	<include name="**/ReportsTestSuite2.class" />
-        	<include name="**/ComplianceReportsPageTest5.class" />
-      		<include name="**/AssessmentReportsPageTest.class" />
-        	<include name="**/ReferenceGasReportsPageTest.class" />
-        	<include name="**/SystemHistortyReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
