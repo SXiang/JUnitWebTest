@@ -277,7 +277,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		Log.method("ComplianceReportsPage.checkComplianceReportButtonPresenceAndClick", rptTitle, strCreatedBy,
+		Log.method("ComplianceReportsPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
 				buttonType.name(), clickButton, confirmAction);
 
 		setPagination(PAGINATIONSETTING);
@@ -293,33 +293,33 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[5]/a[1]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			removeDBCache = true;
 			break;
 		case ReportViewer:
-			buttonXPath = "td[5]/a[3]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[5]/a[4]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[5]/a[@title='Resubmit']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Resubmit']";
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
 								// 1st button.
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
 						// button.
-			buttonXPath = "td[5]/a[@title='Cancel Report']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
 			// cancelled or report error.
-			buttonXPath = "td[5]/span";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/span";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
@@ -340,8 +340,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1, numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
@@ -2784,7 +2784,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		Log.method("isSurveyTableEmpty");
 		return WebElementExtender.isElementPresentAndDisplayed(dataTableEmpty);
 	}
-	
+
 	public WebElement getBtnAssignInvestigators() {
 		return btnAssignInvestigators;
 	}
