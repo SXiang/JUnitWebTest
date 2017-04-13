@@ -36,11 +36,11 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageActionTest {
 
-		private LoginPageActions loginPageAction;
-		private EQReportsPageActions eqReportsPageAction;
-		private EQReportsPage eqReportsPage;
-		private ManageCustomerPageActions manageCustomerPageAction;
-		private ManageUsersPage manageUsersPage;
+		private static LoginPageActions loginPageAction;
+		private static EQReportsPageActions eqReportsPageAction;
+		private static EQReportsPage eqReportsPage;
+		private static ManageCustomerPageActions manageCustomerPageAction;
+		private static ManageUsersPage manageUsersPage;
 		private static Map<String, String> testAccount;
 		@BeforeClass
 		public static void beforeClass() {
@@ -66,7 +66,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			}
 		}
 
-		private void setPropertiesForTestRunMode() throws Exception {
+		private static void setPropertiesForTestRunMode() throws Exception {
 			setTestRunMode(ReportTestRunMode.FullTestRun);
 
 			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
@@ -78,7 +78,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		 * Initializes the page action objects.
 		 * @throws Exception
 		 */
-		protected void initializePageActions() throws Exception {
+		protected static void initializePageActions() throws Exception {
 			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 			manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
