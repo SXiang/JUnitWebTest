@@ -528,12 +528,14 @@
         <fileset dir="${build}">
           <include name="**/ActionsExecutionDriver.class" />
           <include name="**/DriverViewPageTest.class" />
+          <include name="**/DriverViewPageTest_Analytics.class" />
           <include name="**/DriverViewPageTest2.class" />
           <include name="**/DriverViewPageTests_PipelineRunner1.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
           <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
           <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
           <include name="**/ObserverViewPageTest.class" />
+          <include name="**/ObserverViewPageTest_Analytics.class" />
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
@@ -652,7 +654,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-	          <include name="**/SimulatorGeneralTests.class" />
+	          <include name="**/DriverViewPageTest_Analytics.class" />
+	          <include name="**/ObserverViewPageTest_Analytics.class" />
 			</fileset>
       </batchtest>
     </junit>

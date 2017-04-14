@@ -120,7 +120,7 @@ public class WebElementExtender {
 	public static WebElement findElementIfExists(WebDriver driver, String elementId) {
 		return findElementIfExists(driver, By.id(elementId));
 	}
-	
+
 	public static WebElement findElementIfExists(WebDriver driver, By elementBy) {
 		WebElement element = null;
 		try {
@@ -135,6 +135,19 @@ public class WebElementExtender {
 	public static String getInnerHtml(WebElement element) {
 	   return element.getAttribute("innerHTML");
    	}
+
+	/**
+	 * Returns the applied CSS property value for specified CSS property name for a web element.
+	 * @param element - Web element for which the CSS property value is to be retrieved.
+	 * @param cssPropertyName - name of the CSS property to be retrieved.
+	 * @return
+	 */
+	public static String getCssPropertyValue(WebDriver driver, WebElement element, String cssPropertyName) {
+    	JavascriptExecutor js = (JavascriptExecutor) driver;
+    	Object cssPropertyValue = js.executeScript("return window.getComputedStyle(arguments[0], null).getPropertyValue('" + cssPropertyName +  "');",
+				element);
+		return cssPropertyValue.toString();
+	}
 
 	public static void highlightElement(WebElement element) {
 	    for (int i = 0; i < 5; i++) {
