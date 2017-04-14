@@ -527,7 +527,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void addViews(String customer, List<Map<String, String>> viewList){
 		addViews(customer, viewList, false);
 	}
-	
+
 	public void addViews(String customer, List<Map<String, String>> viewList, boolean isAnalyticsReport) {
 		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
@@ -743,7 +743,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.method("invokeEQPDFFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.EQPDF);
 	}
-	
+
 	public void invokePDFZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokePDFZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ZIP);
@@ -1608,7 +1608,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean isInputTitleHighlightedInRed(){
 		return isHighlightedInRed(inputTitle);
 	}
-	
+
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
 		String border = "border: 1px solid red;";

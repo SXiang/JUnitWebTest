@@ -2502,7 +2502,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.clickOnReportViewerView", data, dataRowID);
 		return clickComplianceViewerViewByIndex("1", dataRowID);
 	}
-	
+
 	/**
 	 * Executes clickOnComplianceViewerViewByIndex action.
 	 * @param data - specifies the input data passed to the action.
@@ -2651,7 +2651,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		waitForViewDownloadByViewIndex("1", dataRowID);
 		return true;
 	}
-	
+
 	/**
 	 * Executes waitForView1DownloadToCompleteByViewIndex action.
 	 * @param data - specifies the input data passed to the action.
