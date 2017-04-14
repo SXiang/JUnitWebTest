@@ -12,7 +12,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 
 	// Use the Driver view data reader as the input could be read from DriverViewTestData.
 	private DriverViewDataReader dataReader = null;
-	
+
 	public ObserverViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new ObserverViewPage(driver, strBaseURL, testSetup));
@@ -30,7 +30,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		getObserverViewPage().open();
 		return true;
 	}
-	
+
 	/**
 	 * Executes refreshPage action.
 	 * @param data - specifies the input data passed to the action.
@@ -40,13 +40,13 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean refreshPage(String data, Integer dataRowID) {
 		logAction("ObserverViewPageActions.refreshPage", data, dataRowID);
 		BrowserCommands.refresh();
-		ObserverViewPage observerViewPage = new ObserverViewPage(TestContext.INSTANCE.getDriver(), 
+		ObserverViewPage observerViewPage = new ObserverViewPage(TestContext.INSTANCE.getDriver(),
 				TestContext.INSTANCE.getBaseUrl(),
 				TestContext.INSTANCE.getTestSetup());
 		initializePageObject(TestContext.INSTANCE.getDriver(), observerViewPage);
 		return true;
 	}
- 
+
 	/**
 	 * Executes verifyModeButtonIsVisible action.
 	 * @param data - specifies the input data passed to the action.
@@ -168,6 +168,9 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsGreen")) { return this.verifyAnemometerButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsRed")) { return this.verifyAnemometerButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
@@ -279,7 +282,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
-		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }		
+		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }
 		return false;
 	}
 

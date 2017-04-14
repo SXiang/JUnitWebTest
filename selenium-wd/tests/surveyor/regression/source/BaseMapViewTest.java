@@ -33,12 +33,14 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final int ANALYZER3_REPLAY_LONG_ROW_ID = 32;
 	protected static final int ANALYZER3_REPLAY_ASSESSMENT_ROW_ID = 14;
 	protected static final int ANALYZER3_REPLAY_OPERATOR_ROW_ID = 17;
+	protected static final int ETH_ANALYZER1_REPLAY_ROW_ID = 60;
 	protected static final int NOLICANA_REPLAY_ROW_ID = 39;
 	protected static final int ONE_SECOND = 5;
 	protected static final int SURVEY_STANDARD1_ROW_ID = 3;
 	protected static final int SURVEY_OPERATOR1_ROW_ID = 5;
 	protected static final int SURVEY_ASSESSMENT1_ROW_ID = 30;
 	protected static final int SURVEY_MANUAL1_ROW_ID = 31;
+	protected static final int SURVEY_ANALYTICS1_ROW_ID = 63;
 	protected static final int USER_ROW_ID_AUTOMATION_ADMIN = 6;
 	protected static final int USER_ROW_ID_PICARRO_DRIVER = 16;
 	protected static final int USER_ROW_ID_PICARRO_UTILITYADMIN = 17;

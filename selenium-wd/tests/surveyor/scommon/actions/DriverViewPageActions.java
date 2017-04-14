@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
 import common.source.Log;
@@ -14,6 +16,9 @@ import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
@@ -27,7 +32,6 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 
 public class DriverViewPageActions extends BaseDrivingViewPageActions {
-
 	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
@@ -306,8 +310,10 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			type = SurveyType.RapidResponse;
 		} else if (surveyType.equalsIgnoreCase("Assessment")) {
 			type = SurveyType.Assessment;
-		} else {
+		} else if (surveyType.equalsIgnoreCase("Standard")) {
 			type = SurveyType.Standard;
+		} else if (surveyType.equalsIgnoreCase("Analytics")) {
+			type = SurveyType.Analytics;
 		}
 		return type;
 	}
@@ -771,6 +777,34 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		this.getDriverViewPage().setFieldNotesTextField(data);
 		this.getDriverViewPage().clickFieldNotesSaveButton();
 		return true;
+	}
+
+	/**
+	 * Executes verifyFieldNotesDialogIsShown action.
+	 * NOTES:
+	 * - Use this method - 'verifyFieldNotesDialogIsShown' to verify field notes dialog is showing.
+	 * - Use 'verifyFieldNotesIsShownOnMap' method to verify field note inputed by user is NOT showing on the map.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFieldNotesDialogIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyFieldNotesDialogIsShown", data, dataRowID);
+		return this.getDriverViewPage().verifyFieldNotesDialogIsShown();
+	}
+
+	/**
+	 * Executes verifyFieldNotesDialogIsNotShown action.
+	 * NOTES:
+	 * - Use this method - 'verifyFieldNotesDialogIsNotShown' to verify field notes dialog is NOT showing.
+	 * - Use 'verifyFieldNotesIsNotShownOnMap' method to verify field note inputed by user is NOT showing on the map.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFieldNotesDialogIsNotShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyFieldNotesDialogIsNotShown", data, dataRowID);
+		return !this.getDriverViewPage().verifyFieldNotesDialogIsShown();
 	}
 
 	/**
@@ -1429,6 +1463,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsGreen")) { return this.verifyAnemometerButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsRed")) { return this.verifyAnemometerButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
@@ -1448,6 +1485,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesDialogIsShown")) { return this.verifyFieldNotesDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesDialogIsNotShown")) { return this.verifyFieldNotesDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
