@@ -7,7 +7,6 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import java.util.Map;
-import common.source.ExceptionUtility;
 import common.source.Log;
 
 import common.source.WebElementExtender;
@@ -21,7 +20,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.LoginPageActions;
 
 import surveyor.scommon.actions.ManageAnalyzerPageActions;

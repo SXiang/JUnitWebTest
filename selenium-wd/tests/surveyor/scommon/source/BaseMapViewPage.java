@@ -235,6 +235,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "base_map_menu")
 	protected WebElement mapMenu;
 
+	@FindBy(id = "map")
+	protected WebElement mapElement;
+
+	@FindBy(id = "analytics_mode_warning")
+	protected WebElement analyticsModeDialog;
+
 	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
 	private WebElement peakInfoEpoch;
 	private WebElement peakInfoLatitude;
@@ -382,6 +388,23 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return this;
 	}
+
+	/**
+	 * Verifies whether the Analytics Mode dialog is shown.
+	 */
+	public boolean isAnalyticsModeDialogShown() {
+		Log.method("isAnalyticsModeDialogShown");
+		Log.info(String.format("Expected=[%s], Actual=[%s]", "cssFade", analyticsModeDialog.getAttribute("class")));
+		return this.analyticsModeDialog.getAttribute("class").equals("cssFade");
+	}
+
+	/**
+	 * Verifies the Analytics Mode dialog is NOT shown.
+	 */
+	public boolean isAnalyticsModeDialogHidden() {
+		return this.analyticsModeDialog.getAttribute("class").equals("cssFade ng-hide");
+	}
+
 
 	public boolean isDisplayMenuOpen() {
 		return !this.displayMenu.getAttribute("class").toLowerCase().contains("ng-hide");
@@ -1130,6 +1153,19 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		default:
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
+	}
+
+	/**
+	 * Get Analytics mode dialog message.
+	 *
+	 * @return the span WebElement.
+	 */
+	public WebElement getAnalyticsModeDialog() {
+		return analyticsModeDialog;
+	}
+
+	public WebElement getMapElement() {
+		return mapElement;
 	}
 
 	public String getSurveyId() {

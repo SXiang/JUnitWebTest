@@ -322,4 +322,7 @@ public class ResourceKeys {
 	public static final String Dialog_ProceedMessage = "Dialog_ProceedMessage";
 
 	public static final String Reports_ErrorProcessing = "Reports_ErrorProcessing";
+
+	// Analytics constants.
+	public static final String Dialog_AnalyticsModeActive = "Dialog_AnalyticsModeActive";
 }
