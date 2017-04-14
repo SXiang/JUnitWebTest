@@ -457,7 +457,7 @@ public class BaseTest {
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30};
-		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual"};
+		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
 
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = SurveyType.values();

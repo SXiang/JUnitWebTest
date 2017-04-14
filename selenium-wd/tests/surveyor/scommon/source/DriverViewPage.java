@@ -167,6 +167,9 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(id = "survey_type_standard")
 	private WebElement standard;
 
+	@FindBy(id = "survey_type_analytics")
+	private WebElement analytics;
+
 	@FindBy(id = "survey_start_survey")
 	private WebElement startSurvey;
 
@@ -713,7 +716,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Get Manual Button.
+	 * Get Standard Button.
 	 *
 	 * @return the WebElement.
 	 */
@@ -728,6 +731,26 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	public DriverViewPage clickStandardButton() {
 		Log.clickElementInfo("Standard");
 		standard.click();
+		return this;
+	}
+
+	/**
+	 * Get Analytics Button.
+	 *
+	 * @return the WebElement.
+	 */
+	public WebElement getAnalyticsButton() {
+		return analytics;
+	}
+
+	/**
+	 * Click on Analytics Button.
+	 *
+	 * @return the DriverViewPage class instance.
+	 */
+	public DriverViewPage clickAnalyticsButton() {
+		Log.clickElementInfo("Analytics");
+		analytics.click();
 		return this;
 	}
 
@@ -1023,6 +1046,9 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		case Assessment:
 			this.clickAssessmentButton();
 			break;
+		case Analytics:
+			this.clickAnalyticsButton();
+			break;
 		default:
 			break;
 		}
@@ -1174,6 +1200,20 @@ public class DriverViewPage extends BaseDrivingViewPage {
 			}
 		});
 		return this;
+	}
+
+	/**
+	 * Verify that field notes dialog is shown on the map.
+	 */
+	public boolean verifyFieldNotesDialogIsShown() {
+		return isFieldNotesDialogShown();
+	}
+
+	/**
+	 * Verify that field notes dialog is NOT shown on the map.
+	 */
+	public boolean verifyFieldNotesDialogIsNotShown() {
+		return !isFieldNotesDialogShown();
 	}
 
 	/**
