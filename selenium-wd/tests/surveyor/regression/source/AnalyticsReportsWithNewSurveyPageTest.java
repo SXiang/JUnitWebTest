@@ -6,6 +6,10 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,6 +18,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
@@ -21,8 +26,10 @@ import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.DriverViewPage;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -30,7 +37,9 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
-
+	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static DriverViewPage driverViewPage;
+	private static Map<String, String> testAccount, testSurvey, testReport;
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -42,6 +51,15 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		initializePageActions();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
+		
+		if(testAccount == null){
+			testAccount = createTestAccount("Analytics_Report", false, false);
+		}else{
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageCustomerPageAction.open(EMPTY, NOTSET);
+			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
+		}
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
