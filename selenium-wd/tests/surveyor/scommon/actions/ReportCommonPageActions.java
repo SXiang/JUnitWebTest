@@ -2757,9 +2757,14 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyAllMetadataFiles(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
-		boolean checkPSFilter = !data.isEmpty()&&data.equals(ReportModeFilter.Analytics);
+		boolean checkPSFilter = !data.isEmpty()&&data.equals(ReportModeFilter.Analytics.toString());
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title, checkPSFilter);
+		if(checkPSFilter){
+			Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b",
+					verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile));	
+			return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile;
+		}
 		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyReportSpecificMetadataFiles = verifyMetadataFilesPredicate.test(getReportsCommonPage());
 		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyReportSpecificMetadataFiles = %b",

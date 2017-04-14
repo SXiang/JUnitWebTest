@@ -5,6 +5,9 @@ import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 
+import surveyor.scommon.generators.CustomerSurveyInfoBuilder;
+import surveyor.scommon.generators.TestDataGenerator;
+
 public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST001 = "dataProviderAnalyticReports_UnitTest001";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST002 = "dataProviderAnalyticReports_UnitTest002";
@@ -40,10 +43,18 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 		};
 	}
 	
+//	@DataProvider
+//	public static Object[][] dataProviderAnalyticReports_TC2339() {
+//		return new Object[][] {
+//			{ "TC2339" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+//		};
+//	}
+	
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_TC2339() {
 		return new Object[][] {
-			{ "TC2339" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2339" /*TestCaseID*/, 6 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
+				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportIndicationAnalytics_PSFilter_SurveyTC2339)}
 		};
 	}
 }

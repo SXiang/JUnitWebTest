@@ -53,7 +53,8 @@ public class BaseEntity {
 	public ResultSet executeQuery(String SQL) {
 		try {
 			statement = connection.createStatement();
-			return statement.executeQuery(SQL);
+			ResultSet rs = statement.executeQuery(SQL);
+			return rs;
 
 		} catch (SQLException e) {
 			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());

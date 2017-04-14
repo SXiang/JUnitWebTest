@@ -2649,8 +2649,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
 		}
 
-		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId, checkPSFilter);
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId, checkPSFilter);
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {

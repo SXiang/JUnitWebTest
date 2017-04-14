@@ -126,6 +126,8 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public void applyPSFilter(ArrayList<StoredProcComplianceGetIndications> objReportList, boolean checkPSFilter){
+		if(!checkPSFilter) 
+			return;
 		Iterator<StoredProcComplianceGetIndications> it = objReportList.iterator();
 		while(it.hasNext()){
 			StoredProcComplianceGetIndications indication = it.next();
@@ -223,6 +225,7 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		String sql = "Select PriorityScoreFilterThreshold from dbo.LocationAnalyticsParameter, dbo.SurveyorUnit "+
 					"Where LocationAnalyticsParameter.LocationId = SurveyorUnit.LocationId And SurveyorUnit.Description = '" + surveyorUnitName+"'";
 		ResultSet rs = executeQuery(sql);
+		rs.next();
 		float psFilterThreshold = rs.getFloat("PriorityScoreFilterThreshold");
 		return psFilterThreshold;
 	}
