@@ -142,6 +142,7 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitch8HourHistoryButtonIsVisible(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible(EMPTY, NOTSET));
 		// assert hidden buttons in Display menu
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
