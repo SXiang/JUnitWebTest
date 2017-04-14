@@ -188,7 +188,7 @@
   </target>
 
 	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
-		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
+		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/unittest/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
 			<classpath>
 				<fileset dir="${basedir}/lib">
 					<include name="**/*.jar" />
@@ -785,7 +785,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
+  <target name="tc_localrun" depends="compiletestsuite, compileUnitIntegrationTest" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
       <sysproperty key="maxParallelTestThreads" value="3" />
@@ -799,9 +799,12 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/AssessmentReportsPageTest.class" />
-    	  <include name="**/ComplianceReportsPageTest3.class" />
-      	  <include name="**/ComplianceReportsPageTest10.class" />
+        	<include name="**/AnalyticsReportsPageUnitTest.class" />
+        	<include name="**/ReportsTestSuite2.class" />
+        	<include name="**/ComplianceReportsPageTest5.class" />
+      		<include name="**/AssessmentReportsPageTest.class" />
+        	<include name="**/ReferenceGasReportsPageTest.class" />
+        	<include name="**/SystemHistortyReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -149,10 +149,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	private static final Integer COL_IDX_REPORT_TITLE = 1;
 	private static final Integer COL_IDX_REPORT_NAME = 2;
-	private static final Integer COL_IDX_CREATED_BY = 3;
-	private static final Integer COL_IDX_DATE = 4;
-	private static final Integer COL_IDX_ACTION = 5;
-	private static final Integer COL_IDX_UPLOAD_STATUS = 6;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
 
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
@@ -526,7 +526,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 				RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addViews(String customer, List<Map<String, String>> viewList) {
+	public void addViews(String customer, List<Map<String, String>> viewList){
+		addViews(customer, viewList, false);
+	}
+	
+	public void addViews(String customer, List<Map<String, String>> viewList, boolean isAnalyticsReport) {
 		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
 		int colNum;
@@ -581,18 +585,21 @@ public class ReportsCommonPage extends ReportsBasePage {
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
-				colNum = 7;
-				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-			}
+			// Non Analytics
+			if(!isAnalyticsReport){
+				if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
+					colNum = 7;
+					Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 
-			if (selectView(viewMap, KEYANNOTATION)) {
-				colNum = 8;
-				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				if (selectView(viewMap, KEYANNOTATION)) {
+					colNum = 8;
+					Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
@@ -3920,6 +3927,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 			break;
 		case Manual:
 			radioBox = this.inputSurModeFilterManual;
+			break;
+		case Analytics:
+			radioBox = this.inputSurModeFilterAnalytics;
 			break;
 		default:
 			break;

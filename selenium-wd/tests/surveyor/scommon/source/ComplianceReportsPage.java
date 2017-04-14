@@ -134,6 +134,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Manual']")
 	protected WebElement checkBoxManualRptMode;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='Analytics']")
+	protected WebElement checkBoxAnalyticsRptMode;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeRptMode;
 
@@ -161,7 +164,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[4]")
 	protected WebElement btnFirstInvestigateCompliance;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
@@ -570,15 +573,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
+				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[4]/img";
 				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
 				Log.clickElementInfo("Investigate", ElementType.ICON);
 				investigateImg.click();
@@ -632,15 +635,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 				Log.clickElementInfo("Resubmit", ElementType.ICON);
 				resubmitImg.click();
@@ -965,6 +968,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		case Manual:
 			radioButton = checkBoxManualRptMode;
 			break;
+		case Analytics:
+			radioButton = checkBoxAnalyticsRptMode;
+			break;
 		default:
 			break;
 		}
@@ -979,6 +985,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return checkBoxRRRptMode.isSelected();
 		case Manual:
 			return checkBoxManualRptMode.isSelected();
+		case Analytics:
+			return checkBoxAnalyticsRptMode.isSelected();
 		default:
 			return false;
 		}
@@ -2579,7 +2587,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity) reports;
-
+		boolean isAnalyticsReport = false;
 		// 1. Change customer if specified.
 		if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
 			Log.info("Select customer '"+reports.getCustomer()+"'");
@@ -2591,16 +2599,20 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 
 		// 2. Report general
-		if (reportsCompliance.getEthaneFilter() != null) {
-			selectEthaneFilter(reportsCompliance.getEthaneFilter());
-		}
-
 		if (reportsCompliance.getReportModeFilter() != null) {
+			isAnalyticsReport = reportsCompliance.getReportModeFilter().equals(ReportModeFilter.Analytics);
 			selectReportMode(reportsCompliance.getReportModeFilter());
 		}
 
-		if (reportsCompliance.getExclusionRadius() != null) {
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		// 2.1 Non Analytics
+		if(!isAnalyticsReport){
+			if (reportsCompliance.getEthaneFilter() != null) {
+				selectEthaneFilter(reportsCompliance.getEthaneFilter());
+			}
+
+			if (reportsCompliance.getExclusionRadius() != null) {
+				inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			}
 		}
 
 		// 3. Area Selector
@@ -2625,7 +2637,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		// 4. SearchAreaPreference and Views
 		selectSearchPreferenceArea(reportsCompliance);
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList(), isAnalyticsReport);
 
 		// 5. Optional Tabular PDF Content
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
