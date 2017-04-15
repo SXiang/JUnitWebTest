@@ -43,18 +43,10 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 		};
 	}
 	
-//	@DataProvider
-//	public static Object[][] dataProviderAnalyticReports_TC2339() {
-//		return new Object[][] {
-//			{ "TC2339" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
-//		};
-//	}
-	
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_TC2339() {
 		return new Object[][] {
-			{ "TC2339" /*TestCaseID*/, 6 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1/*reportDataRowID2*/,
-				new TestDataGenerator().generateCustomerSurveyInfo(CustomerSurveyInfoBuilder::customer_WithReportIndicationAnalytics_PSFilter_SurveyTC2339)}
+			{ "TC2339" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }

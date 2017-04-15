@@ -138,6 +138,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "info")
 	protected WebElement selectedPoint;
 
+	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
+	protected WebElement inputPSFilterThreshold;
+	
 	private LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
@@ -823,5 +826,16 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				return isPageTitleMatch(d.getTitle(),STREditPageContentText);
 			}
 		});
+	}
+
+	public void inputPSFilter(float psFilterThreshold){
+		Log.method("inputPSFilterThreshold", psFilterThreshold);
+		this.inputPSFilterThreshold.clear();
+		this.inputPSFilterThreshold.sendKeys(""+psFilterThreshold);
+	}
+	public void editLocationPSFilterThreshold(String customerName, String locationName, float psFilterThreshold){		
+		findExistingLocationAndClickEdit(customerName, locationName);
+		inputPSFilter(psFilterThreshold);
+		clickOnOkBtn();
 	}
 }

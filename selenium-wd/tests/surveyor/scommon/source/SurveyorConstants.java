@@ -449,7 +449,7 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 
 	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
-
+	public static final float DEFAULT_PSFILTER_THRESHOLD = 0.05f;
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";
 
 	/*

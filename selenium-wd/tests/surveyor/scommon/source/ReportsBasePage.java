@@ -1522,7 +1522,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}));
 	}
 
-	private String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
 		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 

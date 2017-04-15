@@ -3,17 +3,18 @@ package surveyor.regression.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
-import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
-import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.DEFAULT_PSFILTER_THRESHOLD;
 
 import java.util.Map;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.support.PageFactory;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
@@ -22,6 +23,7 @@ import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -30,6 +32,11 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -45,20 +52,26 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		initializeTestObjects();
 	}
 
+	@AfterClass
+	public static void afterClass() {
+		if(testAccount!=null){
+			cleanUpGisData(testAccount.get("customerId"));
+		}
+	}
+	
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
 		initializePageActions();
+		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 		
 		if(testAccount == null){
-			testAccount = createTestAccount("Analytics_Report", false, false);
-		}else{
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-			manageCustomerPageAction.open(EMPTY, NOTSET);
-			manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
+			testAccount = createTestAccount("Analytics_Report");
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+					,testAccount.get("userName"), testAccount.get("userPassword"), 600, SurveyType.Analytics);
+			pushGisData(testAccount.get("customerId"));
 		}
 	}
 
@@ -68,6 +81,21 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
+	}
+	
+	private void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		driverViewPage = pageObjectFactory.getDriverViewPage();
+		PageFactory.initElements(getDriver(), driverViewPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
 	}
 
 	/**
@@ -98,52 +126,56 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2339, location = AnalyticReportDataProvider.class)
 	public void TC2339_LisasAreFilteredOutAccordingToThresholdLevel(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, CustomerSurveyInfoEntity surveyInfoEntity) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2339_LisasAreFilteredOutAccordingToThresholdLevel ..." +
 			 "\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
 
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		String userName = testAccount.get("userName");
+		String userPassword = testAccount.get("userPassword");
+		String customerName = testAccount.get("customerName");
+		String locationName = testAccount.get("locationName");
+		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+		float psFilter = 2.5f;
+		
+		//Modify psFilter
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilter);
+		getHomePage().logout();
 
-		// Create new customer with survey + GIS data and then execute test steps.
-		assertTrue(executeAsNewCustomerWithSurveyAndGISData(complianceReportsPageAction, surveyInfoEntity, reportDataRowID1, pageAction -> {
-			try {
-				String usernameColonPassword = String.format("%s:%s", ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
-				loginPageAction.open(EMPTY, NOTSET);
-				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
+		//Generate report and verify indications
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);		
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
+		
+		//Restore psFilter
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,DEFAULT_PSFILTER_THRESHOLD);
+		getHomePage().logout();
 
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-				assertTrue(pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-				assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
-				
-				// Modify PSFilter on location
-				loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-				loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
-//				manageLocationPageActions.
-								
-				// Verifyt indications agatin
-				loginPageAction.open(EMPTY, NOTSET);
-				loginPageAction.login(usernameColonPassword, NOTSET);   /* login using newly created user */
+		//Generate report and verify indications
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
 
-				pageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-				createNewReport(pageAction, getReportRowID(reportDataRowID1));
-				waitForReportGenerationToComplete(pageAction, getReportRowID(reportDataRowID1));
-
-				pageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-				pageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-				assertTrue(pageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-				assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
-			} catch (Exception ex) {
-				return false;
-			}
-			return true;
-		}));
-
+		testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		
+		reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
 	}
 
 }
