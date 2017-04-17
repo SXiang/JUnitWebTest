@@ -19,16 +19,12 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
-import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
@@ -41,12 +37,10 @@ import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
 
-	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
-	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static DriverViewPage driverViewPage;
-	private static Map<String, String> testAccount, testSurvey, testReport;
+	private static Map<String, String> testAccount, testSurvey;
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -70,7 +64,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		if(testAccount == null){
 			testAccount = createTestAccount("Analytics_Report");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), 600, SurveyType.Analytics);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 1500, SurveyType.Analytics);
 			pushGisData(testAccount.get("customerId"));
 		}
 	}
@@ -103,7 +97,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		manageLocationPageActions = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
@@ -135,47 +129,32 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		String customerName = testAccount.get("customerName");
 		String locationName = testAccount.get("locationName");
 		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-		float psFilter = 2.5f;
-		
-		//Modify psFilter
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilter);
-		getHomePage().logout();
+		float[] psFilters = {2.5f,DEFAULT_PSFILTER_THRESHOLD};
 
-		//Generate report and verify indications
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+		for(float psFilter:psFilters){
+			//Modify psFilter
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,psFilter);
+			getHomePage().logout();
 
-		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
-		
-		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);		
-		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
-		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
-		
-		//Restore psFilter
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		manageLocationPageActions.getManageLocationsPage().editLocationPSFilterThreshold(customerName,locationName,DEFAULT_PSFILTER_THRESHOLD);
-		getHomePage().logout();
+			//Generate report and verify indications
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(userName, userPassword);
 
-		//Generate report and verify indications
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
+			Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
-		testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
-		
-		reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
-		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
-		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
+			String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+			String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+			reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+
+			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+			complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+			complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
+			getHomePage().logout();
+		}
 	}
 
 }

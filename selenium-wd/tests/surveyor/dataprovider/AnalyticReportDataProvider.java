@@ -35,7 +35,7 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 			{ "ARUnitTest001" /*TestCaseID*/, 4 /*userDataRowID*/,  209 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
-	
+
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_TC2338() {
 		return new Object[][] {

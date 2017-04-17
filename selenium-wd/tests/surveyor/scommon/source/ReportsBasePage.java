@@ -1195,6 +1195,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void waitForSurveyTabletoLoad() {
 		Log.method("waitForSurveyTabletoLoad");
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = false;

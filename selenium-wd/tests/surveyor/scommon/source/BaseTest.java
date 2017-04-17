@@ -14,8 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -45,12 +43,10 @@ import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
-import surveyor.scommon.actions.ActionArguments;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.PageActionsStore;
-import surveyor.scommon.actions.ReportCommonPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
@@ -432,7 +428,6 @@ public class BaseTest {
 
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
-			
 			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
 			rpt.setReportModeFilter(rm);
 			rpt.setSurveyModeFilter(sm);
@@ -466,6 +461,7 @@ public class BaseTest {
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
+		String replayAnalyticsScriptDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
@@ -500,8 +496,10 @@ public class BaseTest {
 		for(SurveyType st:surveyTypes){
 			TestSetup.restartAnalyzer();
 			String db3file = replayScriptDB3File;
+			String db3DefnFile = replayScriptDefnFile;
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
+				db3DefnFile = replayAnalyticsScriptDefnFile;
 			}
 			driverViewPageAction.open("", -1);
 			driverViewPageAction.waitForConnectionToComplete("", -1);
@@ -513,7 +511,7 @@ public class BaseTest {
 					break;
 				}
 			}
-			TestSetup.replayDB3Script(replayScriptDefnFile, db3file);
+			TestSetup.replayDB3Script(db3DefnFile, db3file);
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.startDrivingSurvey("", surveyRowID);
 			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);

@@ -570,7 +570,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	@Override
-	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
+	public void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
         String reportMode = getWorkingCmpReportsDataRow().reportMode;
         if(!BaseHelper.isNullOrEmpty(reportMode)){
         	reportEntity.setReportModeFilter(ReportModeFilter.valueOf(reportMode.replaceAll(" ", "")));

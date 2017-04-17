@@ -3,10 +3,6 @@ package surveyor.regression.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
-import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
-import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -17,6 +13,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -54,6 +51,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
