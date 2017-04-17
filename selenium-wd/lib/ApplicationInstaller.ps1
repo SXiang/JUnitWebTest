@@ -12,7 +12,7 @@ $NODEJS_INSTALL_TEXT = $NODEJS_INSTALL_VERSION
 $APPIUM_INSTALL_TEXT = 'appium'
 $APPIUM_DOCTOR_INSTALL_TEXT = 'appium-doctor'
 $HAXM_INSTALL_TEXT = 'HAXM is installed'
-$INSTALLED_NPM_VERSION = '2.'
+$INSTALLED_NPM_VERSION = '4.'
 $CURL_APP_INSTALL_TEXT1 = 'curl'
 $CURL_APP_INSTALL_TEXT2 = 'Protocols'
 $CURL_APP_INSTALL_TEXT3 = 'Features'
@@ -29,26 +29,26 @@ $ANDROIDHOME = $env:ANDROID_HOME
 
 #---------------------------------------------------------
 # Checks if specified application is installed or not.
-# Returns TRUE if installed, FALSE otherwise. 
+# Returns TRUE if installed, FALSE otherwise.
 #---------------------------------------------------------
 function IsInstalled($application) {
     $isInstalled = $false
-    
+
     if ($application -eq 'python') {
         # check if python 2.7.x is installed.
         $appCmd = python --version 2>&1
-        $appVer = $appCmd.ToString()    
+        $appVer = $appCmd.ToString()
         $isInstalled = $appVer.StartsWith($PYTHON_APP_INSTALL_TEXT)
     } elseif ($application -eq 'choco') {
-        $appCmd = choco 2>&1
-        $appVer = $appCmd.ToString()
-        $isInstalled = $appVer.StartsWith($CHOCOLATEY_APP_INSTALL_TEXT)
+        $appCmdLines = choco 2>&1
+        $appCmdLines = npm list -g 2>&1
+        $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$CHOCOLATEY_APP_INSTALL_TEXT" -negativematchText "ERROR"
     } elseif ($application -eq 'nodejs') {
         $appCmd = npm --version 2>&1
         $appVer = $appCmd.ToString()
         $isInstalled = $appVer.StartsWith($INSTALLED_NPM_VERSION)
     } elseif ($application -eq 'appium') {
-        $appCmd = npm list -g 2>&1
+        $appCmdLines = npm list -g 2>&1
         $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$APPIUM_INSTALL_TEXT" -negativematchText "doctor"
     } elseif ($application -eq 'appium-doctor') {
         $appCmdLines = npm list -g 2>&1
@@ -86,18 +86,18 @@ function IsInstalled($application) {
     } elseif ($application -eq '7zip') {
         # get Install folder from Registry and check for presence of 7zip EXE in the folder.
         if ((Test-Path $7ZIP_REG_PATH -PathType Any) -eq $true) {
-        	$7ZipFolder = (Get-ItemProperty -Path $7ZIP_REG_PATH).Path		
+        	$7ZipFolder = (Get-ItemProperty -Path $7ZIP_REG_PATH).Path
         	if (Test-Path "${7ZipFolder}\${7ZIP_EXE_NAME}") {
                 $isInstalled = $true
         	}
         }
     }
-    
+
     return $isInstalled
 }
 
 #---------------------------------------------------------
-# Installs the specified application. 
+# Installs the specified application.
 #---------------------------------------------------------
 function InstallApplication($application, $param) {
     if ($application -eq 'python') {
@@ -105,7 +105,6 @@ function InstallApplication($application, $param) {
         choco install python-x86_32 -version 2.7.6 -y --force
     } elseif ($application -eq 'choco') {
         iex ((new-object net.webclient).DownloadString($CHOCOLATEY_INSTALL_SCRIPT_PATH))
-        SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
     } elseif ($application -eq 'curl') {
         choco install curl -y --force
     } elseif ($application -eq 'nodejs') {
@@ -145,14 +144,14 @@ function InstallApplication($application, $param) {
         "Successfully downloaded 7-zip"
         if (Test-Path $7ZIP_MSI_DEST) {
             "Start 7-zip install - $7ZIP_MSI_DEST"
-            Start-Process -FilePath $7ZIP_MSI_DEST -ArgumentList '/qn /l*v $7ZIP_INSTALL_LOG' | Wait-Process            
+            Start-Process -FilePath $7ZIP_MSI_DEST -ArgumentList '/qn /l*v $7ZIP_INSTALL_LOG' | Wait-Process
             "Installed 7-zip. View logs at - '$7ZIP_INSTALL_LOG'"
         }
     }
 }
 
 #---------------------------------------------------------
-# Check/Install the applications specified in the dictionary. 
+# Check/Install the applications specified in the dictionary.
 #---------------------------------------------------------
 function InstallApplications-FromDictTable($installAppsDictTable) {
     # check/install each of the pre-requisite application.
@@ -172,7 +171,7 @@ function InstallApplications-FromDictTable($installAppsDictTable) {
             $installArgs = $null
             if ($appValueParts.Length -gt 1) {
                 $installArgs = $appValueParts[1]
-            }        
+            }
 
             Write-Host "Checking if $appName is installed ..."
             $appInstalled = IsInstalled -application "$appKey"
