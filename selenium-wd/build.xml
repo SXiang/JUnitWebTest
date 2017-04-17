@@ -802,9 +802,9 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	 <include name="**/EQReportsPageTest.class" />
-        	<include name="**/EQReportsPageTest2.class" />
-        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+        	 <include name="**/AnalyticsReportsPageTest.class" />
+        	<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+        	<include name="**/ComplianceReportsPageTest8.class" />
         </fileset>
       </batchtest>
     </junit>
