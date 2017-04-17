@@ -55,7 +55,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 
 			// Select run mode here.
 			setPropertiesForTestRunMode();
-
+			
 			if(testAccount == null){
 				testAccount = createTestAccount("EQ_LicFeature", false, false);
 			}else{

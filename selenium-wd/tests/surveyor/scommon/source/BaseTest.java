@@ -302,12 +302,12 @@ public class BaseTest {
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 			analyzerSharedKey = analyzer.getSharedKey();
 			if (analyzer != null) {
-				Log.info(String.format("Analyzer with serial number-'%s', shearedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
+				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
 						+ "Deleting Analyzer.", analyzerName, analyzerSharedKey));
 				analyzer.cascadeDeleteAnalyzer();
 			}
 		}
-		
+
 		String lotNum = getTestSetup().getRandomNumber() + testCase;
 		String isoValue = "-32.7";
 
