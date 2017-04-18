@@ -1,8 +1,17 @@
-﻿# PRE-REQUISITES: Start Emulator (using 'StartAndroidAutomationTools.ps1') before invoking this script.
+﻿# ---------------------------------------------------------------
+# SCRIPT: Use this script to install Picarro App APK on Emulator.
+# PRE-REQUISITES: Start Emulator (using 'StartAndroidAutomationTools.ps1') before invoking this script.
+# SAMPLE USAGE:
+#   .\Install-PicarroAppAPK.ps1 `
+#           -BuildWorkingDir "C:\Repositories\PicarroApp"
+# ---------------------------------------------------------------
+<# 
+#>
 
 param
 (
-  [string] $buildWorkingDir = "C:\Repositories\PicarroApp"
+  [Parameter(Mandatory=$true)]
+  [string] $BuildWorkingDir             # eg. "C:\Repositories\PicarroApp"
 )
 
 
@@ -19,8 +28,8 @@ function IsEndPointAlive($url) {
     $retVal
 }
 
-# 1. START React Native Packager
-
+# 1. 
+# START React Native Packager
 $REACT_NATIVE_NODEJS_APP_BASEURL = "http://localhost:8081"
 $MAX_ITERATIONS = 300
 
@@ -29,10 +38,10 @@ $MAX_ITERATIONS = 300
 #$userProfile = $env:USERPROFILE
 #Set-ItemProperty "$userProfile\.babel.json" -name IsReadOnly -value $false
 
-cd "$buildWorkingDir"
+cd "$BuildWorkingDir"
 Start-Process "react-native" -ArgumentList "start"
 
-Write-Host "Waiting for react-native JS bundler to start ." -NoNewLine
+Write-Host "Waiting for react-native Packager to start ." -NoNewLine
 $iteration = 0
 while((-not (IsEndPointAlive -url $REACT_NATIVE_NODEJS_APP_BASEURL)) -and ($iteration -lt $MAX_ITERATIONS)) {
     $iteration++
@@ -41,8 +50,8 @@ while((-not (IsEndPointAlive -url $REACT_NATIVE_NODEJS_APP_BASEURL)) -and ($iter
 }
 
 # WORKAROUND [MAY NOT BE NEEDED]
-# if (-not (Test-path "$buildWorkingDir\app\src\main\assets\")) {
-#     New-Item -ItemType Directory "$buildWorkingDir\app\src\main\assets\"
+# if (-not (Test-path "$BuildWorkingDir\app\src\main\assets\")) {
+#     New-Item -ItemType Directory "$BuildWorkingDir\app\src\main\assets\"
 # }
 #
 # Bundle the application first before triggering Gradle build:
@@ -50,6 +59,6 @@ while((-not (IsEndPointAlive -url $REACT_NATIVE_NODEJS_APP_BASEURL)) -and ($iter
 #(curl $REACT_NATIVE_NODEJS_APP_BASEURL/index.android.js?platform=Android).Content | Out-File "app/src/main/assets/index.android.bundle"
 
 
-# 2. INSTALL APK on Emulator.
-
+# 2. 
+# INSTALL APK on Emulator.
 Start-Process "react-native" -ArgumentList "run-android"
