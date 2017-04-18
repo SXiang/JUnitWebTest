@@ -463,7 +463,7 @@ public class BaseTest {
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayAnalyticsScriptDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
-		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2003-01.db3";
+		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
 		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
 

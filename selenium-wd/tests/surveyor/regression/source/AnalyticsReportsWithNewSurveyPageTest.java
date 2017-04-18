@@ -32,6 +32,7 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 @RunWith(SurveyorTestRunner.class)
@@ -152,7 +153,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 			complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
 			complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
-			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(ReportModeFilter.Analytics.toString(), getReportRowID(reportDataRowID1)));
+			String downloadPath = complianceReportsPageAction.getComplianceReportsPage().getDownloadPath(ReportFileType.PDF, reportTitle);
+			assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyIndicationTable(downloadPath, reportTitle, true));
 			getHomePage().logout();
 		}
 	}

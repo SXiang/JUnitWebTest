@@ -3,7 +3,10 @@ package surveyor.unittest.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
+import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
