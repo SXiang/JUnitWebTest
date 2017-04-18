@@ -61,14 +61,6 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: - Analytics Report - LISAs below threshold value are filtered out
 	 * 			When an Analytics Report is run, LISAs below the threshold value indicated on the Location page should be filtered out.
 	 * 			The SSRS, View PDFs, CSVs and Shapefiles should reflect this.
-	 * Script: -
-	 *	- - Log in as Picarro admin user
-	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
-	 *	- - Select Analytics report and select a survey
-	 *	- - Click on OK and click Compliance Viewer button
-	 * Results: -
-	 *	- - Report generated successfully
-	 *	- - The SSRS, View PDFs, CSVs and Shapefiles should not show indications that are below the threshold
 	 */
 
 	@Test

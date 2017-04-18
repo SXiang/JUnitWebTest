@@ -109,14 +109,6 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	 * Test Description: - Analytics Report - LISAs are filtered out according to threshold level set on Locations page
 	 * 			When an Analytics Report is run, LISAs below the threshold value indicated on the Location page should be filtered out.
 	 * 			Changing the threshold level and generating a new report with the same survey should result in filtering according to the newly entered values
-	 * Script: -
-	 *	- - Log in as Picarro admin user
-	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
-	 *	- - Select Analytics report and select a survey
-	 *	- - Add 2 Views with base map value, satellite map
-	 *	- - Click on OK and click Compliance Viewer button
-	 * Results: -
-	 *	- - Report generated successfully
 	 */
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2339, location = AnalyticReportDataProvider.class)
