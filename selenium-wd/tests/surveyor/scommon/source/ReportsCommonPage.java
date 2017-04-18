@@ -759,6 +759,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
 	}
 
+	public void invokeViewFileDownload(String reportName, String viewName, Integer viewIdx) throws Exception {
+		Log.method("invokeViewFileDownload", reportName, viewName, viewIdx);
+		if (firstPdfView.isDisplayed()) {
+			String downloadFileRelativeUrl = pdfViews.get(viewIdx - 1).getAttribute("href");
+			downloadFileRelativeUrl = downloadFileRelativeUrl.replace(TestContext.INSTANCE.getBaseUrl(),"");
+			String outputFileName = reportName + "_" + viewName + ".pdf";
+			String outputFileFullPath = Paths.get(testSetup.getDownloadPath(), outputFileName).toString();
+			Downloader.downloadFile(downloadFileRelativeUrl, outputFileFullPath);
+		}
+	}
+
 	protected void invokeFileDownload(String rptTitle, ReportFileType fileType) throws Exception {
 		Log.method("invokePDFFileDownload", rptTitle, fileType);
 		String reportId = Report.getReport(rptTitle).getId();

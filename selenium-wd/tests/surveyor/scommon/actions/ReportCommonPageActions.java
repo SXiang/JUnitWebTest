@@ -206,13 +206,15 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return areBoundariesMatch;
 	}
 
-
-
 	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
-		this.getReportsCommonPage().clickViewThumbnailImageByIndex(viewIdx);
+		String reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+		List<Map<String, String>> viewList = getWorkingReportsEntity().getViewList();
+		Map<String, String> map = viewList.get(viewIdx-1);
+		String viewName = map.get(KEYVIEWNAME);
+		this.getReportsCommonPage().invokeViewFileDownload(reportName, viewName, viewIdx);
 		return true;
 	}
 
