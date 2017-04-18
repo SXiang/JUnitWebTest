@@ -44,11 +44,4 @@ public class CustomerSurveyInfoBuilder {
 		surveyInfoEntity.setSurveyRowID(60);
 		return surveyInfoEntity;
 	}
-	
-	public static CustomerSurveyInfoEntity customer_WithReportIndicationAnalytics_PSFilter_SurveyTC2339() {
-		CustomerSurveyInfoEntity surveyInfoEntity = CustomerSurveyInfoBuilder.customer_WithReportIndicationAnalytics_PSFilter_SurveyTC2339();
-		surveyInfoEntity.setSurveyRowID(104);
-		surveyInfoEntity.setCustomerRowID(14);
-		return surveyInfoEntity;
-	}
 }
