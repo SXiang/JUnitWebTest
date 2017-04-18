@@ -597,6 +597,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap", data, dataRowID);
+		getBaseMapViewPageObject().waitForAnalyticsDialogToBeDisplayed();
 		boolean dialogShown = getBaseMapViewPageObject().isAnalyticsModeDialogShown();
 		WebElement analyticsModeDialog = getBaseMapViewPageObject().getAnalyticsModeDialog();
 		WebElement mapElement = getBaseMapViewPageObject().getMapElement();
@@ -614,12 +615,25 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 		Float fMapWidth = Float.parseFloat(mapCssWidthValue);
 		Float fMapHeight = Float.parseFloat(mapCssHeightValue);
-		Float fLeft = Float.parseFloat(leftCssValue);
-		Float fTop = Float.parseFloat(topCssValue);
-		Float leftPerc = (fLeft * 100.0f) / fMapWidth;
-		Float topPerc = (fTop * 100.0f) / fMapHeight;
+		Float leftPerc = 0.0f;
+		Float topPerc = 0.0f;
+
+		if (leftCssValue.contains("%")) {
+			leftPerc = Float.parseFloat(leftCssValue.replace("%", "").trim());
+		} else {
+			Float fLeft = Float.parseFloat(leftCssValue);
+			leftPerc = (fLeft * 100.0f) / fMapWidth;
+		}
+
+		if (topCssValue.contains("%")) {
+			topPerc = Float.parseFloat(topCssValue.replace("%", "").trim());
+		} else {
+			Float fTop = Float.parseFloat(topCssValue);
+			topPerc = (fTop * 100.0f) / fMapHeight;
+		}
 
 		Log.info(String.format("Analytics Survey Active dialog shown = [%b]", dialogShown));
+		Log.info(String.format("Survey Active Text Check = [%b]; Actual Span Text = [%s]; Expected Span Text = [%s]", spanText.equals(expectedSpanText), spanText, expectedSpanText));
 		Log.info(String.format("CSS Left Formatting Check = [%b]; Left Percent=%f", (leftPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE), leftPerc));
 		Log.info(String.format("CSS Top Formatting Check = [%b]; Top Percent=%f", (topPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE), topPerc));
 		Log.info(String.format("CSS Color Check = [%b]; Color=%s", colorCssValue.equals(ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE), colorCssValue));
