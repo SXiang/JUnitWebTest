@@ -18,7 +18,7 @@ $CURL_APP_INSTALL_TEXT2 = 'Protocols'
 $CURL_APP_INSTALL_TEXT3 = 'Features'
 $GRADLE_APP_INSTALL_TEXT1 = 'Gradle'
 $GRADLE_APP_INSTALL_TEXT2 = 'Build time'
-$GRADLE_APP_INSTALL_TEXT3 = 'Build number'
+$REACT_NATIVE_CLI_PACKAGE = "react-native-cli"
 
 $CHOCOLATEY_INSTALL_SCRIPT_PATH = 'https://chocolatey.org/install.ps1'
 
@@ -41,7 +41,6 @@ function IsInstalled($application) {
         $isInstalled = $appVer.StartsWith($PYTHON_APP_INSTALL_TEXT)
     } elseif ($application -eq 'choco') {
         $appCmdLines = choco 2>&1
-        $appCmdLines = npm list -g 2>&1
         $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$CHOCOLATEY_APP_INSTALL_TEXT" -negativematchText "ERROR"
     } elseif ($application -eq 'nodejs') {
         $appCmd = npm --version 2>&1
@@ -78,11 +77,13 @@ function IsInstalled($application) {
     } elseif ($application -eq 'android-system-image') {
         $isInstalled = $false   # bypass. let sdkmanager do the check when installing.
     } elseif ($application -eq 'curl') {
-        $appCmd = curl --version 2>&1
-        $isInstalled = ($appCmd[0].Contains($CURL_APP_INSTALL_TEXT1) -and $appCmd[1].Contains($CURL_APP_INSTALL_TEXT2) -and $appCmd[2].Contains($CURL_APP_INSTALL_TEXT3))
+        $response = curl https://www.google.com 2>&1
+        $isInstalled = (($response -ne $null) -and ($response.StatusCode -eq 200))
     } elseif ($application -eq 'gradle') {
         $appCmd = gradle --version 2>&1
-        $isInstalled = ($appCmd[2].Contains($GRADLE_APP_INSTALL_TEXT1) -and $appCmd[5].Contains($GRADLE_APP_INSTALL_TEXT2) -and $appCmd[6].Contains($GRADLE_APP_INSTALL_TEXT3))
+        $isInstalled = ($appCmd[2].Contains($GRADLE_APP_INSTALL_TEXT1) -and $appCmd[5].Contains($GRADLE_APP_INSTALL_TEXT2))
+    } elseif ($application -eq 'react-native-cli') {
+        $isInstalled = IsNodePackageInstalled -packageName $REACT_NATIVE_CLI_PACKAGE
     } elseif ($application -eq '7zip') {
         # get Install folder from Registry and check for presence of 7zip EXE in the folder.
         if ((Test-Path $7ZIP_REG_PATH -PathType Any) -eq $true) {
@@ -137,6 +138,8 @@ function InstallApplication($application, $param) {
         "Done system image install"
     } elseif ($application -eq 'gradle') {
         choco install gradle -y --force
+    } elseif ($application -eq 'react-native-cli') {
+        npm install -g react-native-cli
     } elseif ($application -eq '7zip') {
         # Download msi and trigger quiet install.
         "Start downloading 7-zip .msi to $7zipDest"
@@ -193,15 +196,18 @@ function Windows-DisableUserAccessControl() {
 }
 
 function Array-Contains($arrayLines, $positivematchText, $negativematchText) {
-    "Invoking Array-Contains ..."
     $found = $false
     $arrayLines | % {
         [string]$line = [string]$_
         if ($line.Contains($positivematchText) -and (($negativematchText -eq $null) -or (-not $line.Contains($negativematchText)))) {
-            "Detected FOUND = $found"
             $found = $true
         }
     }
-    "Returning found =$found"
     $found
+}
+
+function IsNodePackageInstalled($packageName) {
+    $appCmdLines = npm list -g --depth=0 $packageName 2>&1
+    $installed = Array-Contains -arrayLines $appCmdLines -positivematchText "$packageName" -negativematchText "(empty)"
+    $installed
 }
