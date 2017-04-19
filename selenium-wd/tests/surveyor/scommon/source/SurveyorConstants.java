@@ -544,7 +544,8 @@ public final class SurveyorConstants {
 		RAPIDRESPONSE ("Rapid Response"),
 		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
-		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
+		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast"),
+		ANALYTICS ("Analytics");
 
 		private final String name;
 

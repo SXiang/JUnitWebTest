@@ -370,9 +370,46 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
 
-		new TestDataGenerator().generateNewCustomerAndSurvey(new CustomerSurveyInfoEntity(
-				SURVEY_RUNTIME_IN_SECONDS, newLocationRowID, newSurveyorRowID, newRefGasBottleRowID,
-				newAnalyzerRowID, newCustomerUserRowID, SURVEY_ROW_ID, newCustomerRowID, DB3_ANALYZER_ROW_ID));
+		new TestDataGenerator().generateNewCustomerAndSurvey(new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID));
+	}
+
+	/**
+	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with new customer user and execute actions in Driver view page once the survey is started.
+	 * @throws Exception
+	 */
+	@Test
+	public void Test_generateSurveyForNewCustomerUser_executeDriverViewPageActions() throws Exception {
+		Log.info("\nRunning Test_generateSurveyForNewCustomerUser_executeDriverViewPageActions ...");
+
+		// This Unit test code can be utilized for creating an Analytics survey for new customer user.
+
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int DB3_ANALYZER_ROW_ID = 61;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 64;	 		/* Survey information  */
+
+		final int SURVEY_RUNTIME_IN_SECONDS = 10; /* Number of seconds to run the survey for. */
+
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+
+			// Include verifications to perform once the Survey has started and before Stop survey is called.
+			assertTrue(driverPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+
+			return true;
+		});
 	}
 
 	/**

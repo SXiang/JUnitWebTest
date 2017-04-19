@@ -7,10 +7,52 @@ import java.util.List;
 
 import common.source.ApiUtility;
 import common.source.Log;
-import common.source.NumberUtility;
 
 public class Analyzer extends BaseEntity {
-	private static final String CACHE_KEY = "ANALYZER.";
+	public static final String CACHE_KEY = "ANALYZER.";
+
+	public static enum CapabilityType {
+		Ethane ("Ethane", 0),
+		IsotopicMethane ("IsotopicMethane", 1),
+		Mast ("Mast", 2),
+		InertialGPS ("InertialGPS", 3);
+
+		private final String name;
+		private final Integer colIndex;
+
+		CapabilityType(String nm) {
+			this(nm, -1);
+		}
+
+		CapabilityType(String nm, Integer colIdx) {
+			name = nm;
+			colIndex = colIdx;
+		}
+
+		public Integer getIndex() {
+			return colIndex;
+		}
+
+
+		public String toString() {
+			return this.name;
+		}
+
+		public static CapabilityType fromString(String value) {
+			CapabilityType type = CapabilityType.IsotopicMethane;
+			if (value.equals("P3300") || value.equals("Ethane")) {
+				type = CapabilityType.Ethane;
+			} else if (value.equals("P3200") || value.equals("IsotopicMethane")) {
+				type = CapabilityType.IsotopicMethane;
+			} else if (value.equals("Mast")) {
+				type = CapabilityType.Mast;
+			} else if (value.equals("InertialGPS")) {
+				type = CapabilityType.InertialGPS;
+			}
+
+			return type;
+		}
+	}
 
 	private Object id;
 	private Object surveyorUnitId;
@@ -167,5 +209,12 @@ public class Analyzer extends BaseEntity {
 		}
 
 		return objAnalyzerList;
+	}
+
+	public void updateCapabilityType(CapabilityType capabilityType) {
+		String SQL = String.format("UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=%d WHERE [AnalyzerId]=N'%s'; "
+				+ "IF @@ROWCOUNT=0 INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'%s', %d);",
+				capabilityType.getIndex(), getId(), getId(), capabilityType.getIndex());
+		executeNonQuery(SQL);
 	}
 }

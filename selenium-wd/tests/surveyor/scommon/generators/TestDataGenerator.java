@@ -2,8 +2,10 @@ package surveyor.scommon.generators;
 
 import java.util.function.Supplier;
 
+import common.source.CheckedPredicate;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
+import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
@@ -39,6 +41,10 @@ public class TestDataGenerator {
 	}
 
 	public void generateNewCustomerAndSurvey(CustomerSurveyInfoEntity custSrvInfo) throws Exception {
+		generateNewCustomerAndSurvey(custSrvInfo, null /*testActions Predicate*/);
+	}
+
+	public void generateNewCustomerAndSurvey(CustomerSurveyInfoEntity custSrvInfo, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		// Create new customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
@@ -68,6 +74,6 @@ public class TestDataGenerator {
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds());
+				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), testActions);
 	}
 }
