@@ -164,7 +164,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Map should display the selected line segments with numbers
 		 * - Validate report creation date, date printed, Survey Start/End time present in SSRS PDF is as expected
 		 */
-		@Test /* Need surveys with indications */
+		@Ignore /* Need surveys with indications */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC537, location = EQReportDataProvider.class)
 		public void TC537_GenerateEQReportAsCustomerAdminWhenOverlappingMultiSegments(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -197,7 +197,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Deleted report is not present on EQ report list screen
 		 * - Report title, customer id, survey details, View Content details are not present in Report, ReportEQ and ReportEQArea tables (Check attached db schema in US850 for more detials)
 		 */
-		@Test
+		@Ignore
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC542, location = EQReportDataProvider.class)
 		public void TC542_DeleteEQReportAsPicarroSupportUser(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -236,7 +236,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - PDF will have Emission Ranking table with list of Pipe Segment IDs, Emissions ranked highest to lowest, emission rate, emission range, segment length, emission factor, estimated # of leaks, # leaks / ft, Emission Rate / Leak
 		 * - Map View should display the selected line segments with numbers
 		 */
-		@Test/* Need surveys with indications */
+		@Ignore/* Need surveys with indications */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC544, location = EQReportDataProvider.class)
 		public void TC544_GenerateEQReportAsPicarroAdminWhenMultipleLinesAllFilters(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -276,7 +276,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 *	 OR "No EQ Records present"
 		 * - Map should display the selected line segments with numbers
 		 */
-		@Test/* Need surveys with indications */
+		@Ignore/* Need surveys with indications */
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC554, location = EQReportDataProvider.class)
 		public void TC554_GenerateEQReportAsPicarroSupportWhenMultiLinesPartiallyOutsideSurveyArea(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -307,7 +307,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * Results:
 		 *	-  EQ customer's surveys should be present in the searched list along with surveyor surveys.
 		 */
-		@Test
+		@Ignore
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC556, location = EQReportDataProvider.class)
 		public void TC556_EQReportCanIncludeEQSurveysAndSurveyorSurveys(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -336,7 +336,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 *	- "Please add a survey" message is displayed
 		 *	- "Please select more than one line segment" message should be present
 		 */
-		@Test
+		@Ignore
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC559, location = EQReportDataProvider.class)
 		public void TC559_EQReportCannotBeGeneratedUnlessAllRequiredFieldsAreFilled(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
