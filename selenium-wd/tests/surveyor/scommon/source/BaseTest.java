@@ -538,6 +538,7 @@ public class BaseTest {
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
 			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
+			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds/10), -1);
 		}
 
 		TestSetup.stopAnalyzer();
