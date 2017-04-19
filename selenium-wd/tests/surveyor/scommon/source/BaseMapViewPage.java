@@ -1591,6 +1591,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		});
 	}
 
+	/**
+	 * Waits for Analytics Survey message dialog to be displayed.
+	 */
+	public void waitForAnalyticsDialogToBeDisplayed() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return isAnalyticsModeDialogShown();
+			}
+		});
+	}
+
     /**
 	 * Verify that the page loaded completely.
 	 */
