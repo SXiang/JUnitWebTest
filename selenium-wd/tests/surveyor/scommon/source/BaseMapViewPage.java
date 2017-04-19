@@ -1195,6 +1195,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			  return true;
 		  }
 		}
+		waitForAJAXCallsToComplete();
 		return mapUtility.getMapZoomLevel()==zoomlevel;
 	}
 
