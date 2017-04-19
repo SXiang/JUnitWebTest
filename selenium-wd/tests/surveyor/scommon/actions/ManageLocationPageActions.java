@@ -67,12 +67,27 @@ public class ManageLocationPageActions extends BasePageActions {
 		boolean useLatLongSelector = false;
 		String ethMthMin = locationDataRow.ethMethRatioMin;
 		String ethMthMax = locationDataRow.ethMethRatioMax;
+		String surMinAmp = locationDataRow.surMinAmp;
+		String rankingMinAmp = locationDataRow.rankingMinAmp;
+		String psFilter = locationDataRow.psFilter;
+		String top10PS = locationDataRow.top10PS;
+		String top25PS = locationDataRow.top25PS;
+		String top50PS = locationDataRow.top50PS;
+		String dbScanRd = locationDataRow.dbScanRd;
+		String minClusterSz = locationDataRow.minClusterSz;
+		String maxClusterScale = locationDataRow.maxClusterScale;
+		String expansionPower = locationDataRow.expansionPower;
+		String inflationPower = locationDataRow.inflationPower;
+		String percentile = locationDataRow.percentile;
 		boolean checkForError = false;
 		this.getManageLocationsPage().setLatitude(locationDataRow.latitude);
 		this.getManageLocationsPage().setLongitude(locationDataRow.longitude);
-		this.getManageLocationsPage().addNewLocation(locationDesc, customer, newLocationName, 
-				useLatLongSelector, ethMthMin, ethMthMax, checkForError);
-		
+		this.getManageLocationsPage().addNewLocation(locationDesc, customer,
+				newLocationName, useLatLongSelector, ethMthMin, ethMthMax,
+				surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS,
+				dbScanRd, minClusterSz, maxClusterScale, expansionPower,
+				inflationPower, percentile, checkForError);
+
 		workingDataRow.set(locationDataRow);
 		
 		return true;

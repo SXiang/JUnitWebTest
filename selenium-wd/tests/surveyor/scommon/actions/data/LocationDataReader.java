@@ -30,6 +30,18 @@ public class LocationDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_EthMethRatioMin = 13;
 	public static final int Excel_TestData__Col_EthMethRatioMax = 14;
 	public static final int Excel_TestData__Col_CustomerDataRowID = 15;
+	public static final int Excel_TestData__Col_SurveyMinAmp = 16;
+	public static final int Excel_TestData__Col_RankingMinAmp = 17;
+	public static final int Excel_TestData__Col_FilterPS = 18;
+	public static final int Excel_TestData__Col_Top10PS = 19;
+	public static final int Excel_TestData__Col_Top25PS = 20;
+	public static final int Excel_TestData__Col_Top50PS = 21;
+	public static final int Excel_TestData__Col_DbScanRadius = 22;
+	public static final int Excel_TestData__Col_MinClusterSize = 23;
+	public static final int Excel_TestData__Col_MaxClusterScale = 24;
+	public static final int Excel_TestData__Col_ExpansionPower = 25;
+	public static final int Excel_TestData__Col_InflationPower = 26;
+	public static final int Excel_TestData__Col_Percentile = 27;
  
 	public class LocationDataRow {
 		public String rowID;
@@ -48,11 +60,32 @@ public class LocationDataReader extends BaseDataReader {
 		public String ethMethRatioMin;
 		public String ethMethRatioMax;
 		public String customerDataRowID;
+		public String surMinAmp;
+		public String rankingMinAmp;
+		public String psFilter;
+		public String top10PS;
+		public String top25PS;
+		public String top50PS;
+		public String dbScanRd;
+		public String minClusterSz;
+		public String maxClusterScale;
+		public String expansionPower;
+		public String inflationPower;
+		public String percentile;
  
-		public LocationDataRow(String rowID, String name, String latitude, String longitude, String standardMinAmplitude, 
-				String operatorMinAmplitude, String rapidResponseMinAmplitude, String assessmentMinAmplitude, String eQMinAmplitude, 
-				String isotopicIdentityNoLowerBound, String isotopicIdentityYesLowerBound, String isotopicIdentityYesUpperBound, 
-				String isotopicIdentityNoUpperBound, String ethMethRatioMin, String ethMethRatioMax, String customerDataRowID) {
+		public LocationDataRow(String rowID, String name, String latitude,
+				String longitude, String standardMinAmplitude,
+				String operatorMinAmplitude, String rapidResponseMinAmplitude,
+				String assessmentMinAmplitude, String eQMinAmplitude,
+				String isotopicIdentityNoLowerBound,
+				String isotopicIdentityYesLowerBound,
+				String isotopicIdentityYesUpperBound,
+				String isotopicIdentityNoUpperBound, String ethMethRatioMin,
+				String ethMethRatioMax, String customerDataRowID,
+				String surMinAmp, String rankingMinAmp, String psFilter,
+				String top10PS, String top25PS, String top50PS,
+				String dbScanRd, String minClusterSz, String maxClusterScale,
+				String expansionPower, String inflationPower, String percentile) {
 			this.rowID = rowID;
 			this.name = name;
 			this.latitude = latitude;
@@ -69,6 +102,18 @@ public class LocationDataReader extends BaseDataReader {
 			this.ethMethRatioMin = ethMethRatioMin;
 			this.ethMethRatioMax = ethMethRatioMax;
 			this.customerDataRowID = customerDataRowID;
+			this.surMinAmp = surMinAmp;
+			this.rankingMinAmp = rankingMinAmp;
+			this.psFilter = psFilter;
+			this.top10PS = top10PS;
+			this.top25PS = top25PS;
+			this.top50PS = top50PS;
+			this.dbScanRd = dbScanRd;
+			this.minClusterSz = minClusterSz;
+			this.maxClusterScale = maxClusterScale;
+			this.expansionPower = expansionPower;
+			this.inflationPower = inflationPower;
+			this.percentile = percentile;
 		}
 	}	
  
@@ -131,17 +176,33 @@ public class LocationDataReader extends BaseDataReader {
 		String ethMethRatioMin = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMin, TESTDATA_SHEET_NAME);
 		String ethMethRatioMax = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMax, TESTDATA_SHEET_NAME);
 		String customerDataRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerDataRowID, TESTDATA_SHEET_NAME);
+		String surMinAmp = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_SurveyMinAmp, TESTDATA_SHEET_NAME);
+		String rankingMinAmp = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RankingMinAmp, TESTDATA_SHEET_NAME);
+		String psFilter = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_FilterPS, TESTDATA_SHEET_NAME);
+		String top10PS = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Top10PS, TESTDATA_SHEET_NAME);
+		String top25PS = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Top25PS, TESTDATA_SHEET_NAME);
+		String top50PS = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Top50PS, TESTDATA_SHEET_NAME);
+		String dbScanRd = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_DbScanRadius, TESTDATA_SHEET_NAME);
+		String minClusterSize = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_MinClusterSize, TESTDATA_SHEET_NAME);
+		String maxClusterScale = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_MaxClusterScale, TESTDATA_SHEET_NAME);
+		String expansionPower = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ExpansionPower, TESTDATA_SHEET_NAME);
+		String inflationPower = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_InflationPower, TESTDATA_SHEET_NAME);
+		String percentile = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Percentile, TESTDATA_SHEET_NAME);
 		
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], latitude=[%s], longitude=[%s], standardMinAmplitude=[%s], "
 				+ "operatorMinAmplitude=[%s], rapidResponseMinAmplitude=[%s], assessmentMinAmplitude=[%s], eQMinAmplitude=[%s], "
 				+ "isotopicIdentityNoLowerBound=[%s], isotopicIdentityYesLowerBound=[%s], isotopicIdentityYesUpperBound=[%s], "
-				+ "isotopicIdentityNoUpperBound=[%s], ethMethRatioMin=[%s], ethMethRatioMax=[%s], customerDataRowID=[%s]", 
+				+ "isotopicIdentityNoUpperBound=[%s], ethMethRatioMin=[%s], ethMethRatioMax=[%s], customerDataRowID=[%s], "
+				+ "surMinAmplitude=[%s], rankingMinAmplitude=[%s], psFilter=[%s], top10PS=[%s], top25PS=[%s], top50PS=[%s], "
+				+ "dbScanRd=[%s], minClusterSize=[%s], maxClusterScale=[%s], expansionPower=[%s], inflationPower=[%s], percentile=[%s]", 
 				rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude, 
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound, 
-				isotopicIdentityYesUpperBound, isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID));
+				isotopicIdentityYesUpperBound, isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID, surMinAmp,
+				rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile));
 		
 		return new LocationDataRow(rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude, 
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound, isotopicIdentityYesUpperBound, 
-				isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID);
+				isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, 
+				top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile);
 	}
 }
