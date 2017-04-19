@@ -317,15 +317,14 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
-		Map<String, String> testSurvey, testReport;
+
+		Map <String, String >testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+				,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Analytics);
+		pushGisData(testAccount.get("customerId"));
 		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-		
-		testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-				,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"));
-		
+		String surveyTag = testSurvey.get("surveyTag");
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, 212 /*reportDataRowID1*/, SurveyModeFilter.Analytics);
+		 	
 		String rptTitle = testReport.get(SurveyType.Standard+"Title");
 		String strCreatedBy = testReport.get("userName");
 
@@ -344,9 +343,11 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+	//	complianceReportsPageAction.getComplianceReportsPage().performSearch("Analytics");
+		complianceReportsPageAction.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 		assertTrue(complianceReportsPageAction.waitForLicenseMissingPopupToShow(EMPTY, NOTSET));
-		complianceReportsPageAction.waitForOkMissingLicensePopupToClose(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnOKButton(EMPTY, NOTSET);
+//		complianceReportsPageAction.waitForOkMissingLicensePopupToClose(EMPTY, NOTSET);
 	
 		getHomePage().logout();
 	}

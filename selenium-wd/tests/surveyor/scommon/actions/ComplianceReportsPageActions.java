@@ -247,13 +247,13 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	/**
-	 * Executes verifyRapidResponseReportModeIsShownOnPage action.
+	 * Executes verifyAnalyticsReportModeIsShownOnPage action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean verifyAnalyticsReportModeIsShownOnPage(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyAnalyticsReportModeIsShownOnPage", data, dataRowID);
+		logAction("ComplianceReportsPageActions.verifyManualReportModeIsShownOnPage", data, dataRowID);
 		return this.getComplianceReportsPage().isAnalyticsReportModeShown();
 	}
 
@@ -279,17 +279,6 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		return this.getComplianceReportsPage().isRapidResponseSurveyModeShown();
 	}
 
-	/**
-	 * Executes verifyAnalyticsSurveyModeIsShownOnPage action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyAnalyticsSurveyModeIsShownOnPage(String data, Integer dataRowID) {
-		logAction("ComplianceReportsPageActions.verifyAnalyticsSurveyModeIsShownOnPage", data, dataRowID);
-		return this.getComplianceReportsPage().isAnalyticsSurveyModeShown();
-	}
-	
 	/**
 	 * Executes verifyManualSurveyModeIsShownOnPage action.
 	 * @param data - specifies the input data passed to the action.
