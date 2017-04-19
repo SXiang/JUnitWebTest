@@ -527,7 +527,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void addViews(String customer, List<Map<String, String>> viewList){
 		addViews(customer, viewList, false);
 	}
-	
+
 	public void addViews(String customer, List<Map<String, String>> viewList, boolean isAnalyticsReport) {
 		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
@@ -743,7 +743,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.method("invokeEQPDFFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.EQPDF);
 	}
-	
+
 	public void invokePDFZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokePDFZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ZIP);
@@ -757,6 +757,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void invokeShapeZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokeShapeZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
+	}
+
+	public void invokeViewFileDownload(String reportName, String viewName, Integer viewIdx) throws Exception {
+		Log.method("invokeViewFileDownload", reportName, viewName, viewIdx);
+		if (firstPdfView.isDisplayed()) {
+			String downloadFileRelativeUrl = pdfViews.get(viewIdx - 1).getAttribute("href");
+			downloadFileRelativeUrl = downloadFileRelativeUrl.replace(TestContext.INSTANCE.getBaseUrl(),"");
+			String outputFileName = reportName + "_" + viewName + ".pdf";
+			String outputFileFullPath = Paths.get(testSetup.getDownloadPath(), outputFileName).toString();
+			Downloader.downloadFile(downloadFileRelativeUrl, outputFileFullPath);
+		}
 	}
 
 	protected void invokeFileDownload(String rptTitle, ReportFileType fileType) throws Exception {
@@ -1608,7 +1619,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean isInputTitleHighlightedInRed(){
 		return isHighlightedInRed(inputTitle);
 	}
-	
+
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
 		String border = "border: 1px solid red;";
