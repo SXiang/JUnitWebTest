@@ -831,7 +831,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void inputPSFilter(float psFilterThreshold){
 		Log.method("inputPSFilterThreshold", psFilterThreshold);
 		this.inputPSFilterThreshold.clear();
-		this.inputPSFilterThreshold.sendKeys(""+psFilterThreshold);
+		this.inputPSFilterThreshold.sendKeys(String.valueOf(psFilterThreshold));
 	}
 	public void editLocationPSFilterThreshold(String customerName, String locationName, float psFilterThreshold){		
 		findExistingLocationAndClickEdit(customerName, locationName);
