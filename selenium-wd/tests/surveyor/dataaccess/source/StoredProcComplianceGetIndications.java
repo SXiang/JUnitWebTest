@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.sql.CallableStatement;
 
 import common.source.BaseHelper;
@@ -128,22 +129,11 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	public void applyPSFilter(ArrayList<StoredProcComplianceGetIndications> objReportList, boolean checkPSFilter){
 		if(!checkPSFilter) 
 			return;
-		Iterator<StoredProcComplianceGetIndications> it = objReportList.iterator();
-		while(it.hasNext()){
-			StoredProcComplianceGetIndications indication = it.next();
-			String surveyorUnitName = indication.getSurveyorUnitName();
-			try{
-				float psFilterThreshold = getPSFilterThreshold(surveyorUnitName);
-				float ch4 = indication.getCh4();
-				if(ch4 < psFilterThreshold){
-					it.remove();
-					Log.warn("Removed indication: "+indication+" based on psShreshold '"+psFilterThreshold+"' for surveyor '"+surveyorUnitName+"'");
-				}
-			}catch(Exception e){
-				Log.error("Failed to get psFilterTreshold for "+surveyorUnitName);
-			}
-		}
+		objReportList.stream()
+				.filter(p -> p.getCh4() > getPSFilterThreshold(p.getSurveyorUnitName()))
+				.collect(Collectors.toList());
 	}
+
 	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId) {
 		return getReportIndications(reportId, false);
 	}
@@ -221,12 +211,9 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return objReport;
 	}
 
-	public float getPSFilterThreshold(String surveyorUnitName) throws SQLException{
-		String sql = "Select PriorityScoreFilterThreshold from dbo.LocationAnalyticsParameter, dbo.SurveyorUnit "+
-					"Where LocationAnalyticsParameter.LocationId = SurveyorUnit.LocationId And SurveyorUnit.Description = '" + surveyorUnitName+"'";
-		ResultSet rs = executeQuery(sql);
-		rs.next();
-		float psFilterThreshold = rs.getFloat("PriorityScoreFilterThreshold");
+	public float getPSFilterThreshold(String surveyorUnitName) {
+		String locationId = SurveyorUnit.getSurveyorUnit(surveyorUnitName).getLocationId();
+		float psFilterThreshold = LocationAnalyticsParameter.getLocationAnalyticsParameterById(locationId).getPriorityScoreFilterThreshold();
 		return psFilterThreshold;
 	}
 	

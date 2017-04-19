@@ -34,6 +34,7 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
+import surveyor.scommon.source.SurveyorConstants.AnalyzerType;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -49,7 +50,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 	@AfterClass
 	public static void afterClass() {
-		if(testAccount!=null){
+		if(testAccount!=null && testAccount.get("customerId")!=null){
 			cleanUpGisData(testAccount.get("customerId"));
 		}
 	}
@@ -64,7 +65,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		
 		if(testAccount == null){
 			testAccount = createTestAccount("Analytics_Report");
-			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), AnalyzerType.METHANE
 					,testAccount.get("userName"), testAccount.get("userPassword"), 1500, SurveyType.Analytics);
 			pushGisData(testAccount.get("customerId"));
 		}
