@@ -2757,7 +2757,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyAllMetadataFiles(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
-		boolean checkPSFilter = !data.isEmpty()&&data.equals(ReportModeFilter.Analytics.toString());
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title, checkPSFilter);
 		if(checkPSFilter){
@@ -2863,7 +2863,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableInfo(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISAsIndicationTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		boolean checkPSFilter = !data.isEmpty()&&data.equals(ReportModeFilter.Analytics);
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;;
 		return this.getReportsCommonPage().verifyIndicationTable(downloadPath, getWorkingReportsDataRow().title, checkPSFilter);
 	}
 

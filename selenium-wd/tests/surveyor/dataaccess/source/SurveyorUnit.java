@@ -112,7 +112,7 @@ public class SurveyorUnit extends BaseEntity {
 
 	public ArrayList<SurveyorUnit> load(String SQL) {
 		ArrayList<SurveyorUnit> objSurveyorUnitList = new ArrayList<SurveyorUnit>();
-		SQL ="SELECT * FROM dbo.[SurveyorUnit] WHERE Description='iGPS car'";
+
 		try {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(SQL);
@@ -122,7 +122,7 @@ public class SurveyorUnit extends BaseEntity {
 				objSurveyorUnitList.add(objSurveyorUnit);
 
 				// add to cache.
-//				DBCache.INSTANCE.set(CACHE_KEY + objSurveyorUnit.getId(), objSurveyorUnit);
+				DBCache.INSTANCE.set(CACHE_KEY + objSurveyorUnit.getId(), objSurveyorUnit);
 			}
 
 		} catch (SQLException e) {
