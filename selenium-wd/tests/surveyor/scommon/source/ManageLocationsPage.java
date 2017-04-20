@@ -224,9 +224,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
 				customer, newLocationName, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName,
-				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "5.0",
-				"0.035", "1.0", "0.5", "0.1", "0.05", "45", "2", "65", "2",
-				"1.5", "90", true);
+				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "",
+				"", "", "", "", "", "", "", "", "", "", "", true);
 	}
 
 	private boolean addNewLocation(String locationDesc, String customer,
@@ -235,9 +234,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName,
 				useLatLongSelector, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName,
-				useLatLongSelector, ethMthMin, ethMthMax, "5.0", "0.035",
-				"1.0", "0.5", "0.1", "0.05", "45", "2", "65", "2", "1.5", "90",
-				true);
+				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "",
+				"", "", "", "", "", "", "", true);
 	}
 	
 	public boolean addNewLocation(String locationDesc, String customer,
@@ -323,52 +321,88 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.eqMinAmp.sendKeys("0.035");
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.surMinAmp)) {
-			this.surMinAmp.clear();
-			this.surMinAmp.sendKeys(surMinAmp);
+			if (surMinAmp != null && surMinAmp != "") {
+				Log.info("Set Survey Min Amp - '" + surMinAmp + "'");
+				this.surMinAmp.clear();
+				this.surMinAmp.sendKeys(surMinAmp);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.rankingMinAmp)) {
-			this.rankingMinAmp.clear();
-			this.rankingMinAmp.sendKeys(rankingMinAmp);
+			if (rankingMinAmp != null && rankingMinAmp != "") {
+				Log.info("Set Ranking Min Amp - '" + rankingMinAmp + "'");
+				this.rankingMinAmp.clear();
+				this.rankingMinAmp.sendKeys(rankingMinAmp);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
-			this.top10PS.clear();
-			this.top10PS.sendKeys(top10PS);
+			if (top10PS != null && top10PS != "") {
+				Log.info("Set Top 10 PS - '" + top10PS + "'");
+				this.top10PS.clear();
+				this.top10PS.sendKeys(top10PS);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.top25PS)) {
-			this.top25PS.clear();
-			this.top25PS.sendKeys(top25PS);
+			if (top25PS != null && top25PS != "") {
+				Log.info("Set Top 25 PS - '" + top25PS + "'");
+				this.top25PS.clear();
+				this.top25PS.sendKeys(top25PS);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.top50PS)) {
-			this.top50PS.clear();
-			this.top50PS.sendKeys(top50PS);
+			if (top50PS != null && top50PS != "") {
+				Log.info("Set Top 50 PS - '" + top50PS + "'");
+				this.top50PS.clear();
+				this.top50PS.sendKeys(top50PS);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
-			this.psFilter.clear();
-			this.psFilter.sendKeys(psFilter);
+			if (psFilter != null && psFilter != "") {
+				Log.info("Set Filter PS - '" + psFilter + "'");
+				this.psFilter.clear();
+				this.psFilter.sendKeys(psFilter);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.dbScanRd)) {
-			this.dbScanRd.clear();
-			this.dbScanRd.sendKeys(dbScanRd);
+			if (dbScanRd != null && dbScanRd != "") {
+				Log.info("Set DB Scan Radius - '" + dbScanRd + "'");
+				this.dbScanRd.clear();
+				this.dbScanRd.sendKeys(dbScanRd);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSz)) {
-			this.minClusterSz.clear();
-			this.minClusterSz.sendKeys(minClusterSz);
+			if (minClusterSz != null && minClusterSz != "") {
+				Log.info("Set Min Cluster Size - '" + minClusterSz + "'");
+				this.minClusterSz.clear();
+				this.minClusterSz.sendKeys(minClusterSz);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.maxClusterScale)) {
-			this.maxClusterScale.clear();
-			this.maxClusterScale.sendKeys(maxClusterScale);
+			if (maxClusterScale != null && maxClusterScale != "") {
+				Log.info("Set Max Cluster Scale - '" + maxClusterScale + "'");
+				this.maxClusterScale.clear();
+				this.maxClusterScale.sendKeys(maxClusterScale);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.expansionPower)) {
-			this.expansionPower.clear();
-			this.expansionPower.sendKeys(expansionPower);
+			if (expansionPower != null && expansionPower != "") {
+				Log.info("Set Expansion Power - '" + expansionPower + "'");
+				this.expansionPower.clear();
+				this.expansionPower.sendKeys(expansionPower);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.inflationPower)) {
-			this.inflationPower.clear();
-			this.inflationPower.sendKeys(inflationPower);
+			if (inflationPower != null && inflationPower != "") {
+				Log.info("Set Inflation Power - '" + inflationPower + "'");
+				this.inflationPower.clear();
+				this.inflationPower.sendKeys(inflationPower);
+			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.percentile)) {
-			this.percentile.clear();
-			this.percentile.sendKeys(percentile);
+			if (percentile != null && percentile != "") {
+				Log.info("Set Percentile - '" + percentile + "'");
+				this.percentile.clear();
+				this.percentile.sendKeys(percentile);
+			}
 		}
 		
 		this.NoLower.clear();
