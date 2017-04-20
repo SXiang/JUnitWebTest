@@ -185,7 +185,7 @@ public class WebDriverWrapper {
 		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
 				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
 		ChromeDriver chromeDriver = new ChromeDriver(this.capabilities);
-		allowChromeAutomationExtensionInIncognito(chromeDriver);
+		FunctionUtil.warnOnError(() -> allowChromeAutomationExtensionInIncognito(chromeDriver));
 		setDriver(chromeDriver);
 	}
 
