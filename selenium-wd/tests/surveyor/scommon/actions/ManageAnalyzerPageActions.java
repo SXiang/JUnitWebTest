@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.AnalyzerDataReader.AnalyzerDataRow;
@@ -103,10 +105,14 @@ public class ManageAnalyzerPageActions extends BasePageActions {
 				Log.info(String.format("Analyzer with serial number-'%s' fetched from pool ALREADY EXISTS in DB. "
 						+ "Deleting Analyzer.", analyzerDataRow.serialNumber));
 				analyzer.cascadeDeleteAnalyzer();
+				DBCache.INSTANCE.purgeCache(Analyzer.CACHE_KEY);
 			}
 		}
 
 		this.getManageAnalyzersPage().addNewAnalyzer(serialNumber, sharedKey, surveyor, customerName, locationName);
+
+		Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerDataRow.serialNumber);
+		analyzer.updateCapabilityType(CapabilityType.fromString(analyzerDataRow.type));
 
 		workingDataRow.set(analyzerDataRow);
 

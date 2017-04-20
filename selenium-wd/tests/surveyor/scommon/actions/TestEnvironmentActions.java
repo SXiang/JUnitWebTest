@@ -1,7 +1,10 @@
 package surveyor.scommon.actions;
 
 import java.io.IOException;
+import org.junit.Assert;
 
+import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.NetworkProxyHandler;
 import common.source.TestContext;
@@ -284,6 +287,11 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public static void generateSurveyForUser(int loginUserRowID, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds) throws Exception {
+		generateSurveyForUser(loginUserRowID, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null/*testActions Predicate*/);
+	}
+
+	public static void generateSurveyForUser(int loginUserRowID, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -293,7 +301,7 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, loginUserRowID);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	/**
@@ -311,6 +319,11 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds) throws Exception {
+		generateSurveyForUser(username, password, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null /*testActions Predicate*/);
+	}
+
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -318,22 +331,33 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
-			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction) throws Exception {
-		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
-		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
-		testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		try {
+			testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
+			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+
+			if (testActions != null) {
+				testActions.test(driverViewPageAction);
+			}
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+			testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
+			testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		}
 	}
 }

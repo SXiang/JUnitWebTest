@@ -81,6 +81,7 @@ import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity.IsotopicAnalysisTableColumns;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
@@ -206,13 +207,15 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return areBoundariesMatch;
 	}
 
-
-
 	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
-		this.getReportsCommonPage().clickViewThumbnailImageByIndex(viewIdx);
+		String reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+		List<Map<String, String>> viewList = getWorkingReportsEntity().getViewList();
+		Map<String, String> map = viewList.get(viewIdx-1);
+		String viewName = map.get(KEYVIEWNAME);
+		this.getReportsCommonPage().invokeViewFileDownload(reportName, viewName, viewIdx);
 		return true;
 	}
 
@@ -2502,7 +2505,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.clickOnReportViewerView", data, dataRowID);
 		return clickComplianceViewerViewByIndex("1", dataRowID);
 	}
-	
+
 	/**
 	 * Executes clickOnComplianceViewerViewByIndex action.
 	 * @param data - specifies the input data passed to the action.
@@ -2651,7 +2654,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		waitForViewDownloadByViewIndex("1", dataRowID);
 		return true;
 	}
-	
+
 	/**
 	 * Executes waitForView1DownloadToCompleteByViewIndex action.
 	 * @param data - specifies the input data passed to the action.
@@ -2756,8 +2759,14 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyAllMetadataFiles(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
-		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title, checkPSFilter);
+		if(checkPSFilter){
+			Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b",
+					verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile));	
+			return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile;
+		}
 		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyReportSpecificMetadataFiles = verifyMetadataFilesPredicate.test(getReportsCommonPage());
 		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyReportSpecificMetadataFiles = %b",
@@ -2856,7 +2865,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyLISAsIndicationTableInfo(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISAsIndicationTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
-		return this.getReportsCommonPage().verifyIndicationTable(downloadPath, getWorkingReportsDataRow().title);
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;;
+		return this.getReportsCommonPage().verifyIndicationTable(downloadPath, getWorkingReportsDataRow().title, checkPSFilter);
 	}
 
 	/**
@@ -2887,6 +2897,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyLISASMetaDataFile(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISASMetaDataFile", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		
 		return this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 	}
 
