@@ -400,6 +400,7 @@ public class LatLongSelectionControl extends BaseControl {
 		for (int i =0; i < coordinates.size(); i++)
 		{
 			Point coord = coordinates.get(i);
+			Log.info("Click on point '"+coord+"'");
 			builder.moveToElement(canvas, coord.x, coord.y)
 			.click()
 			.build()
@@ -407,6 +408,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 			if (i == coordinates.size()-1)
 			{
+				Log.info("DoubleClick on point '"+coord+"'");
 				builder.moveToElement(canvas, coord.x, coord.y)
 				.doubleClick()
 				.build()

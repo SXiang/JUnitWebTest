@@ -2551,10 +2551,14 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
-			throws Exception {
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws Exception{
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle);
-		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
+		return verifyLISASMetaDataFile(actualPath, reportTitle, false);
+	}
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, boolean checkPSFilter)
+			throws Exception {
+		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, checkPSFilter);
+		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId(), checkPSFilter);
 	}
 
 	public boolean verifyNumberOfLISAsInMetaDataFile(String actualPath, String reportTitle, Integer expectedLISACount)
@@ -2564,12 +2568,15 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return (outLISAs.size() == expectedLISACount);
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, boolean checkPSFilter)
 			throws Exception {
-		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/);
+		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/, checkPSFilter);
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs)
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs) throws Exception{
+		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, outLISAs, false);
+	}
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs, boolean checkPSFilter)
 			throws Exception {
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
 		CSVUtility csvUtility = new CSVUtility();
@@ -2581,7 +2588,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 			pathToCsv = actualPath;
 		}
 		setReportName(reportName);
-		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
 
@@ -2642,8 +2655,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
 		}
 
-		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId);
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId, checkPSFilter);
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
@@ -2956,7 +2968,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
+	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException{
+		return verifyIndicationTable(actualPath, reportTitle, false);
+	}
+	
+	public boolean verifyIndicationTable(String actualPath, String reportTitle, boolean checkPSFilter) throws IOException {
 		Log.method("ReportsCommonPage.verifyIndicationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -3021,7 +3037,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 				LogHelper.strListToString(reportIndicationsList)));
 
 		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId);
+				.getReportIndications(reportId, checkPSFilter);
+		
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
 		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 		while (lineIterator.hasNext()) {

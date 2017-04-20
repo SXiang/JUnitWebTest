@@ -50,6 +50,18 @@ public class BaseEntity {
 		return -1;
 	}
 
+	public ResultSet executeQuery(String SQL) {
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			return rs;
+
+		} catch (SQLException e) {
+			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
+		}
+		return null;
+	}
+	
 	/**
 	 * Executes a query that return a single row with single column of integer value.
 	 * @param SQL

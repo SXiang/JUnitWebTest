@@ -78,7 +78,7 @@ public class ManageLocationPageActions extends BasePageActions {
 		return true;
 	}
 	
-	private ManageLocationsPage getManageLocationsPage() {
+	public ManageLocationsPage getManageLocationsPage() {
 		return (ManageLocationsPage)this.getPageObject();
 	}
 
