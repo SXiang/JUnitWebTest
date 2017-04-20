@@ -122,9 +122,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
 
-	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Analytics")
-	protected WebElement inputReportModeAnalytics;
-
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 
@@ -873,13 +870,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String btnLableMsg = btnLable;
 		try{
 			btnLableMsg = (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<String>() {
-				public String apply(WebDriver d) {
-					String msg = btnAddSurveys.getAttribute("value");
-					if(btnLable.isEmpty() || msg.equals(btnLable)){
-						return null;
-					}
-					return msg;
-				}
+			    public String apply(WebDriver d) {
+			    	String msg = btnAddSurveys.getAttribute("value");
+			        if(btnLable.isEmpty() || msg.equals(btnLable)){
+			        	return null;
+			        }
+			        return msg;
+			    }
 			});
 		}catch(Exception e){
 			Log.warn("No message returned by 'Add Surveys'");
@@ -951,7 +948,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// Add the selected surveys
 			clickOnAddSurveysButton();
 			if(waitForSurvyesToBeAdded){
-				waitForSelectedSurveysToBeAdded(numSurveysToSelect);
+			   waitForSelectedSurveysToBeAdded(numSurveysToSelect);
 			}
 		}
 	}
@@ -1364,7 +1361,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 			String str = driver
 					.findElement(By
 							.xpath("//*[@id='surveyContent-0']/div/fieldset/div/fieldset/div[2]/div[" + i + "]/label"))
-							.getText();
+					.getText();
 			if (str != columnName) {
 				result = true;
 			}
@@ -1427,7 +1424,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void addOtherDetails(String customer, String exclusionRadius, String boundary, String imageMapHeight,
 			String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong, String surUnit,
 			List<String> tagList, String startDate, String endDate, boolean changeMode, String strReportMode)
-					throws Exception {
+			throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1515,7 +1512,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private boolean waitForReportGenerationToComplete(String rptTitle, String strCreatedBy, StringBuilder rptNameBuilder) {
 		return FunctionUtil.wrapException(rptTitle, (s1) ->
-		waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/, rptNameBuilder, null/*allowedErrorMsg*/, null /*allowedErrorCheck*/,
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/, rptNameBuilder, null/*allowedErrorMsg*/, null /*allowedErrorCheck*/,
 				(s2) -> {
 					FunctionUtil.warnOnError(() -> {
 						if (isReportViewerDialogOpen()) {
@@ -1523,7 +1520,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						}
 					});
 					return true;
-				}));
+			}));
 	}
 
 	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
@@ -1532,8 +1529,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		StringBuilder rptNameBuilder = new StringBuilder();
 		boolean retVal = FunctionUtil.wrapException(rptTitle, (s1) ->
-		waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
-				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, 
+			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
+				rptNameBuilder, allowedErrorMsg, allowedErrorCheck,
 				(s2) -> {
 					FunctionUtil.warnOnError(() -> {
 						if (isReportViewerDialogOpen()) {
@@ -1541,7 +1538,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 						}
 					});
 					return true;
-				}));
+			}));
 		if (retVal) {
 			return rptNameBuilder.toString();
 		}
@@ -1727,7 +1724,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							Log.error(String.format("Wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
+							Log.error(String.format("Wait action timed out in waitForReportGenerationToCompleteAndExecuteAction() method call. Elapsed time = %d",
 									elapsedTime));
 							return false;
 						}
@@ -1811,7 +1808,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void reportSpecificAddNewReport(String customer, String exclusionRadius, String boundary,
 			String imageMapHeight, String imageMapWidth, String NELat, String NELong, String SWLat, String SWLong)
-					throws Exception {
+			throws Exception {
 		throw new Exception("Not implemented");
 	}
 
@@ -1867,15 +1864,15 @@ public class ReportsBasePage extends SurveyorBasePage {
 			if (rptTitleCellText.trim().equalsIgnoreCase(rptTitle)
 					&& createdByCellText.trim().equalsIgnoreCase(strCreatedBy)) {
 				copyImgXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']"; // Don't
-				// use
-				// index
-				// for
-				// 'Copy'
-				// as
-				// it
-				// has
-				// diff
-				// values
+																			// use
+																			// index
+																			// for
+																			// 'Copy'
+																			// as
+																			// it
+																			// has
+																			// diff
+																			// values
 				copyImg = getReportTableCell(copyImgXPath);
 				Log.clickElementInfo("Copy", ElementType.ICON);
 				jsClick(copyImg);
@@ -2769,10 +2766,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 				// If no report job type in CSV, throw exception.
 				if (!foundInCsv) {
 					throw new Exception(
-							String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
-									expectedFilePath.toString(),
-									BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId).toString(),
-									reportJobTypeId, testCaseID));
+						String.format("Entry NOT found in Baseline CSV-[%s], for ReportJobType-[%s], ReportJobTypeId-[%s], TestCase-[%s]",
+							expectedFilePath.toString(),
+							BaseReportEntity.ReportJobTypeGuids.get(reportJobTypeId).toString(),
+							reportJobTypeId, testCaseID));
 				}
 			}
 		}
@@ -2827,7 +2824,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.info(String.format("Looking for match on last seen values : lastSeenTitleCellText()=[%s], lastSeenReportNameCellText=[%s], lastSeenCreatedByCellText=[%s]",
 				lastSeenTitleCellText.trim(), lastSeenReportNameCellText=="" ? "Not Specified" : lastSeenReportNameCellText.trim(), lastSeenCreatedByCellText.trim()));
 		while (!(rowCompareTest(rptTitleCellText, rptNameCellText, createdByCellText,
-				lastSeenTitleCellText, lastSeenReportNameCellText, lastSeenCreatedByCellText))) {
+					lastSeenTitleCellText, lastSeenReportNameCellText, lastSeenCreatedByCellText))) {
 			Log.info(String.format("Found cell (skipping newly added) : rptTitleCellText=[%s], rptNameCellText=[%s], createdByCellText=[%s]",
 					rptTitleCellText.trim(), rptNameCellText.trim(), createdByCellText.trim()));
 
@@ -2910,19 +2907,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		switch (rmf) {
 		case Standard:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
+					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		case RapidResponse:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
+					&& isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		case Manual:
 			filtersFound = isManualSurveyModeSelected() && !isStandardSurveyModeShown() && !isOperatorSurveyModeShown()
-			&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
+					&& !isAllSurveyModeShown() && !isRapidResponseSurveyModeShown();
 			break;
 		default:
 			filtersFound = isAllSurveyModeShown() && isStandardSurveyModeShown() && isOperatorSurveyModeShown()
-			&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
+					&& !isRapidResponseSurveyModeShown() && !isManualSurveyModeSelected();
 			break;
 		}
 		return filtersFound;
@@ -2942,10 +2939,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isManualReportModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
-	}
-
-	public boolean isAnalyticsReportModeShown() {
-		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeAnalytics);
 	}
 
 	public boolean isStandardSurveyModeShown() {
@@ -3215,7 +3208,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		boolean matchSuccess = false;
 		if (serverLogs != null && serverLogs.size() > 0) {
 			matchSuccess = serverLogs.stream()
-					.allMatch(s -> s.getMessage().contains(SurveyorConstants.MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG));
+				.allMatch(s -> s.getMessage().contains(SurveyorConstants.MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG));
 		}
 
 		return matchSuccess;

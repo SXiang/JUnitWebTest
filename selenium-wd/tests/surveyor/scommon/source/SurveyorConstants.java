@@ -449,7 +449,7 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 
 	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
-
+	public static final float DEFAULT_PSFILTER_THRESHOLD = 0.05f;
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";
 
 	/*
@@ -523,7 +523,20 @@ public final class SurveyorConstants {
 			return this.name;
 		}
 	}
+	
+	public enum AnalyzerType {
+		ETHANE ("Ethane"),
+		METHANE ("Methane");
 
+		private final String name;
+		AnalyzerType(String nm) {
+			name = nm;
+		}
+		public String toString() {
+			return this.name;
+		}
+	}
+	
 	public enum LicensedFeatures {
 		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
@@ -531,6 +544,7 @@ public final class SurveyorConstants {
 		CURTAINVIEW ("Curtain View"),
 		CUSTOMCOLORS ("Custom Colors"),
 		EQ ("EQ"),
+		FACILITYEQ ("Facility EQ"),
 		FLEETMAPVIEW ("FleetMap View"),
 		GAPGRID10 ("FTP Upload"),
 		GISLAYERS ("GIS Layers"),
@@ -546,7 +560,6 @@ public final class SurveyorConstants {
 		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
 		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
-
 		private final String name;
 
 		LicensedFeatures(String nm) {
