@@ -1,8 +1,13 @@
 ﻿param
 (
   [string] $buildWorkingDir = "C:\Repositories\surveyor-qa",
-  [string] $systemImage = "25|google_apis|x86",             # use one of the [key] entries from supported images.
-  [string] $androidSDKPackageIDs = "2,5,35",                # comma-seperated list of ids from => android list sdk --all
+  [string] $systemImage = "23|google_apis|x86",             # use one of the [key] entries from supported images.
+  [string] $androidSDKPackageIDs = "2,12,14,37",            # comma-seperated list of ids from => android list sdk --all
+                                                            # Includes :->
+                                                            #      2 - Android SDK Platform-tools, revision 25.0.4 
+                                                            #     12 - Android SDK Build-tools, revision 23.0.3
+                                                            #     14 - Android SDK Build-tools, revision 23.0.1
+                                                            #     37 - SDK Platform Android 6.0, API 23, revision 3
   [string] $haxmPackageID = "179"                           # id from => android list sdk --all
 )
 
