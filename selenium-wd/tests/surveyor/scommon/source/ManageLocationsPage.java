@@ -337,7 +337,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.rankingMinAmp.sendKeys(rankingMinAmp);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
+/*		Once Khan's code is merged to SQAAuto will uncomment this code
+ 		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
 			if (top10PS != null && top10PS != "") {
 				Log.info("Set Top 10 PS - '" + top10PS + "'");
 				this.top10PS.clear();
@@ -357,7 +358,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.top50PS.clear();
 				this.top50PS.sendKeys(top50PS);
 			}
-		}
+		}*/
 		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
 			if (psFilter != null && psFilter != "") {
 				Log.info("Set Filter PS - '" + psFilter + "'");
@@ -748,7 +749,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.psFilter.clear();
 					this.psFilter.sendKeys(newPsFilter);
 				}
-				
+/*				Once Khan's code is merged to SQAAuto will uncomment this code
 				if (newTop10PS != null && newTop10PS != "") {
 					Log.info("Set Top 10% PS - '" + newTop10PS + "'");
 					this.top10PS.clear();
@@ -766,7 +767,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.top50PS.clear();
 					this.top50PS.sendKeys(newTop50PS);
 				}
-				
+*/				
 				if (newDbScanRd != null && newDbScanRd != "") {
 					Log.info("Set DBScan Radius - '" + newDbScanRd + "'");
 					this.dbScanRd.clear();
@@ -1107,5 +1108,53 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		findExistingLocationAndClickEdit(customerName, locationName);
 		inputPSFilter(psFilterThreshold);
 		clickOnOkBtn();
+	}
+	
+	public boolean isSurveyMinAmpShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isRankingMinAmpShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isTop10PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isTop25PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isTop50PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isFilterPsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isDbScanRadiusShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isMinClusterSizeShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isMaxClusterScaleShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isExpansionPowerShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isInflationPowerShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+	}
+
+	public boolean isPercentileShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
 	}
 }
