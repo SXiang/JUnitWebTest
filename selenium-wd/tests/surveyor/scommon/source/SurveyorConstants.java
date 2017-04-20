@@ -523,7 +523,7 @@ public final class SurveyorConstants {
 			return this.name;
 		}
 	}
-	
+
 	public enum AnalyzerType {
 		ETHANE ("Ethane"),
 		METHANE ("Methane");
@@ -536,7 +536,7 @@ public final class SurveyorConstants {
 			return this.name;
 		}
 	}
-	
+
 	public enum LicensedFeatures {
 		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
@@ -560,6 +560,7 @@ public final class SurveyorConstants {
 		REPORTMETADATA ("Report Metadata"),
 		REPORTSHAPEFILE ("Report ShapeFile"),
 		SURVEYPROTOCOLFORECAST ("Survey Protocol Forecast");
+
 		private final String name;
 
 		LicensedFeatures(String nm) {
