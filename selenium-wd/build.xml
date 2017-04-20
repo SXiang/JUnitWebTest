@@ -804,6 +804,7 @@
         <fileset dir="${build}">
         	<include name="**/EQReportsPageTest.class" />
         	<include name="**/EQReportsPageTest2.class" />
+        	<include name="**/EQReportsWithLicensedFeaturesPageTest" />
         </fileset>
       </batchtest>
     </junit>
