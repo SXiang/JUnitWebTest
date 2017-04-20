@@ -383,6 +383,10 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
+	public WebElement getOkButton() {
+		return okButton;
+	}
+
 	/**
 	 *
 	 *

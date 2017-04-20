@@ -27,11 +27,14 @@ import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.ArrayUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFUtility;
+import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import common.source.PDFTableUtility.PDFTable;
 
 /**
@@ -97,15 +100,29 @@ public class EQReportsPage extends ReportsCommonPage {
 		selectDropdownItem(eqLocationSelector, eqLocationParameter);
 	}
 
-	protected void clickLineSegmentsSelectorBtn() {
-		Log.clickElementInfo("Line Segments Selector");
+	protected void openLineSegmentsSelector() {
+		Log.clickElementInfo("Open Line Segments Selector");
+		// Try few times before failure
+		boolean actionSuccess = RetryUtil.retryOnException(
+				() -> { return clickLineSegmentsSelector();},
+				() -> { return true; },
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+		if (!actionSuccess) {
+			Log.error(String.format("clickLineSegmentsSelector() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
+		}
+	}
+	
+	protected boolean clickLineSegmentsSelector() {
+		Log.clickElementInfo("Click Line Segments Selector");
 		this.lineSegmentsSelectorBtn.click();
+		return WebElementExtender.verifyElementIsDisplayed(driver, latLongSelectionControl.getOkButton(), timeout);
 	}
 
 	protected void selectLineSegments(List<List<Coordinates>> lineSegments) {
 			if(lineSegments.isEmpty())
 				return;
-			clickLineSegmentsSelectorBtn();
+			openLineSegmentsSelector();
 			latLongSelectionControl.waitForModalDialogOpen();
 			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
 			latLongSelectionControl.waitForMapImageLoad();
