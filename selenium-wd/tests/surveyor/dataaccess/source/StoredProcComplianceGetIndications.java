@@ -3,6 +3,8 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 import java.sql.CallableStatement;
 
 import common.source.BaseHelper;
@@ -115,15 +117,32 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
+		return get(reportId, false);
+	}
+
+	public ArrayList<StoredProcComplianceGetIndications> get(String reportId, boolean checkPSFilter) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
+		applyPSFilter(objReportList, checkPSFilter);
 		return objReportList;
 	}
 
-	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId) {
-		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId);
-		return objStoredProcComplianceGetIndications;
+	public void applyPSFilter(ArrayList<StoredProcComplianceGetIndications> objReportList, boolean checkPSFilter){
+		if(!checkPSFilter) 
+			return;
+		objReportList.stream()
+				.filter(p -> p.getCh4() > getPSFilterThreshold(p.getSurveyorUnitName()))
+				.collect(Collectors.toList());
 	}
 
+	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId) {
+		return getReportIndications(reportId, false);
+	}
+
+	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId, boolean checkPSFilter) {
+		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId, checkPSFilter);
+		return objStoredProcComplianceGetIndications;
+	}
+	
 	public boolean isEquals(StoredProcComplianceGetIndications obj) {
 		Log.method("StoredProcComplianceGetIndications.isEquals", obj.toString());
 		if (!this.getPeakNumber().trim().equals(obj.getPeakNumber().trim())) {
@@ -192,6 +211,12 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 		return objReport;
 	}
 
+	public float getPSFilterThreshold(String surveyorUnitName) {
+		String locationId = SurveyorUnit.getSurveyorUnit(surveyorUnitName).getLocationId();
+		float psFilterThreshold = LocationAnalyticsParameter.getLocationAnalyticsParameterById(locationId).getPriorityScoreFilterThreshold();
+		return psFilterThreshold;
+	}
+	
 	public ArrayList<StoredProcComplianceGetIndications> load(String reportId) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = new ArrayList<StoredProcComplianceGetIndications>();
 

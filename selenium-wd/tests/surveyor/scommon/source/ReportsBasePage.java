@@ -193,7 +193,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Analytics']")
 	protected WebElement inputSurModeFilterAnalytics;
-	
+
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
@@ -1195,6 +1195,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void waitForSurveyTabletoLoad() {
 		Log.method("waitForSurveyTabletoLoad");
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = false;
@@ -1522,14 +1523,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}));
 	}
 
-	private String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
 		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 
 		StringBuilder rptNameBuilder = new StringBuilder();
 		boolean retVal = FunctionUtil.wrapException(rptTitle, (s1) ->
 			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
-				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, 
+				rptNameBuilder, allowedErrorMsg, allowedErrorCheck,
 				(s2) -> {
 					FunctionUtil.warnOnError(() -> {
 						if (isReportViewerDialogOpen()) {
@@ -1723,7 +1724,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							Log.error(String.format("Wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
+							Log.error(String.format("Wait action timed out in waitForReportGenerationToCompleteAndExecuteAction() method call. Elapsed time = %d",
 									elapsedTime));
 							return false;
 						}
