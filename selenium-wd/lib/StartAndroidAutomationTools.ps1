@@ -1,6 +1,6 @@
 ﻿param
 (
-  [string] $avdName = "android_25_google_apis_x86"
+  [string] $avdName = "android_23_google_apis_x86"
 )
 
 Write-Host "[ANDROID-TOOLS]: Starting Android Emulator ..."
