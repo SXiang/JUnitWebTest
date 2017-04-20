@@ -38,8 +38,9 @@ $installApplications = @{
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_REACT_NATIVE]: Done installing pre-requisite applications"
 
-"Triggering NPM install (using latest) ..."
+"Triggering NPM install (updating to latest npm) ..."
 npm install npm@latest -g
+npm install
 
 # 2. 
 # Set CI build number in build.gradle 
