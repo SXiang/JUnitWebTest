@@ -600,8 +600,6 @@
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
-          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
-          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" /> 
         </fileset>
       </batchtest>
     </junit>
@@ -637,9 +635,8 @@
       <batchtest fork="yes" todir="${reports}/sanity/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
-          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
-          </fileset>
+          <include name="**/SanityIntegrationTest.class" />
+        </fileset>
       </batchtest>
     </junit>
     <echo message="junit build : ${build}" />
@@ -805,9 +802,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-      		<include name="**/AssessmentReportsPageTest.class" />
-        	<include name="**/ComplianceReportsPageTest3.class" />
-        	<include name="**/ComplianceReportsPageTest6.class" />
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
         </fileset>
       </batchtest>
     </junit>
