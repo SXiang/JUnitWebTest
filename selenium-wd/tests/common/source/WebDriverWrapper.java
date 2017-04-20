@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -35,7 +37,7 @@ public class WebDriverWrapper {
 	private String iosVersion, androidVersion;
 	private String mobilePlatform;
 	private String iosDeviceName, androidDeviceName;
-	
+
 	private RemoteWebDriver driver;
 	private static RemoteWebDriver appiumDriver;
 	private DesiredCapabilities capabilities;
@@ -52,7 +54,7 @@ public class WebDriverWrapper {
 		this.downloadPath = TestContext.INSTANCE.getTestSetup().getDownloadPath();
 		this.platform = TestContext.INSTANCE.getTestSetup().getPlatform();
 		this.isRemoteBrowser = TestContext.INSTANCE.getTestSetup().isRemoteBrowser();
-		
+
 		this.appiumServerHost = TestContext.INSTANCE.getTestSetup().getAppiumServerHost();
 		this.appiumServerPort = TestContext.INSTANCE.getTestSetup().getAppiumServerPort();
 		this.iosApp = TestContext.INSTANCE.getTestSetup().getIosApp();
@@ -124,7 +126,7 @@ public class WebDriverWrapper {
 	public RemoteWebDriver setupAppiumRemoteWebDriver(){
 		this.capabilities = new DesiredCapabilities();
 		this.capabilities.setCapability("platformName", this.mobilePlatform);
-		
+
 		if(this.mobilePlatform.equalsIgnoreCase("iOS")){
 			this.capabilities.setCapability("app", this.iosApp);
 			this.capabilities.setCapability("platformVersion", this.iosVersion);
@@ -157,7 +159,7 @@ public class WebDriverWrapper {
 				+ this.appiumServerHost + "\n");
 		return appiumDriver;
 	}
-	
+
 	public void setChromeBrowserCapabilities() {
 		setChromeBrowserCapabilities(null);
 	}
@@ -182,7 +184,9 @@ public class WebDriverWrapper {
 		System.setProperty("webdriver.chrome.driver", this.chromeDriverPath);
 		Log.info("\nThe System Propery 'webdriver.chrome.driver' is: "
 				+ System.getProperty("webdriver.chrome.driver").toString() + "\n");
-		setDriver(new ChromeDriver(this.capabilities));
+		ChromeDriver chromeDriver = new ChromeDriver(this.capabilities);
+		allowChromeAutomationExtensionInIncognito(chromeDriver);
+		setDriver(chromeDriver);
 	}
 
 	public void setChromeBrowserCapabilitiesForGrid() throws MalformedURLException {
@@ -222,15 +226,23 @@ public class WebDriverWrapper {
 	public void setDriver(RemoteWebDriver driver) {
 		this.driver = driver;
 	}
-	
+
 	public static RemoteWebDriver getAppiumDriver() {
 		if(!isAppiumDriverInTest()){
 			appiumDriver = new WebDriverWrapper().setupAppiumRemoteWebDriver();
 		}
 		return appiumDriver;
 	}
-	
+
 	public static boolean isAppiumDriverInTest(){
 		return appiumDriver != null;
+	}
+
+	private void allowChromeAutomationExtensionInIncognito(ChromeDriver chromeDriver) {
+		chromeDriver.get("chrome://extensions-frame");
+		WebElement checkbox = chromeDriver.findElement(By.xpath("//label[@class='incognito-control']/input[@type='checkbox']"));
+		if (!checkbox.isSelected()) {
+		    checkbox.click();
+		}
 	}
 }
