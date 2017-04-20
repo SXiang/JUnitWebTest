@@ -430,6 +430,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='licenseMissingModal']/div/div/div[3]/a")
+	protected WebElement dialoadModelOK;
+	
+	public WebElement getDialoadModelOK() {
+		return this.dialoadModelOK;
+	}
 	private String reportName;
 	private String reportId;
 	@FindBy(name = "survey-mode-type")

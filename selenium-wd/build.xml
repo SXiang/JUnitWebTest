@@ -600,6 +600,8 @@
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" /> 
         </fileset>
       </batchtest>
     </junit>
@@ -635,8 +637,9 @@
       <batchtest fork="yes" todir="${reports}/sanity/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/SanityIntegrationTest.class" />
-        </fileset>
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
+          </fileset>
       </batchtest>
     </junit>
     <echo message="junit build : ${build}" />

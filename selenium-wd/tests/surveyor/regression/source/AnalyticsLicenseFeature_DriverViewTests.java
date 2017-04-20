@@ -27,6 +27,9 @@ import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
 import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -175,33 +178,12 @@ public class AnalyticsLicenseFeature_DriverViewTests extends BaseMapViewTest {
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
 		homePage.logout();
 
-		loginPage.open();
-		loginPage.loginNormalAs(newUsername, newUserPass);
-
-		getTestEnvironmentAction().startAnalyzer(EMPTY, 61); 	// start analyzer. RFADS2004-PICARRO
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		getTestEnvironmentAction().startReplay(EMPTY, 61);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, 61);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
-		assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: Analytics",NOTSET));
-		assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
-		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
-		assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY,NOTSET));
-		driverViewPageAction.stopDrivingSurvey(EMPTY,NOTSET);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
-		homePage.waitForPageLoad();
-		String surveyTagName = DriverViewPageActions.workingDataRow.get().surveyTag;
-		homePage.clickOnDrivingSurveyLink();
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() == 1);
-		measurementSessionsPage.performSearch(surveyTagName);
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() == 1);
-		homePage.logout();
+		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+				61, 64, 60, (driverPageAction) -> {
+					// Include verifications to perform once the Survey has started and before Stop survey is called.
+					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+					return true;
+				});
 	}
 
 	/* * Test Case ID: TC2335_CreateNewCustomerWithAnalyticsSurveyLicense
@@ -231,63 +213,25 @@ public class AnalyticsLicenseFeature_DriverViewTests extends BaseMapViewTest {
 	public void TC2335_CreateNewCustomerWithAnalyticsSurveyLicense() throws Exception{
 		Log.info("\nTestcase - TC2335_CreateNewCustomerWithAnalyticsSurveyLicense\n");
 
+		final int DB3_ANALYZER_ROW_ID = 61;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 64;	 		/* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		// Create new customer.
-		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, 14 /*customerRowID*/);
-
-		// Create new location.
-		manageLocationPageAction.open(EMPTY, NOTSET);
-		manageLocationPageAction.createNewLocation(EMPTY, 17 /*locationRowID*/);
-
-		// Create new user.
-		manageUsersPageAction.open(EMPTY, NOTSET);
-		manageUsersPageAction.createNewCustomerUser(EMPTY, 26 /*userRowID*/);
-
-		// Create new surveyor.
-		manageSurveyorPageAction.open(EMPTY, NOTSET);
-		manageSurveyorPageAction.createNewSurveyor(EMPTY, 25 /*surveyorRowID*/);
-
-		// Create new analyzer.
-		manageAnalyzerPageAction.open(EMPTY, NOTSET);
-		manageAnalyzerPageAction.createNewAnalyzer(EMPTY, 23 /*analyzerRowID*/);
-
-		// Create new ref gas bottle.
-		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
-		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, 7 /*refGasBottleRowID*/);
-
-		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
-		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
-
-		loginPage.open();
-		loginPage.loginNormalAs(newUsername, newUserPass);
-
-		getTestEnvironmentAction().startAnalyzer(EMPTY, 61); 	// start analyzer. RFADS2004-PICARRO
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
-		getTestEnvironmentAction().startReplay(EMPTY, 61);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, 61);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
-		assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: Analytics",NOTSET));
-		assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
-		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
-		assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY,NOTSET));
-		driverViewPageAction.stopDrivingSurvey(EMPTY,NOTSET);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		driverViewPageAction.clickOnPicarroLogoButton(EMPTY, NOTSET);
-		homePage.waitForPageLoad();
-		String surveyTagName = DriverViewPageActions.workingDataRow.get().surveyTag;
-		homePage.clickOnDrivingSurveyLink();
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() == 1);
-		measurementSessionsPage.performSearch(surveyTagName);
-		measurementSessionsPage.waitForTableDataToLoad();
-		assertTrue(measurementSessionsPage.getTableRows().size() == 1);
-		homePage.logout();
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			return true;
+		});
 	}
 
 	/* * Test Case ID: TC2334_DriverViewAnalyticsSurveyModeLicenseRevokedFromCustomer
@@ -357,7 +301,7 @@ public class AnalyticsLicenseFeature_DriverViewTests extends BaseMapViewTest {
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 		getTestEnvironmentAction().startReplay(EMPTY, 61); 	// start replay db3 file.
-		
+
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.getDriverViewPage().getSystemShutdownButton().isDisplayed());
