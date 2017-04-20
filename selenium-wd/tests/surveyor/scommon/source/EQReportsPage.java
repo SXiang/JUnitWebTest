@@ -2,6 +2,7 @@ package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ import surveyor.dataaccess.source.StoredProcEQGetEQData;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.entities.EQReportEntity.EmissionsQuantificationTableColumns;
 import surveyor.scommon.entities.ReportCommonEntity;
+import surveyor.scommon.actions.ActionArguments;
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
@@ -30,6 +32,7 @@ import common.source.ArrayUtility;
 import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.NumberUtility;
 import common.source.PDFUtility;
 import common.source.RetryUtil;
 import common.source.SortHelper;
@@ -249,5 +252,4 @@ public class EQReportsPage extends ReportsCommonPage {
 		Log.info("Emissions Quantification table verification passed");
 		return true;
 	}
-
 }
