@@ -320,7 +320,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 
 		Map <String, String >testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
 				,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Analytics);
-		pushGisData(testAccount.get("customerId"));
+		//pushGisData(testAccount.get("customerId"));
 		
 		String surveyTag = testSurvey.get("surveyTag");
 		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, 212 /*reportDataRowID1*/, SurveyModeFilter.Analytics);
@@ -343,7 +343,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-	//	complianceReportsPageAction.getComplianceReportsPage().performSearch("Analytics");
+		complianceReportsPageAction.getComplianceReportsPage().performSearch(rptTitle);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 		assertTrue(complianceReportsPageAction.waitForLicenseMissingPopupToShow(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnOKButton(EMPTY, NOTSET);

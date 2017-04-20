@@ -14,9 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -39,10 +39,8 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
-import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -300,10 +298,9 @@ public class BaseTest {
 			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
-			analyzerSharedKey = analyzer.getSharedKey();
 			if (analyzer != null) {
-				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
-						+ "Deleting Analyzer.", analyzerName, analyzerSharedKey));
+				Log.info(String.format("Analyzer with serial number-'%s' fetched from pool ALREADY EXISTS in DB. "
+						+ "Deleting Analyzer.", analyzerName));
 				analyzer.cascadeDeleteAnalyzer();
 			}
 		}
@@ -347,9 +344,6 @@ public class BaseTest {
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
 
-		Customer customer = Customer.getCustomer(customerName);
-		testAccount.put("customerId", customer.getId());
-		
 		if(!addTestSurveyor){
 			return testAccount;
 		}
@@ -397,8 +391,8 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
-		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
-		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
+		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual};
+		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
 			surveyModeFilter = SurveyModeFilter.values();
 		}
@@ -442,9 +436,9 @@ public class BaseTest {
 				}
 			}
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
+
 			complianceReportsPage.addNewReport(rpt, true);
-			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
-			testReport.put(sm.toString()+"ReportName", reportName);
+			complianceReportsPage.waitForReportGenerationtoComplete(rpt.getRptTitle(), rpt.getStrCreatedBy());
 		}
 
 		return Collections.synchronizedMap(testReport);
@@ -461,10 +455,8 @@ public class BaseTest {
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
-		String replayAnalyticsScriptDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
-		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
-		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
+		int[] surveyRowIDs = {3, 5, 9, 31, 30};
 		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
 
 		if(surveyTypes==null||surveyTypes.length==0){
@@ -495,12 +487,7 @@ public class BaseTest {
 
 		for(SurveyType st:surveyTypes){
 			TestSetup.restartAnalyzer();
-			String db3file = replayScriptDB3File;
-			String db3DefnFile = replayScriptDefnFile;
-			if(st.equals(SurveyType.Analytics)){
-				db3file = replayAnalyticsScriptDB3File;
-				db3DefnFile = replayAnalyticsScriptDefnFile;
-			}
+
 			driverViewPageAction.open("", -1);
 			driverViewPageAction.waitForConnectionToComplete("", -1);
 
@@ -511,7 +498,7 @@ public class BaseTest {
 					break;
 				}
 			}
-			TestSetup.replayDB3Script(db3DefnFile, db3file);
+			TestSetup.replayDB3Script(replayScriptDefnFile, replayScriptDB3File);
 			driverViewPageAction.clickOnModeButton("", -1);
 			driverViewPageAction.startDrivingSurvey("", surveyRowID);
 			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
@@ -533,27 +520,7 @@ public class BaseTest {
 
 		return Collections.synchronizedMap(testSurvey);
 	}
-	
-	protected static boolean pushGisData(String customerId) {
-		try {
-			// Add GIS seed for customer.
-			DbSeedExecutor.executeGisSeed(customerId);
-		} catch (Exception ex) {
-			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
-		}
-		return true;
-	}
-	
-	protected static boolean cleanUpGisData(String customerId){
-		try {
-				DbSeedExecutor.cleanUpGisSeed(customerId);
-			} catch (Exception e) {
-				Log.error(String.format("Error in cleanUpGisSeed. Exception - %s", ExceptionUtility.getStackTraceString(e)));
-				return false;
-			}
-		return true;
-	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
