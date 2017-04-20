@@ -21,7 +21,6 @@ import org.openqa.selenium.interactions.Actions;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.NumberUtility;
-import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebElementExtender;
 import common.source.WebElementFunctionUtil;
@@ -31,7 +30,6 @@ public class LatLongSelectionControl extends BaseControl {
 		MapInteraction,
 		Default
 	}
-	private static int mouseTracingTimeout = 1;
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION = "function getBoundarySelectorCanvasImageData(){var imgData=null;var mapFrame=window.frames[1];"
 			+ "if(mapFrame){frameDoc=mapFrame.document;if(frameDoc){divEl=frameDoc.getElementById(\"map\");"
 			+ "if(divEl){canvasElement=divEl.getElementsByClassName(\"ol-unselectable\")[0];ctx=canvasElement.getContext('2d');"
@@ -429,7 +427,7 @@ public class LatLongSelectionControl extends BaseControl {
 		List<Point> coordinates = new ArrayList<Point>();
 
 		Dimension dimension = canvas.getSize();
-		int div = 1, buttomdiv = 100;
+		int div = 200, buttomdiv = 200;
 		int legendHight = legendContainer.getSize().height;
 
 		Coordinates lt = getGPSPosition(canvas, 0+div, legendHight+div);
@@ -453,7 +451,6 @@ public class LatLongSelectionControl extends BaseControl {
 	public Coordinates getGPSPosition(WebElement canvas, int x, int y){
 		Actions builder = new Actions(driver);
 		builder.moveToElement(canvas, x, y).build().perform();
-		TestSetup.idleForSeconds(mouseTracingTimeout);
 		return new Coordinates(NumberUtility.getDoubleValueOf(getLongitude()), NumberUtility.getDoubleValueOf(getLatitude()));
 	}
 
