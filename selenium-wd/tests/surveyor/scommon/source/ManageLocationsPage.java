@@ -1111,50 +1111,50 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	}
 	
 	public boolean isSurveyMinAmpShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(surMinAmp);
 	}
 
 	public boolean isRankingMinAmpShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(rankingMinAmp);
 	}
 
 	public boolean isTop10PsShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(top10PS);
 	}
 
 	public boolean isTop25PsShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(top25PS);
 	}
 
 	public boolean isTop50PsShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(top50PS);
 	}
 
 	public boolean isFilterPsShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(psFilter);
 	}
 
 	public boolean isDbScanRadiusShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(dbScanRd);
 	}
 
 	public boolean isMinClusterSizeShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(minClusterSz);
 	}
 
 	public boolean isMaxClusterScaleShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(maxClusterScale);
 	}
 
 	public boolean isExpansionPowerShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(expansionPower);
 	}
 
 	public boolean isInflationPowerShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(inflationPower);
 	}
 
 	public boolean isPercentileShowing() {
-		return WebElementExtender.isElementPresentAndDisplayed(stdMinAmp);
+		return WebElementExtender.isElementPresentAndDisplayed(percentile);
 	}
 }
