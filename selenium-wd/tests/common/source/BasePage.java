@@ -678,7 +678,11 @@ public class BasePage {
 				return false;
 			}
 		};
-		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
-		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+		try{
+			(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
+			(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+		}catch(Exception e){
+			Log.error("Failed to waitForAJAXCallsToComplete: "+e);
+		}
 	}
 }
