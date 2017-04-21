@@ -616,4 +616,83 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
 	}
+	
+	/**
+	 * Test Case ID: TC2362_AddLocationAnalyticsParams_PicAdmin Test Description: Admin
+	 * configuration screen for customer-location-specific analytics parameters
+	 * - New Location
+	 *
+	 */
+	@Test
+	public void TC2362_AddLocationAnalyticsParams_PicAdmin() {
+		String customerName = CUSTOMER_PICARRO;
+		String locationName = getTestSetup().getRandomNumber() + "TC2362";
+		String cityName = "Santa Clara";
+		String newLocationName = locationName + "New";
+
+		Log.info("\nRunning TC2362_AddLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - New Location");
+
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup()
+				.getLoginPwd());
+
+		manageLocationsPage.open();
+		manageLocationsPage
+				.addNewLocation(locationName, customerName, cityName);
+
+		assertTrue(manageLocationsPage.findExistingLocation(customerName,
+				locationName));
+
+		manageLocationsPage.editPDExistingLocation(customerName, locationName,
+				newLocationName);
+		assertTrue(manageLocationsPage.findExistingLocation(customerName,
+				newLocationName));
+	}
+	
+	/**
+	 * Test Case ID: TC2363_EditLocationAnalyticsParams_PicAdmin Test
+	 * Description: Admin configuration screen for customer-location-specific
+	 * analytics parameters - Existing Location
+	 *
+	 */
+	@Test
+	public void TC2363_EditLocationAnalyticsParams_PicAdmin() {
+		String customerName = CUSTOMER_PICARRO;
+		String locationName = getTestSetup().getRandomNumber() + "TC2363";
+		String cityName = "Santa Clara";
+		String newLocationName = locationName + "New";
+		String newSurMinAmp = "5.5";
+		String newRankingMinAmp = "5.0";
+		String newPsFilter = "1.0";
+		String newTop10PS = "1.5";
+		String newTop25PS = "2.0";
+		String newTop50PS = "2.5";
+		String newDbScanRd = "25";
+		String newMinClusterSz = "3";
+		String newMaxClusterScale = "50";
+		String newExpansionPower = "2.5";
+		String newInflationPower = "2.5";
+		String newPercentile = "75";
+
+		Log.info("\nRunning TC2363_EditLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - Existing Location");
+
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup()
+				.getLoginPwd());
+
+		manageLocationsPage.open();
+		manageLocationsPage
+				.addNewLocation(locationName, customerName, cityName);
+
+		assertTrue(manageLocationsPage.findExistingLocation(customerName,
+				locationName));
+
+		manageLocationsPage.editExistingLocation(customerName, locationName,
+				newLocationName, null, null, null, null, newSurMinAmp,
+				newRankingMinAmp, newPsFilter, newTop10PS, newTop25PS,
+				newTop50PS, newDbScanRd, newMinClusterSz, newMaxClusterScale,
+				newExpansionPower, newInflationPower, newPercentile);
+		assertTrue(manageLocationsPage.findExistingLocation(customerName,
+				newLocationName));
+	}
 }
