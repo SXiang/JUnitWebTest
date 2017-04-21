@@ -137,6 +137,42 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "info")
 	protected WebElement selectedPoint;
+	
+	@FindBy(id = "AnalyticsMinimumAmplitude")
+	protected WebElement surMinAmp;
+	
+	@FindBy(id = "LocationAnalyticsParameter_RankingMinAmplitude")
+	protected WebElement rankingMinAmp;
+	
+	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFirst")
+	protected WebElement top10PS;
+	
+	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreSecond")
+	protected WebElement top25PS;
+	
+	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreThird")
+	protected WebElement top50PS;
+	
+	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
+	protected WebElement psFilter;
+ 
+	@FindBy(id = "LocationAnalyticsParameter_DbScanRadius")
+	protected WebElement dbScanRd;
+	
+	@FindBy(id = "LocationAnalyticsParameter_MinClusterSize")
+	protected WebElement minClusterSz;
+	
+	@FindBy(id = "LocationAnalyticsParameter_MaxSpatialScale")
+	protected WebElement maxClusterScale;
+	
+	@FindBy(id = "LocationAnalyticsParameter_ExpansionPower")
+	protected WebElement expansionPower;
+	
+	@FindBy(id = "LocationAnalyticsParameter_InflationPower")
+	protected WebElement inflationPower;
+	
+	@FindBy(id = "LocationAnalyticsParameter_Percentile")
+	protected WebElement percentile;
 
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
 	protected WebElement inputPSFilterThreshold;
@@ -185,20 +221,53 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return addNewLocation(locationDesc, customer, newLocationName, false /* UseLatLongSelector */, ethMthMin, ethMthMax);
 	}
 
-	public boolean addNewLocationUsingLatLongSelector(String locationDesc, String customer, String newLocationName, String ethMthMin, String ethMthMax) {
-		Log.method("addNewLocationUsingLatLongSelector", locationDesc, customer, newLocationName, ethMthMin, ethMthMax);
-		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax);
+	public boolean addNewLocationUsingLatLongSelector(String locationDesc,
+			String customer, String newLocationName, String ethMthMin,
+			String ethMthMax) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
+				customer, newLocationName, ethMthMin, ethMthMax);
+		return addNewLocation(locationDesc, customer, newLocationName,
+				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "",
+				"", "", "", "", "", "", "", "", "", "", "", true);
 	}
 
-	private boolean addNewLocation(String locationDesc, String customer, String newLocationName,
-			boolean useLatLongSelector, String ethMthMin, String ethMthMax) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax);
-		return addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin,ethMthMax,true);
+	private boolean addNewLocation(String locationDesc, String customer,
+			String newLocationName, boolean useLatLongSelector,
+			String ethMthMin, String ethMthMax) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName,
+				useLatLongSelector, ethMthMin, ethMthMax);
+		return addNewLocation(locationDesc, customer, newLocationName,
+				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "",
+				"", "", "", "", "", "", "", true);
+	}
+	
+	public boolean addNewLocation(String locationDesc, String customer,
+			String newLocationName, String surMinAmp, String rankingMinAmp,
+			String top10PS, String top25PS, String top50PS, String psFilter,
+			String dbScanRd, String minClusterSz, String maxClusterScale,
+			String expansionPower, String inflationPower, String percentile) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName,
+				surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS,
+				top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower,
+				inflationPower, percentile);
+		return addNewLocation(locationDesc, customer, newLocationName, false,
+				"1", "2", surMinAmp, rankingMinAmp, psFilter, top10PS,
+				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale,
+				expansionPower, inflationPower, percentile, true);
 	}
 
 	public boolean addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, boolean checkForError) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, checkForError);
+			String newLocationName, boolean useLatLongSelector,
+			String ethMthMin, String ethMthMax, String surMinAmp,
+			String rankingMinAmp, String psFilter, String top10PS,
+			String top25PS, String top50PS, String dbScanRd,
+			String minClusterSz, String maxClusterScale, String expansionPower,
+			String inflationPower, String percentile, boolean checkForError) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName,
+				useLatLongSelector, ethMthMin, ethMthMax, surMinAmp,
+				rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd,
+				minClusterSz, maxClusterScale, expansionPower, inflationPower,
+				percentile, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			setLatitude("37.3971035425739");
 			setLongitude("-121.98343231897");
@@ -254,7 +323,92 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.eqMinAmp.clear();
 			this.eqMinAmp.sendKeys("0.035");
 		}
-
+		if (WebElementExtender.isElementPresentAndDisplayed(this.surMinAmp)) {
+			if (surMinAmp != null && surMinAmp != "") {
+				Log.info("Set Survey Min Amp - '" + surMinAmp + "'");
+				this.surMinAmp.clear();
+				this.surMinAmp.sendKeys(surMinAmp);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.rankingMinAmp)) {
+			if (rankingMinAmp != null && rankingMinAmp != "") {
+				Log.info("Set Ranking Min Amp - '" + rankingMinAmp + "'");
+				this.rankingMinAmp.clear();
+				this.rankingMinAmp.sendKeys(rankingMinAmp);
+			}
+		}
+/*		Once Khan's code is merged to SQAAuto will uncomment this code
+ 		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
+			if (top10PS != null && top10PS != "") {
+				Log.info("Set Top 10 PS - '" + top10PS + "'");
+				this.top10PS.clear();
+				this.top10PS.sendKeys(top10PS);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.top25PS)) {
+			if (top25PS != null && top25PS != "") {
+				Log.info("Set Top 25 PS - '" + top25PS + "'");
+				this.top25PS.clear();
+				this.top25PS.sendKeys(top25PS);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.top50PS)) {
+			if (top50PS != null && top50PS != "") {
+				Log.info("Set Top 50 PS - '" + top50PS + "'");
+				this.top50PS.clear();
+				this.top50PS.sendKeys(top50PS);
+			}
+		}*/
+		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
+			if (psFilter != null && psFilter != "") {
+				Log.info("Set Filter PS - '" + psFilter + "'");
+				this.psFilter.clear();
+				this.psFilter.sendKeys(psFilter);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.dbScanRd)) {
+			if (dbScanRd != null && dbScanRd != "") {
+				Log.info("Set DB Scan Radius - '" + dbScanRd + "'");
+				this.dbScanRd.clear();
+				this.dbScanRd.sendKeys(dbScanRd);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSz)) {
+			if (minClusterSz != null && minClusterSz != "") {
+				Log.info("Set Min Cluster Size - '" + minClusterSz + "'");
+				this.minClusterSz.clear();
+				this.minClusterSz.sendKeys(minClusterSz);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.maxClusterScale)) {
+			if (maxClusterScale != null && maxClusterScale != "") {
+				Log.info("Set Max Cluster Scale - '" + maxClusterScale + "'");
+				this.maxClusterScale.clear();
+				this.maxClusterScale.sendKeys(maxClusterScale);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.expansionPower)) {
+			if (expansionPower != null && expansionPower != "") {
+				Log.info("Set Expansion Power - '" + expansionPower + "'");
+				this.expansionPower.clear();
+				this.expansionPower.sendKeys(expansionPower);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.inflationPower)) {
+			if (inflationPower != null && inflationPower != "") {
+				Log.info("Set Inflation Power - '" + inflationPower + "'");
+				this.inflationPower.clear();
+				this.inflationPower.sendKeys(inflationPower);
+			}
+		}
+		if (WebElementExtender.isElementPresentAndDisplayed(this.percentile)) {
+			if (percentile != null && percentile != "") {
+				Log.info("Set Percentile - '" + percentile + "'");
+				this.percentile.clear();
+				this.percentile.sendKeys(percentile);
+			}
+		}
+		
 		this.NoLower.clear();
 		this.NoLower.sendKeys("-45");
 		this.YesLower.clear();
@@ -350,12 +504,19 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean findExistingLocationAndClickEdit(String customerName, String locationName){
 		Log.method("findExistingLocationAndClickEdit", customerName, locationName);
-		return editExistingLocation(customerName, locationName, null,null,null,null,null, true, true);
+		return editExistingLocation(customerName, locationName, null, null,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, true, true);
 	}
 
-	public boolean editExistingLocation(String customerName, String locationName, String newLocationName, boolean checkForError){
-		Log.method("editExistingLocation", customerName, locationName, newLocationName, checkForError);
-		return editExistingLocation(customerName, locationName, newLocationName,null,null,null,null, false, checkForError);
+	public boolean editExistingLocation(String customerName,
+			String locationName, String newLocationName, boolean checkForError) {
+		Log.method("editExistingLocation", customerName, locationName,
+				newLocationName, checkForError);
+		return editExistingLocation(customerName, locationName,
+				newLocationName, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, false,
+				checkForError);
 	}
 
 	public boolean findExistingLocation(String customerName, String locationName) {
@@ -431,36 +592,74 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return false;
 	}
 
-	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName) {
-		Log.method("editPDExistingLocation", customerName, locationName, newLocationName);
-		return this.editExistingLocation(customerName, locationName, newLocationName, null, null, null, null);
+	public boolean editPDExistingLocation(String customerName,
+			String locationName, String newLocationName) {
+		Log.method("editPDExistingLocation", customerName, locationName,
+				newLocationName);
+		return this.editExistingLocation(customerName, locationName,
+				newLocationName, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null);
 	}
 
-	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
-			String latValue, String longValue) {
-		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue);
-		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, null, null);
+	public boolean editPDExistingLocation(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue) {
+		Log.method("editPDExistingLocation", customerName, locationName,
+				newLocationName, latValue, longValue);
+		return this.editExistingLocation(customerName, locationName,
+				newLocationName, latValue, longValue, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null);
 	}
 
-	public boolean editPDExistingLocation(String customerName, String locationName, String newLocationName,
-			String latValue, String longValue, String newEthMthMin, String newEthMthMax) {
-		Log.method("editPDExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
-		return this.editExistingLocation(customerName, locationName, newLocationName, latValue, longValue, newEthMthMin,
+	public boolean editPDExistingLocation(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue, String newEthMthMin, String newEthMthMax) {
+		Log.method("editPDExistingLocation", customerName, locationName,
+				newLocationName, latValue, longValue, newEthMthMin,
 				newEthMthMax);
-	}
-	public boolean editExistingLocation(String customerName,
-			String locationName, String newLocationName, String latValue,
-			String longValue, String newEthMthMin, String newEthMthMax){
-		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue, longValue, newEthMthMin, newEthMthMax);
-		return editExistingLocation(customerName, locationName, newLocationName, latValue,
-				longValue, newEthMthMin, newEthMthMax, false,true);
+		return this.editExistingLocation(customerName, locationName,
+				newLocationName, latValue, longValue, newEthMthMin,
+				newEthMthMax, null, null, null, null, null, null, null, null,
+				null, null, null, null);
 	}
 
 	public boolean editExistingLocation(String customerName,
 			String locationName, String newLocationName, String latValue,
-			String longValue, String newEthMthMin, String newEthMthMax , boolean openEditorOnly, boolean checkForError){
-		Log.method("editExistingLocation", customerName, locationName, newLocationName, latValue,
-				longValue, newEthMthMin, newEthMthMax, openEditorOnly, checkForError);
+			String longValue, String newEthMthMin, String newEthMthMax,
+			String newSurMinAmp, String newRankingMinAmp, String newPsFilter,
+			String newTop10PS, String newTop25PS, String newTop50PS,
+			String newDbScanRd, String newMinClusterSz,
+			String newMaxClusterScale, String newExpansionPower,
+			String newInflationPower, String newPercentile) {
+		Log.method("editExistingLocation", customerName, locationName,
+				newLocationName, latValue, longValue, newEthMthMin,
+				newEthMthMax, newSurMinAmp, newRankingMinAmp, newPsFilter,
+				newTop10PS, newTop25PS, newTop50PS, newDbScanRd,
+				newMinClusterSz, newMaxClusterScale, newExpansionPower,
+				newInflationPower, newPercentile);
+		return editExistingLocation(customerName, locationName,
+				newLocationName, latValue, longValue, newEthMthMin,
+				newEthMthMax, newSurMinAmp, newRankingMinAmp, newPsFilter,
+				newTop10PS, newTop25PS, newTop50PS, newDbScanRd,
+				newMinClusterSz, newMaxClusterScale, newExpansionPower,
+				newInflationPower, newPercentile, false, true);
+	}
+
+	public boolean editExistingLocation(String customerName,
+			String locationName, String newLocationName, String latValue,
+			String longValue, String newEthMthMin, String newEthMthMax,
+			String newSurMinAmp, String newRankingMinAmp, String newPsFilter,
+			String newTop10PS, String newTop25PS, String newTop50PS,
+			String newDbScanRd, String newMinClusterSz,
+			String newMaxClusterScale, String newExpansionPower,
+			String newInflationPower, String newPercentile,
+			boolean openEditorOnly, boolean checkForError) {
+		Log.method("editExistingLocation", customerName, locationName,
+				newLocationName, latValue, longValue, newEthMthMin,
+				newEthMthMax, openEditorOnly, newSurMinAmp, newRankingMinAmp,
+				newPsFilter, newTop10PS, newTop25PS, newTop50PS, newDbScanRd,
+				newMinClusterSz, newMaxClusterScale, newExpansionPower,
+				newInflationPower, newPercentile, checkForError);
 		Log.info(String.format("Edit Location '%s', customer = '%s'",
 				locationName, customerName));
 		setPagination(PAGINATIONSETTING_100);
@@ -531,6 +730,78 @@ public class ManageLocationsPage extends SurveyorBasePage {
 						this.inputLocationLong.clear();
 						this.inputLocationLong.sendKeys(longValue);
 					}
+				}
+				
+				if (newSurMinAmp != null && newSurMinAmp != "") {
+					Log.info("Set Survey Min Amp - '" + newSurMinAmp + "'");
+					this.surMinAmp.clear();
+					this.surMinAmp.sendKeys(newSurMinAmp);
+				}
+
+				if (newRankingMinAmp != null && newRankingMinAmp != "") {
+					Log.info("Set Ranking Min Amp - '" + newRankingMinAmp + "'");
+					this.rankingMinAmp.clear();
+					this.rankingMinAmp.sendKeys(newRankingMinAmp);
+				}
+				
+				if (newPsFilter != null && newPsFilter != "") {
+					Log.info("Set PS Filter - '" + newPsFilter + "'");
+					this.psFilter.clear();
+					this.psFilter.sendKeys(newPsFilter);
+				}
+/*				Once Khan's code is merged to SQAAuto will uncomment this code
+				if (newTop10PS != null && newTop10PS != "") {
+					Log.info("Set Top 10% PS - '" + newTop10PS + "'");
+					this.top10PS.clear();
+					this.top10PS.sendKeys(newTop10PS);
+				}
+				
+				if (newTop25PS != null && newTop25PS != "") {
+					Log.info("Set Top 25% PS - '" + newTop25PS + "'");
+					this.top25PS.clear();
+					this.top25PS.sendKeys(newTop25PS);
+				}
+				
+				if (newTop50PS != null && newTop50PS != "") {
+					Log.info("Set Top 50% PS - '" + newTop50PS + "'");
+					this.top50PS.clear();
+					this.top50PS.sendKeys(newTop50PS);
+				}
+*/				
+				if (newDbScanRd != null && newDbScanRd != "") {
+					Log.info("Set DBScan Radius - '" + newDbScanRd + "'");
+					this.dbScanRd.clear();
+					this.dbScanRd.sendKeys(newDbScanRd);
+				}
+	
+				if (newMinClusterSz != null && newMinClusterSz != "") {
+					Log.info("Set Min Cluster Size - '" + newMinClusterSz + "'");
+					this.minClusterSz.clear();
+					this.minClusterSz.sendKeys(newMinClusterSz);
+				}
+				
+				if (newMaxClusterScale != null && newMaxClusterScale != "") {
+					Log.info("Set Max Cluster Scale - '" + newMaxClusterScale + "'");
+					this.maxClusterScale.clear();
+					this.maxClusterScale.sendKeys(newMaxClusterScale);
+				}
+
+				if (newExpansionPower != null && newExpansionPower != "") {
+					Log.info("Set Expansion Power - '" + newExpansionPower + "'");
+					this.expansionPower.clear();
+					this.expansionPower.sendKeys(newExpansionPower);
+				}
+
+				if (newInflationPower != null && newInflationPower != "") {
+					Log.info("Set Inflation Power - '" + newInflationPower + "'");
+					this.inflationPower.clear();
+					this.inflationPower.sendKeys(newInflationPower);
+				}
+				
+				if (newPercentile != null && newPercentile != "") {
+					Log.info("Set Percentile - '" + newPercentile + "'");
+					this.percentile.clear();
+					this.percentile.sendKeys(newPercentile);
 				}
 
 				if (newEthMthMin != null && newEthMthMin != "") {
@@ -837,5 +1108,53 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		findExistingLocationAndClickEdit(customerName, locationName);
 		inputPSFilter(psFilterThreshold);
 		clickOnOkBtn();
+	}
+	
+	public boolean isSurveyMinAmpShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(surMinAmp);
+	}
+
+	public boolean isRankingMinAmpShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(rankingMinAmp);
+	}
+
+	public boolean isTop10PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(top10PS);
+	}
+
+	public boolean isTop25PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(top25PS);
+	}
+
+	public boolean isTop50PsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(top50PS);
+	}
+
+	public boolean isFilterPsShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(psFilter);
+	}
+
+	public boolean isDbScanRadiusShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(dbScanRd);
+	}
+
+	public boolean isMinClusterSizeShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(minClusterSz);
+	}
+
+	public boolean isMaxClusterScaleShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(maxClusterScale);
+	}
+
+	public boolean isExpansionPowerShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(expansionPower);
+	}
+
+	public boolean isInflationPowerShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(inflationPower);
+	}
+
+	public boolean isPercentileShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(percentile);
 	}
 }
