@@ -7,6 +7,7 @@ import java.util.Map;
 import org.junit.Before;
 
 import common.source.Log;
+
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -60,8 +61,18 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(14, 17, 26, 23,
-				25, 7, 61, 60, 61);
+		final int DB3_ANALYZER_ROW_ID = 61;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 64;	 		/* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
 			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			return true;
@@ -113,7 +124,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - Click on Reports -> Compliance on the menu at left
 	 * - Click on New Compliance Report button
 	 * Results:
-	 * - User will see a list of customers
+	 * - User will see a list of customers	
 	 * - User will see configuration page for that customer with list of licensable features
 	 * - Analytics checkbox is now checked
 	 * - User is taken back to list of customers
