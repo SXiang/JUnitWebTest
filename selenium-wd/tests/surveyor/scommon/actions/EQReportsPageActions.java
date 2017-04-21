@@ -1,7 +1,11 @@
 package surveyor.scommon.actions;
 
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 
 import common.source.ExcelUtility;
@@ -105,6 +109,13 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		return true;
 	}
 
+	@Override
+	public boolean clickOnReportViewerView(String data, Integer dataRowID) throws Exception {
+		String reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+		this.getReportsCommonPage().invokeViewFileDownload(reportName, ReportFileType.EQView.toString(), 1);
+		return true;
+	}
+	
 	/**
 	 * Executes verifyViewsImageWithBaseline action.
 	 * @param data - specifies the input data passed to the action.
