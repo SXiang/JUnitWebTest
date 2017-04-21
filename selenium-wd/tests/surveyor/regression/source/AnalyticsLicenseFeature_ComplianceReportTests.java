@@ -40,7 +40,6 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
-	//private static Map<String, String> testAccount;
 	
 	@BeforeClass
 	public static void beforeClass() {
