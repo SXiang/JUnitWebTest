@@ -167,7 +167,6 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyAnalyticsReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
-		assertTrue(complianceReportsPageAction.verifyAnalyticsReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, NOTSET);
 
 		getHomePage().logout();
@@ -331,7 +330,8 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 		
-		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, 212 /*reportDataRowID1*/, SurveyModeFilter.Analytics);
+		final Integer reportDataRowID = 212;
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
 	 	
 		getHomePage().logout();
 		
