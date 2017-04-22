@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -10,11 +11,14 @@ import common.source.Log;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
@@ -41,6 +45,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	private static ManageCustomerPageActions manageCustomerPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
+	private static ComplianceReportsPage complianceReportsPage;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -92,6 +97,9 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		HomePage homePage = pageObjectFactory.getHomePage();
 		setHomePage(homePage);
 		PageFactory.initElements(getDriver(), homePage);
+		
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -204,11 +212,21 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 
 		String userName = ManageUsersPageActions.workingDataRow.get().username;
 		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+		String surveyorName = ManageSurveyorPageActions.workingDataRow.get().description;
+		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
 
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 
+		getHomePage().clickOnDashboardLink();
+		assertTrue(getHomePage().getTagListRecentDrivingSurveys().size() == 1);
+		assertTrue(getHomePage().getTagListRecentDrivingSurveys().get(0).equals(surveyTag));
+		assertTrue(getHomePage().getSurveyorListActiveSurveyors().size() == 1);
+		assertTrue(getHomePage().getSurveyorListActiveSurveyors().get(0).equals(surveyorName));
+
+
 		complianceReportsPageAction.open(EMPTY, NOTSET);
+		assertTrue(complianceReportsPage.getListComplianceReports().get(0).equals(""));
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyAnalyticsReportModeIsShownOnPage(EMPTY, NOTSET));
