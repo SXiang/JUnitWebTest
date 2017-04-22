@@ -29,6 +29,10 @@ $BUILD_NUMBER_PLACEHOLDER = "%BUILD_NUMBER%"
 
 cd "$BuildWorkingDir"
 
+"Triggering NPM install (updating to latest npm) ..."
+npm install npm@latest -g
+npm install
+
 # 1. 
 # Install NPM packages
 Write-Host "[INSTALL_REACT_NATIVE]: Check/Install pre-requisite applications"
@@ -37,10 +41,6 @@ $installApplications = @{
 }
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_REACT_NATIVE]: Done installing pre-requisite applications"
-
-"Triggering NPM install (updating to latest npm) ..."
-npm install npm@latest -g
-npm install
 
 # 2. 
 # Set CI build number in build.gradle 
