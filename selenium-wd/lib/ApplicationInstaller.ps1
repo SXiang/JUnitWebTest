@@ -139,7 +139,7 @@ function InstallApplication($application, $param) {
     } elseif ($application -eq 'gradle') {
         choco install gradle -y --force
     } elseif ($application -eq 'react-native-cli') {
-        npm install -g react-native-cli
+        npm install -g react-native-cli@2.0.1
     } elseif ($application -eq '7zip') {
         # Download msi and trigger quiet install.
         "Start downloading 7-zip .msi to $7zipDest"
