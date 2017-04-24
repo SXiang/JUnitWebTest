@@ -184,4 +184,63 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		assertTrue(manageLocationsPage.isOperatorMinAmpShowing());
 		assertTrue(manageLocationsPage.isRapidResponseMinAmpShowing());
 	}
+	
+	/**
+	 * Test Case ID: TC2364_AnalyticsParamsLicenseFeature_PicAdmin Test
+	 * Description: Admin configuration screen for customer-location-specific analytics parameters only if customer has Analytics license
+	 *
+	 */
+	@Test
+	public void TC2364_CustomerHasAnalyticsParamsPresentWithLicense_PicAdmin() {
+		Log.info("\nRunning TC2364_CustomerHasAnalyticsParamsPresentWithLicense_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters only if customer has Analytics license");
+
+		String customerName = testAccount.get("customerName");
+		String locationName = testAccount.get("locationName");
+		
+		Log.info(testAccount.get("customerName"));
+		Log.info(testAccount.get("locationName"));
+		
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		manageCustomersPage.open();
+		manageCustomersPage.editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
+
+		/* Without License */
+		manageLocationsPage.open();
+		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
+		assertFalse(manageLocationsPage.isSurveyMinAmpShowing());
+		assertFalse(manageLocationsPage.isRankingMinAmpShowing());
+		assertFalse(manageLocationsPage.isTop10PsShowing());
+		assertFalse(manageLocationsPage.isTop25PsShowing());
+		assertFalse(manageLocationsPage.isTop50PsShowing());
+		assertFalse(manageLocationsPage.isFilterPsShowing());
+		assertFalse(manageLocationsPage.isDbScanRadiusShowing());
+		assertFalse(manageLocationsPage.isMinClusterSizeShowing());
+		assertFalse(manageLocationsPage.isMaxClusterScaleShowing());
+		assertFalse(manageLocationsPage.isExpansionPowerShowing());
+		assertFalse(manageLocationsPage.isInflationPowerShowing());
+		assertFalse(manageLocationsPage.isPercentileShowing());
+		assertFalse(manageLocationsPage.isJustDBScanShowing());
+		
+		manageCustomersPage.open();
+		manageCustomersPage.editAndSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
+		
+		/* With License */
+		manageLocationsPage.open();
+		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
+		assertTrue(manageLocationsPage.isSurveyMinAmpShowing());
+		assertTrue(manageLocationsPage.isRankingMinAmpShowing());
+		assertTrue(manageLocationsPage.isTop10PsShowing());
+		assertTrue(manageLocationsPage.isTop25PsShowing());
+		assertTrue(manageLocationsPage.isTop50PsShowing());
+		assertTrue(manageLocationsPage.isFilterPsShowing());
+		assertTrue(manageLocationsPage.isDbScanRadiusShowing());
+		assertTrue(manageLocationsPage.isMinClusterSizeShowing());
+		assertTrue(manageLocationsPage.isMaxClusterScaleShowing());
+		assertTrue(manageLocationsPage.isExpansionPowerShowing());
+		assertTrue(manageLocationsPage.isInflationPowerShowing());
+		assertTrue(manageLocationsPage.isPercentileShowing());
+		assertTrue(manageLocationsPage.isJustDBScanShowing());
+	}
 }
