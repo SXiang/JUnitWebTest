@@ -193,7 +193,7 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC2364_CustomerHasAnalyticsParamsPresentWithLicense_PicAdmin() {
 		Log.info("\nRunning TC2364_CustomerHasAnalyticsParamsPresentWithLicense_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters only if customer has Analytics license");
-		
+
 		String customerName = testAccount.get("customerName");
 		String locationName = testAccount.get("locationName");
 		
