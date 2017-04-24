@@ -625,12 +625,12 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC2362_AddLocationAnalyticsParams_PicAdmin() {
+		Log.info("\nRunning TC2362_AddLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - New Location");
+		
 		String customerName = CUSTOMER_PICARRO;
 		String locationName = getTestSetup().getRandomNumber() + "TC2362";
 		String cityName = "Santa Clara";
 		String newLocationName = locationName + "New";
-
-		Log.info("\nRunning TC2362_AddLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - New Location");
 
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup()
@@ -657,6 +657,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC2363_EditLocationAnalyticsParams_PicAdmin() {
+		Log.info("\nRunning TC2363_EditLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - Existing Location");
+		
 		String customerName = CUSTOMER_PICARRO;
 		String locationName = getTestSetup().getRandomNumber() + "TC2363";
 		String cityName = "Santa Clara";
@@ -673,8 +675,6 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		String newExpansionPower = "2.5";
 		String newInflationPower = "2.5";
 		String newPercentile = "75";
-
-		Log.info("\nRunning TC2363_EditLocationAnalyticsParams_PicAdmin - Test Description: Admin configuration screen for customer-location-specific analytics parameters - Existing Location");
 
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup()

@@ -1,3 +1,21 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @pvmahajan
+ Sign out
+ Unwatch 32
+  Star 0
+ Fork 0 picarro/surveyor-qa Private
+ Code  Issues 0  Pull requests 4  Projects 0  Wiki  Pulse  Graphs
+Branch: master Find file Copy pathsurveyor-qa/selenium-wd/build.xml
+0145ff8  an hour ago
+@picarro-kamini picarro-kamini merge conflicts
+6 contributors @picarro-spulikkal @picarro-sxiang @picarro-kamini @picarro-rmallikarjun @picarro-chathuri @pvmahajan
+RawBlameHistory     
+921 lines (918 sloc)  42.6 KB
 <project name="selenium-qa" default="testsanity" basedir=".">
   <property name="proj_name" value="surveyor-qa" />
   <property name="version" value="2.4" />
@@ -575,6 +593,8 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/ACLandVisibilityTest.class" />
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
           <include name="**/HomePageTest.class" />
           <include name="**/LoginPageTest.class" />
           <include name="**/ManageAnalyzersPageTest.class" />
@@ -802,8 +822,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/ManageLocationsPageTest.class" />
-        	<include name="**/LicensedFeatureAndVisibilityTest.class" />
+        	<include name="**/ComplianceReportsPageTest6.class" />
+        	<include name="**/ComplianceReportsPageTest12.class" />
         </fileset>
       </batchtest>
     </junit>
