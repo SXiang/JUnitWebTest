@@ -575,6 +575,8 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/ACLandVisibilityTest.class" />
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
           <include name="**/HomePageTest.class" />
           <include name="**/LoginPageTest.class" />
           <include name="**/ManageAnalyzersPageTest.class" />
@@ -802,7 +804,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/ComplianceReportsPageTest.class" />
+        	<include name="**/ComplianceReportsPageTest6.class" />
+        	<include name="**/ComplianceReportsPageTest12.class" />
         </fileset>
       </batchtest>
     </junit>

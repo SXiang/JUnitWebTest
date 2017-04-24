@@ -2682,6 +2682,31 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes waitForLicenseMissingPopupToShow action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForLicenseMissingPopupToShow(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForLicenseMissingPopupToShow", data, dataRowID);
+		getReportsCommonPage().waitForLicenseMissingPopupToShow();
+		return true;
+	}
+
+	/**
+	 * Executes waitForConfirmDeletePopupToClose action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForOkMissingLicensePopupToClose(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForConfirmLicenseMissingPopupToClose", data, dataRowID);
+		getReportsCommonPage().waitForConfirmLicenseMissingPopupToClose();
+		return true;
+	}
+	/**
 	 * Executes waitForConfirmDeletePopupToClose action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -3554,6 +3579,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
 		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyCancelButtonIsDisplayed")) { return this.verifyCancelButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("waitForLicenseMissingPopupToShow")) { return this.waitForLicenseMissingPopupToShow(data, dataRowID); }
+		else if (actionName.equals("waitForOkMissingLicensePopupToClose")) { return this.waitForOkMissingLicensePopupToClose(data, dataRowID); }
 		return false;
 	}
 
