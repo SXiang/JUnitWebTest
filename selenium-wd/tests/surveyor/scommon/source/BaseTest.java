@@ -458,7 +458,7 @@ public class BaseTest {
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, SurveyType... surveyTypes) throws Exception{
-		return addTestSurvey(analyzerName, analyzerSharedKey, userName, password, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, AnalyzerType.METHANE, userName, password, surveyTypes);
 	}
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, AnalyzerType analyzerType, String userName, String password, SurveyType... surveyTypes) throws Exception{
 		int surveyRuntimeInSeconds = 2;
@@ -538,7 +538,6 @@ public class BaseTest {
 			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
 			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
 			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
-			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds/10), -1);
 		}
 
 		TestSetup.stopAnalyzer();
