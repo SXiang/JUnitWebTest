@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.DEFAULT_PSFILTER_THRESHOLD;
@@ -54,7 +55,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			cleanUpGisData(testAccount.get("customerId"));
 		}
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
@@ -62,7 +63,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-		
+
 		if(testAccount == null){
 			testAccount = createTestAccount("Analytics_Report");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), AnalyzerType.METHANE
@@ -78,7 +79,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
 	}
-	
+
 	private void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
@@ -116,7 +117,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	public void TC2339_LisasAreFilteredOutAccordingToThresholdLevel(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2339_LisasAreFilteredOutAccordingToThresholdLevel ..." +
-			 "\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
+				"\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
 
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
@@ -151,5 +152,18 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			getHomePage().logout();
 		}
 	}
+	@Test
+	public void TC2375_LisasAreFilteredOutAccordingToThresholdLevel(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2339_LisasAreFilteredOutAccordingToThresholdLevel ..." +
+				"\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
 
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(SQACUSUAUSER, PICADMINPSWD);
+		
+		complianceReportsPageAction.getComplianceReportsPage().openNewReportPage();
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
+
+
+	}
 }
