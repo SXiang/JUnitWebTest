@@ -5,7 +5,6 @@ package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.NumberUtility;
-
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
@@ -22,7 +21,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
@@ -32,6 +30,7 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -48,6 +47,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -181,6 +181,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(id = "report-assethighlighting")
 	protected WebElement highlightAlgorithmDropdown;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']")
+	private WebElement tableListOfComplianceReports;
+	
+	private String strCOMRPTXPath = "//*[@id='datatable']/tbody/tr";
 
 	public WebElement getPercentCoverForecast() {
 		return this.percentCoverForecast;
@@ -2825,5 +2830,24 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			resxMap.put(ResourceTable.Key_CopyPageText, STRCopyPageTitle);
 			return new ResourceTable(resxMap);
 		});
+	}
+	
+	public List<String> getListComplianceReports() {
+		List<String> compliancereportsList = new ArrayList<String>();
+
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String reportXPath;
+		WebElement reportCell;
+
+		List<WebElement> rows = this.tableListOfComplianceReports.findElements(By.xpath(this.strCOMRPTXPath));
+
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			reportXPath = this.strCOMRPTXPath + "["+rowNum+"]/td[1]";
+			reportCell = this.tableListOfComplianceReports.findElement(By.xpath(reportXPath));
+
+			compliancereportsList.add(reportCell.getText().trim());
+		}
+		return compliancereportsList;
 	}
 }
