@@ -3641,9 +3641,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 			public Boolean apply(WebDriver d) {
 				(new WebDriverWait(driver, timeout + 15))
 						.until(ExpectedConditions.presenceOfElementLocated(By.id("licenseMissingModal")));
-				WebElement MissingLicensePopupSection = d.findElement(By.id("licenseMissingModal"));
-				return MissingLicensePopupSection.getAttribute("style").contains("display:block")
-						|| MissingLicensePopupSection.getAttribute("style").contains("display: block");
+				WebElement missingLicensePopupSection = d.findElement(By.id("licenseMissingModal"));
+				return missingLicensePopupSection.getAttribute("style").contains("display:block")
+						|| missingLicensePopupSection.getAttribute("style").contains("display: block");
 			}
 		});
 	}

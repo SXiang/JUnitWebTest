@@ -3579,6 +3579,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
 		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyCancelButtonIsDisplayed")) { return this.verifyCancelButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("waitForLicenseMissingPopupToShow")) { return this.waitForLicenseMissingPopupToShow(data, dataRowID); }
+		else if (actionName.equals("waitForOkMissingLicensePopupToClose")) { return this.waitForOkMissingLicensePopupToClose(data, dataRowID); }
 		return false;
 	}
 

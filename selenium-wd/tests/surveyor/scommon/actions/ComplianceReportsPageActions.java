@@ -477,6 +477,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsReportModeIsShownOnPage")) { return this.verifyAnalyticsReportModeIsShownOnPage(data, dataRowID); }
 		return false;
 	}
 
