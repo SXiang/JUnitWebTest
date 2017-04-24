@@ -410,7 +410,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2", null, null,
+				null, null, null, null, null, null, null, null, null, null, false);
 		manageLocationsPage.logout();
 
 		// *** Starting test
@@ -419,7 +420,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
 		manageLocationsPage.performSearch(locationName);
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2", null, null,
+				null, null, null, null, null, null, null, null, null, null, false);
 
 		assertTrue(manageLocationsPage.verifyErrorMessage(errorMsg));
 
@@ -458,7 +460,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(username, password);
 		manageLocationsPage.open();
 		Log.info("Adding location: " + locationName);
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2", null, null,
+				null, null, null, null, null, null, null, null, null, null, false);
 		manageLocationsPage.logout();
 
 		// *** Starting test
@@ -500,7 +503,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
 		Log.info("Adding location empty description: required field" + locationName);
-		manageLocationsPage.addNewLocation("", SQACUS, cityName, false, "1","2",false);
+		manageLocationsPage.addNewLocation("", SQACUS, cityName, false, "1","2", null, null,
+				null, null, null, null, null, null, null, null, null, null, false);
 
 		assertEquals(BLANKFIELDERROR, manageLocationsPage.getLocationDescriptionError());
 
@@ -530,7 +534,8 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 		loginPage.open();
 		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
 		manageLocationsPage.open();
-		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2",false);
+		manageLocationsPage.addNewLocation(locationName, SQACUS, cityName, false, "1","2", null, null,
+				null, null, null, null, null, null, null, null, null, null, false);
 
 		Log.info("Editing location(empty string): " + locationName + " -> ");
 		manageLocationsPage.performSearch(locationName);
@@ -611,6 +616,4 @@ public class ManageLocationsPageTest extends SurveyorBaseTest {
 
 		assertTrue(manageLocationsPage.findExistingLocation(customerName, locationName));
 	}
-
-
 }
