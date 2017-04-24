@@ -173,6 +173,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	
 	@FindBy(id = "LocationAnalyticsParameter_Percentile")
 	protected WebElement percentile;
+	
+	@FindBy(id = "LocationAnalyticsParameter_JustDbScan")
+	protected WebElement justDBScan;
 
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
 	protected WebElement inputPSFilterThreshold;
@@ -337,8 +340,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.rankingMinAmp.sendKeys(rankingMinAmp);
 			}
 		}
-/*		Once Khan's code is merged to SQAAuto will uncomment this code
- 		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
 			if (top10PS != null && top10PS != "") {
 				Log.info("Set Top 10 PS - '" + top10PS + "'");
 				this.top10PS.clear();
@@ -358,7 +360,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.top50PS.clear();
 				this.top50PS.sendKeys(top50PS);
 			}
-		}*/
+		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
 			if (psFilter != null && psFilter != "") {
 				Log.info("Set Filter PS - '" + psFilter + "'");
@@ -749,7 +751,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.psFilter.clear();
 					this.psFilter.sendKeys(newPsFilter);
 				}
-/*				Once Khan's code is merged to SQAAuto will uncomment this code
 				if (newTop10PS != null && newTop10PS != "") {
 					Log.info("Set Top 10% PS - '" + newTop10PS + "'");
 					this.top10PS.clear();
@@ -767,7 +768,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.top50PS.clear();
 					this.top50PS.sendKeys(newTop50PS);
 				}
-*/				
 				if (newDbScanRd != null && newDbScanRd != "") {
 					Log.info("Set DBScan Radius - '" + newDbScanRd + "'");
 					this.dbScanRd.clear();
@@ -1156,5 +1156,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	public boolean isPercentileShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(percentile);
+	}
+	
+	public boolean isJustDBScanShowing() {
+		return WebElementExtender.isElementPresentAndDisplayed(justDBScan);
 	}
 }

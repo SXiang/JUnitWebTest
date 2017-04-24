@@ -211,10 +211,9 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
 		assertFalse(manageLocationsPage.isSurveyMinAmpShowing());
 		assertFalse(manageLocationsPage.isRankingMinAmpShowing());
-//		Once Khan's code is merged to SQAuto will uncomment this code
-//		assertFalse(manageLocationsPage.isTop10PsShowing());
-//		assertFalse(manageLocationsPage.isTop25PsShowing());
-//		assertFalse(manageLocationsPage.isTop50PsShowing());
+		assertFalse(manageLocationsPage.isTop10PsShowing());
+		assertFalse(manageLocationsPage.isTop25PsShowing());
+		assertFalse(manageLocationsPage.isTop50PsShowing());
 		assertFalse(manageLocationsPage.isFilterPsShowing());
 		assertFalse(manageLocationsPage.isDbScanRadiusShowing());
 		assertFalse(manageLocationsPage.isMinClusterSizeShowing());
@@ -222,6 +221,7 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		assertFalse(manageLocationsPage.isExpansionPowerShowing());
 		assertFalse(manageLocationsPage.isInflationPowerShowing());
 		assertFalse(manageLocationsPage.isPercentileShowing());
+		assertFalse(manageLocationsPage.isJustDBScanShowing());
 		
 		manageCustomersPage.open();
 		manageCustomersPage.editAndSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
@@ -231,9 +231,9 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		manageLocationsPage.findExistingLocationAndClickEdit(customerName, locationName);
 		assertTrue(manageLocationsPage.isSurveyMinAmpShowing());
 		assertTrue(manageLocationsPage.isRankingMinAmpShowing());
-//		assertTrue(manageLocationsPage.isTop10PsShowing());
-//		assertTrue(manageLocationsPage.isTop25PsShowing());
-//		assertTrue(manageLocationsPage.isTop50PsShowing());
+		assertTrue(manageLocationsPage.isTop10PsShowing());
+		assertTrue(manageLocationsPage.isTop25PsShowing());
+		assertTrue(manageLocationsPage.isTop50PsShowing());
 		assertTrue(manageLocationsPage.isFilterPsShowing());
 		assertTrue(manageLocationsPage.isDbScanRadiusShowing());
 		assertTrue(manageLocationsPage.isMinClusterSizeShowing());
@@ -241,5 +241,6 @@ public class LicensedFeatureAndVisibilityTest extends SurveyorBaseTest {
 		assertTrue(manageLocationsPage.isExpansionPowerShowing());
 		assertTrue(manageLocationsPage.isInflationPowerShowing());
 		assertTrue(manageLocationsPage.isPercentileShowing());
+		assertTrue(manageLocationsPage.isJustDBScanShowing());
 	}
 }
