@@ -51,7 +51,7 @@ public class BaseReportEntity {
 		EQ ("EQ"),
 		Assessment ("Assessment"),
 		Analytics ("Analytics");
-		
+
 		private final String name;
 
 		SurveyModeFilter(String nm) {

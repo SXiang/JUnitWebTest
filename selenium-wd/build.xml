@@ -575,6 +575,8 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/ACLandVisibilityTest.class" />
+          <include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+          <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
           <include name="**/HomePageTest.class" />
           <include name="**/LoginPageTest.class" />
           <include name="**/ManageAnalyzersPageTest.class" />

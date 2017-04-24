@@ -122,6 +122,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
 
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Analytics")
+	protected WebElement inputReportModeAnalytics;
+
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
 
@@ -427,6 +430,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='licenseMissingModal']/div/div/div[3]/a")
+	protected WebElement dialoadModelOK;
+	
+	public WebElement getDialoadModelOK() {
+		return this.dialoadModelOK;
+	}
 	private String reportName;
 	private String reportId;
 	@FindBy(name = "survey-mode-type")
@@ -2941,6 +2950,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
 	}
 
+	public boolean isAnalyticsReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeAnalytics);
+	}
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
