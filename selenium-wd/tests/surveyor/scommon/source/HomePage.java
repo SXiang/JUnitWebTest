@@ -115,13 +115,13 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-investigation']")
 	private WebElement linkEQ;
 	private By linkEQBy = By.id("report-investigation");
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-facility-EQ']")
 	private WebElement linkFacilityEQ;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='report-asssessment']")
 	private WebElement linkAssessment;
-	
+
 	// Link may NOT be present for all users. Conditionally detect this link.
 	private WebElement linkInvestigation;
 
@@ -136,6 +136,9 @@ public class HomePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]")
 	private List<WebElement> linkOnlineOffline;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody")
+	private WebElement tableListOfActiveSurveyors;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Session']/tbody")
 	private WebElement tableRecentDrivingSurveys;
@@ -445,8 +448,8 @@ public class HomePage extends SurveyorBasePage {
 		}
 
 		//Need check with Chris Vale if "Fleet Map" should be invisible to driver?
-//		if (!this.linkFleetMap.isDisplayed())
-//			return false;
+		//		if (!this.linkFleetMap.isDisplayed())
+		//			return false;
 
 		if (this.isElementPresent(this.strLinkReportsXPath)){
 			Log.error("Found - link to Reports");
@@ -850,7 +853,7 @@ public class HomePage extends SurveyorBasePage {
 	public boolean isEQLinkVisible(){
 		return this.isElementPresent(linkEQBy);
 	}
-	
+
 	public void clickOnFirstMatchingDrivingSurvey(String surveyTag) {
 		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
 
@@ -890,14 +893,14 @@ public class HomePage extends SurveyorBasePage {
 
 		// When page is loaded Surveyor may not show 'Online'. In such case reload the page and retry.
 		boolean actionSuccess = RetryUtil.retryOnException(
-			() -> {
-				dataTable.actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);
-				return true;},
-			() -> {
-				super.open();waitForPageLoad();resetTableActiveSurveyors();
-				return true;},
-			Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
-			Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+				() -> {
+					dataTable.actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);
+					return true;},
+					() -> {
+						super.open();waitForPageLoad();resetTableActiveSurveyors();
+						return true;},
+						Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+						Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 
 		if (!actionSuccess) {
 			Log.error(String.format("Clicking on '%s' FAILED!", elementName));
@@ -924,6 +927,25 @@ public class HomePage extends SurveyorBasePage {
 		return tagList;
 	}
 
+	public List<String> getSurveyorListActiveSurveyors() {
+		List<String> surveyorList = new ArrayList<String>();
+
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String surveyorXPath;
+		WebElement surveyorCell;
+
+		List<WebElement> rows = this.tableListOfActiveSurveyors.findElements(By.xpath(this.strTRASXPath));
+
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			surveyorXPath = this.strTRASXPath + "["+rowNum+"]/td[1]";
+			surveyorCell = this.tableListOfActiveSurveyors.findElement(By.xpath(surveyorXPath));
+
+			surveyorList.add(surveyorCell.getText().trim());
+		}
+
+		return surveyorList;
+	}
 	public WebElement getDropDownTimeZone() {
 		return dropDownTimeZone;
 	}
@@ -972,36 +994,36 @@ public class HomePage extends SurveyorBasePage {
 	}
 
 	public void waitForReleaseNotesToLoad(WebDriver driver,String winHandle) {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	return d.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.switchTo().window(winHandle).getCurrentUrl().contains(STRReleaseNotes);
+			}
+		});
+	}
 
 	public void waitForReleaseNotesLinktoLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	return getLinkReleaseNotes().isDisplayed() ;
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return getLinkReleaseNotes().isDisplayed() ;
+			}
+		});
+	}
 
 	@Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.getPageSource().contains(STRPageContentText);
+			}
+		});
+	}
 
 	public void waitForFirstDrivingSurveyToBeCompleted() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	BrowserCommands.refresh();
-            	return firstDrivingSurveyLink.getText().equals("Completed");
-            }
-        });
-    }
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				BrowserCommands.refresh();
+				return firstDrivingSurveyLink.getText().equals("Completed");
+			}
+		});
+	}
 }
