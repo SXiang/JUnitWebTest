@@ -682,7 +682,7 @@ public class BasePage {
 			(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
 			(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
 		}catch(Exception e){
-			Log.error("Failed to waitForAJAXCallsToComplete: "+e);
+			Log.warn("Failed to waitForAJAXCallsToComplete: "+e);
 		}
 	}
 }
