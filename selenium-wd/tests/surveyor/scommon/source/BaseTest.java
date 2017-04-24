@@ -648,5 +648,5 @@ public class BaseTest {
 
 	public static void setHomePage(HomePage homePage) {
 		BaseTest.homePage = homePage;
-	}
+}
 }

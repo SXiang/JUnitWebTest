@@ -247,6 +247,17 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	}
 
 	/**
+	 * Executes verifyAnalyticsReportModeIsShownOnPage action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyAnalyticsReportModeIsShownOnPage(String data, Integer dataRowID) {
+		logAction("ComplianceReportsPageActions.verifyManualReportModeIsShownOnPage", data, dataRowID);
+		return this.getComplianceReportsPage().isAnalyticsReportModeShown();
+	}
+
+	/**
 	 * Executes verifyStandardSurveyModeIsShownOnPage action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -466,6 +477,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("waitForInvestigationPDFDownloadToComplete")) { return this.waitForInvestigationPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForInvestigationCSVFileDownloadToComplete")) { return this.waitForInvestigationCSVFileDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySSRSCoverageForecastTableInfo")) { return this.verifySSRSCoverageForecastTableInfo(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsReportModeIsShownOnPage")) { return this.verifyAnalyticsReportModeIsShownOnPage(data, dataRowID); }
 		return false;
 	}
 
