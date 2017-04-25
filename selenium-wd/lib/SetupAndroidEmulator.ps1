@@ -4,7 +4,8 @@
 #           -BuildWorkingDir "C:\Repositories\surveyor-qa" `
 #           -SystemImage "23|google_apis|x86" `
 #           -AndroidSDKPackageIDs "2,13,15,38,131" `
-#           -HaxmPackageID "180"
+#           -HaxmPackageID "180"  `
+#           -ForceInstallAllSDKPackages "0"
 # ---------------------------------------------------------------
 
 param
@@ -25,9 +26,10 @@ param
                                                             #     38 - SDK Platform Android 6.0, API 23, revision 3
                                                             #    131 - Google APIs, Android API 23, revision 1
    [Parameter(Mandatory=$true)]
-   [string] $HaxmPackageID                                  # Eg. "180", # id from => android list sdk --all
+   [string] $HaxmPackageID,                                 # Eg. "180", # id from => android list sdk --all
                                                             # IMPORTANT: This package ID will need to be looked up during the execution time of the script as the IDs might have changed with new packages added to sdkmanager
-
+   [Parameter(Mandatory=$true)]
+   [string] $ForceInstallAllSDKPackages                     # By default only missing SDK packages will be installed. To force install all the packages set this flag to "1". NOTE: We currently only detect packages that cause errors on re-install and prevent their reinstallation. Some packages might get reinstalled even if this flag is OFF.
 )
 
 . "$BuildWorkingDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
@@ -42,22 +44,30 @@ if ($overrideSet) {
     exit
 }
 
+# 1.
+[string]$missingPackages = $AndroidSDKPackageIDs
+if ($ForceInstallAllSDKPackages -ne "1") {
+    $missingPackages = Get-MissingPackageIDs -currentPackageIds 
+}
+
+# 2.
 "Updating NPM to latest..."
 npm install npm@latest -g
 
-# 1. 
+# 3. 
 Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Check/Install Android Build Tools, HAXM and Emulator System Image"
+Write-Host "Missing SDK packages that will be installed - $missingPackages"
 $installApplications = @{
     "01.appium-doctor"="Appium Doctor"
     "02.appium"="Appium"
-    "03.android-sdk-packages"="Android SDK Packages;$AndroidSDKPackageIDs"
+    "03.android-sdk-packages"="Android SDK Packages;$missingPackages"
     "04.haxm"="HAXM Emulator Accelerator;$HaxmPackageID"
     "05.android-system-image"="Android System Image - $SystemImage;$SystemImage"
 }
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Done installing Android Build Tools, HAXM and Emulator System Image"
 
-# 2. 
+# 4. 
 Write-Host "[CREATE_AVD]: Create Android AVD"
 $ANDROIDHOME = $env:ANDROID_HOME
 $imgParts = $SystemImage.split("|")
@@ -65,10 +75,11 @@ $apiLevel = $imgParts[0]
 $tagId = $imgParts[1]
 $abi = $imgParts[2]
 $avdName = "android_${apiLevel}_${tagId}_${abi}"
+Write-Host "Creating AVD - $avdName"
 echo no | . "$ANDROIDHOME\tools\android.bat" create avd -t "Google Inc.:Google APIs:$apiLevel" --abi $abi --tag $tagId --name $avdName  # Create AVD
 Write-Host "[CREATE_AVD]: Done creating Android AVD"
 
-# 3.
+# 5.
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Creating pre-req install success marker file..."
 Create-AutoPreReqsInstallSuccessMarkerFile
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Done creating pre-req install success marker file."
