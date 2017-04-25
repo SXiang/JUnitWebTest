@@ -34,6 +34,7 @@ Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Done installing Android Build Tools,
 
 # 2. 
 Write-Host "[CREATE_AVD]: Create Android AVD"
+$ANDROIDHOME = $env:ANDROID_HOME
 $imgParts = $systemImage.split("|")
 $apiLevel = $imgParts[0]
 $tagId = $imgParts[1]
