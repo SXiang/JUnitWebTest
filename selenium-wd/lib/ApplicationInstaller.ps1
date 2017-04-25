@@ -47,10 +47,10 @@ function IsInstalled($application) {
         $appVer = $appCmd.ToString()
         $isInstalled = $appVer.StartsWith($INSTALLED_NPM_VERSION)
     } elseif ($application -eq 'appium') {
-        $appCmdLines = npm list -g 2>&1
+        $appCmdLines = npm list --depth=0 -g 2>&1
         $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$APPIUM_INSTALL_TEXT" -negativematchText "doctor"
     } elseif ($application -eq 'appium-doctor') {
-        $appCmdLines = npm list -g 2>&1
+        $appCmdLines = npm list --depth=0 -g 2>&1
         $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$APPIUM_DOCTOR_INSTALL_TEXT"
     } elseif ($application -eq 'haxm') {
         $appCmd = . "$ANDROIDHOME\tools\emulator" -accel-check 2>&1

@@ -13,9 +13,7 @@ $installApplications = @{
     "01.choco"="Chocolatey"
     "02.7zip"="7-Zip"
     "03.nodejs"="NodeJS"
-    "04.appium-doctor"="Appium Doctor"
-    "05.appium"="Appium"
-    "06.android-sdk"="Android SDK"
+    "04.android-sdk"="Android SDK"
 }
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_PRE-REQS]: Done installing pre-requisite applications"
