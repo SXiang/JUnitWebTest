@@ -136,7 +136,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='Analytics']")
 	protected WebElement checkBoxAnalyticsRptMode;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeRptMode;
 
@@ -184,8 +184,22 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']")
 	private WebElement tableListOfComplianceReports;
-	
+
 	private String strCOMRPTXPath = "//*[@id='datatable']/tbody/tr";
+
+	@FindBy(how = How.XPATH, using = "	//*[@id='surveyModal']/div/div/div[2]/p[2]")
+	protected WebElement surveyModalErrorMsg;
+
+	@FindBy(how = How.XPATH, using = "	//*[@id='surveyModal']/div/div/div[2]/p[3]")
+	protected WebElement proceedMsg;
+
+	public WebElement getSurveyModalErrorMsg(){
+		return this.surveyModalErrorMsg;
+	}
+
+	public WebElement getProceedMsg(){
+		return this.proceedMsg;
+	}
 
 	public WebElement getPercentCoverForecast() {
 		return this.percentCoverForecast;
@@ -318,11 +332,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
-								// 1st button.
+			// 1st button.
 			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
-						// button.
+			// button.
 			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
@@ -499,9 +513,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			if (radElement.isSelected()) {
 				Map<String, ReportModeFilter> reportSurveyModeFilterGuids = BaseReportEntity.ReportSurveyModeFilterGuids;
 				return reportSurveyModeFilterGuids.entrySet().stream()
-					.filter(e -> e.getKey().equalsIgnoreCase(radElement.getAttribute("value")))
-					.map(e -> e.getValue())
-					.findFirst().orElse(ReportModeFilter.All);
+						.filter(e -> e.getKey().equalsIgnoreCase(radElement.getAttribute("value")))
+						.map(e -> e.getValue())
+						.findFirst().orElse(ReportModeFilter.All);
 			}
 		}
 		return ReportModeFilter.All;
@@ -1029,19 +1043,19 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			this.waitForSurveySearchButtonToLoad();
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
-
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
+			for (int getrowvalue = 0; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue)
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					getrowvalue++;
+					
 					String cellValue = driver
 							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]"))
 							.getText();
 					if (cellValue.contains(" ")) {
 						String str = cellValue.replaceAll("\\s+", "");
-
 						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
 							result = true;
 							break;
@@ -1100,8 +1114,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
 			String key = entry.getKey(); // Key is Asset/Boundary Id
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
-												// followed by name of
-												// Asset/Boundary
+			// followed by name of
+			// Asset/Boundary
 			if (value.startsWith(ComplianceReportEntity.ASSET_PREFIX)) {
 				// Asset key.
 				WebElement assetElement = getViewLayerAssetCheckbox(key);
@@ -1117,8 +1131,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void selectViewLayerBoundaries(Map<String, String> viewLayerMap) {
 		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
-												// followed by name of
-												// Asset/Boundary
+			// followed by name of
+			// Asset/Boundary
 			if (value.startsWith(ComplianceReportEntity.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ComplianceReportEntity.BOUNDARY_PREFIX, "");
@@ -2455,7 +2469,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 			String objAsString = objStoredProc.toString();
 			storedProcConvStringList
-					.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
+			.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s",
@@ -2582,6 +2596,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public WebElement getCheckBoxEtheneBiogeniceMethane() {
 		return checkBoxEtheneBiogeniceMethane;
+	}
+
+	public WebElement getCheckBoxPossibleNaturalGas() {
+		return checkBoxPossibleNaturalGas;
 	}
 
 	public String getSoftwareVersionFromInvestigationPDF(String reportTitle, String downloadPath) {
@@ -2814,7 +2832,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				(new WebDriverWait(driver, timeout + 15))
-						.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
+				.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
 				WebElement confirmDeletePopupSection = d.findElement(By.id("surveyModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:none")
 						|| confirmDeletePopupSection.getAttribute("style").contains("display: none");
@@ -2831,7 +2849,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return new ResourceTable(resxMap);
 		});
 	}
-	
+
 	public List<String> getListComplianceReports() {
 		List<String> compliancereportsList = new ArrayList<String>();
 

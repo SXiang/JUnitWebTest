@@ -3,7 +3,6 @@ package surveyor.regression.source;
 import common.source.Log;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.SQACUSUAUSER;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.DEFAULT_PSFILTER_THRESHOLD;
@@ -21,7 +20,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -151,19 +149,5 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyIndicationTable(downloadPath, reportTitle, true));
 			getHomePage().logout();
 		}
-	}
-	@Test
-	public void TC2375_LisasAreFilteredOutAccordingToThresholdLevel(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2339_LisasAreFilteredOutAccordingToThresholdLevel ..." +
-				"\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
-
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(SQACUSUAUSER, PICADMINPSWD);
-		
-		complianceReportsPageAction.getComplianceReportsPage().openNewReportPage();
-		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
-
-
 	}
 }

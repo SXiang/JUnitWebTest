@@ -93,6 +93,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable="ComplianceReportSSRS_EthaneAnalysisTable";
+	public static final String ComplianceReport_ChangeModeWarning = "ComplianceReport_ChangeModeWarning";
 
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";

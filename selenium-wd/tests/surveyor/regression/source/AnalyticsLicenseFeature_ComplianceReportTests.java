@@ -2,20 +2,21 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 
 import common.source.Log;
+import common.source.WebElementExtender;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Test;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageSurveyorPageActions;
@@ -35,7 +36,8 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-
+import static surveyor.scommon.source.ReportsCommonPage.ComplianceReport_ChangeModeWarning;
+import static surveyor.scommon.source.ReportsCommonPage.Dialog_ProceedMessage;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPageActionTest {
@@ -46,7 +48,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static DriverViewPage driverViewPage;
 	private static ComplianceReportsPage complianceReportsPage;
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -97,7 +99,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		HomePage homePage = pageObjectFactory.getHomePage();
 		setHomePage(homePage);
 		PageFactory.initElements(getDriver(), homePage);
-		
+
 		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
@@ -141,7 +143,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is present
 	 */
 
-	@Test 
+	@Ignore 
 	public void TC2358_AnalyticsReportModeForLicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2358_AnalyticsReportModeForLicensedCustomers\n");
 
@@ -205,7 +207,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - User is shown the Compliance Reports page (no reports exist yet)
 	 * - In the Report Mode section at the top of the New Compliance Report page, "Analytics" is present
 	 */
-	@Test 
+	@Ignore 
 	public void TC2361_CreateNewCustomerWithAnalyticsReportLicense() throws Exception{
 		Log.info("\nTestcase - TC2361_CreateNewCustomerWithAnalyticsReportLicense\n");
 
@@ -257,7 +259,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Test 
+	@Ignore 
 	public void TC2360_AnalyticsReportModeLicenseRevokedFromCustomer() throws Exception{
 		Log.info("\nTestcase - TC2360_AnalyticsReportModeLicenseRevokedFromCustomer\n");
 
@@ -296,7 +298,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Test 
+	@Ignore 
 	public void TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers\n");
 
@@ -336,7 +338,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - The original report was created with the following survey mode licenses: Analytics. Your account currently does not have access to these modes.
 	 */
 
-	@Test 
+	@Ignore 
 	public void TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled() throws Exception{
 		Log.info("\nTestcase - TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled\n");
 
@@ -344,19 +346,19 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		String userName = ManageUsersPageActions.workingDataRow.get().username;
 		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
 		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
-		
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
-		
+
 		final Integer reportDataRowID = 212;
 		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
-	 	
+
 		getHomePage().logout();
-		
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-		 //Unselect Anaytics
+		//Unselect Anaytics
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.ANALYTICS);
 
@@ -368,6 +370,167 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 		assertTrue(complianceReportsPageAction.waitForLicenseMissingPopupToShow(EMPTY, NOTSET));
+		getHomePage().logout();
+	}
+
+	/* * Test Case ID: TC2375_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveys
+	 * Script:
+	 * - Navigate to New Compliance report
+	 * - Select Analytics report mode
+	 * - Search analytics surveys and include couple of them
+	 * - Change report mode from Analytics to Standard or Rapid Response or Manual
+	 * - Click on Change report mode
+	 * Results:
+	 * - Validation message is displayed
+	 * - Old Mode: Analytics
+	 * - New Mode: Standard
+	 * - You are about to change Report Mode. Conflicting surveys will be removed. This procedure is irreversible.
+	 * - Do you wish to proceed?
+	 * - Analytics surveys are no more included in surveys section
+	 */
+
+	@Test 
+	public void TC2375_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveys() throws Exception{
+		Log.info("\nTestcase - TC2375_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveys\n");
+
+		String userName = ManageUsersPageActions.workingDataRow.get().username;
+		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().openNewReportsPage();
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
+		complianceReportsPageAction.getComplianceReportsPage().selectSurveysAndAddToReport(false, 1);
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
+		assertTrue(complianceReportsPageAction.waitForChangeModelWarningPopupToShow(EMPTY, NOTSET));
+		String warningMsg=  (complianceReportsPageAction.getComplianceReportsPage().getSurveyModalErrorMsg().getText());
+		assertTrue (warningMsg.equals(ComplianceReport_ChangeModeWarning));
+		String proceedMsg = (complianceReportsPageAction.getComplianceReportsPage().getProceedMsg().getText());
+		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
+		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+		getHomePage().logout();
+	}
+
+	/* * Test Case ID: TC2376_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveysForExistingAnalyticsReport
+	 * Script:
+	 * - Customer has analytics license feature
+	 * - Generate analytics report
+	 * - Click on Copy button of above analytics report
+	 * - Change report mode from Analytics to Standard or Rapid Response or Manual
+	 * - Click on Change report mode
+	 * Results:
+	 * - Validation message is displayed
+	 * - Old Mode: Analytics
+	 * - New Mode: Standard
+	 * - You are about to change Report Mode. Conflicting surveys will be removed. This procedure is irreversible.
+	 * - Do you wish to proceed?
+	 * - Analytics surveys are no more included in surveys section
+	 */
+	@Test 
+	public void TC2376_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveysForExistingAnalyticsReport() throws Exception{
+		Log.info("\nTestcase - TC2376_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveysForExistingAnalyticsReport\n");
+
+		String userName = ManageUsersPageActions.workingDataRow.get().username;
+		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+
+		final Integer reportDataRowID = 212;
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		complianceReportsPageAction.getComplianceReportsPage().copyReport(reportTitle, userName);
+		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
+		assertTrue(complianceReportsPageAction.waitForChangeModelWarningPopupToShow(EMPTY, NOTSET));
+		String warningMsg=  (complianceReportsPageAction.getComplianceReportsPage().getSurveyModalErrorMsg().getText());
+		assertTrue (warningMsg.equals(ComplianceReport_ChangeModeWarning));
+		String proceedMsg = (complianceReportsPageAction.getComplianceReportsPage().getProceedMsg().getText());
+		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
+		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+		getHomePage().logout();
+	}
+
+	/* * Test Case ID: TC2380_VerifyUIChangesForAnalyticsModeOnComplianceReportPage
+	 * Script:
+	 * - Customer has analytics license feature
+	 * - login to application and navigate to compliance report page
+	 * - click on new compliance report button
+	 * - select analytics report mode
+	 * - click on search button in survey section
+	 * Results:
+	 * - New Report mode - Analytics is present on new compliance report screen
+	 * - Exclusion radius parameter is not present
+	 * - Indication filters are not present
+	 * - Only analytics survey more is present
+	 * - Only analytics surveys are present in survey search grid
+	 * - In Views section, analysis, field notes options are not present
+	 * - In Optional tabular PDF content, Analysis checkbox  is not present
+	 */
+	@Test 
+	public void TC2380_VerifyUIChangesForAnalyticsModeOnComplianceReportPage() throws Exception{
+		Log.info("\nTestcase - TC2380_VerifyUIChangesForAnalyticsModeOnComplianceReportPage\n");
+
+		String userName = ManageUsersPageActions.workingDataRow.get().username;
+		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.getComplianceReportsPage().openNewReportsPage();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsReportModeShown());	
+		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isExclusionRadiusParameterShown());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxPossibleNaturalGas().isDisplayed());
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(true, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsAnalysesColumn()));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsFieldNoteColumn()));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getTubularAnalysisOption()));
+		getHomePage().logout();
+	}
+
+	/* * Test Case ID: TC2381_VerifyUIChangesForAnalyticsModeOnCopyComplianceReportPage
+	 * Script:
+	 * - Customer has analytics license feature
+	 * - Generate analytics report
+	 * - login to application and navigate to compliance report page
+	 * - click on copy compliance report button
+	 * Results:
+	 * - Analytics report mode is selected
+	 * - Exclusion radius parameter is not present
+	 * - Indication filters are not present
+	 * - Analytics surveys included while generating report are present
+	 * - In Views section, analysis, field notes options are not present
+	 * - In Optional tabular PDF content, Analysis checkbox  is not present
+	 * - All data present on copy screen is same as options selected while generating the new report
+	 */
+	@Test 
+	public void TC2381_VerifyUIChangesForAnalyticsModeOnCopyComplianceReportPage() throws Exception{
+		Log.info("\nTestcase - TC2381_VerifyUIChangesForAnalyticsModeOnCopyComplianceReportPage\n");
+
+		String userName = ManageUsersPageActions.workingDataRow.get().username;
+		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+
+		final Integer reportDataRowID = 212;
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		complianceReportsPageAction.getComplianceReportsPage().copyReport(reportTitle, userName);
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsReportModeShown());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isExclusionRadiusParameterShown());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxPossibleNaturalGas().isDisplayed());
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+	//	assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsAnalysesColumn()));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsFieldNoteColumn()));
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getTubularAnalysisOption()));
 		getHomePage().logout();
 	}
 }
