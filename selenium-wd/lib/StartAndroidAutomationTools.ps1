@@ -30,3 +30,4 @@ if ($procs -ne $null) {
 }
 
 Start-Process -FilePath "$appiumCmdPath"
+sleep -Seconds 30

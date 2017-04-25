@@ -47,7 +47,7 @@ if ($overrideSet) {
 # 1.
 [string]$missingPackages = $AndroidSDKPackageIDs
 if ($ForceInstallAllSDKPackages -ne "1") {
-    $missingPackages = Get-MissingPackageIDs -currentPackageIds 
+    $missingPackages = Get-MissingPackageIDs -currentPackageIds $AndroidSDKPackageIDs
 }
 
 # 2.

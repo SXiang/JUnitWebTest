@@ -11,7 +11,7 @@ param
 )
 
 . "$BuildWorkingDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
-. "$buildWorkingDir\selenium-wd\lib\ApplicationInstaller.ps1"
+. "$BuildWorkingDir\selenium-wd\lib\ApplicationInstaller.ps1"
 
 # 0.
 $overrideSet = Pre-AutoInstallationCheck
