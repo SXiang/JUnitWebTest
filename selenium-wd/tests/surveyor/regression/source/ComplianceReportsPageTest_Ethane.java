@@ -51,6 +51,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -98,7 +99,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1634_Ethane_VerifyCheckBoxes() {
 		String rptTitle = "TC1634 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1634: Ethane: Compliance Report UI: Verify Ethane Filter is available - New Compliance Report, " + rptTitle);
@@ -119,7 +120,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1637_Ethane_Copy_Report_VerifyCheckBoxes() throws Exception {
 		String rptTitle = "TC1637 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1637: Ethane: Compliance Report UI: Verify Ethane Filter is available in Copy Report Page, " + rptTitle);
@@ -198,7 +199,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1654_Ethane_Verify_Analyses_Column_View_Table() throws IOException {
 		String rptTitle = "TC1654 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1654: Ethane: Compliance Report UI: Verify Analysis column in Views table, " + rptTitle);
@@ -216,7 +217,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws Exception
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1636_Ethane_Verify_NONEthane_Survey() throws Exception {
 		String rptTitle = "TC1636 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1636: Ethane: Compliance Report UI: Verify Ethane & Non-Ethane Standard mode surveys are displayed" + rptTitle);
@@ -245,7 +246,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1725_Ethane_Verify_Analysis_Column_Tubular_Content() throws IOException {
 		String rptTitle = "TC1725 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1725: Ethane: Compliance Report UI: Verify Analysis column in Optional Tabular PDF Content table" + rptTitle);
@@ -334,7 +335,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws IOException
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1717_Ethane_Verify_Indication_Table_Color_Selection_Removal() throws IOException, InterruptedException {
 		String rptTitle = "TC1717 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1717: Compliance Report Generation : Remove user selection color for Indications" + rptTitle);
@@ -360,7 +361,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws Exception
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1719_Ethane_Copy_Report_Verify_Indication_Table_Color() throws Exception {
 		String rptTitle = "TC1719 Ethane" + getTestSetup().getRandomNumber();
 		Log.info("\nRunning TC1719: Compliance Report Generation : COPY generated report should show default color only for Indication" + rptTitle);
@@ -435,7 +436,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws Exception
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1643_ComplianceReportTest_STNDwithBothFiltersON() throws Exception {
 		String testCaseID = "TC1643";
 		String rptTitle = "TC1643_Ethane" + getTestSetup().getRandomNumber();
@@ -515,7 +516,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws Exception
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1646_ComplianceReportTest_VerifyEthaneCaptureCSV() throws Exception {
 		String testCaseID = "TC1646";
 		String rptTitle = "TC1646_Ethane" + getTestSetup().getRandomNumber();
@@ -593,7 +594,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 	 * @throws Exception
 	 *
 	 */
-	@Test
+	@Ignore
 	public void TC1647_ComplianceReportTest_VerifyEthaneReportCSVJson() throws Exception {
 		String testCaseID = "TC1647";
 		String rptTitle = "TC1647_Ethane" + getTestSetup().getRandomNumber();
