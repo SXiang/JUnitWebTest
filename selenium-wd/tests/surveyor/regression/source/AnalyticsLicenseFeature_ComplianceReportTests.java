@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 
 import common.source.Log;
 import common.source.WebElementExtender;
@@ -143,7 +142,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is present
 	 */
 
-	@Ignore 
+	@Test 
 	public void TC2358_AnalyticsReportModeForLicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2358_AnalyticsReportModeForLicensedCustomers\n");
 
@@ -207,7 +206,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - User is shown the Compliance Reports page (no reports exist yet)
 	 * - In the Report Mode section at the top of the New Compliance Report page, "Analytics" is present
 	 */
-	@Ignore 
+	@Test 
 	public void TC2361_CreateNewCustomerWithAnalyticsReportLicense() throws Exception{
 		Log.info("\nTestcase - TC2361_CreateNewCustomerWithAnalyticsReportLicense\n");
 
@@ -259,7 +258,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Ignore 
+	@Test 
 	public void TC2360_AnalyticsReportModeLicenseRevokedFromCustomer() throws Exception{
 		Log.info("\nTestcase - TC2360_AnalyticsReportModeLicenseRevokedFromCustomer\n");
 
@@ -298,7 +297,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Ignore 
+	@Test 
 	public void TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers\n");
 
@@ -338,7 +337,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - The original report was created with the following survey mode licenses: Analytics. Your account currently does not have access to these modes.
 	 */
 
-	@Ignore 
+	@Test 
 	public void TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled() throws Exception{
 		Log.info("\nTestcase - TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled\n");
 
@@ -527,7 +526,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxPossibleNaturalGas().isDisplayed());
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
-	//	assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsAnalysesColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsFieldNoteColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getTubularAnalysisOption()));
