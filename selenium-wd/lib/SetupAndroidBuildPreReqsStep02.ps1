@@ -1,7 +1,8 @@
 ﻿# ---------------------------------------------------------------
 # SAMPLE USAGE:
 #   .\SetupAndroidBuildPreReqsStep02.ps1 `
-#           -BuildWorkingDir "C:\Repositories\surveyor-qa"
+#           -BuildWorkingDir "C:\Repositories\surveyor-qa" `
+#           -AndroidSDKPackageIDs "2,13,15,38,166,173" `
 # ---------------------------------------------------------------
 
 param
@@ -10,7 +11,7 @@ param
   [string] $BuildWorkingDir,             # Eg. "C:\Repositories\surveyor-qa"
 
   [Parameter(Mandatory=$true)]
-  [string] $androidSDKPackageIDs         # Eg. $androidSDKPackageIDs = "2,13,15,38,166,173"    # comma-seperated list of ids from => android list sdk --all
+  [string] $AndroidSDKPackageIDs         # Eg. $AndroidSDKPackageIDs = "2,13,15,38,166,173"    # comma-seperated list of ids from => android list sdk --all
                                                 # Includes at the time of writing this script :->
                                                 # IMPORTANT: The package IDs will need to be looked up during the execution time of the script as the IDs might have changed with new packages added to sdkmanager
                                                 #      2 - Android SDK Platform-tools, revision 25.0.4 
@@ -37,18 +38,12 @@ if ($overrideSet) {
 # 1.
 Write-Host "[INSTALL_PRE-REQS]: Check/Install pre-requisite applications"
 $installApplications = @{
-    "01.android-sdk-packages"="Android SDK Packages;$androidSDKPackageIDs"
+    "01.android-sdk-packages"="Android SDK Packages;$AndroidSDKPackageIDs"
 }
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_PRE-REQS]: Done installing pre-requisite applications"
 
 # 2.
-$PRE_INSTALL_CHECK_FILE = "C:\install-overrides.txt"
-$OVERRIDE_TEXT = "android-pre-reqs-present=1"
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Creating pre-req install success marker file..."
-if (Test-Path -Path $PRE_INSTALL_CHECK_FILE) {
-    Remove-Item -Path $PRE_INSTALL_CHECK_FILE
-}
-$markerFile = New-Item -Path $PRE_INSTALL_CHECK_FILE -ItemType File -Force
-Add-Content $markerFile $OVERRIDE_TEXT
+Create-PreReqsInstallSuccessMarkerFile
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Done creating pre-req install success marker file."
