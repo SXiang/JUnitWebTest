@@ -2695,7 +2695,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 	
 	/**
-	 * Executes waitForLicenseMissingPopupToShow action.
+	 * Executes waitForChangeModelWarningPopupToShow action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.

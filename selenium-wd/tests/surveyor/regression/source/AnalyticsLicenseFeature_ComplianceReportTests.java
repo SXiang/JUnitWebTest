@@ -410,6 +410,8 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
 		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Standard, SurveyModeFilter.Analytics));
 		getHomePage().logout();
 	}
 
@@ -448,6 +450,8 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
 		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
+		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Standard, SurveyModeFilter.Analytics));		
 		getHomePage().logout();
 	}
 
@@ -526,7 +530,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxEtheneBiogeniceMethane().isDisplayed());
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxPossibleNaturalGas().isDisplayed());
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
+		//assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Analytics, SurveyModeFilter.Analytics));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsAnalysesColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsFieldNoteColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getTubularAnalysisOption()));

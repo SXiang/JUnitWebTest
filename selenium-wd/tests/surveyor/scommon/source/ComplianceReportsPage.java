@@ -187,10 +187,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	private String strCOMRPTXPath = "//*[@id='datatable']/tbody/tr";
 
-	@FindBy(how = How.XPATH, using = "	//*[@id='surveyModal']/div/div/div[2]/p[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[2]")
 	protected WebElement surveyModalErrorMsg;
 
-	@FindBy(how = How.XPATH, using = "	//*[@id='surveyModal']/div/div/div[2]/p[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[3]")
 	protected WebElement proceedMsg;
 
 	public WebElement getSurveyModalErrorMsg(){
