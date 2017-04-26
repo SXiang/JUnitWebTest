@@ -1,7 +1,8 @@
 ﻿# ---------------------------------------------------------------
 # SAMPLE USAGE:
 #   .\SetupAndroidEmulator.ps1 `
-#           -BuildWorkingDir "C:\Repositories\surveyor-qa" `
+#           -BuildWorkingDir "C:\Repositories\PicarroApp" `
+#           -BuildScriptsBaseDir "C:\Repositories\surveyor-qa" `
 #           -SystemImage "23|google_apis|x86" `
 #           -AndroidSDKPackageIDs "2,13,15,38,131" `
 #           -HaxmPackageID "180"  `
@@ -11,7 +12,10 @@
 param
 (
    [Parameter(Mandatory=$true)]
-   [string] $BuildWorkingDir,                               # Eg. "C:\Repositories\surveyor-qa",
+   [string] $BuildWorkingDir,                               # Eg. "C:\Repositories\PicarroApp",
+
+   [Parameter(Mandatory=$true)]
+   [string] $BuildScriptsBaseDir,                           # Eg. "C:\Repositories\surveyor-qa",
 
    [Parameter(Mandatory=$true)]
    [string] $SystemImage,                                   # Eg. "23|google_apis|x86",  # Use one of the [key] entries from supported images. Lookup configuration file - eg. https://dl-ssl.google.com/android/repository/sys-img/google_apis/sys-img.xml
@@ -32,8 +36,8 @@ param
    [string] $ForceInstallAllSDKPackages                     # By default only missing SDK packages will be installed. To force install all the packages set this flag to "1". NOTE: We currently only detect packages that cause errors on re-install and prevent their reinstallation. Some packages might get reinstalled even if this flag is OFF.
 )
 
-. "$BuildWorkingDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
-. "$BuildWorkingDir\selenium-wd\lib\ApplicationInstaller.ps1"
+. "$BuildScriptsBaseDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
+. "$BuildScriptsBaseDir\selenium-wd\lib\ApplicationInstaller.ps1"
 
 # 0.
 $overrideSet = Pre-AutoInstallationCheck
@@ -51,6 +55,7 @@ if ($ForceInstallAllSDKPackages -ne "1") {
 }
 
 # 2.
+cd $BuildWorkingDir
 "Updating NPM to latest..."
 npm install npm@latest -g
 npm install
