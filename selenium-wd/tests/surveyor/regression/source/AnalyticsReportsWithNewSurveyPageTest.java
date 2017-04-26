@@ -20,8 +20,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -34,7 +34,6 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
-import surveyor.scommon.source.SurveyorConstants.AnalyzerType;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -64,8 +63,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		setPropertiesForTestRunMode();
 		
 		if(testAccount == null){
-			testAccount = createTestAccount("Analytics_Report");
-			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), AnalyzerType.METHANE
+			testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
 					,testAccount.get("userName"), testAccount.get("userPassword"), 1500, SurveyType.Analytics);
 			pushGisData(testAccount.get("customerId"));
 		}
