@@ -100,8 +100,8 @@ function IsInstalled($application) {
 #---------------------------------------------------------
 function InstallApplication($application, $param) {
     if ($application -eq 'python') {
-        # install python 2.7.6
-        choco install python-x86_32 -version 2.7.6 -y --force
+        # install python 2.7.6 (x86)
+        choco install python.x86 -version 2.7.6 -y --force
     } elseif ($application -eq 'choco') {
         iex ((new-object net.webclient).DownloadString($CHOCOLATEY_INSTALL_SCRIPT_PATH))
     } elseif ($application -eq 'curl') {
