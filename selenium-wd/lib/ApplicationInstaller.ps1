@@ -7,8 +7,6 @@ $7ZIP_INSTALL_LOG = '${TEMP_PATH}7zip-install.log'
 $PYTHON_APP_INSTALL_TEXT = 'Python 2.7.'
 $CHOCOLATEY_APP_INSTALL_TEXT = 'Chocolatey v'
 $ANDROID_SDK_INSTALL_VERSION = '25.2.3'
-$NODEJS_INSTALL_VERSION = '4.1.2'
-$NODEJS_INSTALL_TEXT = $NODEJS_INSTALL_VERSION
 $APPIUM_INSTALL_TEXT = 'appium'
 $APPIUM_DOCTOR_INSTALL_TEXT = 'appium-doctor'
 $HAXM_INSTALL_TEXT = 'HAXM is installed'
@@ -109,12 +107,12 @@ function InstallApplication($application, $param) {
     } elseif ($application -eq 'curl') {
         choco install curl -y --force
     } elseif ($application -eq 'nodejs') {
-        choco install nodejs.install --version $NODEJS_INSTALL_VERSION -y --force
+        choco install nodejs.install -y --force
     } elseif ($application -eq 'appium') {
         # Update package manager in case of issues => 'npm i -g npm'
-        npm install -g appium
+        npm install -g appium@1.6.3
     } elseif ($application -eq 'appium-doctor') {
-        npm install -g appium-doctor
+        npm install -g appium-doctor@1.4.2
     } elseif ($application -eq 'haxm') {
         $haxmPackageID = $param
         "Installing HAXM. Android Package ID - $haxmPackageID"

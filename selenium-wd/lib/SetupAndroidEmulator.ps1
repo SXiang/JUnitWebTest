@@ -53,6 +53,7 @@ if ($ForceInstallAllSDKPackages -ne "1") {
 # 2.
 "Updating NPM to latest..."
 npm install npm@latest -g
+npm install
 
 # 3. 
 Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Check/Install Android Build Tools, HAXM and Emulator System Image"
