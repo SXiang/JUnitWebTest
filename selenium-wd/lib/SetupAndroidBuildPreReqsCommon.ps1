@@ -103,6 +103,8 @@ function Get-AndroidPackageDirectory([string]$packageName, [string]$packageVersi
             $packageDirName = "$andHome\tools"
         } elseif ($packageName -eq "Intel x86 Emulator Accelerator") {
             $packageDirName = "$andHome\extras\intel\Hardware_Accelerated_Execution_Manager"
+        } else {
+            throw [System.Exception] "PackageName-$packageName' NOT supported."
         }
     }
 

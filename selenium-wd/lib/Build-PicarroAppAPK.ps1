@@ -30,7 +30,7 @@ $BUILD_NUMBER_PLACEHOLDER = "%BUILD_NUMBER%"
 cd "$BuildWorkingDir"
 
 "Triggering NPM install (updating to latest npm) ..."
-npm install npm@latest -g
+npm install npm@$CHOCO_NPM_VERSION -g
 npm install
 
 # 1. 

@@ -161,7 +161,7 @@ Invoke-WebRequest -Uri $downloadURL -WebSession $wSession -OutFile $apkDownloadP
 cd "$BuildWorkingDir"
 
 "Triggering NPM install (updating to latest npm) ..."
-npm install npm@latest -g
+npm install npm@$CHOCO_NPM_VERSION -g
 npm install
 
 Write-Host "[INSTALL_REACT_NATIVE]: Check/Install pre-requisite applications"

@@ -57,7 +57,7 @@ if ($ForceInstallAllSDKPackages -ne "1") {
 # 2.
 cd $BuildWorkingDir
 "Updating NPM to latest..."
-npm install npm@latest -g
+npm install npm@$CHOCO_NPM_VERSION -g
 npm install
 
 # 3. 

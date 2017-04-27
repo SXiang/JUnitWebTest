@@ -4,7 +4,6 @@ $7ZIP_DOWNLOAD_URL = 'http://www.7-zip.org/a/7z920-x64.msi'
 $7ZIP_MSI_DEST = '${TEMP_PATH}7zip-x64.msi'
 $7ZIP_INSTALL_LOG = '${TEMP_PATH}7zip-install.log'
 
-$PYTHON_APP_INSTALL_TEXT = 'Python 2.7.'
 $CHOCOLATEY_APP_INSTALL_TEXT = 'Chocolatey v'
 $ANDROID_SDK_INSTALL_VERSION = '25.2.3'
 $APPIUM_INSTALL_TEXT = 'appium'
@@ -25,6 +24,13 @@ $PROGRAMFILES = $env:ProgramFiles
 $PROGRAMFILES86 = ${env:ProgramFiles(x86)}
 $ANDROIDHOME = $env:ANDROID_HOME
 
+$PYTHON_APP_INSTALL_TEXT = 'Python 2.7.'
+$CHOCO_PYTHON_VERSION = "2.7.6"
+$CHOCO_APPIUM_VERSION = "1.6.3"
+$CHOCO_APPIUM_DOCTOR_VERSION = "1.4.2"
+$CHOCO_REACT_NATIVE_CLI_VERSION = "2.0.1"
+$CHOCO_NPM_VERSION = "4.5.0"
+
 #---------------------------------------------------------
 # Checks if specified application is installed or not.
 # Returns TRUE if installed, FALSE otherwise.
@@ -33,7 +39,6 @@ function IsInstalled($application) {
     $isInstalled = $false
 
     if ($application -eq 'python') {
-        # check if python 2.7.x is installed.
         $appCmd = python --version 2>&1
         $appVer = $appCmd.ToString()
         $isInstalled = $appVer.StartsWith($PYTHON_APP_INSTALL_TEXT)
@@ -101,7 +106,7 @@ function IsInstalled($application) {
 function InstallApplication($application, $param) {
     if ($application -eq 'python') {
         # install python 2.7.6 (x86)
-        choco install python.x86 -version 2.7.6 -y --force
+        choco install python.x86 -version $CHOCO_PYTHON_VERSION -y --force
     } elseif ($application -eq 'choco') {
         iex ((new-object net.webclient).DownloadString($CHOCOLATEY_INSTALL_SCRIPT_PATH))
     } elseif ($application -eq 'curl') {
@@ -110,9 +115,9 @@ function InstallApplication($application, $param) {
         choco install nodejs.install -y --force
     } elseif ($application -eq 'appium') {
         # Update package manager in case of issues => 'npm i -g npm'
-        npm install -g appium@1.6.3
+        npm install -g appium@$CHOCO_APPIUM_VERSION
     } elseif ($application -eq 'appium-doctor') {
-        npm install -g appium-doctor@1.4.2
+        npm install -g appium-doctor@$CHOCO_APPIUM_DOCTOR_VERSION
     } elseif ($application -eq 'haxm') {
         $haxmPackageID = $param
         "Installing HAXM. Android Package ID - $haxmPackageID"
