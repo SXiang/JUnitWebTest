@@ -511,8 +511,9 @@ public class BaseTest {
 
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 				analyzerName, analyzerSharedKey);
-		int i=0;
+
 		for(SurveyType st : surveyTypes){
+			int i=0;
 			while(i<surveyType.length){
 				if(st.toString().equals(surveyType[i])){
 					break;
