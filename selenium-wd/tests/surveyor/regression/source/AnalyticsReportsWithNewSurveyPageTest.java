@@ -20,7 +20,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -54,7 +53,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			cleanUpGisData(testAccount.get("customerId"));
 		}
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
@@ -62,7 +61,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-		
+
 		if(testAccount == null){
 			testAccount = createTestAccount("Analytics_Report");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), AnalyzerType.METHANE
@@ -78,7 +77,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
 	}
-	
+
 	private void initializePageObjects() {
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
@@ -116,7 +115,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	public void TC2339_LisasAreFilteredOutAccordingToThresholdLevel(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2339_LisasAreFilteredOutAccordingToThresholdLevel ..." +
-			 "\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
+				"\nTest Description:  Analytics Report - LISAs are filtered out according to threshold level set on Locations paget");
 
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
@@ -151,5 +150,4 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			getHomePage().logout();
 		}
 	}
-
 }

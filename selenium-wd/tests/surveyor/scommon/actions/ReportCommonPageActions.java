@@ -2693,7 +2693,20 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		getReportsCommonPage().waitForLicenseMissingPopupToShow();
 		return true;
 	}
-
+	
+	/**
+	 * Executes waitForChangeModelWarningPopupToShow action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForChangeModelWarningPopupToShow(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForSurveyModalPopupToShow", data, dataRowID);
+		getReportsCommonPage().waitForChangeModeWarningPopupToShow();
+		return true;
+	}
+	
 	/**
 	 * Executes waitForConfirmDeletePopupToClose action.
 	 * @param data - specifies the input data passed to the action.

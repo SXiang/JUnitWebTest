@@ -2953,6 +2953,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean isAnalyticsReportModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeAnalytics);
 	}
+	
+	public boolean isExclusionRadiusParameterShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputExclusionRadius);
+	}
+	
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
@@ -2967,6 +2972,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isManualSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+	}
+
+	public boolean isAnalyticsSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAnalytics);
 	}
 
 	public boolean isManualSurveyModeSelected() {
@@ -3005,6 +3014,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		case Manual:
 			validType.add(SurveyModeFilter.Manual.toString());
 			break;
+		case Analytics:
+			validType.add(SurveyModeFilter.Analytics.toString());
 		default:
 			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());

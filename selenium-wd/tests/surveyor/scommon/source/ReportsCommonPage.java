@@ -217,7 +217,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
-
+	public static final String ComplianceReport_ChangeModeWarning = Resources.getResource(ResourceKeys.ComplianceReport_ChangeModeWarning);
+	public static final String Dialog_ProceedMessage = Resources.getResource(ResourceKeys.Dialog_ProceedMessage);
+	
 	public static final String LisaInvestigationReportSSRS_Lisa = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Lisa);
 	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
@@ -327,9 +329,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[8]/div")
+	protected WebElement viewsFieldNoteColumn;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
 	protected WebElement tubularAnalysisOption;
 
@@ -3648,6 +3653,18 @@ public class ReportsCommonPage extends ReportsBasePage {
 		});
 	}
 
+	public void waitForChangeModeWarningPopupToShow() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
+				WebElement changeModeWarningPopupSection = d.findElement(By.id("surveyModal"));
+				return changeModeWarningPopupSection.getAttribute("style").contains("display:block")
+						|| changeModeWarningPopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+	
 	public void waitForConfirmLicenseMissingPopupToClose() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
@@ -3739,6 +3756,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public WebElement getViewsAnalysesColumn() {
 		return this.viewsAnalysesColumn;
+	}
+
+	public WebElement getViewsFieldNoteColumn() {
+		return this.viewsFieldNoteColumn;
 	}
 
 	public WebElement getTubularAnalysisOption() {
