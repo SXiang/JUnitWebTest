@@ -409,8 +409,9 @@ public class BaseTest {
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
+		SurveyModeFilter[] defaultTestSurveyModeFilter =  {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
-			surveyModeFilter = SurveyModeFilter.values();
+			surveyModeFilter = defaultTestSurveyModeFilter;
 		}
 
 		HashMap<String, String> testReport = new HashMap<String, String>();
