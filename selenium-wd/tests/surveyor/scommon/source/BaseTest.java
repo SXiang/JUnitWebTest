@@ -484,7 +484,7 @@ public class BaseTest {
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
 		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
-		String[] db3Type = {"3200", "3200","3200","3200","3200","3300"};
+		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
 		
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = SurveyType.values();
@@ -511,12 +511,21 @@ public class BaseTest {
 
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 				analyzerName, analyzerSharedKey);
-
-		for(int i=0; i<surveyTypes.length; i++){
+		int i=0;
+		for(SurveyType st : surveyTypes){
+			while(i<surveyType.length){
+				if(st.toString().equals(surveyType[i])){
+					break;
+				}
+				i++;
+			}
+			if(i==surveyType.length){
+				Log.warn("SurveyType '"+st+"' is not valid");
+				continue;
+			}
 			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
 				continue;
 			}
-			SurveyType st = surveyTypes[i];
 			TestSetup.restartAnalyzer();
 			String db3file = replayScriptDB3File;
 			String db3DefnFile = replayScriptDefnFile;
