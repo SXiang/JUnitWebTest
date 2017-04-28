@@ -524,19 +524,6 @@ public final class SurveyorConstants {
 		}
 	}
 
-	public enum AnalyzerType {
-		ETHANE ("Ethane"),
-		METHANE ("Methane");
-
-		private final String name;
-		AnalyzerType(String nm) {
-			name = nm;
-		}
-		public String toString() {
-			return this.name;
-		}
-	}
-
 	public enum LicensedFeatures {
 		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
