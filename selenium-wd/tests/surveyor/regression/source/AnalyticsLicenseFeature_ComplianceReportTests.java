@@ -2,6 +2,9 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Before;
@@ -534,6 +537,49 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsAnalysesColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getViewsFieldNoteColumn()));
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(complianceReportsPageAction.getComplianceReportsPage().getTubularAnalysisOption()));
+		getHomePage().logout();
+	}
+	
+	/*
+	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 */
+	@Test
+	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
+		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
+		List<String> expectedReportHeader = Arrays.asList("Report Title",
+				"Report Name", "Report Mode", "Created By", "Date", "Action",
+				"Upload Status");
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+
+		for (int count = 1; count <= expectedReportHeader.size(); count++) {
+			assertTrue(complianceReportsPage.getComplianceListPageHeader()
+					.equals(expectedReportHeader.get(count)));
+		}
+		getHomePage().logout();
+	}
+	
+	/*
+	 * * Test Case ID:
+	 * TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 * shows correct modes
+	 */
+	@Test
+	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage() throws Exception {
+		Log.info("\nTestcase - TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage\n");
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+
+		for (int count = 1; count <= expectedReportHeader.size(); count++) {
+			assertTrue(complianceReportsPage.getComplianceListPageHeader()
+					.equals(expectedReportHeader.get(count)));
+		}
 		getHomePage().logout();
 	}
 }
