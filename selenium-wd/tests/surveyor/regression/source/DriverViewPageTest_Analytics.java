@@ -489,7 +489,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyStartEQSurveyButtonIsEnabled(EMPTY, NOTSET));
 
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(700), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(1000), NOTSET);
 
 		driverViewPageAction.verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET);
 		driverViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
