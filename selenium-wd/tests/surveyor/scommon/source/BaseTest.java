@@ -39,6 +39,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
@@ -53,7 +54,6 @@ import surveyor.scommon.entities.ReportsSurveyInfo;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
-import surveyor.scommon.source.SurveyorConstants.AnalyzerType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class BaseTest {
@@ -264,15 +264,19 @@ public class BaseTest {
 	}
 
 	public Map<String, String> createTestAccount(String testCase){
-		return createTestAccount(testCase, null);
+		return createTestAccount(testCase, CapabilityType.IsotopicMethane);
 	}
-
+	
+	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType){
+		return createTestAccount(testCase,  null, analyzerType, true, true);
+	}
+	
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
-		return createTestAccount(testCase, null, addTestSurveyor);
+		return createTestAccount(testCase, addTestSurveyor, true);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
-		return createTestAccount(testCase, null, addTestSurveyor, fetchAnalyzerFromPool);
+		return createTestAccount(testCase,  null, CapabilityType.IsotopicMethane, addTestSurveyor, fetchAnalyzerFromPool);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
@@ -282,8 +286,10 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
 		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
-
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+		return createTestAccount(testCase, lfsToExclude, CapabilityType.IsotopicMethane, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
+	}
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
@@ -357,6 +363,7 @@ public class BaseTest {
 
 		testAccount.put("analyzerSharedKey", analyzerSharedKey);
 		testAccount.put("analyzerName", analyzerName);
+		testAccount.put("analyzerType", analyzerType.toString());
 		testAccount.put("surveyorName", surveyorName);
 
 		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
@@ -375,6 +382,8 @@ public class BaseTest {
 		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
 		}
+		Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
+		analyzer.updateCapabilityType(analyzerType);
 
 		manageRefGasBottlesPage.open();
 		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
@@ -400,8 +409,9 @@ public class BaseTest {
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
+		SurveyModeFilter[] defaultTestSurveyModeFilter =  {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
-			surveyModeFilter = SurveyModeFilter.values();
+			surveyModeFilter = defaultTestSurveyModeFilter;
 		}
 
 		HashMap<String, String> testReport = new HashMap<String, String>();
@@ -452,30 +462,31 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
-		return addTestSurvey(analyzerName, analyzerSharedKey, AnalyzerType.METHANE);
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane);
 	}
-	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, AnalyzerType analyzerType) throws Exception{
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, SurveyType... surveyTypes) throws Exception{
-		return addTestSurvey(analyzerName, analyzerSharedKey, AnalyzerType.METHANE, userName, password, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyTypes);
 	}
-	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, AnalyzerType analyzerType, String userName, String password, SurveyType... surveyTypes) throws Exception{
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, SurveyType... surveyTypes) throws Exception{
 		int surveyRuntimeInSeconds = 2;
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
 	
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
-		return addTestSurvey(analyzerName, analyzerSharedKey, AnalyzerType.METHANE, userName, password, surveyRuntimeInSeconds, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
-	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, AnalyzerType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
 		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
-
+		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
+		
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = SurveyType.values();
 		}
@@ -502,23 +513,37 @@ public class BaseTest {
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
 				analyzerName, analyzerSharedKey);
 
-		for(SurveyType st:surveyTypes){
+		for(SurveyType st : surveyTypes){
+			int i=0;
+			while(i<surveyType.length){
+				if(st.toString().equals(surveyType[i])){
+					break;
+				}
+				i++;
+			}
+			if(i==surveyType.length){
+				Log.warn("SurveyType '"+st+"' is not valid");
+				continue;
+			}
+			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
+				continue;
+			}
 			TestSetup.restartAnalyzer();
 			String db3file = replayScriptDB3File;
 			String db3DefnFile = replayScriptDefnFile;
+			if(analyzerType.equals(CapabilityType.Ethane)){
+				db3DefnFile = replayScriptEthaneDefnFile;
+			}
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
-			}
-			if(analyzerType.equals(AnalyzerType.ETHANE)){
-				db3DefnFile = replayScriptEthaneDefnFile;
 			}
 			driverViewPageAction.open("", -1);
 			driverViewPageAction.waitForConnectionToComplete("", -1);
 
 			int surveyRowID = surveyRowIDs[0];
-			for(int i=0; i<surveyType.length; i++){
-				if(st.toString().equalsIgnoreCase(surveyType[i])){
-					surveyRowID = surveyRowIDs[i];
+			for(int j=0; j<surveyType.length; j++){
+				if(st.toString().equalsIgnoreCase(surveyType[j])){
+					surveyRowID = surveyRowIDs[j];
 					break;
 				}
 			}
