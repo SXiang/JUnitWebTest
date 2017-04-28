@@ -13,6 +13,7 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	public static final String DRIVERVIEW_START_STOP_SURVEY_METH_LONGDB3_PROVIDER = "dataProviderStartStopSurveyMethLongDB3";
 	public static final String DRIVERVIEW_START_STOP_SURVEY_ETH_PROVIDER = "dataProviderStartStopSurveyEth";
 	public static final String DRIVERVIEW_COMPARE_INDICATIONS_DRIVERVIEW_SURVEYVIEW_PROVIDER = "dataProviderCompareIndicationsDriverViewSurveyView";
+	public static final String DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414 = "dataProviderRawDataUpdates_TC2411_2412_2413_2414";
 
 	public DriverViewDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -21,6 +22,41 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	@Override
 	public void run(RunNotifier notifier) {
 		super.run(notifier);
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderRawDataUpdates_TC2411_2412_2413_2414() throws Exception {
+
+		// ethane - bad iGPS (GpsFit=6, PeripheralStatus=98304), GPSLat/Long shifted by 0.5
+		final int userDataRowID1 = 16;
+		final int analyzerDb3DataRowID1 = 62;
+		final int surveyRuntimeInSeconds1 = 60;
+		final int surveyDataRowID1 = 3;
+
+		// ethane - generate Peak with NaN Wind
+		final int userDataRowID2 = 16;
+		final int analyzerDb3DataRowID2 = 63;
+		final int surveyRuntimeInSeconds2 = 600;
+		final int surveyDataRowID2 = 4;
+
+		// ethane - generate Peak with NaN EthaneRatio
+		final int userDataRowID3 = 16;
+		final int analyzerDb3DataRowID3 = 64;
+		final int surveyRuntimeInSeconds3 = 60;
+		final int surveyDataRowID3 = 5;
+
+		// ethane - generate Peak with bad GPS (GpsFit=0, GpsLat/Long=NaN)
+		final int userDataRowID4 = 16;
+		final int analyzerDb3DataRowID4 = 65;
+		final int surveyRuntimeInSeconds4 = 60;
+		final int surveyDataRowID4 = 6;
+
+		return new Object[][] {
+			//{ userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
+			{ userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
+			//{ userDataRowID3, analyzerDb3DataRowID3, surveyRuntimeInSeconds3, surveyDataRowID3 },
+			//{ userDataRowID4, analyzerDb3DataRowID4, surveyRuntimeInSeconds4, surveyDataRowID4 },
+		};
 	}
 
 	@DataProvider

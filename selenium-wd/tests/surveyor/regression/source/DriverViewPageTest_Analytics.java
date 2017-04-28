@@ -9,9 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestSetup;
+import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.source.LoginPage;
@@ -188,5 +191,51 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
+	}
+
+	/**
+	 * Test Case ID: TC2326_SimulatorTest_DrivingSurvey_CH4_C2H6_Missing_UtilityAdmin
+	 * Script: -
+	 * 1. Login to driver view as Pic Utility admin
+	 * 2. Start PSA and Host Simulator.
+	 * 3. Replay Ethane DB3s and apply transformations to Raw data (GPS and Measurements)
+	 * 4. Create survey tag, select  Survey Time: Day Solar Radiation: Moderate Wind: Light Survey Type: Standard
+	 * 4. Click on Start Survey button
+	 * 5. Let the survey run for few seconds
+	 * 6. Stop survey
+	 * Results: -
+	 * 1. Verify surveys can be started and stopped correctly.
+	 * 2. Verify there is no runtime error in pipelinerunner.
+	 * @throws Exception
+	 */
+	@Test
+	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414, location = DriverViewDataProvider.class)
+	public void TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates(Integer userDataRowID,
+			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
+		Log.info("TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates");
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
+
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+		// Stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 }
