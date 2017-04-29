@@ -22,6 +22,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	private static final String[] GreyRGBPixels = new String[] { "153", "153", "153" };
 
 	private static final Integer PIXEL_DIFF_400 = 400;
+	private static final Integer VALUE_700 = 700;
 
 	public static final String STATUS_PRESSURE_CANVAS_CTX = "test_ctx = $(\"#status_pressure_canvas\")[0].getContext('2d');";
 	public static final String STATUS_WARM_CANVAS_CTX = "test_ctx = $(\"#status_warm_canvas\")[0].getContext('2d');";
@@ -209,14 +210,11 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isFlowButtonGrey() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreyRGBPixels[0]) && pixelGreen.toString().equals(GreyRGBPixels[1])
-				&& pixelBlue.toString().equals(GreyRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		boolean redPixelsGreater = olMapUtility.areRedPixelsGreaterThanGreenOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
+		boolean greenPixelsGreater = olMapUtility.areGreenPixelsGreaterThanRedOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
+		boolean rgbCountsLesser = olMapUtility.areRGBPixelCountsLesserThanValue(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, VALUE_700);
+		return rgbCountsLesser && !redPixelsGreater && !greenPixelsGreater;
 	}
 
 	public boolean isGPSButtonRed() {
