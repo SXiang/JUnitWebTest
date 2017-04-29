@@ -52,8 +52,8 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 		final int surveyDataRowID4 = 6;
 
 		return new Object[][] {
-			//{ userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
-			{ userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
+			{ userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
+			//{ userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
 			//{ userDataRowID3, analyzerDb3DataRowID3, surveyRuntimeInSeconds3, surveyDataRowID3 },
 			//{ userDataRowID4, analyzerDb3DataRowID4, surveyRuntimeInSeconds4, surveyDataRowID4 },
 		};
