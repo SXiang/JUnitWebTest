@@ -17,8 +17,9 @@ import common.source.TestSetup;
 public class BoundaryDbSeedBuilder extends BaseDbSeedBuilder {
 	public static final String TABLE_NAME = "[dbo].[Boundary]";
 	private static final String PK_COL_NAME = "Id";
-	private static final String SEED_DATA_FOLDER = "GisSeedData";
-	private static final String SEED_FILE_NAME = "BoundarySeed.csv";
+	protected static final String SEED_DATA_FOLDER = "GisSeedData";
+	protected static final String SEED_FILE_NAME = "BoundarySeed.csv";
+	protected static final String SEED_FILE_NAME_NEW_CUSTOMER = "BoundarySeedAll.csv";
 	private static final String INSERT_TEMPLATE = "INSERT [dbo].[Boundary] ([Id], [ExternalId], [CustomerId], [CustomerBoundaryTypeID], [Description], [Level], [Shape], [State]) VALUES "
 			+ "(N'%s', N'%s', N'%s', N'%s', N'%s', %s, %s, NULL)";
 
