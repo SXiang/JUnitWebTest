@@ -656,7 +656,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-			    <include name="**/DriverViewPageTest.class" />
+			    <include name="**/DriverViewPageTests_PipelineRunner1.class" />
 	          <include name="**/SimulatorGeneralTests.class" />
 			</fileset>
       </batchtest>
