@@ -12,8 +12,12 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.ExceptionUtility;
+import common.source.HostSimInstructions;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.HostSimInstructions.Action;
+import common.source.HostSimInstructions.Measurement;
+import common.source.HostSimInstructions.Selector;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
@@ -210,7 +214,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 */
 	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414, location = DriverViewDataProvider.class)
-	public void TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates(Integer userDataRowID,
+	public void TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
 		Log.info("TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates");
 
@@ -222,8 +226,10 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
+		String instFilesPath = generateInstructionFiles(testCaseId);
+
 		Log.info("Starting Replay...");
-		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+		getTestEnvironmentAction().startReplay(instFilesPath, analyzerDb3DataRowID); 	// start replay db3 file.
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -237,5 +243,42 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		// Stop simulator and PSA.
 		Log.info("Stopping Analyzer...");
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/**
+	 * Generates COLON separated list of Instruction files for the specified test case.
+	 * @param testCaseId - test case identifier.
+	 * @return
+	 * @throws IOException
+	 */
+	private String generateInstructionFiles(String testCaseId) throws IOException {
+		Log.method("generateInstructionFiles", testCaseId);
+		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
+		if (testCaseId.equalsIgnoreCase("TC2411")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
+				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
+				.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+		}
+
+		return String.join(":", measInstructions.createFile());
 	}
 }

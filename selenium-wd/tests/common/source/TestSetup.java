@@ -1002,7 +1002,12 @@ public class TestSetup {
 		FileUtility.deleteFile(surveyorDb3Path);
 	}
 
+
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
+		replayDB3Script(defnFileName, db3FileName, null);
+	}
+
+	public static void replayDB3Script(String defnFileName, String db3FileName, String[] instructionFiles) {
 		try {
 			// Replace %DB3_FILE_PATH% in defn file with full path to
 			// db3FileName.
@@ -1019,6 +1024,12 @@ public class TestSetup {
 			// Update the working copy.
 			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
 			placeholderMap.put("%DB3_FILE_PATH%", db3FileFullPath);
+			if (instructionFiles != null && instructionFiles.length > 0) {
+				for (int i=0; i<instructionFiles.length; i++) {
+					placeholderMap.put("%" + String.format("INSTRUCTION_FILE_%d", i) + "%", instructionFiles[i]);
+				}
+			}
+
 			FileUtility.updateFile(workingDefnFullPath, placeholderMap);
 
 			// Replay DB3 script
