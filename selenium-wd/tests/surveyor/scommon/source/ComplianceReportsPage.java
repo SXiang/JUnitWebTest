@@ -2884,7 +2884,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		for (int colNum = 1; colNum <= cols.size(); colNum++) {
 			reportHeaderxPath = this.headerListComplianceReport + "["+colNum+"]";
 			reportCell = driver.findElement(By.xpath(reportHeaderxPath));
+			Log.info(reportCell.getText().trim());
 			complianceHeaderList.add(reportCell.getText().trim());
+			Log.info(complianceHeaderList.get(colNum));
 		}
 		return complianceHeaderList;
 	}

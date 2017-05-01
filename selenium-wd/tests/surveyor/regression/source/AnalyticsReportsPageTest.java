@@ -1,19 +1,30 @@
 package surveyor.regression.source;
 
-import common.source.Log;
+import java.util.Arrays;
+import java.util.List;
 
+import common.source.Log;
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
+import org.openqa.selenium.support.PageFactory;
+
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -23,7 +34,10 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-
+	private static LoginPage loginPage;
+	private static HomePage homePage;
+	private static ComplianceReportsPage complianceReportsPage;
+	
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -50,10 +64,20 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
+		loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
+		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
+		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	/**
@@ -99,5 +123,49 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
         assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 /* Shape file base line will be generated/enabled after dev completion */
 //        assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+	
+	
+	/*
+	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 */
+	@Test
+	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
+		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
+		List<String> expectedReportHeader = Arrays.asList("Report Title",
+				"Report Name", "Report Mode", "Created By", "Date", "Action",
+				"Upload Status");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		complianceReportsPage.open();
+
+		for (int count = 1; count <= expectedReportHeader.size(); count++) {
+			assertTrue(complianceReportsPage.getComplianceListPageHeader()
+					.equals(expectedReportHeader.get(count)));
+		}
+		homePage.logout();
+	}
+	
+	/*
+	 * * Test Case ID:
+	 * TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 * shows correct modes
+	 */
+	@Test
+	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage() throws Exception {
+		Log.info("\nTestcase - TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage\n");
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		complianceReportsPage.open();
+
+//		for (int count = 1; count <= expectedReportHeader.size(); count++) {
+//			assertTrue(complianceReportsPage.getComplianceListPageHeader()
+//					.equals(expectedReportHeader.get(count)));
+//		}
+		homePage.logout();
 	}
 }
