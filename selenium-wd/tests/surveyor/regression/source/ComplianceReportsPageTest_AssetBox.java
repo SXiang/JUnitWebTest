@@ -225,7 +225,7 @@ public class ComplianceReportsPageTest_AssetBox extends BaseReportsPageActionTes
 	 * - If customer has both Asset Box Highlighting and LISA Asset Highlighting licenses, dropdown will be present. If customer has Asset Box Highlighting license but not LISA Asset Highlighting, dropdown will be disabled
 	 * - All of the square bubbles pointing to Gap Boxes should match red color of the Gap Box itself
 	 */
-	@Test /* Need to update baseline with more suitable survey for this test */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2200, location = ComplianceReportDataProvider.class)
 	public void TC2200_GapBoxNumberBubblesHasSameColorAsGap(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
