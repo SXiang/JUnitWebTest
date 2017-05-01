@@ -656,6 +656,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
+			    <include name="**/ObserverViewPageStressTest.class" />
 	          <include name="**/SimulatorGeneralTests.class" />
 			</fileset>
       </batchtest>
