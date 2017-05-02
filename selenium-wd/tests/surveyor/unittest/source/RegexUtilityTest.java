@@ -2,19 +2,37 @@ package surveyor.unittest.source;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.TestContext;
+import common.source.TestSetup;
 
 public class RegexUtilityTest {
+
+	@BeforeClass
+	public static void BeforeClass()	{
+		// Initialize TestSetup to instantiate the TestContext.
+		TestSetup testSetup = new TestSetup(false /* skip initialization */);
+		String rootPath;
+		try {
+			rootPath = TestSetup.getRootPath();
+			testSetup.loadTestProperties(rootPath);
+		} catch (IOException e) {
+			Log.error(e.getMessage());
+		}
+		testSetup.initialize();
+		TestContext.INSTANCE.setTestSetup(testSetup);
+	}
 
 	@Test
 	public void testFeatureInfoAllMatch() {
 		Log.info("Running test - testFeatureInfoAllMatch() ...");
-		//String fInfoText = "Disposition : Natural GasClassification Confidence : ?95.00 %Methane Concentration : 2.15 ppmEthane Ratio : 6.78 ± 1.00 %Amplitude : 0.18 ppm";
 		String fInfoText = "Disposition : Natural GasClassification Confidence : ?95.00 %Methane Concentration : 2.15 ppmEthane Ratio : 6.78 ± 1.00 %Amplitude : 0.18 ppm";
 		assertTrue(isFeatureInfoTextMatch(fInfoText));
 	}
