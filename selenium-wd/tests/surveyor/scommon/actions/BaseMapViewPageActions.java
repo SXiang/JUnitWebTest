@@ -756,6 +756,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return mapUtility.isBoundariesShownOnMap();
 	}
 
+	public boolean verifySurveyAmplitudes(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifySurveyAmplitudes", data, dataRowID);
+		float minAmp = Float.parseFloat(data);
+		Set<Indication> indications = getIndicationsShownOnPage();
+		System.out.println("IndicationsFound: '"+indications.size()+"'");
+		for(Indication indi:indications){
+			float amp = Float.parseFloat(indi.amplitude);
+			System.out.println("Amplitude on indication = '"+amp+"'");
+			if(amp < minAmp){
+				Log.warn("Amplitiude '"+amp+"' on map is less then expected: > '"+minAmp+"'");
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.

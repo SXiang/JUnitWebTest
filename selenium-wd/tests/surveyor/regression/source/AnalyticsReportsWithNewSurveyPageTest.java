@@ -122,9 +122,9 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		String customerName = testAccount.get("customerName");
 		String locationName = testAccount.get("locationName");
 		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-		float[] psFilters = {2.5f,DEFAULT_PSFILTER_THRESHOLD};
+		String[] psFilters = {"2.5",DEFAULT_PSFILTER_THRESHOLD};
 
-		for(float psFilter:psFilters){
+		for(String psFilter:psFilters){
 			//Modify psFilter
 			getLoginPage().open();
 			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);

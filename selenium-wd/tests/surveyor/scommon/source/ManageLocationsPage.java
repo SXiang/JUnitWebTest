@@ -177,9 +177,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "LocationAnalyticsParameter_JustDbScan")
 	protected WebElement justDBScan;
 
-	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
-	protected WebElement inputPSFilterThreshold;
-	
 	private LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
@@ -328,9 +325,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.surMinAmp)) {
 			if (surMinAmp != null && surMinAmp != "") {
-				Log.info("Set Survey Min Amp - '" + surMinAmp + "'");
-				this.surMinAmp.clear();
-				this.surMinAmp.sendKeys(surMinAmp);
+				setSurveyMinAmp(surMinAmp);
 			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.rankingMinAmp)) {
@@ -363,9 +358,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
 			if (psFilter != null && psFilter != "") {
-				Log.info("Set Filter PS - '" + psFilter + "'");
-				this.psFilter.clear();
-				this.psFilter.sendKeys(psFilter);
+				setPsFilter(psFilter);
 			}
 		}
 		if (WebElementExtender.isElementPresentAndDisplayed(this.dbScanRd)) {
@@ -430,11 +423,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Log.clickElementInfo("Ok");
-		js.executeScript("arguments[0].click();", this.btnOK);
-
-		this.waitForPageToLoad();
+		clickOnOkButton();
 
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			Log.clickElementInfo("Cancel");
@@ -444,6 +433,25 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return true;
 	}
 
+	public void setSurveyMinAmp(String surMinAmp){
+		Log.info("Set Survey Min Amp - '" + surMinAmp + "'");
+		this.surMinAmp.clear();
+		this.surMinAmp.sendKeys(surMinAmp);
+	}
+
+	public void setPsFilter(String psFilter){
+		Log.info("Set Filter PS - '" + psFilter + "'");
+		this.psFilter.clear();
+		this.psFilter.sendKeys(psFilter);
+	}
+	
+	public void clickOnOkButton(){
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		Log.clickElementInfo("Ok");
+		js.executeScript("arguments[0].click();", this.btnOK);
+		this.waitForPageToLoad();
+	}
+	
 	public boolean verifyErrorMessage(String errorMsg){
 		Log.method("verifyErrorMessage", errorMsg);
 		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
@@ -1099,14 +1107,15 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		});
 	}
 
-	public void inputPSFilter(float psFilterThreshold){
-		Log.method("inputPSFilterThreshold", psFilterThreshold);
-		this.inputPSFilterThreshold.clear();
-		this.inputPSFilterThreshold.sendKeys(String.valueOf(psFilterThreshold));
-	}
-	public void editLocationPSFilterThreshold(String customerName, String locationName, float psFilterThreshold){		
+	public void editSurveyMinAmplitude(String customerName, String locationName, String surMinAmp){		
 		findExistingLocationAndClickEdit(customerName, locationName);
-		inputPSFilter(psFilterThreshold);
+		setSurveyMinAmp(surMinAmp);
+		clickOnOkBtn();
+	}
+	
+	public void editLocationPSFilterThreshold(String customerName, String locationName, String psFilterThreshold){		
+		findExistingLocationAndClickEdit(customerName, locationName);
+		setPsFilter(psFilterThreshold);
 		clickOnOkBtn();
 	}
 	

@@ -6,9 +6,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -64,7 +66,14 @@ public class ObserverViewPage extends BaseDrivingViewPage {
 		
 		return false;
 	}
-
+	
+	public boolean isAnalysisDisplayOptionOnViewPage() {
+		return WebElementExtender.isElementPresentAndDisplayed(displaySwitchIsotopicAnalysis);
+	}
+	
+	public boolean isFieldNotesDisplayOptionOnViewPage() {
+		return WebElementExtender.isElementPresentAndDisplayed(displaySwitchNotes);
+	}
     /**
      * Verify that the page loaded completely.
      *
