@@ -390,7 +390,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		String locationName = ManageLocationPageActions.workingDataRow.get().name;
 		
-		String newSurMinAmp = "3.0";
+		String newSurMinAmp = "0.035";
 		String newRankingMinAmp = "5.0";
 		String newPsFilter = "1.0";
 		String newTop10PS = "1.5";
@@ -431,7 +431,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.verifyStartEQSurveyButtonIsEnabled(EMPTY, NOTSET));
 
 		driverViewPageAction.startDrivingSurvey(EMPTY, SURVEY_ROW_ID);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(700), NOTSET);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(1000), NOTSET);
 
 		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 		driverViewPageAction.verifyDisplaySwitchIndicationsButtonIsVisible(EMPTY, NOTSET);
