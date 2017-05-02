@@ -37,6 +37,28 @@ public class OLMapUtility {
 		Gray
 	}
 
+	private static final String GET_RGB_PIXEL_COUNT_FUNCTION_JS = "function getRGBPixelCount(imgData){"
+			+ "var len=imgData.data.length;var rPixelCount=0;var gPixelCount=0;var bPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
+			+ "if(imgData.data[i+1]==255){gPixelCount++;};if(imgData.data[i+2]==255){bPixelCount++;};};return[rPixelCount,gPixelCount,bPixelCount];};";
+
+	private static final String ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_JS = "function areRedPixelsGreaterThanGreen(imgData,delta){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(rPixelCount>(gPixelCount+delta));};";
+
+	private static final String ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_JS = "function areGreenPixelsGreaterThanRed(imgData,delta){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(gPixelCount>(rPixelCount+delta));};";
+
+	private static final String ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_JS = "function areRGBPixelCountsLesserThanValue(imgData,value){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(rPixelCount<value)&&(gPixelCount<value)&&(bPixelCount<value);};";
+
+	private static final String ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_CALL = "%s;return areRedPixelsGreaterThanGreen(%s, %d);";
+
+	private static final String ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_CALL = "%s;return areGreenPixelsGreaterThanRed(%s, %d);";
+
+	private static final String ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_CALL = "%s;return areRGBPixelCountsLesserThanValue(%s, %d);";
+
 	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS = "function isRedArcShownOnButton(imgData){var len=imgData.data.length;"
 			+ "var rPixelCount=0;var gPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
 			+ "if(imgData.data[i+1]==255){gPixelCount++;}};console.log(rPixelCount);console.log(gPixelCount);"
@@ -719,6 +741,48 @@ public class OLMapUtility {
 		String jsScript = IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS + String.format(IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_CALL, imgDataScript, imgDataVarName);
 		Object redArcShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
 		if (redArcShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether green pixels shown on a button are greater than red pixels by atleast the specified delta.
+	 * Returns true if green pixels count is greater.
+	 */
+	public boolean areGreenPixelsGreaterThanRedOnButton(String imgDataScript, String imgDataVarName, Integer delta) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_JS +
+				String.format(ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_CALL, imgDataScript, imgDataVarName, delta);
+		Object gPxGreater = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (gPxGreater.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether red pixels shown on a button are greater than green pixels by atleast the specified delta.
+	 * Returns true if red pixels count is greater.
+	 */
+	public boolean areRedPixelsGreaterThanGreenOnButton(String imgDataScript, String imgDataVarName, Integer delta) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_JS +
+				String.format(ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_CALL, imgDataScript, imgDataVarName, delta);
+		Object rPxGreater = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (rPxGreater.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether RGB pixel counts are lesser than the specified value.
+	 * Returns true if RGB pixel count is lesser.
+	 */
+	public boolean areRGBPixelCountsLesserThanValue(String imgDataScript, String imgDataVarName, Integer value) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_JS +
+				String.format(ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_CALL, imgDataScript, imgDataVarName, value);
+		Object pxCountLesser = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (pxCountLesser.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;

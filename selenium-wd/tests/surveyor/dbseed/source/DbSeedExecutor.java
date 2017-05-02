@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,8 @@ public class DbSeedExecutor {
 	private static final String GPSRAW_PREFIX = "GPSRaw-";
 	private static final String ANEMOMETERRAW_PREFIX = "AnemometerRaw-";
 	private static DbSeedBuilderCache surveySeedBuilderCache;
+
+	private static Map<String, String> customerNameIdMap = Collections.synchronizedMap(new HashMap<String, String>());
 
 	public static final String ASSET_DAT_FILE = "Asset.BA.dat";
 	public static final String BOUNDARY_DAT_FILE = "Boundary.BA.dat";
@@ -360,7 +364,17 @@ public class DbSeedExecutor {
 		return rowCount;
 	}
 
+	private static boolean isSeedCustomer(String customerId) {
+		String[] seedCustomerNames = {CUSTOMER_PICARRO, CUSTOMER_SQACUS, CUSTOMER_PGE};
+		for (String custName : seedCustomerNames) {
+			String custId = Customer.getCustomer(custName).getId();
+			if (!customerNameIdMap.containsKey(custId)) {
+				customerNameIdMap.put(custId, custName);
+			}
+		}
 
+		return customerNameIdMap.containsKey(customerId);
+	}
 
 	/* Methods for pushing new refreshed GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
 
@@ -464,11 +478,14 @@ public class DbSeedExecutor {
 			customerId = customer.getId();
 		}
 
+		boolean isSeedCustomer = isSeedCustomer(customerId);
+
 		Connection connection = null;
 		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache();
 		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
 		CustomerMaterialTypeDbSeedBuilder customerMaterialTypeDbSeedBuilder = null;
 		BoundaryDbSeedBuilder boundaryDbSeedBuilder = null;
+		AssetDbSeedBuilder assetDbSeedBuilder = null;
 
 		try
         {
@@ -487,9 +504,18 @@ public class DbSeedExecutor {
 			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
-			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
+			DbSeed assetDbSeed = null;
+			int expectedAssetCount = 0;   // 0 - to ignore pushing assets from obsolete seed data for seed customer.
+			if (!isSeedCustomer) {
+				// For new customer - build all Assets and Boundaries
+				assetDbSeedBuilder = new AssetDbSeedBuilder();
+				assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
+				assetDbSeed = assetDbSeedBuilder.build(customerId);
+				boundaryDbSeedBuilder.setSeedFilePath(BoundaryDbSeedBuilder.SEED_DATA_FOLDER, BoundaryDbSeedBuilder.SEED_FILE_NAME_NEW_CUSTOMER);
+				expectedAssetCount = assetDbSeed.getInsertStatements().size();
+			}
 
-			int expectedAssetCount = 0;   // 0 - to ignore pushing assets from obsolete seed data.
+			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
 			int expectedBoundaryCount = boundaryDbSeed.getInsertStatements().size();
 
 			// check if GIS seed is present in database for this customer.
@@ -528,6 +554,11 @@ public class DbSeedExecutor {
 			}
 
 			executeSeed(connection, boundaryDbSeed);
+
+			if (!isSeedCustomer) {
+				// For new customer - push assets.
+				executeSeed(connection, assetDbSeed);
+			}
 
 			connection.commit();
 
