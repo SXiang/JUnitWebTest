@@ -3,6 +3,8 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,6 +20,7 @@ import common.source.TestSetup;
 import common.source.HostSimInstructions.Action;
 import common.source.HostSimInstructions.Measurement;
 import common.source.HostSimInstructions.Selector;
+import common.source.OLMapEntities.Indication;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
@@ -234,15 +237,25 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
-		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
-		// Stop simulator and PSA.
+		// stop simulator and PSA.
 		Log.info("Stopping Analyzer...");
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
+		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+
+		if (testCaseId.equalsIgnoreCase("TC2413")) {
+			// confirm indication was shown in Driver view.
+			assertTrue(indicationsOnDriverView.size() > 0);
+		}
 	}
 
 	/**
@@ -260,25 +273,25 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
 				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
 				.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 				.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
 				.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
 				.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2412_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
 			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
 			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "1", "0.01", "insert_peak_ampl_5_5_sigma_1_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
 		}
 
-		return String.join(":", measInstructions.createFile());
+		return String.join(",", measInstructions.createFile());
 	}
 }
