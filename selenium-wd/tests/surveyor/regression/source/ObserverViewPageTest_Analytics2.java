@@ -175,7 +175,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("3000", NOTSET);
+		testEnvironmentAction.idleForSeconds("1500", NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifySurveyAmplitudes(surMinAmp, NOTSET));
 
 		/* Step 4: stopAnalyzerSurvey */
@@ -301,7 +301,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("3000", NOTSET);
+		testEnvironmentAction.idleForSeconds("1500", NOTSET);
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
 			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isFeatureInfoDialogShown());
 			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isFieldNotesDialogShown());
