@@ -124,20 +124,6 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 //        assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 	
-	
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC624, location = ComplianceReportDataProvider.class)
-	public void TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-	}
-	
 	/*
 	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
 	 * Description: Report Mode column on Compliance Reports (Report List) page
@@ -157,22 +143,67 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 					.get(count).equals(expectedReportHeader.get(count)));
 		}
 	}
-	
+
 	/*
-	 * * Test Case ID: TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage
-	 * Test Description: Report Mode column on Compliance Reports (Report List) page
+	 * * Test Case ID:
+	 * TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
 	 * shows correct modes
 	 */
 	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2341, location = ComplianceReportDataProvider.class)
-	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage(String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3, Integer reportDataRowID4) throws Exception {
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2341, location = AnalyticReportDataProvider.class)
+	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1,
+			Integer reportDataRowID2, Integer reportDataRowID3,
+			Integer reportDataRowID4) throws Exception {
 		Log.info("\nTestcase - TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage\n");
 
-		String reportTitle = "";
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		complianceReportsPage.open();
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID1));
 
-		String reportMode = complianceReportsPage.getReportModeForProvidedReportTitle(reportTitle, PICDFADMIN);
+		String reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(complianceReportsPageAction
+				.isReportModeAnalytics(reportMode));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID2));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID2));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(complianceReportsPageAction.isReportModeStandard(reportMode));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID3));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID3));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(complianceReportsPageAction
+				.isReportModeRapidResponse(reportMode));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID4));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID4));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(complianceReportsPageAction.isReportModeManual(reportMode));
 	}
 }

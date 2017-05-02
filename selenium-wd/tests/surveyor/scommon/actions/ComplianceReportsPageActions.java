@@ -13,7 +13,6 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
-
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
@@ -618,5 +617,42 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
 	private boolean verifyComplianceReportMetadataFiles(ReportsCommonPage reportsPage, String downloadPath, String reportTitle) {
 		return FunctionUtil.wrapException(reportsPage, r -> reportsPage.verifyIsotopicMetaDataFile(downloadPath, reportTitle));
+	}
+	
+	public String getReportModeForSpecifiedReportTitle(String reportTitle,
+			String reportCreatedBy) {
+		String reportMode = "";
+		reportMode = this.getComplianceReportsPage()
+				.getReportModeForProvidedReportTitle(reportTitle,
+						reportCreatedBy);
+		return reportMode;
+	}
+
+	public boolean isReportModeAnalytics(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Analytics"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeStandard(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Standard"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeRapidResponse(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Rapid Response"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeManual(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Manual"))
+			return true;
+		else
+			return false;
 	}
 }

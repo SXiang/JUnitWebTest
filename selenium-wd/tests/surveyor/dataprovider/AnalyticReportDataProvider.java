@@ -54,7 +54,7 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAnalyticReports_TC2341() {
 		return new Object[][] {
-			{ "TC2341" /*TestCaseID*/, 4 /*userDataRowID*/,  213 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2341" /*TestCaseID*/, 4 /*userDataRowID*/,  213 /*reportDataRowID1*/, 214 /*reportDataRowID2*/, 215 /*reportDataRowID3*/, 216 /*reportDataRowID4*/}
 		};
 	}
 }

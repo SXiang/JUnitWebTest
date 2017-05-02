@@ -2893,9 +2893,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public String getReportModeForProvidedReportTitle(String reportTitle,
 			String reportCreatedBy) {
 		String reportMode = "";
-		searchReport(reportTitle, reportCreatedBy);
 		reportMode = this.reportMode.getText().trim();
-		Log.info(reportMode);
 		return reportMode;
 	}
 
