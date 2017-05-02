@@ -28,6 +28,10 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_SURVEY_STANDARD1_TAG = "stnd-pic";
 	protected static final String TEST_SURVEY_STANDARD1_TYPE = "Standard";
 	protected static final String TEST_SURVEY_STANDARD1_USERNAME = "Administrator";
+	protected static final String TEST_SURVEY_ANALYTICS1_ID = "acc61f00-87f7-31f0-8906-39de52bc5ec5";
+	protected static final String TEST_SURVEY_ANALYTICS1_TAG = "AnalyticsTagA";
+	protected static final String TEST_SURVEY_ANALYTICS1_TYPE = "Analytics";
+	protected static final String TEST_SURVEY_ANALYTICS1_USERNAME = "picdr@picarro.com";
 	protected static final String TEST_SURVEY_ASSESSMENT1_ID = "028f8fb7-8ba3-a44b-f778-39d626cd322b";
 	protected static final String TEST_SURVEY_ASSESSMENT1_TAG = "assessment";
 	protected static final String TEST_SURVEY_ASSESSMENT1_TYPE = "Assessment";
@@ -49,7 +53,7 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_SURVEY_OPERATOR1_TAG = "op-pic";
 	protected static final String TEST_SURVEY_OPERATOR1_TYPE = "Operator";
 	protected static final String TEST_SURVEY_OPERATOR1_USERNAME = "Administrator";
-	
+
 	// Ethane specific constants.
 	protected static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
 	protected static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
@@ -61,15 +65,15 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
-	
+
 	private static ThreadLocal<DriverViewPageActions> driverViewPageAction = new ThreadLocal<DriverViewPageActions>();
 	private static ThreadLocal<SurveyViewPageActions> surveyViewPageAction = new ThreadLocal<SurveyViewPageActions>();
 	private static ThreadLocal<SurveyViewPage> surveyViewPage = new ThreadLocal<SurveyViewPage>();
-	
+
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
 		initializeTestObjects();
-		
+
 		// Initialization needed at class level for automation reports.
 		initializeBasePageActions();
 	}
@@ -78,9 +82,9 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	public void beforeTestMethod() {
 		try {
 			initializeTestObjects();
-			
+
 			initializeBasePageActions();
-			
+
 			setDriverViewPageAction(new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup()));
 			setSurveyViewPageAction(new SurveyViewPageActions(getDriver(), getBaseURL(),getTestSetup()));
 
@@ -91,7 +95,7 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	protected static DriverViewPageActions getDriverViewPageAction() {
@@ -116,5 +120,5 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
 	private static void setSurveyViewPage(SurveyViewPage surveyViewPg) {
 		surveyViewPage.set(surveyViewPg);
-	}	
+	}
 }

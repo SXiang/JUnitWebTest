@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -119,6 +120,34 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		// Stop current simulator.
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+    /**
+	 *	Test Case ID: TC2365
+	 *	Test Case Description: Survey View - Only peaks above Survey Min Amplitude appear in Analytics Survey mode
+	 *	Peaks in Analytics Survey mode should all be at or above the Survey Min Amplitude level set in the Locations page in the "Survey Mode: Analytics" section
+	 *	SCRIPT:
+	 *	- Log into UI as Picarro Admin
+	 *	- Navigate to the Locations page
+	 *	- Select a customer location and click Edit
+	 *	- Set the Survey Min Amplitude level to a certain level (ex. 0.4)
+	 *	- Click OK
+	 *	- Have driver start an Analytics Survey
+	 *	- Have driver drive to an area where indications are reliably found
+	 *	- Have driver stop survey
+	 *	- When survey has uploaded, click on the View Survey button
+	 *	RESULT:
+	 *	- Only indications above Survey Min Amplitude level will appear in Survey View
+	 */
+	@Ignore
+	public void TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurvey() throws Exception {
+		Log.info("\nRunning TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurvey ...");
+
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		// NOTE: This test case requires host simulator update to generate Peaks of desired amplitude.
+		// Test case has been included in US4307 to automate along with updated HostSim integration in automation framework.
 	}
 
 	/**

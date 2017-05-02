@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
 
 import org.testng.Assert;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 /**
  * Regex Matching Utility class.
  *
@@ -44,6 +47,12 @@ public class RegexUtility {
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
+
+	public static final String FEATURE_INFO_DISPOSITION_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", "") + "\\s+:.+)+";
+	public static final String FEATURE_INFO_CLASSIFICATION_CONF_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", "") + "\\s+:.+)+";
+	public static final String FEATURE_INFO_METH_CONC_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", "") + "\\s+:.+)+";
+	public static final String FEATURE_INFO_ETH_RATIO_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", "") + "\\s+:.+)+";
+	public static final String FEATURE_INFO_AMPLITUDE_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", "") + "\\s+:.+)+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
@@ -245,9 +254,14 @@ public class RegexUtility {
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 	}
 
+	public static String replaceNonAsciiChars(String inputString) {
+		return inputString.replaceAll("[^\\x20-\\x7e]", "");
+	}
+
 	public static String getValidFileName(String inputString){
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_NOT_METHODNAME_CHARACTERS, "");
 	}
+
 	/**
 	 * Compare strings by equals or matches
 	 * @param line
@@ -273,6 +287,8 @@ public class RegexUtility {
 		}
 		return isMatch;
 	}
+
+
 
 	public static void main(String[] args) throws IOException {
 		Log.info("Running test - testAppVersion_Success() ...");
