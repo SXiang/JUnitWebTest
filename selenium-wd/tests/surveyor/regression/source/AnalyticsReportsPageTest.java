@@ -1,33 +1,32 @@
 package surveyor.regression.source;
 
-import java.util.Arrays;
-import java.util.List;
-
-import common.source.Log;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.BaseReportsPageActionTest;
-import surveyor.scommon.source.ComplianceReportsPage;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import common.source.Log;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
@@ -126,6 +125,19 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	}
 	
 	
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC624, location = ComplianceReportDataProvider.class)
+	public void TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC624_ComplianceReportRedTraceIsotopicCaptureAnalysis ...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+	}
+	
 	/*
 	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
 	 * Description: Report Mode column on Compliance Reports (Report List) page
@@ -140,32 +152,27 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		complianceReportsPage.open();
-
-		for (int count = 1; count <= expectedReportHeader.size(); count++) {
+		for (int count = 0; count < expectedReportHeader.size(); count++) {
 			assertTrue(complianceReportsPage.getComplianceListPageHeader()
-					.equals(expectedReportHeader.get(count)));
+					.get(count).equals(expectedReportHeader.get(count)));
 		}
-		homePage.logout();
 	}
 	
 	/*
-	 * * Test Case ID:
-	 * TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage Test
-	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 * * Test Case ID: TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage
+	 * Test Description: Report Mode column on Compliance Reports (Report List) page
 	 * shows correct modes
 	 */
 	@Test
-	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage() throws Exception {
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2341, location = ComplianceReportDataProvider.class)
+	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage(String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3, Integer reportDataRowID4) throws Exception {
 		Log.info("\nTestcase - TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage\n");
 
+		String reportTitle = "";
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 		complianceReportsPage.open();
 
-//		for (int count = 1; count <= expectedReportHeader.size(); count++) {
-//			assertTrue(complianceReportsPage.getComplianceListPageHeader()
-//					.equals(expectedReportHeader.get(count)));
-//		}
-		homePage.logout();
+		String reportMode = complianceReportsPage.getReportModeForProvidedReportTitle(reportTitle, PICDFADMIN);
 	}
 }

@@ -2874,28 +2874,56 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return compliancereportsList;
 	}
 	
-	public List<String> getComplianceListPageHeader(){
+	public List<String> getComplianceListPageHeader() {
 		List<String> complianceHeaderList = new ArrayList<String>();
 		String reportHeaderxPath;
 		WebElement reportCell;
-		
-		List<WebElement> cols = driver.findElements(By.xpath(this.headerListComplianceReport));
-		
+
+		List<WebElement> cols = driver.findElements(By
+				.xpath(this.headerListComplianceReport));
 		for (int colNum = 1; colNum <= cols.size(); colNum++) {
-			reportHeaderxPath = this.headerListComplianceReport + "["+colNum+"]";
+			reportHeaderxPath = this.headerListComplianceReport + "[" + colNum
+					+ "]";
 			reportCell = driver.findElement(By.xpath(reportHeaderxPath));
-			Log.info(reportCell.getText().trim());
 			complianceHeaderList.add(reportCell.getText().trim());
-			Log.info(complianceHeaderList.get(colNum));
 		}
 		return complianceHeaderList;
 	}
 	
-	public String getReportModeForProvidedReportTitle(String reportTitle, String reportCreatedBy) {
+	public String getReportModeForProvidedReportTitle(String reportTitle,
+			String reportCreatedBy) {
 		String reportMode = "";
 		searchReport(reportTitle, reportCreatedBy);
 		reportMode = this.reportMode.getText().trim();
 		Log.info(reportMode);
 		return reportMode;
+	}
+
+	public boolean isReportModeAnalytics(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Analytics"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeStandard(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Standard"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeRapidResponse(String reportMode) {
+		if (reportMode.equalsIgnoreCase("RapidResponse"))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isReportModeManual(String reportMode) {
+		if (reportMode.equalsIgnoreCase("Manual"))
+			return true;
+		else
+			return false;
 	}
 }

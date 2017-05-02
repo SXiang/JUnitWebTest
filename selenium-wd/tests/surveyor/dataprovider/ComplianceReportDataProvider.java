@@ -201,6 +201,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1960 = "dataProviderPageActionsComplianceReports_TC1960";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2017 = "dataProviderPageActionsComplianceReports_TC2017";
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2018 = "dataProviderPageActionsComplianceReports_TC2018";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2341 = "dataProviderPageActionsComplianceReports_TC2341";
 
 	/* Asset box */
 	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC927 = "dataProviderPageActionsComplianceReports_TC927";
