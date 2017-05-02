@@ -1,15 +1,9 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 
-import common.source.ExceptionUtility;
 import common.source.Log;
 
 import org.junit.BeforeClass;
@@ -29,9 +23,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.dbseed.source.DbSeedExecutor;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest9 extends BaseReportsPageActionTest {
