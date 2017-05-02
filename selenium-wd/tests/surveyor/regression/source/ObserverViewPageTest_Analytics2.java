@@ -106,6 +106,9 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 			addTestUser(customerName, userName, userPassword, CUSUSERROLEDR, locationName);
 			pushGisData(testAccount.get("customerId"));
 		}
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
 		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
 	}
 
