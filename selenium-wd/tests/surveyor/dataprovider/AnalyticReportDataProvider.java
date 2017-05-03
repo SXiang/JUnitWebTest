@@ -13,7 +13,6 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST002 = "dataProviderAnalyticReports_UnitTest002";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2338 = "dataProviderAnalyticReports_TC2338";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2339 = "dataProviderAnalyticReports_TC2339";
-	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2340 = "dataProviderAnalyticReports_TC2340";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2341 = "dataProviderAnalyticReports_TC2341";
 	public AnalyticReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -56,13 +55,6 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderAnalyticReports_TC2341() {
 		return new Object[][] {
 			{ "TC2341" /*TestCaseID*/, 4 /*userDataRowID*/,  213 /*reportDataRowID1*/, 214 /*reportDataRowID2*/, 215 /*reportDataRowID3*/, 216 /*reportDataRowID4*/}
-		};
-	}
-	
-	@DataProvider
-	public static Object[][] dataProviderAnalyticReports_TC2340() {
-		return new Object[][] {
-			{ "TC2340" /*TestCaseID*/, 4 /*userDataRowID*/,  217 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }

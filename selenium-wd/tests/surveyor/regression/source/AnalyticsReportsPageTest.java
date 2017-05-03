@@ -112,19 +112,15 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * Description: Report Mode column on Compliance Reports (Report List) page
 	 */
 	@Test
-	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2340, location = AnalyticReportDataProvider.class)
-	public void TC2340_ReportModeOnComplianceReportListPage(String testCaseID,
-			Integer userDataRowID, Integer reportDataRowID1,
-			Integer reportDataRowID2) throws Exception {
+	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
 		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
 		List<String> expectedReportHeader = Arrays.asList("Report Title",
 				"Report Name", "Report Mode", "Created By", "Date", "Action",
 				"Upload Status");
 
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID,
-				getReportRowID(reportDataRowID1));
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
 		for (int count = 0; count < expectedReportHeader.size(); count++) {
 			assertTrue(complianceReportsPageAction
 					.getComplianceListPageHeader().get(count)
