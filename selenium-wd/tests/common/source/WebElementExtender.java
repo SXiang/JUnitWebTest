@@ -94,9 +94,9 @@ public class WebElementExtender {
 		return true;
 	}
 
-	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
+	public static Object executeScript(WebElement element, WebDriver driver, String jsScript) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript(jsScript, element);
+		return js.executeScript(jsScript, element);
 	}
 
 	public static boolean findElementBy(WebDriver driver, By by) {
@@ -131,6 +131,11 @@ public class WebElementExtender {
 
 		return element;
 	}
+
+	public static WebElement findParentElement(WebDriver driver, WebElement element) {
+		return (WebElement)executeScript(element, driver, "return arguments[0].parentNode;");
+	}
+
 
 	public static String getInnerHtml(WebElement element) {
 	   return element.getAttribute("innerHTML");
