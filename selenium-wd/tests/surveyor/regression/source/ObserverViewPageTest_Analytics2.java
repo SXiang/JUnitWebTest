@@ -216,7 +216,8 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		
 		/* Step 3: ObserverView and verifications */
 		loginPageActionList.get(0).getLoginPage().open();
-
+		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+		
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -286,25 +287,25 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	 */
 	@Test
 	public void TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys() throws Exception{
-		Log.info("\nTestcase - TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys\n");
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("1500", NOTSET);
+//		Log.info("\nTestcase - TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys\n");
+//		
+//		getLoginPage().open();
+//		getLoginPage().loginNormalAs(userName, userPassword);
+//
+//		/* Step 1. setup analyzer configuration */
+//		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
+//		
+//		/* Step 2: startAnalyzerSurvey */
+//		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
+//		
+//		/* Step 3: ObserverView and verifications */
+//		loginPageActionList.get(0).open(EMPTY, NOTSET);
+//		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
+//
+//		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
+//		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+//		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+//		testEnvironmentAction.idleForSeconds("3000", NOTSET);
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
 			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isFeatureInfoDialogShown());
 			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isFieldNotesDialogShown());
