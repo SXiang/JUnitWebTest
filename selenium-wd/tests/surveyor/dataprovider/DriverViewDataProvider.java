@@ -13,6 +13,7 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	public static final String DRIVERVIEW_START_STOP_SURVEY_METH_LONGDB3_PROVIDER = "dataProviderStartStopSurveyMethLongDB3";
 	public static final String DRIVERVIEW_START_STOP_SURVEY_ETH_PROVIDER = "dataProviderStartStopSurveyEth";
 	public static final String DRIVERVIEW_COMPARE_INDICATIONS_DRIVERVIEW_SURVEYVIEW_PROVIDER = "dataProviderCompareIndicationsDriverViewSurveyView";
+	public static final String DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417 = "dataProviderRawDataUpdates_TC2411_2412_2413_2414_2417";
 
 	public DriverViewDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -21,6 +22,49 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 	@Override
 	public void run(RunNotifier notifier) {
 		super.run(notifier);
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderRawDataUpdates_TC2411_2412_2413_2414_2417() throws Exception {
+
+		// ethane - bad iGPS (GpsFit=6, PeripheralStatus=98304), GPSLat/Long shifted by 0.5
+		final int userDataRowID1 = 16;
+		final int analyzerDb3DataRowID1 = 62;
+		final int surveyRuntimeInSeconds1 = 60;
+		final int surveyDataRowID1 = 61;
+
+		// ethane - generate Peak with NaN Wind
+		final int userDataRowID2 = 16;
+		final int analyzerDb3DataRowID2 = 63;
+		final int surveyRuntimeInSeconds2 = 120;
+		final int surveyDataRowID2 = 62;
+
+		// ethane - generate Peak with NaN EthaneRatio
+		final int userDataRowID3 = 16;
+		final int analyzerDb3DataRowID3 = 64;
+		final int surveyRuntimeInSeconds3 = 60;
+		final int surveyDataRowID3 = 63;
+
+		// ethane - generate Peak with bad GPS (GpsFit=0, GpsLat/Long=NaN)
+		final int userDataRowID4 = 16;
+		final int analyzerDb3DataRowID4 = 65;
+		final int surveyRuntimeInSeconds4 = 60;
+		final int surveyDataRowID4 = 64;
+
+		// ethane - occasional missing CH4 and C2H6 values
+		final int userDataRowID5 = 16;
+		final int analyzerDb3DataRowID5 = 64;
+		final int surveyRuntimeInSeconds5 = 60;
+		final int surveyDataRowID5 = 63;
+
+		return new Object[][] {
+			{ "TC2411", userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
+			{ "TC2412", userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
+			{ "TC2413", userDataRowID3, analyzerDb3DataRowID3, surveyRuntimeInSeconds3, surveyDataRowID3 },
+			// TODO: Turned OFF until issue with replay stopping when setting GPS_LAT & LONG/CH4, C2H6 occasionally to NaN
+			//{ "TC2414", userDataRowID4, analyzerDb3DataRowID4, surveyRuntimeInSeconds4, surveyDataRowID4 },
+			//{ "TC2417", userDataRowID5, analyzerDb3DataRowID5, surveyRuntimeInSeconds5, surveyDataRowID5 },
+		};
 	}
 
 	@DataProvider
