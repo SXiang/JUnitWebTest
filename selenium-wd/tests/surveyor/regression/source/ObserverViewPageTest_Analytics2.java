@@ -285,7 +285,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	 *		The popup should not have a button for adding Field Notes
 	 *	- The Display menu does not have an option for Field Notes
 	 */
-	@Test
+	@Test /* DE2934 to enhance verifications of this test */
 	public void TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys() throws Exception{
 		Log.info("\nTestcase - TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys\n");
 		
