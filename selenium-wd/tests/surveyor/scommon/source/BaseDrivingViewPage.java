@@ -53,15 +53,6 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	@FindBy(id = "canvas_rose_arrow")
 	private WebElement windRoseArrow;
 
-	@FindBy(id = "annotation_modal")
-	private WebElement fieldNotesModalDialog;
-
-	@FindBy(id = "featureinfo_modal")
-	protected WebElement featureInfoModalDialog;
-
-	@FindBy(id = "feature_info")
-	protected WebElement featureInfoText;
-
 	public BaseDrivingViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
 	}
@@ -140,76 +131,6 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 		return driver.findElement(By.id("headerInfoStatus")).getText();
 	}
 
-	public boolean isFieldNotesDialogShown() {
-		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
-	}
-
-	public boolean isFeatureInfoDialogShown() {
-		return !this.featureInfoModalDialog.getAttribute("class").contains("ng-hide");
-	}
-	
-	public String getFeatureInfoDialogText() {
-		return this.featureInfoText.getAttribute("value");
-	}
-
-	/**
-	 * Verify that field notes dialog is shown on the map.
-	 */
-	public boolean verifyFieldNotesDialogIsShown() {
-		return isFieldNotesDialogShown();
-	}
-
-	/**
-	 * Verify that field notes dialog is NOT shown on the map.
-	 */
-	public boolean verifyFieldNotesDialogIsNotShown() {
-		return !isFieldNotesDialogShown();
-	}
-	
-	/**
-	 * Waits for the Field notes dialog to be shown.
-	 */
-	public void waitForFieldNotesDialogToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return isFieldNotesDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Field notes dialog to be closed.
-	 */
-	public void waitForFieldNotesDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return !isFieldNotesDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Feature info dialog to be shown.
-	 */
-	public void waitForFeatureInfoDialogToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return isFeatureInfoDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Feature info dialog to be closed.
-	 */
-	public void waitForFeatureInfoDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return !isFeatureInfoDialogShown();
-			}
-		});
-	}
-	
 	public boolean isWindRoseShown() {
 		boolean isShown = true;
 		if ((this.windRose.getAttribute("class").contains("ng-hide")) && (this.windRoseArrow.getAttribute("class").contains("ng-hide"))) {

@@ -3,8 +3,11 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.collections.iterators.EntrySetMapIterator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.relevantcodes.extentreports.LogStatus;
 
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility;
 import common.source.RegexUtility;
@@ -30,9 +34,10 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.PageActionsFactory;
+import surveyor.scommon.entities.FeatureInfoEntity;
+import surveyor.scommon.source.BaseMapViewPage.FeatureInfo;
 
 public class BaseMapViewPage extends SurveyorBasePage {
-
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
@@ -241,17 +246,43 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "analytics_mode_warning")
 	protected WebElement analyticsModeDialog;
 
-	// Peak info popup values are updated on each peakInfo click. Seek these elements newly when get*() method is called.
-	private WebElement peakInfoEpoch;
-	private WebElement peakInfoLatitude;
-	private WebElement peakInfoLongitude;
-	private WebElement peakInfoText;
-	private WebElement peakInfoCoordinate;
-	private WebElement peakInfoOverlayText;
-	private WebElement peakInfoPopupDiv;
+	// Feature info popup values are updated on each featureInfo click. Seek these elements newly when get*() method is called.
+	private WebElement featureInfoEpoch;
+	private WebElement featureInfoLatitude;
+	private WebElement featureInfoLongitude;
+	private WebElement featureInfoCoordinate;
+	private WebElement featureInfoOverlayText;
+	private WebElement featureInfoPopupDiv;
+	private WebElement featureInfoAnnotationText;
+
+	@FindBy(id = "feature_info")
+	protected WebElement featureInfoText;
+
+	@FindBy(id = "btn_addupdate_annotation")
+	protected WebElement addUpdateNoteButton;
 
     // Survey ID used for opening the specified survey page.
     private String surveyId;
+
+	public static class FeatureInfo {
+		public enum Field {
+			Disposition ("Disposition"),
+			ClassificationConfidence ("Classification Confidence"),
+			MethaneConcentration ("Methane Concentration"),
+			EthaneRatio ("Ethane Ratio"),
+			Amplitude ("Amplitude");
+
+			private final String name;
+
+			Field(String nm) {
+				name = nm;
+			}
+
+			public String toString() {
+				return this.name;
+			}
+		}
+	}
 
 	public BaseMapViewPage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		super(driver, testSetup, strBaseURL, strPageURL);
@@ -389,6 +420,10 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return this;
 	}
 
+	public boolean isAddUpdateNoteButtonVisible() {
+		return WebElementExtender.isElementPresentAndDisplayed(addUpdateNoteButton);
+	}
+
 	/**
 	 * Verifies whether the Analytics Mode dialog is shown.
 	 */
@@ -442,40 +477,105 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isShutdownAnalyzerButtonVisible() {
 		return !this.ShutdownAnalyzerButton.getAttribute("class").contains("ng-hide");
 	}
-	public WebElement getPeakInfoPopupTextElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoOverlayText = this.driver.findElement(By.id("peak_info"));
-		return peakInfoOverlayText;
+
+	public String getFeatureInfoDialogText() {
+		return this.featureInfoText.getAttribute("value");
 	}
 
-	public WebElement getPeakInfoCoordinateElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoCoordinate = this.driver.findElement(By.id("annotation-coordinate"));
-		return peakInfoCoordinate;
+	private String getRegexForFeatureInfoField(FeatureInfo.Field field) {
+		String regex = null;
+		if (field == FeatureInfo.Field.Amplitude) {
+			regex = RegexUtility.FEATURE_INFO_AMPLITUDE_REGEX;
+		} else if (field == FeatureInfo.Field.ClassificationConfidence) {
+			regex = RegexUtility.FEATURE_INFO_CLASSIFICATION_CONF_REGEX;
+		} else if (field == FeatureInfo.Field.Disposition) {
+			regex = RegexUtility.FEATURE_INFO_DISPOSITION_REGEX;
+		} else if (field == FeatureInfo.Field.EthaneRatio) {
+			regex = RegexUtility.FEATURE_INFO_ETH_RATIO_REGEX;
+		} else if (field == FeatureInfo.Field.MethaneConcentration) {
+			regex = RegexUtility.FEATURE_INFO_METH_CONC_REGEX;
+		}
+
+		return regex;
 	}
 
-	public WebElement getPeakInfoTextElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoText = this.driver.findElement(By.id("annotation-text"));
-		return peakInfoText;
+	private void setFeatureInfoEntityProperty(FeatureInfoEntity entity, FeatureInfo.Field field, String value) {
+		if (field == FeatureInfo.Field.Amplitude) {
+			entity.setAmplitude(value);
+		} else if (field == FeatureInfo.Field.ClassificationConfidence) {
+			entity.setClassificationConfidence(value);
+		} else if (field == FeatureInfo.Field.Disposition) {
+			entity.setDisposition(value);
+		} else if (field == FeatureInfo.Field.EthaneRatio) {
+			entity.setEthaneRatio(value);
+		} else if (field == FeatureInfo.Field.MethaneConcentration) {
+			entity.setMethaneConcentration(value);
+		}
 	}
 
-	public WebElement getPeakInfoLongitudeElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoLongitude = this.driver.findElement(By.id("annotation-longitude"));
-		return peakInfoLongitude;
+	public FeatureInfoEntity getFeatureInfoDialogTextAsObject(FeatureInfo.Field[] expectedFields) {
+		Log.method("getFeatureInfoDialogTextAsObject", LogHelper.arrayToString(expectedFields));
+		FeatureInfoEntity entity = null;
+		if (expectedFields != null) {
+			entity = new FeatureInfoEntity();
+			String featureInfoText = RegexUtility.replaceNonAsciiChars(getFeatureInfoDialogText());
+			for (int i = expectedFields.length-1; i >=0; i--) {
+				FeatureInfo.Field field = expectedFields[i];
+				String regexPattern = getRegexForFeatureInfoField(field);
+				if (RegexUtility.matchesPattern(featureInfoText, regexPattern)) {
+					List<String> matchingGroups = RegexUtility.getMatchingGroups(featureInfoText, regexPattern, true);
+					String matchedText = matchingGroups.get(matchingGroups.size()-1);
+					Log.info(String.format("Matched Text=[%s]. Pattern=[%s]; Text=[%s]", matchedText, regexPattern, featureInfoText));
+					setFeatureInfoEntityProperty(entity, field, matchedText);
+					featureInfoText = featureInfoText.replace(matchedText, "");
+				} else {
+					String failureMsg = String.format("FAILED match. Pattern=[%s]; Text=[%s]", regexPattern, featureInfoText);
+					Log.warn(failureMsg);
+				}
+			}
+		}
+
+		if (entity != null) {
+			Log.info(String.format("RETURN FeatureInfoEntity object -> %s", entity));
+		}
+
+		return entity;
 	}
 
-	public WebElement getPeakInfoLatitudeElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoLatitude = this.driver.findElement(By.id("annotation-latitude"));
-		return peakInfoLatitude;
+	public WebElement getFeatureInfoPopupTextElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoOverlayText = this.driver.findElement(By.id("peak_info"));
+		return featureInfoOverlayText;
 	}
 
-	public WebElement getPeakInfoEpochElement() {
-		// element value changes dynamically on peakInfo click. Seek new each time.
-		peakInfoEpoch = this.driver.findElement(By.id("annotation-epoch"));
-		return peakInfoEpoch;
+	public WebElement getFeatureInfoCoordinateElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoCoordinate = this.driver.findElement(By.id("annotation-coordinate"));
+		return featureInfoCoordinate;
+	}
+
+	public WebElement getFeatureInfoTextElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoAnnotationText = this.driver.findElement(By.id("annotation-text"));
+		return featureInfoAnnotationText;
+	}
+
+	public WebElement getFeatureInfoLongitudeElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoLongitude = this.driver.findElement(By.id("annotation-longitude"));
+		return featureInfoLongitude;
+	}
+
+	public WebElement getFeatureInfoLatitudeElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoLatitude = this.driver.findElement(By.id("annotation-latitude"));
+		return featureInfoLatitude;
+	}
+
+	public WebElement getFeatureInfoEpochElement() {
+		// element value changes dynamically on featureInfo click. Seek new each time.
+		featureInfoEpoch = this.driver.findElement(By.id("annotation-epoch"));
+		return featureInfoEpoch;
 	}
 
 	public WebElement getFieldNotesDialogCloseButton() {
@@ -1434,82 +1534,77 @@ public class BaseMapViewPage extends SurveyorBasePage {
     }
 
     /**
-	 * Verifies that the Disposition value in peak info popup equals the specified value.
+	 * Verifies that the Disposition value in feature info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
 	 */
-	public boolean verifyPeakInfoPopupDispositionEquals(String value) {
-		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_Disposition));
+	public boolean verifyFeatureInfoPopupDispositionEquals(String actualText, String expectedValue) {
+		return verifyFeatureInfoPopupKeyValue(actualText, expectedValue, Resources.getResource(ResourceKeys.Survey_Disposition));
 	}
 
 	/**
-	 * Verifies that the Classification Confidence value in peak info popup equals the specified value.
+	 * Verifies that the Classification Confidence value in feature info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
 	 */
-	public boolean verifyPeakInfoPopupClassificationConfidenceEquals(String value) {
-		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence));
+	public boolean verifyFeatureInfoPopupClassificationConfidenceEquals(String actualText, String expectedValue) {
+		return verifyFeatureInfoPopupKeyValue(actualText, expectedValue, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence));
 	}
 
 	/**
-	 * Verifies that the Methane Concentration value in peak info popup equals the specified value.
+	 * Verifies that the Methane Concentration value in feature info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
 	 */
-	public boolean verifyPeakInfoPopupMethaneConcEquals(String value) {
-		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_CH4));
+	public boolean verifyFeatureInfoPopupMethaneConcEquals(String actualText, String expectedValue) {
+		return verifyFeatureInfoPopupKeyValue(actualText, expectedValue, Resources.getResource(ResourceKeys.Survey_CH4));
 	}
 
 	/**
-	 * Verifies that the Ethane Ratio value in peak info popup equals the specified value.
+	 * Verifies that the Ethane Ratio value in feature info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
 	 */
-	public boolean verifyPeakInfoPopupEthaneRatioEquals(String value) {
-		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_EthaneRatio));
+	public boolean verifyFeatureInfoPopupEthaneRatioEquals(String actualText, String expectedValue) {
+		return verifyFeatureInfoPopupKeyValue(actualText, expectedValue, Resources.getResource(ResourceKeys.Survey_EthaneRatio));
 	}
 
 	/**
-	 * Verifies that the Amplitude value in peak info popup equals the specified value.
+	 * Verifies that the Amplitude value in feature info popup equals the specified value.
 	 * @param value - value to compare with.
 	 * @return
 	 */
-	public boolean verifyPeakInfoPopupAmplitudeEquals(String value) {
-		return verifyPeakInfoPopupKeyValue(value, Resources.getResource(ResourceKeys.Survey_amplitude));
+	public boolean verifyFeatureInfoPopupAmplitudeEquals(String actualText, String expectedValue) {
+		return verifyFeatureInfoPopupKeyValue(actualText, expectedValue, Resources.getResource(ResourceKeys.Survey_amplitude));
 	}
 
-	private boolean verifyPeakInfoPopupKeyValue(String value, String keyLabel) {
-		String popupText = getPeakInfoPopupTextElement().getText();
-		List<String> lines = RegexUtility.split(popupText, RegexUtility.NEWLINE_SPLIT_REGEX_PATTERN);
-		String keyValue = "";
-		for (String line : lines) {
-			if (line.startsWith(keyLabel)) {
-				keyValue = line.replace(keyLabel, "").trim();
-			}
-		}
-		return keyValue.equals(value);
+	private boolean verifyFeatureInfoPopupKeyValue(String actualText, String expectedValue, String keyLabel) {
+		String expectedText = String.format("%s %s", keyLabel, expectedValue);
+		return actualText.equals(expectedText);
 	}
 
 	/**
-	 * Wait for peak info popup to be shown.
+	 * Wait for feature info popup to be shown.
 	 */
-	public void waitForPeakInfoPopupToOpen() {
-		peakInfoPopupDiv = driver.findElement(By.id("peakinfo_modal"));
+	public void waitForFeatureInfoPopupToOpen() {
+		featureInfoPopupDiv = driver.findElement(By.id("featureinfo_modal"));
+		WebElement popupContainer = WebElementExtender.findParentElement(driver, featureInfoPopupDiv);
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return peakInfoPopupDiv.getAttribute("class").equalsIgnoreCase("balloon");
+				return WebElementExtender.isElementPresentAndDisplayed(popupContainer);
 			}
 		});
 	}
 
 	/**
-	 * Wait for peak info popup to be hidden.
+	 * Wait for feature info popup to be hidden.
 	 */
-	public void waitForPeakInfoPopupToClose() {
-		peakInfoPopupDiv = driver.findElement(By.id("peakinfo_modal"));
+	public void waitForFeatureInfoPopupToClose() {
+		featureInfoPopupDiv = driver.findElement(By.id("featureinfo_modal"));
+		WebElement popupContainer = WebElementExtender.findParentElement(driver, featureInfoPopupDiv);
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return peakInfoPopupDiv.getAttribute("class").equalsIgnoreCase("ng-hide");
+				return !WebElementExtender.isElementPresentAndDisplayed(popupContainer);
 			}
 		});
 	}

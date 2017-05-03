@@ -160,15 +160,15 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return retVal;
 	}
 
-	public boolean waitForPeakInfoPopupToOpen(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".waitForPeakInfoPopupToOpen", data, dataRowID);
-		getBaseMapViewPageObject().waitForPeakInfoPopupToOpen();
+	public boolean waitForFeatureInfoPopupToOpen(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForFeatureInfoPopupToOpen", data, dataRowID);
+		getBaseMapViewPageObject().waitForFeatureInfoPopupToOpen();
 		return true;
 	}
 
-	public boolean waitForPeakInfoPopupToClose(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".waitForPeakInfoPopupToClose", data, dataRowID);
-		getBaseMapViewPageObject().waitForPeakInfoPopupToClose();
+	public boolean waitForFeatureInfoPopupToClose(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForFeatureInfoPopupToClose", data, dataRowID);
+		getBaseMapViewPageObject().waitForFeatureInfoPopupToClose();
 		return true;
 	}
 
@@ -1292,6 +1292,28 @@ public class BaseMapViewPageActions extends BasePageActions {
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isFieldNoteShown(data);
+	}
+
+	/**
+	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsVisible", data, dataRowID);
+		return this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
+	}
+
+	/**
+	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible", data, dataRowID);
+		return !this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
 	}
 
 	/**
