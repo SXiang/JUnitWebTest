@@ -488,11 +488,12 @@ public class BaseTest {
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
-		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
+		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
+		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
 		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
 		
 		if(surveyTypes==null||surveyTypes.length==0){
-			surveyTypes = SurveyType.values();
+			surveyTypes = defaultTestSurveyType;
 		}
 
 		HashMap<String, String> testSurvey = new HashMap<String, String>();
@@ -515,7 +516,7 @@ public class BaseTest {
 		for(SurveyType st : surveyTypes){
 			int i=0;
 			while(i<surveyType.length){
-				if(st.toString().equals(surveyType[i])){
+				if(st.equals(surveyType[i])){
 					break;
 				}
 				i++;
@@ -538,18 +539,17 @@ public class BaseTest {
 			}
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
-				if(st.toString().equalsIgnoreCase(surveyType[j])){
+				if(st.equals(surveyType[j])){
 					surveyRowID = surveyRowIDs[j];
 					break;
 				}
 			}
-			
-			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
-			
+
 			/* Step 2: startAnalyzerSurvey */
 			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
 			/* Step 3: stopAnalyzerSurvey */
 			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
 		}
 
 		/* Step 4: stopAnalyzer */
