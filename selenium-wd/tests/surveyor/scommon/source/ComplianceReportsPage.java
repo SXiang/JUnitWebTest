@@ -2893,35 +2893,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public String getReportModeForProvidedReportTitle(String reportTitle,
 			String reportCreatedBy) {
 		String reportMode = "";
+		searchReport(reportTitle, reportCreatedBy);
 		reportMode = this.reportMode.getText().trim();
 		return reportMode;
-	}
-
-	public boolean isReportModeAnalytics(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Analytics"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeStandard(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Standard"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeRapidResponse(String reportMode) {
-		if (reportMode.equalsIgnoreCase("RapidResponse"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeManual(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Manual"))
-			return true;
-		else
-			return false;
 	}
 }

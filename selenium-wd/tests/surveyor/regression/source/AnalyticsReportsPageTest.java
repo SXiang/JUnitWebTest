@@ -11,18 +11,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
 
 import surveyor.dataprovider.AnalyticReportDataProvider;
-import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -33,9 +29,6 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-	private static LoginPage loginPage;
-	private static HomePage homePage;
-	private static ComplianceReportsPage complianceReportsPage;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -63,20 +56,10 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-		
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 		new HomePageActions(getDriver(), getBaseURL(), getTestSetup());
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
-		loginPage = pageObjectFactory.getLoginPage();
-		setLoginPage(loginPage);
-		PageFactory.initElements(getDriver(), loginPage);
-		HomePage homePage = pageObjectFactory.getHomePage();
-		setHomePage(homePage);
-		PageFactory.initElements(getDriver(), homePage);
-		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
-		PageFactory.initElements(getDriver(), complianceReportsPage);
 	}
 
 	/**
@@ -129,18 +112,23 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * Description: Report Mode column on Compliance Reports (Report List) page
 	 */
 	@Test
-	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2340, location = AnalyticReportDataProvider.class)
+	public void TC2340_ReportModeOnComplianceReportListPage(String testCaseID,
+			Integer userDataRowID, Integer reportDataRowID1,
+			Integer reportDataRowID2) throws Exception {
 		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
 		List<String> expectedReportHeader = Arrays.asList("Report Title",
 				"Report Name", "Report Mode", "Created By", "Date", "Action",
 				"Upload Status");
 
-		loginPage.open();
-		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		complianceReportsPage.open();
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID1));
 		for (int count = 0; count < expectedReportHeader.size(); count++) {
-			assertTrue(complianceReportsPage.getComplianceListPageHeader()
-					.get(count).equals(expectedReportHeader.get(count)));
+			assertTrue(complianceReportsPageAction
+					.getComplianceListPageHeader().get(count)
+					.equals(expectedReportHeader.get(count)));
 		}
 	}
 
@@ -169,8 +157,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
 						PICDFADMIN);
-		assertTrue(complianceReportsPageAction
-				.isReportModeAnalytics(reportMode));
+		assertTrue(reportMode.equalsIgnoreCase("Analytics"));
 
 		complianceReportsPageAction.open(testCaseID,
 				getReportRowID(reportDataRowID2));
@@ -181,7 +168,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
 						PICDFADMIN);
-		assertTrue(complianceReportsPageAction.isReportModeStandard(reportMode));
+		assertTrue(reportMode.equalsIgnoreCase("Standard"));
 
 		complianceReportsPageAction.open(testCaseID,
 				getReportRowID(reportDataRowID3));
@@ -192,8 +179,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
 						PICDFADMIN);
-		assertTrue(complianceReportsPageAction
-				.isReportModeRapidResponse(reportMode));
+		assertTrue(reportMode.equalsIgnoreCase("Rapid Response"));
 
 		complianceReportsPageAction.open(testCaseID,
 				getReportRowID(reportDataRowID4));
@@ -204,6 +190,6 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
 						PICDFADMIN);
-		assertTrue(complianceReportsPageAction.isReportModeManual(reportMode));
+		assertTrue(reportMode.equalsIgnoreCase("Manual"));
 	}
 }

@@ -1,10 +1,13 @@
 package surveyor.scommon.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
@@ -627,32 +630,10 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 						reportCreatedBy);
 		return reportMode;
 	}
-
-	public boolean isReportModeAnalytics(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Analytics"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeStandard(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Standard"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeRapidResponse(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Rapid Response"))
-			return true;
-		else
-			return false;
-	}
-
-	public boolean isReportModeManual(String reportMode) {
-		if (reportMode.equalsIgnoreCase("Manual"))
-			return true;
-		else
-			return false;
+	
+	public List<String> getComplianceListPageHeader() {
+		List<String> complianceHeaderList = new ArrayList<String>();
+		complianceHeaderList = this.getComplianceReportsPage().getComplianceListPageHeader();
+		return complianceHeaderList;
 	}
 }
