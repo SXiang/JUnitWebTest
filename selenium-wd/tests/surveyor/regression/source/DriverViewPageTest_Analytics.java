@@ -201,7 +201,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	}
 
 	/**
-	 * Test Case ID: TC2326_SimulatorTest_DrivingSurvey_CH4_C2H6_Missing_UtilityAdmin
+	 * Test Case IDs: TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates
 	 * Script: -
 	 * 1. Login to driver view as Pic Utility admin
 	 * 2. Start PSA and Host Simulator.
@@ -216,10 +216,10 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * @throws Exception
 	 */
 	@Test
-	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414, location = DriverViewDataProvider.class)
-	public void TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
+	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
+	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
-		Log.info("TC2411_2412_2413_2414_SimulatorTest_DrivingSurvey_RawDataUpdates");
+		Log.info("TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates");
 
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
@@ -259,7 +259,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	}
 
 	/**
-	 * Generates COLON separated list of Instruction files for the specified test case.
+	 * Generates comma separated list of Instruction files for the specified test case.
 	 * @param testCaseId - test case identifier.
 	 * @return
 	 * @throws IOException
@@ -290,6 +290,10 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
 			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
+			measInstructions.addSelector(Selector.WithProbability, 0.1)
+				.addMeasurementAction(Action.Update, Measurement.Column.CH4, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)");
 		}
 
 		return String.join(",", measInstructions.createFile());

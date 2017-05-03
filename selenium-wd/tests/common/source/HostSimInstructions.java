@@ -42,7 +42,8 @@ public class HostSimInstructions {
 
 	public enum Selector {
 		EveryM ("every"),
-		EveryMK ("every");
+		EveryMK ("every"),
+		WithProbability ("withProbability");
 
 		private final String name;
 
@@ -75,18 +76,18 @@ public class HostSimInstructions {
 	}
 
 	public static class SelectorParams {
-		private List<Integer> params;
+		private List<Object> params;
 
 
-		public SelectorParams(Integer... inputParams) {
+		public SelectorParams(Object... inputParams) {
 			params = Arrays.asList(inputParams);
 		}
 
-		public List<Integer> getParams() {
+		public List<Object> getParams() {
 			return params;
 		}
 
-		public void setParams(List<Integer> params) {
+		public void setParams(List<Object> params) {
 			this.params = params;
 		}
 
@@ -221,7 +222,7 @@ public class HostSimInstructions {
 		}
 	}
 
-	public HostSimInstructions addSelector(Selector selector, Integer... inputParams) {
+	public HostSimInstructions addSelector(Selector selector, Object... inputParams) {
 		if (selector == Selector.EveryM) {
 			if (inputParams.length != 1) {
 				throw new IllegalArgumentException("For Selector.EveryM exactly one input parameter should be specified.");
@@ -229,6 +230,10 @@ public class HostSimInstructions {
 		} else if (selector == Selector.EveryMK) {
 			if (inputParams.length != 2) {
 				throw new IllegalArgumentException("For Selector.EveryMK exactly two input parameters should be specified.");
+			}
+		} else if (selector == Selector.WithProbability) {
+			if (inputParams.length != 1) {
+				throw new IllegalArgumentException("For Selector.WithProbability exactly one input parameter should be specified.");
 			}
 		}
 
