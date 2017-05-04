@@ -804,7 +804,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/AnalyticsReportsPageTest.class" />
+        	<include name="**/SurveyViewPageTest_Analytics.class" />
         </fileset>
       </batchtest>
     </junit>

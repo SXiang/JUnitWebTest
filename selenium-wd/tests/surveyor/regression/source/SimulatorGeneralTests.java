@@ -175,6 +175,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
+		surveyViewPage.waitForUIUnBlock();
+		surveyViewPage.waitForAJAXCallsToComplete();
 		surveyViewPage.clickGisButton();
 		
 		surveyViewPage.clickPicarroLogoButton();

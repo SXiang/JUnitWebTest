@@ -3,15 +3,26 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import common.source.ExceptionUtility;
+import common.source.HostSimInstructions;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.HostSimInstructions.Action;
+import common.source.HostSimInstructions.Measurement;
+import common.source.HostSimInstructions.Selector;
+import common.source.OLMapEntities.Indication;
+import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.source.LoginPage;
@@ -121,6 +132,34 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
+    /**
+	 *	Test Case ID: TC2365
+	 *	Test Case Description: Survey View - Only peaks above Survey Min Amplitude appear in Analytics Survey mode
+	 *	Peaks in Analytics Survey mode should all be at or above the Survey Min Amplitude level set in the Locations page in the "Survey Mode: Analytics" section
+	 *	SCRIPT:
+	 *	- Log into UI as Picarro Admin
+	 *	- Navigate to the Locations page
+	 *	- Select a customer location and click Edit
+	 *	- Set the Survey Min Amplitude level to a certain level (ex. 0.4)
+	 *	- Click OK
+	 *	- Have driver start an Analytics Survey
+	 *	- Have driver drive to an area where indications are reliably found
+	 *	- Have driver stop survey
+	 *	- When survey has uploaded, click on the View Survey button
+	 *	RESULT:
+	 *	- Only indications above Survey Min Amplitude level will appear in Survey View
+	 */
+	@Ignore
+	public void TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurvey() throws Exception {
+		Log.info("\nRunning TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurvey ...");
+
+		loginPage.open();
+		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		// NOTE: This test case requires host simulator update to generate Peaks of desired amplitude.
+		// Test case has been included in US4307 to automate along with updated HostSim integration in automation framework.
+	}
+
 	/**
 	 * Test Case ID: TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu
 	 * Script:
@@ -188,5 +227,104 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyDisplaySwitchConcentrationChartButtonIsNotVisible(EMPTY, NOTSET));
+	}
+
+	/**
+	 * Test Case IDs: TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates
+	 * Script: -
+	 * 1. Login to driver view as Pic Utility admin
+	 * 2. Start PSA and Host Simulator.
+	 * 3. Replay Ethane DB3s and apply transformations to Raw data (GPS and Measurements)
+	 * 4. Create survey tag, select  Survey Time: Day Solar Radiation: Moderate Wind: Light Survey Type: Standard
+	 * 4. Click on Start Survey button
+	 * 5. Let the survey run for few seconds
+	 * 6. Stop survey
+	 * Results: -
+	 * 1. Verify surveys can be started and stopped correctly.
+	 * 2. Verify there is no runtime error in pipelinerunner.
+	 * @throws Exception
+	 */
+	@Test
+	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
+	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
+			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
+		Log.info("TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates");
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
+
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		String instFilesPath = generateInstructionFiles(testCaseId);
+
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(instFilesPath, analyzerDb3DataRowID); 	// start replay db3 file.
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
+		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+
+		if (testCaseId.equalsIgnoreCase("TC2413")) {
+			// confirm indication was shown in Driver view.
+			assertTrue(indicationsOnDriverView.size() > 0);
+		}
+	}
+
+	/**
+	 * Generates comma separated list of Instruction files for the specified test case.
+	 * @param testCaseId - test case identifier.
+	 * @return
+	 * @throws IOException
+	 */
+	private String generateInstructionFiles(String testCaseId) throws IOException {
+		Log.method("generateInstructionFiles", testCaseId);
+		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
+		if (testCaseId.equalsIgnoreCase("TC2411")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
+				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
+				.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2412_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
+			measInstructions.addSelector(Selector.WithProbability, 0.1)
+				.addMeasurementAction(Action.Update, Measurement.Column.CH4, "numpy.float64(numpy.nan)")
+				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)");
+		}
+
+		return String.join(",", measInstructions.createFile());
 	}
 }

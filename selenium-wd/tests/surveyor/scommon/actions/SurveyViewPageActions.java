@@ -284,7 +284,8 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyCrossHairIconIsShownOnMap")) { return this.verifyCrossHairIconIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
-		else if (actionName.equals("verifySurveyViewPageIsOpened")) { return this.verifySurveyViewPageIsOpened(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }
@@ -348,6 +349,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifySurveyInfoEndTimeLabelStartsWith")) { return this.verifySurveyInfoEndTimeLabelStartsWith(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoStartTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoEndTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(data, dataRowID); }
+		else if (actionName.equals("verifySurveyViewPageIsOpened")) { return this.verifySurveyViewPageIsOpened(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
