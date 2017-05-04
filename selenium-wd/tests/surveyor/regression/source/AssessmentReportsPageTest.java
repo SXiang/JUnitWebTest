@@ -230,7 +230,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Deleted report is not present on assessment report list screen
 	 */
 	// Verified.
-	@Test
+	@Ignore     // Ignored for local execution.
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1448, location = AssessmentReportDataProvider.class)
 	public void TC1448_DeleteAssessmentReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -260,7 +260,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Selected number of reports will be listed in the table
 	 */
 	// Verified.
-	@Test
+	@Ignore     // Ignored for local execution.
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1478, location = AssessmentReportDataProvider.class)
 	public void TC1478_Pagination_AssessmentReport_CustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -484,7 +484,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	-
 	 */
 	// Verified.
-	@Test
+	@Ignore      // Ignored for local execution.
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1800, location = AssessmentReportDataProvider.class)
 	public void TC1800_ValidateInformationPresentReportViewsPDFAssessmentReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
