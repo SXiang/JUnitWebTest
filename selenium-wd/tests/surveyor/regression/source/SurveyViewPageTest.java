@@ -2122,6 +2122,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
 		getSurveyViewPageAction().clickOnFirst3300IndicationShownOnMap("NaturalGas", NOTSET);
 		// TODO: Click at Pixel currently not working as Expected.
-		//surveyViewPageAction.waitForPeakInfoPopupToOpen(EMPTY, NOTSET);
+		//surveyViewPageAction.waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
 	}
 }

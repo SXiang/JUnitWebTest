@@ -228,7 +228,7 @@ public class ResourceKeys {
 	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas";
 	public static final String Survey_NaturalGas = "Survey_NaturalGas";
 
-	// Peak info popup constants.
+	// Feature info popup constants.
 	public static final String Survey_Disposition = "Survey_Disposition";
 	public static final String Survey_ClassificationConfidence = "Survey_ClassificationConfidence";
 	public static final String Survey_CH4 = "Survey_CH4";

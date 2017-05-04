@@ -112,7 +112,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		boolean retVal = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 		if (retVal) {
-			getDriverViewPage().waitForFeatureInfoDialogToOpen();
+			getDriverViewPage().waitForFeatureInfoPopupToOpen();
 		}
 		return retVal;
 	}
@@ -1485,6 +1485,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesDialogIsShown")) { return this.verifyFieldNotesDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesDialogIsNotShown")) { return this.verifyFieldNotesDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
