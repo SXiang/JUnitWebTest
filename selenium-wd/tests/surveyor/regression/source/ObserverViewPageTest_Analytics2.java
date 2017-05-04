@@ -44,7 +44,6 @@ import surveyor.scommon.source.PageObjectFactory;
 @RunWith(SurveyorTestRunner.class)
 public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 
-	// Change this: When test defaulted to Analyzer 1.
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
 	private ManageLocationPageActions manageLocationPageActions;
@@ -306,18 +305,25 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
+		testEnvironmentAction.idleForSeconds("200", NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		testEnvironmentAction.idleForSeconds("5", NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		
-		observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
-		testEnvironmentAction.idleForSeconds("300", NOTSET);
 		//TODO: Clicking on indication is not table while conducting survey, need a workaround and enable this test
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
-			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
-			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isAddUpdateNoteButtonVisible());
+//			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
+//			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isAddUpdateNoteButtonVisible());
+			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+			testEnvironmentAction.idleForSeconds("5", NOTSET);
+			assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
+			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		}
+		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+		testEnvironmentAction.idleForSeconds("5", NOTSET);
+		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		/* Step 4: stopAnalyzerSurvey */
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
