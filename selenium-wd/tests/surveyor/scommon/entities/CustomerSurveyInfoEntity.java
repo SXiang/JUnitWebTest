@@ -14,12 +14,20 @@ public class CustomerSurveyInfoEntity {
 	private Integer surveyRowID;
 	private Integer customerRowID;
 	private Integer db3AnalyzerRowID;
+	private String[] instructionFiles;
+	private boolean pushGISSeedData;
 
 	public CustomerSurveyInfoEntity() {
 	}
 
 	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
 			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID) {
+		this(customerRowID, locationRowID, userRowID, analyzerRowID, surveyorRowID, refGasBottleRowID,
+				db3AnalyzerRowID, surveyRuntimeInSeconds, surveyRowID, null /*instructionFiles*/);
+	}
+
+	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
+			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID, String[] instructionFiles) {
 		this.surveyRuntimeInSeconds = surveyRuntimeInSeconds;
 		this.locationRowID = locationRowID;
 		this.surveyorRowID = surveyorRowID;
@@ -29,6 +37,7 @@ public class CustomerSurveyInfoEntity {
 		this.surveyRowID = surveyRowID;
 		this.customerRowID = customerRowID;
 		this.db3AnalyzerRowID = db3AnalyzerRowID;
+		this.instructionFiles = instructionFiles;
 	}
 
 	public Integer getSurveyRuntimeInSeconds() {
@@ -101,6 +110,22 @@ public class CustomerSurveyInfoEntity {
 
 	public void setDb3AnalyzerRowID(Integer db3AnalyzerRowID) {
 		this.db3AnalyzerRowID = db3AnalyzerRowID;
+	}
+
+	public String[] getInstructionFiles() {
+		return instructionFiles;
+	}
+
+	public void setInstructionFiles(String[] instructionFiles) {
+		this.instructionFiles = instructionFiles;
+	}
+
+	public boolean isPushGISSeedData() {
+		return pushGISSeedData;
+	}
+
+	public void setPushGISSeedData(boolean pushGISSeedData) {
+		this.pushGISSeedData = pushGISSeedData;
 	}
 
 	@Override
