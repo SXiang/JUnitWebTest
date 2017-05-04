@@ -224,15 +224,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
 	protected WebElement closeSurveyModalButton;
 
-	@FindBy(id = "featureinfo_modal")
-	protected WebElement featureInfoModalDialog;
-
-	@FindBy(id = "feature_info")
-	protected WebElement featureInfoText;
-
-	@FindBy(id = "btn_addupdate_annotation")
-	protected WebElement addUpdateNoteButton;
-
 	private boolean useAnalyzerReadyLongTimeout = false;
 
 	/**
@@ -299,14 +290,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 
 	public boolean isFieldNotesDialogShown() {
 		return !this.fieldNotesModalDialog.getAttribute("class").contains("ng-hide");
-	}
-
-	public boolean isFeatureInfoDialogShown() {
-		return !this.featureInfoModalDialog.getAttribute("class").contains("ng-hide");
-	}
-
-	public String getFeatureInfoDialogText() {
-		return this.featureInfoText.getAttribute("value");
 	}
 
 	public WebElement getStartSurveyButton() {
@@ -1307,28 +1290,6 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return !isFieldNotesDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Feature info dialog to be shown.
-	 */
-	public void waitForFeatureInfoDialogToOpen() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return isFeatureInfoDialogShown();
-			}
-		});
-	}
-
-	/**
-	 * Waits for the Feature info dialog to be closed.
-	 */
-	public void waitForFeatureInfoDialogToClose() {
-		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				return !isFeatureInfoDialogShown();
 			}
 		});
 	}

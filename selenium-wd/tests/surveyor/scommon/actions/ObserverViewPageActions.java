@@ -187,6 +187,8 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
 		else if (actionName.equals("verifyObserverViewPageIsOpened")) { return this.verifyObserverViewPageIsOpened(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }

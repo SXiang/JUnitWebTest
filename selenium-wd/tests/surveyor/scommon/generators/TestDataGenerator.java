@@ -3,6 +3,10 @@ package surveyor.scommon.generators;
 import java.util.function.Supplier;
 
 import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
+import common.source.Log;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -69,11 +73,27 @@ public class TestDataGenerator {
 		manageRefGasBottlesPageAction.open(EMPTY, NOTSET);
 		manageRefGasBottlesPageAction.createNewRefGasBottle(EMPTY, custSrvInfo.getRefGasBottleRowID() /*refGasBottleRowID*/);
 
+		// Push GIS seed if specified.
+		if (custSrvInfo.isPushGISSeedData()) {
+			Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			DbSeedExecutor.executeGisSeed(customer.getId());
+		}
+
 		// Email ID for the new created user was generated dynamically in this case by using 'GenerateRandomEmail(20)' function.
 		// For such cases, use the overload with username and password for generateSurveyForUser().
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), testActions);
+				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(),
+				custSrvInfo.getInstructionFiles(), testActions);
+
+		// Cleanup GIS seed.
+		try {
+			Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+			DbSeedExecutor.cleanUpGisSeed(customer.getId());
+		} catch (Exception e) {
+			Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+		}
+
 	}
 }

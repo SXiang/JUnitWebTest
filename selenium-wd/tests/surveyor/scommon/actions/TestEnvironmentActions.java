@@ -1,12 +1,15 @@
 package surveyor.scommon.actions;
 
 import java.io.IOException;
+import java.util.List;
+
 import org.junit.Assert;
 
 import common.source.CheckedPredicate;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.NetworkProxyHandler;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.Analyzer;
@@ -80,7 +83,8 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/**
 	 * Executes startReplay action.
-	 * @param data - specifies the input data passed to the action.
+	 * @param data - [Optional] colon separated full path to instruction files. Eg.
+	 * 		<full_path_to_instruction_file_1>:<full_path_to_instruction_file_2>:<full_path_to_instruction_file_3>
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
@@ -90,9 +94,13 @@ public class TestEnvironmentActions extends BaseActions {
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_REPLAY, ARG_DATA_ROW_ID, dataRowID);
 		try {
 			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
-
 			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
+				if (!ActionArguments.isEmpty(data)) {
+					List<String> insFiles = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+					TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File, insFiles.toArray(new String[insFiles.size()]));
+				} else {
+					TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
+				}
 			} else {
 				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile);
 			}
@@ -324,6 +332,12 @@ public class TestEnvironmentActions extends BaseActions {
 
 	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(username, password, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds,
+				null /*instructionFiles*/, testActions);
+	}
+
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, String[] instructionFiles, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -331,16 +345,29 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction, testActions);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, instructionFiles,
+				driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null /*instructionFiles*/,
+				driverViewPageAction, testEnvironmentAction, testActions);
+	}
+
+	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles,
 			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		try {
 			testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-			testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+
+			if (instructionFiles != null && instructionFiles.length > 0) {
+				testEnvironmentAction.startReplay(String.join(",", instructionFiles), db3AnalyzerRowID);
+			} else {
+				testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+			}
+
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
 			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);

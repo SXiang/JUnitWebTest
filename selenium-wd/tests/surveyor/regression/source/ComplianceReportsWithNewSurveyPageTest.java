@@ -3,7 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
+import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import java.util.Map;
@@ -358,7 +358,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
 		// Add a new user customer with Report ShapeFile first disabled and then enable it.
-		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS;
+		String allCustomerLicenseRowIDs = ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID /*customerRowID*/);
 		manageCustomerPageAction.editCustomerSelectLicensedFeatures(allCustomerLicenseRowIDs, NOTSET);

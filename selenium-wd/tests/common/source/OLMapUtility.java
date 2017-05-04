@@ -110,9 +110,9 @@ public class OLMapUtility {
 			+ "var freshConstellation=JSON.parse(JSON.stringify(d3constellation));freshConstellation.nodes.forEach(function(d){"
 			+ "if(d.type=='annotation'){if(!d.fixed){if(d.text==note){noteFound=true;}}}});return noteFound&&showAnnotations;};";
 
-	private static final String IS_PEAK_INFO_POPUP_SHOWN_FUNCTION = "function isPeakInfoPopupShown(){"
+	private static final String IS_FEATURE_INFO_POPUP_SHOWN_FUNCTION = "function isFeatureInfoPopupShown(){"
 			+ "var shown=false;try{if(surveyormap){overlays=surveyormap.getOverlays();for(var i=0;i<overlays.getLength();i++){"
-			+ "overlay=overlays.item(i);if(overlay){element=overlay.getElement();if(element){if(element.id=='peakinfo_modal'){"
+			+ "overlay=overlays.item(i);if(overlay){element=overlay.getElement();if(element){if(element.id=='featureinfo_modal'){"
 			+ "return!(overlay.getPosition()==undefined);}}}}}}catch(err){shown=false;};return shown;};";
 
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION = "function isIsotopicCaptureResultPresent(result){"
@@ -260,7 +260,7 @@ public class OLMapUtility {
 	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
 	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
 
-	private static final String IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL = "return isPeakInfoPopupShown();";
+	private static final String IS_FEATURE_INFO_POPUP_SHOWN_JS_FUNCTION_CALL = "return isFeatureInfoPopupShown();";
 
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isIsotopicCaptureResultPresent('%s');";
 	private static final String IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isReferenceGasCaptureResultPresent('%s');";
@@ -694,13 +694,13 @@ public class OLMapUtility {
 	}
 
 	/*
-	 * Checks whether peak info popup is shown on the map.
-	 * Returns true if peak info popup is shown on the map, false otherwise.
+	 * Checks whether feature info popup is shown on the map.
+	 * Returns true if feature info popup is shown on the map, false otherwise.
 	 */
-	public boolean isPeakInfoPopupShown() {
-		String jsScript = IS_PEAK_INFO_POPUP_SHOWN_FUNCTION + IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL;
-		Object peakInfoPopupShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
-		if (peakInfoPopupShown.toString().equalsIgnoreCase("true")) {
+	public boolean isFeatureInfoPopupShown() {
+		String jsScript = IS_FEATURE_INFO_POPUP_SHOWN_FUNCTION + IS_FEATURE_INFO_POPUP_SHOWN_JS_FUNCTION_CALL;
+		Object featureInfoPopupShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (featureInfoPopupShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;
