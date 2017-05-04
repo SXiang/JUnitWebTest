@@ -1,23 +1,15 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Map;
 import java.util.Set;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.ExceptionUtility;
@@ -29,25 +21,12 @@ import common.source.HostSimInstructions.Measurement;
 import common.source.HostSimInstructions.Selector;
 import common.source.OLMapEntities.Indication;
 import common.source.RegexUtility;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.DriverViewDataProvider;
-import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
-import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageAnalyzerPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
-import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
