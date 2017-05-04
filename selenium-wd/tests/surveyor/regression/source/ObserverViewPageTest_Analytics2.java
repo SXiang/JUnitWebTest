@@ -59,9 +59,10 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	private static String analyzerName;
 	private static String analyzerSharedKey;
 	private static String surveyorName;
-	private  int analyticSurveyRowId = 62;
+	private int analyticSurveyRowId = 62;
+	private int zoomLevelForIndication = 13;
 	private String db3DefnFile = "replay-db3-eth.defn";
-	private String db3File = "AnalyticsSurvey-RFADS2024-02.db3";
+	private String db3File = "AnalyticsSurvey-RFADS2024-03.db3";
 	
 	public ObserverViewPageTest_Analytics2() throws IOException {
 		super();
@@ -178,7 +179,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("1500", NOTSET);
+		testEnvironmentAction.idleForSeconds("300", NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifySurveyAmplitudes(surMinAmp, NOTSET));
 
 		/* Step 4: stopAnalyzerSurvey */
@@ -305,15 +306,18 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("1500", NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+		testEnvironmentAction.idleForSeconds("5", NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
+		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+		
+		observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
+		testEnvironmentAction.idleForSeconds("300", NOTSET);
 		//TODO: Clicking on indication is not table while conducting survey, need a workaround and enable this test
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
-//			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
-//			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isAddUpdateNoteButtonVisible());
+			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
+			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isAddUpdateNoteButtonVisible());
 		}
-		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
-
 		/* Step 4: stopAnalyzerSurvey */
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
