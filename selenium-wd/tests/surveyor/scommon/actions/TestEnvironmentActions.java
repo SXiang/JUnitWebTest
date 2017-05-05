@@ -332,6 +332,12 @@ public class TestEnvironmentActions extends BaseActions {
 
 	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(username, password, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds,
+				null /*instructionFiles*/, testActions);
+	}
+
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, String[] instructionFiles, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -339,16 +345,29 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction, testActions);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, instructionFiles,
+				driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null /*instructionFiles*/,
+				driverViewPageAction, testEnvironmentAction, testActions);
+	}
+
+	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles,
 			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		try {
 			testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
 			driverViewPageAction.open(EMPTY,NOTSET);
 			driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-			testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+
+			if (instructionFiles != null && instructionFiles.length > 0) {
+				testEnvironmentAction.startReplay(String.join(",", instructionFiles), db3AnalyzerRowID);
+			} else {
+				testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+			}
+
 			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 			driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
 			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);

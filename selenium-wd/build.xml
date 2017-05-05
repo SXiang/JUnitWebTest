@@ -538,6 +538,7 @@
           <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
           <include name="**/ObserverViewPageTest.class" />
           <include name="**/ObserverViewPageTest_Analytics.class" />
+          <include name="**/ObserverViewPageTest_Analytics2.class" />
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
@@ -656,8 +657,12 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
+<<<<<<< HEAD
 	          <include name="**/DriverViewPageTest_Analytics.class" />
 	          <include name="**/ObserverViewPageTest_Analytics.class" />
+=======
+				<include name="**/DriverViewPageTest_Analytics.class" />
+>>>>>>> 2922d62d1bdf121b31ba371826d6543a6effbee5
 			</fileset>
       </batchtest>
     </junit>
@@ -804,7 +809,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/SurveyViewPageTest_Analytics.class" />
+        	<include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+        	<include name="**/ObserverViewPageTest_Analytics2.class" />
         </fileset>
       </batchtest>
     </junit>
