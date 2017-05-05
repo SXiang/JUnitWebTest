@@ -21,7 +21,6 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH = "verifySurveyInfoTimeElapsedLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH = "verifySurveyInfoTimeRemainingLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
-
 	private static final String CLS_BASE_DRIVING_VIEW_PAGE_ACTIONS = "BaseDrivingViewPageActions::";
 	
 	public BaseDrivingViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
@@ -262,7 +261,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		log(String.format("Looking for Text-[%s], Found Time Remaining Label Text-[%s]", data, getBaseDrivingViewPage().getTimeRemainingLabelText()));
 		return getBaseDrivingViewPage().getTimeRemainingLabelText().startsWith(data);
 	}
-	
+
 	/**
 	 * Executes verifySurveyInfoTimeElapsedIsTickingForward action.
 	 * @param data - specifies the input data passed to the action.

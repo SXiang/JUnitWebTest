@@ -329,30 +329,24 @@ public class BaseTest {
 		testAccount.put("userRole", userRole);
 		testAccount.put("eula", eula);
 
-		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageLocationsPage);
-
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
+		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		manageCustomersPage.open();
 		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
 			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
 		}
 
+		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 		manageLocationsPage.open();
 		if(!manageLocationsPage.addNewLocation(locationName, customerName, cityName)){
 			fail(String.format("Failed to add a new location %s, %s, %s",locationName, customerName, cityName));
 		}
 
-		manageUsersPage.open();
-		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
-			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
-		}
+		addTestUser(customerName, userName, userPassword, userRole, locationName);
 
 		Customer customer = Customer.getCustomer(customerName);
 		testAccount.put("customerId", customer.getId());
@@ -393,6 +387,15 @@ public class BaseTest {
 		return Collections.synchronizedMap(testAccount);
 	}
 
+	public void addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
+		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
+			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
+		}
+	}
+	
 	public Map<String, String> addTestReport() throws Exception{
 		return addTestReport(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
@@ -482,13 +485,14 @@ public class BaseTest {
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
-		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-02.db3";
+		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
-		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual", "Analytics"};
+		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
+		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
 		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
 		
 		if(surveyTypes==null||surveyTypes.length==0){
-			surveyTypes = SurveyType.values();
+			surveyTypes = defaultTestSurveyType;
 		}
 
 		HashMap<String, String> testSurvey = new HashMap<String, String>();
@@ -501,22 +505,17 @@ public class BaseTest {
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, password);
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
-		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
-		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
 
 		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
-		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(TEST_ENVIRONMENT_DATA_ROW_ID));
-		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
-		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
-		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
-
-		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
-				analyzerName, analyzerSharedKey);
+		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+		
+		/*Step 1. setup analyzer configuration */
+		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, TEST_ENVIRONMENT_DATA_ROW_ID);
 
 		for(SurveyType st : surveyTypes){
 			int i=0;
 			while(i<surveyType.length){
-				if(st.toString().equals(surveyType[i])){
+				if(st.equals(surveyType[i])){
 					break;
 				}
 				i++;
@@ -528,7 +527,7 @@ public class BaseTest {
 			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
 				continue;
 			}
-			TestSetup.restartAnalyzer();
+			
 			String db3file = replayScriptDB3File;
 			String db3DefnFile = replayScriptDefnFile;
 			if(analyzerType.equals(CapabilityType.Ethane)){
@@ -537,39 +536,63 @@ public class BaseTest {
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
 			}
-			driverViewPageAction.open("", -1);
-			driverViewPageAction.waitForConnectionToComplete("", -1);
-
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
-				if(st.toString().equalsIgnoreCase(surveyType[j])){
+				if(st.equals(surveyType[j])){
 					surveyRowID = surveyRowIDs[j];
 					break;
 				}
 			}
-			TestSetup.replayDB3Script(db3DefnFile, db3file);
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.startDrivingSurvey("", surveyRowID);
-			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
-			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.stopDrivingSurvey("", -1);
 
-			// wait for a while before shutting down Analyzer.
-			testEnvironmentAction.idleForSeconds(String.valueOf(30), -1);
-
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.clickOnShutdownButton("", -1);
-			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
-			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
-			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+			/* Step 3: stopAnalyzerSurvey */
+			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
 		}
 
+		/* Step 4: stopAnalyzer */
 		TestSetup.stopAnalyzer();
 
 		return Collections.synchronizedMap(testSurvey);
 	}
-	
+
+	protected void updateAnalyzerConfiguration(TestEnvironmentActions testEnvironmentAction, String analyzerName, String analyzerSharedKey, int TEST_ENVIRONMENT_DATA_ROW_ID) throws Exception{
+		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
+		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(TEST_ENVIRONMENT_DATA_ROW_ID));
+		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
+		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
+		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
+		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
+			analyzerName, analyzerSharedKey);
+	}
+
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		TestSetup.restartAnalyzer();
+		driverViewPageAction.open("", -1);
+		driverViewPageAction.waitForConnectionToComplete("", -1);
+
+		TestSetup.replayDB3Script(db3DefnFile, db3file);
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.startDrivingSurvey("", surveyRowID);
+		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
+	}
+
+	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+			String analyzerName, String analyzerSharedKey, String surveyorName) throws Exception{
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.stopDrivingSurvey("", -1);
+
+		// wait for a while before shutting down Analyzer.
+		testEnvironmentAction.idleForSeconds(String.valueOf(30), -1);
+
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.clickOnShutdownButton("", -1);
+		driverViewPageAction.clickOnShutdownConfirmButton("", -1);
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
+	}
 	protected static boolean pushGisData(String customerId) {
 		try {
 			// Add GIS seed for customer.

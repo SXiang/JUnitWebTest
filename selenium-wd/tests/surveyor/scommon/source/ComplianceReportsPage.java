@@ -192,6 +192,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[3]")
 	protected WebElement proceedMsg;
+	
+	private String headerListComplianceReport = "//*[@id='datatable']/thead/tr/th";
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	protected WebElement reportMode;
 
 	public WebElement getSurveyModalErrorMsg(){
 		return this.surveyModalErrorMsg;
@@ -208,7 +213,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public WebElement getCheckBoxStndRptMode() {
 		return this.checkBoxStndRptMode;
 	}
-
+	
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -2867,5 +2872,29 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			compliancereportsList.add(reportCell.getText().trim());
 		}
 		return compliancereportsList;
+	}
+	
+	public List<String> getComplianceListPageHeader() {
+		List<String> complianceHeaderList = new ArrayList<String>();
+		String reportHeaderxPath;
+		WebElement reportCell;
+
+		List<WebElement> cols = driver.findElements(By
+				.xpath(this.headerListComplianceReport));
+		for (int colNum = 1; colNum <= cols.size(); colNum++) {
+			reportHeaderxPath = this.headerListComplianceReport + "[" + colNum
+					+ "]";
+			reportCell = driver.findElement(By.xpath(reportHeaderxPath));
+			complianceHeaderList.add(reportCell.getText().trim());
+		}
+		return complianceHeaderList;
+	}
+	
+	public String getReportModeForProvidedReportTitle(String reportTitle,
+			String reportCreatedBy) {
+		String reportMode = "";
+		searchReport(reportTitle, reportCreatedBy);
+		reportMode = this.reportMode.getText().trim();
+		return reportMode;
 	}
 }

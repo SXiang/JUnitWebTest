@@ -1,29 +1,35 @@
 package surveyor.regression.source;
 
-import common.source.Log;
+import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
+import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
-import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
+import org.junit.runner.RunWith;
+
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
-import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.SurveyorTestRunner;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import common.source.Log;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 
 	private static LoginPageActions loginPageAction;
 	private static ComplianceReportsPageActions complianceReportsPageAction;
-
+	
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -99,5 +105,87 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
         assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 /* Shape file base line will be generated/enabled after dev completion */
 //        assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+	
+	/*
+	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 */
+	@Test
+	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
+		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
+		List<String> expectedReportHeader = Arrays.asList("Report Title",
+				"Report Name", "Report Mode", "Created By", "Date", "Action",
+				"Upload Status");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, 6);
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		for (int count = 0; count < expectedReportHeader.size(); count++) {
+			assertTrue(complianceReportsPageAction
+					.getComplianceListPageHeader().get(count)
+					.equals(expectedReportHeader.get(count)));
+		}
+	}
+
+	/*
+	 * * Test Case ID:
+	 * TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage Test
+	 * Description: Report Mode column on Compliance Reports (Report List) page
+	 * shows correct modes
+	 */
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2341, location = AnalyticReportDataProvider.class)
+	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1,
+			Integer reportDataRowID2, Integer reportDataRowID3,
+			Integer reportDataRowID4) throws Exception {
+		Log.info("\nTestcase - TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage\n");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID1));
+
+		String reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(reportMode.equalsIgnoreCase("Analytics"));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID2));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID2));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(reportMode.equalsIgnoreCase("Standard"));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID3));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID3));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(reportMode.equalsIgnoreCase("Rapid Response"));
+
+		complianceReportsPageAction.open(testCaseID,
+				getReportRowID(reportDataRowID4));
+		createNewReport(complianceReportsPageAction,
+				getReportRowID(reportDataRowID4));
+
+		reportMode = complianceReportsPageAction
+				.getReportModeForSpecifiedReportTitle(
+						ComplianceReportsPageActions.workingDataRow.get().title,
+						PICDFADMIN);
+		assertTrue(reportMode.equalsIgnoreCase("Manual"));
 	}
 }
