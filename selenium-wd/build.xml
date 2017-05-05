@@ -538,6 +538,7 @@
           <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
           <include name="**/ObserverViewPageTest.class" />
           <include name="**/ObserverViewPageTest_Analytics.class" />
+          <include name="**/ObserverViewPageTest_Analytics2.class" />
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
