@@ -6,12 +6,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Set;
 
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
@@ -31,18 +27,11 @@ import common.source.RegexUtility;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
-import surveyor.scommon.actions.ManageAnalyzerPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -64,14 +53,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private static LoginPage loginPage;
 	private static HomePage homePage;
 	private static MeasurementSessionsPage measurementSessionsPage;
-	private static ManageCustomerPageActions manageCustomerPageAction;
-	private static ManageUsersPageActions manageUsersPageAction;
-	private static ManageLocationsPage manageLocationsPage;
-	private static ManageLocationPageActions manageLocationPageAction;
-	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
-	private static ManageSurveyorPageActions manageSurveyorPageAction;
-	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
-
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
 	}
@@ -129,7 +110,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	RESULT:
 	 *	- Only indications above Survey Min Amplitude level will appear in Survey View
 	 **/
-	@Ignore // Disabled due to product issue: DE2939
+	@Test // Disabled due to product issue: DE2939
 	public void TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode() throws Exception {
 		Log.info("\nTestcase - TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode ...\n");
 
@@ -187,7 +168,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Car icon turns red and "Analytics Survey Active" appears in bold green font at top left of map
 	 *	- 8 Hour History, Concentration Chart, WindRose and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Ignore
+	@Test
 	public void TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception{
 		Log.info("\nTestcase - TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu\n");
 
@@ -239,7 +220,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- User is taken to Survey View of selected survey
 	 *	- 8 Hour History and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Ignore
+	@Test
 	public void TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception {
 		Log.info("\nRunning TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu ...");
 
@@ -312,7 +293,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
 	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
