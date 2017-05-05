@@ -1,5 +1,6 @@
 package surveyor.dataaccess.source;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class Report extends BaseEntity {
 
 	public Report() {
 		super();
+	}
+
+	public Report(Connection conn) {
+		super(conn);
 	}
 
 	public void purgeCache() {
@@ -148,10 +153,19 @@ public class Report extends BaseEntity {
 		return objReport;
 	}
 
+	public Report getTitleLike(String reportTitle) {
+		String SQL = "SELECT * FROM dbo.[Report] WHERE ReportTitle LIKE '" + reportTitle + "%' ORDER BY DateStarted DESC ";
+		return getByQuery(SQL);
+	}
+
 	public Report getById(String reportId) {
-		Report objReport = null;
 		String SQL = "SELECT * FROM dbo.[Report] WHERE Id='" + reportId + "'";
-		ArrayList<Report> objReportList = load(SQL);
+		return getByQuery(SQL);
+	}
+
+	private Report getByQuery(String query) {
+		Report objReport = null;
+		ArrayList<Report> objReportList = load(query);
 		if (objReportList!=null && objReportList.size()>0) {
 			objReport = objReportList.get(0);
 		}

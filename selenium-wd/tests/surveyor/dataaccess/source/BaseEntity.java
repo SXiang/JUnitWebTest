@@ -23,6 +23,10 @@ public class BaseEntity {
     	this.connection = ConnectionFactory.createConnection();
     }
 
+    public BaseEntity(Connection conn) {
+    	this.connection = conn;
+    }
+
     public Connection getConnection() {
 		return connection;
 	}
@@ -61,7 +65,7 @@ public class BaseEntity {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Executes a query that return a single row with single column of integer value.
 	 * @param SQL
