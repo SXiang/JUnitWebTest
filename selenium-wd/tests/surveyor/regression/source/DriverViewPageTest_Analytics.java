@@ -540,7 +540,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
 			indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
 
-			Float LOCATION_MIN_AMP = 1.0F;
+			Float LOCATION_MIN_AMP = 2.0F;
 			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
 			indicationsOnDriverView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
 
