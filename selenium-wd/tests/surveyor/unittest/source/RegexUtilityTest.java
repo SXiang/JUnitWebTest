@@ -67,11 +67,11 @@ public class RegexUtilityTest {
 
 	private boolean isFeatureInfoTextMatch(String featureInfoText, boolean modifyInfoText) {
 		String[] regexPatternList = {
-				String.format(RegexUtility.FEATURE_INFO_AMPLITUDE_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", "")),
-				String.format(RegexUtility.FEATURE_INFO_ETH_RATIO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", "")),
-				String.format(RegexUtility.FEATURE_INFO_METH_CONC_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", "")),
-				String.format(RegexUtility.FEATURE_INFO_CLASSIFICATION_CONF_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", "")),
-				String.format(RegexUtility.FEATURE_INFO_DISPOSITION_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", ""))
+				String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", "")),
+				String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", "")),
+				String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", "")),
+				String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", "")),
+				String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", ""))
 		};
 
 		boolean atleastOneMatch = false;

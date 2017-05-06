@@ -485,15 +485,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private String getRegexForFeatureInfoField(FeatureInfo.Field field) {
 		String regex = null;
 		if (field == FeatureInfo.Field.Amplitude) {
-			regex = String.format(RegexUtility.FEATURE_INFO_AMPLITUDE_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", ""));
+			regex = String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.ClassificationConfidence) {
-			regex = String.format(RegexUtility.FEATURE_INFO_CLASSIFICATION_CONF_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", ""));
+			regex = String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.Disposition) {
-			regex = String.format(RegexUtility.FEATURE_INFO_DISPOSITION_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", ""));
+			regex = String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.EthaneRatio) {
-			regex = String.format(RegexUtility.FEATURE_INFO_ETH_RATIO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", ""));
+			regex = String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.MethaneConcentration) {
-			regex = String.format(RegexUtility.FEATURE_INFO_METH_CONC_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", ""));
+			regex = String.format(RegexUtility.FEATURE_INFO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", ""));
 		}
 
 		return regex;
