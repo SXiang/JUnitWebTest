@@ -1,10 +1,13 @@
 package surveyor.scommon.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
@@ -13,7 +16,6 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
-
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
@@ -618,5 +620,20 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
 	private boolean verifyComplianceReportMetadataFiles(ReportsCommonPage reportsPage, String downloadPath, String reportTitle) {
 		return FunctionUtil.wrapException(reportsPage, r -> reportsPage.verifyIsotopicMetaDataFile(downloadPath, reportTitle));
+	}
+	
+	public String getReportModeForSpecifiedReportTitle(String reportTitle,
+			String reportCreatedBy) {
+		String reportMode = "";
+		reportMode = this.getComplianceReportsPage()
+				.getReportModeForProvidedReportTitle(reportTitle,
+						reportCreatedBy);
+		return reportMode;
+	}
+	
+	public List<String> getComplianceListPageHeader() {
+		List<String> complianceHeaderList = new ArrayList<String>();
+		complianceHeaderList = this.getComplianceReportsPage().getComplianceListPageHeader();
+		return complianceHeaderList;
 	}
 }
