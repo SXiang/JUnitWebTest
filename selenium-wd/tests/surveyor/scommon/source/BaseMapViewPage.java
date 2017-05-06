@@ -485,15 +485,15 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private String getRegexForFeatureInfoField(FeatureInfo.Field field) {
 		String regex = null;
 		if (field == FeatureInfo.Field.Amplitude) {
-			regex = RegexUtility.FEATURE_INFO_AMPLITUDE_REGEX;
+			regex = String.format(RegexUtility.FEATURE_INFO_AMPLITUDE_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.ClassificationConfidence) {
-			regex = RegexUtility.FEATURE_INFO_CLASSIFICATION_CONF_REGEX;
+			regex = String.format(RegexUtility.FEATURE_INFO_CLASSIFICATION_CONF_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.Disposition) {
-			regex = RegexUtility.FEATURE_INFO_DISPOSITION_REGEX;
+			regex = String.format(RegexUtility.FEATURE_INFO_DISPOSITION_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.EthaneRatio) {
-			regex = RegexUtility.FEATURE_INFO_ETH_RATIO_REGEX;
+			regex = String.format(RegexUtility.FEATURE_INFO_ETH_RATIO_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", ""));
 		} else if (field == FeatureInfo.Field.MethaneConcentration) {
-			regex = RegexUtility.FEATURE_INFO_METH_CONC_REGEX;
+			regex = String.format(RegexUtility.FEATURE_INFO_METH_CONC_REGEX_WITH_PLACEHOLDER, Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", ""));
 		}
 
 		return regex;
