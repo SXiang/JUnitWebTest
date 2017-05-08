@@ -3,6 +3,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.junit.Before;
@@ -322,39 +323,56 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 */
 	private String generateInstructionFiles(String testCaseId) throws IOException {
 		Log.method("generateInstructionFiles", testCaseId);
-		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
-		if (testCaseId.equalsIgnoreCase("TC2411")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-				.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
-				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
-				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
-				.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-				.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2412_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-				.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
-				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
-			measInstructions.addSelector(Selector.WithProbability, 0.95)
-				.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-				.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2365_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
-		}
 
-		return String.join(",", measInstructions.createFile());
+		if (testCaseId.equalsIgnoreCase("TC_DUMMY_TEST")) {
+			String[] instFiles = new String[5];
+			Float ch4Value = 5.5f;
+			for (int i = 0; i < 5; i++) {
+				HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, String.valueOf(ch4Value), "0.16", "0.01",
+							String.format("DummyTest_insert_peak_ampl_%f_sigma_0_1_6_randomizer_1.log", ch4Value));
+				instFiles[i] = measInstructions.createFile();
+				ch4Value += 1.0f;
+			}
+
+			return Arrays.toString(instFiles).replace("[","").replace("]","");
+
+		} else {
+			HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
+			if (testCaseId.equalsIgnoreCase("TC2411")) {
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+					.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
+					.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
+					.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
+			} else if (testCaseId.equalsIgnoreCase("TC2412")) {
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2412_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+			} else if (testCaseId.equalsIgnoreCase("TC2413")) {
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+			} else if (testCaseId.equalsIgnoreCase("TC2414")) {
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
+					.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+			} else if (testCaseId.equalsIgnoreCase("TC2417")) {
+				measInstructions.addSelector(Selector.WithProbability, 0.95)
+					.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
+			} else if (testCaseId.equalsIgnoreCase("TC2365")) {
+				measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+					.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2365_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+			}
+
+			return String.join(",", measInstructions.createFile());
+		}
 	}
 }
