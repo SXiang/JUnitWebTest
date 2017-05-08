@@ -48,11 +48,7 @@ public class RegexUtility {
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
 
-	public static final String FEATURE_INFO_DISPOSITION_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_Disposition).replace(" :", "") + "\\s+:.+)+";
-	public static final String FEATURE_INFO_CLASSIFICATION_CONF_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_ClassificationConfidence).replace(" :", "") + "\\s+:.+)+";
-	public static final String FEATURE_INFO_METH_CONC_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_CH4).replace(" :", "") + "\\s+:.+)+";
-	public static final String FEATURE_INFO_ETH_RATIO_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_EthaneRatio).replace(" :", "") + "\\s+:.+)+";
-	public static final String FEATURE_INFO_AMPLITUDE_REGEX = ".*(" + Resources.getResource(ResourceKeys.Survey_amplitude).replace(" :", "") + "\\s+:.+)+";
+	public static final String FEATURE_INFO_REGEX_WITH_PLACEHOLDER = ".*(%s\\s+:.+)+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
