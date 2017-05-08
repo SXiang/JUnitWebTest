@@ -14,9 +14,9 @@ import common.source.TestContext;
 
 public class ConnectionFactory {
 
-	private static final String JDBC_SQLSERVER_CONNECTION_STRING = "jdbc:sqlserver://%s:%s;databaseName=%s;";
+	public static final String JDBC_SQLSERVER_CONNECTION_STRING = "jdbc:sqlserver://%s:%s;databaseName=%s;";
+
 	private static final String MICROSOFT_SQLSERVER_JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-	
 	private static Map<String, Connection> connectionCache = Collections.synchronizedMap(new HashMap<String, Connection>());
 
 	@Rule
@@ -25,7 +25,7 @@ public class ConnectionFactory {
 		protected void before() throws Throwable {
 			// Connections can be opened on-demand by the tests.
 		};
-		
+
 		@Override
 		protected void after() {
 			if (connectionCache!=null && connectionCache.size() > 0) {
@@ -37,14 +37,14 @@ public class ConnectionFactory {
 							conn.close();
 						}
 					} catch (SQLException e) {
-						Log.error(String.format("Exception when closing connection: Exception message - ", 
+						Log.error(String.format("Exception when closing connection: Exception message - ",
 								ExceptionUtility.getStackTraceString(e)));
 					}
 				}
 			}
 		};
 	};
-	
+
 	public static Connection createConnection() {
 		Connection conn = null;
 
@@ -59,18 +59,19 @@ public class ConnectionFactory {
 			conn = connectionCache.get(connectionUrl);
 			try {
 				if (conn.isClosed()) {
-					conn = createNewConnection(conn, dbUser, dbPassword, connectionUrl);
+					conn = createNewConnection(dbUser, dbPassword, connectionUrl);
 				}
 			} catch (SQLException e) {
 				Log.error(String.format("Error creating connection. EXCEPTION: %s", ExceptionUtility.getStackTraceString(e)));
 			}
-		} else {		
-			conn = createNewConnection(conn, dbUser, dbPassword, connectionUrl);
+		} else {
+			conn = createNewConnection(dbUser, dbPassword, connectionUrl);
 		}
 		return conn;
 	}
 
-	private static Connection createNewConnection(Connection conn, String dbUser, String dbPassword, String connectionUrl) {
+	public static Connection createNewConnection(String dbUser, String dbPassword, String connectionUrl) {
+		Connection conn = null;
 		try {
 			Class.forName(MICROSOFT_SQLSERVER_JDBC_DRIVER);
 			conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);

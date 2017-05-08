@@ -3,14 +3,12 @@
  */
 package surveyor.regression.source;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.CR_VALUEMISSING_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_EQLINES_MESSAGE;
 import static surveyor.scommon.source.SurveyorConstants.CR_SURVEYMISSING_MESSAGE;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -102,7 +100,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
@@ -132,14 +130,14 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
-			
+
 			eqReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.verifyWarningMessageOnDeleteButtonClickEquals(EMPTY, getReportRowID(reportDataRowID1));
 			clickOnConfirmDeleteReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 		}
-		
+
 		/**
 		 * Test Case ID: TC537_GenerateEQReportAsCustomerAdminWhenOverlappingMultiSegments
 		 * Test Description: Generate EQ Report as Customer Admin user when multiple line segments are selected, geographic filter is used to search and include the surveys
@@ -154,7 +152,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Click on Map button to download the report
 		 * Results:
 		 *	- Selected number of line segments are displayed
-		 * - EQ surveys present in the geographic area should be present in the searched list 
+		 * - EQ surveys present in the geographic area should be present in the searched list
 		 * - Survey search should show User, Surveyor,Start Date,End date,Type ,Tag and Selected columns with correct data.
 		 * - Report title entry is present on EQ report list screen and report is generated successfully
 		 * - PDF and Map thumbnails are present and user can download them
@@ -178,7 +176,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
@@ -208,14 +206,14 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
-			
+
 			eqReportsPageAction.clickOnDeleteButton(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.waitForConfirmDeletePopupToShow(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.verifyWarningMessageOnDeleteButtonClickEquals(EMPTY, getReportRowID(reportDataRowID1));
 			clickOnConfirmDeleteReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.verifyReportDeletedSuccessfully(EMPTY, NOTSET));
 		}
-		
+
 		/**
 		 * Test Case ID: TC544_GenerateEQReportAsPicarroAdminWhenMultipleLinesAllFilters
 		 * Test Description: Pagination - Generate EQ Report as Picarro Admin user when multiple line segements are selected, all filters are selected to search and include the picarro surveys
@@ -250,12 +248,12 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
 			eqReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
-		}		
+		}
 
 		/**
 		 * Test Case ID: TC554_GenerateEQReportAsPicarroSupportWhenMultiLinesPartiallyOutsideSurveyArea
@@ -290,7 +288,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
-			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));			
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
 			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
@@ -320,7 +318,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
 		}
 
-		
+
 		/**
 		 * Test Case ID: TC559_EQReportCannotBeGeneratedUnlessAllRequiredFieldsAreFilled
 		 * Test Description: Check that EQ report cannot be generated unless all required fields are filled out
