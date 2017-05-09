@@ -2366,7 +2366,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String metaJsonFile = String.format("%s-%s-Report.json", reportPrefix, reportID);
 		String metaGapFile = String.format("%s-%s-ReportGAP.csv", reportPrefix, reportID);
 		String metaLISAFile = String.format("%s-%s-ReportLISAS.csv", reportPrefix, reportID);
-		String metaLISAAnalyticsFile = String.format("%s-%s-ReportLISAS_analytics.csv", reportPrefix, reportID);
+		String metaLISAAnalyticsFile = String.format("%s-%s-ReportLISAS_Analytics.csv", reportPrefix, reportID);
 		String metaSurveyFile = String.format("%s-%s-ReportSurvey.csv", reportPrefix, reportID);
 		String metaIsoCaptureFile = String.format("%s-%s-ReportIsotopicCapture.csv", reportPrefix, reportID);
 
@@ -2392,9 +2392,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 
 			if (verifyLisaAnalyticsMetaPresent) {
-				present = present && filesInDirectory.contains(metaLISAFile);
+				present = present && filesInDirectory.contains(metaLISAAnalyticsFile);
 				if (!present) {
-					Log.error("*ReportLISAS_analytics.csv NOT found in Metadata ZIP");
+					Log.error("*ReportLISAS_Analytics.csv NOT found in Metadata ZIP");
 				}
 			}
 			
@@ -2838,7 +2838,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 						reportListObj.toString()));
 				return false;
 			}
-			if(numIndications>=rankingGroup.size() || rankingGroup.get(numIndications)<-1){
+			if(numIndications>=rankingGroup.size() || rankingGroup.get(numIndications++)<-1){
 				Log.error((String.format(
 						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT in any ranking group in CSV.",
 						reportListObj.toString())));

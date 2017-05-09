@@ -269,10 +269,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				minClusterSz, maxClusterScale, expansionPower, inflationPower,
 				percentile, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
-//			setLatitude("37.3971035425739");
-//			setLongitude("-121.98343231897");
-			setLatitude("37.42057");
-			setLongitude("-121.97356");
+			setLatitude("37.3971035425739");
+			setLongitude("-121.98343231897");
 		}
 
 		this.btnAddNewLocation.click();
