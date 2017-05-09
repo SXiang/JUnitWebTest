@@ -93,7 +93,7 @@ public class TestEnvironmentActions extends BaseActions {
 		logAction("TestEnvironmentActions.startReplay", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_REPLAY, ARG_DATA_ROW_ID, dataRowID);
 		try {
-			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			TestEnvironmentDataRow dataRow = getWorkingDataRow(dataRowID);
 			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
 				if (!ActionArguments.isEmpty(data)) {
 					List<String> insFiles = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
@@ -228,6 +228,15 @@ public class TestEnvironmentActions extends BaseActions {
 
 	public void setDataReader(TestEnvironmentDataReader dataReader) {
 		this.dataReader = dataReader;
+	}
+
+	public TestEnvironmentDataRow getWorkingDataRow(Integer dataRowID) throws Exception {
+		TestEnvironmentDataRow dataRow = workingDataRow.get();
+		if (dataRow == null) {
+			getDataReader().getDataRow(dataRowID);
+		}
+
+		return dataRow;
 	}
 
 	public String getWorkingAnalyzerSerialNumber() throws NumberFormatException, Exception {
