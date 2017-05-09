@@ -2,6 +2,7 @@ package surveyor.scommon.actions.data;
 
 import common.source.ExcelUtility;
 import common.source.Log;
+import surveyor.scommon.actions.ActionArguments;
 
 public class TestEnvironmentDataReader extends BaseDataReader {
 	public TestEnvironmentDataReader(ExcelUtility excelUtility) {
@@ -9,14 +10,14 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 	}
 
 	private static final String TESTDATA_SHEET_NAME = "Test Environment Data";
-	 
+
 	public static final int Excel_TestData__Col_RowID = 0;
 	public static final int Excel_TestData__Col_AnalyzerSerialNumber = 1;
 	public static final int Excel_TestData__Col_AnalyzerSharedKey = 2;
 	public static final int Excel_TestData__Col_ReplayScriptDB3File = 3;
 	public static final int Excel_TestData__Col_ReplayScriptDefnFile = 4;
 	public static final int Excel_TestData__Col_AnalyzerRowID = 5;
- 
+
 	public class TestEnvironmentDataRow {
 		public String rowID;
 		public String analyzerSerialNumber;
@@ -24,8 +25,8 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 		public String replayScriptDB3File;
 		public String replayScriptDefnFile;
 		public String analyzerRowID;
- 
-		public TestEnvironmentDataRow(String rowID, String analyzerSerialNumber, String analyzerSharedKey, String replayScriptDB3File, 
+
+		public TestEnvironmentDataRow(String rowID, String analyzerSerialNumber, String analyzerSharedKey, String replayScriptDB3File,
 				String replayScriptDefnFile, String analyzerRowID) {
 			this.rowID = rowID;
 			this.analyzerSerialNumber = analyzerSerialNumber;
@@ -34,34 +35,35 @@ public class TestEnvironmentDataReader extends BaseDataReader {
 			this.replayScriptDefnFile = replayScriptDefnFile;
 			this.analyzerRowID = analyzerRowID;
 		}
-	}	
- 
+	}
+
 	private TestEnvironmentDataRow dataRow = null;
- 
+
 	public TestEnvironmentDataRow getDataRow() {
 		return dataRow;
 	}
- 
+
 	public Integer getRowCount() {
 		return this.getRowCount(TESTDATA_SHEET_NAME);
 	}
-	
+
 	public void setDataRow(TestEnvironmentDataRow dataRow) {
 		this.dataRow = dataRow;
 	}
- 
+
 	public TestEnvironmentDataRow getDataRow(Integer dataRowID) throws Exception {
 		String rowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_RowID, TESTDATA_SHEET_NAME);
 		String analyzerSerialNumber = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSerialNumber, TESTDATA_SHEET_NAME);
 		String analyzerSharedKey = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerSharedKey, TESTDATA_SHEET_NAME);
 		String replayScriptDB3File = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDB3File, TESTDATA_SHEET_NAME);
 		String replayScriptDefnFile = excelUtility.getCellData(dataRowID, Excel_TestData__Col_ReplayScriptDefnFile, TESTDATA_SHEET_NAME);
+		replayScriptDefnFile = ActionArguments.evaluateArgForFunction(replayScriptDefnFile);
 		String analyzerRowID = excelUtility.getCellData(dataRowID, Excel_TestData__Col_AnalyzerRowID, TESTDATA_SHEET_NAME);
-		
-		Log.info(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s], analyzerRowID=[%s]", 
+
+		Log.info(String.format("Found data row: rowID=[%s], analyzerSerialNumber=[%s], analyzerSharedKey=[%s], replayScriptDB3File=[%s], replayScriptDefnFile=[%s], analyzerRowID=[%s]",
 				rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, replayScriptDefnFile, analyzerRowID));
-		
-		return new TestEnvironmentDataRow(rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File, 
+
+		return new TestEnvironmentDataRow(rowID, analyzerSerialNumber, analyzerSharedKey, replayScriptDB3File,
 				replayScriptDefnFile, analyzerRowID);
 	}
 }

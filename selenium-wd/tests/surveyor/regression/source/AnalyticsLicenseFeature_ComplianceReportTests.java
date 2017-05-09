@@ -2,6 +2,9 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Before;

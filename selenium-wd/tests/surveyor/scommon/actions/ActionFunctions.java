@@ -1,6 +1,16 @@
 package surveyor.scommon.actions;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+import common.source.FileUtility;
+import common.source.HostSimDefinitionGenerator;
+import common.source.RegexUtility;
 import common.source.TestContext;
+import common.source.TestSetup;
 import surveyor.scommon.source.AnalyzerSerialNumberPool;
 
 public class ActionFunctions {
@@ -24,5 +34,16 @@ public class ActionFunctions {
 		}
 
 		return AnalyzerSerialNumberPool.INSTANCE.getAtIndex(index);
+	}
+
+	public String GenerateDefnWithMultipleEthPeaks(String ch4Values) throws IOException {
+		List<String> listCh4Values = RegexUtility.split(ch4Values, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
+		String defnFile = new HostSimDefinitionGenerator().generateDefaultEthDefinitionForMultiplePeaks(listCh4Values.toArray(new String[listCh4Values.size()]));
+		String defnFilename = Paths.get(defnFile).getFileName().toString();
+		String defnFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data" + File.separator + "defn";
+		String defnFullPath = Paths.get(defnFolder, defnFilename).toString();
+		Files.copy(Paths.get(defnFile), Paths.get(defnFullPath));
+		FileUtility.deleteFile(Paths.get(defnFile));
+		return defnFilename;
 	}
 }

@@ -2314,6 +2314,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
+		this.inputSearchReport.clear();
 		this.inputSearchReport.sendKeys(reportTitle);
 		waitForSearchResultsToLoad();
 
