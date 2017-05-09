@@ -14,7 +14,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ComplianceReportsPage;
 
-public class ReportJobPerformanceAssetBoxHighlightTest4 extends BaseReportJobPerformanceAssetBoxHighlightTest {
+public class ReportJobPerformanceAssetBoxHighlightTest4 extends BaseReportJobPerformanceReportGenTest {
 
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
@@ -93,6 +93,23 @@ public class ReportJobPerformanceAssetBoxHighlightTest4 extends BaseReportJobPer
 			Integer executionTimesForBaselines, String category) throws Exception {
 		Log.info(String.format("\nRunning [%s] Performance Test ASSETBOX_HIGHLIGHT_JOB ...", rallyTestCaseID));
 
-		executeAssetBoxHighlightTest(userDataRowID, reportDataRowID);
+		executeReportGenerationTest(userDataRowID, reportDataRowID);
+	}
+
+	/**
+	 * Test Case ID: ReportJob_PerformanceLargeAreaTest
+	 * Script: -
+	 *	- - Login as specified user
+	 *	- - Create New Compliance Report with specified report data
+	 *  - - Wait for Report to be generated
+	 *  - - Post report job statistics to automation reporting DB.
+	 */
+	@Test
+	@UseDataProvider(value = PerformanceReportJobDataProvider.REPORT_JOB_PERFORMANCE_REPORTGEN_PROVIDER_LARGEAREA, location = PerformanceReportJobDataProvider.class)
+	public void ReportJob_PerformanceLargeAreaReportGenTests(String rallyTestCaseID, Integer userDataRowID, Integer reportDataRowID,
+			Integer executionTimesForBaselines, String category) throws Exception {
+		Log.info(String.format("\nRunning [%s] Performance Test REPORTGEN_LARGEAREA ...", rallyTestCaseID));
+
+		executeReportGenerationTest(userDataRowID, reportDataRowID);
 	}
 }

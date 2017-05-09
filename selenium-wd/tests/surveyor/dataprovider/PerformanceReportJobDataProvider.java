@@ -103,6 +103,14 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int LARGE_AREA3_REPORT_DATA_ROW_ID = 151;
 	private static final int LARGE_AREA3_EXECUTIONS_FOR_BASELINES = 5;
 
+	private static final int LARGE_AREA4_USER_ROW_ID = 23;
+	private static final int LARGE_AREA4_REPORT_DATA_ROW_ID = 217;
+	private static final int LARGE_AREA4_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_AREA5_USER_ROW_ID = 23;
+	private static final int LARGE_AREA5_REPORT_DATA_ROW_ID = 218;
+	private static final int LARGE_AREA5_EXECUTIONS_FOR_BASELINES = 5;
+
 	private static final int LARGE_PIPES1_USER_ROW_ID = 24;
 	private static final int LARGE_PIPES1_REPORT_DATA_ROW_ID = 152;
 	private static final int LARGE_PIPES1_EXECUTIONS_FOR_BASELINES = 5;
@@ -123,6 +131,8 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEAREA = "dataProviderReportJobPerformanceLargeArea";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEPIPES = "dataProviderReportJobPerformanceLargePipes";
+
+	public static final String REPORT_JOB_PERFORMANCE_REPORTGEN_PROVIDER_LARGEAREA = "dataProviderReportJobPerformanceLargeAreaReportGenTest";
 
 	// asset box highlight dataproviders
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_ASSETBOX1 = "dataProviderReportJobPerformanceAssetBox1";
@@ -387,6 +397,15 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 			{ "TC2315-1", LARGE_AREA1_USER_ROW_ID, LARGE_AREA1_REPORT_DATA_ROW_ID, LARGE_AREA1_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
 			{ "TC2315-2", LARGE_AREA2_USER_ROW_ID, LARGE_AREA2_REPORT_DATA_ROW_ID, LARGE_AREA2_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
 			{ "TC2315-3", LARGE_AREA3_USER_ROW_ID, LARGE_AREA3_REPORT_DATA_ROW_ID, LARGE_AREA3_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceLargeAreaReportGenTest() {
+
+		return new Object[][] {
+			{ "TC2315-4", LARGE_AREA4_USER_ROW_ID, LARGE_AREA4_REPORT_DATA_ROW_ID, LARGE_AREA4_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+			{ "TC2315-5", LARGE_AREA5_USER_ROW_ID, LARGE_AREA5_REPORT_DATA_ROW_ID, LARGE_AREA5_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
 		};
 	}
 
