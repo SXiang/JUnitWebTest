@@ -657,7 +657,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-				<include name="**/DriverViewPageTest_Analytics.class" />
+				<include name="**/DriverViewPageTest.class" />
 			</fileset>
       </batchtest>
     </junit>

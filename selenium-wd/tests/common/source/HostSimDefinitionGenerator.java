@@ -24,6 +24,29 @@ public class HostSimDefinitionGenerator {
 	private HostSimNode mergerNode = null;
 	private HostSimNode zmqSenderNode = null;
 
+	public String generateDefaultMethDefinitionForMultiplePeaks(String[] ch4Values) throws IOException {
+		String[] sigmaValues = getDefaultSigmaValues(ch4Values);
+		return generateDefaultDefinitionForMultiplePeaks(ch4Values, sigmaValues, Mode.FEDS_mode, DEFAULT_METH_DELAY);
+	}
+
+	public String generateDefaultEthDefinitionForMultiplePeaks(String[] ch4Values) throws IOException {
+		String[] sigmaValues = getDefaultSigmaValues(ch4Values);
+		return generateDefaultDefinitionForMultiplePeaks(ch4Values, sigmaValues, Mode.RFADS_mode, DEFAULT_ETH_DELAY);
+	}
+
+	public String generateDefaultDefinitionForMultiplePeaks(String[] ch4Values, String[] sigmaValues, Mode mode, Integer delay) throws IOException {
+		HostSimDefinition hostSimDefinition = createBasicHostSimDefinition(String.format("replay-db3-%s-mult-peaks.defn", mode), mode, delay,
+				() -> createDefaultMultiplePeakDataTransformerNodes(ch4Values, sigmaValues));
+
+		if (mode == Mode.FEDS_mode) {
+			hostSimDefinition.addOption(Option.iCH4);
+		} else if (mode == Mode.RFADS_mode) {
+			hostSimDefinition.addOption(Option.Ethane);
+		}
+
+		return hostSimDefinition.writeFile();
+	}
+
 	private HostSimDefinition createBasicHostSimDefinition(String defnFileName, Mode mode, Integer delay, Supplier<List<HostSimNode>> measNodeSupplier) {
 		final String DB3_FILE_PATH = "%DB3_FILE_PATH%";
 		anemNode = new HostSimDbReaderNode("amemometer_reader", DB3_FILE_PATH , HostSimNodeTarget.dbreader_anemometer_reader);
@@ -51,29 +74,6 @@ public class HostSimDefinitionGenerator {
 			.addNode(zmqSenderNode);
 
 		return hostSimDefn;
-	}
-
-	public String generateDefaultMethDefinitionForMultiplePeaks(String[] ch4Values) throws IOException {
-		String[] sigmaValues = getDefaultSigmaValues(ch4Values);
-		return generateDefaultDefinitionForMultiplePeaks(ch4Values, sigmaValues, Mode.FEDS_mode, DEFAULT_METH_DELAY);
-	}
-
-	public String generateDefaultEthDefinitionForMultiplePeaks(String[] ch4Values) throws IOException {
-		String[] sigmaValues = getDefaultSigmaValues(ch4Values);
-		return generateDefaultDefinitionForMultiplePeaks(ch4Values, sigmaValues, Mode.RFADS_mode, DEFAULT_ETH_DELAY);
-	}
-
-	public String generateDefaultDefinitionForMultiplePeaks(String[] ch4Values, String[] sigmaValues, Mode mode, Integer delay) throws IOException {
-		HostSimDefinition hostSimDefinition = createBasicHostSimDefinition(String.format("replay-db3-%s-mult-peaks.defn", mode), mode, delay,
-				() -> createDefaultMultiplePeakDataTransformerNodes(ch4Values, sigmaValues));
-
-		if (mode == Mode.FEDS_mode) {
-			hostSimDefinition.addOption(Option.iCH4);
-		} else if (mode == Mode.RFADS_mode) {
-			hostSimDefinition.addOption(Option.Ethane);
-		}
-
-		return hostSimDefinition.writeFile();
 	}
 
 	private String[] getDefaultSigmaValues(String[] ch4Values) {

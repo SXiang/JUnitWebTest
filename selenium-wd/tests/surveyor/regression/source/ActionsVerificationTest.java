@@ -9,14 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.OLMapEntities.Indication;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
