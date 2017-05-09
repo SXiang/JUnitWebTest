@@ -57,19 +57,12 @@ public class DriverViewDataProvider extends SurveyorTestRunner {
 		final int surveyRuntimeInSeconds5 = 60;
 		final int surveyDataRowID5 = 63;
 
-		// Dummy test to try out generating multiple peaks in same survey
-		final int userDataRowID6 = 16;
-		final int analyzerDb3DataRowID6 = 67;
-		final int surveyRuntimeInSeconds6 = 60;
-		final int surveyDataRowID6 = 63;
-
 		return new Object[][] {
 			{ "TC2411", userDataRowID1, analyzerDb3DataRowID1, surveyRuntimeInSeconds1, surveyDataRowID1 },
 			{ "TC2412", userDataRowID2, analyzerDb3DataRowID2, surveyRuntimeInSeconds2, surveyDataRowID2 },
 			{ "TC2413", userDataRowID3, analyzerDb3DataRowID3, surveyRuntimeInSeconds3, surveyDataRowID3 },
 			{ "TC2414", userDataRowID4, analyzerDb3DataRowID4, surveyRuntimeInSeconds4, surveyDataRowID4 },
 			{ "TC2417", userDataRowID5, analyzerDb3DataRowID5, surveyRuntimeInSeconds5, surveyDataRowID5 },
-			{ "TC_DUMMY_TEST", userDataRowID6, analyzerDb3DataRowID6, surveyRuntimeInSeconds6, surveyDataRowID6 },
 		};
 	}
 

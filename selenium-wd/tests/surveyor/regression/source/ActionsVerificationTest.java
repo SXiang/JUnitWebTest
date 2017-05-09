@@ -3,14 +3,20 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.OLMapEntities.Indication;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
@@ -326,6 +332,53 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		} catch (Exception e) {
 			Log.error(e.toString());
 		}
+	}
+
+	/**
+	 * Unit test to verify multiple peak generation using dynamically generated defn and instruction files.
+	 * @throws Exception
+	 */
+	@Test
+	public void Test_verifyMultiplePeakGenerationUsingHostSimulator() throws Exception {
+		Log.info("\n Running Test_verifyMultiplePeakGenerationUsingHostSimulator ...");
+
+		final int EXPECTED_INDICATIONS = 5;
+
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 67;
+		final int surveyRuntimeInSeconds = 120;
+		final int surveyDataRowID = 63;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Driver */
+
+		Log.info("Starting Analyzer...");
+		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		Log.info("Starting Replay...");
+		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+
+		// confirm indication was shown in Driver view.
+		assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
 	}
 
 	/**
