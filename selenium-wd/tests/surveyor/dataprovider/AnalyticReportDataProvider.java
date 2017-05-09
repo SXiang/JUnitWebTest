@@ -11,8 +11,8 @@ import surveyor.scommon.generators.TestDataGenerator;
 public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST001 = "dataProviderAnalyticReports_UnitTest001";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_UNITTEST002 = "dataProviderAnalyticReports_UnitTest002";
-	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2338 = "dataProviderAnalyticReports_TC2338";
-	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2339 = "dataProviderAnalyticReports_TC2339";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2373 = "dataProviderAnalyticReports_TC2373";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2383 = "dataProviderAnalyticReports_TC2383";
 	public AnalyticReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -37,16 +37,16 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	}
 
 	@DataProvider
-	public static Object[][] dataProviderAnalyticReports_TC2338() {
+	public static Object[][] dataProviderAnalyticReports_TC2373() {
 		return new Object[][] {
-			{ "TC2338" /*TestCaseID*/, 4 /*userDataRowID*/,  210 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2373" /*TestCaseID*/, 6 /*userDataRowID*/,  210 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	
 	@DataProvider
-	public static Object[][] dataProviderAnalyticReports_TC2339() {
+	public static Object[][] dataProviderAnalyticReports_TC2383() {
 		return new Object[][] {
-			{ "TC2339" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2383" /*TestCaseID*/, 4 /*userDataRowID*/,  211 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }
