@@ -1153,6 +1153,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForNewPageLoad() {
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
