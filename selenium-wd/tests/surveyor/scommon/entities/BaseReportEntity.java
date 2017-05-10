@@ -373,6 +373,7 @@ public class BaseReportEntity {
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-TYLER HP|F07A7A0C-C857-415B-A956-039FD0625908");
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 2a|F46854AD-BB8C-4079-AE58-A803FC59A71C");
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560688|F61533EC-AF68-4E3A-A8C3-A536E67A6120");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30720800|9D5E66A8-C51D-4ABC-A291-C374F76CBDAF");
 	}
 
 	/**
