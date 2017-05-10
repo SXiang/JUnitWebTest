@@ -176,12 +176,22 @@ public class ManageUsersPage extends SurveyorBasePage {
 		super(driver, testSetup, baseURL, baseURL + urlPath);
 	}
 
+	public boolean addNewPicarroUser(String email, String password){
+		return addNewPicarroUser(email,password,true);
+	}
+	
 	public boolean addNewPicarroUser(String email, String password, boolean enabled) {
-		Log.method("addNewPicarroUser", email, "<PASSWORD_HIDDEN>", enabled);
+		return addNewPicarroUser(email,password,"Default", enabled);
+	}
+	public boolean addNewPicarroUser(String email, String password, String location, boolean enabled) {
+		Log.method("addNewPicarroUser", email, location, "<PASSWORD_HIDDEN>", enabled);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
 
+		Select droplist = new Select(this.dropDownCustomer);
+		droplist.selectByVisibleText(location);
+		
 		boolean done = false;
 		Log.info("Set email - '"+email+"'");
 		this.inputEmail.clear();

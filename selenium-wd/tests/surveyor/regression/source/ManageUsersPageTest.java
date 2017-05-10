@@ -632,7 +632,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, false);
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, "Picarro - "+location, false);
 		manageUsersPage.waitForPageLoad();
 
 		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
