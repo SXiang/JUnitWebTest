@@ -78,7 +78,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			manageLocationPageActions.open(EMPTY, NOTSET);
 			manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-					,testAccount.get("userName"), testAccount.get("userPassword"), 300, SurveyType.Analytics);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 500, SurveyType.Analytics);
 			pushGisData(testAccount.get("customerId"));
 			surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
 		}else{
