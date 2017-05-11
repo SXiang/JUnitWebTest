@@ -790,10 +790,10 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileSanity" description="Run sanity test suite tests ">
+  <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
-      <sysproperty key="maxParallelTestThreads" value="1" />
+      <sysproperty key="maxParallelTestThreads" value="3" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
@@ -804,7 +804,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/SanityIntegrationTest.class" />
+          <include name="**/AssessmentReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
