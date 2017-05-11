@@ -152,7 +152,7 @@ public class ReportJob extends BaseEntity {
 	}
 
 	public ArrayList<ReportJob> getAll() {
-		String SQL = "SELECT * FROM dbo.[ReportJob]";
+		String SQL = "SELECT * FROM dbo.[ReportJob] ORDER BY [DateStarted] DESC";
 		return load(SQL);
 	}
 

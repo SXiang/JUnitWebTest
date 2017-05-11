@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 import common.source.DateUtility;
 
-public class BaseReportJobPerformanceAssetBoxHighlightTest extends BaseReportJobPerformanceTest {
+public class BaseReportJobPerformanceReportGenTest extends BaseReportJobPerformanceTest {
 
-	protected void executeAssetBoxHighlightTest(Integer userDataRowID, Integer reportDataRowID) throws Exception {
+	protected void executeReportGenerationTest(Integer userDataRowID, Integer reportDataRowID) throws Exception {
 		LocalDateTime startDate = LocalDateTime.now();
 		createAndAssertOnReportGenerationComplete(userDataRowID, reportDataRowID);
 		getComplianceReportsPageAction().getComplianceReportsPage().setReportEndEpochTime(DateUtility.getCurrentUnixEpochTime());

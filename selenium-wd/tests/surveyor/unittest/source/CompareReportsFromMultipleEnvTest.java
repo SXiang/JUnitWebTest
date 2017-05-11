@@ -66,6 +66,8 @@ public class CompareReportsFromMultipleEnvTest {
 	private static final String MAP_REPORT_JOB_TYPE_ID = "00000000-0000-0000-0001-000000000000";
 	private static final String EQMAP_REPORT_JOB_TYPE_ID = "00000000-0000-0000-0004-000000000000";
 
+	private static final Integer MAX_REPORTS_TO_USE_FOR_COMPARISON = 50;
+
 	private static TestSetup testSetup = null;
 	private static ReportsBasePage reportsBasePage = null;
 	private static PDFUtility pdfUtility = null;
@@ -237,23 +239,34 @@ public class CompareReportsFromMultipleEnvTest {
 
 	private void downloadExtractPDFImages(Environment environment, Set<ReportInfo> reportInfosEnv, String reportPrefix) {
 		String envShortName = RegexUtility.split(environment.getBaseUrl(), RegexUtility.DOT_SPLIT_REGEX_PATTERN).get(0).replace("https://", "").toUpperCase();
-		reportInfosEnv.forEach(ri -> {
-			List<String> downloadURLs = new ArrayList<String>();
-			String downloadFileRelativeUrl = String.format(PDF_ZIP_FILE_DOWNLOAD_COMPLIANCE_URL, ri.getReportId());
-			if (reportPrefix.equals("AS")) {
-				downloadFileRelativeUrl = String.format(PDF_ZIP_FILE_DOWNLOAD_ASSESSMENT_URL, ri.getReportId());
-				downloadURLs.add(downloadFileRelativeUrl);
-			} else if (reportPrefix.equals("EQ")) {
-				ri.getReportJobInfos().forEach(j -> {
-					String relativeUrl = String.format(VIEW_FILE_DOWNLOAD_URL, j.getReportJobId());
-					downloadURLs.add(relativeUrl);
+		int idx = 0;
+		for (ReportInfo ri : reportInfosEnv) {
+			if (idx > MAX_REPORTS_TO_USE_FOR_COMPARISON) {
+				break;
+			}
+
+			if (ri != null && ri.getReportId() != null) {
+				List<String> downloadURLs = new ArrayList<String>();
+				String downloadFileRelativeUrl = String.format(PDF_ZIP_FILE_DOWNLOAD_COMPLIANCE_URL, ri.getReportId());
+				if (reportPrefix.equals("CR")) {
+					downloadURLs.add(downloadFileRelativeUrl);
+				} else if (reportPrefix.equals("AS")) {
+					downloadFileRelativeUrl = String.format(PDF_ZIP_FILE_DOWNLOAD_ASSESSMENT_URL, ri.getReportId());
+					downloadURLs.add(downloadFileRelativeUrl);
+				} else if (reportPrefix.equals("EQ")) {
+					ri.getReportJobInfos().forEach(j -> {
+						String relativeUrl = String.format(VIEW_FILE_DOWNLOAD_URL, j.getReportJobId());
+						downloadURLs.add(relativeUrl);
+					});
+				}
+
+				downloadURLs.stream().forEach(url -> {
+					downloadExtractFileFromUrl(environment, ri, reportPrefix, envShortName, url);
 				});
 			}
 
-			downloadURLs.stream().forEach(url -> {
-				downloadExtractFileFromUrl(environment, ri, reportPrefix, envShortName, url);
-			});
-		});
+			idx++;
+		}
 	}
 
 	private void downloadExtractFileFromUrl(Environment environment, ReportInfo rptInfo, String reportPrefix, String envShortName, String url) {
@@ -403,6 +416,7 @@ public class CompareReportsFromMultipleEnvTest {
 			.filter(r -> r.getReportTypeId().equals(reportTypeId))
 			.filter(r -> collectionContainsReport(reportJobInfosEnv1, r.getId()))
 			.map(r -> new ReportInfo(r.getId(), r.getReportTitle()))
+			.limit(MAX_REPORTS_TO_USE_FOR_COMPARISON)
 			.collect(Collectors.toSet());
 
 		// ENV2 -> Get ReportInfos for ENV1 ReportInfos.

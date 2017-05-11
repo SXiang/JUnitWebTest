@@ -1,3 +1,7 @@
+BEGIN TRANSACTION;
+
+BEGIN TRY
+
 DECLARE @customerId uniqueidentifier
 DECLARE @locationID uniqueidentifier
 DECLARE @userId uniqueidentifier
@@ -268,6 +272,11 @@ UPDATE [dbo].[Survey] set Tag='AACPTPerf16' where [Id]='33ED6C74-A6EB-8029-CFF1-
 
 UPDATE [dbo].[Survey] set Tag='AACPTPerf17' where [Id]='A8866B7B-8647-E108-E3A5-39D7D8DD3CCA'
 
+UPDATE [dbo].[Survey] set Tag='AACPTPerf21' where [Id]='F937E2FC-71AC-7237-73A8-39DE90E5AE80'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf22' where [Id]='1931E03D-1921-86F9-16D2-39DE9B10957A'
+UPDATE [dbo].[Survey] set Tag='AACPTPerf23' where [Id]='F39B7892-BB9D-BC86-8CBD-39DEBFD103C8'
+
+
 -- SIG surveys for Large Area/Large Asset tests.
 UPDATE [dbo].[Survey] set Tag='AASGPerf01' where [Id]='FC5D3AE1-F174-8CCE-260A-39D7A4D6A898'
 UPDATE [dbo].[Survey] set Tag='AASGPerf02' where [Id]='6B17E60D-D2B7-DDF2-D220-39D7F2CF46F5'
@@ -295,3 +304,31 @@ UPDATE [dbo].[Survey] set Tag='AAATMPerf06' where [Id]='8A820AAE-B663-97D6-0E28-
 -- Note: survey not detected in system and not used in tests.
 UPDATE [dbo].[Survey] set Tag='AAATMPerf07' where [Id]='FFD309B8-FC3D-8904-9C8B-39D1A98BDE65'
 UPDATE [dbo].[Survey] set Tag='AAATMPerf08' where [Id]='9DFE1519-E27A-9859-D993-39D3CB63D698'
+
+
+END TRY
+
+BEGIN CATCH
+    --returns the complete original error message as a result set
+    SELECT 
+        ERROR_NUMBER() AS ErrorNumber
+        ,ERROR_SEVERITY() AS ErrorSeverity
+        ,ERROR_STATE() AS ErrorState
+        ,ERROR_PROCEDURE() AS ErrorProcedure
+        ,ERROR_LINE() AS ErrorLine
+        ,ERROR_MESSAGE() AS ErrorMessage
+
+    --will return the complete original error message as an error message
+    DECLARE @ErrorMessage nvarchar(400), @ErrorNumber int, @ErrorSeverity int, @ErrorState int, @ErrorLine int
+    SELECT @ErrorMessage = N'Error %d, Line %d, Message: '+ERROR_MESSAGE(),@ErrorNumber = ERROR_NUMBER(),@ErrorSeverity = ERROR_SEVERITY(),@ErrorState = ERROR_STATE(),@ErrorLine = ERROR_LINE()
+
+ 	IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+
+	RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorNumber,@ErrorLine)
+    
+END CATCH;
+
+IF @@TRANCOUNT > 0
+    COMMIT TRANSACTION;
+GO

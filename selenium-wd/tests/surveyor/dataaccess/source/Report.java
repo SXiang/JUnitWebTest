@@ -196,7 +196,7 @@ public class Report extends BaseEntity {
 	}
 
 	public ArrayList<Report> getAll() {
-		String SQL = "SELECT * FROM dbo.[Report]";
+		String SQL = "SELECT * FROM dbo.[Report] ORDER BY [DateStarted] DESC";
 		return load(SQL);
 	}
 
