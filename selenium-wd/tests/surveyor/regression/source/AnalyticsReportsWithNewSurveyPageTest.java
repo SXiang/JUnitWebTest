@@ -235,6 +235,9 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
 	        assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+
+	        // TODO: Add additional verifications post DE2950 fixed to ensure correct indications are showing up in report.
+
 		} catch (Exception ex) {
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
