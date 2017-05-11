@@ -290,7 +290,7 @@ public class BaseTest {
 		return createTestAccount(testCase, lfsToExclude, CapabilityType.IsotopicMethane, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
-		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
+		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
 		String userRole = CUSUSERROLEUA;
