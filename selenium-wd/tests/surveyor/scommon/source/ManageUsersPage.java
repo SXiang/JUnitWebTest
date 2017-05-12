@@ -337,6 +337,10 @@ public class ManageUsersPage extends SurveyorBasePage {
 		this.inputEmail.clear();
 
 		this.inputEmail.sendKeys(email);
+		if (email.contains("@email.com")) {
+			this.firstName.sendKeys(email.replaceAll("@email.com", ""));
+		}
+
 		focusOnPage(pageLabel);
 		done = isElementPresent(this.labelUserNameErrorXPath, validatationTimeout);
 
@@ -365,10 +369,6 @@ public class ManageUsersPage extends SurveyorBasePage {
 			}
 
 			enableDisableUser(enabled);
-		}
-
-		if (email.contains("@email.com")) {
-			this.firstName.sendKeys(email.replaceAll("@email.com", ""));
 		}
 
 		Log.clickElementInfo("Ok");
