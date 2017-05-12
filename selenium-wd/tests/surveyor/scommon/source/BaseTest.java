@@ -483,9 +483,9 @@ public class BaseTest {
 	}
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
-		String replayScriptEthaneDefnFile = "replay-db3-eth-5.defn";
+		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
 		String replayScriptDB3File = "Surveyor.db3";
-		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-04.db3";
+		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};

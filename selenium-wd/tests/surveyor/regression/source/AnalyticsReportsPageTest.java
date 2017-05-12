@@ -1,29 +1,23 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -85,7 +79,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
 		
-		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("True:False:True:False", getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("True:True:True:True", getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 	
