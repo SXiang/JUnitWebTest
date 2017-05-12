@@ -176,10 +176,10 @@ public class LocationDataReader extends BaseDataReader {
 		String ethMethRatioMin = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMin, TESTDATA_SHEET_NAME);
 		String ethMethRatioMax = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_EthMethRatioMax, TESTDATA_SHEET_NAME);
 		String customerDataRowID = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_CustomerDataRowID, TESTDATA_SHEET_NAME);
-		String surMinAmp = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_SurveyMinAmp, TESTDATA_SHEET_NAME);
+		String surMinAmp = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_SurveyMinAmp, TESTDATA_SHEET_NAME);
 		String rankingMinAmp = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_RankingMinAmp, TESTDATA_SHEET_NAME);
 		String psFilter = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_FilterPS, TESTDATA_SHEET_NAME);
-		String top10PS = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Top10PS, TESTDATA_SHEET_NAME);
+		String top10PS = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Top10PS, TESTDATA_SHEET_NAME);
 		String top25PS = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Top25PS, TESTDATA_SHEET_NAME);
 		String top50PS = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Top50PS, TESTDATA_SHEET_NAME);
 		String dbScanRd = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_DbScanRadius, TESTDATA_SHEET_NAME);
@@ -187,7 +187,7 @@ public class LocationDataReader extends BaseDataReader {
 		String maxClusterScale = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_MaxClusterScale, TESTDATA_SHEET_NAME);
 		String expansionPower = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ExpansionPower, TESTDATA_SHEET_NAME);
 		String inflationPower = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_InflationPower, TESTDATA_SHEET_NAME);
-		String percentile = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_Percentile, TESTDATA_SHEET_NAME);
+		String percentile = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Percentile, TESTDATA_SHEET_NAME);
 
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], latitude=[%s], longitude=[%s], standardMinAmplitude=[%s], "
 				+ "operatorMinAmplitude=[%s], rapidResponseMinAmplitude=[%s], assessmentMinAmplitude=[%s], eQMinAmplitude=[%s], "
