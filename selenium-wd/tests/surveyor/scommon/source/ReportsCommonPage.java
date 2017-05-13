@@ -2842,7 +2842,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 						reportListObj.toString()));
 				return false;
 			}
-			if(numIndications>=rankingGroup.size() || rankingGroup.get(numIndications++)<-1){
+			if(numIndications>=rankingGroup.size() ||rankingGroup.get(numIndications++)<1||rankingGroup.get(numIndications++)>4){
 				Log.error((String.format(
 						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT in any ranking group in CSV.",
 						reportListObj.toString())));
