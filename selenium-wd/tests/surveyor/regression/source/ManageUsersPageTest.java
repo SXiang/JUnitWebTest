@@ -793,7 +793,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC480_ConfirmPasswordDifferent_PicSupport() {
 		String errorMsg = PWDSAMEVALUE;
-		String email = PICNAMEPREFIX + "dr" + getTestSetup().getRandomNumber() + REGBASEPICUSERNAME;
+		String email = PICNAMEPREFIX + "dr" + getTestSetup().getNewFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
 		String customerName = "Picarro";
 		String location = SQACUSSULOC;
 		String locationDesc = customerName + " - " + location;
