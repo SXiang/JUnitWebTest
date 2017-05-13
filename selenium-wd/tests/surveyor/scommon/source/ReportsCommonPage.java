@@ -2699,6 +2699,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public Map<Integer, Integer> getLISASAnalyticsRankingMap(String reportTitle) throws Exception{
 		Log.method("ReportsCommonPage.getLISASAnalyticsRankingMap", reportTitle);
 		Map<Integer, Integer> rankingMap = new HashMap<Integer, Integer>();
+		rankingMap.put(1, 0);
+		rankingMap.put(2, 0);
+		rankingMap.put(3, 0);
+		rankingMap.put(4, 0);
 		List<Integer> rankingList = getLISASAnalyticsRankingList(reportTitle);
 		for(Integer rankingGroup:rankingList){
 			int num = 1;
@@ -2711,9 +2715,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 	
 	public List<Integer> getLISASAnalyticsRankingList(String reportTitle) throws Exception{
+		Log.method("ReportsCommonPage.getLISASAnalyticsRankingList",reportTitle);
 		String reportId = Report.getReport(reportTitle).getId();
 		String actualPath = getDownloadPath(ReportFileType.MetaDataZIP, reportTitle);
-		Log.method("ReportsCommonPage.getLISASAnalyticsRankingList",reportTitle);
 		CSVUtility csvUtility = new CSVUtility();
 		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
 		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS_Analytics.csv";

@@ -78,7 +78,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			manageLocationPageActions.open(EMPTY, NOTSET);
 			manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-					,testAccount.get("userName"), testAccount.get("userPassword"), 500, SurveyType.Analytics);
+					,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
 			pushGisData(testAccount.get("customerId"));
 			surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
 		}else{
@@ -150,7 +150,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		Log.info("\nRunning TC2383_AnalyticsReportRankingGroup4WithFilterPS ..." +
 				"\nTest Description: Admin configuration screen for customer-location-specific analytics parameters - Filter PS");
 
-		String[] psFilters = {"0.01", DEFAULT_PSFILTER_THRESHOLD};
+		String[] psFilters = {"0.01", "0.2"};
 
 			//Modify psFilter
 			getLoginPage().open();
@@ -196,10 +196,10 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
 			Map<Integer, Integer> rankingMap2 = complianceReportsPageAction.getComplianceReportsPage().getLISASAnalyticsRankingMap(reportTitle);
 			
-//			assertEquals(rankingMap1.get(Integer.valueOf(1)), rankingMap2.get(Integer.valueOf(1)));
-//			assertEquals(rankingMap1.get(Integer.valueOf(2)), rankingMap2.get(Integer.valueOf(2)));
-//			assertEquals(rankingMap1.get(Integer.valueOf(3)), rankingMap2.get(Integer.valueOf(3)));
-//			assertTrue(rankingMap1.get(Integer.valueOf(4)) > rankingMap2.get(Integer.valueOf(4)));
+			assertEquals(rankingMap1.get(Integer.valueOf(1)), rankingMap2.get(Integer.valueOf(1)));
+			assertEquals(rankingMap1.get(Integer.valueOf(2)), rankingMap2.get(Integer.valueOf(2)));
+			assertEquals(rankingMap1.get(Integer.valueOf(3)), rankingMap2.get(Integer.valueOf(3)));
+			assertTrue(rankingMap1.get(Integer.valueOf(4)) > rankingMap2.get(Integer.valueOf(4)));
 			
 			getHomePage().logout();
 	}

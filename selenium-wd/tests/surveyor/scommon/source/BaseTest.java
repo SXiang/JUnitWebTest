@@ -490,7 +490,7 @@ public class BaseTest {
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
 		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
-		
+
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = defaultTestSurveyType;
 		}
