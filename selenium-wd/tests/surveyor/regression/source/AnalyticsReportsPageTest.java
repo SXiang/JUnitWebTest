@@ -1,7 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+import static surveyor.scommon.source.SurveyorConstants.SQAPICAD;
 
 import java.util.Arrays;
 import java.util.List;
@@ -128,7 +128,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		String reportMode = complianceReportsPageAction
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
-						PICDFADMIN);
+						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Analytics"));
 
 		complianceReportsPageAction.open(testCaseID,
@@ -139,7 +139,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		reportMode = complianceReportsPageAction
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
-						PICDFADMIN);
+						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Standard"));
 
 		complianceReportsPageAction.open(testCaseID,
@@ -150,7 +150,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		reportMode = complianceReportsPageAction
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
-						PICDFADMIN);
+						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Rapid Response"));
 
 		complianceReportsPageAction.open(testCaseID,
@@ -161,7 +161,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		reportMode = complianceReportsPageAction
 				.getReportModeForSpecifiedReportTitle(
 						ComplianceReportsPageActions.workingDataRow.get().title,
-						PICDFADMIN);
+						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Manual"));
 	}
 }
