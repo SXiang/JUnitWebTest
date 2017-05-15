@@ -184,7 +184,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 		return addNewPicarroUser(email,password,"Default", enabled);
 	}
 	public boolean addNewPicarroUser(String email, String password, String location, boolean enabled) {
-		Log.method("addNewPicarroUser", email, location, "<PASSWORD_HIDDEN>", enabled);
+		Log.method("addNewPicarroUser", email, "<PASSWORD_HIDDEN>", location, enabled);
 		Log.clickElementInfo("Add New Picarro User");
 		this.btnAddNewPicarroUser.click();
 		this.waitForNewPageLoad();
