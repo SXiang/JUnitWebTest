@@ -542,6 +542,7 @@
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -790,10 +791,10 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite" description="Run compliance report test suite tests ">
+  <target name="tc_localrun" depends="compileregression" description="Run local branch tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
-      <sysproperty key="maxParallelTestThreads" value="3" />
+      <sysproperty key="maxParallelTestThreads" value="1" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
