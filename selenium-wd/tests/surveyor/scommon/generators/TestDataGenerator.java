@@ -87,13 +87,14 @@ public class TestDataGenerator {
 				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(),
 				custSrvInfo.getInstructionFiles(), testActions);
 
-		// Cleanup GIS seed.
-		try {
-			Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
-			DbSeedExecutor.cleanUpGisSeed(customer.getId());
-		} catch (Exception e) {
-			Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+		// Cleanup GIS seed (if not specified to be retained).
+		if (!custSrvInfo.isRetainGISSeedData()) {
+			try {
+				Customer customer = Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name);
+				DbSeedExecutor.cleanUpGisSeed(customer.getId());
+			} catch (Exception e) {
+				Log.error(String.format("Error in FINALLY. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			}
 		}
-
 	}
 }

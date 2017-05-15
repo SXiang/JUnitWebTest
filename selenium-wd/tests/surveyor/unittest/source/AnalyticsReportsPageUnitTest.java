@@ -82,7 +82,7 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
 	}
-	
+
 	/**
 	 * Test Case ID: UnitTest002_GenerateAnalyticReportPicarroAdminUser
 	 * Test Description: - Generate Analytics Report as Picarro admin user
@@ -107,5 +107,5 @@ public class AnalyticsReportsPageUnitTest extends BaseReportsPageActionTest {
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_SURVEYMISSING_MESSAGE));
-		}
+	}
 }

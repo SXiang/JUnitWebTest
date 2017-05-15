@@ -2758,13 +2758,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 				boolean foundInCsv = false;
 				for (Map<String, String> csvRow : csvRows) {
-					// NOTE: This is workaround added to keep perf tests running in CI while we are adding support for
-					//       LISAAssetHighlight comparison in baselines (Tracked by US4383)
-					if (reportJobTypeId.equals(BaseReportEntity.ReportJobTypeReverseGuids.get(ReportJobType.LISAAssetHighlight))) {
-						foundInCsv = true;
-						break;
-					}
-
 					String expectedReportJobId = csvRow.get("ReportJobTypeId");
 					if (reportJobTypeId.equals(expectedReportJobId)) {
 						foundInCsv = true;

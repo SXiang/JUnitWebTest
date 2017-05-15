@@ -1026,7 +1026,9 @@ public class TestSetup {
 			placeholderMap.put("%DB3_FILE_PATH%", db3FileFullPath);
 			if (instructionFiles != null && instructionFiles.length > 0) {
 				for (int i=0; i<instructionFiles.length; i++) {
-					placeholderMap.put("%" + String.format("INSTRUCTION_FILE_%d", i) + "%", instructionFiles[i]);
+					String instFilePath = instructionFiles[i];
+					instFilePath = instFilePath.replace("\\", "/").trim();
+					placeholderMap.put("%" + String.format("INSTRUCTION_FILE_%d", i) + "%", instFilePath);
 				}
 			}
 

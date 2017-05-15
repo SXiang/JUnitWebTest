@@ -14,7 +14,7 @@ import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.ComplianceReportsPage;
 
-public class ReportJobPerformanceAssetBoxHighlightTest5 extends BaseReportJobPerformanceAssetBoxHighlightTest {
+public class ReportJobPerformanceAssetBoxHighlightTest5 extends BaseReportJobPerformanceReportGenTest {
 
 	private static HomePageActions homePageAction;
 	private static LoginPageActions loginPageAction;
@@ -92,6 +92,6 @@ public class ReportJobPerformanceAssetBoxHighlightTest5 extends BaseReportJobPer
 			Integer executionTimesForBaselines, String category) throws Exception {
 		Log.info(String.format("\nRunning [%s] Performance Test ASSETBOX_HIGHLIGHT_JOB ...", rallyTestCaseID));
 
-		executeAssetBoxHighlightTest(userDataRowID, reportDataRowID);
+		executeReportGenerationTest(userDataRowID, reportDataRowID);
 	}
 }
