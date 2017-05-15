@@ -117,29 +117,12 @@ public class StoredProcComplianceGetIndications extends BaseEntity {
 	}
 
 	public ArrayList<StoredProcComplianceGetIndications> get(String reportId) {
-		return get(reportId, false);
-	}
-
-	public ArrayList<StoredProcComplianceGetIndications> get(String reportId, boolean checkPSFilter) {
 		ArrayList<StoredProcComplianceGetIndications> objReportList = load(reportId);
-		applyPSFilter(objReportList, checkPSFilter);
 		return objReportList;
 	}
 
-	public void applyPSFilter(ArrayList<StoredProcComplianceGetIndications> objReportList, boolean checkPSFilter){
-		if(!checkPSFilter) 
-			return;
-		objReportList.stream()
-				.filter(p -> p.getCh4() > getPSFilterThreshold(p.getSurveyorUnitName()))
-				.collect(Collectors.toList());
-	}
-
 	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId) {
-		return getReportIndications(reportId, false);
-	}
-
-	public static ArrayList<StoredProcComplianceGetIndications> getReportIndications(String reportId, boolean checkPSFilter) {
-		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId, checkPSFilter);
+		ArrayList<StoredProcComplianceGetIndications> objStoredProcComplianceGetIndications = new StoredProcComplianceGetIndications().get(reportId);
 		return objStoredProcComplianceGetIndications;
 	}
 	

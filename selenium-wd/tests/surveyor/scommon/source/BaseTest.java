@@ -490,7 +490,7 @@ public class BaseTest {
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
 		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
-		
+
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = defaultTestSurveyType;
 		}
@@ -572,7 +572,6 @@ public class BaseTest {
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
 		driverViewPageAction.waitForConnectionToComplete("", -1);
-
 		TestSetup.replayDB3Script(db3DefnFile, db3file);
 		driverViewPageAction.clickOnModeButton("", -1);
 		driverViewPageAction.startDrivingSurvey("", surveyRowID);
