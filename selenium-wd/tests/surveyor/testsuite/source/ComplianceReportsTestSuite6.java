@@ -7,12 +7,14 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
 import surveyor.regression.mobile.source.ComplianceReportsInvestigationPageTest;
+import surveyor.regression.source.AnalyticsReportsPageTest;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
 @SuiteClasses({
 	/* !Don't Put more than one mobile test class in each suite */
-	ComplianceReportsInvestigationPageTest.class
+	ComplianceReportsInvestigationPageTest.class,
+	AnalyticsReportsPageTest.class
 })
 public class ComplianceReportsTestSuite6 {
 
