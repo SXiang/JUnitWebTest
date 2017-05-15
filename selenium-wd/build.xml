@@ -542,6 +542,7 @@
           <include name="**/ObserverViewPageTest2.class" />
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -790,7 +791,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileSanity" description="Run sanity test suite tests ">
+  <target name="tc_localrun" depends="compileregression" description="Run local branch tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
       <sysproperty key="maxParallelTestThreads" value="1" />
@@ -804,7 +805,8 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/SanityIntegrationTest.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+          <include name="**/AnalyticsReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

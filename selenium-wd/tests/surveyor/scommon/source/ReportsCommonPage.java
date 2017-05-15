@@ -57,6 +57,7 @@ import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -2350,7 +2351,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyMetaDataFilesArePresent(String downloadPath, String reportTitle,
-			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent, boolean verifyIsotopicMetaPresent) throws IOException {
+			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent, 
+			boolean verifyIsotopicMetaPresent, boolean verifyLisaAnalyticsMetaPresent) throws IOException {
 		Log.method("verifyMetaDataFilesArePresent", downloadPath, reportTitle,
 				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 
@@ -2364,6 +2366,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String metaJsonFile = String.format("%s-%s-Report.json", reportPrefix, reportID);
 		String metaGapFile = String.format("%s-%s-ReportGAP.csv", reportPrefix, reportID);
 		String metaLISAFile = String.format("%s-%s-ReportLISAS.csv", reportPrefix, reportID);
+		String metaLISAAnalyticsFile = String.format("%s-%s-ReportLISAS_Analytics.csv", reportPrefix, reportID);
 		String metaSurveyFile = String.format("%s-%s-ReportSurvey.csv", reportPrefix, reportID);
 		String metaIsoCaptureFile = String.format("%s-%s-ReportIsotopicCapture.csv", reportPrefix, reportID);
 
@@ -2388,6 +2391,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 				}
 			}
 
+			if (verifyLisaAnalyticsMetaPresent) {
+				present = present && filesInDirectory.contains(metaLISAAnalyticsFile);
+				if (!present) {
+					Log.error("*ReportLISAS_Analytics.csv NOT found in Metadata ZIP");
+				}
+			}
+			
 			if (verifySurveyMetaPresent) {
 				present = present && filesInDirectory.contains(metaSurveyFile);
 				if (!present) {
@@ -2576,12 +2586,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws Exception{
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle);
-		return verifyLISASMetaDataFile(actualPath, reportTitle, false);
-	}
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, boolean checkPSFilter)
-			throws Exception {
-		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, checkPSFilter);
-		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId(), checkPSFilter);
+		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
 
 	public boolean verifyNumberOfLISAsInMetaDataFile(String actualPath, String reportTitle, Integer expectedLISACount)
@@ -2591,15 +2596,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return (outLISAs.size() == expectedLISACount);
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, boolean checkPSFilter)
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId)
 			throws Exception {
-		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/, checkPSFilter);
+		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, null /*outLISAs*/);
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs) throws Exception{
-		return verifyLISASMetaDataFile(actualPath, reportTitle, reportId, outLISAs, false);
-	}
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs, boolean checkPSFilter)
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle, String reportId, List<String> outLISAs)
 			throws Exception {
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle, reportId);
 		CSVUtility csvUtility = new CSVUtility();
@@ -2678,7 +2680,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
 		}
 
-		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId, checkPSFilter);
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId);
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
@@ -2688,10 +2690,169 @@ public class ReportsCommonPage extends ReportsBasePage {
 				return false;
 			}
 		}
+		
 		Log.info("LISA Meta data file verification passed");
+
 		return true;
 	}
 
+	public Map<Integer, Integer> getLISASAnalyticsRankingMap(String reportTitle) throws Exception{
+		Log.method("ReportsCommonPage.getLISASAnalyticsRankingMap", reportTitle);
+		Map<Integer, Integer> rankingMap = new HashMap<Integer, Integer>();
+		rankingMap.put(1, 0);
+		rankingMap.put(2, 0);
+		rankingMap.put(3, 0);
+		rankingMap.put(4, 0);
+		List<Integer> rankingList = getLISASAnalyticsRankingList(reportTitle);
+		for(Integer rankingGroup:rankingList){
+			int num = 1;
+			if(rankingMap.containsKey(rankingGroup)){
+				num += rankingMap.get(rankingGroup);
+			}
+			rankingMap.put(rankingGroup, num);
+		}
+		return rankingMap;
+	}
+	
+	public List<Integer> getLISASAnalyticsRankingList(String reportTitle) throws Exception{
+		Log.method("ReportsCommonPage.getLISASAnalyticsRankingList",reportTitle);
+		String reportId = Report.getReport(reportTitle).getId();
+		String actualPath = getDownloadPath(ReportFileType.MetaDataZIP, reportTitle);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS_Analytics.csv";
+		if (actualPath.endsWith("-ReportLISAS_Analytics.csv")) {
+			pathToCsv = actualPath;
+		}	
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		return getLISASAnalyticsRankingList(csvRows);
+	}
+	
+	private List<Integer> getLISASAnalyticsRankingList(List<Map<String, String>> csvRows){
+		List<Integer> rankingGroup = new ArrayList<Integer>();
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		while (csvIterator.hasNext()) {
+			Integer ranking = -1;
+			Map<String, String> csvRow = csvIterator.next();
+			try{
+				ranking = Integer.valueOf(csvRow.get("RankingGroup"));
+			}catch(Exception e){
+				Log.warn("Failed to get the ranking group of a indication "+e);
+			}
+			rankingGroup.add(ranking);
+		}
+		return rankingGroup;
+	}
+	
+	public boolean verifyLISASAnalyticsMetaDataFile(String reportTitle) throws Exception{
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP, reportTitle);
+		return verifyLISASAnalyticsMetaDataFile(downloadPath, reportTitle);
+	}
+	
+	public boolean verifyLISASAnalyticsMetaDataFile(String actualPath, String reportTitle)
+			throws Exception {
+		String reportId = Report.getReport(reportTitle).getId();
+		Log.method("ReportsCommonPage.verifyLISASAnalyticsMetaDataFile", actualPath, reportTitle, reportId);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
+
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS_Analytics.csv";
+		String reportName = getReportPrefix() + "-" + reportId;
+		if (actualPath.endsWith("-ReportLISAS_Analytics.csv")) {
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		List<Integer> rankingGroup = getLISASAnalyticsRankingList(csvRows);
+		
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
+
+		List<String> lisasList = new ArrayList<String>();
+		while (csvIterator.hasNext()) {
+			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
+			Map<String, String> csvRow = csvIterator.next();
+			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
+				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
+				return false;
+			}
+			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
+				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
+				return false;
+			}
+			String lisaNumber = csvRow.get("LISANumber").trim();
+			reportIndObj.setPeakNumber(lisaNumber.replaceAll("LISA", ""));
+			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
+			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
+
+			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
+			reportIndObj.setAmplitude((float) amp);
+			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
+			reportIndObj.setCh4((float) cH4);
+			reportIndObj.setText(csvRow.get("FieldNotes").trim());
+
+			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
+			// indication
+			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
+			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
+			String aggregatedClassificationconfidence = "N/A";
+			try {
+				if (!BaseHelper.isNullOrEmpty(csvRow.get("ConfidenceInDisposition").trim())) {
+					int aggregatedClassificationconfidenceFloat = (int) (Float
+							.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
+					aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+				} else {
+					aggregatedClassificationconfidence = "0%";
+				}
+			} catch (Exception e) {
+				Log.warn(e.toString());
+			}
+			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
+			reportList.add(reportIndObj);
+
+			lisasList.add(lisaNumber);
+		}
+
+		if (!verifyLisasAreUpperCase(lisasList)) {
+			throw new Exception("Incorrect LISA label casing detected.");
+		}
+
+		if (!verifyLisaNumbersAreInSequentialOrder(lisasList)) {
+			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
+		}
+
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId);
+
+		int numIndications = 0;
+		for (StoredProcComplianceGetIndications reportListObj : reportList) {
+			if (!reportListObj.isInList(storedPodList)) {
+				Log.info(String.format(
+						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.",
+						reportListObj.toString()));
+				return false;
+			}
+			if(numIndications>=rankingGroup.size() ||rankingGroup.get(numIndications)<1||rankingGroup.get(numIndications++)>4){
+				Log.error((String.format(
+						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT in any ranking group in CSV.",
+						reportListObj.toString())));
+				return false;
+			}
+		}
+		
+		Log.info("LISA Analytics Meta data file verification passed");
+		return true;
+	}
 	public boolean verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
 		switch (compliancezipmeta) {
 		case ComplianceTablePDF:
@@ -2992,10 +3153,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @throws IOException
 	 */
 	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException{
-		return verifyIndicationTable(actualPath, reportTitle, false);
-	}
-	
-	public boolean verifyIndicationTable(String actualPath, String reportTitle, boolean checkPSFilter) throws IOException {
 		Log.method("ReportsCommonPage.verifyIndicationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -3059,8 +3216,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.info(String.format("ReportIndications ArrayList Values : %s",
 				LogHelper.strListToString(reportIndicationsList)));
 
-		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId, checkPSFilter);
+		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
 		
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
 		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
