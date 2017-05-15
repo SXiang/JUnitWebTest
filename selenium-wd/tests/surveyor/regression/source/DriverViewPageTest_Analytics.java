@@ -596,8 +596,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
 
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
-			indicationsOnDriverView.forEach(i -> 
-			(driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET)));
+			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
 			assertTrue(driverPageAction.verifyFieldNotesDialogIsNotShown(EMPTY, NOTSET));
 			return true;
 		});
