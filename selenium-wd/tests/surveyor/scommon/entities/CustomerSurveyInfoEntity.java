@@ -16,6 +16,7 @@ public class CustomerSurveyInfoEntity {
 	private Integer db3AnalyzerRowID;
 	private String[] instructionFiles;
 	private boolean pushGISSeedData;
+	private boolean retainGISSeedData;
 
 	public CustomerSurveyInfoEntity() {
 	}
@@ -126,6 +127,14 @@ public class CustomerSurveyInfoEntity {
 
 	public void setPushGISSeedData(boolean pushGISSeedData) {
 		this.pushGISSeedData = pushGISSeedData;
+	}
+
+	public boolean isRetainGISSeedData() {
+		return retainGISSeedData;
+	}
+
+	public void setRetainGISSeedData(boolean retainGISSeedData) {
+		this.retainGISSeedData = retainGISSeedData;
 	}
 
 	@Override

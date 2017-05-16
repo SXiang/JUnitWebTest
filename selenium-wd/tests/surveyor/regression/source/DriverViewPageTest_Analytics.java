@@ -339,6 +339,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 */
 	private String generateInstructionFiles(String testCaseId) throws IOException {
 		Log.method("generateInstructionFiles", testCaseId);
+
 		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
 		if (testCaseId.equalsIgnoreCase("TC2411")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
