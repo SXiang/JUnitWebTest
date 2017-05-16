@@ -439,6 +439,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.surMinAmp.sendKeys(surMinAmp);
 	}
 
+	public void setRankingMinAmp(String rankingMinAmp){
+		Log.info("Set Ranking Min Amp - '" + rankingMinAmp + "'");
+		this.rankingMinAmp.clear();
+		this.rankingMinAmp.sendKeys(rankingMinAmp);
+	}
+
 	public void setPsFilter(String psFilter){
 		Log.info("Set Filter PS - '" + psFilter + "'");
 		this.psFilter.clear();
@@ -1128,6 +1134,12 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void editSurveyMinAmplitude(String customerName, String locationName, String surMinAmp){
 		findExistingLocationAndClickEdit(customerName, locationName);
 		setSurveyMinAmp(surMinAmp);
+		clickOnOkBtn();
+	}
+
+	public void editRankingMinAmplitude(String customerName, String locationName, String surMinAmp){
+		findExistingLocationAndClickEdit(customerName, locationName);
+		setRankingMinAmp(surMinAmp);
 		clickOnOkBtn();
 	}
 

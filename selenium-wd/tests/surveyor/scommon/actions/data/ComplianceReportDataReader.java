@@ -60,6 +60,11 @@ public class ComplianceReportDataReader extends ReportsCommonDataReader {
 			this.opacityLISA = opacityLISA;
 			this.searchAreaPreference = searchAreaPreference;
 		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
 	}
 
 	private static Map<String, Integer> buildColumnIndexMap() {
@@ -118,10 +123,5 @@ public class ComplianceReportDataReader extends ReportsCommonDataReader {
 				reportsDataRow.opacityFOV, opacityLISA, reportsDataRow.pDFImageOutputWidth, reportsDataRow.pDFImageOutputHeight, reportsDataRow.reportViewRowIDs,
 				reportsDataRow.reportOptViewLayerRowID, reportsDataRow.reportOptTabularPDFContentRowID, reportsDataRow.reportSurveyRowIDs,
 				searchAreaPreference);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 }

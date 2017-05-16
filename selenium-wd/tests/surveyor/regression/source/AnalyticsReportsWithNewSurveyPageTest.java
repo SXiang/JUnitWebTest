@@ -6,7 +6,6 @@ import common.source.Log;
 import common.source.TestContext;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.DEFAULT_LOCATION_DATAROWID;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import java.util.Map;
@@ -47,7 +46,6 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
-import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -347,15 +345,15 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
-		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
-		final int newLocationRowID = 19;
-		final int newCustomerUserRowID = 29;
-		final int newSurveyorRowID = 27;
-		final int newAnalyzerRowID = 25;
-		final int newRefGasBottleRowID = 9;
+		final int newLocationRowID = 20;
+		final int newCustomerUserRowID = 30;
+		final int newSurveyorRowID = 28;
+		final int newAnalyzerRowID = 26;
+		final int newRefGasBottleRowID = 10;
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
@@ -384,16 +382,24 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 
-			Float locationMinAmp = manageLocationPageActions.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, MinAmplitudeType.Survey_Analytics_Survey);
+			Float locationMinAmp = manageLocationPageActions.getMinAmplitudeForLocation(newLocationRowID, MinAmplitudeType.Survey_Analytics_Ranking);
 			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(locationMinAmp), NOTSET));
 
 			final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
 			final String locationName = ManageLocationPageActions.workingDataRow.get().name;
-			final String newAnalyticsSurveyMinAmp = "0.1";
+			final String newAnalyticsRankingMinAmp = "0.1";
+
+			// login as admin and update analytics location properties.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
 			manageLocationPageActions.open(EMPTY, NOTSET);
 			manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
-			manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,newAnalyticsSurveyMinAmp);
+			manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,newAnalyticsRankingMinAmp);
+
+			// login back as user and create analytics report.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
 			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -401,7 +407,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsSurveyMinAmp, NOTSET));
+			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsRankingMinAmp, NOTSET));
 
 		} catch (Exception ex) {
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
@@ -479,12 +485,22 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			final String newTop10PS = "0.1";
 			final String newTop25PS = "0.05";
 			final String newTop50PS = "0.035";
+
+			// login as admin and update analytics location properties.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
 			manageLocationPageActions.open(EMPTY, NOTSET);
 			manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
 			manageLocationPageActions.getManageLocationsPage().editLocationTopPSValues(customerName, locationName, newTop10PS, newTop25PS, newTop50PS);
 
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			// login back as user and create analytics report.
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+			complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.copyReport(ComplianceReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnOKButton(EMPTY, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(String.format("%s:%s:%s", newTop10PS, newTop25PS, newTop50PS),
 					getReportRowID(reportDataRowID1));
