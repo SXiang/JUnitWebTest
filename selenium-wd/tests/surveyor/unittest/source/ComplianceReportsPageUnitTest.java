@@ -74,7 +74,13 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		}
 	}
 
-
+	@Test
+	public void verifyAnalyticsPeakInfoIsCorrectInDB() throws Exception {
+        loginPageAction.open(EMPTY, 6);
+        loginPageAction.login("9c06ff17ed@email.com:sqa#Picarro$0", NOTSET);
+		complianceReportsPageAction.open(EMPTY, 221);
+		complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(EMPTY, 221);
+	}
 
 	@Test
 	public void verifyGetSSRSPDFTableValues() throws IOException {

@@ -6,6 +6,7 @@ import common.source.Log;
 import common.source.TestContext;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.DEFAULT_LOCATION_DATAROWID;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import java.util.Map;
@@ -41,9 +42,12 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
+import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
+import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -51,8 +55,11 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
 	private static LoginPageActions loginPageAction;
-
 	private static DriverViewPage driverViewPage;
+
+	private static MeasurementSessionsPage measurementSessionsPage;
+
+
 	private static Map<String, String> testAccount, testSurvey;
 	private static String userName;
 	private static String userPassword;
@@ -63,6 +70,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	public TestName testName = new TestName();
 
 	private static String surveyTag;
+
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -83,7 +91,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 
-		if (!testName.getMethodName().startsWith("TC2418_AnalyticsLowSurveyMinAmplitudeAndHighRankingMinAmplitude")) {
+		if (testCaseNeedsSetupData(testName)) {
 			if(testAccount == null){
 				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
 				userName = testAccount.get("userName");
@@ -96,7 +104,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
 				pushGisData(testAccount.get("customerId"));
 				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-			}else{
+			} else {
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 				manageLocationPageActions.open(EMPTY, NOTSET);
@@ -126,6 +134,20 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		HomePage homePage = pageObjectFactory.getHomePage();
 		setHomePage(homePage);
 		PageFactory.initElements(getDriver(), homePage);
+
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
+	}
+
+	private boolean testCaseNeedsSetupData(TestName testName) {
+		String methodName = testName.getMethodName();
+		if (!methodName.startsWith("TC2418_AnalyticsLowSurveyMinAmplitudeAndHighRankingMinAmplitude")
+				&& !methodName.startsWith("TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS")
+				&& !methodName.startsWith("TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -276,6 +298,9 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
+			measurementSessionsPage.open();
+			measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
+
 			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
@@ -295,6 +320,184 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
 		}
 	}
+
+	/**
+	 * Test Case: TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude
+	 * Description: Admin configuration screen for customer-location-specific analytics parameters - Ranking Min Amplitude
+	 * Pre-Conditions:
+	 *  - Existing customer with Analytics license
+	 *  - Existing Analytics surveys
+	 * Script:
+	 *	- Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer
+	 *	- Set the Ranking Min Amplitude value to 0.035 and click OK
+	 *	- Generate an Analytics Report
+	 *	- Check the SSRS
+	 *	- Navigate back to the Locations configuration page and set the Ranking Min Amplitude value to 0.1 (or higher, depending on the peaks that are present in the report) and click OK
+	 *	- Generate another Analytics Report
+	 *	- Check the SSRS
+	 * Verifications:
+	 *	- After the first report is run, the SSRS should show that peaks with amplitude as low as 0.035 are included in the rankings. Peaks below this threshold are not included
+	 *	- After the second report is run, the SSRS should show that peaks only down to 0.1 (or whatever the new value entered) are included in the rankings
+	**/
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2389, location = AnalyticReportDataProvider.class)
+	public void TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude ...");
+
+		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
+
+		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 19;
+		final int newCustomerUserRowID = 29;
+		final int newSurveyorRowID = 27;
+		final int newAnalyzerRowID = 25;
+		final int newRefGasBottleRowID = 9;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setRetainGISSeedData(true);
+
+		try {
+			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+				assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+				return true;
+			});
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+			measurementSessionsPage.open();
+			measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+
+			Float locationMinAmp = manageLocationPageActions.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, MinAmplitudeType.Survey_Analytics_Survey);
+			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(locationMinAmp), NOTSET));
+
+			final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+			final String locationName = ManageLocationPageActions.workingDataRow.get().name;
+			final String newAnalyticsSurveyMinAmp = "0.1";
+
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
+			manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,newAnalyticsSurveyMinAmp);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsSurveyMinAmp, NOTSET));
+
+		} catch (Exception ex) {
+			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+		} finally {
+			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+			// Remove GIS seed from the customer.
+			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+		}
+	}
+
+	/**
+	 * Test Case: TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS
+	 * Description: Admin configuration screen for customer-location-specific analytics parameters - Top % PS
+	 * Pre-Conditions:
+	 *  - Existing customer with Analytics license
+ 	 *  - Existing Analytics surveys with LISAs of different amplitudes - ideally, these would produce a report that has LISAs with Ranking Grades  of 1, 2, 3 and 4
+	 * Script:
+	 *	- Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer
+	 *	- Set the Top 10% PS value to 1, the Top 25% PS value to .5, the Top 50% PS value to .1 and click OK
+	 *	- Navigate to Reports -> Compliance Reports and click on New Compliance Report
+	 *	- Enter a report Title, select the above customer, select Report Mode: Analytics
+	 *	- Select a boundary, select one or more surveys run by a surveyor associated to the above location that have several indications of varying amplitudes, select all View and GIS options, select Indication table and click OK
+	 *	- Once the report has completed, check the AnalyticsPeak table in the DB for that report
+	 *	- Navigate back to the Locations page and change the Top 10% PS value to .1, Top 25% PS value to .05, Top 50% PS value to .035 and click OK
+	 *	- Copy the above generated report and compare the PDF and CSV of the first report with those of the second
+	 * Verifications:
+	 *	- Verify that the peaks with PS above 1 are in Ranking Grade 1, those between.5 and 1 are in Ranking Grade 2, those between .1 and .5 are in Ranking Grade 3 and there are no peaks below .1The second report's results should reflect the changes made on the Locations page
+	 *	- In the second report's ReportLISAs_Analytics.csv, the Ranking Grades should have changed - some of the LISAs should have jumped to a higher rank. Verify that the DB reflects the changes made to the PS values
+	**/
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2401, location = AnalyticReportDataProvider.class)
+	public void TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS ...");
+
+		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
+
+		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 180; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 19;
+		final int newCustomerUserRowID = 29;
+		final int newSurveyorRowID = 27;
+		final int newAnalyzerRowID = 25;
+		final int newRefGasBottleRowID = 9;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setRetainGISSeedData(true);
+
+		try {
+			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+				assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+				return true;
+			});
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+			measurementSessionsPage.open();
+			measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(EMPTY, getReportRowID(reportDataRowID1));
+
+			final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+			final String locationName = ManageLocationPageActions.workingDataRow.get().name;
+			final String newTop10PS = "0.1";
+			final String newTop25PS = "0.05";
+			final String newTop50PS = "0.035";
+			manageLocationPageActions.open(EMPTY, NOTSET);
+			manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
+			manageLocationPageActions.getManageLocationsPage().editLocationTopPSValues(customerName, locationName, newTop10PS, newTop25PS, newTop50PS);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(String.format("%s:%s:%s", newTop10PS, newTop25PS, newTop50PS),
+					getReportRowID(reportDataRowID1));
+
+		} catch (Exception ex) {
+			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
+		} finally {
+			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+			// Remove GIS seed from the customer.
+			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+		}
+	}
+
 	private void cleanupReports(String rptTitle, String strCreatedBy) throws Exception {
 		// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
 		// Delete both the original report and the copy compliance report.

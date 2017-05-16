@@ -137,43 +137,43 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(id = "info")
 	protected WebElement selectedPoint;
-	
+
 	@FindBy(id = "AnalyticsMinimumAmplitude")
 	protected WebElement surMinAmp;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_RankingMinAmplitude")
 	protected WebElement rankingMinAmp;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFirst")
 	protected WebElement top10PS;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreSecond")
 	protected WebElement top25PS;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreThird")
 	protected WebElement top50PS;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_PriorityScoreFilterThreshold")
 	protected WebElement psFilter;
- 
+
 	@FindBy(id = "LocationAnalyticsParameter_DbScanRadius")
 	protected WebElement dbScanRd;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_MinClusterSize")
 	protected WebElement minClusterSz;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_MaxSpatialScale")
 	protected WebElement maxClusterScale;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_ExpansionPower")
 	protected WebElement expansionPower;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_InflationPower")
 	protected WebElement inflationPower;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_Percentile")
 	protected WebElement percentile;
-	
+
 	@FindBy(id = "LocationAnalyticsParameter_JustDbScan")
 	protected WebElement justDBScan;
 
@@ -240,7 +240,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "",
 				"", "", "", "", "", "", "", true);
 	}
-	
+
 	public boolean addNewLocation(String locationDesc, String customer,
 			String newLocationName, String surMinAmp, String rankingMinAmp,
 			String top10PS, String top25PS, String top50PS, String psFilter,
@@ -403,7 +403,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				this.percentile.sendKeys(percentile);
 			}
 		}
-		
+
 		this.NoLower.clear();
 		this.NoLower.sendKeys("-45");
 		this.YesLower.clear();
@@ -444,14 +444,32 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.psFilter.clear();
 		this.psFilter.sendKeys(psFilter);
 	}
-	
+
+	public void setTop10Ps(String top10PS){
+		Log.info("Set Top10PS - '" + top10PS + "'");
+		this.top10PS.clear();
+		this.top10PS.sendKeys(top10PS);
+	}
+
+	public void setTop25Ps(String top25PS){
+		Log.info("Set Top25PS - '" + top25PS + "'");
+		this.top25PS.clear();
+		this.top25PS.sendKeys(top25PS);
+	}
+
+	public void setTop50Ps(String top50PS){
+		Log.info("Set Top50PS - '" + top50PS + "'");
+		this.top50PS.clear();
+		this.top50PS.sendKeys(top50PS);
+	}
+
 	public void clickOnOkButton(){
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		Log.clickElementInfo("Ok");
 		js.executeScript("arguments[0].click();", this.btnOK);
 		this.waitForPageToLoad();
 	}
-	
+
 	public boolean verifyErrorMessage(String errorMsg){
 		Log.method("verifyErrorMessage", errorMsg);
 		return verifyErrorMessage(errorMsg, false /*checkOnlyErrorSummary*/);
@@ -741,7 +759,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 						this.inputLocationLong.sendKeys(longValue);
 					}
 				}
-				
+
 				if (newSurMinAmp != null && newSurMinAmp != "") {
 					Log.info("Set Survey Min Amp - '" + newSurMinAmp + "'");
 					this.surMinAmp.clear();
@@ -753,7 +771,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.rankingMinAmp.clear();
 					this.rankingMinAmp.sendKeys(newRankingMinAmp);
 				}
-				
+
 				if (newPsFilter != null && newPsFilter != "") {
 					Log.info("Set PS Filter - '" + newPsFilter + "'");
 					this.psFilter.clear();
@@ -764,13 +782,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.top10PS.clear();
 					this.top10PS.sendKeys(newTop10PS);
 				}
-				
+
 				if (newTop25PS != null && newTop25PS != "") {
 					Log.info("Set Top 25% PS - '" + newTop25PS + "'");
 					this.top25PS.clear();
 					this.top25PS.sendKeys(newTop25PS);
 				}
-				
+
 				if (newTop50PS != null && newTop50PS != "") {
 					Log.info("Set Top 50% PS - '" + newTop50PS + "'");
 					this.top50PS.clear();
@@ -781,13 +799,13 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.dbScanRd.clear();
 					this.dbScanRd.sendKeys(newDbScanRd);
 				}
-	
+
 				if (newMinClusterSz != null && newMinClusterSz != "") {
 					Log.info("Set Min Cluster Size - '" + newMinClusterSz + "'");
 					this.minClusterSz.clear();
 					this.minClusterSz.sendKeys(newMinClusterSz);
 				}
-				
+
 				if (newMaxClusterScale != null && newMaxClusterScale != "") {
 					Log.info("Set Max Cluster Scale - '" + newMaxClusterScale + "'");
 					this.maxClusterScale.clear();
@@ -805,7 +823,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					this.inflationPower.clear();
 					this.inflationPower.sendKeys(newInflationPower);
 				}
-				
+
 				if (newPercentile != null && newPercentile != "") {
 					Log.info("Set Percentile - '" + newPercentile + "'");
 					this.percentile.clear();
@@ -1107,18 +1125,26 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		});
 	}
 
-	public void editSurveyMinAmplitude(String customerName, String locationName, String surMinAmp){		
+	public void editSurveyMinAmplitude(String customerName, String locationName, String surMinAmp){
 		findExistingLocationAndClickEdit(customerName, locationName);
 		setSurveyMinAmp(surMinAmp);
 		clickOnOkBtn();
 	}
-	
-	public void editLocationPSFilterThreshold(String customerName, String locationName, String psFilterThreshold){		
+
+	public void editLocationPSFilterThreshold(String customerName, String locationName, String psFilterThreshold){
 		findExistingLocationAndClickEdit(customerName, locationName);
 		setPsFilter(psFilterThreshold);
 		clickOnOkBtn();
 	}
-	
+
+	public void editLocationTopPSValues(String customerName, String locationName, String top10PS, String top25PS, String top50PS){
+		findExistingLocationAndClickEdit(customerName, locationName);
+		setTop10Ps(top10PS);
+		setTop25Ps(top25PS);
+		setTop50Ps(top50PS);
+		clickOnOkBtn();
+	}
+
 	public boolean isSurveyMinAmpShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(surMinAmp);
 	}
@@ -1166,7 +1192,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public boolean isPercentileShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(percentile);
 	}
-	
+
 	public boolean isJustDBScanShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(justDBScan);
 	}
