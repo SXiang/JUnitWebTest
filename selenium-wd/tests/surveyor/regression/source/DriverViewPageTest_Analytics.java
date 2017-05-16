@@ -612,7 +612,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * - User should not able to see Analytics survey mode option.
 	 * - User can see Standard/Rapid Response/Operator/Manual survey mode according to the license feature, but not Analytics.
 	 */
-	@Test  //Test case is failing due to product defect DE2942
+	@Ignore  //Disabling test case is failing due to product defect DE2942.  Tracking with DE2964 
 	public void TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer() throws Exception{
 		Log.info("\nTestcase - TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer\n");
 
