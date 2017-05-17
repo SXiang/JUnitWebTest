@@ -473,4 +473,48 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		});
 
 	}
+	
+	@Test
+	public void Test_verifyMultiplePeakGenerationUsingHostSimulator() throws Exception {
+		Log.info("\n Running Test_verifyMultiplePeakGenerationUsingHostSimulator ...");
+
+	final int EXPECTED_INDICATIONS = 5;
+
+	final int userDataRowID = 16;
+	final int analyzerDb3DataRowID = 70;
+	final int surveyRuntimeInSeconds = 120;
+	final int surveyDataRowID = 63;
+
+	getLoginPageAction().open(EMPTY, NOTSET);
+	getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
+
+	Log.info("Starting Analyzer...");
+	getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+	driverViewPageAction.open(EMPTY,NOTSET);
+	driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+	Log.info("Starting Replay...");
+	getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+
+	// start survey.
+	driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+	driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+	driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+	driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+
+	// collect indications shown during the survey.
+	Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+	// stop survey.
+	driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+	driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+	// stop simulator and PSA.
+	Log.info("Stopping Analyzer...");
+	getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+	// confirm indication was shown in Driver view.
+	assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
+}
+
 }
