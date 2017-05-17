@@ -63,6 +63,7 @@ import common.source.ApiUtility;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFTableUtility;
@@ -86,6 +87,7 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -2898,7 +2900,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public String getReportModeForProvidedReportTitle(String reportTitle,
 			String reportCreatedBy) {
 		String reportMode = "";
-		searchReport(reportTitle, reportCreatedBy);
+		int numTry = 0;
+		boolean found = false;
+		do{
+			found = searchReport(reportTitle, reportCreatedBy);
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
 		reportMode = this.reportMode.getText().trim();
 		return reportMode;
 	}
