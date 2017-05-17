@@ -480,6 +480,14 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(EMPTY, getReportRowID(reportDataRowID1));
 
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("True:True:True:True", getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
+
 			final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
 			final String locationName = ManageLocationPageActions.workingDataRow.get().name;
 			final String newTop10PS = "0.1";
@@ -504,6 +512,14 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 			complianceReportsPageAction.verifyAnalyticsPeakInfoIsCorrectInDB(String.format("%s:%s:%s", newTop10PS, newTop25PS, newTop50PS),
 					getReportRowID(reportDataRowID1));
+
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.waitForMetaZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.extractMetaZIP(EMPTY, getReportRowID(reportDataRowID1));
+
+			assertTrue(complianceReportsPageAction.verifyMetaDataZIPFilesArePresent("True:True:True:True", getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
