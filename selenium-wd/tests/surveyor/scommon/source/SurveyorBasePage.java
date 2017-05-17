@@ -806,7 +806,11 @@ public class SurveyorBasePage extends BasePage {
 				return false;
 			}
 		};
-		(new WebDriverWait(driver, timeout)).until(jQueryAnimationComplete);
+		try{
+			(new WebDriverWait(driver, 2*timeout)).until(jQueryAnimationComplete);
+		}catch(Exception e){
+			Log.warn("Failed to wait for animation to complete "+e);
+		}
 	}
 
 	public void waitForSignalRCallsToComplete() {
