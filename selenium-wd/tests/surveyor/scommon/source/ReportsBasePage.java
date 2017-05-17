@@ -1173,12 +1173,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.inputTitle.sendKeys(rptTitle);
 	}
 
+	protected boolean isCustomerSelectDisplayed() {
+		return WebElementExtender.isElementPresentAndDisplayed(dropdownCustomer);
+	}
+
 	public void selectCustomer(String customer) {
 		selectCustomer(customer, true);
 	}
 
 	public void selectCustomer(String customer, boolean confirm) {
-		if (dropdownCustomer.isDisplayed()) {
+		if (isCustomerSelectDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
