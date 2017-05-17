@@ -356,15 +356,15 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
 		}
 		else if (testCaseId.equalsIgnoreCase("TC2345")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		}
 		else if (testCaseId.equalsIgnoreCase("TC2355")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		}
 		return String.join(",", measInstructions.createFile());
 	}
