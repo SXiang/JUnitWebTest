@@ -54,10 +54,6 @@ public enum AnalyzerSerialNumberPool {
 		// grab random serial number from pool.
 		runningIdx = new Random().nextInt(analyzerPool.size());
 
-		if (runningIdx >= analyzerPool.size()) {
-			runningIdx = 0;
-		}
-
 		return analyzerPool.get(runningIdx);
 	}
 }
