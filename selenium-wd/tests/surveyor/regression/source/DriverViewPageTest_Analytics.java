@@ -149,7 +149,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Car icon turns red and "Analytics Survey Active" appears in bold green font at top left of map
 	 *	- 8 Hour History, Concentration Chart, WindRose and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Test
+	@Ignore
 	public void TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception{
 		Log.info("\nTestcase - TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu\n");
 
@@ -201,7 +201,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- User is taken to Survey View of selected survey
 	 *	- 8 Hour History and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Test
+	@Ignore
 	public void TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception {
 		Log.info("\nRunning TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu ...");
 
@@ -274,7 +274,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
 	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
@@ -389,11 +389,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception {
 		Log.info("\nRunning TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures ...");
 
+		final int picAdminUserDataRowID = 6;
 		final Integer analyzerDb3DataRowID = 58;
 		final Integer surveyDataRowID = 61;
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
 		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
 		driverViewPageAction.open(EMPTY,NOTSET);
@@ -438,11 +439,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed() throws Exception {
 		Log.info("\nRunning TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed ...");
 
+		final int picAdminUserDataRowID = 6;
 		final Integer analyzerDb3DataRowID = 58;
 		final Integer surveyDataRowID = 61;
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
 		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
 		driverViewPageAction.open(EMPTY,NOTSET);
