@@ -211,8 +211,15 @@ public class TestSetup {
 	public static String getExecutionPath() throws IOException{
 		return getExecutionPath(getRootPath());
 	}
+
 	public static String getExecutionPath(String rootPath) {
 		/* For CI and Eclipse run setup */
+		// NOTE: This check is added to ensure both Selenium tests and Android app tests compile correctly using ANT.
+		//       Once code refactoring for Android App is complete, this check might not be needed.
+		if (rootPath.contains("android-app")) {
+			rootPath = rootPath.replace("\\android-app", "");
+		}
+
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
 		//String executionPath = rootPath+ File.separator;
