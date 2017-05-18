@@ -149,7 +149,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Car icon turns red and "Analytics Survey Active" appears in bold green font at top left of map
 	 *	- 8 Hour History, Concentration Chart, WindRose and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Ignore
+	@Test
 	public void TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception{
 		Log.info("\nTestcase - TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu\n");
 
@@ -201,7 +201,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- User is taken to Survey View of selected survey
 	 *	- 8 Hour History and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Ignore
+	@Test
 	public void TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception {
 		Log.info("\nRunning TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu ...");
 
@@ -274,7 +274,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
 	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
