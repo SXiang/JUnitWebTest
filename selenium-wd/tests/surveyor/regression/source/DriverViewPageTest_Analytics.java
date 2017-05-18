@@ -389,11 +389,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception {
 		Log.info("\nRunning TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures ...");
 
+		final int picAdminUserDataRowID = 6;
 		final Integer analyzerDb3DataRowID = 58;
 		final Integer surveyDataRowID = 61;
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
 		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
 		driverViewPageAction.open(EMPTY,NOTSET);
@@ -438,11 +439,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed() throws Exception {
 		Log.info("\nRunning TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed ...");
 
+		final int picAdminUserDataRowID = 6;
 		final Integer analyzerDb3DataRowID = 58;
 		final Integer surveyDataRowID = 61;
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
 		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
 		driverViewPageAction.open(EMPTY,NOTSET);
