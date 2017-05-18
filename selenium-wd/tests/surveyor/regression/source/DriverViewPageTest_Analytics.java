@@ -11,14 +11,13 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
-
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.ExceptionUtility;
 import common.source.HostSimInstructions;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import common.source.HostSimInstructions.Action;
 import common.source.HostSimInstructions.Measurement;
 import common.source.HostSimInstructions.Selector;
@@ -30,9 +29,7 @@ import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
-import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -50,7 +47,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
 	private static LoginPage loginPage;
-	private static HomePage homePage;
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
 	}
@@ -65,7 +61,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		try {
 			initializeTestObjects();
 			initializePageActions();
-			initializePageObjects();
 			TestSetup.restartAnalyzer();
 		} catch (UnknownHostException e) {
 			Log.info(ExceptionUtility.getStackTraceString(e));
@@ -79,15 +74,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		surveyViewPageAction = ActionBuilder.createSurveyViewPageAction();
 	}
 
-	private void initializePageObjects() {
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-
-		loginPage = pageObjectFactory.getLoginPage();
-		PageFactory.initElements(getDriver(), loginPage);
-
-		homePage = pageObjectFactory.getHomePage();
-		PageFactory.initElements(getDriver(), homePage);
-	}
 	/**
 	 *	Test Case ID: TC2365
 	 *	Test Case Description: Survey View - Only peaks above Survey Min Amplitude appear in Analytics Survey mode
@@ -146,7 +132,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		indicationsOnSurveyView.forEach(i -> Log.info(i.toString()));
 
 		Float LOCATION_MIN_AMP = 5.0F;
-		Log.info(String.format("Confirm indications shown in Survey view are above MinAmplitude[%d] of the location ", LOCATION_MIN_AMP));
+		Log.info(String.format("Confirm indications shown in Survey view are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
 		indicationsOnSurveyView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
 	}
 
@@ -370,151 +356,316 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2365_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
 		}
-		else if (testCaseId.equalsIgnoreCase("TC2382-1")) {
+		else if (testCaseId.equalsIgnoreCase("TC2345")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "2.5", "0.16", "0.01", "TC2382_1_insert_peak_ampl_0_0_3_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		}
-		else if (testCaseId.equalsIgnoreCase("TC2382-2")) {
+		else if (testCaseId.equalsIgnoreCase("TC2355")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "2.5", "0.16", "0.01", "TC2382_1_insert_peak_ampl_0_1_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		}
-
 		return String.join(",", measInstructions.createFile());
 	}
 
 	/**
-	 * Test Case ID: TC2382_AdminConfigurationScreenForCustomer_Location_Specific_AnalyticsParameters_SurveyMinAmplitude
+	 * Test Case ID: TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures
 	 * Script:
-	 *	- Existing customer with Analytics license
-	 *	- This test is best conducted with a Surveyor running two analyzers, one with a lower threshold value and one with a higher threshold value, to confirm that the higher threshold value is being respected (and peaks with lower amplitudes are being filtered out by the higher-threshold analyzer).
-	 *	- The alternative is to run a survey and gather several peaks at a lower threshold, then a second survey at a high enough threshold that some peaks are filtered out but larger peaks are displayed (this procedure is detailed below)
-	 *	- Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer
-	 *	- Set the Survey Min Amplitude value to 0.035 and click OK
-	 *	- Log into the tablet for an analyzer belonging to the above customer and begin an Analytics survey
-	 *	- Collect several peaks of different amplitudes and then stop the survey and log out
-	 *	- Log into the UI as a Picarro Admin and change the Survey Min Amplitude for the above location to 0.1 (or some other value that is midway between the amplitudes collected in the above survey) and click OK
-	 *	- Restart the PSA, log back into the tablet and run a new survey over the same route as before.
+	 *	- Log into the tablet
+	 *	- Click on Mode -> Start Survey
+	 *	- Enter a tag and the environmental conditions and select Survey Mode "Analytics"
+	 *	- Click on Mode again
+	 *	- Click on Display
 	 *
 	 * Results:
-	 *	- During the first survey, Driver View should display peaks with amplitudes as low as 0.035.
-	 *	- During the second survey, Driver View should only display peaks with amplitude above 0.1 (or whatever value was entered the second time). Peaks that appeared in the first survey with amplitudes between 0.035 and 0.1 should not be present in the second survey
+	 *	- User is taken to Driver View
+	 *	- Survey details popup appears
+	 *	- Car icon turns red, "Analytics Survey Active" appears in bold green font at upper left of map, "Mode: Analytics" appears at top right
+	 *	- Only "Stop Survey" appears as an option on Mode menu. "Reference Bottle Measurement" and "Start Capture" do not appear in Mode menu
+	 *	- Display menu does not have "Analysis Results" option
+	 **/
+	@Test	
+	public void TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception {
+		Log.info("\nRunning TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures ...");
+
+		final int picAdminUserDataRowID = 6;
+		final Integer analyzerDb3DataRowID = 58;
+		final Integer surveyDataRowID = 61;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
+
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID);
+
+
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(2), NOTSET);
+
+		assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
+		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsNotVisible(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsNotVisible(EMPTY, NOTSET));		
+
+		driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
+
+		// Stop current simulator.
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/**
+	 * Test Case ID: TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed
+	 * Script:
+	 *	- Log into tablet as Picarro Admin
+	 *	- Click on Mode
+	 *	- Click on Start Analytics Survey
+	 *	- Enter the tag and environmental conditions and click Start Survey
+	 *
+	 * Results:
+	 *	- User is taken to Driver View
+	 *	- Mode menu appears with Start Survey, Start Analytics Survey and System Shutdown buttons (Start EQ or Start Facility EQ buttons may also be present)
+	 *	- Start Survey popup appears
+	 *	- "Analytics Survey Active" appears in bold green font at top left of map and "Mode: Analytics" appears in the Survey Information block at top right
 	 **/
 	@Test
-	public void TC2382_AdminConfigurationScreenForCustomer_Location_Specific_AnalyticsParameters_SurveyMinAmplitude() throws Exception {
-		Log.info("\nRunning TC2382_AdminConfigurationScreenForCustomer_Location_Specific_AnalyticsParameters_SurveyMinAmplitude ...");
+	public void TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed() throws Exception {
+		Log.info("\nRunning TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed ...");
 
-		final String testCaseId1 = "TC2382-1";
-		final String testCaseId2 = "TC2382-2";
+		final int picAdminUserDataRowID = 6;
+		final Integer analyzerDb3DataRowID = 58;
+		final Integer surveyDataRowID = 61;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
+
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer. RFADS2004-PICARRO
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID);
+
+
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+
+		assertTrue(driverViewPageAction.verifyStartSurveyButtonIsEnabled(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifySystemShutdownButtonIsEnabled(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyStartEQSurveyButtonIsEnabled(EMPTY, NOTSET));
+
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		getTestEnvironmentAction().idleForSeconds(String.valueOf(2), NOTSET);
+
+		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
+		assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals(expectedModeValue, NOTSET));
+
+		// Stop current simulator.
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/**
+	 * Test Case ID: TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode
+	 * Script:
+	 *	- Log into UI as Picarro Admin
+	 *	- Navigate to the Locations page
+	 *	- Select a customer location and click Edit
+	 *	- Set the Survey Min Amplitude level to a certain level (ex. 0.4)
+	 *	- Click OK
+	 *	- Log into tablet as Picarro Admin
+	 *	- Click on Mode
+	 *	- Click on Start Analytics Survey
+	 *	- Enter the tag and environmental conditions and click Start Survey
+	 *	- Click on Display
+	 *	- Turn on all Indications options
+	 *	- Drive to areas where indications reliably appear
+	 *
+	 * Results:
+	 *	- User is taken to Driver View
+	 *	- Mode menu appears with Start Survey, Start Analytics Survey and System Shutdown buttons (Start EQ or Start Facility EQ buttons may also be present)
+	 *	- Start Survey popup appears
+	 *	- Display menu appears with Indications option and indications sub-options
+	 *	- Only indications with amplitudes above the Survey Min Amplitude level should appear during survey
+	 **/
+	@Test
+	public void TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode() throws Exception {
+		Log.info("\nRunning TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode ...");
+
+		final String testCaseId = "TC2365";
 
 		final int picAdminUserDataRowID = 6;
 		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
-
 		final int newCustomerRowID = 14;
-		final int newLocationRowID1 = 18;
-		final int newCustomerUserRowID1 = 28;
-		final int newSurveyorRowID1 = 26;
-		final int newAnalyzerRowID1 = 24;
-		final int newRefGasBottleRowID1 = 8;
-
-		final int newLocationRowID2 = 19;
-		final int newCustomerUserRowID2 = 29;
-		final int newSurveyorRowID2 = 27;
-		final int newAnalyzerRowID2 = 25;
-		final int newRefGasBottleRowID2 = 9;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
 
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
-		final int numInstFiles1 = 1;
-		String[] instFiles1 = RegexUtility.split(generateInstructionFiles(testCaseId1), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles1]);
+		final int numInstFiles = 1;
+		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
 
-		CustomerSurveyInfoEntity custSrvInfo1 = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID1, newCustomerUserRowID1, newAnalyzerRowID1,
-				newSurveyorRowID1, newRefGasBottleRowID1, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles1);
-		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo1, (driverPageAction) -> {
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
 			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-			Set<Indication> indicationsOnDriverView1 = driverViewPageAction.getIndicationsShownOnPage();
+			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
 
-			Log.info(String.format("Indications detected in DriverView with Survey Min Amp 0.035 = %d", indicationsOnDriverView1.size()));
-			indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
+			indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
 
-			Float LOCATION_MIN_AMP_1 = 0.035F;
-			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[0.035] of the location ", LOCATION_MIN_AMP_1));
-			indicationsOnDriverView1.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_1));
+			Float LOCATION_MIN_AMP = 2.0F;
+			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
+			indicationsOnDriverView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
 
 			return true;
 		});
-
-		getHomePage().logout();
-
-		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
-
-		final int numInstFiles2 = 1;
-		String[] instFiles2 = RegexUtility.split(generateInstructionFiles(testCaseId2), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles2]);
-
-		CustomerSurveyInfoEntity custSrvInfo2 = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID2, newCustomerUserRowID2, newAnalyzerRowID2,
-				newSurveyorRowID2, newRefGasBottleRowID2, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles2);
-		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo2, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-			Set<Indication> indicationsOnDriverView2 = driverViewPageAction.getIndicationsShownOnPage();
-
-			Log.info(String.format("Indications detected in DriverView with Survey Min Amp 0.1 = %d", indicationsOnDriverView2.size()));
-			indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
-
-			Float LOCATION_MIN_AMP_2 = 0.1F;
-			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%0.1] of the location ", LOCATION_MIN_AMP_2));
-			indicationsOnDriverView2.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_2));
-
-			return true;
-		});
-
 	}
-	
+
+	/**
+	 * Test Case ID: TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys
+	 * Script:
+	 *	- Log into the tablet as Picarro Admin
+	 *	- Click Mode
+	 *	- Click Start Analytics Survey
+	 *	- Fill out tag and environmental conditions in popup and click OK
+	 *	- Collect several indications
+	 *	- Click on one or more of the indications
+	 *	- Click on Display
+	 *
+	 * Results:
+	 *	- Upon clicking an indication, a popup should appear with details about that leak. The popup should not have a button for adding Field Notes
+	 *	- The Display menu does not have an option for Field Notes
+	 **/
+	@Test
+	public void TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys() throws Exception {
+		Log.info("\nRunning TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys ...");
+
+
+		final String testCaseId = "TC2365";
+
+		final int picAdminUserDataRowID = 6;
+		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
+
+		final int numInstFiles = 1;
+		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
+
+			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
+			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
+			assertTrue(driverPageAction.verifyFieldNotesDialogIsNotShown(EMPTY, NOTSET));
+			return true;
+		});
+	}
+
+	/* * Test Case ID: TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer
+	 * Script:
+	 * - Customer has Analytics License.
+	 * - Customer has P3200 (FEDS) Analyzer up and running.
+	 * - login as customer driver go on Driver view on FEDS Analyzer.
+	 * - Click on Start survey
+	 * Results:
+	 * - User should not able to see Analytics survey mode option.
+	 * - User can see Standard/Rapid Response/Operator/Manual survey mode according to the license feature, but not Analytics.
+	 */
+	@Ignore  //Disabling test case is failing due to product defect DE2942.  Tracking with DE2964 
+	public void TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer() throws Exception{
+		Log.info("\nTestcase - TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer\n");
+
+		loginPageAction.get().open(EMPTY, NOTSET);
+		loginPageAction.get().login(EMPTY, 6);   /* Utility Admin */
+		testEnvironmentAction.get().startAnalyzer(EMPTY, 24);
+
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		testEnvironmentAction.get().startReplay(EMPTY, 31); 	// start simulator and replay db3 file.
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.getDriverViewPage().getSystemShutdownButton().isDisplayed());
+		assertTrue(driverViewPageAction.getDriverViewPage().getStartSurveyButton().isDisplayed());
+
+		// click Start Survey button.
+		driverViewPageAction.getDriverViewPage().clickStartSurveyButton();
+		driverViewPageAction.getDriverViewPage().waitForStartSurveyModalDialogToShow();
+
+		// verify Analytics button is NOT showing.
+		assertFalse(WebElementExtender.isElementPresentAndDisplayed(driverViewPageAction.getDriverViewPage().getAnalyticsButton()));
+
+		// Stop current simulator
+		testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/**
+	 * Unit test to verify multiple peak generation using dynamically generated defn and instruction files.
+	 * @throws Exception
+	 */
 	@Test
 	public void Test_verifyMultiplePeakGenerationUsingHostSimulator() throws Exception {
 		Log.info("\n Running Test_verifyMultiplePeakGenerationUsingHostSimulator ...");
 
-	final int EXPECTED_INDICATIONS = 5;
+		final int EXPECTED_INDICATIONS = 5;
 
-	final int userDataRowID = 16;
-	final int analyzerDb3DataRowID = 70;
-	final int surveyRuntimeInSeconds = 120;
-	final int surveyDataRowID = 63;
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 70;
+		final int surveyRuntimeInSeconds = 120;
+		final int surveyDataRowID = 63;
 
-	getLoginPageAction().open(EMPTY, NOTSET);
-	getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
 
-	Log.info("Starting Analyzer...");
-	getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
-	driverViewPageAction.open(EMPTY,NOTSET);
-	driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-	Log.info("Starting Replay...");
-	getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
 
-	// start survey.
-	driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-	driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
-	driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-	driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 
-	// collect indications shown during the survey.
-	Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
-	// stop survey.
-	driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-	driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
-	// stop simulator and PSA.
-	Log.info("Stopping Analyzer...");
-	getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
-	// confirm indication was shown in Driver view.
-	assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
-}
-
+		// confirm indication was shown in Driver view.
+		assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
+	}
 }

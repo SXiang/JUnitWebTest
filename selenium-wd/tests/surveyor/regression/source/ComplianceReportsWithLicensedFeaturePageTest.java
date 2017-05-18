@@ -141,7 +141,6 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyStandardReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertFalse(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
 		assertFalse(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
@@ -164,7 +163,6 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.RapidResponse);
 		assertTrue(complianceReportsPageAction.verifyRapidResponseSurveyModeIsShownOnPage(EMPTY, NOTSET));
@@ -186,7 +184,6 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, NOTSET);
-		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, NOTSET);
 		assertTrue(complianceReportsPageAction.verifyManualReportModeIsShownOnPage(EMPTY, NOTSET));
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Manual);
 		assertTrue(complianceReportsPageAction.verifyManualSurveyModeIsShownOnPage(EMPTY, NOTSET));
