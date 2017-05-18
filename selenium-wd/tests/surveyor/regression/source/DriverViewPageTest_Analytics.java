@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.ExceptionUtility;
@@ -622,31 +623,72 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
 	}
 
-	/**
-	 * Unit test to verify multiple peak generation using dynamically generated defn and instruction files.
-	 * @throws Exception
+	/* * Test Case ID: TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude
+	 * Script:
+	 * - Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer
+	 * - Set the Survey Min Amplitude value to 0.035 and click OK
+	 * - Log into the tablet for an analyzer belonging to the above customer and begin an Analytics survey
+	 * - Collect several peaks of different amplitudes and then stop the survey and log out
+	 * - Log into the UI as a Picarro Admin and change the Survey Min Amplitude for the above location to 0.1 (or some other value that is midway between the amplitudes collected in the above survey) and click OK
+	 * - Restart the PSA, log back into the tablet and run a new survey over the same route as before.
+	 * Results:
+	 * - During the first survey, Driver View should display peaks with amplitudes as low as 0.035.
+	 * - During the second survey, Driver View should only display peaks with amplitude above 0.1 (or whatever value was entered the second time). Peaks that appeared in the first survey with amplitudes between 0.035 and 0.1 should not be present in the second survey
 	 */
 	@Test
-	public void Test_verifyMultiplePeakGenerationUsingHostSimulator() throws Exception {
-		Log.info("\n Running Test_verifyMultiplePeakGenerationUsingHostSimulator ...");
+	public void TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude() throws Exception{
+		Log.info("\nTestcase - TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude\n");
 
-		final int EXPECTED_INDICATIONS = 5;
+		
+
+		final int picAdminUserDataRowID = 6;
+		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
+
+		final int numInstFiles = 1;
+		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
+
+			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
+			indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+
+			Float LOCATION_MIN_AMP = 2.0F;
+			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
+			indicationsOnDriverView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
+
+			return true;
+			
 
 		final int userDataRowID = 16;
-		final int analyzerDb3DataRowID = 70;
+		final int analyzerDb3DataRowID = 67;
 		final int surveyRuntimeInSeconds = 120;
 		final int surveyDataRowID = 63;
 
-		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Driver */
 
 		Log.info("Starting Analyzer...");
-		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
 		Log.info("Starting Replay...");
-		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
 
 		// start survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -663,7 +705,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		// stop simulator and PSA.
 		Log.info("Stopping Analyzer...");
-		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 
 		// confirm indication was shown in Driver view.
 		assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
