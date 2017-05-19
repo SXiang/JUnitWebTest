@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="selenium-wd/tests"/>
+	<classpathentry kind="src" path="android-app"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/ant-junit-1.8.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-csv-1.2.jar">
 		<attributes>
@@ -56,5 +57,11 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-toolbox-2.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/retrofit-2.3.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/converter-jackson-2.3.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/jackson-core-2.8.8.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/jackson-databind-2.8.8.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/okhttp-3.8.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/okio-1.13.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

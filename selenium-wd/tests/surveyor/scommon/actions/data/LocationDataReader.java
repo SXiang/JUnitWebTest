@@ -4,6 +4,7 @@ import common.source.ExcelUtility;
 import common.source.Log;
 import surveyor.scommon.actions.ActionArguments;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
 import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 public class LocationDataReader extends BaseDataReader {
@@ -141,19 +142,23 @@ public class LocationDataReader extends BaseDataReader {
 		return null;
 	}
 
-	public Float getMinAmpForLocation(Integer dataRowID, SurveyModeType surveyModeType) throws Exception {
+	public Float getMinAmpForLocation(Integer dataRowID, MinAmplitudeType minAmplitudeType) throws Exception {
 		Float minAmp = 0.0F;
 		LocationDataRow locationDataRow = this.getDataRow(dataRowID);
-		if (surveyModeType.equals("Standard")) {
+		if (minAmplitudeType == MinAmplitudeType.Survey_Standard) {
 			minAmp = Float.valueOf(locationDataRow.standardMinAmplitude);
-		} else if (surveyModeType.equals("RapidResponse")) {
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_RapidResponse) {
 			minAmp = Float.valueOf(locationDataRow.rapidResponseMinAmplitude);
-		} else if (surveyModeType.equals("Operator")) {
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_Operator) {
 			minAmp = Float.valueOf(locationDataRow.operatorMinAmplitude);
-		} else if (surveyModeType.equals("Assessment")) {
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_Assessment) {
 			minAmp = Float.valueOf(locationDataRow.assessmentMinAmplitude);
-		} else if (surveyModeType.equals("EQ")) {
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_EQ) {
 			minAmp = Float.valueOf(locationDataRow.eQMinAmplitude);
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_Analytics_Survey) {
+			minAmp = Float.valueOf(locationDataRow.surMinAmp);
+		} else if (minAmplitudeType == MinAmplitudeType.Survey_Analytics_Ranking) {
+			minAmp = Float.valueOf(locationDataRow.rankingMinAmp);
 		}
 		return minAmp;
 	}

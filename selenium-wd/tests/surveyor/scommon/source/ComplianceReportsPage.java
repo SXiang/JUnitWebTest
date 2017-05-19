@@ -63,6 +63,7 @@ import common.source.ApiUtility;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFTableUtility;
@@ -86,6 +87,7 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -192,9 +194,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[3]")
 	protected WebElement proceedMsg;
-	
+
 	private String headerListComplianceReport = "//*[@id='datatable']/thead/tr/th";
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
 	protected WebElement reportMode;
 
@@ -213,7 +215,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public WebElement getCheckBoxStndRptMode() {
 		return this.checkBoxStndRptMode;
 	}
-	
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -1055,7 +1057,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
 					getrowvalue++;
-					
+
 					String cellValue = driver
 							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]"))
 							.getText();
@@ -2621,13 +2623,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity) reports;
 		boolean isAnalyticsReport = false;
-		// 1. Change customer if specified.
-		if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
-			Log.info("Select customer '"+reports.getCustomer()+"'");
-			selectCustomer(reportsCompliance.getCustomer());
-			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
-			if (confirmed) {
-				inputReportTitle(reportsCompliance.getRptTitle());
+		// 1. Change customer if specified. Ensure Customer dropdown present.
+		if (isCustomerSelectDisplayed()) {
+			if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
+				Log.info("Select customer '"+reports.getCustomer()+"'");
+				selectCustomer(reportsCompliance.getCustomer());
+				Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
+				if (confirmed) {
+					inputReportTitle(reportsCompliance.getRptTitle());
+				}
 			}
 		}
 
@@ -2878,7 +2882,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		return compliancereportsList;
 	}
-	
+
 	public List<String> getComplianceListPageHeader() {
 		List<String> complianceHeaderList = new ArrayList<String>();
 		String reportHeaderxPath;
@@ -2894,11 +2898,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		return complianceHeaderList;
 	}
-	
+
 	public String getReportModeForProvidedReportTitle(String reportTitle,
 			String reportCreatedBy) {
 		String reportMode = "";
-		searchReport(reportTitle, reportCreatedBy);
+		int numTry = 0;
+		boolean found = false;
+		do{
+			found = searchReport(reportTitle, reportCreatedBy);
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
 		reportMode = this.reportMode.getText().trim();
 		return reportMode;
 	}

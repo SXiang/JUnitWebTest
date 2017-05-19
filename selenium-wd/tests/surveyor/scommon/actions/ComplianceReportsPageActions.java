@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,11 +16,18 @@ import common.source.BaseHelper;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.AnalyticsPeak;
+import surveyor.dataaccess.source.Report;
 import surveyor.scommon.actions.data.ComplianceReportDataReader;
 import surveyor.scommon.actions.data.ReportSurveyDataReader;
 import surveyor.scommon.actions.data.ComplianceReportDataReader.ComplianceReportsDataRow;
+import surveyor.scommon.actions.data.CustomerDataReader;
+import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.ReportOptTabularPDFContentDataReader.ReportOptTabularPDFContentDataRow;
 import surveyor.scommon.actions.data.ReportSurveyDataReader.ReportSurveyDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
@@ -213,6 +222,43 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		ReportModeFilter mode = this.getComplianceReportsPage().getReportMode(reportMode);
 		this.getComplianceReportsPage().selectReportMode(mode);
 		return true;
+	}
+
+	/**
+	 * Executes verifyAnalyticsPeakInfoIsCorrectInDB action.
+	 * Verifies
+	 *  1. Peaks with PS above Top10PS are in Ranking Grade 1,
+	 *  2. Peaks with PS between Top25PS and Top10PS are in Ranking Grade 2
+	 *  3. Peaks with PS between Top50PS and Top25PS are in Ranking Grade 3
+	 *  4. There are no peaks below Top50PS
+	 * @param data - [optional] specifies top10PS, top25PS, top50PS values in format -> top10PS:top25PS:top50PS.
+	 *  If not specified top10PS, top25PS, top50PS values are read from location for the customer.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyAnalyticsPeakInfoIsCorrectInDB(String data, Integer dataRowID) throws Exception {
+		logAction("ComplianceReportsPageActions.verifyAnalyticsPeakInfoIsCorrectInDB", data, dataRowID);
+		ComplianceReportsDataRow reportsDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
+		Float top10PS = 0.0f;
+		Float top25PS = 0.0f;
+		Float top50PS = 0.0f;
+		if (!ActionArguments.isEmpty(data)) {
+			List<String> psValues = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
+			top10PS = Float.valueOf(psValues.get(0));
+			top25PS = Float.valueOf(psValues.get(1));
+			top50PS = Float.valueOf(psValues.get(2));
+		} else {
+			Log.info("ReportsDataRow -> " + reportsDataRow.toString());
+			Integer customerRowID = Integer.valueOf(reportsDataRow.customerRowID);
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getLocationForCustomer(customerRowID);
+			top10PS = Float.valueOf(locationDataRow.top10PS);
+			top25PS = Float.valueOf(locationDataRow.top25PS);
+			top50PS = Float.valueOf(locationDataRow.top50PS);
+		}
+
+		return verifyAnalyticsPeakInfoValuesInDB(reportsDataRow, top10PS, top25PS, top50PS);
 	}
 
 	/**
@@ -463,6 +509,7 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		else if (actionName.equals("investigateReport")) { return this.investigateReport(data, dataRowID); }
 		else if (actionName.equals("selectPercentCoverageForecastCheckBox")) { return this.selectPercentCoverageForecastCheckBox(data, dataRowID); }
 		else if (actionName.equals("selectReportMode")) { return this.selectReportMode(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsPeakInfoIsCorrectInDB")) { return this.verifyAnalyticsPeakInfoIsCorrectInDB(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFDownload")) { return this.verifyInvestigatePDFDownload(data, dataRowID); }
 		else if (actionName.equals("verifyLISAInvestigationTable")) { return this.verifyLISAInvestigationTable(data, dataRowID); }
 		else if (actionName.equals("verifyGAPInvestigationTable")) { return this.verifyGAPInvestigationTable(data, dataRowID); }
@@ -504,6 +551,21 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
 	public ComplianceReportsPage getComplianceReportsPage() {
 		return (ComplianceReportsPage)this.getPageObject();
+	}
+
+	public String getReportModeForSpecifiedReportTitle(String reportTitle,
+			String reportCreatedBy) {
+		String reportMode = "";
+		reportMode = this.getComplianceReportsPage()
+				.getReportModeForProvidedReportTitle(reportTitle,
+						reportCreatedBy);
+		return reportMode;
+	}
+
+	public List<String> getComplianceListPageHeader() {
+		List<String> complianceHeaderList = new ArrayList<String>();
+		complianceHeaderList = this.getComplianceReportsPage().getComplianceListPageHeader();
+		return complianceHeaderList;
 	}
 
 	@Override
@@ -621,19 +683,31 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 	private boolean verifyComplianceReportMetadataFiles(ReportsCommonPage reportsPage, String downloadPath, String reportTitle) {
 		return FunctionUtil.wrapException(reportsPage, r -> reportsPage.verifyIsotopicMetaDataFile(downloadPath, reportTitle));
 	}
-	
-	public String getReportModeForSpecifiedReportTitle(String reportTitle,
-			String reportCreatedBy) {
-		String reportMode = "";
-		reportMode = this.getComplianceReportsPage()
-				.getReportModeForProvidedReportTitle(reportTitle,
-						reportCreatedBy);
-		return reportMode;
-	}
-	
-	public List<String> getComplianceListPageHeader() {
-		List<String> complianceHeaderList = new ArrayList<String>();
-		complianceHeaderList = this.getComplianceReportsPage().getComplianceListPageHeader();
-		return complianceHeaderList;
+
+	private boolean verifyAnalyticsPeakInfoValuesInDB(ComplianceReportsDataRow reportsDataRow, Float top10PS, Float top25PS, Float top50PS) {
+		Log.method("verifyAnalyticsPeakInfoValuesInDB", top10PS, top25PS, top50PS);
+		Report report = Report.getReport(reportsDataRow.title);
+		String reportId = report.getId();
+		List<AnalyticsPeak> analyticsPeaks = AnalyticsPeak.getAnalyticsPeaks(reportId);
+		List<AnalyticsPeak> group1Peaks = analyticsPeaks.stream()
+				.filter(p -> p.getRankingGroup()==1).collect(Collectors.toList());
+		Log.info(LogHelper.collectionToString(group1Peaks, "Ranking Group 1 Peaks"));
+		List<AnalyticsPeak> group2Peaks = analyticsPeaks.stream()
+				.filter(p -> p.getRankingGroup()==2).collect(Collectors.toList());
+		Log.info(LogHelper.collectionToString(group2Peaks, "Ranking Group 2 Peaks"));
+		List<AnalyticsPeak> group3Peaks = analyticsPeaks.stream()
+				.filter(p -> p.getRankingGroup()==3).collect(Collectors.toList());
+		Log.info(LogHelper.collectionToString(group3Peaks, "Ranking Group 3 Peaks"));
+		List<AnalyticsPeak> group4Peaks = analyticsPeaks.stream()
+				.filter(p -> p.getRankingGroup()!=1 && p.getRankingGroup()!=2 && p.getRankingGroup()!=3).collect(Collectors.toList());
+		Log.info(LogHelper.collectionToString(group4Peaks, "Ranking Group 4 Peaks"));
+		boolean incorrectGroup1Ranking = group1Peaks.stream().anyMatch(p -> p.getPriorityScore()<top10PS);
+		boolean incorrectGroup2Ranking = group2Peaks.stream().anyMatch(p -> p.getPriorityScore()<top25PS || p.getPriorityScore()>top10PS);
+		boolean incorrectGroup3Ranking = group3Peaks.stream().anyMatch(p -> p.getPriorityScore()<top50PS || p.getPriorityScore()>top25PS);
+		boolean incorrectGroup4Ranking = group4Peaks.stream().anyMatch(p -> p.getPriorityScore()>top50PS);
+		Log.info(String.format("Incorrect Analytics Peaks Status: Incorrect Group1 Peaks=[%b]; Incorrect Group2 Peaks=[%b]; "
+				+ "Incorrect Group3 Peaks=[%b]; Incorrect Group4 Peaks=[%b]; ",
+				incorrectGroup1Ranking, incorrectGroup2Ranking, incorrectGroup3Ranking, incorrectGroup4Ranking));
+		return (!incorrectGroup1Ranking) && (!incorrectGroup2Ranking) && (!incorrectGroup3Ranking) && (!incorrectGroup4Ranking);
 	}
 }
