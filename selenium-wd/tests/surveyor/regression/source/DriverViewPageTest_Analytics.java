@@ -28,10 +28,12 @@ import common.source.RegexUtility;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -48,7 +50,10 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
+	private static ManageLocationPageActions manageLocationPageActions;
+
 	private static LoginPage loginPage;
+
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
 	}
@@ -74,6 +79,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private void initializePageActions() {
 		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		surveyViewPageAction = ActionBuilder.createSurveyViewPageAction();
+		manageLocationPageActions = ActionBuilder.createManageLocationPageAction();
 	}
 
 	/**
@@ -93,16 +99,14 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	RESULT:
 	 *	- Only indications above Survey Min Amplitude level will appear in Survey View
 	 **/
-	@Ignore // Disabled due to product issue: DE2939
+	@Test
 	public void TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode() throws Exception {
 		Log.info("\nTestcase - TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode ...\n");
 
-		final String testCaseId = "TC2365";
-
 		final int picAdminUserDataRowID = 6;
-		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int DB3_ANALYZER_ROW_ID = 72;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
-		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
+		final int SURVEY_RUNTIME_IN_SECONDS = 90; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
 		final int newLocationRowID = 17;
 		final int newCustomerUserRowID = 26;
@@ -113,11 +117,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
-		final int numInstFiles = 1;
-		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
-
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
-				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, null /*instFiles*/);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
 			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			return true;
@@ -133,9 +134,9 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		Log.info(String.format("Indications detected in Survey view = %d", indicationsOnSurveyView.size()));
 		indicationsOnSurveyView.forEach(i -> Log.info(i.toString()));
 
-		Float LOCATION_MIN_AMP = 5.0F;
-		Log.info(String.format("Confirm indications shown in Survey view are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
-		indicationsOnSurveyView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
+		Float locationMinAmp = manageLocationPageActions.getMinAmplitudeForLocation(newLocationRowID, MinAmplitudeType.Survey_Analytics_Survey);
+		Log.info(String.format("Confirm indications shown in Survey view are above MinAmplitude[%f] of the location ", locationMinAmp));
+		indicationsOnSurveyView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > locationMinAmp));
 	}
 
 	/** Test Case ID: TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu
@@ -751,25 +752,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			measInstructions.addSelector(Selector.WithProbability, 0.95)
 			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2345")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2355")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2390")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
-			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "262144")   // 2^18 - For iGPS Warning
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2390_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2392")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
-			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "262144")   // 2^18 - For iGPS Warning
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2392_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2355_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
 		}
 
 		return String.join(",", measInstructions.createFile());
