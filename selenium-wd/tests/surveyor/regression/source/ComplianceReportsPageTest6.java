@@ -107,7 +107,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 
 		// Get min amplitude for the Analyzer and assert all values in Indication table > MinAmp.
 		List<Float> minAmps = complianceReportsPageAction.getMinAmplitudesForSurveys(reportDataRowID1);
-		Float locationMinAmp = manageLocationPageAction.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, SurveyModeType.Standard);
+		Float locationMinAmp = manageLocationPageAction.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, MinAmplitudeType.Survey_Standard);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(locationMinAmp), NOTSET));
 	}
 
