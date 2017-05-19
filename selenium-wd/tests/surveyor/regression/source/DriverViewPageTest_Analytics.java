@@ -496,7 +496,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode() throws Exception {
 		Log.info("\nRunning TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode ...");
 
-		final String testCaseId = "TC2365";
+		final String testCaseId = "TC2345";
 
 		final int picAdminUserDataRowID = 6;
 		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */

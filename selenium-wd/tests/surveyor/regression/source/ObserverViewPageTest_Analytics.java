@@ -1,20 +1,25 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+
 import common.source.Log;
+import common.source.OLMapEntities.Indication;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
+
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorTestRunner;
-
 import surveyor.scommon.actions.ObserverViewPageActions;
 import surveyor.scommon.source.ObserverViewPage;
 import surveyor.scommon.source.PageObjectFactory;
@@ -150,5 +155,69 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
+	}
+	
+	/**
+	 * Test Case ID: TC2356_ObserverView_NoFieldNotesOptionForAnalyticsSurveys
+	 *	SCRIPT:
+	 *	- Have driver log into the tablet as Picarro Admin and start Analytics Survey
+	 *	- Have driver collect several indications
+	 *	- On observer View, click on one or more of the indications
+	 *	- Click on Display
+	 *
+	 *	VERIFICATION:
+	 *	- Upon clicking an indication, a popup should appear with details about that leak. The popup should not have a button for adding Field Notes
+	 *	- The Display menu does not have an option for Field Notes
+	**/
+	@Test
+	public void TC2356_ObserverView_NoFieldNotesOptionForAnalyticsSurveys() throws Exception{
+		Log.info("\nTestcase - TC2356_ObserverView_NoFieldNotesOptionForAnalyticsSurveys\n");
+
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 67;
+		final int surveyDataRowID = 63;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
+
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+
+		loginAsObserver(USER_ROW_ID_PICARRO_DRIVER);
+
+		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
+		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
+		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
+		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
+
+		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
+		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		getTestEnvironmentAction().idleForSeconds("20", NOTSET);
+		
+		Set<Indication> indicationsOnObserverView = observerViewPageActionList.get(0).getIndicationsShownOnPage();
+
+		Log.info(String.format("Indications detected in ObserverView = %d", indicationsOnObserverView.size()));
+		//TODO: Clicking on indication is not table while conducting survey.  Uncomment below code once DE2934 gets fixed.
+		/*if (observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
+		assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
+		}*/
+		
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 }
