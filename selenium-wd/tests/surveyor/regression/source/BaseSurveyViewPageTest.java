@@ -19,6 +19,10 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
 	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
 	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
+	protected static final String SURVEY_INFO_SURVEYOR_2 = "Surveyor: Nissan Rogue - Picarro";
+	protected static final String SURVEY_INFO_ANALYZER_2 = "Analyzer: FEDS2055-PICARRO";
+	protected static final String SURVEY_INFO_SURVEYOR_3 = "Surveyor: SoftwareCar_2037_cust";
+	protected static final String SURVEY_INFO_ANALYZER_3 = "Analyzer: FDDS2037-1";
 	protected static final String SURVEY_INFO_ASSESSMENT_SURVEYOR = "Surveyor: Picarro Production #10";
 	protected static final String SURVEY_INFO_ASSESSMENT_ANALYZER = "Analyzer: FEDS2055";
 	protected static final String SURVEY_INFO_MODE_PREFIX = "Mode: ";
@@ -63,6 +67,13 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
+	protected static final String TEST_SURVEY_EQ_ID = "541567d0-a899-3418-8ce2-39dd2c61c355";
+	protected static final String TEST_SURVEY_EQ_TAG = "daysurvey7";
+	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
+	protected static final String TEST_SURVEY_EQ_USERNAME = "driver1@picarro.com";
+	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "a76f83a3-b0a2-47a9-9aed-1b8ab7921bdf";
+	protected static final String TEST_SURVEY_EQ_USERNAME_SQACUS = "sqacusdr1@email.com";
+	
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 

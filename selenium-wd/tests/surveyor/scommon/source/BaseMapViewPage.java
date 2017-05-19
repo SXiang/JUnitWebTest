@@ -75,6 +75,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[8]")
 	private WebElement displaySwitchFovsDivElement;
 
+	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
+	private WebElement activeModeWarning;
+	
 	@FindBy(id = "display_switch_8hour_history")
 	protected WebElement displaySwitch8HourHistory;
 
@@ -685,6 +688,23 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isGisUseAllBoundariesButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.useAllBoundariesDivElement,"ng-cloak") ||
 					this.useAllBoundariesDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isSurveyModeWarningContentCorrect(String expectedText){
+		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
+		String text = getElementText(activeModeWarning);
+		if(!text.equals(expectedText)){
+			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
+			return false;
+		}
+		for(String[] css:cssValues){
+			String value = activeModeWarning.getCssValue(css[0]);
+			if(!value.equals(css[1])){
+				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws Exception {

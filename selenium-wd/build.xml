@@ -604,6 +604,7 @@
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
+          <include name="**/SurveyViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -805,7 +806,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/ManageUsersPageTest.class" />
+        	<include name="**/SurveyViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
     </junit>

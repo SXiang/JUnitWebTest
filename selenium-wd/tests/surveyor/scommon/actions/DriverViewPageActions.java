@@ -1610,6 +1610,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySurveyAmplitudes")) { return this.verifySurveyAmplitudes(data, dataRowID); }
+		else if (actionName.equals("verifySurveyModeWarningCorrect")) { return this.verifySurveyModeWarningCorrect(data, dataRowID); }
 		return false;
 	}
 

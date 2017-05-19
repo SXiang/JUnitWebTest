@@ -357,6 +357,7 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForIndicationsToBeShownOnMap")) { return this.waitForIndicationsToBeShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifySurveyAmplitudes")) { return this.verifySurveyAmplitudes(data, dataRowID); }
+		else if (actionName.equals("verifySurveyModeWarningCorrect")) { return this.verifySurveyModeWarningCorrect(data, dataRowID); }
 		return false;
 	}
 

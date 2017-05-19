@@ -41,6 +41,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
 	private static final String FN_VERIFY_MAP_SWITCH_ON = "verifyMapSwitchOn";
+	private static final String FN_VERIFY_SURVEY_WARNING_CONTENT = "verifySurveyModeWarningContent";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";
@@ -1458,4 +1459,18 @@ public class BaseMapViewPageActions extends BasePageActions {
 		log(String.format("Looking for Text-[%s], Found Survey Tag Label Text-[%s]", expectedTagValue, actualTagValue));
 		return actualTagValue.equals(expectedTagValue);
 	}
+
+	/**
+	 * Executes verifySurveyModeWarningContent action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception 
+	 */
+	public boolean verifySurveyModeWarningCorrect(String data, Integer dataRowID) throws Exception {
+		logAction(getRuntimeType() + ".verifySurveyModeWarningContent", data, dataRowID);
+		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_WARNING_CONTENT, ARG_DATA, data);
+		return getBaseMapViewPageObject().isSurveyModeWarningContentCorrect(data);
+	}
+
 }

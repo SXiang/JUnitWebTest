@@ -21,6 +21,8 @@ import common.source.HostSimInstructions.Measurement;
 import common.source.HostSimInstructions.Selector;
 import common.source.OLMapEntities.Indication;
 import common.source.RegexUtility;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -90,15 +92,15 @@ public class DriverViewPageTest_EQ extends BaseMapViewTest {
 	 *	- EQ survey should be completed successfully
 	 *	- EQ survey mode option is not present and user cannot perform EQ survey
 	**/
-	@Test
-	public void TC1042_() throws Exception {
-		Log.info("\nTestcase - TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode ...\n");
+	@Ignore /* Depend on US4438 */
+	public void TC1042_DisableEQFeatureAndCheckDriverView() throws Exception {
+		Log.info("\nTestcase - TC1042_DisableEQFeatureAndCheckDriverView ...\n");
 
-		final String testCaseId = "TC2365";
+		final String testCaseId = "TC1042";
 
 		final int picAdminUserDataRowID = 6;
-		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
-		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
+		final int DB3_ANALYZER_ROW_ID = 69;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 7;	/* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
 		final int newLocationRowID = 17;
@@ -110,28 +112,11 @@ public class DriverViewPageTest_EQ extends BaseMapViewTest {
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
 
-		final int numInstFiles = 1;
-//		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
-//
-//		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
-//				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
-//		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-//			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-//			return true;
-//		});
-//
-//		// Goto survey view page for current survey and verify indications shown are above min amplitude of location.
-//		getHomePageAction().open(EMPTY, NOTSET);
-//		getHomePageAction().clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET);
-//		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
-//		surveyViewPageAction.waitForIndicationsToBeShownOnMap(EMPTY, NOTSET);
-//		Set<Indication> indicationsOnSurveyView = surveyViewPageAction.getIndicationsShownOnPage();
-//
-//		Log.info(String.format("Indications detected in Survey view = %d", indicationsOnSurveyView.size()));
-//		indicationsOnSurveyView.forEach(i -> Log.info(i.toString()));
-//
-//		Float LOCATION_MIN_AMP = 5.0F;
-//		Log.info(String.format("Confirm indications shown in Survey view are above MinAmplitude[%d] of the location ", LOCATION_MIN_AMP));
-//		indicationsOnSurveyView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+			assertTrue(driverPageAction.verifySurveyModeWarningCorrect(Resources.getResource(ResourceKeys.Dialog_EQModeActive), NOTSET));
+			return true;
+		});
 	}
 }

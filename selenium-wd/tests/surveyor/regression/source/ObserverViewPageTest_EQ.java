@@ -15,6 +15,7 @@ import common.source.Log;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
@@ -155,37 +156,9 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 	 *	- Car icon is displayed in grey color. Breadcrumb will be displayed in black color
 	 *	- Survey Inactive message will be displayed
 	 */
-	@Test
+	@Ignore /* Depend on US4438 */
 	public void TC1060_() throws Exception{
-		Log.info("\nTestcase - TC2346_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode\n");
-
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-		manageLocationPageActions.open(EMPTY, NOTSET);
-		String surMinAmp = "0.4";
-		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surMinAmp);
-		getHomePage().logout();
-		getLoginPage().loginNormalAs(userName, userPassword);
-
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds("300", NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifySurveyAmplitudes(surMinAmp, NOTSET));
-
-		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		Log.info("\nTestcase - TC1060_\n");
 	}
 	
 	/**
@@ -208,35 +181,8 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 	 *	- Map is not centered on car's position
 	 *	- LISA,Indication Assets, Boundaries data will not be displayed on map in satellite view
 	 */
-	@Test
+	@Ignore /* Depend on US4438 */
 	public void TC1067_() throws Exception{
-		Log.info("\nTestcase - TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed\n");
-		
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-
-		loginPageActionList.get(0).open(EMPTY, NOTSET);
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-		
-		/* Step 1. setup analyzer configuration */
-		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
-		/* Step 2: startAnalyzerSurvey */
-		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
-		/* Step 3: ObserverView and verifications */
-		loginPageActionList.get(0).getLoginPage().open();
-		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-		
-		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
-		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
-		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
-		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
-		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-
-		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		Log.info("\nTestcase - TC1067_\n");
 	}
 }
