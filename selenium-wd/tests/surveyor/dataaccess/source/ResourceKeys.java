@@ -326,4 +326,8 @@ public class ResourceKeys {
 
 	// Analytics constants.
 	public static final String Dialog_AnalyticsModeActive = "Dialog_AnalyticsModeActive";
+
+	// iGPS modal messages.
+	public static final String Dialog_IGPSWarning = "Dialog_IGPSWarning";
+	public static final String Dialog_IGPSError = "Dialog_IGPSError";
 }

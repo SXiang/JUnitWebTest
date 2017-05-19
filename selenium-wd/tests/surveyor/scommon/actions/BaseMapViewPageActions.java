@@ -12,6 +12,7 @@ import common.source.Log;
 import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility;
 import common.source.TestContext;
+import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -727,6 +728,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyBreadcrumbIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBreadcrumbIsShownOnMap", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		BreadcrumbColor brColor = BreadcrumbColor.valueOf(data);
+		if (!ActionArguments.isEmpty(data)) {
+			mapUtility.isBreadcrumbShownOnMap(brColor);
+		}
+
 		return mapUtility.isBreadcrumbShownOnMap();
 	}
 	public boolean verifyFOVIsShownOnMap(String data, Integer dataRowID) {

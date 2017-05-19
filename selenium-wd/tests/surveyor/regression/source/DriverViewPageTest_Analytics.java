@@ -16,12 +16,14 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.ExceptionUtility;
 import common.source.HostSimInstructions;
 import common.source.Log;
+import common.source.OLMapUtility;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import common.source.HostSimInstructions.Action;
 import common.source.HostSimInstructions.Measurement;
 import common.source.HostSimInstructions.Selector;
 import common.source.OLMapEntities.Indication;
+import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.RegexUtility;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
@@ -548,7 +550,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * @throws Exception
 	**/
 	@Test
-	// TODO: Add verification for breadcrumb.
 	public void TC2390_DriverViewLISAsAndIndicationsWithBlueiGPSIndicator() throws Exception {
 		Log.info("\nRunning test case - TC2390_DriverViewLISAsAndIndicationsWithBlueiGPSIndicator\n");
 
@@ -580,6 +581,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
 		assertTrue(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Blue.toString(), NOTSET));
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -613,13 +615,13 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- While the iGPS indicator is red, there should be no breadcrumb drawn in any color. FOV and indications/LISAs should also be absent from the survey where the iGPS indicator was red
 	**/
 	@Test
-	// TODO: Add additional verifications.
 	public void TC2392_DriverViewLISAsAndIndicationsWithRediGPSIndicator() throws Exception {
 		Log.info("\nRunning test case - TC2392_DriverViewLISAsAndIndicationsWithRediGPSIndicator\n");
 
 		final int userDataRowID = 16;
 		final int analyzerDb3DataRowID = 62;
-		final int surveyRuntimeInSeconds = 75;
+		final int surveyRuntimeToGetDegradediGPS = 75;
+		final int additionalSurveyRuntimeToGetBadiGPS = 25;
 		final int surveyDataRowID = 61;
 
 		getLoginPageAction().open(EMPTY, NOTSET);
@@ -630,8 +632,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		String[] ch4Values = {"5.5", "7.5", "8.5", "8.5", "9.5"};
-		String[] c2h6Values = {"3.5", "3.5", "3.5", "3.5", "3.5"};
+		String[] ch4Values = {"5.5", "7.5"};
+		String[] c2h6Values = {"3.5", "3.5"};
 		getTestEnvironmentAction().generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
 
 		Log.info("Starting Replay...");
@@ -642,9 +644,19 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID));
 
 		// collect indications shown during the survey.
-		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+		Set<Indication> indicationsOnDriverView1 = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeToGetDegradediGPS);
+		assertTrue(driverViewPageAction.verifyGPSButtonIsYellow(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyiGPSDriftWarningMessageIsShowing(EMPTY, NOTSET));
 
-		assertTrue(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));
+		// blue breadcrumbs when iGPS blue or yellow
+		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Blue.toString(), NOTSET));
+
+		Set<Indication> indicationsOnDriverView2 = driverViewPageAction.collectIndicationsDuringSurvey(additionalSurveyRuntimeToGetBadiGPS);
+		assertTrue(driverViewPageAction.verifyGPSButtonIsRed(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyiGPSDriftErrorMessageIsShowing(EMPTY, NOTSET));
+
+		// gray breadcrumbs when iGPS is red
+		assertTrue(driverViewPageAction.verifyBreadcrumbIsShownOnMap(BreadcrumbColor.Gray.toString(), NOTSET));
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -654,11 +666,14 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		Log.info("Stopping Analyzer...");
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 
-		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
-		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+		int totalIndications = indicationsOnDriverView2.size();   // Indications collected in the end will have all the indications shown in UI.
+		Log.info(String.format("Indications detected in Driver view = %d", totalIndications));
+		indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
-		// confirm indication was shown in Driver view.
-		assertTrue(indicationsOnDriverView.size() >= 3);
+		// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.
+		// not all 6 peaks should show. atleast 4 should show which were generated when iGPS is Blue,Yellow.
+		assertTrue(totalIndications > 3 && totalIndications < 6);
 	}
 
 	/* * Test Case ID: TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer

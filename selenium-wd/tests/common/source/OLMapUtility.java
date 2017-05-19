@@ -31,10 +31,20 @@ public class OLMapUtility {
 	}
 
 	public enum BreadcrumbColor {
-		Red,
-		Blue,
-		Black,
-		Gray
+		Red ("Red"),
+		Blue ("Blue"),
+		Black ("Black"),
+		Gray ("Gray");
+
+		private final String name;
+
+		BreadcrumbColor(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	private static final String GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS = "function getRGBPixelSumValues(imgData) { "
@@ -221,13 +231,11 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){breadcrumbCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return breadcrumbCoord;};";
 
-	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){"
-			+ "var fillColorFound=false;try{if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();"
-			+ "if(features){for(var i=0;i<features.length;i++){feature=features[0];style=feature.getStyle();"
-			+ "if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
-			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fillColorFound=true;fcolor=fill.getColor();"
-			+ "scolor=stroke.getColor();if(fcolor!=color||scolor!=color){return false;}}}}}}}catch(err){fillColorFound=false;};"
-			+ "return fillColorFound;};";
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){var fillColorFound=false;try{"
+			+ "if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();if(features){for(var i=0;i<features.length;i++){"
+			+ "feature=features[i];style=feature.getStyle();if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
+			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fcolor=fill.getColor();scolor=stroke.getColor();"
+			+ "if(fcolor==color&&scolor==color){fillColorFound=true;break;}}}}}}}catch(err){fillColorFound=false;};return fillColorFound;};";
 
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION = "function isIndicationsShownOnMap(){"
 			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();"
