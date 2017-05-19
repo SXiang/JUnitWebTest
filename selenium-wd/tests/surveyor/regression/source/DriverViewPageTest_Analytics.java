@@ -27,10 +27,13 @@ import common.source.RegexUtility;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -47,7 +50,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
-	private static LoginPage loginPage;
+	private static ManageLocationPageActions manageLocationPageActions;
+
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
 	}
@@ -73,6 +77,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private void initializePageActions() {
 		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		surveyViewPageAction = ActionBuilder.createSurveyViewPageAction();
+		manageLocationPageActions = ActionBuilder.createManageLocationPageAction();
 	}
 
 	/**
@@ -639,75 +644,69 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	public void TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude() throws Exception{
 		Log.info("\nTestcase - TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude\n");
 
-		
-
-		final int picAdminUserDataRowID = 6;
-		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
-		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
-		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
+		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
-		final int newLocationRowID = 17;
-		final int newCustomerUserRowID = 26;
-		final int newSurveyorRowID = 25;
-		final int newAnalyzerRowID = 23;
-		final int newRefGasBottleRowID = 7;
+		final int newLocationRowID = 20;
+		final int newCustomerUserRowID = 30;
+		final int newSurveyorRowID = 28;
+		final int newAnalyzerRowID = 26;
+		final int newRefGasBottleRowID = 10;
 
 		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
-
-		final int numInstFiles = 1;
-		String[] instFiles = RegexUtility.split(generateInstructionFiles(testCaseId), RegexUtility.COMMA_SPLIT_REGEX_PATTERN).toArray(new String[numInstFiles]);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
 
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
-				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
 			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
+			Set<Indication> indicationsOnDriverView1 = driverPageAction.getIndicationsShownOnPage();
 
-			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
-			indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView1.size()));
+			indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
 
-			Float LOCATION_MIN_AMP = 2.0F;
-			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP));
-			indicationsOnDriverView.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP));
-
+			Float LOCATION_MIN_AMP_1 = 0.035F;
+			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_1));
+			indicationsOnDriverView1.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_1));
 			return true;
-			
+		});
 
-		final int userDataRowID = 16;
-		final int analyzerDb3DataRowID = 67;
-		final int surveyRuntimeInSeconds = 120;
-		final int surveyDataRowID = 63;
+		final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+		final String locationName = ManageLocationPageActions.workingDataRow.get().name;
+		final String SurveyMinAmp = "0.1";
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Driver */
+		// login as admin and update analytics location properties.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		Log.info("Starting Analyzer...");
-		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
+		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName, locationName, SurveyMinAmp);
 
-		Log.info("Starting Replay...");
-		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+		// login back as user and create analytics report.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
-		// start survey.
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
-		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
-		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 
-		// collect indications shown during the survey.
-		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		// stop survey.
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		TestEnvironmentActions. generateSurveyForUser(newUsername, newUserPass,
+				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), (driverPageAction) -> {
+					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+					Set<Indication> indicationsOnDriverView2 = driverPageAction.getIndicationsShownOnPage();
 
-		// stop simulator and PSA.
-		Log.info("Stopping Analyzer...");
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+					Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView2.size()));
+					indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
-		// confirm indication was shown in Driver view.
-		assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
+					Float LOCATION_MIN_AMP_2 = 0.1F;
+					Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_2));
+					indicationsOnDriverView2.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_2));
+					return true;
+				});
 	}
 }
+
+
