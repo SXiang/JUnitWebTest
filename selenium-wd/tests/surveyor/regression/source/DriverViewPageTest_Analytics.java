@@ -318,58 +318,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	}
 
 	/**
-	 * Generates comma separated list of Instruction files for the specified test case.
-	 * @param testCaseId - test case identifier.
-	 * @return
-	 * @throws IOException
-	 */
-	private String generateInstructionFiles(String testCaseId) throws IOException {
-		Log.method("generateInstructionFiles", testCaseId);
-
-		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
-		if (testCaseId.equalsIgnoreCase("TC2411")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
-			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
-			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
-			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2412_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
-			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
-			measInstructions.addSelector(Selector.WithProbability, 0.95)
-			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
-		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
-		}
-		else if (testCaseId.equalsIgnoreCase("TC2345")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
-		}
-		else if (testCaseId.equalsIgnoreCase("TC2355")) {
-			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
-		}
-		return String.join(",", measInstructions.createFile());
-	}
-
-	/**
 	 * Test Case ID: TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures
 	 * Script:
 	 *	- Log into the tablet
@@ -385,7 +333,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Only "Stop Survey" appears as an option on Mode menu. "Reference Bottle Measurement" and "Start Capture" do not appear in Mode menu
 	 *	- Display menu does not have "Analysis Results" option
 	 **/
-	@Test	
+	@Test
 	public void TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception {
 		Log.info("\nRunning TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures ...");
 
@@ -412,7 +360,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY, NOTSET));
 		assertTrue(driverViewPageAction.verifyRefBottleMeasButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsNotVisible(EMPTY, NOTSET));		
+		assertTrue(driverViewPageAction.verifyStartIsotopicCaptureButtonIsNotVisible(EMPTY, NOTSET));
 
 		driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
@@ -584,6 +532,135 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		});
 	}
 
+	/**
+	 *	Test Case: TC2390_DriverViewLISAsAndIndicationsWithBlueiGPSIndicator
+	 *	Description: Driver View - LISAs and Indications with blue iGPS indicator
+	 *	Script:
+	 *	- Log into the tablet
+	 *	- Click on Mode -> Start Survey
+	 *	- Enter a survey tag, fill out the environmental conditions and select "Analytics" as the survey mode and click Start Survey
+	 *	- Drive for a short distance to produce a blue breadcrumb
+	 *	- Disconnect the GPS cable from the GPS antenna
+	 *	- Drive in an area where indications reliably appear
+	 *	Verifications:
+	 *	- Once the cable is disconnected from the GPS antenna, the "GPS" indicator text should change to "iGPS" and the color of the indicator should change from green to blue
+	 *	- Breadcrumb should be blue and closely follow the path of the car with minimal straying off the actual course and indications/LISAs should appear as normal
+	 * @throws Exception
+	**/
+	@Test
+	// TODO: Add verification for breadcrumb.
+	public void TC2390_DriverViewLISAsAndIndicationsWithBlueiGPSIndicator() throws Exception {
+		Log.info("\nRunning test case - TC2390_DriverViewLISAsAndIndicationsWithBlueiGPSIndicator\n");
+
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 62;
+		final int surveyRuntimeInSeconds = 75;
+		final int surveyDataRowID = 61;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
+
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		String[] ch4Values = {"5.5", "7.5", "8.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.5", "3.5", "3.5", "3.5"};
+		getTestEnvironmentAction().generateiGPSGoingToBlueWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
+
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID));
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+		assertTrue(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET));
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
+		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+
+		// confirm indication was shown in Driver view.
+		assertTrue(indicationsOnDriverView.size() >= 3);
+	}
+
+	/**
+	 *	Test Case: TC2392_DriverViewLISAsAndIndicationsWithRediGPSIndicator
+	 *	Description: Driver View - LISAs and Indications with red iGPS indicator
+	 *	Script:
+	 *	- Log into the tablet
+	 *	- Click on Mode -> Start Survey
+	 *	- Enter a survey tag, fill out the environmental conditions and select "Analytics" as the survey mode and click Start Survey
+	 *	- Drive for a short distance to produce a blue breadcrumb
+	 *	- Disconnect the GPS cable from the GPS antenna
+	 *	- Drive until the iGPS indicator turns from blue to yellow to red
+	 *	- Drive in an area where indications reliably appear
+	 *	Verifications:
+	 *	- Once the cable is disconnected from the GPS antenna, the "GPS" indicator text should change to "iGPS" and the color of the indicator should change from green to blue
+	 *	- When the iGPS indicator turns from blue to yellow to red, a warning message should appear at the top left in red font
+	 *	- While the iGPS indicator is red, there should be no breadcrumb drawn in any color. FOV and indications/LISAs should also be absent from the survey where the iGPS indicator was red
+	**/
+	@Test
+	// TODO: Add additional verifications.
+	public void TC2392_DriverViewLISAsAndIndicationsWithRediGPSIndicator() throws Exception {
+		Log.info("\nRunning test case - TC2392_DriverViewLISAsAndIndicationsWithRediGPSIndicator\n");
+
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 62;
+		final int surveyRuntimeInSeconds = 75;
+		final int surveyDataRowID = 61;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, userDataRowID);   /* Customer Driver */
+
+		Log.info("Starting Analyzer...");
+		getTestEnvironmentAction().startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		String[] ch4Values = {"5.5", "7.5", "8.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.5", "3.5", "3.5", "3.5"};
+		getTestEnvironmentAction().generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
+
+		Log.info("Starting Replay...");
+		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID));
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+		assertTrue(driverViewPageAction.verifyGPSButtonIsBlue(EMPTY, NOTSET));
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET));
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
+		Log.info(String.format("Indications detected in Driver view = %d", indicationsOnDriverView.size()));
+		indicationsOnDriverView.forEach(i -> Log.info(i.toString()));
+
+		// confirm indication was shown in Driver view.
+		assertTrue(indicationsOnDriverView.size() >= 3);
+	}
+
 	/* * Test Case ID: TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer
 	 * Script:
 	 * - Customer has Analytics License.
@@ -594,7 +671,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * - User should not able to see Analytics survey mode option.
 	 * - User can see Standard/Rapid Response/Operator/Manual survey mode according to the license feature, but not Analytics.
 	 */
-	@Ignore  //Disabling test case is failing due to product defect DE2942.  Tracking with DE2964 
+	@Ignore  //Disabling test case is failing due to product defect DE2942.  Tracking with DE2964
 	public void TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer() throws Exception{
 		Log.info("\nTestcase - TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer\n");
 
@@ -620,5 +697,66 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		// Stop current simulator
 		testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/**
+	 * Generates comma separated list of Instruction files for the specified test case.
+	 * @param testCaseId - test case identifier.
+	 * @return
+	 * @throws IOException
+	 */
+	private String generateInstructionFiles(String testCaseId) throws IOException {
+		Log.method("generateInstructionFiles", testCaseId);
+
+		HostSimInstructions measInstructions = new HostSimInstructions(testCaseId);
+		if (testCaseId.equalsIgnoreCase("TC2411")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "0.5")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "0.5")
+			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "524288")   // 2^19
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2411_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2412")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.WIND_N, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.Update, Measurement.Column.WIND_E, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.Update, Measurement.Column.WIND_DIR_SDEV, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2412_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LAT, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.UpdateFieldBy, Measurement.Column.GPS_ABS_LONG, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.0", "0.16", "0.01", "TC2414_insert_peak_ampl_7_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
+			measInstructions.addSelector(Selector.WithProbability, 0.95)
+			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2365")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2365_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2345")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2355")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2390")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "262144")   // 2^18 - For iGPS Warning
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2390_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+		} else if (testCaseId.equalsIgnoreCase("TC2392")) {
+			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
+			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "6")
+			.addMeasurementAction(Action.Update, Measurement.Column.PeripheralStatus, "262144")   // 2^18 - For iGPS Warning
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "7.5", "0.16", "0.01", "TC2392_insert_peak_ampl_7_5_sigma_0_1_6_randomizer_1.log");
+		}
+
+		return String.join(",", measInstructions.createFile());
 	}
 }
