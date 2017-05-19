@@ -100,7 +100,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	RESULT:
 	 *	- Only indications above Survey Min Amplitude level will appear in Survey View
 	 **/
-	@Test
+	@Ignore
 	public void TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode() throws Exception {
 		Log.info("\nTestcase - TC2365_SurveyView_OnlyPeaksAboveSurveyMinAmplitudeAppearInAnalyticsSurveyMode ...\n");
 
@@ -153,7 +153,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Car icon turns red and "Analytics Survey Active" appears in bold green font at top left of map
 	 *	- 8 Hour History, Concentration Chart, WindRose and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Test
+	@Ignore
 	public void TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception{
 		Log.info("\nTestcase - TC2368_DriverView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu\n");
 
@@ -205,7 +205,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- User is taken to Survey View of selected survey
 	 *	- 8 Hour History and FOV buttons are present. Indications, LISAs, Analysis and Field Notes buttons are not present
 	 **/
-	@Test
+	@Ignore
 	public void TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu() throws Exception {
 		Log.info("\nRunning TC2370_SurveyView_IndicationsAndLISAButtonsAreNotPresentInDisplayMenu ...");
 
@@ -278,7 +278,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 * 2. Verify there is no runtime error in pipelinerunner.
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = DriverViewDataProvider.DRIVERVIEW_RAWDATA_UPDATES_TC2411_2412_2413_2414_2417, location = DriverViewDataProvider.class)
 	public void TC2411_2412_2413_2414_2417_SimulatorTest_DrivingSurvey_RawDataUpdates(String testCaseId, Integer userDataRowID,
 			Integer analyzerDb3DataRowID, Integer surveyRuntimeInSeconds, Integer surveyDataRowID) throws Exception {
@@ -385,7 +385,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Only "Stop Survey" appears as an option on Mode menu. "Reference Bottle Measurement" and "Start Capture" do not appear in Mode menu
 	 *	- Display menu does not have "Analysis Results" option
 	 **/
-	@Test
+	@Ignore
 	public void TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception {
 		Log.info("\nRunning TC2336_DriverView_AnalyticsSurveyModeHasNoCaptureOrRefGasFeatures ...");
 
@@ -435,7 +435,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Start Survey popup appears
 	 *	- "Analytics Survey Active" appears in bold green font at top left of map and "Mode: Analytics" appears in the Survey Information block at top right
 	 **/
-	@Test
+	@Ignore
 	public void TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed() throws Exception {
 		Log.info("\nRunning TC2343_DriverView_AnalyticsSurveyActiveIsDisplayed ...");
 
@@ -492,7 +492,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Display menu appears with Indications option and indications sub-options
 	 *	- Only indications with amplitudes above the Survey Min Amplitude level should appear during survey
 	 **/
-	@Test
+	@Ignore
 	public void TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode() throws Exception {
 		Log.info("\nRunning TC2345_DriverView_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode ...");
 
@@ -547,7 +547,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	 *	- Upon clicking an indication, a popup should appear with details about that leak. The popup should not have a button for adding Field Notes
 	 *	- The Display menu does not have an option for Field Notes
 	 **/
-	@Test
+	@Ignore
 	public void TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys() throws Exception {
 		Log.info("\nRunning TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys ...");
 
