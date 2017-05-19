@@ -92,9 +92,16 @@ public class DataAccessUnitTests {
 		testStoredProcLisaInvestigationShowIndication_Valid();
 		Log.info("Executingtest StoredProcLisaInvestigationShowIndication_Invalid()..." );
 		testStoredProcLisaInvestigationShowIndication_Invalid();
+		Log.info("Executing testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Valid() ...");
+		testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Valid();
+		Log.info("Executing testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Invalid() ...");
+		testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Invalid();
+		Log.info("Executing testAnalyticsPeak_GetAnalyticsPeaksByReportId_Valid() ...");
+		testAnalyticsPeak_GetAnalyticsPeaksByReportId_Valid();
+		Log.info("Executing testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid() ...");
+		testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid();
 
 		Log.info("DONE!");
-
 	}
 
 	private static void testCustomerMaterialType_ByName() {
@@ -346,7 +353,6 @@ public class DataAccessUnitTests {
 		Assert.assertTrue(!iterator.hasNext());
 	}
 
-
 	private static void testStoredProcLisaInvestigationShowIndication_Valid() {
 		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("166328b0-b266-a7c2-3e41-39d7a866a18c");
 		Iterator<StoredProcLisaInvestigationShowIndication> iterator = list.iterator();
@@ -361,5 +367,30 @@ public class DataAccessUnitTests {
 		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("f90e9dd2-1b65-0111-756a-39d7a8986637");
 		Iterator<StoredProcLisaInvestigationShowIndication> iterator = list.iterator();
 		Assert.assertTrue(!iterator.hasNext());
+	}
+
+	private static void testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Valid() {
+		String validReportPeakId = "FB796BAA-0C0E-1A6F-7CA7-39DEDCE3E43F";
+		AnalyticsPeak objAnalyticsPeak = AnalyticsPeak.getAnalyticsPeak(validReportPeakId);
+		Assert.assertTrue(objAnalyticsPeak != null, "Value cannot be NULL.");
+	}
+
+	private static void testAnalyticsPeak_GetAnalyticsPeakByReportPeakId_Invalid() {
+		String invalidReportPeakId = "FB796BAA-0C0E-1A6F-7CA7-39DEDCE3E42F";
+		AnalyticsPeak objAnalyticsPeak = AnalyticsPeak.getAnalyticsPeak(invalidReportPeakId);
+		Assert.assertTrue(objAnalyticsPeak == null, "Value should be NULL.");
+	}
+
+	private static void testAnalyticsPeak_GetAnalyticsPeaksByReportId_Valid() {
+		String validReportId = "43745C4D-5796-9F2C-F831-39DF00AC7874";
+		final int EXPECTED_ROWS = 5;
+		List<AnalyticsPeak> objAnalyticsPeaks = AnalyticsPeak.getAnalyticsPeaks(validReportId);
+		Assert.assertTrue(objAnalyticsPeaks != null && objAnalyticsPeaks.size()==EXPECTED_ROWS, "Value cannot be NULL.");
+	}
+
+	private static void testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid() {
+		String invalidReportId = "43745C4D-5796-9F2C-F831-39DF00AC7885";
+		List<AnalyticsPeak> objAnalyticsPeaks = AnalyticsPeak.getAnalyticsPeaks(invalidReportId);
+		Assert.assertTrue(objAnalyticsPeaks == null || objAnalyticsPeaks.size()==0, "Value should be NULL.");
 	}
 }

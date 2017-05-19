@@ -527,6 +527,27 @@ public final class SurveyorConstants {
 		}
 	}
 
+	public enum MinAmplitudeType {
+		Survey_Standard ("Survey_Standard"),
+		Survey_RapidResponse ("Survey_RapidResponse"),
+		Survey_Manual ("Survey_Manual"),
+		Survey_Operator ("Survey_Operator"),
+		Survey_Assessment ("Survey_Assessment"),
+		Survey_EQ ("Survey_EQ"),
+		Survey_Analytics_Survey ("Survey_Analytics_Survey"),
+		Survey_Analytics_Ranking ("Survey_Analytics_Ranking");
+
+		private final String name;
+
+		MinAmplitudeType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum LicensedFeatures {
 		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
