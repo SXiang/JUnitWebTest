@@ -7,6 +7,7 @@ import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.source.ManageLocationsPage;
+import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
 import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 public class ManageLocationPageActions extends BasePageActions {
@@ -19,9 +20,9 @@ public class ManageLocationPageActions extends BasePageActions {
 		initializePageObject(driver, new ManageLocationsPage(driver, strBaseURL, testSetup));
 		setDataReader(new LocationDataReader(this.excelUtility));
 	}
-	
+
 	private void setDataReader(LocationDataReader customerDataReader) {
-		this.dataReader = customerDataReader;	
+		this.dataReader = customerDataReader;
 	}
 
 	// Note: Not thread-safe.
@@ -46,7 +47,7 @@ public class ManageLocationPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean createNewLocation(String data, Integer dataRowID) throws Exception {
 		logAction("ManageLocationPageActions.addNewLocation", data, dataRowID);
@@ -56,12 +57,12 @@ public class ManageLocationPageActions extends BasePageActions {
 		String customer = "";
 		if (ManageCustomerPageActions.workingDataRow.get() != null) {
 			customer = ManageCustomerPageActions.workingDataRow.get().name;
-		} else {	
+		} else {
 			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
 			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.valueOf(locationDataRow.customerDataRowID));
 			customer = customerDataRow.name;
 		}
-		
+
 		String locationDesc = locationDataRow.name;
 		String newLocationName = locationDataRow.name;
 		boolean useLatLongSelector = false;
@@ -89,17 +90,17 @@ public class ManageLocationPageActions extends BasePageActions {
 				inflationPower, percentile, checkForError);
 
 		workingDataRow.set(locationDataRow);
-		
+
 		return true;
 	}
-	
+
 	public ManageLocationsPage getManageLocationsPage() {
 		return (ManageLocationsPage)this.getPageObject();
 	}
 
-	public Float getMinAmplitudeForLocation(Integer dataRowID, SurveyModeType surveyModeType) throws Exception {
+	public Float getMinAmplitudeForLocation(Integer dataRowID, MinAmplitudeType minAmplitudeType) throws Exception {
 		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-		return locationDataReader.getMinAmpForLocation(dataRowID, surveyModeType);
+		return locationDataReader.getMinAmpForLocation(dataRowID, minAmplitudeType);
 	}
 
 	/* Invoke action using specified ActionName */

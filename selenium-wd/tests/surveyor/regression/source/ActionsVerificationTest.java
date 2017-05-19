@@ -342,7 +342,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		final int EXPECTED_INDICATIONS = 5;
 
 		final int userDataRowID = 16;
-		final int analyzerDb3DataRowID = 67;
+		final int analyzerDb3DataRowID = 70;
 		final int surveyRuntimeInSeconds = 120;
 		final int surveyDataRowID = 63;
 
