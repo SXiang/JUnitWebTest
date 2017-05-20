@@ -1133,14 +1133,6 @@ public class TestSetup {
 		ProcessUtility.killProcess("chrome.exe", /* killChildProcesses */ true);
 	}
 
-	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {
-		String replayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-		String defnFullPath = replayCmdFolder + File.separator + defnFileName;
-
-		HostSimInvoker simulator = new HostSimInvoker();
-		simulator.startReplay(defnFullPath);
-	}
-
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("DataManagerPublisher.exe", /* killChildProcesses */ true);
