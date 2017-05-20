@@ -728,8 +728,8 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyBreadcrumbIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBreadcrumbIsShownOnMap", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		BreadcrumbColor brColor = BreadcrumbColor.valueOf(data);
 		if (!ActionArguments.isEmpty(data)) {
+			BreadcrumbColor brColor = BreadcrumbColor.valueOf(data);
 			mapUtility.isBreadcrumbShownOnMap(brColor);
 		}
 
