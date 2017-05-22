@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.OLMapEntities.Indication;
 
@@ -215,7 +216,9 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
+		// which could cause waitForUIUnblock to throw error.
+		FunctionUtil.warnOnError(() -> driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET));
 
 		// stop simulator and PSA.
 		Log.info("Stopping Analyzer...");
