@@ -156,7 +156,7 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 
 		stopSurveyAndAnalyzer();
 	}
-	
+
 	/**
 	 * Test Case ID: TC2356_ObserverView_NoFieldNotesOptionForAnalyticsSurveys
 	 *	SCRIPT:
@@ -202,16 +202,17 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 
 		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
 		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-		getTestEnvironmentAction().idleForSeconds("20", NOTSET);
-		
+		getTestEnvironmentAction().idleForSeconds("10", NOTSET);
+
 		Set<Indication> indicationsOnObserverView = observerViewPageActionList.get(0).getIndicationsShownOnPage();
 
 		Log.info(String.format("Indications detected in ObserverView = %d", indicationsOnObserverView.size()));
-		//TODO: Clicking on indication is not table while conducting survey.  Uncomment below code once DE2934 gets fixed.
-		/*if (observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
-		assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
-		}*/
-		
+		getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
+		if (observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)) {
+			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
+			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
+		}
+
 		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
