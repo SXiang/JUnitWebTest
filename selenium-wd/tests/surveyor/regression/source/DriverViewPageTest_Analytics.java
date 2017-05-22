@@ -79,8 +79,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		surveyViewPageAction = ActionBuilder.createSurveyViewPageAction();
 		manageLocationPageActions = ActionBuilder.createManageLocationPageAction();
-		ActionBuilder.createManageUsersPageAction();
-
 	}
 
 	/**
@@ -660,7 +658,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView1.size()));
 			indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
 
-			Float LOCATION_MIN_AMP_1 = 0.035F;
+			Float LOCATION_MIN_AMP_1 = Float.valueOf(ManageLocationPageActions.workingDataRow.get().surMinAmp);
+
 			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_1));
 			indicationsOnDriverView1.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_1));
 			return true;
@@ -668,6 +667,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		final String locationName = ManageLocationPageActions.workingDataRow.get().name;
+		final String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		final String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 		final String SurveyMinAmp = "0.1";
 
 		// login as admin and update analytics location properties.
@@ -682,10 +683,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
 
-
-		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
-		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
-
 		TestEnvironmentActions. generateSurveyForUser(newUsername, newUserPass,
 				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), (driverPageAction) -> {
 					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
@@ -694,7 +691,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 					Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView2.size()));
 					indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
-					Float LOCATION_MIN_AMP_2 = 0.1F;
+					Float LOCATION_MIN_AMP_2 = Float.valueOf(SurveyMinAmp);
+
 					Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_2));
 					indicationsOnDriverView2.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_2));
 					return true;
