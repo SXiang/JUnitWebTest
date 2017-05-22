@@ -1147,17 +1147,9 @@ public class TestSetup {
 		}
 	}
 
-	public void stopReplay() {
-		// Execute replay script from the contained folder.
-		try {
-			String stopReplayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-			String stopReplayCmdFullPath = stopReplayCmdFolder + File.separator + STOP_REPLAY_CURL_FILE;
-			String command = "cd \"" + stopReplayCmdFolder + "\" && " + stopReplayCmdFullPath;
-			Log.info("Executing stop replay command. Command -> " + command);
-			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
-		} catch (IOException e) {
-			Log.error(e.toString());
-		}
+	public boolean stopReplay() throws IOException {
+		Log.method("stopReplay");
+		return new HostSimInvoker().stopReplay();
 	}
 
 	public static void updateAnalyzerConfiguration() {

@@ -1,6 +1,8 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -415,9 +417,10 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 	 * Test Case ID: <None>
 	 * NOTE: This is a test method to demonstrate the usage of OLMapUtility functions.
 	 *  Actual automation tests that use OLMapUtility can use this method as a reference.
+	 * @throws IOException
 	 */
 	@Test
-	public void ReferenceOnly_SimulatorTest_OLMapFunctionality() {
+	public void ReferenceOnly_SimulatorTest_OLMapFunctionality() throws IOException {
 		Log.info("Running ReferenceOnly_SimulatorTest_OLMapFunctionality");
 
 		loginPage.open();
@@ -442,7 +445,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickZoomOutButton();
 
 		// Let the test run for a few seconds.
-		getTestSetup().slowdownInSeconds(5 * getTestSetup().getSlowdownInSeconds());
+		getTestSetup().slowdownInSeconds(45);
 
 		// Stopping the replay before capturing OLMapUtility objects.
 		// This is necessary to click on correct co-ordinates.

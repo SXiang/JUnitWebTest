@@ -192,6 +192,43 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	}
 
 	@Test
+	public void TC_SimulatorTest_DriverView_VerifyClickFirstIndicationAddFieldNotes() throws Exception {
+		final int analyzerDb3DataRowID = 3;
+		final int surveyDataRowID = 3;
+		final Integer WAIT_TIME_IN_SECONDS = 35;
+		final String SAMPLE_FIELD_NOTES1 = "Dummy Note";
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
+		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		// start replay. start survey.
+		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds(String.valueOf(WAIT_TIME_IN_SECONDS), NOTSET);
+
+		// stop replay and click on first indication.
+		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
+		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
+		assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(EMPTY, NOTSET));
+
+		// add field notes and verify.
+		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
+		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1 , NOTSET);
+		assertTrue(driverViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
+
+		// stop survey. stop analyzer.
+		driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	@Test
 	public void TC_SimulatorTest_DriverViewStartDrivingSurvey_ManualSurvey() {
 		try {
 			final int analyzerDb3DataRowID = 3;

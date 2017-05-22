@@ -547,20 +547,18 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	@Test
 	public void TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys() throws Exception {
 		Log.info("\nRunning TC2355_DriverView_NoFieldNotesOptionForAnalyticsSurveys ...");
-
-
 		final String testCaseId = "TC2365";
-
 		final int picAdminUserDataRowID = 6;
-		final int DB3_ANALYZER_ROW_ID = 66;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
-		final int SURVEY_ROW_ID = 61;	 		/* Survey information  */
+
+		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
-		final int newLocationRowID = 17;
-		final int newCustomerUserRowID = 26;
-		final int newSurveyorRowID = 25;
-		final int newAnalyzerRowID = 23;
-		final int newRefGasBottleRowID = 7;
+		final int newLocationRowID = 20;
+		final int newCustomerUserRowID = 30;
+		final int newSurveyorRowID = 28;
+		final int newAnalyzerRowID = 26;
+		final int newRefGasBottleRowID = 10;
 
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, picAdminUserDataRowID);   /* Picarro Admin */
@@ -573,10 +571,12 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
 			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
-
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
+
+			// stop replay. click on indication and verify field notes button is not present.
+			testEnvironmentAction.get().stopReplay(EMPTY, NOTSET);
 			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-			assertTrue(driverPageAction.verifyFieldNotesDialogIsNotShown(EMPTY, NOTSET));
+			assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
 			return true;
 		});
 	}

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import common.source.HostSimulatorEntities.ReplayStatus;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -11,14 +12,18 @@ import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class HostSimInvoker {
-	public void stopReplay() {
+	public boolean stopReplay() throws IOException {
 		HostSimulatorInterface simulatorInterface = HostSimulatorCall.createInterface();
-		simulatorInterface.stopReplay();
+		Call<ResponseBody> stopReplayCall = simulatorInterface.stopReplay();
+		Response<ResponseBody> response = stopReplayCall.execute();
+		return response.isSuccessful();
 	}
 
-	public void stop() {
+	public boolean stop() throws IOException {
 		HostSimulatorInterface simulatorInterface = HostSimulatorCall.createInterface();
-		simulatorInterface.stop();
+		Call<ResponseBody> stopCall = simulatorInterface.stop();
+		Response<ResponseBody> response = stopCall.execute();
+		return response.isSuccessful();
 	}
 
 	public ReplayStatus getStatus() throws IOException {
@@ -67,4 +72,5 @@ public class HostSimInvoker {
 		public static HostSimulatorInterface createInterface() {
 			return new HostSimulatorCall().getInterface();
 		}
-	}}
+	}
+}
