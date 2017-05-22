@@ -258,6 +258,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 			modeFilter = SurveyModeFilter.Operator;
 		} else if (surveyModeFilter.equalsIgnoreCase("rapid response")) {
 			modeFilter = SurveyModeFilter.RapidResponse;
+		}else if (surveyModeFilter.equalsIgnoreCase("analytics")) {
+			modeFilter = SurveyModeFilter.Analytics;
 		}
 		return modeFilter;
 	}
@@ -370,7 +372,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		}
 	}
 
-	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
+	public boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
 		ReportCommonEntity rpt = fillWorkingDataForReports(dataRowID);
 		getReportsCommonPage().addNewReport(rpt, openNewReportsPage);
 		return true;

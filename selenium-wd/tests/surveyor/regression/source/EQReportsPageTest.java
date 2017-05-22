@@ -243,4 +243,49 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 			assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
 		}		
 
+		/**
+		 * Test Case ID: TC2419_MobileEQReportsWithAnalyticsSurveys
+		 * Test Description: Mobile EQ reports can be run with Analytics surveys
+		 * Script:
+		 * - Log into the UI
+		 * - Navigate to the EQ Reports page (NOT Facility EQ Reports page)
+		 * - Click on New EQ Report
+		 * - Enter a Report Title, select EQ Location Parameter, select line segments, add at least one EQ survey and one Analytics survey and click OK
+		 * - Download the EQ Table PDF and EQ View PDF
+		 * Results:
+		 * - In the Survey Selector section of the New EQ Report page, the Survey Mode Filter should include EQ, Standard and Analytics (depending on licensing, Rapid Response, Operator and Manual may also be among the choices)
+		 * - The report should generate successfully
+		 * - The EQ Table PDF should have the correct surveys listed along with line segments and indications (if any)
+		 * - The EQ View PDF should show the correct line segments as drawn by the user
+		 */
+		@Test
+		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2419, location = EQReportDataProvider.class)
+		public void TC2419_MobileEQReportsWithAnalyticsSurveys(
+				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+			Log.info("\nRunning TC2419_MobileEQReportsWithAnalyticsSurveys ...");
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			
+			eqReportsPage.openNewReportPage();
+			assertTrue(eqReportsPage.isAllSurveyModeShown());
+			assertTrue(eqReportsPage.isManualSurveyModeShown());
+			assertTrue(eqReportsPage.isStandardSurveyModeShown());
+			assertTrue(eqReportsPage.isOperatorSurveyModeShown());
+			assertTrue(eqReportsPage.isAnalyticsSurveyModeShown());
+			assertTrue(eqReportsPage.isRapidResponseSurveyModeShown());
+			assertTrue(eqReportsPage.isEQSurveyModeShown());
+			eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
+			eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
+			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			eqReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(eqReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(eqReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+			assertTrue(eqReportsPageAction.verifyAllSSRSTableInfos(EMPTY, reportDataRowID1));
+			eqReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID1));
+		}
+
 }
