@@ -1370,6 +1370,28 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return !getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
 
+	/**
+	 * Executes verifyiGPSDriftErrorMessageIsShowing action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyiGPSDriftErrorMessageIsShowing(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyiGPSDriftErrorMessageIsShowing", data, dataRowID);
+		return getDriverViewPage().isiGPSDriftErrorMessageShowing();
+	}
+
+	/**
+	 * Executes verifyiGPSDriftWarningMessageIsShowing action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyiGPSDriftWarningMessageIsShowing(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyiGPSDriftWarningMessageIsShowing", data, dataRowID);
+		return getDriverViewPage().isiGPSDriftWarningMessageShowing();
+	}
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -1501,6 +1523,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGPSButtonIsRed")) { return this.verifyGPSButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyHBTempButtonIsGreen")) { return this.verifyHBTempButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyHBTempButtonIsRed")) { return this.verifyHBTempButtonIsRed(data, dataRowID); }
+		else if (actionName.equals("verifyiGPSDriftErrorMessageIsShowing")) { return this.verifyiGPSDriftErrorMessageIsShowing(data, dataRowID); }
+		else if (actionName.equals("verifyiGPSDriftWarningMessageIsShowing")) { return this.verifyiGPSDriftWarningMessageIsShowing(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationsIsNotShownOnMap")) { return this.verifyIndicationsIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationsIsShownOnMap")) { return this.verifyIndicationsIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyLISAIsNotShownOnMap")) { return this.verifyLISAIsNotShownOnMap(data, dataRowID); }
