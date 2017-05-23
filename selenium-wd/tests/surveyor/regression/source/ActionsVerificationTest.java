@@ -213,6 +213,8 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(WAIT_TIME_IN_SECONDS), NOTSET);
 
 		// stop replay and click on first indication.
+		// NOTE: post stopping replay if test is on a view where indication bubbles take time to settle
+		//       add a pause before calling clickOnFirstIndicationShownOnMap().
 		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
 		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(EMPTY, NOTSET));

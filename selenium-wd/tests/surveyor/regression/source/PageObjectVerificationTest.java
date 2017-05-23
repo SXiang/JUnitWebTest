@@ -445,7 +445,7 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		driverViewPage.clickZoomOutButton();
 
 		// Let the test run for a few seconds.
-		getTestSetup().slowdownInSeconds(45);
+		getTestSetup().slowdownInSeconds(5 * getTestSetup().getSlowdownInSeconds());
 
 		// Stopping the replay before capturing OLMapUtility objects.
 		// This is necessary to click on correct co-ordinates.
