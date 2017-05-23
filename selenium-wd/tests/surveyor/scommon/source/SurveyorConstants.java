@@ -68,6 +68,7 @@ public final class SurveyorConstants {
 	public static final String ADMINISTRATORUSER = "Administrator";    // NOTE: This user is required for cases where the data pushed into environment has been pushed as Administrator User.
 	public static final String PICDFADMIN = "AutomationAdmin";
 	public static final String USERPASSWORDHASH ="oeHwHqmv621dZ1MRE2BSdw==";
+	public static final String INVALIDPSWD ="1234";
 	public static final String PICADMINPSWD = "sqa#Picarro$0";
 	public static final String SQACUSUAUSER = "sqacusua";
 	public static final String SQACUSSUUSER = "sqacussu";
@@ -116,6 +117,7 @@ public final class SurveyorConstants {
 
 	public static final String RFADS2004ANZ = "RFADS2004";
 	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
+	public static final String RFADS2004FEQ = "RFADS2004-FEQ";
 
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
@@ -259,8 +261,9 @@ public final class SurveyorConstants {
 	public static final String EMAILTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "50");
 	public static final String PASSWORDTOOLONG = Resources.getResource(ResourceKeys.Validation_EnterNoMoreThan).replace("{0}", "15");
 	public static final String NOMATCHINGRECORDS = Resources.getResource("Constant_NoMatchingRecordsFound");
-
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
+	public static final String REPORTERRORPROCESSING = Resources.getResource(ResourceKeys.Reports_ErrorProcessing);
+	public static final String INVALIDUSERPASS = Resources.getResource(ResourceKeys.Account_NotRecognized);
 
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
@@ -272,11 +275,13 @@ public final class SurveyorConstants {
 	public static final String SUBTITLE = " - Surveyor";
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
-	public static final int LINE_SELECTOR_ZOOMLEVEL = 15;
-	
+	public static final int LINE_SELECTOR_ZOOMLEVEL = 13;
+
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
 	public static final String ETHMTHERRLESSMSG = Resources.getResource(ResourceKeys.Validation_EnterValueLessThanOrEqual).replace("{0}", "99");
+
+	public static final String MORE_ASSETS_THAN_SUPPORTED_ERROR_MSG = "More than 10000 Assets found in the report area";
 
 	/*
 	 * Survey View constants
@@ -395,6 +400,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_IGPSCAR = "iGPS car";
 	public static final String SURVEYOR_SQACUSUNIT1 = "SQACusSrvUnit-1";
 	public static final String SURVEYOR_NISSANROGUEPICARRO = "Nissan Rogue - Picarro";
+	public static final String SURVEYOR_BLACKRHINOFEQ = "Black Rhino FEQ";
 
 	/*
 	 * Compliance Report Surveyor Units
@@ -443,7 +449,8 @@ public final class SurveyorConstants {
 	public static final String DEFAULTLOC="Default";
 
 	public static final Integer DEFAULT_LOCATION_DATAROWID = 6;
-
+	public static final String DEFAULT_PSFILTER_THRESHOLD = "0.05";
+	public static final String DEFAULT_SURVEY_MIN_AMPLITUDE = "5";
 	public static final String REQUIRED_FIELD_VAL_MESSAGE = "This field is required.";
 
 	/*
@@ -457,6 +464,8 @@ public final class SurveyorConstants {
 	public static final String DIALOG_SELECTEDAREALSTOOLARGE_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooLarge);
 	public static final String DIALOG_SELECTEDAREALSTOOSMALL_MESSAGE = Resources.getResource(ResourceKeys.Dialog_SelectedArealsTooSmall);
 	public static final String CR_BOUNDARYMINSIZE_MESSAGE = Resources.getResource(ResourceKeys.ComplianceReport_BoundaryMinSizeMessage);
+	public static final String CR_VALUEMISSING_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_ValueMissingMessage);
+	public static final String CR_EQLINES_MESSAGE=Resources.getResource(ResourceKeys.ComplianceReport_EQLinesMessage);
 
 	/*
 	 * Analyzer and surveyor constants.
@@ -491,7 +500,9 @@ public final class SurveyorConstants {
 	/*
 	 * Other string constants
 	 */
-	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
+
+	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21";
 
 	/*
 	 * enum for list of constants
@@ -516,12 +527,35 @@ public final class SurveyorConstants {
 		}
 	}
 
+	public enum MinAmplitudeType {
+		Survey_Standard ("Survey_Standard"),
+		Survey_RapidResponse ("Survey_RapidResponse"),
+		Survey_Manual ("Survey_Manual"),
+		Survey_Operator ("Survey_Operator"),
+		Survey_Assessment ("Survey_Assessment"),
+		Survey_EQ ("Survey_EQ"),
+		Survey_Analytics_Survey ("Survey_Analytics_Survey"),
+		Survey_Analytics_Ranking ("Survey_Analytics_Ranking");
+
+		private final String name;
+
+		MinAmplitudeType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum LicensedFeatures {
+		ANALYTICS ("Analytics"),
 		ASSESSMENT ("Assessment"),
 		ASSETBOX ("Asset Box Highlight"),
 		CURTAINVIEW ("Curtain View"),
 		CUSTOMCOLORS ("Custom Colors"),
 		EQ ("EQ"),
+		FACILITYEQ ("Facility EQ"),
 		FLEETMAPVIEW ("FleetMap View"),
 		GAPGRID10 ("FTP Upload"),
 		GISLAYERS ("GIS Layers"),

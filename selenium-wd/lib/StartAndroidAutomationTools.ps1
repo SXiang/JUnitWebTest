@@ -1,12 +1,13 @@
-﻿param
+param
 (
-  [string] $avdName = "android_23_google_apis_x86"
+  [Parameter(Mandatory=$true)]
+  [string] $AvdName                      # Eg. "android_23_google_apis_x86"
 )
 
 Write-Host "[ANDROID-TOOLS]: Starting Android Emulator ..."
 
 $ANDROIDHOME = $env:ANDROID_HOME
-Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $avdName"
+Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $AvdName"
 
 $APPDATA = $env:APPDATA
 $appiumCmdPath = "$APPDATA\npm\appium"
@@ -21,4 +22,6 @@ if ($procs -ne $null) {
         "NOTE: Process NOT found errors can be ignored."
     }
 }
+
 Start-Process -FilePath "$appiumCmdPath"
+sleep -Seconds 30

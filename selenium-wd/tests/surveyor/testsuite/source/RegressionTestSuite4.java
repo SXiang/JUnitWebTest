@@ -7,10 +7,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import common.source.Log;
 import surveyor.regression.source.ACLandVisibilityTest;
-import surveyor.regression.source.LicensedFeatureAndVisibilityTest;
 import surveyor.regression.source.MeasurementSessionsPageTest;
 import surveyor.regression.source.SurveyViewPageTest1;
 import surveyor.regression.source.SurveyViewPageTest2;
+import surveyor.regression.source.SurveyViewPageTest_Analytics;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
@@ -19,6 +19,7 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	,MeasurementSessionsPageTest.class
 	,SurveyViewPageTest1.class
 	,SurveyViewPageTest2.class
+	,SurveyViewPageTest_Analytics.class
 })
 public class RegressionTestSuite4 {
 

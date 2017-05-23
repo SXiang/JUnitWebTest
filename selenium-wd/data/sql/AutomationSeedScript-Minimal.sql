@@ -409,6 +409,12 @@ BEGIN
 	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
 	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', @locationID, N'Nissan Rogue - Picarro')
 END
+-- SurveyorUnit - (Black Rhino FEQ)
+IF NOT EXISTS (SELECT * FROM [dbo].[SurveyorUnit] WHERE [Id]='58c51edd-51a4-1266-1159-39dbd3f3366c')
+BEGIN
+	SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+	INSERT [dbo].[SurveyorUnit] ([Id], [LocationId], [Description]) VALUES (N'58c51edd-51a4-1266-1159-39dbd3f3366c', @locationID, N'Black Rhino FEQ')
+END
 
 
 -- Analyzer
@@ -527,7 +533,13 @@ IF @@ROWCOUNT=0
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]='FEDS2055-PICARRO' AND [SharedKey]='feds2055-picarro')
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'FEDS2055-PICARRO', N'feds2055-picarro')
 END
-
+-- Analyzer - (RFADS2004-FEQ)
+IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'RFADS2004-FEQ' AND [SharedKey]=N'rfads2004-feq')
+BEGIN 
+UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'58c51edd-51a4-1266-1159-39dbd3f3366c', [SerialNumber]=N'RFADS2004-FEQ', [SharedKey]=N'rfads2004-feq' WHERE [Id]='88cfc43e-9005-03e1-1d7a-39dbd3f483de'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'88cfc43e-9005-03e1-1d7a-39dbd3f483de', N'58c51edd-51a4-1266-1159-39dbd3f3366c', N'RFADS2004-FEQ', N'rfads2004-feq')
+END
 
 
 --ReferenceGasBottle: (UPDATE if EXISTS, else INSERT)
@@ -603,6 +615,10 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899', [BatchId]='109-56-12523', [IsotopicValue]=-32.7, [Date]=CAST(N'2015-11-10 00:00:00.000' AS DateTime), [EthaneToMethaneRatio]=0.03 WHERE [Id]='C4890397-D624-7D79-CA78-39D895DB6962'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date], [EthaneToMethaneRatio]) VALUES (N'C4890397-D624-7D79-CA78-39D895DB6962', N'BFEEA4F3-093D-B963-4AE6-39D7B44D9899', N'109-56-12523', -32.7 ,CAST(N'2015-11-10 00:00:00.000' AS DateTime), 0.03)
+-- RefGasBottle - (RFADS2004-FEQ)
+UPDATE [dbo].[ReferenceGasBottle] SET [SurveyorUnitId]='58c51edd-51a4-1266-1159-39dbd3f3366c', [BatchId]='A', [IsotopicValue]=-32.7, [Date]=CAST(N'2016-12-02 23:04:27.220' AS DateTime) WHERE [Id]='49ef9ff8-c480-632d-8202-39dbd3f4f555'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[ReferenceGasBottle] ([Id], [SurveyorUnitId], [BatchId], [IsotopicValue], [Date]) VALUES (N'49ef9ff8-c480-632d-8202-39dbd3f4f555', N'58c51edd-51a4-1266-1159-39dbd3f3366c', N'A', -32.7, CAST(N'2016-12-02 23:04:27.220' AS DateTime))
 
 	
 -- Add AnalyzerHardwareCapabilityType
@@ -662,13 +678,27 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'F5970731-CE37-F7F3-DB5F-39D7E2D02053'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'F5970731-CE37-F7F3-DB5F-39D7E2D02053', 1)
+-- AnalyzerHardwareCapabilityType for Surveyor - 'Black Rhino FEQ'
+UPDATE [dbo].[AnalyzerHardwareCapabilityType] SET [HardwareCapabilityTypeId]=0 WHERE [AnalyzerId]=N'88cfc43e-9005-03e1-1d7a-39dbd3f483de'
+IF @@ROWCOUNT=0
+	INSERT [dbo].[AnalyzerHardwareCapabilityType] ([AnalyzerId], [HardwareCapabilityTypeId]) VALUES (N'88cfc43e-9005-03e1-1d7a-39dbd3f483de', 0)
 
+	
 -- CalibrationRecords
 -- Add calibration record for EQ Surveyor - Nissan Rogue
 UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='BFEEA4F3-093D-B963-4AE6-39D7B44D9899',[StartEpoch]=1479538985.544,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='23BEBF59-BB6E-85C9-C889-39DD83BD36E5'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('23BEBF59-BB6E-85C9-C889-39DD83BD36E5','BFEEA4F3-093D-B963-4AE6-39D7B44D9899',1479538985.544,0,0,-4)
-
+-- Calibration record for 'SoftwareCar_2037_cust'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1483809491,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='09FD8BE0-98B1-480A-BEC6-54AC5847E141'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('09FD8BE0-98B1-480A-BEC6-54AC5847E141','00000014-FB61-2EF6-5DD1-39C8AC533D41',1483809491,0,0,-4)
+-- Calibration record for 'Black Rhino FEQ'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='58c51edd-51a4-1266-1159-39dbd3f3366c',[StartEpoch]=1480719926,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-5.2 WHERE [Id]='c9cf29da-0f18-0782-e93c-39dbd3f8f705'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('c9cf29da-0f18-0782-e93c-39dbd3f8f705','58c51edd-51a4-1266-1159-39dbd3f3366c',1480719926,0,0,-5.2)
+	
+	
 -- Inlet entries for EQ Surveyor - Nissan Rogue, calibration record
 UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0
 IF @@ROWCOUNT=0
@@ -718,17 +748,13 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[Inlet] SET [Height]=2.5 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=15
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'23bebf59-bb6e-85c9-c889-39dd83bd36e5', 15,2.5)
-
+	
 -- Anemometer entry for EQ Surveyor - Nissan Rogue, calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'23bebf59-bb6e-85c9-c889-39dd83bd36e5', 0, -3.6, 1, 2, 0)	
 
--- Calibration record for 'SoftwareCar_2037_cust'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='00000014-FB61-2EF6-5DD1-39C8AC533D41',[StartEpoch]=1486498358.94,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='09FD8BE0-98B1-480A-BEC6-54AC5847E141'
-IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('09FD8BE0-98B1-480A-BEC6-54AC5847E141','00000014-FB61-2EF6-5DD1-39C8AC533D41',1486498358.94,0,0,-4)
-
+	
 -- Inlet entry for 'SoftwareCar_2037_cust' calibration record
 UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'09FD8BE0-98B1-480A-BEC6-54AC5847E141' AND [Index]=0
 IF @@ROWCOUNT=0
@@ -784,18 +810,73 @@ UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotat
 IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'09FD8BE0-98B1-480A-BEC6-54AC5847E141', 0, -3.6, 1, 2, 0)
 	
+-- Inlet entry for 'Black Rhino FEQ' calibration record
+UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=0
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 0,0.625)
+UPDATE [dbo].[Inlet] SET [Height]=0.75 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=1
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 1,0.75)
+UPDATE [dbo].[Inlet] SET [Height]=0.875 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=2
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 2,0.875)
+UPDATE [dbo].[Inlet] SET [Height]=1 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=3
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 3,1)
+UPDATE [dbo].[Inlet] SET [Height]=1.125 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=4
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 4,1.125)
+UPDATE [dbo].[Inlet] SET [Height]=1.25 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=5
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 5,1.25)
+UPDATE [dbo].[Inlet] SET [Height]=1.375 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=6
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 6,1.375)
+UPDATE [dbo].[Inlet] SET [Height]=1.5 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=7
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 7,1.5)
+UPDATE [dbo].[Inlet] SET [Height]=1.625 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=8
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 8,1.625)
+UPDATE [dbo].[Inlet] SET [Height]=1.75 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=9
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 9,1.75)
+UPDATE [dbo].[Inlet] SET [Height]=1.875 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=10
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 10,1.875)
+UPDATE [dbo].[Inlet] SET [Height]=2 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=11
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 11,2)
+UPDATE [dbo].[Inlet] SET [Height]=2.125 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=12
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 12,2.125)
+UPDATE [dbo].[Inlet] SET [Height]=2.25 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=13
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 13,2.25)
+UPDATE [dbo].[Inlet] SET [Height]=2.375 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=14
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 14,2.375)
+UPDATE [dbo].[Inlet] SET [Height]=2.5 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=15
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 15,2.5)
 
+-- Anemometer entry for 'Black Rhino FEQ', calibration record
+UPDATE [dbo].[Anemometer] SET [Offset]=0, [SpeedFactor]=1, [Height]=0, [Rotation]=0 WHERE [CalibrationRecordId]=N'c9cf29da-0f18-0782-e93c-39dbd3f8f705' AND [Index]=3
+IF @@ROWCOUNT=0
+	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 3, 0, 1, 0, 0)	
+	
+	
 --Users:
 --Users for manual
 -- Users assigned to Location='Santa Clara', Customer='Picarro'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'Seed_first',[LastName]=N'seed_last',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='AutomationAdmin'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C600',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'Seed_first',N'seed_last',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','AutomationAdmin')
 -- Users assigned to Location='sqaTestloc', Customer='sqaTest'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'sqaTest' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqaTestloc'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqaTestloc' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'sqatestua',[LastName]=N'lastName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='uadmin@sqatest.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C580',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqatestua',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','uadmin@sqatest.com')
@@ -807,7 +888,7 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C582',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqatestdr',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver@sqatest.com')
 -- Users assigned to Location='pge_SC', Customer='PG&E'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'PG&E' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='pge_SC' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'SQAPGE',[LastName]=N'Dr1',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='sqapgedr1@email.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'FFB92186-375D-5142-920D-39D8B54800BB',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'SQAPGE',N'Dr1',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqapgedr1@email.com')
@@ -822,7 +903,7 @@ IF @@ROWCOUNT=0
 --Users for selenium automation
 -- Users assigned to Location='Santa Clara', Customer='Picarro'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'sqapicua',[LastName]=N'lastName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='sqapicua@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C560',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqapicua',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqapicua@picarro.com')
@@ -839,7 +920,7 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'picdr',[LastName]=N'lName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'APzfKg2J7WbjrSj9t2MBHjNnAtGscp1cmFXYZpXjERYmvfcEGfoV1AMuWTGiswmGtQ==',[SecurityStamp]=N'7aa6b035-f94b-4e73-9b8c-008663e71e45',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0', [CultureId]='en-US' WHERE [UserName]='picdr@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT [dbo].[User] ([Id], [CustomerId], [OpQualExpiration], [Active], [EulaAccepted], [TimeZoneId], [LocationId], [FirstName], [LastName], [CellPhoneNumber], [Email], [EmailConfirmed], [PasswordHash], [SecurityStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEndDateUtc], [LockoutEnabled], [AccessFailedCount], [UserName], [CultureId]) VALUES (N'c67baf53-693b-78f8-0498-39d76b0009aa', @customerId, NULL, 1, 1, N'00000000-0000-0000-0001-000000000000', @locationID, 'picdr', 'lname', NULL, NULL, 0, N'APzfKg2J7WbjrSj9t2MBHjNnAtGscp1cmFXYZpXjERYmvfcEGfoV1AMuWTGiswmGtQ==', N'7aa6b035-f94b-4e73-9b8c-008663e71e45', NULL, 0, 0, NULL, 0, 0, N'picdr@picarro.com', N'en-US')
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Santa Clara' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'sqapicsup',[LastName]=N'lastName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='sqapicsup@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'575DC0C7-7927-3EA6-56E4-39D375BFA723',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqapicsup',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqapicsup@picarro.com')
@@ -848,7 +929,7 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C562',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqapicdr',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqapicdr@picarro.com')
 -- Users assigned to Location='sqacusloc', Customer='sqacus'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'sqacus' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='sqacusloc' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'sqacusua',[LastName]=N'lastName',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='sqacusua@email.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C570',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'sqacusua',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','sqacusua@email.com')
@@ -863,7 +944,7 @@ IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'DE734DDF-363E-49FC-8DBC-39C8C221C575',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'driverTestMR',N'lastName',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver@testmr.com')
 -- User assigned to Location='NolicenseLoc', Customer='CustomerWithNoLicense'
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'CustomerWithNoLicense' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='NolicenseLoc'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='NolicenseLoc' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=Null,[LastName]=Null,[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='CusAdmUserWithNoLic@email.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName])
@@ -872,7 +953,7 @@ IF @@ROWCOUNT=0
 
 -- User for assessment surveys.
 SELECT @customerId=[Id] FROM [dbo].[Customer] WHERE [Name]=N'Picarro' 
-SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default'
+SELECT @locationID=[Id] FROM [dbo].[Location] WHERE Description='Default' AND CustomerId=@customerId
 UPDATE [dbo].[User] SET [CustomerId]=@customerId, [OpQualExpiration]=NULL,[Active]=N'1',[EulaAccepted]=N'1',[TimeZoneId]=N'00000000-0000-0000-0001-000000000000',[LocationId]=@locationID,[FirstName]=N'driver1',[LastName]=N'Picarro',[CellPhoneNumber]=NULL,[Email]=NULL,[EmailConfirmed]=N'0',[PasswordHash]=N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',[SecurityStamp]=N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',[PhoneNumber]=NULL,[PhoneNumberConfirmed]=N'0',[TwoFactorEnabled]=N'0',[LockoutEndDateUtc]=NULL,[LockoutEnabled]=N'0',[AccessFailedCount]=N'0' WHERE [UserName]='driver1@picarro.com'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[User] ([Id] ,[CustomerId],[OpQualExpiration],[Active],[EulaAccepted],[TimeZoneId],[LocationId],[FirstName],[LastName],[CellPhoneNumber],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName]) VALUES   (N'B195D287-52BA-FFA4-9405-39D60DAE335C',@customerId, NULL,N'1',N'1',N'00000000-0000-0000-0001-000000000000',@locationID,N'driver1',N'Picarro',NULL,NULL,N'0',N'AA7woOuTNxwDCcQoo2Xq/Z5372UeFyS4beksZrkaU5Orz/b22355leGbNHZdLSlHjw==',N'254fc4fe-7a90-4e6d-9b5e-aa3bdc319f4a',NULL,N'0',N'0',NULL,N'0',N'0','driver1@picarro.com')

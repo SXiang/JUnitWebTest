@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
 
 import org.testng.Assert;
 
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
+
 /**
  * Regex Matching Utility class.
  *
@@ -19,6 +22,7 @@ import org.testng.Assert;
  */
 public class RegexUtility {
 	public static final String DOT_SPLIT_REGEX_PATTERN = "\\.";
+	public static final String TAB_SPLIT_REGEX_PATTERN = "\\t";
 	public static final String NEWLINE_SPLIT_REGEX_PATTERN = "\\r?\\n";
 	public static final String SPACE_SPLIT_REGEX_PATTERN = " ";
 	public static final String COLON_SPLIT_REGEX_PATTERN = ":";
@@ -43,6 +47,8 @@ public class RegexUtility {
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
+
+	public static final String FEATURE_INFO_REGEX_WITH_PLACEHOLDER = ".*(%s\\s+:.+)+";
 
 	private static int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 
@@ -244,9 +250,14 @@ public class RegexUtility {
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_SPECIAL_CHARACTERS, "_");
 	}
 
+	public static String replaceNonAsciiChars(String inputString) {
+		return inputString.replaceAll("[^\\x20-\\x7e]", "");
+	}
+
 	public static String getValidFileName(String inputString){
 		return inputString.replaceAll(RegexUtility.REGEX_PATTEN_NOT_METHODNAME_CHARACTERS, "");
 	}
+
 	/**
 	 * Compare strings by equals or matches
 	 * @param line
@@ -272,6 +283,8 @@ public class RegexUtility {
 		}
 		return isMatch;
 	}
+
+
 
 	public static void main(String[] args) throws IOException {
 		Log.info("Running test - testAppVersion_Success() ...");

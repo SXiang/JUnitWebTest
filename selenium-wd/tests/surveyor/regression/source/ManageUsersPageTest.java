@@ -632,7 +632,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 
 		manageUsersPage.open();
 		manageUsersPage.waitForPageLoad();
-		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, false);
+		manageUsersPage.addNewPicarroUser(userName, USERPASSWORD, "Picarro - "+location, false);
 		manageUsersPage.waitForPageLoad();
 
 		assertTrue(manageUsersPage.findExistingUser(location, userName, false));
@@ -793,7 +793,7 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 	@Test
 	public void TC480_ConfirmPasswordDifferent_PicSupport() {
 		String errorMsg = PWDSAMEVALUE;
-		String email = PICNAMEPREFIX + "dr" + getTestSetup().getRandomNumber() + REGBASEPICUSERNAME;
+		String email = PICNAMEPREFIX + "dr" + getTestSetup().getNewFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
 		String customerName = "Picarro";
 		String location = SQACUSSULOC;
 		String locationDesc = customerName + " - " + location;

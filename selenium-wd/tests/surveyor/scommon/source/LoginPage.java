@@ -39,6 +39,12 @@ public class LoginPage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
 	private WebElement txtAccountDisabled;
 
+	@FindBy(how = How.XPATH, using = "/html/body/div/div/div/div/div[2]/form/fieldset/div/div[1]/div/ul/li")
+	private WebElement txtErrLogin;
+
+	public WebElement getTxtErrLogin(){
+		return this.txtErrLogin;
+	}
 	/**
 	 * @param driver
 	 * @param testSetup

@@ -1,10 +1,16 @@
 package surveyor.scommon.actions;
 
+import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 
 import common.source.ExcelUtility;
+import common.source.Log;
+import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
@@ -14,6 +20,7 @@ import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
+import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.source.Coordinates;
@@ -88,6 +95,73 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 				!this.getEQReportsPage().isManualReportModeShown();
 	}
 
+	/**
+	 * Executes clickOnEQViewerPDF action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean clickOnViewerPDF(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageActions.clickOnViewerPDF", data, dataRowID);
+		ReportsBaseDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		this.getReportsCommonPage().invokeEQPDFFileDownload(reportsDataRow.title);
+		return true;
+	}
+
+	@Override
+	public boolean clickOnReportViewerView(String data, Integer dataRowID) throws Exception {
+		String reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+		this.getReportsCommonPage().invokeViewFileDownload(reportName, ReportFileType.EQView.toString(), 1);
+		return true;
+	}
+	
+	/**
+	 * Executes verifyViewsImageWithBaseline action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyViewImageWithBaseline(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageAction.verifyViewImageWithBaseline", data, dataRowID);
+		ReportsCommonDataRow reportsDataRow = getReportsCommonDataRow(dataRowID);
+		return  this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+					reportsDataRow.title, reportsDataRow.tCID, ReportFileType.EQView.toString(), false);
+	}
+
+	@Override
+	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+		Log.info("Executing verifyDrivingSurveysTable()...");
+		boolean verifyDrivingSurveysTable = this.getReportsCommonPage().verifyDrivingSurveysTable(downloadPath, getWorkingReportsDataRow().title);
+		Log.info(String.format("verifyDrivingSurveysTable() returned - '%b'", verifyDrivingSurveysTable));
+
+		Log.info("Executing verifyEmissionsQuantificationTable()...");
+		boolean verifyEmissionsQuantificationTable = this.getEQReportsPage().verifyEmissionsQuantificationTable(downloadPath, getWorkingReportsDataRow().title);
+		Log.info(String.format("verifyEmissionsQuantificationTable() returned - '%b'", verifyEmissionsQuantificationTable));
+		
+		Log.info(String.format("verifyEmissionsQuantificationTable = %b; verifyDrivingSurveysTable = %b",
+				verifyEmissionsQuantificationTable, verifyDrivingSurveysTable));
+		return verifyEmissionsQuantificationTable && verifyDrivingSurveysTable;
+	}
+	
+	/**
+	 * Executes verifyViewsImagesWithBaselines action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	@Override
+	public boolean verifyViewsImagesWithBaselines(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageActions.verifyViewsImagesWithBaselines", data, dataRowID);
+		boolean retVal = true;
+		EQReportsDataRow reportsDataRow = getReportsDataRow(dataRowID);
+		retVal = retVal && this.getReportsCommonPage().verifyViewsImages(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+					reportsDataRow.title, reportsDataRow.tCID, ReportFileType.EQView.toString(), false);
+		return retVal;
+	}
+
 	/* END - Actions on the Page*/
 
 	/* Invoke action using specified ActionName */
@@ -138,9 +212,27 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	protected void waitForReportSpecificFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
-		// No EQ reports specific action.
-	}
+		String reportName = "", viewName = "";
 
+		switch(fileType) {
+		case EQView:
+			reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+			viewName = fileType.toString();
+			this.getReportsCommonPage().waitForViewFileDownload(reportName, viewName);
+			break;
+		default:
+			Log.warn("File type is not supported in EQ report: "+fileType);
+			break;
+		}
+	}
+	
+	@Override
+	public boolean waitForViewDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("EQReportsPageActions.waitForViewDownloadToComplete", data, dataRowID);
+		waitForReportFileDownload(dataRowID, ReportFileType.EQView, 1);
+		return true;
+	}
+	
 	@Override
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		return new EQReportEntity();

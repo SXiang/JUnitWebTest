@@ -54,7 +54,7 @@ public class ReportsBaseDataReader extends BaseDataReader {
 		String tCID = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_TCID"), sheetName);
 		String title = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_Title"), sheetName);
 		title = ActionArguments.evaluateArgForFunction(title);
-		if (!BaseHelper.isNullOrEmpty(tCID)) {
+		if (!BaseHelper.isNullOrEmpty(title)&& !BaseHelper.isNullOrEmpty(tCID)) {
 			title = String.format("%s-%s", tCID, title);
 		}
 		String customerRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_CustomerRowID"), sheetName);

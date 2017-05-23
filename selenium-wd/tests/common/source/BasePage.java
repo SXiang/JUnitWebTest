@@ -25,7 +25,9 @@ import java.util.function.BooleanSupplier;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -448,10 +450,18 @@ public class BasePage {
 		WebElementExtender.executeScript(element, driver, "arguments[0].scrollIntoView();");
 	}
 
+	public void focusOnPage(By locator){
+		WebElement element = waitUntilPresenceOfElementLocated(locator);
+		focusOnPage(element);
+	}
 	public void focusOnPage(WebElement element){
 		Actions action = new Actions(driver);
-		action.moveToElement(element).click().click().perform();
-		action.moveToElement(element).click().click().perform();
+		try{
+			action.moveToElement(element).click().click().perform();
+			action.moveToElement(element).click().click().perform();
+		}catch(Exception e){
+			Log.warn("Failed to focusOnPage by clicking on element: "+e);
+		}
 	}
 
 	public void minimizeBrowserWindow(){
@@ -642,5 +652,37 @@ public class BasePage {
 			return false;
 		}
 		return true;
-}
+	}
+
+	public void waitForAJAXCallsToComplete() {
+		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				try {
+					Object jQueryActive = ((JavascriptExecutor)d).executeScript("return jQuery.active");
+					if (jQueryActive.toString().equalsIgnoreCase("0")) {
+						return true;
+					}
+				} catch (WebDriverException e) {
+					Log.info("jQuery NOT available. Skipping wait on jQuery.active");
+					return true;
+				}
+				return false;
+			}
+		};
+		ExpectedCondition<Boolean> documentReadyComplete = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				Object documentReadyState = ((JavascriptExecutor)d).executeScript("return document.readyState");
+				if (documentReadyState.toString().equalsIgnoreCase("complete")) {
+					return true;
+				}
+				return false;
+			}
+		};
+		try{
+			(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
+			(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+		}catch(Exception e){
+			Log.warn("Failed to waitForAJAXCallsToComplete: "+e);
+		}
+	}
 }

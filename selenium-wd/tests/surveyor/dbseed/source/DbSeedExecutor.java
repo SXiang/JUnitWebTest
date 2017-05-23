@@ -1,10 +1,14 @@
 package surveyor.dbseed.source;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +23,7 @@ import common.source.LogHelper;
 import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.ZipUtility;
 import surveyor.dataaccess.source.ConnectionFactory;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.SqlCmdUtility;
@@ -26,6 +31,8 @@ import static surveyor.scommon.source.SurveyorConstants.*;
 
 public class DbSeedExecutor {
 
+	private static final String ASSET_BOUNDARY_BA_ZIP = "Asset.Boundary.BA.zip";
+	private static final String AUTOMATION_SEED_SCRIPT_LOAD_GIS_SQL = "AutomationSeedScript-LoadGIS.sql";
 	private static final boolean ENABLE_VERBOSE_LOGGING = false;
 	private static final boolean DEFAULT_REDATE_SETTING = false;
 	private static final String MEASUREMENT_PREFIX = "Measurement-";
@@ -33,22 +40,30 @@ public class DbSeedExecutor {
 	private static final String ANEMOMETERRAW_PREFIX = "AnemometerRaw-";
 	private static DbSeedBuilderCache surveySeedBuilderCache;
 
+	private static Map<String, String> customerNameIdMap = Collections.synchronizedMap(new HashMap<String, String>());
+
+	public static final String ASSET_DAT_FILE = "Asset.BA.dat";
+	public static final String BOUNDARY_DAT_FILE = "Boundary.BA.dat";
+
 	public static final String[] PICARRO_CUSTOMER_SURVEYS = {"assessment-1", "assessment-2", "EthaneManual", "EthaneStnd3","EthaneStnd2","EthaneStnd","EthaneRR","EthaneOpertor2","EthaneOpertor1","Ethane1MinSurvey",
 			"iso-cap-1", "iso-cap-2", "man-pic-1","man-pic-2","op-pic","op-sqacudr","rr-pic","rr-sqacudr-1","rr-sqacudr-2","stnd-pic",
 			"standard_test-1", "standard_test-2", "standard_test-3", "stnd-sqacudr","stnd-sqacudr-1","stnd-sqacudr-2","stnd-sqacudr-3",
-			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1", "daysurvey7-1", "daysurvey8.2-1", "daysurvey8-1", "daysurvey8-2"};
+			"StandardWithLeak", "NoFOV-1", "NoFOV-2", "NoFOV-3", "daysurvey3.2-1", "daysurvey3.2-2", "daysurvey4-1", "daysurvey5-1", "daysurvey7-1", "daysurvey8.2-1", "daysurvey8-1", "daysurvey8-2",
+			"IsoCapRedTrace-1", "AnalyticsTagA-1", "AnalyticsTagB-1", "AnalyticsTagC-1"};
 
 	public static final String[] SQACUS_CUSTOMER_SURVEYS = {"assessment-1-sqacus", "assessment-2-sqacus", "EthaneManual-sqacus","EthaneStnd3-sqacus","EthaneStnd2-sqacus","EthaneStnd-sqacus","EthaneRR-sqacus","EthaneOpertor2-sqacus",
 			"EthaneOpertor1-sqacus","Ethane1MinSurvey-sqacus", "iso-cap-1-sqacus", "iso-cap-2-sqacus", "man-pic-1-sqacus","man-pic-2-sqacus","op-pic-sqacus","op-sqacudr-sqacus","rr-pic-sqacus",
 			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
 			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus",
-			"daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus", "daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus"};
+			"daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus", "daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus",
+			"AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus", "AnalyticsTagC-1-sqacus"};
 
 	/* Method to push all the seed data required for automation. */
 
 	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
 		DbSeedExecutor.executeGisSeed();
+		DbSeedExecutor.executeGisRefreshDataSeed();
 		DbSeedExecutor.executeSurveyDataSeed();
 		DbSeedExecutor.executeSurveyDataSeed(SQACUS_CUSTOMER_SURVEYS);
 	}
@@ -67,7 +82,7 @@ public class DbSeedExecutor {
 			}
 
 			Log.info("Automation DB seed NOT found. Executing SQL script to push automation DB seed...");
-			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(),"logs", String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
 			String sqlFileFullPath = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql", "AutomationSeedScript-Minimal.sql").toString();
 			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
 					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
@@ -108,6 +123,7 @@ public class DbSeedExecutor {
 
 		try {
 			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
 			for (String surveyTag : surveyTags) {
 				try
 		        {
@@ -303,6 +319,7 @@ public class DbSeedExecutor {
 					surveySeedBuilderCache.addDbSeedBuilder(surveySeedKey, surveyDbSeedBuilder);
 
 					Log.info(String.format("----- Done processing survey with tag - '%s' -----", surveyTag));
+					connection.commit();
 
 		        } catch (Exception ex) {
 		        	Log.error(String.format("EXCEPTION in executeSurveyDataSeed(), tag='%s'. ERROR: %s", surveyTag, ExceptionUtility.getStackTraceString(ex)));
@@ -324,6 +341,7 @@ public class DbSeedExecutor {
 		} catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeSurveyDataSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
 		} finally {
+			connection.setAutoCommit(true);
             connection.close();
 		}
 	}
@@ -346,6 +364,102 @@ public class DbSeedExecutor {
 		return rowCount;
 	}
 
+	private static boolean isSeedCustomer(String customerId) {
+		String[] seedCustomerNames = {CUSTOMER_PICARRO, CUSTOMER_SQACUS, CUSTOMER_PGE};
+		for (String custName : seedCustomerNames) {
+			String custId = Customer.getCustomer(custName).getId();
+			if (!customerNameIdMap.containsKey(custId)) {
+				customerNameIdMap.put(custId, custName);
+			}
+		}
+
+		return customerNameIdMap.containsKey(customerId);
+	}
+
+	/* Methods for pushing new refreshed GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
+
+	public static void executeGisRefreshDataSeed() throws Exception {
+		Log.method("DbSeedExecutor.executeGisRefreshDataSeed");
+		executeGisRefreshDataSeed(null /*customerId*/); // default -> Picarro customer.
+		executeGisRefreshDataSeed(Customer.getCustomer(CUSTOMER_SQACUS).getId());
+		executeGisRefreshDataSeed(Customer.getCustomer(CUSTOMER_PGE).getId());
+	}
+
+	public static void executeGisRefreshDataSeed(String customerId) throws Exception {
+		Log.method("DbSeedExecutor.executeGisRefreshDataSeed", customerId);
+		boolean isCustomerSpecified = true;
+		Customer customer = Customer.getCustomer(CUSTOMER_PICARRO);
+		String picarroCustomerId = customer.getId();
+		if (customerId == null) {
+			isCustomerSpecified = false;
+			customerId = picarroCustomerId;
+		}
+
+		Connection connection = null;
+		DatFileBuilder datFileBuilder = null;
+		try {
+			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
+
+			DbStateVerifier dbStateVerifier = new DbStateVerifier(connection);
+			ensureGISDatFilesArePresent();
+
+			String datFolder = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql").toString();
+			int expectedAssetCount = FileUtility.getLineCountInFile(Paths.get(datFolder, ASSET_DAT_FILE), FileUtility.ENCODING_UTF16LE) - 1;
+			int expectedBoundaryCount = FileUtility.getLineCountInFile(Paths.get(datFolder, BOUNDARY_DAT_FILE), FileUtility.ENCODING_UTF16LE) - 1;
+			if (dbStateVerifier.isGisRefreshSeedPresent(customerId, expectedAssetCount, expectedBoundaryCount)) {
+				Log.info("GIS Refresh DB seed is already present. SKIP execution.");
+				return;
+			}
+
+			String assetDatFile = Paths.get(datFolder, ASSET_DAT_FILE).toString();
+			String boundaryDatFile = Paths.get(datFolder, BOUNDARY_DAT_FILE).toString();
+			if (isCustomerSpecified) {
+				datFileBuilder = new DatFileBuilder();
+				assetDatFile = datFileBuilder.build(assetDatFile, picarroCustomerId, customerId);
+				boundaryDatFile = datFileBuilder.build(boundaryDatFile, picarroCustomerId, customerId);;
+			}
+
+			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
+			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+
+			Log.info("[Step-1] Preparing pre-GIS push steps ...");
+			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();
+			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
+
+			Log.info("[Step-2] Pushing GIS refresh Asset/Boundary data ...");
+			sqlFileFullPath = Paths.get(datFolder, AUTOMATION_SEED_SCRIPT_LOAD_GIS_SQL).toString();
+			String workingSqlFile = TestSetup.getUUIDString() + "_" + AUTOMATION_SEED_SCRIPT_LOAD_GIS_SQL;
+			String workingSqlFullPath = Paths.get(datFolder, workingSqlFile).toString();
+			Files.copy(Paths.get(sqlFileFullPath), Paths.get(workingSqlFullPath));
+			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
+			placeholderMap.put("%ASSET_DAT_FILE_PATH%", Paths.get(assetDatFile).toString());
+			placeholderMap.put("%BOUNDARY_DAT_FILE_PATH%", Paths.get(boundaryDatFile).toString());
+			placeholderMap.put("%DB_NAME%", TestContext.INSTANCE.getDbName());
+			placeholderMap.put("%DB_USER%", TestContext.INSTANCE.getDbUser());
+			placeholderMap.put("%DB_PASSWORD%", TestContext.INSTANCE.getDbPassword());
+			placeholderMap.put("%SERVER_IP_ADDR%", TestContext.INSTANCE.getDbIpAddress());
+			FileUtility.updateFile(workingSqlFullPath, placeholderMap);
+			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), workingSqlFullPath, sqlCmdLogFilePath);
+
+			Log.info("[Step-3] Executing post-GIS push steps ...");
+			sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PostGISLoad.sql").toString();
+			SqlCmdUtility.executeSQLFile(TestContext.INSTANCE.getDbIpAddress(), TestContext.INSTANCE.getDbPortNo(), TestContext.INSTANCE.getDbName(),
+					TestContext.INSTANCE.getDbUser(), TestContext.INSTANCE.getDbPassword(), sqlFileFullPath, sqlCmdLogFilePath);
+
+			connection.commit();
+
+		} finally {
+			connection.setAutoCommit(true);
+			connection.close();
+			if (datFileBuilder != null) {
+				datFileBuilder.close();
+			}
+		}
+	}
+
 	/* Methods for pushing GIS seed data (CustomerBoundaryType, CustomerMaterialType, Boundary and Asset) */
 
 	public static void executeGisSeed() throws Exception {
@@ -364,6 +478,8 @@ public class DbSeedExecutor {
 			customerId = customer.getId();
 		}
 
+		boolean isSeedCustomer = isSeedCustomer(customerId);
+
 		Connection connection = null;
 		DbSeedBuilderCache dbSeedBuilderCache = new DbSeedBuilderCache();
 		CustomerBoundaryTypeDbSeedBuilder customerBoundaryTypeDbSeedBuilder = null;
@@ -374,6 +490,8 @@ public class DbSeedExecutor {
 		try
         {
 			connection = ConnectionFactory.createConnection();
+			connection.setAutoCommit(false);
+
         	customerBoundaryTypeDbSeedBuilder = new CustomerBoundaryTypeDbSeedBuilder();
         	customerBoundaryTypeDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
 
@@ -383,16 +501,21 @@ public class DbSeedExecutor {
         	boundaryDbSeedBuilder = new BoundaryDbSeedBuilder();
         	boundaryDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
 
-        	assetDbSeedBuilder = new AssetDbSeedBuilder();
-        	assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
-
 			DbSeed custBoundaryTypeDbSeed = customerBoundaryTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 			DbSeed custMaterialTypeDbSeed = customerMaterialTypeDbSeedBuilder.build(isCustomerSpecified ? customerId : null);
 
-			DbSeed assetDbSeed = assetDbSeedBuilder.build(customerId);
-			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
+			DbSeed assetDbSeed = null;
+			int expectedAssetCount = 0;   // 0 - to ignore pushing assets from obsolete seed data for seed customer.
+			if (!isSeedCustomer) {
+				// For new customer - build all Assets and Boundaries
+				assetDbSeedBuilder = new AssetDbSeedBuilder();
+				assetDbSeedBuilder.setDbSeedCache(dbSeedBuilderCache);
+				assetDbSeed = assetDbSeedBuilder.build(customerId);
+				boundaryDbSeedBuilder.setSeedFilePath(BoundaryDbSeedBuilder.SEED_DATA_FOLDER, BoundaryDbSeedBuilder.SEED_FILE_NAME_NEW_CUSTOMER);
+				expectedAssetCount = assetDbSeed.getInsertStatements().size();
+			}
 
-			int expectedAssetCount = assetDbSeed.getInsertStatements().size();
+			DbSeed boundaryDbSeed = boundaryDbSeedBuilder.build(customerId);
 			int expectedBoundaryCount = boundaryDbSeed.getInsertStatements().size();
 
 			// check if GIS seed is present in database for this customer.
@@ -431,17 +554,23 @@ public class DbSeedExecutor {
 			}
 
 			executeSeed(connection, boundaryDbSeed);
-			executeSeed(connection, assetDbSeed);
+
+			if (!isSeedCustomer) {
+				// For new customer - push assets.
+				executeSeed(connection, assetDbSeed);
+			}
+
+			connection.commit();
 
         } catch (Exception ex) {
         	Log.error(String.format("EXCEPTION in executeGisSeed() - %s", ExceptionUtility.getStackTraceString(ex)));
         } finally {
+        	connection.setAutoCommit(true);
             connection.close();
             // cleanup seed builders.
             closeDbSeedBuilder(customerBoundaryTypeDbSeedBuilder);
             closeDbSeedBuilder(customerMaterialTypeDbSeedBuilder);
             closeDbSeedBuilder(boundaryDbSeedBuilder);
-            closeDbSeedBuilder(assetDbSeedBuilder);
         }
 	}
 
@@ -594,5 +723,18 @@ public class DbSeedExecutor {
 
 	public static DbSeedBuilderCache getSurveySeedBuilderCache() {
 		return surveySeedBuilderCache;
+	}
+
+	private static void ensureGISDatFilesArePresent() throws IOException {
+		Log.method("DbSeedExecutor.ensureGISDatFilesPresent");
+		String datFolder = Paths.get(TestSetup.getExecutionPath(TestSetup.getRootPath()), "data", "sql").toString();
+		boolean assetDatFileExists = FileUtility.fileExists(Paths.get(datFolder, ASSET_DAT_FILE).toString());
+		boolean boundaryDatFileExists = FileUtility.fileExists(Paths.get(datFolder, BOUNDARY_DAT_FILE).toString());
+		if (!assetDatFileExists || !boundaryDatFileExists) {
+			Log.info(String.format("AssetDatFile FOUND=[%b], BoundaryDatFile FOUND=[%b]", assetDatFileExists, boundaryDatFileExists));
+			String datZipFileFullPath = Paths.get(datFolder, ASSET_BOUNDARY_BA_ZIP).toString();
+			ZipUtility unZip = new ZipUtility();
+			unZip.unZip(datZipFileFullPath, datFolder);
+		}
 	}
 }

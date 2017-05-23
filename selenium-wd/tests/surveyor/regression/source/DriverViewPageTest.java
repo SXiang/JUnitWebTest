@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import com.relevantcodes.extentreports.LogStatus;
@@ -27,7 +28,6 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
@@ -41,7 +41,6 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
-import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 /*
@@ -89,23 +88,28 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	}
 
 	private void initializePageObjects() {
-		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		initializePageObjects(false /*createNewDriver*/);
+	}
 
-		homePage = pageObjectFactory.getHomePage();
-		PageFactory.initElements(getDriver(), homePage);
+	@Override
+	protected void initializePageObjects(boolean createNewDriver) {
+		WebDriver driver = createDriver(createNewDriver);
 
-		loginPage = pageObjectFactory.getLoginPage();
-		PageFactory.initElements(getDriver(), loginPage);
+		homePage = new HomePage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, homePage);
 
-		driverViewPage = pageObjectFactory.getDriverViewPage();
-		PageFactory.initElements(getDriver(), driverViewPage);
+		loginPage = new LoginPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, loginPage);
+
+		driverViewPage = new DriverViewPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, driverViewPage);
 
 		// Additional page objects.
-		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
+		manageCustomersPage = new ManageCustomersPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver,  manageCustomersPage);
 
-		manageUsersPage = pageObjectFactory.getManageUsersPage();
-		PageFactory.initElements(getDriver(),  manageUsersPage);
+		manageUsersPage = new ManageUsersPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver,  manageUsersPage);
 	}
 
 	/**
@@ -130,79 +134,83 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin() throws Exception {
 		Log.info("Running TC1093_SimulatorTest_VerifyInstrumentWarmUp_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		executeAsNewWebDriver(object -> {
+			loginPage.open();
+			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		getTestEnvironmentAction().startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
+			getTestEnvironmentAction().startAnalyzer(EMPTY, 2);  // start Analyzer instr_ready.defn
 
-		driverViewPage.open();
-		driverViewPage.waitForPageLoad();
-		driverViewPage.waitForConnectionComplete();
+			driverViewPage.open();
+			driverViewPage.waitForPageLoad();
+			driverViewPage.waitForConnectionComplete();
 
-		getTestEnvironmentAction().startReplay(EMPTY, 2);  // start Analyzer instr_ready.defn
+			getTestEnvironmentAction().startReplay(EMPTY, 2);  // start Analyzer instr_ready.defn
 
-		Log.info("Clicking on MODE button");
-		driverViewPage.clickModeButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on MODE button");
+			driverViewPage.clickModeButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 1.
-		assertTrue(driverViewPage.isPositionButtonGreen());
+			// Verify 1.
+			assertTrue(driverViewPage.isPositionButtonGreen());
 
-		// "Car icon not displayed." <-- [Check Feasibility in Open Layer]
+			// "Car icon not displayed." <-- [Check Feasibility in Open Layer]
 
-		// Verify 2.
-		assertTrue(!driverViewPage.getStartSurveyButton().isDisplayed());
-		assertTrue(!driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
-		assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
+			// Verify 2.
+			assertTrue(!driverViewPage.getStartSurveyButton().isDisplayed());
+			assertTrue(!driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
+			assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
 
-		assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
-		assertTrue(driverViewPage.isSystemShutdownButtonEnabled());
+			assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
+			assertTrue(driverViewPage.isSystemShutdownButtonEnabled());
 
-		Log.info("Clicking on DISPLAY button");
-		driverViewPage.clickDisplayButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on DISPLAY button");
+			driverViewPage.clickDisplayButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 3.
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.ConcentrationChart));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.FOVs));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
+			// Verify 3.
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.ConcentrationChart));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.FOVs));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 
-		Log.info("Clicking on MAP button");
-		driverViewPage.clickMapButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on MAP button");
+			driverViewPage.clickMapButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 4.
-		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
-		assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
+			// Verify 4.
+			assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
+			assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
 
-		Log.info("Clicking on GIS button");
-		driverViewPage.clickGisButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on GIS button");
+			driverViewPage.clickGisButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 5.
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.SmallBoundary));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCastIron));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCopper));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeOtherPlastic));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypePEPlastic));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeProtectedSteel));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeUnprotectedSteel));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
+			// Verify 5.
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.SmallBoundary));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCastIron));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCopper));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeOtherPlastic));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypePEPlastic));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeProtectedSteel));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeUnprotectedSteel));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
 
-		// Verify 6.
-		assertTrue(driverViewPage.isStatusButtonRed());
-		assertTrue(driverViewPage.isPressureButtonRed());
-		assertTrue(driverViewPage.isHBTempButtonRed());
-		assertTrue(driverViewPage.isWBTempButtonRed());
-		assertTrue(driverViewPage.isFlowButtonGrey());
-		assertTrue(driverViewPage.isRedArcShownOnFlowButton());
+			// Verify 6.
+			assertTrue(driverViewPage.isStatusButtonRed());
+			assertTrue(driverViewPage.isPressureButtonRed());
+			assertTrue(driverViewPage.isHBTempButtonRed());
+			assertTrue(driverViewPage.isWBTempButtonRed());
+			assertTrue(driverViewPage.isFlowButtonGrey());
+			assertTrue(driverViewPage.isRedArcShownOnFlowButton());
+
+			return true;
+		});
 	}
 
 	/**
@@ -227,98 +235,102 @@ public class DriverViewPageTest extends BaseMapViewTest {
 	public void TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin() throws Exception {
 		Log.info("Running TC1094_SimulatorTest_VerifyInstrumentReady_PicAdmin");
 
-		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		executeAsNewWebDriver(object -> {
+			loginPage.open();
+			loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 
-		getTestEnvironmentAction().startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
+			getTestEnvironmentAction().startAnalyzer(EMPTY, 1);  // start Analyzer instr_ready.defn
 
-		driverViewPage.open();
-		driverViewPage.waitForPageLoad();
-		driverViewPage.waitForConnectionComplete();
+			driverViewPage.open();
+			driverViewPage.waitForPageLoad();
+			driverViewPage.waitForConnectionComplete();
 
-		getTestEnvironmentAction().startReplay(EMPTY, 1);	// start replay instr_ready.defn
+			getTestEnvironmentAction().startReplay(EMPTY, 1);	// start replay instr_ready.defn
 
-		Log.info("Clicking on MODE button");
-		driverViewPage.clickModeButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on MODE button");
+			driverViewPage.clickModeButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 1.
-		assertTrue(driverViewPage.isPositionButtonGreen());
+			// Verify 1.
+			assertTrue(driverViewPage.isPositionButtonGreen());
 
-		// "Car icon is displayed in grey color." <-- [Check Feasibility in Open Layer]
+			// "Car icon is displayed in grey color." <-- [Check Feasibility in Open Layer]
 
-		// Verify 2.
-		assertTrue(driverViewPage.getStartSurveyButton().isDisplayed());
-		assertTrue(driverViewPage.isStartSurveyButtonEnabled());
-		assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
-		assertTrue(driverViewPage.isSystemShutdownButtonEnabled());
+			// Verify 2.
+			assertTrue(driverViewPage.getStartSurveyButton().isDisplayed());
+			assertTrue(driverViewPage.isStartSurveyButtonEnabled());
+			assertTrue(driverViewPage.getSystemShutdownButton().isDisplayed());
+			assertTrue(driverViewPage.isSystemShutdownButtonEnabled());
 
-		// Verify Isotopic Capture and Ref Bottle Measurement buttons are NOT displayed.
-		assertTrue(!driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
-		assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
+			// Verify Isotopic Capture and Ref Bottle Measurement buttons are NOT displayed.
+			assertTrue(!driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
+			assertTrue(!driverViewPage.getRefBottleMeasButton().isDisplayed());
 
-		// Start Driving Survey.
-		String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1094";
-		driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
+			// Start Driving Survey.
+			String tag = getTestSetup().getFixedSizePseudoRandomString(10) + "_TC1094";
+			driverViewPage.startDrivingSurvey(tag, SurveyTime.Day, SolarRadiation.Moderate, Wind.Calm, CloudCover.LessThan50, SurveyType.Standard);
 
-		// Verify Isotopic Capture and Ref Bottle Measurement buttons ARE displayed.
-		driverViewPage.clickModeButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
-		assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
+			// Verify Isotopic Capture and Ref Bottle Measurement buttons ARE displayed.
+			driverViewPage.clickModeButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			assertTrue(driverViewPage.getStartIsotopicCaptureButton().isDisplayed());
+			assertTrue(driverViewPage.getRefBottleMeasButton().isDisplayed());
 
-		Log.info("Clicking on DISPLAY button");
-		driverViewPage.clickDisplayButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on DISPLAY button");
+			driverViewPage.clickDisplayButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 3.
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.ConcentrationChart));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.FOVs));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
-		assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
+			// Verify 3.
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.EightHourHistory));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.ConcentrationChart));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.FOVs));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Indications));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Lisas));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.Notes));
+			assertTrue(driverViewPage.isDisplaySwitchOn(DisplaySwitchType.WindRose));
 
-		Log.info("Clicking on MAP button");
-		driverViewPage.clickMapButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on MAP button");
+			driverViewPage.clickMapButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 4.
-		assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
-		assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
+			// Verify 4.
+			assertTrue(driverViewPage.isMapSwitchOn(MapSwitchType.Satellite));
+			assertTrue(driverViewPage.isMapSwitchOff(MapSwitchType.Map));
 
-		Log.info("Clicking on GIS button");
-		driverViewPage.clickGisButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on GIS button");
+			driverViewPage.clickGisButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 5.
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.SmallBoundary));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCastIron));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCopper));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeOtherPlastic));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypePEPlastic));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeProtectedSteel));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeUnprotectedSteel));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
-		assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
+			// Verify 5.
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.BigBoundary));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.SmallBoundary));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCastIron));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeCopper));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeOtherPlastic));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypePEPlastic));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeProtectedSteel));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.MaterialTypeUnprotectedSteel));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllBoundaries));
+			assertTrue(driverViewPage.isGisSwitchOff(GisSwitchType.UseAllPipes));
 
-		// Verify 6.
-		assertTrue(driverViewPage.isStatusButtonGreen());
+			// Verify 6.
+			assertTrue(driverViewPage.isStatusButtonGreen());
 
-		Log.info("Clicking on STATUS button to expand gauges");
-		driverViewPage.clickStatusButton();
-		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
+			Log.info("Clicking on STATUS button to expand gauges");
+			driverViewPage.clickStatusButton();
+			getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
-		// Verify 6.
-		assertTrue(driverViewPage.isPressureButtonGreen());
-		assertTrue(driverViewPage.isHBTempButtonGreen());
-		assertTrue(driverViewPage.isWBTempButtonGreen());
-		assertTrue(driverViewPage.isFlowButtonGreen());
-		assertTrue(driverViewPage.isGPSButtonGreen());
-		assertTrue(driverViewPage.isAnemometerButtonGreen());
+			// Verify 6.
+			assertTrue(driverViewPage.isPressureButtonGreen());
+			assertTrue(driverViewPage.isHBTempButtonGreen());
+			assertTrue(driverViewPage.isWBTempButtonGreen());
+			assertTrue(driverViewPage.isFlowButtonGreen());
+			assertTrue(driverViewPage.isGPSButtonGreen());
+			assertTrue(driverViewPage.isAnemometerButtonGreen());
+
+			return true;
+		});
 	}
 
 	/**

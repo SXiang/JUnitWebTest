@@ -94,9 +94,9 @@ public class WebElementExtender {
 		return true;
 	}
 
-	public static void executeScript(WebElement element, WebDriver driver, String jsScript) {
+	public static Object executeScript(WebElement element, WebDriver driver, String jsScript) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript(jsScript, element);
+		return js.executeScript(jsScript, element);
 	}
 
 	public static boolean findElementBy(WebDriver driver, By by) {
@@ -118,19 +118,41 @@ public class WebElementExtender {
 	}
 
 	public static WebElement findElementIfExists(WebDriver driver, String elementId) {
+		return findElementIfExists(driver, By.id(elementId));
+	}
+
+	public static WebElement findElementIfExists(WebDriver driver, By elementBy) {
 		WebElement element = null;
 		try {
-			element = driver.findElement(By.id(elementId));
+			element = driver.findElement(elementBy);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			Log.warn(String.format("Element with ID='%s' was NOT found", elementId));;
+			Log.warn(String.format("Element with By='%s' was NOT found: "+e, elementBy));
 		}
 
 		return element;
 	}
 
+	public static WebElement findParentElement(WebDriver driver, WebElement element) {
+		return (WebElement)executeScript(element, driver, "return arguments[0].parentNode;");
+	}
+
+
 	public static String getInnerHtml(WebElement element) {
 	   return element.getAttribute("innerHTML");
    	}
+
+	/**
+	 * Returns the applied CSS property value for specified CSS property name for a web element.
+	 * @param element - Web element for which the CSS property value is to be retrieved.
+	 * @param cssPropertyName - name of the CSS property to be retrieved.
+	 * @return
+	 */
+	public static String getCssPropertyValue(WebDriver driver, WebElement element, String cssPropertyName) {
+    	JavascriptExecutor js = (JavascriptExecutor) driver;
+    	Object cssPropertyValue = js.executeScript("return window.getComputedStyle(arguments[0], null).getPropertyValue('" + cssPropertyName +  "');",
+				element);
+		return cssPropertyValue.toString();
+	}
 
 	public static void highlightElement(WebElement element) {
 	    for (int i = 0; i < 5; i++) {

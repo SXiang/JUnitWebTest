@@ -62,7 +62,7 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 	public SystemHistoryReportsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
 
-		System.out.format("\nThe System History Report Page URL is: %s\n", this.strPageURL);
+		Log.info(String.format("\nThe System History Report Page URL is: %s\n", this.strPageURL));
 	}
 
 	private void addNewReport(String title, String timeZone, String surUnit, String startDate, String endDate) {
@@ -143,8 +143,8 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
@@ -207,8 +207,8 @@ public class SystemHistoryReportsPage extends ReportsBasePage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING_100);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));

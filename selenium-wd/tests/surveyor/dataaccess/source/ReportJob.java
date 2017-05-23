@@ -1,5 +1,6 @@
 package surveyor.dataaccess.source;
- 
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Date;
 
 import common.source.DateUtility;
 import common.source.Log;
- 
+
 public class ReportJob extends BaseEntity {
 	public static final String COLNAME_ID = "Id";
 	public static final String COLNAME_DATE_STARTED = "DateStarted";
@@ -19,7 +20,7 @@ public class ReportJob extends BaseEntity {
 	public static final String COLNAME_PROCESSING_STARTED = "ProcessingStarted";
 
 	private static final String CACHE_KEY = "REPORTJOB.";
- 
+
 	private Date dateStarted;
 	private Object id;
 	private Date processingStarted;
@@ -28,75 +29,79 @@ public class ReportJob extends BaseEntity {
 	private Object reportJobStatusId;
 	private Date processingCompleted;
 	private Object reportViewId;
- 
+
 	public ReportJob() {
 		super();
 	}
- 
+
+	public ReportJob(Connection conn) {
+		super(conn);
+	}
+
 	public Date getDateStarted() {
 		return dateStarted;
 	}
- 
+
 	public void setDateStarted(Date dateStarted) {
 		this.dateStarted = dateStarted;
 	}
- 
+
 	public Object getId() {
 		return id;
 	}
- 
+
 	public void setId(Object id) {
 		this.id = id;
 	}
- 
+
 	public Date getProcessingStarted() {
 		return processingStarted;
 	}
- 
+
 	public void setProcessingStarted(Date processingStarted) {
 		this.processingStarted = processingStarted;
 	}
- 
+
 	public Object getReportId() {
 		return reportId;
 	}
- 
+
 	public void setReportId(Object reportId) {
 		this.reportId = reportId;
 	}
- 
+
 	public Object getReportJobTypeId() {
 		return reportJobTypeId;
 	}
- 
+
 	public void setReportJobTypeId(Object reportJobTypeId) {
 		this.reportJobTypeId = reportJobTypeId;
 	}
- 
+
 	public Object getReportJobStatusId() {
 		return reportJobStatusId;
 	}
- 
+
 	public void setReportJobStatusId(Object reportJobStatusId) {
 		this.reportJobStatusId = reportJobStatusId;
 	}
- 
+
 	public Date getProcessingCompleted() {
 		return processingCompleted;
 	}
- 
+
 	public void setProcessingCompleted(Date processingCompleted) {
 		this.processingCompleted = processingCompleted;
 	}
- 
+
 	public Object getReportViewId() {
 		return reportViewId;
 	}
- 
+
 	public void setReportViewId(Object reportViewId) {
 		this.reportViewId = reportViewId;
 	}
- 
+
 	public static ReportJob getReportJob(String reportId, String reportJobId) {
 		ReportJob objReportJob = new ReportJob().get(reportId, reportJobId);
 		return objReportJob;
@@ -108,7 +113,7 @@ public class ReportJob extends BaseEntity {
 
 	public ReportJob get(String reportId, String reportJobId) {
 		ReportJob objReportJob = null;
-		
+
 		// Get from cache if present. Else fetch from Database.
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY + "_" + reportId + "_" + reportJobId)) {
 			objReportJob = (ReportJob)DBCache.INSTANCE.get(CACHE_KEY + "_" + reportId + "_" + reportJobId);
@@ -145,31 +150,31 @@ public class ReportJob extends BaseEntity {
 
 		return objReportJob;
 	}
-	
+
 	public ArrayList<ReportJob> getAll() {
-		String SQL = "SELECT * FROM dbo.[ReportJob]";
+		String SQL = "SELECT * FROM dbo.[ReportJob] ORDER BY [DateStarted] DESC";
 		return load(SQL);
 	}
- 
+
 	public ArrayList<ReportJob> load(String SQL) {
 		ArrayList<ReportJob> objReportJobList = new ArrayList<ReportJob>();
-		
+
 		try {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(SQL);
-			
+
 			while (resultSet.next()) {
 				ReportJob objReportJob = loadFrom(resultSet);
 				objReportJobList.add(objReportJob);
-				
+
 				// add to cache.
 				DBCache.INSTANCE.set(CACHE_KEY + "_" + objReportJob.getReportId() + "_" + objReportJob.getReportJobTypeId(), objReportJob);
 			}
-			
+
 		} catch (SQLException e) {
 			Log.error("Class ReportJob | " + e.toString());
 		}
-		
+
 		return objReportJobList;
 	}
 

@@ -7,6 +7,7 @@ import static common.source.BaseHelper.matchSinglePattern;
 import common.source.DateUtility;
 import common.source.Downloader;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.NumberUtility;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
@@ -144,6 +145,16 @@ import common.source.SortHelper;
 import common.source.TestContext;
 
 public class ReportsCommonPage extends ReportsBasePage {
+
+	protected static final String COL_HEADER_UPLOAD_STATUS = "Upload Status";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
+
 	private static final int CUSTOM_BOUNDARY_RADBUTTON_GROUP_IDX = 0;
 	private static final int CUSTOMER_BOUNDARY_RADBUTTON_GROUP_IDX = 1;
 
@@ -152,6 +163,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String XPATH_DELETE_MODAL_DELETE_CONFIRMATION = "//*[@id='deleteReportModal']/div/div/div[2]/p[3]";
 
 	private static final String PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Compliance";
+	private static final String EQ_PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=EQ";
 	private static final String INVESTIGATION_PDF_FILE_DOWNLOAD_URL = "Reports/ViewReportPdf?reportId=%s&ReportType=Investigation";
 	private static final String INVESTIGATION_CSV_FILE_DOWNLOAD_URL = "../Reports/DownloadInvestigationData?reportId=%s";
 	private static final String PDF_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadPdf?reportId=%s&ReportType=Compliance";
@@ -206,7 +218,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_IndicationTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_IndicationTable);
 	public static final String ComplianceReportSSRS_GapTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_GapTable);
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable = Resources.getResource(ResourceKeys.ComplianceReportSSRS_EthaneAnalysisTable);
-
+	public static final String ComplianceReport_ChangeModeWarning = Resources.getResource(ResourceKeys.ComplianceReport_ChangeModeWarning);
+	public static final String Dialog_ProceedMessage = Resources.getResource(ResourceKeys.Dialog_ProceedMessage);
+	
 	public static final String LisaInvestigationReportSSRS_Lisa = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Lisa);
 	public static final String LisaInvestigationReportSSRS_Amplitude = Resources.getResource(ResourceKeys.LisaInvestigationReportSSRS_Amplitude);
 	public static final String Constant_Status = Resources.getResource(ResourceKeys.Constant_Status);
@@ -224,6 +238,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String Constant_Date = Resources.getResource(ResourceKeys.Constant_Date);
 	public static final String ComplianceReport_LicenseMissing = Resources.getResource(ResourceKeys.ComplianceReport_LicenseMissing);
 
+	
+	private static final String OK_lICENSE_MISSING_BUTTON_XPATH = "//*[@id='licenseMissingModal']/div/div/div[3]/a";
 	private static final String DELETE_POPUP_CONFIRM_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[1]";
 	private static final String DELETE_POPUP_CANCEL_BUTTON_XPATH = "//*[@id='deleteReportModal']/div/div/div[3]/a[2]";
 	protected static final String deleteSurveyBtnByTagParameter = "//label[contains(@id,'surveytag') and text()='%s']/../../../p/button";
@@ -244,10 +260,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(css = "#reportViewer > .modal-dialog button.close")
 	protected WebElement modalX;
 
-	@FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+	@FindBy(css = "#ImageList > li .image a[href*='DownloadReportView']")
 	protected List<WebElement> pdfViews;
 
-	@FindBy(css = "#ImageList > li.dynamic a[href*='DownloadReportView']")
+	@FindBy(css = "#ImageList > li .image a[href*='DownloadReportView']")
 	protected WebElement firstPdfView;
 
 	@FindBy(name = "rdAreaMode")
@@ -314,9 +330,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[7]/div")
 	protected WebElement viewsAnalysesColumn;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[8]/div")
+	protected WebElement viewsFieldNoteColumn;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
 	protected WebElement tubularAnalysisOption;
 
@@ -416,8 +435,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public enum ReportFileType {
-		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), ZIP("ZIP"), MetaDataZIP(
-				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View");
+		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), EQPDF("EQPDF"), ZIP("ZIP"), MetaDataZIP(
+				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View");
 
 		private final String name;
 
@@ -513,7 +532,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 				RNELAT, RNELON, RSWLAT, RSWLON, surveyor, tag, STARTDATE, ENDDATE, changeMode, reportMode);
 	}
 
-	public void addViews(String customer, List<Map<String, String>> viewList) {
+	public void addViews(String customer, List<Map<String, String>> viewList){
+		addViews(customer, viewList, false);
+	}
+
+	public void addViews(String customer, List<Map<String, String>> viewList, boolean isAnalyticsReport) {
 		Log.method("ReportsCommonPage.addViews", customer, LogHelper.mapListToString(viewList));
 		int rowNum;
 		int colNum;
@@ -568,18 +591,21 @@ public class ReportsCommonPage extends ReportsBasePage {
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
-			if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
-				colNum = 7;
-				Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-			}
+			// Non Analytics
+			if(!isAnalyticsReport){
+				if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
+					colNum = 7;
+					Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 
-			if (selectView(viewMap, KEYANNOTATION)) {
-				colNum = 8;
-				Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
-				strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
-				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				if (selectView(viewMap, KEYANNOTATION)) {
+					colNum = 8;
+					Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
+					strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
+					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
+				}
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
@@ -721,6 +747,11 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.PDF);
 	}
 
+	public void invokeEQPDFFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeEQPDFFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.EQPDF);
+	}
+
 	public void invokePDFZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokePDFZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ZIP);
@@ -736,6 +767,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
 	}
 
+	public void invokeViewFileDownload(String reportName, String viewName, Integer viewIdx) throws Exception {
+		Log.method("invokeViewFileDownload", reportName, viewName, viewIdx);
+		if (firstPdfView.isDisplayed()) {
+			String downloadFileRelativeUrl = pdfViews.get(viewIdx - 1).getAttribute("href");
+			downloadFileRelativeUrl = downloadFileRelativeUrl.replace(TestContext.INSTANCE.getBaseUrl(),"");
+			String outputFileName = reportName + "_" + viewName + ".pdf";
+			String outputFileFullPath = Paths.get(testSetup.getDownloadPath(), outputFileName).toString();
+			Downloader.downloadFile(downloadFileRelativeUrl, outputFileFullPath);
+		}
+	}
+
 	protected void invokeFileDownload(String rptTitle, ReportFileType fileType) throws Exception {
 		Log.method("invokePDFFileDownload", rptTitle, fileType);
 		String reportId = Report.getReport(rptTitle).getId();
@@ -745,7 +787,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		if (fileType == ReportFileType.PDF) {
 			downloadFileRelativeUrl = String.format(PDF_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportPDFFileName(rptTitle, true /* includeExtension */);
-		} else if (fileType == ReportFileType.InvestigationPDF) {
+		} else if (fileType == ReportFileType.EQPDF) {
+			downloadFileRelativeUrl = String.format(EQ_PDF_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportPDFFileName(rptTitle, true /* includeExtension */);
+		}else if (fileType == ReportFileType.InvestigationPDF) {
 			downloadFileRelativeUrl = String.format(INVESTIGATION_PDF_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getInvestigationPDFFileName(rptTitle, true /* includeExtension */);
 		} else if (fileType == ReportFileType.InvestigationCSV) {
@@ -781,7 +826,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				this.boundarySelectorBtn.click();
 				return;
 			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button");
+				Log.warn("Try "+(i+1) + ":Failed to click boundary selector button: "+e);
 			}
 		}
 	}
@@ -797,7 +842,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.clickElementInfo("Cancel of deletion");
 		cancelDelete.click();
 	}
-
+	
+	public void clickOnOKMissingLicensePopup() {
+		WebElement OKMissingLicense = this.driver.findElement(By.xpath(OK_lICENSE_MISSING_BUTTON_XPATH));
+		Log.clickElementInfo("Confirm of deletion");
+		OKMissingLicense.click();
+	}
 	public boolean clickOnButtonInReportPage(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType) throws Exception {
 		return checkButtonOnReportsPageAndClick(rptTitle, strCreatedBy, buttonType, true,
@@ -1076,10 +1126,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String zipImgXPath;
 		WebElement pdfImg;
 		WebElement zipImg;
-		pdfImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[3]/img";
+		pdfImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]/img";
 		pdfImg = getTable().findElement(By.xpath(pdfImgXPath));
 		String srcPdfImg = pdfImg.getAttribute("src");
-		zipImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[4]/a[4]/img";
+		zipImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[4]/img";
 		zipImg = getTable().findElement(By.xpath(zipImgXPath));
 		String srcZipImg = zipImg.getAttribute("src");
 		if (srcPdfImg.contains("pdf") && srcZipImg.contains("zip")) {
@@ -1126,33 +1176,33 @@ public class ReportsCommonPage extends ReportsBasePage {
 		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[5]/a[1]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			removeDBCache = true;
 			break;
 		case ReportViewer:
-			buttonXPath = "td[5]/a[3]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[5]/a[4]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[5]/a[@title='Resubmit']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Resubmit']";
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
 								// 1st button.
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
 						// button.
-			buttonXPath = "td[5]/a[@title='Cancel Report']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
 			// cancelled or report error.
-			buttonXPath = "td[5]/span";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/span";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
@@ -1173,8 +1223,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1, numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY)  + "]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
@@ -1388,15 +1438,15 @@ public class ReportsCommonPage extends ReportsBasePage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 				Log.clickElementInfo("Resubmit", ElementType.ICON);
 				resubmitImg.click();
@@ -1579,6 +1629,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return done;
 	}
 
+	public boolean isInputTitleHighlightedInRed(){
+		return isHighlightedInRed(inputTitle);
+	}
+
 	public boolean isHighlightedInRed(WebElement element) {
 		String background = "background: rgb(255, 206, 206)";
 		String border = "border: 1px solid red;";
@@ -1735,7 +1789,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				this.waitForCustomerBoundarySectionToShow();
 				return;
 			}catch(Exception e){
-				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button");
+				Log.warn("Try "+(i+1) + ":Failed to select customer boundary radio button "+e.toString());
 			}
 		}
 	}
@@ -2297,7 +2351,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	}
 
 	public boolean verifyMetaDataFilesArePresent(String downloadPath, String reportTitle,
-			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent, boolean verifyIsotopicMetaPresent) throws IOException {
+			boolean verifyGapMetaPresent, boolean verifyLisaMetaPresent, boolean verifySurveyMetaPresent, 
+			boolean verifyIsotopicMetaPresent, boolean verifyLisaAnalyticsMetaPresent) throws IOException {
 		Log.method("verifyMetaDataFilesArePresent", downloadPath, reportTitle,
 				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
 
@@ -2311,6 +2366,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String metaJsonFile = String.format("%s-%s-Report.json", reportPrefix, reportID);
 		String metaGapFile = String.format("%s-%s-ReportGAP.csv", reportPrefix, reportID);
 		String metaLISAFile = String.format("%s-%s-ReportLISAS.csv", reportPrefix, reportID);
+		String metaLISAAnalyticsFile = String.format("%s-%s-ReportLISAS_Analytics.csv", reportPrefix, reportID);
 		String metaSurveyFile = String.format("%s-%s-ReportSurvey.csv", reportPrefix, reportID);
 		String metaIsoCaptureFile = String.format("%s-%s-ReportIsotopicCapture.csv", reportPrefix, reportID);
 
@@ -2335,6 +2391,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 				}
 			}
 
+			if (verifyLisaAnalyticsMetaPresent) {
+				present = present && filesInDirectory.contains(metaLISAAnalyticsFile);
+				if (!present) {
+					Log.error("*ReportLISAS_Analytics.csv NOT found in Metadata ZIP");
+				}
+			}
+			
 			if (verifySurveyMetaPresent) {
 				present = present && filesInDirectory.contains(metaSurveyFile);
 				if (!present) {
@@ -2521,8 +2584,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return true;
 	}
 
-	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle)
-			throws Exception {
+	public boolean verifyLISASMetaDataFile(String actualPath, String reportTitle) throws Exception{
 		Log.method("ReportsCommonPage.verifyLISASMetaDataFile", actualPath, reportTitle);
 		return verifyLISASMetaDataFile(actualPath, reportTitle, Report.getReport(reportTitle).getId());
 	}
@@ -2551,7 +2613,13 @@ public class ReportsCommonPage extends ReportsBasePage {
 			pathToCsv = actualPath;
 		}
 		setReportName(reportName);
-		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
 
@@ -2612,8 +2680,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
 		}
 
-		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId);
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId);
 
 		for (StoredProcComplianceGetIndications reportListObj : reportList) {
 			if (!reportListObj.isInList(storedPodList)) {
@@ -2623,10 +2690,169 @@ public class ReportsCommonPage extends ReportsBasePage {
 				return false;
 			}
 		}
+		
 		Log.info("LISA Meta data file verification passed");
+
 		return true;
 	}
 
+	public Map<Integer, Integer> getLISASAnalyticsRankingMap(String reportTitle) throws Exception{
+		Log.method("ReportsCommonPage.getLISASAnalyticsRankingMap", reportTitle);
+		Map<Integer, Integer> rankingMap = new HashMap<Integer, Integer>();
+		rankingMap.put(1, 0);
+		rankingMap.put(2, 0);
+		rankingMap.put(3, 0);
+		rankingMap.put(4, 0);
+		List<Integer> rankingList = getLISASAnalyticsRankingList(reportTitle);
+		for(Integer rankingGroup:rankingList){
+			int num = 1;
+			if(rankingMap.containsKey(rankingGroup)){
+				num += rankingMap.get(rankingGroup);
+			}
+			rankingMap.put(rankingGroup, num);
+		}
+		return rankingMap;
+	}
+	
+	public List<Integer> getLISASAnalyticsRankingList(String reportTitle) throws Exception{
+		Log.method("ReportsCommonPage.getLISASAnalyticsRankingList",reportTitle);
+		String reportId = Report.getReport(reportTitle).getId();
+		String actualPath = getDownloadPath(ReportFileType.MetaDataZIP, reportTitle);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS_Analytics.csv";
+		if (actualPath.endsWith("-ReportLISAS_Analytics.csv")) {
+			pathToCsv = actualPath;
+		}	
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		return getLISASAnalyticsRankingList(csvRows);
+	}
+	
+	private List<Integer> getLISASAnalyticsRankingList(List<Map<String, String>> csvRows){
+		List<Integer> rankingGroup = new ArrayList<Integer>();
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		while (csvIterator.hasNext()) {
+			Integer ranking = -1;
+			Map<String, String> csvRow = csvIterator.next();
+			try{
+				ranking = Integer.valueOf(csvRow.get("RankingGroup"));
+			}catch(Exception e){
+				Log.warn("Failed to get the ranking group of a indication "+e);
+			}
+			rankingGroup.add(ranking);
+		}
+		return rankingGroup;
+	}
+	
+	public boolean verifyLISASAnalyticsMetaDataFile(String reportTitle) throws Exception{
+		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP, reportTitle);
+		return verifyLISASAnalyticsMetaDataFile(downloadPath, reportTitle);
+	}
+	
+	public boolean verifyLISASAnalyticsMetaDataFile(String actualPath, String reportTitle)
+			throws Exception {
+		String reportId = Report.getReport(reportTitle).getId();
+		Log.method("ReportsCommonPage.verifyLISASAnalyticsMetaDataFile", actualPath, reportTitle, reportId);
+		CSVUtility csvUtility = new CSVUtility();
+		String pathToMetaDataUnZip = getReportMetaUnzipFolder(actualPath, reportTitle);
+
+		String pathToCsv = pathToMetaDataUnZip + File.separator + getReportPrefix() + "-" + reportId.substring(0, 6) + "-ReportLISAS_Analytics.csv";
+		String reportName = getReportPrefix() + "-" + reportId;
+		if (actualPath.endsWith("-ReportLISAS_Analytics.csv")) {
+			pathToCsv = actualPath;
+		}
+		setReportName(reportName);
+		
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
+		List<Integer> rankingGroup = getLISASAnalyticsRankingList(csvRows);
+		
+		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
+		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
+
+		List<String> lisasList = new ArrayList<String>();
+		while (csvIterator.hasNext()) {
+			StoredProcComplianceGetIndications reportIndObj = new StoredProcComplianceGetIndications();
+			Map<String, String> csvRow = csvIterator.next();
+			if (!csvRow.get("ReportId").trim().equalsIgnoreCase(reportId.trim())) {
+				Log.info("ReportId does NOT match. LISA Meta data file verification failed");
+				return false;
+			}
+			if (!csvRow.get("ReportName").trim().equalsIgnoreCase(getReportName().trim().substring(0, 9))) {
+				Log.info("ReportName does NOT match. LISA Meta data file verification failed");
+				return false;
+			}
+			String lisaNumber = csvRow.get("LISANumber").trim();
+			reportIndObj.setPeakNumber(lisaNumber.replaceAll("LISA", ""));
+			reportIndObj.setSurveyorUnitName(csvRow.get("Surveyor").trim());
+			reportIndObj.setDateTime(csvRow.get("LISADateTime").trim());
+
+			double amp = Math.round(Float.parseFloat((csvRow.get("Amplitude")).trim()) * 100.0) / 100.0;
+			reportIndObj.setAmplitude((float) amp);
+			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
+			reportIndObj.setCh4((float) cH4);
+			reportIndObj.setText(csvRow.get("FieldNotes").trim());
+
+			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
+			// indication
+			String ethaneMethaneRatioUncertainty = csvRow.get("EthaneMethaneRatioUncertainty").trim();
+			reportIndObj.setAggregatedEthaneToMethaneRatio(ethaneMethaneRatioUncertainty);
+			String aggregatedClassificationconfidence = "N/A";
+			try {
+				if (!BaseHelper.isNullOrEmpty(csvRow.get("ConfidenceInDisposition").trim())) {
+					int aggregatedClassificationconfidenceFloat = (int) (Float
+							.parseFloat(csvRow.get("ConfidenceInDisposition").trim()) * 100);
+					aggregatedClassificationconfidence = aggregatedClassificationconfidenceFloat + "%";
+				} else {
+					aggregatedClassificationconfidence = "0%";
+				}
+			} catch (Exception e) {
+				Log.warn(e.toString());
+			}
+			reportIndObj.setAggregatedClassificationConfidence(aggregatedClassificationconfidence);
+			reportList.add(reportIndObj);
+
+			lisasList.add(lisaNumber);
+		}
+
+		if (!verifyLisasAreUpperCase(lisasList)) {
+			throw new Exception("Incorrect LISA label casing detected.");
+		}
+
+		if (!verifyLisaNumbersAreInSequentialOrder(lisasList)) {
+			throw new Exception("Incorrect LISA number sequential ordering found in LISAS metadata file.");
+		}
+
+		ArrayList<StoredProcComplianceGetIndications> storedPodList = StoredProcComplianceGetIndications.getReportIndications(reportId);
+
+		int numIndications = 0;
+		for (StoredProcComplianceGetIndications reportListObj : reportList) {
+			if (!reportListObj.isInList(storedPodList)) {
+				Log.info(String.format(
+						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT found in CSV.",
+						reportListObj.toString()));
+				return false;
+			}
+			if(numIndications>=rankingGroup.size() ||rankingGroup.get(numIndications)<1||rankingGroup.get(numIndications++)>4){
+				Log.error((String.format(
+						"LISA Analytics Meta data file verification failed. Report object from database -> [%s] NOT in any ranking group in CSV.",
+						reportListObj.toString())));
+				return false;
+			}
+		}
+		
+		Log.info("LISA Analytics Meta data file verification passed");
+		return true;
+	}
 	public boolean verifyThumbnailInReportViewer(ReportViewerThumbnailType compliancezipmeta) {
 		switch (compliancezipmeta) {
 		case ComplianceTablePDF:
@@ -2926,7 +3152,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException {
+	public boolean verifyIndicationTable(String actualPath, String reportTitle) throws IOException{
 		Log.method("ReportsCommonPage.verifyIndicationTable", actualPath, reportTitle);
 		PDFUtility pdfUtility = new PDFUtility();
 		Report reportObj = Report.getReport(reportTitle);
@@ -2990,8 +3216,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 		Log.info(String.format("ReportIndications ArrayList Values : %s",
 				LogHelper.strListToString(reportIndicationsList)));
 
-		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications
-				.getReportIndications(reportId);
+		ArrayList<StoredProcComplianceGetIndications> storedProcIndicationsList = StoredProcComplianceGetIndications.getReportIndications(reportId);
+		
 		Iterator<StoredProcComplianceGetIndications> lineIterator = storedProcIndicationsList.iterator();
 		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
 		while (lineIterator.hasNext()) {
@@ -3571,6 +3797,42 @@ public class ReportsCommonPage extends ReportsBasePage {
 		});
 	}
 
+	public void waitForLicenseMissingPopupToShow() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("licenseMissingModal")));
+				WebElement missingLicensePopupSection = d.findElement(By.id("licenseMissingModal"));
+				return missingLicensePopupSection.getAttribute("style").contains("display:block")
+						|| missingLicensePopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+
+	public void waitForChangeModeWarningPopupToShow() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
+				WebElement changeModeWarningPopupSection = d.findElement(By.id("surveyModal"));
+				return changeModeWarningPopupSection.getAttribute("style").contains("display:block")
+						|| changeModeWarningPopupSection.getAttribute("style").contains("display: block");
+			}
+		});
+	}
+	
+	public void waitForConfirmLicenseMissingPopupToClose() {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				(new WebDriverWait(driver, timeout + 15))
+						.until(ExpectedConditions.presenceOfElementLocated(By.id("licenseMissingModal")));
+				WebElement confirmLicenseMissingPopupSection = d.findElement(By.id("licenseMissingModal"));
+				return confirmLicenseMissingPopupSection.getAttribute("style").contains("display:none")
+						|| confirmLicenseMissingPopupSection.getAttribute("style").contains("display: none");
+			}
+		});
+	}
+	
 	protected void waitForCustomerBoundarySectionToShow() {
 		WebElement dvAreaModeCustomer = this.divCustomerBoundarySection;
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -3652,6 +3914,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return this.viewsAnalysesColumn;
 	}
 
+	public WebElement getViewsFieldNoteColumn() {
+		return this.viewsFieldNoteColumn;
+	}
+
 	public WebElement getTubularAnalysisOption() {
 		return this.tubularAnalysisOption;
 	}
@@ -3719,7 +3985,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		if (!actionSuccess) {
 			Log.error(String.format("fillCustomerBoundary() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
-			throw new Exception("Failure when executing fillCustomerBoundary.");
 		}
 
 		return actionSuccess;
@@ -3727,35 +3992,39 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public boolean fillCustomerBoundary(String customerBoundaryFilterType, String customerBoundaryName, List<String> boundaryNamesToVerify) {
 		openCustomerBoundarySelector();
-		latLongSelectionControl.waitForModalDialogOpen();
-		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
-		latLongSelectionControl.waitForMapImageLoad();
-		focusOnPage(latLongSelectionControl.getFilterByTypeDropDown());
-		latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
 		boolean setSuccess = false;
-		if (boundaryNamesToVerify != null) {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
-		} else {
-			setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
-		}
-
 		boolean invalidResults = false;
-		if (!setSuccess) {
-			// If value not set, check if noResults entry has been found.
-			Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
-			invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
-			Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+		try{
+			latLongSelectionControl.waitForModalDialogOpen();
+			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+			latLongSelectionControl.waitForMapImageLoad();
+			waitForAJAXCallsToComplete();
+			focusOnPage(latLongSelectionControl.filterByTypeId);
+			latLongSelectionControl.selectCustomerBoundaryType(customerBoundaryFilterType);
+
+			if (boundaryNamesToVerify != null) {
+				setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName, boundaryNamesToVerify);
+			} else {
+				setSuccess = latLongSelectionControl.setVerifyCustomerBoundaryName(customerBoundaryName);
+			}
+			if (!setSuccess) {
+				// If value not set, check if noResults entry has been found.
+				Log.info("Invalid entry. Value NOT set. Verifying if no results entry has been found.");
+				invalidResults = latLongSelectionControl.verifyNoBoundaryNameSearchResult();
+				Log.info(String.format("No results entry FIND status=[%b]", invalidResults));
+			}
+		}catch(Exception e){
+			Log.warn("Exception thrown when filling customer boundary: "+e);
+		}finally{
+			latLongSelectionControl.switchMode(ControlMode.Default);
+			if (setSuccess) {
+				latLongSelectionControl.clickOkButton();
+			} else {
+				latLongSelectionControl.clickCancelButton();
+			}
+
+			latLongSelectionControl.waitForModalDialogToClose();
 		}
-
-		latLongSelectionControl.switchMode(ControlMode.Default);
-		if (setSuccess) {
-			latLongSelectionControl.clickOkButton();
-		} else {
-			latLongSelectionControl.clickCancelButton();
-		}
-
-		latLongSelectionControl.waitForModalDialogToClose();
-
 		return setSuccess || invalidResults;
 	}
 
@@ -3864,6 +4133,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		case Manual:
 			radioBox = this.inputSurModeFilterManual;
 			break;
+		case Analytics:
+			radioBox = this.inputSurModeFilterAnalytics;
+			break;
 		default:
 			break;
 		}
@@ -3961,6 +4233,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return ComplianceReport_SurveyMissingMessage;
 	}
 
+	@Override
+	public LoginPage logout() {
+		// Check if report viewer is open. Close if open.
+		FunctionUtil.warnOnError(() -> { if (isReportViewerDialogOpen()) {
+			closeReportViewerDialog();
+		}});
+
+		return super.logout();
+	}
+
 	public boolean isSurveyModesValidForReportMode(String reportMode, List<String> distinctSurveyModes) {
 		if(distinctSurveyModes==null){
 			return false;
@@ -3974,7 +4256,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
+
 	public String getDownloadPath(ReportFileType fileType, String reportTitle) throws Exception {
 		String fileName = "";
 		if (fileType == ReportFileType.PDF || fileType == ReportFileType.InvestigationPDF) {
@@ -3989,5 +4271,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 		String downloadPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(), fileName).toString();
 		return downloadPath;
+	}
+
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		columnIdxMap.put(COL_HEADER_UPLOAD_STATUS, COL_IDX_UPLOAD_STATUS);
+		return columnIdxMap;
 	}
 }

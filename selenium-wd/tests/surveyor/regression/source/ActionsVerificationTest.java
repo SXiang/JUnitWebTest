@@ -3,13 +3,16 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.OLMapEntities.Indication;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
@@ -329,6 +332,53 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	}
 
 	/**
+	 * Unit test to verify multiple peak generation using dynamically generated defn and instruction files.
+	 * @throws Exception
+	 */
+	@Test
+	public void Test_verifyMultiplePeakGenerationUsingHostSimulator() throws Exception {
+		Log.info("\n Running Test_verifyMultiplePeakGenerationUsingHostSimulator ...");
+
+		final int EXPECTED_INDICATIONS = 5;
+
+		final int userDataRowID = 16;
+		final int analyzerDb3DataRowID = 70;
+		final int surveyRuntimeInSeconds = 120;
+		final int surveyDataRowID = 63;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);   /* Picarro Driver */
+
+		Log.info("Starting Analyzer...");
+		testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID); 	// start analyzer.
+		driverViewPageAction.open(EMPTY,NOTSET);
+		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+
+		Log.info("Starting Replay...");
+		testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay with dynamically generated defn and instruction files (for generating multiple peaks).
+
+		// start survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
+
+		// collect indications shown during the survey.
+		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
+
+		// stop survey.
+		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+
+		// stop simulator and PSA.
+		Log.info("Stopping Analyzer...");
+		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+
+		// confirm indication was shown in Driver view.
+		assertTrue(indicationsOnDriverView.size()==EXPECTED_INDICATIONS);
+	}
+
+	/**
 	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with existing user.
 	 * @throws Exception
 	 */
@@ -370,9 +420,46 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
 
-		new TestDataGenerator().generateNewCustomerAndSurvey(new CustomerSurveyInfoEntity(
-				SURVEY_RUNTIME_IN_SECONDS, newLocationRowID, newSurveyorRowID, newRefGasBottleRowID,
-				newAnalyzerRowID, newCustomerUserRowID, SURVEY_ROW_ID, newCustomerRowID, DB3_ANALYZER_ROW_ID));
+		new TestDataGenerator().generateNewCustomerAndSurvey(new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID));
+	}
+
+	/**
+	 * Unit test for TestEnvironmentActions.generateSurveyForUser() with new customer user and execute actions in Driver view page once the survey is started.
+	 * @throws Exception
+	 */
+	@Test
+	public void Test_generateSurveyForNewCustomerUser_executeDriverViewPageActions() throws Exception {
+		Log.info("\nRunning Test_generateSurveyForNewCustomerUser_executeDriverViewPageActions ...");
+
+		// This Unit test code can be utilized for creating an Analytics survey for new customer user.
+
+		final int LOGIN_USER_ROW_ID = 6;	 	/* LoginRowID. AutomationAdmin */
+		final int DB3_ANALYZER_ROW_ID = 61;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 64;	 		/* Survey information  */
+
+		final int SURVEY_RUNTIME_IN_SECONDS = 10; /* Number of seconds to run the survey for. */
+
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 17;
+		final int newCustomerUserRowID = 26;
+		final int newSurveyorRowID = 25;
+		final int newAnalyzerRowID = 23;
+		final int newRefGasBottleRowID = 7;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+
+			// Include verifications to perform once the Survey has started and before Stop survey is called.
+			assertTrue(driverPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+
+			return true;
+		});
 	}
 
 	/**

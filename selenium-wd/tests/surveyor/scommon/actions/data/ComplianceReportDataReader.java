@@ -3,6 +3,9 @@ package surveyor.scommon.actions.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import common.source.ExcelUtility;
 import common.source.Log;
 
@@ -56,6 +59,11 @@ public class ComplianceReportDataReader extends ReportsCommonDataReader {
 			this.minAmplitude = minAmplitude;
 			this.opacityLISA = opacityLISA;
 			this.searchAreaPreference = searchAreaPreference;
+		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 		}
 	}
 

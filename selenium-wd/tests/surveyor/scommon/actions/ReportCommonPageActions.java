@@ -81,6 +81,7 @@ import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.ReportCommonEntity;
 import surveyor.scommon.entities.ReportsSurveyInfo;
+import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.entities.ReportCommonEntity.IsotopicAnalysisTableColumns;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
@@ -206,13 +207,15 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return areBoundariesMatch;
 	}
 
-
-
 	private boolean clickComplianceViewerViewByIndex(String data, Integer dataRowID) throws Exception {
 		ActionArguments.verifyNotNullOrEmpty(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, data);
 		Integer viewIdx = NumberUtility.getIntegerValueOf(data);
 		ActionArguments.verifyGreaterThanZero(FN_CLICK_ON_COMPLIANCE_VIEWER_VIEW_BY_INDEX, ARG_DATA, viewIdx);
-		this.getReportsCommonPage().clickViewThumbnailImageByIndex(viewIdx);
+		String reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
+		List<Map<String, String>> viewList = getWorkingReportsEntity().getViewList();
+		Map<String, String> map = viewList.get(viewIdx-1);
+		String viewName = map.get(KEYVIEWNAME);
+		this.getReportsCommonPage().invokeViewFileDownload(reportName, viewName, viewIdx);
 		return true;
 	}
 
@@ -494,7 +497,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return viewNamesList;
 	}
 
-	protected String getDownloadPath(ReportFileType fileType) throws Exception {	
+	protected String getDownloadPath(ReportFileType fileType) throws Exception {
 		return this.getReportsCommonPage().getDownloadPath(fileType, (getWorkingReportsDataRow().title));
 	}
 
@@ -613,7 +616,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected void waitForReportFileDownload(Integer dataRowID, ReportFileType fileType, Integer fileIndex, int zipIndex) throws Exception {
 		ReportsBaseDataRow compRptDataRow = getReportsDataRow(dataRowID);
 		String reportTitle = compRptDataRow.title;
-		String reportName = "";
+		String reportName = "", viewName = "";
 
 		switch(fileType) {
 		case PDF:
@@ -641,9 +644,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		case View:
 			reportName = this.getReportsCommonPage().getReportPDFFileName(getWorkingReportsDataRow().title, false /*includeExtension*/);
 			List<Map<String, String>> viewList = getWorkingReportsEntity().getViewList();
-
 			Map<String, String> map = viewList.get(fileIndex-1);
-			String viewName = map.get(KEYVIEWNAME);
+			viewName = map.get(KEYVIEWNAME);
 			this.getReportsCommonPage().waitForViewFileDownload(reportName, viewName);
 			break;
 		default:
@@ -1670,8 +1672,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	public boolean verifyCancelButtonIsDisplayed(String data, Integer dataRowID) throws Exception {
-		logAction("ReportsCommonPageActions.verifyCopyButtonIsDisplayed", data, dataRowID);
-		ActionArguments.verifyGreaterThanZero("verifyCopyButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
+		logAction("ReportsCommonPageActions.verifyCancelButtonIsDisplayed", data, dataRowID);
+		ActionArguments.verifyGreaterThanZero("verifyCancelButtonIsDisplayed", ARG_DATA_ROW_ID, dataRowID);
 		return verifyPresenceOfButton(dataRowID, ReportsButtonType.Cancel);
 	}
 	/**
@@ -1788,13 +1790,18 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesArePresent", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesArePresent", ARG_DATA_ROW_ID, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		
+		boolean[] verifyMetaPresent = {false, false, false, false};
+		/* verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, 
+		 * verifyIsotopicMetaPresent/verfiyLisaAnalyticsMetaPresent */
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;
 		List<String> verifications = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
-		boolean verifyGapMetaPresent = Boolean.parseBoolean(verifications.get(0));
-		boolean verifyLisaMetaPresent = Boolean.parseBoolean(verifications.get(1));
-		boolean verifySurveyMetaPresent = Boolean.parseBoolean(verifications.get(2));
-		boolean verifyIsotopicMetaPresent = Boolean.parseBoolean(verifications.get(3));
+		for(int i=0; i<verifications.size(); i++){
+			verifyMetaPresent[i]= Boolean.parseBoolean(verifications.get(i));
+		}
 		return this.getReportsCommonPage().verifyMetaDataFilesArePresent(downloadPath, getWorkingReportsDataRow().title,
-				verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, verifyIsotopicMetaPresent);
+				verifyMetaPresent[0], verifyMetaPresent[1], verifyMetaPresent[2], 
+				verifyMetaPresent[3]&&!checkPSFilter, verifyMetaPresent[3]&&checkPSFilter);
 	}
 
 	/**
@@ -2493,6 +2500,18 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
+	 * Executes clickOnReportViewerView action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean clickOnReportViewerView(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.clickOnReportViewerView", data, dataRowID);
+		return clickComplianceViewerViewByIndex("1", dataRowID);
+	}
+
+	/**
 	 * Executes clickOnComplianceViewerViewByIndex action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2535,6 +2554,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		this.getReportsCommonPage().waitForPageLoad();
 		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
 				TestContext.INSTANCE.getLoggedInUser());
+	}
+
+	/**
+	 * Executes waitForReportGenerationToCompleteWithErrorChecks action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForReportGenerationToCompleteWithErrorChecks(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForReportGenerationToCompleteWithErrorChecks", data, dataRowID);
+		this.getReportsCommonPage().checkErrorMessages();
+		this.getReportsCommonPage().waitForPageLoad();
+		return this.getReportsCommonPage().waitForReportGenerationtoComplete(getWorkingReportsDataRow().title,
+				TestContext.INSTANCE.getLoggedInUser(), data);
 	}
 
 	/**
@@ -2620,6 +2654,19 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
 	 */
+	public boolean waitForViewDownloadToComplete(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForViewDownloadToComplete", data, dataRowID);
+		waitForViewDownloadByViewIndex("1", dataRowID);
+		return true;
+	}
+
+	/**
+	 * Executes waitForView1DownloadToCompleteByViewIndex action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
 	public boolean waitForViewDownloadToCompleteByViewIndex(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.waitForViewDownloadToCompleteByViewIndex", data, dataRowID);
 		waitForViewDownloadByViewIndex(data, dataRowID);
@@ -2639,6 +2686,44 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return true;
 	}
 
+	/**
+	 * Executes waitForLicenseMissingPopupToShow action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForLicenseMissingPopupToShow(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForLicenseMissingPopupToShow", data, dataRowID);
+		getReportsCommonPage().waitForLicenseMissingPopupToShow();
+		return true;
+	}
+	
+	/**
+	 * Executes waitForChangeModelWarningPopupToShow action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForChangeModelWarningPopupToShow(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForSurveyModalPopupToShow", data, dataRowID);
+		getReportsCommonPage().waitForChangeModeWarningPopupToShow();
+		return true;
+	}
+	
+	/**
+	 * Executes waitForConfirmDeletePopupToClose action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean waitForOkMissingLicensePopupToClose(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.waitForConfirmLicenseMissingPopupToClose", data, dataRowID);
+		getReportsCommonPage().waitForConfirmLicenseMissingPopupToClose();
+		return true;
+	}
 	/**
 	 * Executes waitForConfirmDeletePopupToClose action.
 	 * @param data - specifies the input data passed to the action.
@@ -2717,8 +2802,15 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyAllMetadataFiles(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyAllMetadataFiles", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;
 		boolean verifyReportSurveyMetaDataFile = this.getReportsCommonPage().verifyReportSurveyMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyLISASMetaDataFile = this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+		if(checkPSFilter){
+			boolean verifyLISASAnalyticsMetaDataFile = this.getReportsCommonPage().verifyLISASAnalyticsMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
+			Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyLISASAnalyticsMetaDataFile = %b",
+					verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile, verifyLISASAnalyticsMetaDataFile));	
+			return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile && verifyLISASAnalyticsMetaDataFile;
+		}
 		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
 		boolean verifyReportSpecificMetadataFiles = verifyMetadataFilesPredicate.test(getReportsCommonPage());
 		Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyReportSpecificMetadataFiles = %b",
@@ -2766,6 +2858,19 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyGapsTableInfo", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.PDF);
 		return this.getReportsCommonPage().verifyGapsTable(downloadPath, getWorkingReportsDataRow().title);
+	}
+
+	/**
+	 * Executes verifyEthaneAnalysisTableInfo action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean verifyEthaneAnalysisTableInfo(String data, Integer dataRowID) throws Exception {
+		logAction("ReportsCommonPageActions.verifyEthaneAnalysisTableInfo", data, dataRowID);
+		String downloadPath = getDownloadPath(ReportFileType.PDF);
+		return this.getReportsCommonPage().verifyEthaneAnalysisTable(downloadPath, getWorkingReportsDataRow().title);
 	}
 
 	/**
@@ -2835,6 +2940,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyLISASMetaDataFile(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISASMetaDataFile", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
+		
 		return this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 	}
 
@@ -3401,6 +3507,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyComplianceViewerViewCountEquals")) { return this.verifyComplianceViewerViewCountEquals(data, dataRowID); }
 		else if (actionName.equals("verifyCopyButtonIsDisplayed")) { return this.verifyCopyButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyDeleteButtonIsDisplayed")) { return this.verifyDeleteButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("verifyEthaneAnalysisTableInfo")) { return this.verifyEthaneAnalysisTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyGapsTableInfo")) { return this.verifyGapsTableInfo(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigateButtonIsDisplayed")) { return this.verifyInvestigateButtonIsDisplayed(data, dataRowID); }
 		else if (actionName.equals("verifyInvestigatePDFButtonIsDisplayed")) { return this.verifyInvestigatePDFButtonIsDisplayed(data, dataRowID); }
@@ -3484,11 +3591,14 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("waitForPDFDownloadToComplete")) { return this.waitForPDFDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForPDFZIPDownloadToComplete")) { return this.waitForPDFZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForReportGenerationToComplete")) { return this.waitForReportGenerationToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForReportGenerationToCompleteWithErrorChecks")) { return this.waitForReportGenerationToCompleteWithErrorChecks(data, dataRowID); }
 		else if (actionName.equals("waitForShapeZIPDownloadToComplete")) { return this.waitForShapeZIPDownloadToComplete(data, dataRowID); }
 		else if (actionName.equals("waitForViewDownloadToCompleteByViewIndex")) { return this.waitForViewDownloadToCompleteByViewIndex(data, dataRowID); }
 		else if (actionName.equals("copyInProgressReport")) { return this.copyInProgressReport(data, dataRowID); }
 		else if (actionName.equals("verifyShapeFilesWithBaselines")) { return this.verifyShapeFilesWithBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyCancelButtonIsDisplayed")) { return this.verifyCancelButtonIsDisplayed(data, dataRowID); }
+		else if (actionName.equals("waitForLicenseMissingPopupToShow")) { return this.waitForLicenseMissingPopupToShow(data, dataRowID); }
+		else if (actionName.equals("waitForOkMissingLicensePopupToClose")) { return this.waitForOkMissingLicensePopupToClose(data, dataRowID); }
 		return false;
 	}
 
@@ -3544,7 +3654,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return r -> true;
 	}
 
-	private boolean verifySSRSTableInfos(String downloadPath) throws Exception {
+	protected boolean verifySSRSTableInfos(String downloadPath) throws Exception {
 		boolean retSuccess = true;
 		boolean verifyCoverageValuesTable = false;
 		boolean verifyShowCoverageTable = false;
@@ -3618,7 +3728,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		return (ReportsCommonDataRow) getWorkingReportsDataRow();
 	}
 
-	private ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
+	protected ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}
 }

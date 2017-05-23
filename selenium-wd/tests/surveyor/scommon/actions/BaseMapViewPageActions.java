@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,14 +14,22 @@ import common.source.OLMapUtility;
 import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
 import surveyor.scommon.source.BaseMapViewPage.MapSwitchType;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage;
 
 public class BaseMapViewPageActions extends BasePageActions {
 	private static final int DEFAULT_ZOOM_LEVEL = 19;
+
+	private static final Float ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE = 1.01f;
+	private static final Float ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE = 10.01f;
+	private static final String ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE = "rgb(0, 128, 0)";
+
 	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
@@ -151,15 +160,15 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return retVal;
 	}
 
-	public boolean waitForPeakInfoPopupToOpen(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".waitForPeakInfoPopupToOpen", data, dataRowID);
-		getBaseMapViewPageObject().waitForPeakInfoPopupToOpen();
+	public boolean waitForFeatureInfoPopupToOpen(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForFeatureInfoPopupToOpen", data, dataRowID);
+		getBaseMapViewPageObject().waitForFeatureInfoPopupToOpen();
 		return true;
 	}
 
-	public boolean waitForPeakInfoPopupToClose(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".waitForPeakInfoPopupToClose", data, dataRowID);
-		getBaseMapViewPageObject().waitForPeakInfoPopupToClose();
+	public boolean waitForFeatureInfoPopupToClose(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".waitForFeatureInfoPopupToClose", data, dataRowID);
+		getBaseMapViewPageObject().waitForFeatureInfoPopupToClose();
 		return true;
 	}
 
@@ -522,17 +531,17 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 	public boolean turnOffPossibleNaturalGas(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.turnOffPossibleNaturalGas", data, dataRowID);
+		logAction(getRuntimeType() + ".turnOffPossibleNaturalGas", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.PossibleNaturalGas, false);
 		return true;
 	}
 	public boolean turnOffNotNaturalGas(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.turnOffNotNaturalGas", data, dataRowID);
+		logAction(getRuntimeType() + ".turnOffNotNaturalGas", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.NotNaturalGas, false);
 		return true;
 	}
 	public boolean turnOffVehicleExhaust(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.turnOffVehicleExhaust", data, dataRowID);
+		logAction(getRuntimeType() + ".turnOffVehicleExhaust", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.VehicleExhaust, false);
 		return true;
 	}
@@ -555,6 +564,81 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".turnOffWindRose", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, false);
 		return true;
+	}
+
+	/* Verify Analytics methods */
+	/**
+	 * Executes verifyAnalyticsModeDialogIsShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyAnalyticsModeDialogIsShown(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsShown", data, dataRowID);
+		return getBaseMapViewPageObject().isAnalyticsModeDialogShown();
+	}
+
+	/**
+	 * Executes verifyAnalyticsModeDialogIsNotShown action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyAnalyticsModeDialogIsNotShown(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsNotShown", data, dataRowID);
+		return getBaseMapViewPageObject().isAnalyticsModeDialogHidden();
+	}
+
+	/**
+	 * Verifies Analytics Survey active dialog is shown on the map with correct message and CSS formatting.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap", data, dataRowID);
+		getBaseMapViewPageObject().waitForAnalyticsDialogToBeDisplayed();
+		boolean dialogShown = getBaseMapViewPageObject().isAnalyticsModeDialogShown();
+		WebElement analyticsModeDialog = getBaseMapViewPageObject().getAnalyticsModeDialog();
+		WebElement mapElement = getBaseMapViewPageObject().getMapElement();
+		String spanText = analyticsModeDialog.getText();
+		String expectedSpanText = Resources.getResource(ResourceKeys.Dialog_AnalyticsModeActive);
+
+		String leftCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "left").replace("px", "");
+		String topCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "top").replace("px", "");
+		String mapCssWidthValue = WebElementExtender.getCssPropertyValue(getDriver(), mapElement, "width").replace("px", "");
+		String mapCssHeightValue = WebElementExtender.getCssPropertyValue(getDriver(), mapElement, "height").replace("px", "");
+		String colorCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "color");
+
+		Log.info(String.format("mapCssWidthValue=[%s], mapCssHeightValue=[%s], leftCssValue=[%s], topCssValue=[%s]",
+				mapCssWidthValue, mapCssHeightValue, leftCssValue, topCssValue));
+
+		Float fMapWidth = Float.parseFloat(mapCssWidthValue);
+		Float fMapHeight = Float.parseFloat(mapCssHeightValue);
+		Float leftPerc = 0.0f;
+		Float topPerc = 0.0f;
+
+		if (leftCssValue.contains("%")) {
+			leftPerc = Float.parseFloat(leftCssValue.replace("%", "").trim());
+		} else {
+			Float fLeft = Float.parseFloat(leftCssValue);
+			leftPerc = (fLeft * 100.0f) / fMapWidth;
+		}
+
+		if (topCssValue.contains("%")) {
+			topPerc = Float.parseFloat(topCssValue.replace("%", "").trim());
+		} else {
+			Float fTop = Float.parseFloat(topCssValue);
+			topPerc = (fTop * 100.0f) / fMapHeight;
+		}
+
+		Log.info(String.format("Analytics Survey Active dialog shown = [%b]", dialogShown));
+		Log.info(String.format("Survey Active Text Check = [%b]; Actual Span Text = [%s]; Expected Span Text = [%s]", spanText.equals(expectedSpanText), spanText, expectedSpanText));
+		Log.info(String.format("CSS Left Formatting Check = [%b]; Left Percent=%f", (leftPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE), leftPerc));
+		Log.info(String.format("CSS Top Formatting Check = [%b]; Top Percent=%f", (topPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE), topPerc));
+		Log.info(String.format("CSS Color Check = [%b]; Color=%s", colorCssValue.equals(ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE), colorCssValue));
+		return dialogShown && spanText.equals(expectedSpanText) && (leftPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE) &&
+				(topPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE) && colorCssValue.equals(ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE);
 	}
 
 	/* Button state verification methods */
@@ -672,6 +756,21 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return mapUtility.isBoundariesShownOnMap();
 	}
 
+	public boolean verifySurveyAmplitudes(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifySurveyAmplitudes", data, dataRowID);
+		float minAmp = Float.parseFloat(data);
+		Set<Indication> indications = getIndicationsShownOnPage();
+		System.out.println("IndicationsFound: '"+indications.size()+"'");
+		for(Indication indi:indications){
+			float amp = Float.parseFloat(indi.amplitude);
+			System.out.println("Amplitude on indication = '"+amp+"'");
+			if(amp < minAmp){
+				Log.warn("Amplitiude '"+amp+"' on map is less then expected: > '"+minAmp+"'");
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 *
 	 * @param data (Required) - Specifies the color for the cross hair icon which should be shown on the map.
@@ -1193,6 +1292,28 @@ public class BaseMapViewPageActions extends BasePageActions {
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isFieldNoteShown(data);
+	}
+
+	/**
+	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsVisible", data, dataRowID);
+		return this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
+	}
+
+	/**
+	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible", data, dataRowID);
+		return !this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
 	}
 
 	/**

@@ -133,6 +133,12 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-locations']/a")
+	protected WebElement linkCusManageLocations;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-ref-gas-bottles']/a")
+	protected WebElement linkCusManageRefGasBottles;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
 	protected WebElement linkPicAdminManageUsers;
 
@@ -363,6 +369,14 @@ public class SurveyorBasePage extends BasePage {
 
 	public WebElement getLinkAdminManageUsers() {
 		return this.linkAdminManageUsers;
+	}
+
+	public WebElement getLinkCusManageLocations() {
+		return this.linkCusManageLocations;
+	}
+
+	public WebElement getLinkCusManageRefGasBottles() {
+		return this.linkCusManageRefGasBottles;
 	}
 
 	public WebElement getLabelPageTableInfo() {
@@ -730,7 +744,7 @@ public class SurveyorBasePage extends BasePage {
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);
-				boolean retVal = splitArgs.size()>0 && splitArgs.get(1)!="0";
+				boolean retVal = splitArgs.size()>1 && splitArgs.get(1)!="0";
 				Log.info(String.format("waitForSearchResultsToLoad - ExpectedCondition=[%b]. datatable_info text='%s'", retVal, tableInfoElement.getText()));
 				return retVal;
 			}
@@ -776,34 +790,6 @@ public class SurveyorBasePage extends BasePage {
 		});
 	}
 
-	public void waitForAJAXCallsToComplete() {
-		ExpectedCondition<Boolean> jQueryActiveComplete = new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				try {
-					Object jQueryActive = ((JavascriptExecutor)d).executeScript("return jQuery.active");
-					if (jQueryActive.toString().equalsIgnoreCase("0")) {
-						return true;
-					}
-				} catch (WebDriverException e) {
-					Log.info("jQuery NOT available. Skipping wait on jQuery.active");
-					return true;
-				}
-				return false;
-			}
-		};
-		ExpectedCondition<Boolean> documentReadyComplete = new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				Object documentReadyState = ((JavascriptExecutor)d).executeScript("return document.readyState");
-				if (documentReadyState.toString().equalsIgnoreCase("complete")) {
-					return true;
-				}
-				return false;
-			}
-		};
-		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
-		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
-	}
-
 	public void waitForAnimationToComplete() {
 		Log.method("waitForAnimationToComplete");
 		ExpectedCondition<Boolean> jQueryAnimationComplete = new ExpectedCondition<Boolean>() {
@@ -820,7 +806,11 @@ public class SurveyorBasePage extends BasePage {
 				return false;
 			}
 		};
-		(new WebDriverWait(driver, timeout)).until(jQueryAnimationComplete);
+		try{
+			(new WebDriverWait(driver, 2*timeout)).until(jQueryAnimationComplete);
+		}catch(Exception e){
+			Log.warn("Failed to wait for animation to complete "+e);
+		}
 	}
 
 	public void waitForSignalRCallsToComplete() {

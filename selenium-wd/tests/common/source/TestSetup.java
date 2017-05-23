@@ -68,6 +68,7 @@ public class TestSetup {
 	public static final String REPLAY_DEFN_CURL_FILE = "replay-defn-curl.bat";
 	public static final String STOP_REPLAY_CURL_FILE = "replay-stop.bat";
 	public static final String ANALYZER_EXE_PATH = "C:\\Picarro\\G2000\\Picarro.Surveyor.Analyzer\\Picarro.Surveyor.Analyzer.exe";
+
 	public static final String TEST_ANALYZER_SERIAL_NUMBER = "SimAuto-Analyzer1";
 	public static final String TEST_ANALYZER_KEY = "SimAuto-AnalyzerKey1";
 
@@ -210,8 +211,15 @@ public class TestSetup {
 	public static String getExecutionPath() throws IOException{
 		return getExecutionPath(getRootPath());
 	}
+
 	public static String getExecutionPath(String rootPath) {
 		/* For CI and Eclipse run setup */
+		// NOTE: This check is added to ensure both Selenium tests and Android app tests compile correctly using ANT.
+		//       Once code refactoring for Android App is complete, this check might not be needed.
+		if (rootPath.contains("android-app")) {
+			rootPath = rootPath.replace("\\android-app", "");
+		}
+
 		String executionPath = rootPath + File.separator + "selenium-wd" + File.separator;
 		/* For build.xml run locally */
 		//String executionPath = rootPath+ File.separator;
@@ -1001,7 +1009,12 @@ public class TestSetup {
 		FileUtility.deleteFile(surveyorDb3Path);
 	}
 
+
 	public static void replayDB3Script(String defnFileName, String db3FileName) {
+		replayDB3Script(defnFileName, db3FileName, null);
+	}
+
+	public static void replayDB3Script(String defnFileName, String db3FileName, String[] instructionFiles) {
 		try {
 			// Replace %DB3_FILE_PATH% in defn file with full path to
 			// db3FileName.
@@ -1018,6 +1031,14 @@ public class TestSetup {
 			// Update the working copy.
 			Hashtable<String, String> placeholderMap = new Hashtable<String, String>();
 			placeholderMap.put("%DB3_FILE_PATH%", db3FileFullPath);
+			if (instructionFiles != null && instructionFiles.length > 0) {
+				for (int i=0; i<instructionFiles.length; i++) {
+					String instFilePath = instructionFiles[i];
+					instFilePath = instFilePath.replace("\\", "/").trim();
+					placeholderMap.put("%" + String.format("INSTRUCTION_FILE_%d", i) + "%", instFilePath);
+				}
+			}
+
 			FileUtility.updateFile(workingDefnFullPath, placeholderMap);
 
 			// Replay DB3 script

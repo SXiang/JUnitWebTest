@@ -1,11 +1,26 @@
-﻿param
+# ---------------------------------------------------------------
+# SAMPLE USAGE:
+#   .\SetupAndroidPreReqs.ps1 `
+#           -BuildWorkingDir "C:\Repositories\surveyor-qa"
+# ---------------------------------------------------------------
+
+param
 (
-  [string] $buildWorkingDir = "C:\Repositories\surveyor-qa"
+  [Parameter(Mandatory=$true)]
+  [string] $BuildWorkingDir     # Eg. "C:\Repositories\surveyor-qa"
 )
 
-. "$buildWorkingDir\selenium-wd\lib\ApplicationInstaller.ps1"
+. "$BuildWorkingDir\selenium-wd\lib\SetupAndroidBuildPreReqsCommon.ps1"
+. "$BuildWorkingDir\selenium-wd\lib\ApplicationInstaller.ps1"
 
-$EMPTY = "EMPTY"
+# 0.
+$overrideSet = Pre-AutoInstallationCheck
+if ($overrideSet) {
+    Write-Host "Override found in $AUTO_PRE_INSTALL_CHECK_FILE to skip installation of Android automation pre-requisites"
+    Write-Host "Android automation pre-requisites will NOT be installed."
+    Write-Host "NOTE: If you wish to force installation of Android automation pre-requisites on the machine remove '$AUTO_OVERRIDE_TEXT' text from $AUTO_PRE_INSTALL_CHECK_FILE"
+    exit
+}
 
 # 1. 
 Write-Host "[INSTALL_PRE-REQS]: Check/Install pre-requisite applications"
@@ -13,9 +28,7 @@ $installApplications = @{
     "01.choco"="Chocolatey"
     "02.7zip"="7-Zip"
     "03.nodejs"="NodeJS"
-    "04.appium-doctor"="Appium Doctor"
-    "05.appium"="Appium"
-    "06.android-sdk"="Android SDK"
+    "04.android-sdk"="Android SDK"
 }
 InstallApplications-FromDictTable -installAppsDictTable $installApplications
 Write-Host "[INSTALL_PRE-REQS]: Done installing pre-requisite applications"

@@ -22,6 +22,7 @@ import surveyor.scommon.source.BaseReportsPageActionTest.ReportTestRunMode;
 public class BaseReportsPageTest extends SurveyorBaseTest {
 
 	protected static final Integer REPORT_GENERATION_TIMEOUT_1HR_IN_SECONDS = 3600;    // Timeout= 1hr for report gen.
+	protected static final Integer REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS = 5400;  // Timeout= 90 mins for report gen.
 	protected static final Integer REPORT_GENERATION_TIMEOUT_30MIN_IN_SECONDS = 1800;  // Timeout= 30 mins for report gen.
 
 	private static ThreadLocal<ReportsBasePage> reportsPageThreadLocal = new ThreadLocal<ReportsBasePage>();

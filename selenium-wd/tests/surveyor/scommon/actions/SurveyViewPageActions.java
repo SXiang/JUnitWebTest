@@ -268,6 +268,9 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsShownOnMap")) { return this.verifyAssetIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyBoundariesIsNotShownOnMap")) { return this.verifyBoundariesIsNotShownOnMap(data, dataRowID); }
@@ -281,7 +284,8 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyCrossHairIconIsShownOnMap")) { return this.verifyCrossHairIconIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOff")) { return this.verifyDisplaySwitchIsOff(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsOn")) { return this.verifyDisplaySwitchIsOn(data, dataRowID); }
-		else if (actionName.equals("verifySurveyViewPageIsOpened")) { return this.verifySurveyViewPageIsOpened(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }
@@ -345,12 +349,14 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifySurveyInfoEndTimeLabelStartsWith")) { return this.verifySurveyInfoEndTimeLabelStartsWith(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoStartTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(data, dataRowID); }
 		else if (actionName.equals("verifySurveyInfoEndTimeLabelHasCorrectTimeFormat")) { return this.verifySurveyInfoEndTimeLabelHasCorrectTimeFormat(data, dataRowID); }
+		else if (actionName.equals("verifySurveyViewPageIsOpened")) { return this.verifySurveyViewPageIsOpened(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsPresentOnMap")) { return this.verifyIsotopicCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyIsotopicCaptureResultIsNotPresentOnMap")) { return this.verifyIsotopicCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyMapShownForZoomLevelIsCorrect")) { return this.verifyMapShownForZoomLevelIsCorrect(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForIndicationsToBeShownOnMap")) { return this.waitForIndicationsToBeShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifySurveyAmplitudes")) { return this.verifySurveyAmplitudes(data, dataRowID); }
 		return false;
 	}
 

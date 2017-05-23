@@ -21,7 +21,7 @@ public class ResourceKeys {
 	public static final String EQReport_PageTitleNew = "EQReport_PageTitleNew";
 	public static final String EQReports_AddNew = "EQReports_AddNew";
 	public static final String EQReports_PageTitle = "EQReports_PageTitle";
-	
+
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
@@ -93,6 +93,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable="ComplianceReportSSRS_EthaneAnalysisTable";
+	public static final String ComplianceReport_ChangeModeWarning = "ComplianceReport_ChangeModeWarning";
 
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";
@@ -109,6 +110,7 @@ public class ResourceKeys {
 	public static final String Constant_Map = "Constant_Map";
 	public static final String Constant_Name = "Constant_Name";
 	public static final String Constant_NoMatchingRecordsFound = "Constant_NoMatchingRecordsFound";
+	public static final String Account_NotRecognized = "Account_NotRecognized";
 	public static final String Constant_Observer = "Constant_Observer";
 	public static final String Constant_Password = "Constant_Password";
 	public static final String Constant_Satellite = "Constant_Satellite";
@@ -207,6 +209,7 @@ public class ResourceKeys {
 	public static final String LisaInvestigationReportSSRS_Investigator = "LisaInvestigationReportSSRS_Investigator";
 	public static final String LisaInvestigationReportSSRS_InvestigationReport = "LisaInvestigationReportSSRS_InvestigationReport";
 	public static final String LisaInvestigations_PageTitle = "LisaInvestigations_PageTitle";
+	public static final String ServerLog_PageTitle = "ServerLog_PageTitle";
 
 //  Constants for _HEADERs
 	public static final String _HEADERS_Investigator = "_HEADERS_Investigator";
@@ -225,7 +228,7 @@ public class ResourceKeys {
 	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas";
 	public static final String Survey_NaturalGas = "Survey_NaturalGas";
 
-	// Peak info popup constants.
+	// Feature info popup constants.
 	public static final String Survey_Disposition = "Survey_Disposition";
 	public static final String Survey_ClassificationConfidence = "Survey_ClassificationConfidence";
 	public static final String Survey_CH4 = "Survey_CH4";
@@ -318,4 +321,9 @@ public class ResourceKeys {
 
 	// Modal dialog constant.
 	public static final String Dialog_ProceedMessage = "Dialog_ProceedMessage";
+
+	public static final String Reports_ErrorProcessing = "Reports_ErrorProcessing";
+
+	// Analytics constants.
+	public static final String Dialog_AnalyticsModeActive = "Dialog_AnalyticsModeActive";
 }

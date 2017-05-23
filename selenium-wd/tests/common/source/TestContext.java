@@ -22,11 +22,12 @@ public enum TestContext {
 	INSTANCE;
 
 	private static final String DEFAULT_TEST_STATUS = "FAIL";
+	private static final String EMPTY = "";
 
 	private TestSetup testSetup;
 	private String userCulture = null;
-	private String loggedInUserName;
-	private String loggedInPwd;
+	private ThreadLocalMap<String> threadLoggedInUser;
+	private ThreadLocalMap<String> threadLoggedInPwd;
 	private ExtentReports report;
 	private Map<String, ExtentTest> extentTestMap;
 	private List<String> testMessage;
@@ -41,6 +42,8 @@ public enum TestContext {
 		this.threadReportIdSet = new ThreadLocalMap<Set<String>>(Collections.synchronizedSet(new HashSet<String>()));
 		this.threadLogData = new ThreadLocalMap<LogData>(ThreadLocalStore.getLogData());
 		this.threadTestStatus = new ThreadLocalMap<String>(DEFAULT_TEST_STATUS);
+		this.threadLoggedInUser = new ThreadLocalMap<String>(EMPTY);
+		this.threadLoggedInPwd = new ThreadLocalMap<String>(EMPTY);
 		this.getLogData().setIndexID(getIndexIdForTestRun());
 		this.extentTestMap = ThreadLocalStore.getExtentTestMap();
 	}
@@ -195,27 +198,19 @@ public enum TestContext {
 	}
 
 	public String getLoggedInUser() {
-		return this.loggedInUserName;
+		return threadLoggedInUser.getObject();
 	}
 
 	public void setLoggedInUser(String loggedInUserName) {
-		this.loggedInUserName = loggedInUserName;
+		threadLoggedInUser.putObject(loggedInUserName);
 	}
 
 	public String getLoggedInPassword() {
-		return loggedInPwd;
+		return threadLoggedInPwd.getObject();
 	}
 
 	public void setLoggedInPassword(String loggedInPwd) {
-		this.loggedInPwd = loggedInPwd;
-	}
-
-	public String getLoggedInUserPassword() {
-		String loggedInUserPassword = null;
-		if (testSetup != null) {
-			loggedInUserPassword = testSetup.getLoginPwd();
-		}
-		return loggedInUserPassword;
+		this.threadLoggedInPwd.putObject(loggedInPwd);
 	}
 
 	public String getUserCulture() {

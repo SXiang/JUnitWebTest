@@ -5,7 +5,6 @@ package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
 import common.source.NumberUtility;
-
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPTB;
@@ -22,7 +21,6 @@ import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-
 import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
@@ -32,6 +30,7 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -48,6 +47,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -63,6 +63,7 @@ import common.source.ApiUtility;
 import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFTableUtility;
@@ -86,6 +87,7 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import common.source.PDFUtility;
 import common.source.RegexUtility;
+import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestContext;
 
@@ -94,6 +96,16 @@ import common.source.TestContext;
  *
  */
 public class ComplianceReportsPage extends ReportsCommonPage {
+
+	protected static final String COL_HEADER_REPORT_MODE = "Report Mode";
+
+	private static final Integer COL_IDX_REPORT_TITLE = 1;
+	private static final Integer COL_IDX_REPORT_NAME = 2;
+	private static final Integer COL_IDX_REPORT_MODE = 3;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
+	private static final Integer COL_IDX_UPLOAD_STATUS = 7;
 
 	public static final String STRURLPath = "/Reports/ComplianceReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.ComplianceReports_PageTitle);
@@ -124,6 +136,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='Manual']")
 	protected WebElement checkBoxManualRptMode;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='Analytics']")
+	protected WebElement checkBoxAnalyticsRptMode;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[3]/a[1]")
 	protected WebElement btnChangeRptMode;
 
@@ -151,7 +166,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@FindBy(id = "buttonInvestigator")
 	protected WebElement btnAssignInvestigators;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[4]")
 	protected WebElement btnFirstInvestigateCompliance;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='datatableBoxes_info']")
@@ -168,6 +183,30 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	@FindBy(id = "report-assethighlighting")
 	protected WebElement highlightAlgorithmDropdown;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']")
+	private WebElement tableListOfComplianceReports;
+
+	private String strCOMRPTXPath = "//*[@id='datatable']/tbody/tr";
+
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[2]")
+	protected WebElement surveyModalErrorMsg;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='surveyModal']/div/div/div[2]/p[3]")
+	protected WebElement proceedMsg;
+
+	private String headerListComplianceReport = "//*[@id='datatable']/thead/tr/th";
+
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	protected WebElement reportMode;
+
+	public WebElement getSurveyModalErrorMsg(){
+		return this.surveyModalErrorMsg;
+	}
+
+	public WebElement getProceedMsg(){
+		return this.proceedMsg;
+	}
 
 	public WebElement getPercentCoverForecast() {
 		return this.percentCoverForecast;
@@ -267,7 +306,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
-		Log.method("ComplianceReportsPage.checkComplianceReportButtonPresenceAndClick", rptTitle, strCreatedBy,
+		Log.method("ComplianceReportsPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
 				buttonType.name(), clickButton, confirmAction);
 
 		setPagination(PAGINATIONSETTING);
@@ -283,33 +322,33 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean removeDBCache = false;
 		switch (buttonType) {
 		case Delete:
-			buttonXPath = "td[5]/a[1]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[1]";
 			break;
 		case Copy:
-			buttonXPath = "td[5]/a[@title='Copy']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			removeDBCache = true;
 			break;
 		case ReportViewer:
-			buttonXPath = "td[5]/a[3]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]";
 			break;
 		case Investigate:
-			buttonXPath = "td[5]/a[4]";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[4]";
 			break;
 		case Resubmit:
-			buttonXPath = "td[5]/a[@title='Resubmit']";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Resubmit']";
 			removeDBCache = true;
 			break;
 		case InProgressCopy: // NOTE: When report is in-progress, Copy is the
-								// 1st button.
-			buttonXPath = "td[5]/a[@title='Copy']";
+			// 1st button.
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Copy']";
 			break;
 		case Cancel: // NOTE: When cancel button is visible it is the 2nd
-						// button.
-			buttonXPath = "td[5]/a[@title='Cancel Report']";
+			// button.
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Cancel Report']";
 			break;
 		case ReportErrorLabel: // 'Error Processing' label on report
 			// cancelled or report error.
-			buttonXPath = "td[5]/span";
+			buttonXPath = "td[" + getColumnIndex(COL_HEADER_ACTION) + "]/span";
 			break;
 		default:
 			throw new Exception("ButtonType NOT supported.");
@@ -330,8 +369,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1, numRetry = 0; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "tr[" + rowNum + "]/td[1]";
-			createdByXPath = "tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]";
+			createdByXPath = "tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_CREATED_BY) + "]";
 
 			try {
 				rptTitleCellText = getTable().findElement(By.xpath(reportTitleXPath)).getText().trim();
@@ -481,9 +520,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			if (radElement.isSelected()) {
 				Map<String, ReportModeFilter> reportSurveyModeFilterGuids = BaseReportEntity.ReportSurveyModeFilterGuids;
 				return reportSurveyModeFilterGuids.entrySet().stream()
-					.filter(e -> e.getKey().equalsIgnoreCase(radElement.getAttribute("value")))
-					.map(e -> e.getValue())
-					.findFirst().orElse(ReportModeFilter.All);
+						.filter(e -> e.getKey().equalsIgnoreCase(radElement.getAttribute("value")))
+						.map(e -> e.getValue())
+						.findFirst().orElse(ReportModeFilter.All);
 			}
 		}
 		return ReportModeFilter.All;
@@ -560,15 +599,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			loopCount = Integer.parseInt(PAGINATIONSETTING);
 
 		for (int rowNum = 1; rowNum <= loopCount; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[4]/img";
+				investigateImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[4]/img";
 				investigateImg = getTable().findElement(By.xpath(investigateImgXPath));
 				Log.clickElementInfo("Investigate", ElementType.ICON);
 				investigateImg.click();
@@ -622,15 +661,15 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		final int MAX_PAGES_TO_MOVE_AHEAD = 3;
 		int pageCounter = 0;
 		for (int rowNum = 1; rowNum <= loopCount && pageCounter < MAX_PAGES_TO_MOVE_AHEAD; rowNum++) {
-			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[1]";
-			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[3]";
+			reportTitleXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_REPORT_TITLE)+"]";
+			createdByXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_CREATED_BY)+"]";
 
 			rptTitleCell = getTable().findElement(By.xpath(reportTitleXPath));
 			createdByCell = getTable().findElement(By.xpath(createdByXPath));
 
 			if (rptTitleCell.getText().trim().equalsIgnoreCase(rptTitle)
 					&& createdByCell.getText().trim().equalsIgnoreCase(strCreatedBy)) {
-				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td[5]/a[2]/img";
+				resubmitImgXPath = "//*[@id='datatable']/tbody/tr[" + rowNum + "]/td["+getColumnIndex(COL_HEADER_ACTION)+"]/a[2]/img";
 				resubmitImg = getTable().findElement(By.xpath(resubmitImgXPath));
 				Log.clickElementInfo("Resubmit", ElementType.ICON);
 				resubmitImg.click();
@@ -955,6 +994,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		case Manual:
 			radioButton = checkBoxManualRptMode;
 			break;
+		case Analytics:
+			radioButton = checkBoxAnalyticsRptMode;
+			break;
 		default:
 			break;
 		}
@@ -969,6 +1011,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			return checkBoxRRRptMode.isSelected();
 		case Manual:
 			return checkBoxManualRptMode.isSelected();
+		case Analytics:
+			return checkBoxAnalyticsRptMode.isSelected();
 		default:
 			return false;
 		}
@@ -1006,19 +1050,19 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			this.waitForSurveySearchButtonToLoad();
 			this.getBtnSurveySearch().click();
 			this.waitForSurveyTabletoLoad();
-
 			WebElement tabledata = driver.findElement(By.id("datatableSurveys"));
 			List<WebElement> Rows = tabledata.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr"));
-			for (int getrowvalue = 1; getrowvalue < Rows.size(); getrowvalue++) {
+			for (int getrowvalue = 0; getrowvalue < Rows.size(); getrowvalue++) {
 				List<WebElement> Columns = Rows.get(getrowvalue)
 						.findElements(By.xpath("//*[@id='datatableSurveys']/tbody/tr/td[7]"));
 				for (int getcolumnvalue = 0; getcolumnvalue < Columns.size(); getcolumnvalue++) {
+					getrowvalue++;
+
 					String cellValue = driver
 							.findElement(By.xpath("//*[@id='datatableSurveys']/tbody/tr[" + getrowvalue + "]/td[7]"))
 							.getText();
 					if (cellValue.contains(" ")) {
 						String str = cellValue.replaceAll("\\s+", "");
-
 						if (surveyModeFilter.name().equalsIgnoreCase(str)) {
 							result = true;
 							break;
@@ -1077,8 +1121,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
 			String key = entry.getKey(); // Key is Asset/Boundary Id
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
-												// followed by name of
-												// Asset/Boundary
+			// followed by name of
+			// Asset/Boundary
 			if (value.startsWith(ComplianceReportEntity.ASSET_PREFIX)) {
 				// Asset key.
 				WebElement assetElement = getViewLayerAssetCheckbox(key);
@@ -1094,8 +1138,8 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void selectViewLayerBoundaries(Map<String, String> viewLayerMap) {
 		for (Entry<String, String> entry : viewLayerMap.entrySet()) {
 			String value = entry.getValue(); // Value is Asset/Boundary{Prefix}
-												// followed by name of
-												// Asset/Boundary
+			// followed by name of
+			// Asset/Boundary
 			if (value.startsWith(ComplianceReportEntity.BOUNDARY_PREFIX)) {
 				// Boundary key.
 				value = value.replace(ComplianceReportEntity.BOUNDARY_PREFIX, "");
@@ -2042,7 +2086,12 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			pathToCsv = actualPath;
 		}
 		setReportName(reportName);
-		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
+		List<Map<String, String>> csvRows;
+		if(!new File(pathToCsv).exists()){
+			csvRows = new ArrayList<Map<String,String>>();
+		}else{
+			csvRows = csvUtility.getAllRows(pathToCsv);
+		}
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		List<StoredProcComplianceGetIndications> reportList = new ArrayList<StoredProcComplianceGetIndications>();
 		while (csvIterator.hasNext()) {
@@ -2432,7 +2481,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			StoredProcComplianceGetIndications objStoredProc = lineIterator.next();
 			String objAsString = objStoredProc.toString();
 			storedProcConvStringList
-					.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
+			.add(objAsString.replace("0.0 ", "0").replaceAll("\\s+", "").trim().replace("+/-", ""));
 		}
 
 		Log.info(String.format("Checking in ReportIndications ArrayList, StoredProcConvStringList Values : %s",
@@ -2460,10 +2509,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<String> getLISAInvestigationPDFData(Integer lisaNumber, String reportTitle) throws Exception {
-		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);		
+		Log.method("ComplianceReportsPage.getLISAInvestigationPDFData", lisaNumber, reportTitle);
 		String actualPath =  getDownloadPath(ReportFileType.InvestigationPDF, reportTitle);
 
 		PDFUtility pdfUtility = new PDFUtility();
@@ -2512,7 +2561,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @param actualPath
 	 * @param reportTitle
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Map<String, String> getLISAInvestigationMetaData(Integer lisaNumber, String reportTitle) throws Exception {
 		Log.method("ComplianceReportsPage.getLISAInvestigationMetaData", lisaNumber, reportTitle);
@@ -2528,7 +2577,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		}
 		setReportName(reportName);
 		List<Map<String, String>> csvRows = csvUtility.getAllRows(pathToCsv);
-		
+
 		Iterator<Map<String, String>> csvIterator = csvRows.iterator();
 		Map<String, String > lisaInvestigationDetails = null;
 
@@ -2561,6 +2610,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return checkBoxEtheneBiogeniceMethane;
 	}
 
+	public WebElement getCheckBoxPossibleNaturalGas() {
+		return checkBoxPossibleNaturalGas;
+	}
+
 	public String getSoftwareVersionFromInvestigationPDF(String reportTitle, String downloadPath) {
 		String pdfFilename = this.getInvestigationPDFFileName(reportTitle, true /* includeExtension */);
 		return getSoftwareVersionFromPDF(() -> {return Paths.get(downloadPath, pdfFilename).toString();});
@@ -2569,28 +2622,34 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) throws Exception {
 		ComplianceReportEntity reportsCompliance = (ComplianceReportEntity) reports;
-
-		// 1. Change customer if specified.
-		if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
-			Log.info("Select customer '"+reports.getCustomer()+"'");
-			selectCustomer(reportsCompliance.getCustomer());
-			Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
-			if (confirmed) {
-				inputReportTitle(reportsCompliance.getRptTitle());
+		boolean isAnalyticsReport = false;
+		// 1. Change customer if specified. Ensure Customer dropdown present.
+		if (isCustomerSelectDisplayed()) {
+			if (reportsCompliance.getCustomer() != null && !reportsCompliance.getCustomer().equalsIgnoreCase(CUSTOMER_PICARRO)) {
+				Log.info("Select customer '"+reports.getCustomer()+"'");
+				selectCustomer(reportsCompliance.getCustomer());
+				Boolean confirmed = getChangeCustomerDialog().confirmInChangeCustomerDialog();
+				if (confirmed) {
+					inputReportTitle(reportsCompliance.getRptTitle());
+				}
 			}
 		}
 
 		// 2. Report general
-		if (reportsCompliance.getEthaneFilter() != null) {
-			selectEthaneFilter(reportsCompliance.getEthaneFilter());
-		}
-
 		if (reportsCompliance.getReportModeFilter() != null) {
+			isAnalyticsReport = reportsCompliance.getReportModeFilter().equals(ReportModeFilter.Analytics);
 			selectReportMode(reportsCompliance.getReportModeFilter());
 		}
 
-		if (reportsCompliance.getExclusionRadius() != null) {
-			inputExclusionRadius(reportsCompliance.getExclusionRadius());
+		// 2.1 Non Analytics
+		if(!isAnalyticsReport){
+			if (reportsCompliance.getEthaneFilter() != null) {
+				selectEthaneFilter(reportsCompliance.getEthaneFilter());
+			}
+
+			if (reportsCompliance.getExclusionRadius() != null) {
+				inputExclusionRadius(reportsCompliance.getExclusionRadius());
+			}
 		}
 
 		// 3. Area Selector
@@ -2615,7 +2674,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 
 		// 4. SearchAreaPreference and Views
 		selectSearchPreferenceArea(reportsCompliance);
-		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList());
+		addViews(reportsCompliance.getCustomer(), reportsCompliance.getViewList(), isAnalyticsReport);
 
 		// 5. Optional Tabular PDF Content
 		List<Map<String, String>> tablesList = reportsCompliance.getTablesList();
@@ -2667,6 +2726,17 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
+	public String getReportPrefix() {
+		return "CR";
+	}
+
+	@Override
+	public void deleteReportWithApiCall(String reportId) {
+		Log.method("deleteReportWithApiCall", reportId);
+		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	}
+
+	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
 		SurveyModeFilter surveyModeFilter = ((ReportCommonEntity) reports).getSurveyModeFilter();
 		if (surveyModeFilter != null) {
@@ -2682,14 +2752,16 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	}
 
 	@Override
-	public String getReportPrefix() {
-		return "CR";
-	}
-
-	@Override
-	public void deleteReportWithApiCall(String reportId) {
-		Log.method("deleteReportWithApiCall", reportId);
-		ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_COMPLIANCE_REPORTS_RELATIVE_URL, reportId));
+	protected Map<String, Integer> getColumnIndexMap() {
+		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
+		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
+		columnIdxMap.put(COL_HEADER_REPORT_NAME, COL_IDX_REPORT_NAME);
+		columnIdxMap.put(COL_HEADER_REPORT_MODE, COL_IDX_REPORT_MODE);
+		columnIdxMap.put(COL_HEADER_CREATED_BY, COL_IDX_CREATED_BY);
+		columnIdxMap.put(COL_HEADER_DATE, COL_IDX_DATE);
+		columnIdxMap.put(COL_HEADER_ACTION, COL_IDX_ACTION);
+		columnIdxMap.put(COL_HEADER_UPLOAD_STATUS, COL_IDX_UPLOAD_STATUS);
+		return columnIdxMap;
 	}
 
 	public List<String> getViewsTableExpectedStaticText(List<Map<String, String>> viewsList) {
@@ -2757,6 +2829,11 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		return checkTableSort("datatableBoxes_wrapper", columnMap, pagination, getPaginationOption());
 	}
 
+	public boolean isSurveyTableEmpty() {
+		Log.method("isSurveyTableEmpty");
+		return WebElementExtender.isElementPresentAndDisplayed(dataTableEmpty);
+	}
+
 	public WebElement getBtnAssignInvestigators() {
 		return btnAssignInvestigators;
 	}
@@ -2769,7 +2846,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				(new WebDriverWait(driver, timeout + 15))
-						.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
+				.until(ExpectedConditions.presenceOfElementLocated(By.id("surveyModal")));
 				WebElement confirmDeletePopupSection = d.findElement(By.id("surveyModal"));
 				return confirmDeletePopupSection.getAttribute("style").contains("display:none")
 						|| confirmDeletePopupSection.getAttribute("style").contains("display: none");
@@ -2785,5 +2862,52 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			resxMap.put(ResourceTable.Key_CopyPageText, STRCopyPageTitle);
 			return new ResourceTable(resxMap);
 		});
+	}
+
+	public List<String> getListComplianceReports() {
+		List<String> compliancereportsList = new ArrayList<String>();
+
+		this.testSetup.slowdownInSeconds(testSetup.getSlowdownInSeconds());
+
+		String reportXPath;
+		WebElement reportCell;
+
+		List<WebElement> rows = this.tableListOfComplianceReports.findElements(By.xpath(this.strCOMRPTXPath));
+
+		for (int rowNum = 1; rowNum <= rows.size(); rowNum++) {
+			reportXPath = this.strCOMRPTXPath + "["+rowNum+"]/td[1]";
+			reportCell = this.tableListOfComplianceReports.findElement(By.xpath(reportXPath));
+
+			compliancereportsList.add(reportCell.getText().trim());
+		}
+		return compliancereportsList;
+	}
+
+	public List<String> getComplianceListPageHeader() {
+		List<String> complianceHeaderList = new ArrayList<String>();
+		String reportHeaderxPath;
+		WebElement reportCell;
+
+		List<WebElement> cols = driver.findElements(By
+				.xpath(this.headerListComplianceReport));
+		for (int colNum = 1; colNum <= cols.size(); colNum++) {
+			reportHeaderxPath = this.headerListComplianceReport + "[" + colNum
+					+ "]";
+			reportCell = driver.findElement(By.xpath(reportHeaderxPath));
+			complianceHeaderList.add(reportCell.getText().trim());
+		}
+		return complianceHeaderList;
+	}
+
+	public String getReportModeForProvidedReportTitle(String reportTitle,
+			String reportCreatedBy) {
+		String reportMode = "";
+		int numTry = 0;
+		boolean found = false;
+		do{
+			found = searchReport(reportTitle, reportCreatedBy);
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
+		reportMode = this.reportMode.getText().trim();
+		return reportMode;
 	}
 }

@@ -121,7 +121,6 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String coordChangeJsonFile = Paths.get(dir,"jsonString_coordchange.json").toString();
 		String idOrderCoordChangeJsonFile = Paths.get(dir,"jsonString_idOrderCoordchange.json").toString();
 
-
 		String shpString = ShapeToGeoJsonConverter.convertToJsonString(oriShpFile);
 		FileUtility.writeToFile(jsonFile, shpString);
 		String jsonString = FileUtility.readFileContents(jsonFile);

@@ -1,6 +1,7 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
+import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
 import org.junit.Before;
 
 import common.source.Log;
@@ -21,6 +22,7 @@ import surveyor.scommon.source.LatLongSelectionControl;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dataprovider.EQReportDataProvider;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
@@ -99,7 +101,7 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.getComplianceReportsPage().openCustomerBoundarySelector();
 
-		String boundaryName = "Level 2-AA";
+		String boundaryName = "3350-F6";
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
@@ -112,5 +114,34 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		String actualValue = complianceReportsPageAction.getComplianceReportsPage().getBoundarySelectedText().getAttribute("value");
 		Log.info(String.format("Expected Boundary Selected TextField value = '%s'. Actual value = '%s'", boundaryName, actualValue));
 		assertTrue(actualValue.equals(boundaryName));
+	}
+
+	/**
+	 * Test Case ID: TC557_ComplianceReportSurveySearchGridShouldNotDisplayEQModeSurvey
+	 * Test Description: Compliance Report survey search grid should not display EQ mode surveys
+	 * Script:
+	 *	- Login as Customer Supervisor user
+	 * - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * - Search the Survey
+	 * Results:
+	 *- EQ surveys should not be displayed in searched survey grid
+	 */
+	@Test
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC557, location = EQReportDataProvider.class)
+	public void TC557_ComplianceReportSurveySearchGridShouldNotDisplayEQModeSurvey(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC557_ComplianceReportSurveySearchGridShouldNotDisplayEQModeSurvey ...");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		complianceReportsPageAction.open(EMPTY, NOTSET);
+		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
+
+		complianceReportsPageAction.getComplianceReportsPage().inputSurveyTag(EQDAYSURVEY);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
+		complianceReportsPageAction.getComplianceReportsPage().waitForSurveyTabletoLoad();
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isSurveyTableEmpty());
 	}
 }
