@@ -209,6 +209,7 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 
 		Log.info(String.format("Indications detected in ObserverView = %d", indicationsOnObserverView.size()));
 		getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
+		getTestEnvironmentAction().idleForSeconds("5", NOTSET);
 		if (observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)) {
 			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
 			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));

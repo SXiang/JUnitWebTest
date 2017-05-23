@@ -311,8 +311,8 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		testEnvironmentAction.idleForSeconds("5", NOTSET);
 		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
+		testEnvironmentAction.idleForSeconds("5", NOTSET);
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)){
 			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
 			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));

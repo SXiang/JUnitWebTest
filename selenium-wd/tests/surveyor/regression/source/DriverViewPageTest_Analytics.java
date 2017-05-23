@@ -52,7 +52,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
-	
+
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
 	}
@@ -576,6 +576,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 			// stop replay. click on indication and verify field notes button is not present.
 			testEnvironmentAction.get().stopReplay(EMPTY, NOTSET);
+			testEnvironmentAction.get().idleForSeconds("5", NOTSET);
 			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
 			assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
 			return true;
