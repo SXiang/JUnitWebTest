@@ -14,7 +14,10 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2418 = "dataProviderAnalyticReports_TC2418";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2389 = "dataProviderAnalyticReports_TC2389";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2401 = "dataProviderAnalyticReports_TC2401";
-
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2395 = "dataProviderAnalyticReports_TC2395";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2398 = "dataProviderAnalyticReports_TC2398";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2423 = "dataProviderAnalyticReports_TC2423";
+	
 	public AnalyticReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -77,6 +80,27 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderAnalyticReports_TC2401() {
 		return new Object[][] {
 		{ "TC2401" /*TestCaseID*/, 6 /*userDataRowID*/,  221 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2395() {
+		return new Object[][] {
+		{ "TC2395" /*TestCaseID*/, 6 /*userDataRowID*/,  222 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2398() {
+		return new Object[][] {
+		{ "TC2398" /*TestCaseID*/, 6 /*userDataRowID*/,  223 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2423() {
+		return new Object[][] {
+		{ "TC2423" /*TestCaseID*/, 6 /*userDataRowID*/,  224 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }

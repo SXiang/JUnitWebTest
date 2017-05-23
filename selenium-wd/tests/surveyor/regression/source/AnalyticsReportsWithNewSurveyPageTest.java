@@ -8,6 +8,8 @@ import common.source.TestContext;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
+
+import java.util.List;
 import java.util.Map;
 
 import org.junit.AfterClass;
@@ -31,6 +33,7 @@ import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.Peak;
 import surveyor.dataprovider.AnalyticReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -63,6 +66,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	private static String userPassword;
 	private static String customerName;
 	private static String locationName;
+	private static String surveyMinAmplitude;
+	private static String rankingMinAmplitude;
 
 	@Rule
 	public TestName testName = new TestName();
@@ -88,7 +93,6 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-
 		if (testCaseNeedsSetupData(testName)) {
 			if(testAccount == null){
 				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
@@ -96,8 +100,11 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");
 				locationName = testAccount.get("locationName");
+				surveyMinAmplitude = "0.035";
+				rankingMinAmplitude = "2.0";
 				manageLocationPageActions.open(EMPTY, NOTSET);
-				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
+				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
 				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
 						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
 				pushGisData(testAccount.get("customerId"));
@@ -106,7 +113,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 				getLoginPage().open();
 				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 				manageLocationPageActions.open(EMPTY, NOTSET);
-				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
+				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
 			}
 		}
 	}
@@ -139,8 +147,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 	private boolean testCaseNeedsSetupData(TestName testName) {
 		String methodName = testName.getMethodName();
-		if (!methodName.startsWith("TC2418_AnalyticsLowSurveyMinAmplitudeAndHighRankingMinAmplitude")
-				&& !methodName.startsWith("TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS")
+		if (!methodName.startsWith("TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS")
 				&& !methodName.startsWith("TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude")) {
 			return true;
 		}
@@ -254,12 +261,12 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	 *	- Enter a tag, select the appropriate environmental conditions and select Survey Mode: Analytics and click Start Survey
 	 *	- Collect peaks of different amplitudes, from below 1.0 to above 3
 	 *	- After the survey has been uploaded, log into the UI and navigate to the Compliance Reports page
-	 *	- Click on New Compliance Report, enter a Report Title, select Report Mode: Analytics, select a boundary that includes the above survey area, select LISAs and indications from the View options and select Indication Table and click OK
+	 *	- Click on New Compliance Report, enter a Report Title, select Report Mode: Analytics, select a boundary that includes the above survey area, 
+	 *		select LISAs and indications from the View options and select Indication Table and click OK
 	 *	- Once the report generates, check the SSRS PDF
 	 *
 	 *	Verifications:
 	 *	- All of the indications below the Ranking Min Amplitude should have been filtered out.
-	 * @throws Exception
 	 **/
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2418, location = AnalyticReportDataProvider.class)
@@ -267,58 +274,69 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2418_AnalyticsLowSurveyMinAmplitudeAndHighRankingMinAmplitude ...");
 
-		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
+		String rankingMinAmplitudeHigh = "0.5";
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitudeHigh);
+		getHomePage().logout();
 
-		final int DB3_ANALYZER_ROW_ID = 68;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
-		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
-		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
-		final int newCustomerRowID = 14;
-		final int newLocationRowID = 18;
-		final int newCustomerUserRowID = 28;
-		final int newSurveyorRowID = 26;
-		final int newAnalyzerRowID = 24;
-		final int newRefGasBottleRowID = 7;
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		List<Peak> listOfDBPeak = Peak.getPeaks(surveyTag, testAccount.get("analyzerName"));
+		int numPeaksBelowRankingMin = listOfDBPeak.stream().filter(p -> p.getAmplitude() < Float.valueOf(rankingMinAmplitudeHigh)).mapToInt((x) -> 1).sum();
+		assertTrue( numPeaksBelowRankingMin > 0);
+		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
+		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
 
-		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
-				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
-		custSrvInfo.setPushGISSeedData(true);
-		custSrvInfo.setRetainGISSeedData(true);
-
-		try {
-			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-				assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
-				return true;
-			});
-
-			loginPageAction.open(EMPTY, NOTSET);
-			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
-
-			measurementSessionsPage.open();
-			measurementSessionsPage.waitForFirstSurveyInTableToBeCompleted();
-
-			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-			complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
-			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-
-			// TODO: Add additional verifications post DE2950 fixed to ensure correct indications are showing up in report.
-
-		} catch (Exception ex) {
-			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
-		} finally {
-			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
-		}
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
+		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(rankingMinAmplitudeHigh, NOTSET));
 	}
-
+	
+	/**
+	 *  Test Case ID: TC2423_ReportsUsEToMRatioFromLatestSurvey() {
+	 *  Description: Analytics - Use the values from latest survey included in report - (sort by date desc)
+	 *   for both report and copy report to avoid picking up the survey which was inserted first in ReportDrivingSurveys table.
+	 * 	 Reports should use Ethane to Methane Ratio from latest survey
+	 *	Script:
+	 *	-  Log into the UI as Picarro Admin
+	 * - Navigate to the Manage Locations page, select a location, click on Edit
+	 * - Set Ethane to Methane Ratio to 2 to 10 and click OK
+	 * - Log into the tablet for an analyzer associated to the above location
+	 * - Click Mode -> Start Survey
+	 * - Enter a tag, select environmental conditions and select Standard Survey Mode and click Start Survey
+	 * - Run a survey that includes several indications of different dispositions
+	 * - Log back into the UI as Picarro Admin and set Ethane to Methane Ratio to 5 to 10 and click OK
+	 * - Restart the PSA
+	 * - Log into the tablet and start a new survey
+	 * - Log into the UI and navigate to the Compliance Report page
+	 * - Click on the New Compliance Report page
+	 * - Enter a tag, uncheck all Indication Filters, set Exclusion Radius to 0, select boundary area, add the second survey, then the first survey
+	 * - Select LISAs, Indications in Views section, select Indication Table and click OK
+	 * - Repeat report generation, but add surveys in reverse order
+	 * - Check DB and run these queries:
+	 * select  * from ReportDrivingSurvey where reportid like '<report 1 id>'
+	 * select  * from ReportDrivingSurvey where reportid like '<report 2 id>'
+	 * - Compare SSRS for both reports
+	 *
+	 *	Verifications:
+	 * - After adding surveys for first report, surveys should appear with first survey on top and second survey below
+	 * - After adding surveys for second report, surveys should appear with second survey on top and first survey below
+	 * - Query results should show that surveys were added in different order for both reports
+	 * - SSRS for both reports should be identical
+	 * @throws Exception
+	 **/
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2423, location = AnalyticReportDataProvider.class)
+	public void TC2423_ReportsUsEToMRatioFromLatestSurvey(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2423_ReportsUsEToMRatioFromLatestSurvey ...");
+	}
 	/**
 	 * Test Case: TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude
 	 * Description: Admin configuration screen for customer-location-specific analytics parameters - Ranking Min Amplitude

@@ -41,6 +41,7 @@ import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -306,7 +307,7 @@ public class BaseTest {
 			// Fetch Analyzer from pool. Delete analyzer if already exists in DB.
 			analyzerName = AnalyzerSerialNumberPool.INSTANCE.fetchNext();
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
-			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
+			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);			
 			if (analyzer != null) {
 				analyzerSharedKey = analyzer.getSharedKey();
 				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
@@ -443,6 +444,7 @@ public class BaseTest {
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
 			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
+			complianceReportsPageAction.getWorkingReportsDataRow().title = rpt.getRptTitle();
 			rpt.setReportModeFilter(rm);
 			rpt.setSurveyModeFilter(sm);
 			rpt.setStrCreatedBy(userName);
