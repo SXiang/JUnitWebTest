@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.ExceptionUtility;
@@ -28,11 +29,13 @@ import common.source.RegexUtility;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.SurveyViewPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
-import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -51,8 +54,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 	private static DriverViewPageActions driverViewPageAction;
 	private static SurveyViewPageActions surveyViewPageAction;
 	private static ManageLocationPageActions manageLocationPageActions;
-
-	private static LoginPage loginPage;
 
 	public DriverViewPageTest_Analytics() throws IOException {
 		super();
@@ -713,6 +714,86 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		// Stop current simulator
 		testEnvironmentAction.get().stopAnalyzer(EMPTY, NOTSET);
+	}
+
+	/* * Test Case ID: TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude
+	 * Script:
+	 * - Log into the UI as a Picarro Admin and navigate to the Locations configuration page for a customer
+	 * - Set the Survey Min Amplitude value to 0.035 and click OK
+	 * - Log into the tablet for an analyzer belonging to the above customer and begin an Analytics survey
+	 * - Collect several peaks of different amplitudes and then stop the survey and log out
+	 * - Log into the UI as a Picarro Admin and change the Survey Min Amplitude for the above location to 0.1 (or some other value that is midway between the amplitudes collected in the above survey) and click OK
+	 * - Restart the PSA, log back into the tablet and run a new survey over the same route as before.
+	 * Results:
+	 * - During the first survey, Driver View should display peaks with amplitudes as low as 0.035.
+	 * - During the second survey, Driver View should only display peaks with amplitude above 0.1 (or whatever value was entered the second time). Peaks that appeared in the first survey with amplitudes between 0.035 and 0.1 should not be present in the second survey
+	 */
+	@Test
+	public void TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude() throws Exception{
+		Log.info("\nTestcase - TC2382_AdminConfigurationScreenForCustomer_Location_SpecificAnalyticsParameters_SurveyMinAmplitude\n");
+
+		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 20;
+		final int newCustomerUserRowID = 30;
+		final int newSurveyorRowID = 28;
+		final int newAnalyzerRowID = 26;
+		final int newRefGasBottleRowID = 10;
+
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().login(EMPTY, 6);   /* Picarro Admin */
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
+			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			Set<Indication> indicationsOnDriverView1 = driverPageAction.getIndicationsShownOnPage();
+
+			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView1.size()));
+			indicationsOnDriverView1.forEach(i -> Log.info(i.toString()));
+
+			Float LOCATION_MIN_AMP_1 = Float.valueOf(ManageLocationPageActions.workingDataRow.get().surMinAmp);
+
+			Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_1));
+			indicationsOnDriverView1.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_1));
+			return true;
+		});
+
+		final String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+		final String locationName = ManageLocationPageActions.workingDataRow.get().name;
+		final String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		final String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
+		final String SurveyMinAmp = "0.1";
+
+		// login as admin and update analytics location properties.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().getLoginPage().loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+
+		manageLocationPageActions.open(EMPTY, NOTSET);
+		manageLocationPageActions.getManageLocationsPage().performSearch(locationName);
+		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName, locationName, SurveyMinAmp);
+
+		// login back as user and create analytics report.
+		getLoginPageAction().open(EMPTY, NOTSET);
+		getLoginPageAction().getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+		TestEnvironmentActions. generateSurveyForUser(newUsername, newUserPass,
+				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), (driverPageAction) -> {
+					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+					Set<Indication> indicationsOnDriverView2 = driverPageAction.getIndicationsShownOnPage();
+
+					Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView2.size()));
+					indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
+
+					Float LOCATION_MIN_AMP_2 = Float.valueOf(SurveyMinAmp);
+
+					Log.info(String.format("Confirm indications shown in DriverView are above MinAmplitude[%f] of the location ", LOCATION_MIN_AMP_2));
+					indicationsOnDriverView2.forEach(i -> assertTrue(Float.valueOf(i.amplitude) > LOCATION_MIN_AMP_2));
+					return true;
+				});
 	}
 
 	/**
