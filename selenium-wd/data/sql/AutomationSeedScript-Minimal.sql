@@ -697,7 +697,10 @@ IF @@ROWCOUNT=0
 UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='58c51edd-51a4-1266-1159-39dbd3f3366c',[StartEpoch]=1480719926,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-5.2 WHERE [Id]='c9cf29da-0f18-0782-e93c-39dbd3f8f705'
 IF @@ROWCOUNT=0
 	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('c9cf29da-0f18-0782-e93c-39dbd3f8f705','58c51edd-51a4-1266-1159-39dbd3f3366c',1480719926,0,0,-5.2)
-	
+-- Calibration record for 'iGPS Car'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='EDA5A3A0-7B86-A343-69F6-39D8A7186DC1',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='60540576-77EF-198F-F284-39DF4393A70F'
+IF @@ROWCOUNT=0
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('60540576-77EF-198F-F284-39DF4393A70F','EDA5A3A0-7B86-A343-69F6-39D8A7186DC1',1485109206,0,0,-4)	
 	
 -- Inlet entries for EQ Surveyor - Nissan Rogue, calibration record
 UPDATE [dbo].[Inlet] SET [Height]=0.625 WHERE [CalibrationRecordId]=N'23bebf59-bb6e-85c9-c889-39dd83bd36e5' AND [Index]=0

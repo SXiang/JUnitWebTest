@@ -25,7 +25,7 @@ public class EQReportDataProvider extends ReportDataProvider {
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC557 = "dataProviderPageActionsEQReports_TC557";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC558 = "dataProviderPageActionsEQReports_TC558";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC559 = "dataProviderPageActionsEQReports_TC559";
-	
+	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2419 = "dataProviderPageActionsEQReports_TC2419";
 	public EQReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -125,6 +125,12 @@ public class EQReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderPageActionsEQReports_TC559() {
 		return new Object[][] {
 			{ "TC559" /*TestCaseID*/, 18 /*userDataRowID*/,  14 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsEQReports_TC2419() {
+		return new Object[][] {
+			{ "TC2419" /*TestCaseID*/, 4 /*userDataRowID*/,  15 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }

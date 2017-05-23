@@ -4136,6 +4136,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		case Analytics:
 			radioBox = this.inputSurModeFilterAnalytics;
 			break;
+		case EQ:
+			radioBox = this.inputSurModeFilterEQ;
+			break;
 		default:
 			break;
 		}
