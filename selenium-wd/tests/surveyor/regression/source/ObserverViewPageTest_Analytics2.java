@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import common.source.FunctionUtil;
 import common.source.Log;
 
 import org.junit.AfterClass;
@@ -326,7 +327,9 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+		// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
+		// which could cause ElementNotFound exception to get thrown.
+		FunctionUtil.warnOnError(() -> stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName));
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 
