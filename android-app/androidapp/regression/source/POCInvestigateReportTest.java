@@ -1,4 +1,4 @@
-package surveyor.regression.androidapp.source;
+package androidapp.regression.source;
 
 import static org.junit.Assert.*;
 
@@ -27,12 +27,12 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
-import surveyor.scommon.androidapp.source.AndroidInvestigationScreen;
+import androidapp.screens.source.AndroidInvestigationScreen;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.androidapp.entities.InvestigateReportEntity;
-import surveyor.scommon.androidapp.entities.InvestigationEntity;
-import surveyor.scommon.androidapp.source.AndroidInvestigateMapScreen;
-import surveyor.scommon.androidapp.source.AndroidInvestigateReportScreen;
+import androidapp.entities.source.InvestigateReportEntity;
+import androidapp.entities.source.InvestigationEntity;
+import androidapp.screens.source.AndroidInvestigateMapScreen;
+import androidapp.screens.source.AndroidInvestigateReportScreen;
 
 @RunWith(SurveyorTestRunner.class)
 public class POCInvestigateReportTest {

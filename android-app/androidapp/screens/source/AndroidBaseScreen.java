@@ -1,4 +1,4 @@
-package surveyor.scommon.androidapp.source;
+package androidapp.screens.source;
 
 import java.util.function.Predicate;
 

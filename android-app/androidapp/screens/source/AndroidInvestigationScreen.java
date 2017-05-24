@@ -1,4 +1,4 @@
-package surveyor.scommon.androidapp.source;
+package androidapp.screens.source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import surveyor.scommon.androidapp.entities.InvestigationEntity;
+import androidapp.entities.source.InvestigationEntity;
 
 public class AndroidInvestigationScreen extends AndroidBaseScreen {
 

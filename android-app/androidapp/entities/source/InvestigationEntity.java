@@ -1,4 +1,4 @@
-package surveyor.scommon.androidapp.entities;
+package androidapp.entities.source;
 
 public class InvestigationEntity {
 	private String lisaId;
