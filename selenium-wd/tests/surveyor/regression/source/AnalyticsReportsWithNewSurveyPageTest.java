@@ -329,7 +329,6 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	 * - After adding surveys for second report, surveys should appear with second survey on top and first survey below
 	 * - Query results should show that surveys were added in different order for both reports
 	 * - SSRS for both reports should be identical
-	 * @throws Exception
 	 **/
 	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2423, location = AnalyticReportDataProvider.class)
