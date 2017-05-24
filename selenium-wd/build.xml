@@ -658,6 +658,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
+				<include name="**/DriverViewPageTest.class" />
 				<include name="**/DriverViewPageTest_Analytics.class" />
 			</fileset>
       </batchtest>
@@ -787,6 +788,25 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/ReportJobPerformanceAssetBoxHighlightTestSuite.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="performanceMultiExecutionTests" depends="compileperformance" description="Run performance multiple execution tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="JUnitParallel" />
+      <sysproperty key="maxParallelTestThreads" value="1" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/regression/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/ReportJobPerformanceMultipleExecutionTests.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -218,25 +218,23 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isGPSButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonRed(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isGPSButtonYellow() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonYellow(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isGPSButtonBlue() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonBlue(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isGPSButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonGreen(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isAnemometerButtonRed() {
