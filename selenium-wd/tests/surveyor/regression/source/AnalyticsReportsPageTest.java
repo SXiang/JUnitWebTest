@@ -64,7 +64,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 	
-	@Ignore
+	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2373, location = AnalyticReportDataProvider.class)
 	public void TC2373_LisaRankingInReportLisasAnalyticsCsvFile(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -90,7 +90,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * * Test Case ID: TC2340_ReportModeOnComplianceReportListPage Test
 	 * Description: Report Mode column on Compliance Reports (Report List) page
 	 */
-	@Ignore
+	@Test
 	public void TC2340_ReportModeOnComplianceReportListPage() throws Exception {
 		Log.info("\nTestcase - TC2340_ReportModeOnComplianceReportListPage\n");
 		List<String> expectedReportHeader = Arrays.asList("Report Title",
@@ -113,7 +113,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * Description: Report Mode column on Compliance Reports (Report List) page
 	 * shows correct modes
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2341, location = AnalyticReportDataProvider.class)
 	public void TC2341_VerifyCorrectReportModesPresentOnComplianceReportListPage(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1,
@@ -230,7 +230,7 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 	 * - First report view PDF should have all assets and boundaries data displayed
 	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV). This will only be clear in reports where part of a LISA fan is within the FOV and part of it is outside (in a gap)
 	 */
-	@Test
+	@Test 
 	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2425, location = AnalyticReportDataProvider.class)
 	public void TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
