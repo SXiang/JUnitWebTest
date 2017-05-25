@@ -668,7 +668,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		driverViewPageAction.clickOnZoomOutButton(EMPTY, NOTSET);
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
+		getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
 		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
+		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
 		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
 		stopSurvey();
 
