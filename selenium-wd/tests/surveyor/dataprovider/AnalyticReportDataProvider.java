@@ -14,6 +14,10 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2418 = "dataProviderAnalyticReports_TC2418";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2389 = "dataProviderAnalyticReports_TC2389";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2401 = "dataProviderAnalyticReports_TC2401";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2421 = "dataProviderAnalyticReports_TC2421";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2425 = "dataProviderAnalyticReports_TC2425";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2422 = "dataProviderAnalyticReports_TC2422";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2424 = "dataProviderAnalyticReports_TC2424";
 
 	public AnalyticReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -77,6 +81,33 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static Object[][] dataProviderAnalyticReports_TC2401() {
 		return new Object[][] {
 		{ "TC2401" /*TestCaseID*/, 6 /*userDataRowID*/,  221 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2421() {
+		return new Object[][] {
+		{ "TC2421" /*TestCaseID*/, 6 /*userDataRowID*/,  222 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2425() {
+		return new Object[][] {
+		{ "TC2425" /*TestCaseID*/, 6 /*userDataRowID*/,  223 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2422() {
+		return new Object[][] {
+		{ "TC2422" /*TestCaseID*/, 6 /*userDataRowID*/,  224 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2424() {
+		return new Object[][] {
+		{ "TC2424" /*TestCaseID*/, 6 /*userDataRowID*/,  225 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 }
