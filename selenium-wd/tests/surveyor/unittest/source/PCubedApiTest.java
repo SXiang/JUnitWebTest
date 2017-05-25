@@ -43,7 +43,7 @@ public class PCubedApiTest {
 		Log.info(verificationToken);
 		apiInvoker.setRequestVerificationToken(verificationToken);
 
-		apiInvoker.setIsAuthenticated(true);
+		apiInvoker.setIsAuthenticationRequest(true);
 
 		Log.info("INVOKING login()...");
 		Response<ResponseBody> response = apiInvoker.login(USERNAME, PASSWORD, verificationToken);

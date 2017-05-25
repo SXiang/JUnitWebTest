@@ -163,7 +163,7 @@ public class PCubedApiInvoker {
 		return isAuthenticationRequest;
 	}
 
-	public static void setIsAuthenticated(Boolean authenticated) {
+	public static void setIsAuthenticationRequest(Boolean authenticated) {
 		isAuthenticationRequest = authenticated;
 	}
 
