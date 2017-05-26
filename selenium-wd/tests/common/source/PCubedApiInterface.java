@@ -7,6 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import surveyor.api.entities.InvestigationReports;
 
 public interface PCubedApiInterface {
 	@GET("/Account/login")
@@ -17,5 +18,8 @@ public interface PCubedApiInterface {
 	Call<ResponseBody> login(@Field("Username") String username, @Field("Password") String password, @Field("__RequestVerificationToken") String requestVerificationToken);
 
 	@GET("/Investigation/GetReportsByType?sEcho=3&sSearch")
-	Call<ResponseBody> getInvestigationReports(@Query("reportType") String reportType, @Query("iDisplayStart") Integer startIdx, @Query("iDisplayLength") Integer size);
+	Call<InvestigationReports> getInvestigationReports(@Query("reportType") String reportType, @Query("iDisplayStart") Integer startIdx, @Query("iDisplayLength") Integer size);
+
+	@GET("/Reports/ComplianceReports")
+	Call<ResponseBody> getComplianceReportsPage();
 }
