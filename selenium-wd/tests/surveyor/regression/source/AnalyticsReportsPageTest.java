@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 
+
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,6 +23,7 @@ import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import common.source.Log;
 
 @RunWith(SurveyorTestRunner.class)
@@ -163,5 +166,176 @@ public class AnalyticsReportsPageTest extends BaseReportsPageActionTest {
 						ComplianceReportsPageActions.workingDataRow.get().title,
 						SQAPICAD);
 		assertTrue(reportMode.equalsIgnoreCase("Manual"));
+	}
+	
+	/* * Test Case ID: TC2421_GenerateAnalyticsReportAndSelectAllOptionViewLayers
+	 * Script:
+	 * - Customer has analytics license feature
+	 * - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * - TimeZone : PST, Survey Mode: Analytics
+	 * - Provide lat long values co-ordinates
+	 * - Select Search Area Preference: LISAs
+	 * - Select Indication table
+	 * - Asset Layer : "Select All". Boundary Layer : "Select All"
+	 * - Select all options
+	 * - Add View with base map value: map
+	 * - Add second view with gap only
+	 * - Select Show Percent Coverage of Assets
+	 * - Click on OK and click PDF and zip(PDF)
+	 * Results:
+	 * - Report generated successfully having coverage percentage information of the assets included
+	 * - First report view PDF should have all assets and boundaries data displayed
+	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV). This will only be clear in reports where part of a LISA fan is within the FOV and part of it is outside (in a gap)
+	 */
+	@Test 
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2421, location = AnalyticReportDataProvider.class)
+	public void TC2421_GenerateAnalyticsReportAndSelectAllOptionViewLayers(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nTestcase - TC2421_GenerateAnalyticsReportAndSelectAllOptionViewLayers\n");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+				
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
+	}
+	
+	/* * Test Case ID: TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox
+	 * Script:
+	 * - Customer has analytics license feature
+	 * -  On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * -  TimeZone : PST, Survey Mode: Analytics
+	 * -  Provide lat long values co-ordinates
+	 * -  Add selected surveys
+	 * -  Select Search Area Preference: Asset Boxes
+	 * -  Select Indication table
+	 * -  Asset Layer : "Select All". Boundary Layer : "Select All"
+	 * -  Select all options
+	 * -  Add View with base map value: map
+	 * -  Add second view with gap only
+	 * -  Select Show Percent Coverage of Assets
+	 * -  Click on OK and click PDF and zip(PDF)
+	 * Results:
+	 * - Report generated successfully having coverage percentage information of the assets included
+	 * - First report view PDF should have all assets and boundaries data displayed
+	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV). This will only be clear in reports where part of a LISA fan is within the FOV and part of it is outside (in a gap)
+	 */
+	@Test 
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2425, location = AnalyticReportDataProvider.class)
+	public void TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nTestcase - TC2425_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_AssetBox\n");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+				
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
+	}
+
+	/* * Test Case ID: TC2422_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_LISABox
+	 * Script:
+	 * - Customer has analytics and LISA Box licenses
+	 * - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * - TimeZone : PST, Survey Mode: Analytics
+	 * - Provide lat long values co-ordinates
+	 * - Add selected surveys
+	 * - Select Search Area Preference: LISAs
+	 * - Select Indication table
+	 * - Asset Layer : "Select All". Boundary Layer : "Select All"
+	 * - Select all options
+	 * - Add View with base map value: map
+	 * - Add second view with gap only
+	 * - Select Show Percent Coverage of Assets
+	 * - Click on OK and click PDF and zip(PDF)
+	 * Results:
+	 * - Report generated successfully having coverage percentage information of the assets included
+	 * - First report view PDF should have all assets and boundaries data displayed. LISAs should be displayed as boxes, not as Classic LISAs
+	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV)
+	 */
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2422, location = AnalyticReportDataProvider.class)
+	public void TC2422_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_LISABox(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nTestcase - TC2422_GenerateAnalyticsReportAndSelectAllOptionAiewLayers_LISABox\n");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+				
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
+	}
+
+	/* * Test Case ID: TC2424_GenerateAnalyticsReportAndSelectAllOptionViewLayers_LISABox_AssetBox
+	 * Script:
+	 * - Customer has analytics and LISA Box licenses
+	 * - On Home Page, click Reports -> Compliance -> 'New Compliance Report' button
+	 * - TimeZone : PST, Survey Mode: Analytics
+	 * - Provide lat long values co-ordinates
+	 * - Add selected surveys
+	 * - Select Search Area Preference: Asset Boxes
+	 * - Select Indication table
+	 * - Asset Layer : "Select All". Boundary Layer : "Select All"
+	 * - Select all options
+	 * - Add View with base map value: map
+	 * - Add second view with gap only
+	 * - Select Show Percent Coverage of Assets
+	 * - Click on OK and click PDF and zip(PDF)
+	 * Results:
+	 * - Report generated successfully having coverage percentage information of the assets included
+	 * - First report view PDF should have all assets and boundaries data displayed. LISAs should be displayed as boxes, not as Classic LISAs
+	 * - Second report view should show gaps with outline of FOV only, not LISAs (Gap area =  Map area - FOV)
+	 */
+	@Test
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2424, location = AnalyticReportDataProvider.class)
+	public void TC2424_GenerateAnalyticsReportAndSelectAllOptionViewLayers_LISABox_AssetBox(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nTestcase - TC2424_GenerateAnalyticsReportAndSelectAllOptionViewLayers_LISABox_AssetBox\n");
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+				
+		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("1", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerViewByIndex("2", getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToCompleteByViewIndex("2", getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("false", getReportRowID(reportDataRowID1)));
 	}
 }

@@ -118,6 +118,18 @@ public class TestEnvironmentActions extends BaseActions {
 	}
 
 	/**
+	 * Executes stopReplay action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean stopReplay(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.stopReplay", data, dataRowID);
+		TestContext.INSTANCE.getTestSetup().stopReplay();
+		return true;
+	}
+
+	/**
 	 * Executes stopAnalyzer action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.

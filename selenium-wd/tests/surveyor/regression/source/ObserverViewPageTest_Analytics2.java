@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import common.source.FunctionUtil;
 import common.source.Log;
 
 import org.junit.AfterClass;
@@ -62,7 +63,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	private int zoomLevelForIndication = 13;
 	private String db3DefnFile = "replay-db3-eth.defn";
 	private String db3File = "AnalyticsSurvey-RFADS2024-03.db3";
-	
+
 	public ObserverViewPageTest_Analytics2() throws IOException {
 		super();
 	}
@@ -78,7 +79,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 			cleanUpGisData(testAccount.get("customerId"));
 		}
 	}
-	
+
 	@Before
 	public void beforeTestMethod() {
 		try {
@@ -121,7 +122,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		LoginPage loginPage = pageObjectFactory.getLoginPage();
 		setLoginPage(loginPage);
 		PageFactory.initElements(getDriver(), loginPage);
-		
+
 		HomePage homePage = pageObjectFactory.getHomePage();
 		setHomePage(homePage);
 		PageFactory.initElements(getDriver(), homePage);
@@ -135,7 +136,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 			PageFactory.initElements(getDriver(), observerViewPageList.get(i));
 		}
 	}
-	
+
 	/**
 	 * Test Case ID: TC2346_OnlyPeaksAboveSurveyMinAmpAppearInAnalyticsSurveyMode
 	 * Test Description: - Observer View - Only peaks above Survey Min Amplitude appear in Analytics Survey mode
@@ -167,10 +168,10 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 
 		/* Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
+
 		/* Step 2: startAnalyzerSurvey */
 		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
+
 		/* Step 3: ObserverView and verifications */
 		loginPageActionList.get(0).open(EMPTY, NOTSET);
 		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
@@ -185,7 +186,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
-	
+
 	/**
 	 * Test Case ID: TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed
 	 * Test Description: - Observer View shows indication that Analytics Survey is being run
@@ -195,29 +196,29 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	 *	- Have driver start Analytics Survey
 	 *	- Check Observer View
 	 * Results:
-	 *	- - In Observer View, "Analytics Survey Active" appears in bold green font at top left of map and "Mode: Analytics" 
+	 *	- - In Observer View, "Analytics Survey Active" appears in bold green font at top left of map and "Mode: Analytics"
 	 *		appears in the Survey Information block at top right
 	 */
 	@Test
 	public void TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed() throws Exception{
 		Log.info("\nTestcase - TC2348_ObserverViewAnalyticsSurveyActiveIsDisplayed\n");
-		
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		loginPageActionList.get(0).open(EMPTY, NOTSET);
 		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-		
+
 		/* Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
+
 		/* Step 2: startAnalyzerSurvey */
 		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
+
 		/* Step 3: ObserverView and verifications */
 		loginPageActionList.get(0).getLoginPage().open();
 		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
-		
+
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzerName, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -229,7 +230,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
-	
+
 	/**
 	 * Test Case ID: TC2351_ObserverViewAnalyticsSurveyModeHasNoCaptureOrRefGasFeatures
 	 * Test Description: - Analytics Survey mode will not have the option of running Ref Gas Measurements or Captures
@@ -245,16 +246,16 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	@Test
 	public void TC2351_ObserverViewAnalyticsSurveyModeHasNoCaptureOrRefGasFeatures() throws Exception{
 		Log.info("\nTestcase - TC2351_ObserverViewAnalyticsSurveyModeHasNoCaptureOrRefGasFeatures\n");
-		
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		/* Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
+
 		/* Step 2: startAnalyzerSurvey */
 		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
+
 		/* Step 3: ObserverView and verifications */
 		loginPageActionList.get(0).open(EMPTY, NOTSET);
 		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
@@ -271,7 +272,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
-	
+
 	/**
 	 * Test Case ID: TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys
 	 * Test Description: - Observer View - No Field Notes option for Analytics Surveys
@@ -281,23 +282,23 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 	 *	- On observer View, click on one or more of the indications
 	 *	- Click on Display
 	 * Results:
-	 *	- - Upon clicking an indication, a popup should appear with details about that leak. 
+	 *	- - Upon clicking an indication, a popup should appear with details about that leak.
 	 *		The popup should not have a button for adding Field Notes
 	 *	- The Display menu does not have an option for Field Notes
 	 */
-	@Test /* DE2934 to enhance verifications of this test */
+	@Test
 	public void TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys() throws Exception{
 		Log.info("\nTestcase - TC2356_ObserverViewNoFieldNotesOptionForAnalyticsSurveys\n");
-		
+
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 
 		/* Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, analyticSurveyRowId);
-		
+
 		/* Step 2: startAnalyzerSurvey */
 		startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3File, analyticSurveyRowId, ONE_SECOND);
-		
+
 		/* Step 3: ObserverView and verifications */
 		loginPageActionList.get(0).open(EMPTY, NOTSET);
 		loginPageActionList.get(0).getLoginPage().loginNormalAs(observerName, userPassword);
@@ -310,11 +311,12 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
+		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds("5", NOTSET);
-		//TODO: Clicking on indication is not table while conducting survey, need a workaround and enable this test
-		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(EMPTY, NOTSET)){
-//			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
-//			assertFalse(observerViewPageActionList.get(0).getObserverViewPage().isAddUpdateNoteButtonVisible());
+		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)){
+			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
+			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
+			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 			testEnvironmentAction.idleForSeconds("5", NOTSET);
 			assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
@@ -325,7 +327,9 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		/* Step 4: stopAnalyzerSurvey */
-		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+		// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
+		// which could cause ElementNotFound exception to get thrown.
+		FunctionUtil.warnOnError(() -> stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName));
 		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
 	}
 
