@@ -461,10 +461,14 @@ public class BaseTest {
 			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
 			for(int i=0;i<surveyInfoList.size(); i++){
 				ReportsSurveyInfo smf = surveyInfoList.get(i);
+				String tag = "";
 				if(smf!=null) {
 					smf.setSurveyModeFilter(sm);
-					if (surTags.length>i && surTags[i] != "") {
-						smf.setTag(surTags[i]);
+					if (surTags.length>i) {
+						tag = surTags[i];
+					}
+					if(!tag.isEmpty()){
+						smf.setTag(tag);
 					}
 				}
 			}

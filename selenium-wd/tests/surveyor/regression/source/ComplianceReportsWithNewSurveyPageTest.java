@@ -121,7 +121,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			ethMthMin = "1";
 			ethMthMax = "2";
 			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword, SurveyType.Standard);
-			pushGisData(testAccount.get("customerId"));
 			surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
 		} else {
 			getLoginPage().open();
@@ -470,43 +469,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	}
 
 	/**
-	 *  Test Case ID: TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication() {
-	 *  Description: Compliance Report -  LISAs and Indications with red iGPS indicator 
-	 *	Script:
-	 *	-  Log into the UI and navigate to the Compliance Reports page
-	 * - Click on New Compliance Report
-	 * - Enter a Report Title and select Report Mode: Standard
-	 * - Select an area, add the appropriate survey(s), select all View options and GIS layers, select Indication Table and click OK
-	 * - When the report has completed, download the Map View pdf
-	 *
-	 *	Verifications:
-	 *	-The data on the Map View pdf (breadcrumb, FOV, LISAs/indications) should exactly match that of the included survey(s). 
-	 * The gaps in breadcrumb on the survey should also be present on the Map View pdf.
-	 * There should be no FOV, LISAs or indications along the gaps
-	 **/
-	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2395, location = ComplianceReportDataProvider.class)
-	public void TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication ...");
-		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
-		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
-		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
-		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
-				,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
-		String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, 
-				reportDataRowID1, SurveyModeFilter.Standard);
-		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
-		String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");
-		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
-		
-		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
-		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
-	}
-	/**
 	 *  Test Case ID: TC2423_ReportsUsEToMRatioFromLatestSurvey() {
 	 *  Description: Analytics - Use the values from latest survey included in report - (sort by date desc)
 	 *   for both report and copy report to avoid picking up the survey which was inserted first in ReportDrivingSurveys table.
@@ -577,6 +539,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String reportId1 = testReport1.get(SurveyModeFilter.Standard.toString()+"ReportName");
 		String reportName1 = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportId1.substring(0, 6);
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle1, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle1);
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName1);
 		
@@ -586,6 +550,8 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		String reportName2 = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportId2.substring(0, 6);
 		
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle2, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
+		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle2);
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName2);
 	}
