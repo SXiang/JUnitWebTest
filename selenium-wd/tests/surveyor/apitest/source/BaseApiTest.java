@@ -10,26 +10,35 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import common.source.PCubedApiInvoker;
+import common.source.TestContext;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import surveyor.scommon.source.BaseTest;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class BaseApiTest extends BaseTest {
-	protected static final String USERNAME = "AutomationAdmin";
-	protected static final String PASSWORD = "sqa#Picarro$0";
-	protected static final String BASE_URL = "https://p3sqaauto.picarro.com";
 
 	protected static final String LOGIN_FAIL_ERROR_MESSAGE = "error has occured and we have automatically logged this information";
 	protected static final String INVALID_VERIFICATION_TOKEN = "INVALID_VERIFICATION_TOKEN";
 	protected static final String INVALID_PASSWORD = "INVALID_PASSWORD";
 
+	protected static String USERNAME = SurveyorConstants.PICDFADMIN;
+	protected static String PASSWORD = SurveyorConstants.PICADMINPSWD;
+	protected static String baseUrl;
+
 	protected PCubedApiInvoker apiInvoker = null;
+
+	@BeforeClass
+	public static void beforeTestClass() {
+		baseUrl = TestContext.INSTANCE.getTestSetup().getBaseUrl();
+	}
 
 	@Before
 	public void beforeTestSetup() {
-		apiInvoker = new PCubedApiInvoker(BASE_URL);
+		apiInvoker = new PCubedApiInvoker(baseUrl);
 	}
 
 	protected String getVerificationToken() throws IOException {
@@ -78,7 +87,7 @@ public class BaseApiTest extends BaseTest {
 	protected String executeLoginRequest(String username, String password, String verificationToken) throws IOException {
 		apiInvoker.setRequestVerificationToken(verificationToken);
 		PCubedApiInvoker.setIsAuthenticationRequest(true);
-		Response<ResponseBody> response = apiInvoker.login(USERNAME, PASSWORD, verificationToken);
+		Response<ResponseBody> response = apiInvoker.login(username, password, verificationToken);
 		assertTrue(response.isSuccessful());
 		Log.info(String.format("Response code = %d", response.code()));
 		PCubedApiInvoker.setIsAuthenticationRequest(false);
