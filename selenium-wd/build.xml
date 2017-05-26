@@ -543,6 +543,8 @@
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+          <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -825,8 +827,10 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-    	  <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
-          <include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+          <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
+        	<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+        	<include name="**/ComplianceReportsWithNewSurveyPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
