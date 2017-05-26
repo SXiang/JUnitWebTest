@@ -7,18 +7,23 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import java.util.Map;
-import common.source.Log;
 
+import common.source.HostSimDefinitionGenerator;
+import common.source.Log;
 import common.source.WebElementExtender;
+
+import org.junit.AfterClass;
 import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
 
@@ -43,6 +48,7 @@ import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 
 import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -64,12 +70,32 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static ManageSurveyorPageActions manageSurveyorPageAction;
 	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
 
-
+	private static String userName = "328713@email.com";
+	private static String userPassword = PICADMINPSWD;
+	private static String customerName = "regcus328713CusWithoutAsset";
+	private static String locationName = "328713Loc";
+	private static String analyzerSharedKey = "1039c7504cfa475 ";
+	private static String analyzerName = "AutoTestAnalyzer076";
+	private static String analyzerType;
+	private static String surveyorName = "328713Sur";
+	private static String surveyTag = "d7f12db0beb545d";
+	private static String customerId;
+	private static String ethMthMin;
+	private static String ethMthMax;
+	
 	@BeforeClass
 	public static void beforeClass() {
+		testAccount = null;
 		initializeTestObjects();
 	}
-
+	
+	@AfterClass
+	public static void afterClass() {
+		if(testAccount!=null && customerId!=null){
+			cleanUpGisData(customerId);
+		}
+	}
+	
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
@@ -83,8 +109,26 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		if(testAccount == null){
 			testAccount = createTestAccount("CusWithoutAsset");
-			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+			userName = testAccount.get("userName");
+			userPassword = testAccount.get("userPassword");
+			customerName = testAccount.get("customerName");
+			locationName = testAccount.get("locationName");
+			analyzerSharedKey = testAccount.get("analyzerSharedKey");
+			analyzerName = testAccount.get("analyzerName");
+			analyzerType = testAccount.get("analyzerType");
+			surveyorName = testAccount.get("surveyorName");
+			customerId = testAccount.get("customerId");
+			ethMthMin = "1";
+			ethMthMax = "2";
+			testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, userName, userPassword, SurveyType.Standard);
+			pushGisData(testAccount.get("customerId"));
+			surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+		} else {
+			getLoginPage().open();
+			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+			manageLocationPageAction.open(EMPTY, NOTSET);
+			manageLocationPageAction.getManageLocationsPage().editEthaneToMethaneRatio(customerName,locationName,ethMthMin, ethMthMax);
+			getHomePage().logout();
 		}
 	}
 
@@ -423,5 +467,126 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			}
 			return true;
 		}));
+	}
+
+	/**
+	 *  Test Case ID: TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication() {
+	 *  Description: Compliance Report -  LISAs and Indications with red iGPS indicator 
+	 *	Script:
+	 *	-  Log into the UI and navigate to the Compliance Reports page
+	 * - Click on New Compliance Report
+	 * - Enter a Report Title and select Report Mode: Standard
+	 * - Select an area, add the appropriate survey(s), select all View options and GIS layers, select Indication Table and click OK
+	 * - When the report has completed, download the Map View pdf
+	 *
+	 *	Verifications:
+	 *	-The data on the Map View pdf (breadcrumb, FOV, LISAs/indications) should exactly match that of the included survey(s). 
+	 * The gaps in breadcrumb on the survey should also be present on the Map View pdf.
+	 * There should be no FOV, LISAs or indications along the gaps
+	 **/
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2395, location = ComplianceReportDataProvider.class)
+	public void TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2395_ComplianceReportLisasAndIndicationsWithRediGPSIndication ...");
+		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane
+				,defnFilePath, userName, userPassword, 300, SurveyType.Standard);
+		String surveyTag = testSurvey.get(SurveyType.Standard.toString()+"Tag");
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, 
+				reportDataRowID1, SurveyModeFilter.Standard);
+		String reportTitle = testReport.get(SurveyModeFilter.Standard.toString()+"Title");
+		String reportName = testReport.get(SurveyModeFilter.Standard.toString()+"ReportName");
+		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
+		
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+	}
+	/**
+	 *  Test Case ID: TC2423_ReportsUsEToMRatioFromLatestSurvey() {
+	 *  Description: Analytics - Use the values from latest survey included in report - (sort by date desc)
+	 *   for both report and copy report to avoid picking up the survey which was inserted first in ReportDrivingSurveys table.
+	 * 	 Reports should use Ethane to Methane Ratio from latest survey
+	 *	Script:
+	 * - Log into the UI as Picarro Admin
+	 * - Navigate to the Manage Locations page, select a location, click on Edit
+	 * - Set Ethane to Methane Ratio to 2 to 10 and click OK
+	 * - Log into the tablet for an analyzer associated to the above location
+	 * - Click Mode -> Start Survey
+	 * - Enter a tag, select environmental conditions and select Standard Survey Mode and click Start Survey
+	 * - Run a survey that includes several indications of different dispositions
+	 * - Log back into the UI as Picarro Admin and set Ethane to Methane Ratio to 5 to 10 and click OK
+	 * - Restart the PSA
+	 * - Log into the tablet and start a new survey
+	 * - Log into the UI and navigate to the Compliance Report page
+	 * - Click on the New Compliance Report page
+	 * - Enter a tag, uncheck all Indication Filters, set Exclusion Radius to 0, select boundary area, add the second survey, then the first survey
+	 * - Select LISAs, Indications in Views section, select Indication Table and click OK
+	 * - Repeat report generation, but add surveys in reverse order
+	 * - Check DB and run these queries:
+	 * select  * from ReportDrivingSurvey where reportid like '<report 1 id>'
+	 * select  * from ReportDrivingSurvey where reportid like '<report 2 id>'
+	 * - Compare SSRS for both reports
+	 *
+	 *	Verifications:
+	 * - After adding surveys for first report, surveys should appear with first survey on top and second survey below
+	 * - After adding surveys for second report, surveys should appear with second survey on top and first survey below
+	 * - Query results should show that surveys were added in different order for both reports
+	 * - SSRS for both reports should be identical
+	 **/
+	@Ignore /* Description changed, depends on US4458 */
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2423, location = ComplianceReportDataProvider.class)
+	public void TC2423_ReportsUsEToMRatioFromLatestSurvey(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2423_ReportsUsEToMRatioFromLatestSurvey ...");
+		
+		String newEthMthMin = "2";
+		String newEthMthMax = "10";
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.getManageLocationsPage().editEthaneToMethaneRatio(customerName,locationName,newEthMthMin, newEthMthMax);
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		Map<String, String> testSurvey1 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
+				 userName, userPassword, 100, SurveyType.Standard);
+		String surveyTag1 = testSurvey1.get(SurveyType.Standard.toString()+"Tag");
+		
+		newEthMthMin = "5";
+		newEthMthMax = "10";
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.getManageLocationsPage().editEthaneToMethaneRatio(customerName,locationName,newEthMthMin, newEthMthMax);
+		getHomePage().logout();
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(userName, userPassword);
+		Map<String, String> testSurvey2 = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane,
+				 userName, userPassword, 100, SurveyType.Standard);
+		String surveyTag2 = testSurvey2.get(SurveyType.Standard.toString()+"Tag");
+
+		Map<String, String> testReport1 = addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID1, SurveyModeFilter.Standard);
+		String reportTitle1 = testReport1.get(SurveyModeFilter.Standard.toString()+"Title");
+		String reportId1 = testReport1.get(SurveyModeFilter.Standard.toString()+"ReportName");
+		String reportName1 = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportId1.substring(0, 6);
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle1, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle1);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName1);
+		
+		Map<String, String> testReport2 = addTestReport(userName, userPassword, customerName, surveyTag1+":"+surveyTag2, reportDataRowID1, SurveyModeFilter.Standard);
+		String reportTitle2 = testReport2.get(SurveyModeFilter.Standard.toString()+"Title");
+		String reportId2 = testReport2.get(SurveyModeFilter.Standard.toString()+"ReportName");
+		String reportName2 = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportId2.substring(0, 6);
+		
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle2, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle2);
+		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName2);
 	}
 }

@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import common.source.BaseHelper;
 import common.source.FunctionUtil;
+import common.source.HostSimDefinitionGenerator;
 import common.source.Log;
 import common.source.TestContext;
 
@@ -35,6 +36,7 @@ import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.Peak;
 import surveyor.dataprovider.AnalyticReportDataProvider;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -66,23 +68,28 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	private static String userPassword;
 	private static String customerName;
 	private static String locationName;
+	private static String analyzerSharedKey;
+	private static String analyzerName;
+	private static String analyzerType ;
+	private static String surveyorName;
+	private static String surveyTag;
+	private static String customerId;
 	private static String surveyMinAmplitude;
 	private static String rankingMinAmplitude;
 
 	@Rule
 	public TestName testName = new TestName();
 
-	private static String surveyTag;
-
 	@BeforeClass
 	public static void beforeClass() {
+		testAccount = null;
 		initializeTestObjects();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		if(testAccount!=null && testAccount.get("customerId")!=null){
-			cleanUpGisData(testAccount.get("customerId"));
+		if(testAccount!=null && customerId!=null){
+			cleanUpGisData(customerId);
 		}
 	}
 
@@ -95,11 +102,16 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		setPropertiesForTestRunMode();
 		if (testCaseNeedsSetupData(testName)) {
 			if(testAccount == null){
-				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);
+				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);				
 				userName = testAccount.get("userName");
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");
 				locationName = testAccount.get("locationName");
+				analyzerSharedKey = testAccount.get("analyzerSharedKey");
+				analyzerName = testAccount.get("analyzerName");
+				analyzerType = testAccount.get("analyzerType");
+				surveyorName = testAccount.get("surveyorName");
+				customerId = testAccount.get("customerId");
 				surveyMinAmplitude = "0.035";
 				rankingMinAmplitude = "2.0";
 				manageLocationPageActions.open(EMPTY, NOTSET);
@@ -206,7 +218,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 
-		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
@@ -283,10 +295,10 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
-		List<Peak> listOfDBPeak = Peak.getPeaks(surveyTag, testAccount.get("analyzerName"));
+		List<Peak> listOfDBPeak = Peak.getPeaks(surveyTag, analyzerName);
 		int numPeaksBelowRankingMin = listOfDBPeak.stream().filter(p -> p.getAmplitude() < Float.valueOf(rankingMinAmplitudeHigh)).mapToInt((x) -> 1).sum();
 		assertTrue( numPeaksBelowRankingMin > 0);
-		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName, surveyTag, reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		String reportName = testReport.get(SurveyModeFilter.Analytics.toString()+"ReportName");
@@ -297,45 +309,45 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(rankingMinAmplitudeHigh, NOTSET));
 	}
-	
+
 	/**
-	 *  Test Case ID: TC2423_ReportsUsEToMRatioFromLatestSurvey() {
-	 *  Description: Analytics - Use the values from latest survey included in report - (sort by date desc)
-	 *   for both report and copy report to avoid picking up the survey which was inserted first in ReportDrivingSurveys table.
-	 * 	 Reports should use Ethane to Methane Ratio from latest survey
+	 *  Test Case ID: TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator() {
+	 *  Description: Analytics - Analytics survey that produced gaps in breadcrumbs due to iGPS indicator turning red. 
+	 *  The survey should include LISAs/indications in the areas where the iGPS had not turned red.
 	 *	Script:
-	 *	-  Log into the UI as Picarro Admin
-	 * - Navigate to the Manage Locations page, select a location, click on Edit
-	 * - Set Ethane to Methane Ratio to 2 to 10 and click OK
-	 * - Log into the tablet for an analyzer associated to the above location
-	 * - Click Mode -> Start Survey
-	 * - Enter a tag, select environmental conditions and select Standard Survey Mode and click Start Survey
-	 * - Run a survey that includes several indications of different dispositions
-	 * - Log back into the UI as Picarro Admin and set Ethane to Methane Ratio to 5 to 10 and click OK
-	 * - Restart the PSA
-	 * - Log into the tablet and start a new survey
-	 * - Log into the UI and navigate to the Compliance Report page
-	 * - Click on the New Compliance Report page
-	 * - Enter a tag, uncheck all Indication Filters, set Exclusion Radius to 0, select boundary area, add the second survey, then the first survey
-	 * - Select LISAs, Indications in Views section, select Indication Table and click OK
-	 * - Repeat report generation, but add surveys in reverse order
-	 * - Check DB and run these queries:
-	 * select  * from ReportDrivingSurvey where reportid like '<report 1 id>'
-	 * select  * from ReportDrivingSurvey where reportid like '<report 2 id>'
-	 * - Compare SSRS for both reports
+	 * - Log into the UI and navigate to the Compliance Reports page
+	 * - Click on New Compliance Report
+	 * - Enter a Report Title and select Report Mode: Analytics
+	 * - Select an area, add the appropriate survey(s), select all View options and GIS layers, select Indication Table and click OK
+	 * - When the report has completed, download the Map View pdf
 	 *
 	 *	Verifications:
-	 * - After adding surveys for first report, surveys should appear with first survey on top and second survey below
-	 * - After adding surveys for second report, surveys should appear with second survey on top and first survey below
-	 * - Query results should show that surveys were added in different order for both reports
-	 * - SSRS for both reports should be identical
+	 *	- The data on the Map View pdf (breadcrumb, FOV, LISAs/indications) should exactly match that of the included survey(s). 
+	 *	The gaps in breadcrumb on the survey should also be present on the Map View pdf. 
+	 *	There should be no FOV, LISAs or indications along the gaps
 	 **/
 	@Test
-	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2423, location = AnalyticReportDataProvider.class)
-	public void TC2423_ReportsUsEToMRatioFromLatestSurvey(
+	@UseDataProvider(value = AnalyticReportDataProvider.ANALYTIC_REPORT_DATA_PROVIDER_TC2398, location = AnalyticReportDataProvider.class)
+	public void TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2423_ReportsUsEToMRatioFromLatestSurvey ...");
-	}
+		Log.info("\nRunning TC2398_AnalyticsLisasAndIndicationsWithREdiGPSIndicator ...");
+		String[] ch4Values = {"5.5", "6.5", "7.5", "8.5", "9.5"};
+		String[] c2h6Values = {"3.5", "3.2", "3.0", "3.5", "2.5"};
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+
+		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
+				,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
+		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag, 
+				reportDataRowID1, SurveyModeFilter.Analytics);
+
+		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
+		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
+		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
+		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
+	}	
+
 	/**
 	 * Test Case: TC2389_AdminConfigurationScreenCustomerLocationSpecificAnalyticsParametersRankingMinAmplitude
 	 * Description: Admin configuration screen for customer-location-specific analytics parameters - Ranking Min Amplitude

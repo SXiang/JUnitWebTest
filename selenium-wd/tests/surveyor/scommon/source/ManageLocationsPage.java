@@ -1156,7 +1156,29 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		setTop50Ps(top50PS);
 		clickOnOkBtn();
 	}
-
+	public void editEthaneToMethaneMinRatio(String customerName, String locationName, String newEthMthMin){
+		editEthaneToMethaneRatio(customerName, locationName, newEthMthMin, null);
+	}
+	
+	public void editEthaneToMethaneMaxRatio(String customerName, String locationName, String newEthMthMax){
+		editEthaneToMethaneRatio(customerName, locationName, null, newEthMthMax);
+	}
+	
+	public void editEthaneToMethaneRatio(String customerName, String locationName, String newEthMthMin, String newEthMthMax){
+		findExistingLocationAndClickEdit(customerName, locationName);
+		if(newEthMthMax!=null&&!newEthMthMax.isEmpty()){
+			Log.info("Set Ethane to Methane Ratio Max % - '" + newEthMthMax + "'");
+			this.ethMthMaxUnit.clear();
+			this.ethMthMaxUnit.sendKeys(newEthMthMax);
+		}
+		if(newEthMthMin!=null&&!newEthMthMin.isEmpty()){
+			Log.info("Set Ethane to Methane Ratio Min % - '" + newEthMthMin + "'");
+			this.ethMthMinUnit.clear();
+			this.ethMthMinUnit.sendKeys(newEthMthMin);
+		}
+		clickOnOkBtn();
+	}
+	
 	public boolean isSurveyMinAmpShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(surMinAmp);
 	}
