@@ -110,6 +110,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			JavascriptExecutor js = (JavascriptExecutor)driver; 
 			js.executeScript("arguments[0].click();", btnDelete);
 		}
+		this.waitForAJAXCallsToComplete();
 	}
 
 	public enum DrivingSurveyButtonType {
