@@ -102,7 +102,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 				surveyorName = testAccount.get("surveyorName");
 				customerId = testAccount.get("customerId");
 				surveyMinAmplitude = "0.035";
-				rankingMinAmplitude = "2.0";
+				rankingMinAmplitude = "0.035";
 				manageLocationPageActions.open(EMPTY, NOTSET);
 				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
 				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
