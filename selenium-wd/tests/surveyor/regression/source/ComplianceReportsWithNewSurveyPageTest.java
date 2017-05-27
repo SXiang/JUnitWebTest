@@ -7,6 +7,8 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
+import common.source.WebElementExtender;
+
 import org.junit.Assert;
 
 import org.junit.Before;
