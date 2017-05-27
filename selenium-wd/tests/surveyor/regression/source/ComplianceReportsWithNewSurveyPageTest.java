@@ -61,7 +61,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	public static void beforeClass() {
 		initializeTestObjects();
 	}
-	
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();

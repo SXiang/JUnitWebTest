@@ -14,11 +14,11 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2418 = "dataProviderAnalyticReports_TC2418";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2389 = "dataProviderAnalyticReports_TC2389";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2401 = "dataProviderAnalyticReports_TC2401";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2421 = "dataProviderAnalyticReports_TC2421";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2398 = "dataProviderAnalyticReports_TC2398";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2425 = "dataProviderAnalyticReports_TC2425";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2422 = "dataProviderAnalyticReports_TC2422";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2424 = "dataProviderAnalyticReports_TC2424";
-	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2421 = "dataProviderAnalyticReports_TC2421";
 	
 	public AnalyticReportDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
