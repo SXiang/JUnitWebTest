@@ -54,15 +54,15 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 
 	private static Map<String, String> testAccount, testSurvey;
-	private static String userName;
-	private static String userPassword;
-	private static String customerName;
-	private static String locationName;
-	private static String analyzerSharedKey;
-	private static String analyzerName;
-	private static String analyzerType ;
-	private static String surveyorName;
-	private static String surveyTag;
+	private static String userName="599050@email.com";
+	private static String userPassword="sqa#Picarro$0";
+	private static String customerName="regcus599050Analytics_Report";
+	private static String locationName="599050Loc";
+	private static String analyzerSharedKey="49b97c7d3f92451";
+	private static String analyzerName="AutoTestAnalyzer021";
+	private static String analyzerType="Analytics";
+	private static String surveyorName="599050Sur";
+	private static String surveyTag="bfba653c51b3475";
 	private static String customerId;
 	private static String surveyMinAmplitude;
 	private static String rankingMinAmplitude;
@@ -78,9 +78,9 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 	@AfterClass
 	public static void afterClass() {
-		if(testAccount!=null && customerId!=null){
-			cleanUpGisData(customerId);
-		}
+//		if(testAccount!=null && customerId!=null){
+//			cleanUpGisData(customerId);
+//		}
 	}
 
 	@Before
@@ -90,33 +90,33 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		initializePageObjects();
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-			if(testAccount == null){
-				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);				
-				userName = testAccount.get("userName");
-				userPassword = testAccount.get("userPassword");
-				customerName = testAccount.get("customerName");
-				locationName = testAccount.get("locationName");
-				analyzerSharedKey = testAccount.get("analyzerSharedKey");
-				analyzerName = testAccount.get("analyzerName");
-				analyzerType = testAccount.get("analyzerType");
-				surveyorName = testAccount.get("surveyorName");
-				customerId = testAccount.get("customerId");
-				surveyMinAmplitude = "0.035";
-				rankingMinAmplitude = "0.035";
-				manageLocationPageActions.open(EMPTY, NOTSET);
-				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
-						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
-				pushGisData(testAccount.get("customerId"));
-				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-			} else {
-				getLoginPage().open();
-				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-				manageLocationPageActions.open(EMPTY, NOTSET);
-				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
-				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
-			}
+//			if(testAccount == null){
+//				testAccount = createTestAccount("Analytics_Report", CapabilityType.Ethane);				
+//				userName = testAccount.get("userName");
+//				userPassword = testAccount.get("userPassword");
+//				customerName = testAccount.get("customerName");
+//				locationName = testAccount.get("locationName");
+//				analyzerSharedKey = testAccount.get("analyzerSharedKey");
+//				analyzerName = testAccount.get("analyzerName");
+//				analyzerType = testAccount.get("analyzerType");
+//				surveyorName = testAccount.get("surveyorName");
+//				customerId = testAccount.get("customerId");
+//				surveyMinAmplitude = "0.035";
+//				rankingMinAmplitude = "0.035";
+//				manageLocationPageActions.open(EMPTY, NOTSET);
+//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+//				testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey"), CapabilityType.Ethane
+//						,testAccount.get("userName"), testAccount.get("userPassword"), 220, SurveyType.Analytics);
+//				pushGisData(testAccount.get("customerId"));
+//				surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
+//			} else {
+//				getLoginPage().open();
+//				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+//				manageLocationPageActions.open(EMPTY, NOTSET);
+//				manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,surveyMinAmplitude);
+//				manageLocationPageActions.getManageLocationsPage().editRankingMinAmplitude(customerName,locationName,rankingMinAmplitude);
+//			}
 		}
 
 	private static void setPropertiesForTestRunMode() throws Exception {
@@ -322,7 +322,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		Map<String, String> testSurvey = addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.Ethane
 				,defnFilePath, userName, userPassword, 300, SurveyType.Analytics);
 		String surveyTag = testSurvey.get(SurveyType.Analytics.toString()+"Tag");
-		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag, 
+		Map<String, String> testReport = addTestReport(userName, userPassword, customerName,  surveyTag,
 				reportDataRowID1, SurveyModeFilter.Analytics);
 
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
