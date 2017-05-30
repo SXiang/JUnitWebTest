@@ -2,7 +2,6 @@ package surveyor.regression.source;
 
 import common.source.Log;
 import common.source.PDFTableUtility;
-
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -13,9 +12,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
+
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -190,10 +191,10 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test /* Change to customer user after the fix of DE2745 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1340, location = ComplianceReportDataProvider.class)
 	public void TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedOnCopyCR(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2,Integer reportDataRowID3, Integer reportDataRowID4) throws Exception {
 		Log.info("\nRunning TC1340_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected ..." +
 			 "\nTest Description: Check error mesage is displayed if Percent Coverage Forecast check box is selected on Copy Compliance Report screens and user has included no or only one or multiple survey with same tag");
 
@@ -212,7 +213,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
-		//Add 2 surveys, same tag
+		//Select Percent Coverage Forecast check box
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID2));
@@ -220,12 +221,20 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID2));
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 
-		//Add 2 surveys, different tags
+		//Add 2 surveys, same tags
         complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
         complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
 		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID3));
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
+		complianceReportsPageAction.clickOnCancelButton(EMPTY, getReportRowID(reportDataRowID3));
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
+	
+		//Add 2 surveys, different tags
+        complianceReportsPageAction.copyReport(rptTitle, getReportRowID(reportDataRowID1));
+        complianceReportsPageAction.getComplianceReportsPage().deleteAllDrivingSurveys();
+		modifyReport(complianceReportsPageAction, getReportRowID(reportDataRowID4));
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifyErrorMessages(CR_CF_ASSETSINVALID_MESSAGE));
-
+		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID4));
 	}
 
 	/**
@@ -248,7 +257,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Prediction table will not show any records as 4 or more surveys with different tag values are not supported.
 	 *	- - "No Coverage Forecast Available" message is displayed
 	 */
-	@Test /* Change to customer user after the fix of DE2745 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1352, location = ComplianceReportDataProvider.class)
 	public void TC1352_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast4OrMoreSurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -282,7 +291,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test /* Change to customer user after the fix of DE2745 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1363, location = ComplianceReportDataProvider.class)
 	public void TC1363_GenerateComplianceReportCustomerAdminUsingCopyFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -475,7 +484,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test /* Change to customer user after the fix of DE2745 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1367, location = ComplianceReportDataProvider.class)
 	public void TC1367_GenerateComplianceReportCustomerSupervisorUserUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -529,7 +538,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Test //failing at last step
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1370, location = ComplianceReportDataProvider.class)
 	public void TC1370_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecastMultipleSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -540,13 +549,10 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
 		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDFZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForPDFZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-
+		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
