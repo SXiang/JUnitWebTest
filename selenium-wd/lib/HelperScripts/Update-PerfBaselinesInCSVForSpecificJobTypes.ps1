@@ -11,7 +11,7 @@
   4. Specify the test cases and job types to be updated in '$testCasesAndJobTypesToUpdate'. Use format -  <TcID>|<JobType>|<Increment>,<TcID>|<JobType>|<Increment>
   
  Sample Run Script: 
-   .\Update-PerfBaselinesInCSV.ps1  `
+   .\Update-PerfBaselinesInCSVForSpecificJobTypes.ps1  `
         -perfResultsFolder "C:\Repositories\surveyor-qa\selenium-wd\data\perf-metric\report-job-metrics"  `
         -testCasesAndJobTypesToUpdate "TC1843-11|00000000-0000-0000-0001-000000000000|2804,TC2315-3|00000000-0000-0000-0001-000000000000|7854,TC2316-3|00000000-0000-0000-0001-000000000000|4126,TC1841|00000000-0000-0000-0001-000000000000|5232,TC1842|00000000-0000-0000-0001-000000000000|5002,TC1844-31|00000000-0000-0000-0001-000000000000|698,TC1844|00000000-0000-0000-0001-000000000000|7340,TC1843-31|00000000-0000-0000-0011-000000000000|14994,TC1843-11|00000000-0000-0000-0011-000000000000|17446,TC2315-3|00000000-0000-0000-0011-000000000000|6532,TC2316-3|00000000-0000-0000-0011-000000000000|38178,TC1844-31|00000000-0000-0000-0011-000000000000|844,TC1844-21|00000000-0000-0000-0011-000000000000|2439,TC1844-11|00000000-0000-0000-0011-000000000000|609"  `
 		-additionalPercentIncrease 0.05  `
@@ -126,7 +126,10 @@ function Build-TCUpdateMap($testCasesAndJobTypesInfo) {
         $jbType = $tcInfoParts[1]
         $incr = $tcInfoParts[2]
 
-        $tcInfoObj = New-Object PSObject -Property @{                        TcID       = $tcId                             JobType    = $jbType                          Increment  = $incr 
+        $tcInfoObj = New-Object PSObject -Property @{            
+            TcID       = $tcId                 
+            JobType    = $jbType              
+            Increment  = $incr 
         }
 
         AddTo-TestCaseInfoMapTable -tcID $tcid -tcJobTypeInfo $tcInfoObj

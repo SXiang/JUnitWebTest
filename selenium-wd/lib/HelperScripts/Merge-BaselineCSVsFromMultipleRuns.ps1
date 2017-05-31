@@ -10,7 +10,7 @@
   4. Specify a folder for output. NOTE: Files from this folder will be deleted when executing this script. 
   
  Sample Run Script: 
-   .\Tweak-BaselineNumbers.ps1 `
+   .\Merge-BaselineCSVsFromMultipleRuns.ps1 `
         -perfResultsFolder1 "C:\Shirish\Automation\AutomationRuns\Performance-Baselines-Tweaking-20170525\RESULT-Previous-14Days\Percentile" `
         -perfResultsFolder2 "C:\Shirish\Automation\AutomationRuns\Performance-Baselines-Tweaking-20170525\RESULT-Previous-2Days\Percentile" `
         -reportJobTypesToUseFromResult1 "00000000-0000-0000-0001-000000000000" `    # comma-seperated list of ReportJobIDs
@@ -69,7 +69,11 @@ function Fill-ReportJobProcessingTimesTable($baseResultsFolder, $jobTypesToInclu
                 $processingTimeInMs = $_.ProcessingTimeInMs
                 
                 $key = $filename.Replace(".csv", "")
-                $valueObj = New-Object PSObject -Property @{                                ReportJobTypeId       = $ReportJobTypeId                                     StartTime             = $StartTime                                  EndTime               = $EndTime                                ProcessingTimeInMs    = $ProcessingTimeInMs 
+                $valueObj = New-Object PSObject -Property @{            
+                    ReportJobTypeId       = $ReportJobTypeId                 
+                    StartTime             = $StartTime              
+                    EndTime               = $EndTime            
+                    ProcessingTimeInMs    = $ProcessingTimeInMs 
                 }
 
 
