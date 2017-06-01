@@ -3445,11 +3445,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
-					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
-					return false;
+//					return false;
 				}
-				Files.delete(Paths.get(pathToActualImage));
+//				Files.delete(Paths.get(pathToActualImage));
 				pageCounter++;
 			}
 
@@ -3605,37 +3604,26 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
 		File folder = new File(imageExtractFolder);
 		File[] listOfFiles = folder.listFiles();
-
+		int numFiles = 0;
 		for (File file : listOfFiles) {
 			if (file.isFile()) {
+				numFiles++;
 				BufferedImage image = ImageIO.read(file);
 				int width = image.getWidth();
 				int height = image.getHeight();
 				Rectangle rect = new Rectangle(0, 0, width, height - 40);
 				image = cropImage(image, rect);
-				String actualViewPath = Paths
-						.get(TestSetup.getSystemTempDirectory(), file.getName().replace(".pdf", "") + ".png")
-						.toString();
+				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images"
+							+ File.separator + testCase + File.separator + "View_"+ viewName + "_"+numFiles + ".png").toString();
+				String actualViewPath = Paths.get(testSetup.getDownloadPath(), testCase + "View_"
+							+ viewName + "_"+numFiles + ".png").toString();
 				File outputfile = new File(actualViewPath);
 				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = "";
-				if (inZipFolder) {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + "View"
-							+ new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
-				} else {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + viewName + ".png";
-				}
-
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
 				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
-					Files.delete(Paths.get(actualViewPath));
 					return false;
 				}
-				Files.delete(Paths.get(actualViewPath));
+//				Files.delete(Paths.get(actualViewPath));
 			}
 		}
 		return true;

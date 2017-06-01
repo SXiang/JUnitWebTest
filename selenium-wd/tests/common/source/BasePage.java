@@ -623,13 +623,26 @@ public class BasePage {
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		
-		if (!verifyActualImageWithBase(actualFile, baseFile, generateBaseline)) {
+		if (!verifyGISImageWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
 		Files.delete(Paths.get(actualFile));
 		return true;
 	}
-	
+	public boolean verifyGISImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+		if(generateBaseline){
+			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
+			return true;
+		}
+		boolean  isEqual = ImageSimilarityUtility.isSimilaryImage(pathToActualImage, pathToBaseImage);
+		if(!isEqual){
+			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+			Log.error("Images diff is save as : "+pathToActualImage+ImageSimilarityUtility.diffImageSuffix);
+			return false;
+		}
+		return true;
+	}
+
 	public Dimension getBrowserSize(){
 		return driver.manage().window().getSize();
 	}
@@ -648,7 +661,11 @@ public class BasePage {
 			return true;
 		}
 		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
+		boolean  isEqual = result.isEqual();
+		if(!isEqual){
+			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+			String error = result.getFailureMessage();
+			Log.error("Images comparison error: "+error);
 			return false;
 		}
 		return true;
