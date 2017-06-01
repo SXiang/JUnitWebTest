@@ -6,43 +6,49 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
+
 import java.util.Map;
+
+import common.source.FunctionUtil;
 import common.source.Log;
-
+import common.source.TestContext;
 import common.source.WebElementExtender;
-import org.junit.Assert;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.LoginPageActions;
-
 import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
 import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
-
 import surveyor.scommon.actions.TestEnvironmentActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
+import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
-
 import surveyor.scommon.source.DriverViewPage.SurveyType;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -55,7 +61,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 	private static ManageCustomerPageActions manageCustomerPageAction;
-	private static Map<String, String> testAccount, testSurvey, testReport;
+	private static Map<String, String> testAccount, testSurvey, testReport, testSurvey1, testSurvey2;
 
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;
@@ -85,6 +91,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			testAccount = createTestAccount("CusWithoutAsset");
 			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
 					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
+			pushGisData(testAccount.get("customerId"));
 		}
 	}
 
@@ -158,9 +165,9 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		Log.info("\nRunning TC210_GenerateReportTryDeleteSurveyUsedWhileGeneratingReport ...");
 
 		final int LOGIN_USER_ROW_ID = 6;        /* LoginRowID. AutomationAdmin */
-	    final int DB3_ANALYZER_ROW_ID = 9;      /* Analyzer3/Surveyor3. Replay db3 file rowID */
-	    final int SURVEY_ROW_ID = 51;           /* Survey information rowID */
-	    final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+		final int DB3_ANALYZER_ROW_ID = 9;      /* Analyzer3/Surveyor3. Replay db3 file rowID */
+		final int SURVEY_ROW_ID = 51;           /* Survey information rowID */
+		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
 
 		TestEnvironmentActions.generateSurveyForUser(LOGIN_USER_ROW_ID, DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 

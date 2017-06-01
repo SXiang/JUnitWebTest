@@ -2,6 +2,7 @@ package surveyor.regression.source;
 
 import common.source.Log;
 import common.source.PDFTableUtility;
+import common.source.TestContext;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.*;
 
@@ -18,8 +19,13 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
@@ -75,7 +81,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
      *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1319, location = ComplianceReportDataProvider.class)
 	public void TC1319_GenerateComplianceReportPicarroSupportUserIncludePercentCoverageForecast(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -117,19 +123,64 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
 
+		final int DB3_ANALYZER_ROW_ID = 73;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 180; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 15;
+		final int newLocationRowID = 21;
+		final int newCustomerUserRowID = 31;
+		final int newSurveyorRowID = 29;
+		final int newAnalyzerRowID = 27;
+		final int newRefGasBottleRowID = 11;
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
 
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setRetainGISSeedData(true);
 
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+		try {
+			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+
+			String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
+			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+					custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds());
+			
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+
+			assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+			
+		} catch (Exception ex) {
+			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
+		} finally {
+			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		}
 	}
+
+	private void cleanupReports(String rptTitle, String strCreatedBy) throws Exception {
+		// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+		for (int i = 0; i < 1; i++) {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().searchAndDeleteReport(rptTitle, strCreatedBy);
+		}
+	}
+
 
 
 	/**
@@ -148,7 +199,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
 	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
@@ -340,7 +391,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1364, location = ComplianceReportDataProvider.class)
 	public void TC1364_GenerateComplianceReportPicarroSupportUserUsingReprocessFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -389,7 +440,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1365, location = ComplianceReportDataProvider.class)
 	public void TC1365_GenerateComplianceReportPicarroAdminUsingCopyFunctionalityIncludePercentCoverageForecast3SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -437,7 +488,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1366, location = ComplianceReportDataProvider.class)
 	public void TC1366_GenerateComplianceReportPicarroAdminUsingReprocessFunctionalityIncludePercentCoverageForecast2SurveysDifferentTags(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -576,7 +627,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *  - - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1371, location = ComplianceReportDataProvider.class)
 	public void TC1371_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastMultipleSurveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -618,7 +669,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
 	 *	- - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1373, location = ComplianceReportDataProvider.class)
 	public void TC1373_GenerateComplianceReportPicarroAdminIncludePercentCoverageForecastAssetsReportArea(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -662,7 +713,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- Verify that there are multiple record present in ReportLISAS.csv. All the information for ReportId, ReportName, Lisa Number, Surveyor, LISA Date/Time, Amplitude, Concentration, Lat/Long co-ordinates, Field Notes is correct and matches with driving survey in the report. Data present in ReportLisa.csv should be same as SSRS PDF indication table
 	 *	- Verify that there is only the record present in ReportGap.csv matches with the information in the driving survey in the report. Data present in ReportGap.csv should be same as SSRS PDF gap table
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1389, location = ComplianceReportDataProvider.class)
 	public void TC1389_MetadataExport_CSVFileMultipleSurvey_MultipleLisasISO(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -696,7 +747,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1394, location = ComplianceReportDataProvider.class)
 	public void TC1394_CopyButtonPresentIn_ProgressComplianceReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -725,7 +776,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Report will be in in-progress state and user can see Copy and Cancel Report buttons
 	 *	- - Report is generated successfully
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1395, location = ComplianceReportDataProvider.class)
 	public void TC1395_CopyButtonPresentIn_ProgressComplianceReportCustomerAdminUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -761,7 +812,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Test /* Input Custom Boundary manually */
+	@Ignore /* Input Custom Boundary manually */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC12, location = ComplianceReportDataProvider.class)
 	public void TC12_ReportViewThumbnailsCustomBoundarySingleView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -812,7 +863,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 * - View1 should appear and the thumbnail should accurately reflect the view
 	 * - The thumbnails for Views 2 and 3 should accurately reflect their respective views
 	 */
-	@Test /* Input Custom Boundary manually *//* Change to customer user after the fix of DE2745 */
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC13, location = ComplianceReportDataProvider.class)
 	public void TC13_ReportViewThumbnailsCustomBoundaryMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -864,7 +915,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - Thumbnails will be present  for compliance SSRS PDF, ZIP folders and generated view
 	 *	- - The thumbnail should still be present
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC14, location = ComplianceReportDataProvider.class)
 	public void TC14_ReportViewThumbnailsCustomerBoundarySingleView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -914,7 +965,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - View names and option selections on SSRS should match those in UI when creating report
 	 *	- - Export image should show the map for the specified Lat-Long boundary
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC149, location = ComplianceReportDataProvider.class)
 	public void TC149_GenerateComplianceReportUsingSurveyorUnitTagFiltersMoreThanOneViewDownloadReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -967,7 +1018,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test /* Start Stop survey is not a candidate of automated test */
+	@Ignore /* Start Stop survey is not a candidate of automated test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1490, location = ComplianceReportDataProvider.class)
 	public void TC1490_CreateNewCustomerLISABoxOption(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -999,49 +1050,13 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *  - - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Ignore @Test /* Start Stop survey is not a candidate of automated test */
+	@Ignore /* Start Stop survey is not a candidate of automated test */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1491, location = ComplianceReportDataProvider.class)
 	public void TC1491_CreateNewCustomerWithoutLISABoxOption(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC1491_CreateNewCustomerWithoutLISABoxOption ..." +
 			 "\nTest Description: create new customer without LISA Box option");
 
-	}
-
-	/**
-	 * Test Case ID: TC1496_AddLISABoxOptionExistingCustomer
-	 * Test Description: - Add LISA Box option to existing customer
-	 * Script: -
-	 *	-  Log into PCubed as Picarro Admin
-	 *	- - Navigate to Picarro Administration -> Manage Customers page
-	 *	- - Select a customer and click the Edit button
-	 *	- - Check LISA Box 1.0 checkbox, and make sure that the Report Shape File box is checked and click OK
-	 *	- - Navigate to Reports -> Compliance Reports and click on the New Compliance Report button
-	 *	- - Fill out the necessary fields and select LISAs in the Views section.
-	 *	- - Click OK
-	 *	- - Once the report has completed generation, click on the Compliance Viewer button and then the View thumbnail
-	 *	- - Click on the Shape File button
-	 *	- - Run the Shape Files through GIS software like ArcGIS
-	 * Results: -
-	 *	- - The report View should have all LISAs in the shape of boxes, not fans or circles
-	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
-	 */
-	@Ignore /* Without changing of licensed feature *//* Enable this test and update base line files after fix of DE2745 */
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
-	public void TC1496_AddLISABoxOptionExistingCustomer(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC1496_AddLISABoxOptionExistingCustomer ..." +
-			 "\nTest Description: Add LISA Box option to existing customer");
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* SQACus with lisabox 1.0*/
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.clickOnComplianceViewerShapeZIP(EMPTY, getReportRowID(reportDataRowID1));
-		complianceReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	/**
@@ -1061,7 +1076,7 @@ Map<String, List<String[]>> coverageForecastMap = complianceReportsPageAction.ge
 	 *	- - The report View should have all LISAs in the shape of fans or circles, not boxes
 	 *	- - The shapes drawn by the GIS software should match those of the Compliance Report views
 	 */
-	@Test /* Without changing of licensed feature */
+	@Ignore /* Without changing of licensed feature */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1497, location = ComplianceReportDataProvider.class)
 	public void TC1497_RemoveLISABoxOptionFromExistingCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
