@@ -2,19 +2,13 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
-import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import java.util.Map;
 
-import common.source.HostSimDefinitionGenerator;
 import common.source.Log;
 import common.source.WebElementExtender;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -22,19 +16,9 @@ import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataprovider.ComplianceReportDataProvider;
-import surveyor.scommon.actions.LoginPageActions;
-
-import surveyor.scommon.actions.ManageAnalyzerPageActions;
-import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
-import surveyor.scommon.actions.ManageUsersPageActions;
-
-import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
@@ -52,11 +36,7 @@ import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest2 extends BaseReportsPageActionTest {
-
-	private static final String EMPTY = "";
-	private static final Integer NOTSET = -1;
-
-	private static LoginPageActions loginPageAction;
+	
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static MeasurementSessionsPage measurementSessionsPage;
 	private static Map<String, String> testAccount, testSurvey, testReport;
@@ -151,18 +131,9 @@ public class ComplianceReportsWithNewSurveyPageTest2 extends BaseReportsPageActi
 	 * @throws Exception
 	 */
 	protected static void initializePageActions() throws Exception {
-		loginPageAction = ActionBuilder.createLoginPageAction();
 		complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
-
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
-
-		ActionBuilder.createManageCustomerPageAction();
-		ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
-
-		ActionBuilder.createManageAnalyzerPageAction();
-		ActionBuilder.createManageSurveyorPageAction();
-		ActionBuilder.createManageRefGasBottlePageAction();
 	}
 
 	private ComplianceReportsPage getComplianceReportsPage() {

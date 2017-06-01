@@ -7,7 +7,6 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
-import common.source.WebElementExtender;
 
 import org.junit.Assert;
 
@@ -116,10 +115,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		manageAnalyzerPageAction = ActionBuilder.createManageAnalyzerPageAction();
 		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();
 		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();
-	}
-
-	private ComplianceReportsPage getComplianceReportsPage() {
-		return (ComplianceReportsPage)getReportsPage();
 	}
 
 	/**
