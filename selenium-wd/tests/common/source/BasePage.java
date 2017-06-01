@@ -637,7 +637,7 @@ public class BasePage {
 		boolean  isEqual = ImageSimilarityUtility.isSimilaryImage(pathToActualImage, pathToBaseImage);
 		if(!isEqual){
 			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
-			Log.error("Images diff is save as : "+pathToActualImage+ImageSimilarityUtility.diffImageSuffix);
+			Log.error("Images diff is saved in : "+pathToActualImage+ImageSimilarityUtility.diffImageSuffix);
 			return false;
 		}
 		return true;
@@ -661,8 +661,7 @@ public class BasePage {
 			return true;
 		}
 		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		boolean  isEqual = result.isEqual();
-		if(!isEqual){
+		if(!result.isEqual()){
 			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
 			String error = result.getFailureMessage();
 			Log.error("Images comparison error: "+error);

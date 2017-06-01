@@ -3446,9 +3446,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
 					Log.info("Image verification failed");
-//					return false;
+					return false;
 				}
-//				Files.delete(Paths.get(pathToActualImage));
+				Files.delete(Paths.get(pathToActualImage));
 				pageCounter++;
 			}
 
@@ -3623,7 +3623,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
 					return false;
 				}
-//				Files.delete(Paths.get(actualViewPath));
+				Files.delete(Paths.get(actualViewPath));
 			}
 		}
 		return true;
