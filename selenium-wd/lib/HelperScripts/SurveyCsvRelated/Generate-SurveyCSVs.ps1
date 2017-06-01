@@ -1,15 +1,15 @@
 ﻿<#--------------------------------------------------------------------------------------------------------------------------------
- DESCRIPTION: 
+ DESCRIPTION:
   - This script can be used to generate seed data survey CSV files for list of Survey Ids in database.
-  
- Sample Run Script: 
+
+ Sample Run Script:
    .\Generate-SurveyCSVs.ps1 `
-        -surveyIDs "DA2C4869-58DD-70FE-3B6A-39DD2C131AAA,A0EE2DB5-1B37-B1B0-554C-39DD2C1D41B5,F5D5BF4C-A286-BB4E-9C08-39DD2C310655"  `
+        -surveyIDs "10E42534-6411-1117-5A52-39DEC3776FDA,0AB9CC3C-C299-D0CB-AF0E-39DEC377AD10,3210F764-F72C-9363-A37E-39DEC385F977,346B99F8-7644-C30C-7A1B-39DEC385FEB2"  `
         -databaseIPAddress "20.20.130.238"  `
         -databaseName "SurveyorSQA"  `
         -databaseUser "awssa"  `
-        -databasePassword "<password>"  `
-        -outputFolder "C:\temp\SurveyCSVs"  
+        -databasePassword "j!RuL1Gd7A"  `
+        -outputFolder "C:\temp\MEQ_FEQ_Surveys"
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param
@@ -54,12 +54,12 @@ $surveyIDArr | % {
 
     $idx = 0
 
-    $objSurveys | % { 
+    $objSurveys | % {
         if ($idx -gt 0) {     # first row is length of array. datarows are from index=1
-            
+
             # --- AnemometerRaw ---
-            
-            $obj = $_; 
+
+            $obj = $_;
             $id = $obj.Id
             $tag = $obj.Tag
             $startEpoch = $obj.AdjustedStartEpoch
@@ -86,7 +86,7 @@ $surveyIDArr | % {
             $objAnemometerRaw | foreach {
                 if ($i1 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> AnemometerRaw, Survey Tag -> $tag - Processing row - $i1"
-                    
+
                     $objAne = $_;
                     $aneAnalyzerId = Null-ToValue -value $objAne.AnalyzerId;
                     $aneEpochTime = Null-ToValue -value $objAne.EpochTime;
@@ -116,7 +116,7 @@ $surveyIDArr | % {
             $objCaptureEvent | foreach {
                 if ($i2 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> CaptureEvent, Survey Tag -> $tag - Processing row - $i2"
-                    
+
                     $objCap = $_;
                     $capAnalyzerId = Null-ToValue -value $objCap.AnalyzerId;
                     $capCaptureType = Bool-ToBit -value $objCap.CaptureType;
@@ -160,7 +160,7 @@ $surveyIDArr | % {
             $objFieldOfView | foreach {
                 if ($i3 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> FieldOfView, Survey Tag -> $tag - Processing row - $i3"
-                    
+
                     $objFie = $_;
                     $fieAnalyzerId = Null-ToValue -value $objFie.AnalyzerId;
                     $fieEpochTime = Null-ToValue -value $objFie.EpochTime;
@@ -188,7 +188,7 @@ $surveyIDArr | % {
             $objGPSRaw | foreach {
                 if ($i4 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> GPSRaw, Survey Tag -> $tag - Processing row - $i4"
-                    
+
                     $objGPS = $_;
                     $gPSAnalyzerId = Null-ToValue -value $objGPS.AnalyzerId;
                     $gPSEpochTime = Null-ToValue -value $objGPS.EpochTime;
@@ -220,7 +220,7 @@ $surveyIDArr | % {
             $objMeasurement | foreach {
                 if ($i5 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Measurement, Survey Tag -> $tag - Processing row - $i5"
-                    
+
                     $objMea = $_;
                     $meaAnalyzerEthaneConcentrationUncertainty = $objMea.AnalyzerEthaneConcentrationUncertainty;
                     $meaAnalyzerId = Null-ToValue -value $objMea.AnalyzerId;
@@ -278,7 +278,7 @@ $surveyIDArr | % {
             $objNote | foreach {
                 if ($i6 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Note, Survey Tag -> $tag - Processing row - $i6"
-                    
+
                     $objNot = $_;
                     $notAnalyzerId = Null-ToValue -value $objNot.AnalyzerId;
                     $notDeleted = Null-ToValue -value $objNot.Deleted;
@@ -310,7 +310,7 @@ $surveyIDArr | % {
             $objPeak | foreach {
                 if ($i7 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Peak, Survey Tag -> $tag - Processing row - $i7"
-                    
+
                     $objPea = $_;
                     $peaAmplitude = $objPea.Amplitude;
                     $peaAnalyzerId = $objPea.AnalyzerId;
@@ -368,7 +368,7 @@ $surveyIDArr | % {
             $objSegment | foreach {
                 if ($i8 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Segment, Survey Tag -> $tag - Processing row - $i8"
-                    
+
                     $objSeg = $_;
                     $segMode = Null-ToValue -value $objSeg.Mode;
                     $segOrder = Null-ToValue -value $objSeg.Order;
@@ -396,7 +396,7 @@ $surveyIDArr | % {
             $objSurvey | foreach {
                 if ($i9 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Survey, Survey Tag -> $tag - Processing row - $i9"
-                    
+
                     $objSur = $_;
                     $surAnalyzerId = Null-ToValue -value $objSur.AnalyzerId;
                     $surBuildNumber = $objSur.BuildNumber;
@@ -439,7 +439,7 @@ $surveyIDArr | % {
             $objSurveyCondition | foreach {
                 if ($i10 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyCondition, Survey Tag -> $tag - Processing row - $i10"
-                    
+
                     $objSur = $_;
                     $surId = Null-ToValue -value $objSur.Id;
                     $surName = Null-ToValue -value $objSur.Name;
@@ -467,7 +467,7 @@ $surveyIDArr | % {
             $objSurveyResult | foreach {
                 if ($i11 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyResult, Survey Tag -> $tag - Processing row - $i11"
-                    
+
                     $objSur = $_;
                     $surBreadcrumb = Geometry-ToText -value $objSur.Breadcrumb;
                     $surFieldOfView = Geometry-ToText -value $objSur.FieldOfView;
@@ -490,7 +490,7 @@ $surveyIDArr | % {
             $objSurveyResult | foreach {
                 if ($i12 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyResult(-geom), Survey Tag -> $tag - Processing row - $i12"
-                    
+
                     $surSurveyResultFieldOfViewAsWKT = $_.SurveyResultFieldOfViewAsWKT;
 
                     Add-Content $OUTCSV "$surSurveyResultFieldOfViewAsWKT"
@@ -510,7 +510,7 @@ $surveyIDArr | % {
             $objSegment | foreach {
                 if ($i13 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Segment, Survey Tag -> $tag - Processing row - $i13"
-                    
+
                     $segSegmentShapeWKT = $_.SegmentShapeWKT;
 
                     Add-Content $OUTCSV "$segSegmentShapeWKT"

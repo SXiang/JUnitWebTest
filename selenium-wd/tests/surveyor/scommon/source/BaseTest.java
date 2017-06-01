@@ -267,11 +267,11 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase){
 		return createTestAccount(testCase, CapabilityType.IsotopicMethane);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType){
 		return createTestAccount(testCase,  null, analyzerType, true, true);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
 		return createTestAccount(testCase, addTestSurveyor, true);
 	}
@@ -351,7 +351,7 @@ public class BaseTest {
 
 		Customer customer = Customer.getCustomer(customerName);
 		testAccount.put("customerId", customer.getId());
-		
+
 		if(!addTestSurveyor){
 			return testAccount;
 		}
@@ -396,7 +396,7 @@ public class BaseTest {
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
 	}
-	
+
 	public Map<String, String> addTestReport() throws Exception{
 		return addTestReport(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
@@ -496,7 +496,7 @@ public class BaseTest {
 		int surveyRuntimeInSeconds = 2;
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
-	
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
@@ -536,7 +536,7 @@ public class BaseTest {
 
 		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
-		
+
 		/*Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, TEST_ENVIRONMENT_DATA_ROW_ID);
 
@@ -555,7 +555,7 @@ public class BaseTest {
 			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
 				continue;
 			}
-			
+
 			String db3file = replayScriptDB3File;
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
@@ -591,7 +591,7 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
-	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
 			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
@@ -602,7 +602,7 @@ public class BaseTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
 	}
 
-	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
 			String analyzerName, String analyzerSharedKey, String surveyorName) throws Exception{
 		driverViewPageAction.clickOnModeButton("", -1);
 		driverViewPageAction.stopDrivingSurvey("", -1);
@@ -625,7 +625,7 @@ public class BaseTest {
 		}
 		return true;
 	}
-	
+
 	protected static boolean cleanUpGisData(String customerId){
 		try {
 				DbSeedExecutor.cleanUpGisSeed(customerId);
@@ -635,7 +635,7 @@ public class BaseTest {
 			}
 		return true;
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
