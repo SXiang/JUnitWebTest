@@ -24,18 +24,25 @@ public class AndroidBaseScreen {
 		this.driver = driver;
 	}
 
-	public void waitForScreenLoad() {
-		Log.method("waitForScreenLoad");
-		waitForScreenLoad(driver, screenLoadPredicate);
+	public void waitForFirstAppLoad() {
+		Log.method("waitForFirstAppLoad");
+		waitForScreenLoad(driver, Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT, screenLoadPredicate);
 	}
 
-	private void waitForScreenLoad(WebDriver drv, Predicate<WebDriver> waitPredicate) {
-		Log.method("waitForScreenLoad", drv, waitPredicate);
-		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT)).until(new ExpectedCondition<Boolean>() {
+	public boolean waitForScreenLoad() {
+		Log.method("waitForScreenLoad");
+		return waitForScreenLoad(driver, Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT, screenLoadPredicate);
+	}
+
+	private boolean waitForScreenLoad(WebDriver drv, Integer timeout, Predicate<WebDriver> waitPredicate) {
+		Log.method("waitForScreenLoad", drv, timeout, waitPredicate);
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return waitPredicate.test(drv);
 			}
 		});
+
+		return true;
 	}
 
 	/* Methods to be implemented by derived class. */

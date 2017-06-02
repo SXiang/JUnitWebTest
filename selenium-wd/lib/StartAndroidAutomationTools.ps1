@@ -23,5 +23,5 @@ if ($procs -ne $null) {
     }
 }
 
-Start-Process -FilePath "$appiumCmdPath"
+Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override"
 sleep -Seconds 30

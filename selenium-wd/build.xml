@@ -10,6 +10,7 @@
   <property name="reports" location="reports" />
   <property name="sanity_jar" value="sanity" />
   <property name="gridpoc_jar" value="gridpoc" />
+  <property name="api_jar" value="api" />
   <property name="regression_jar" value="regression" />
   <property name="testsuite_jar" value="testsuite" />
   <property name="performance_jar" value="performance" />
@@ -24,6 +25,7 @@
   <target name="init" depends="clean" description="Initialize build environment">
     <mkdir dir="${build}" />
     <mkdir dir="${dist}" />
+  	<mkdir dir="${reports}/api/xml" />
     <mkdir dir="${reports}/sanity/xml" />
     <mkdir dir="${reports}/gridpoc/xml" />
     <mkdir dir="${reports}/regression/xml" />
@@ -186,6 +188,25 @@
       </manifest>
     </jar>
   </target>
+  <target name="compile_api" depends="compile_scommon" description="Compile api tests source code">
+    <buildnumber file="build.number" />
+    <javac srcdir="${basedir}/tests/surveyor/apitest/source" includeantruntime="false" destdir="${build}" debug="true">
+      <classpath>
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${dist}/${api_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <attribute name="Implementation-Title" value="${proj_name} api tests" />
+        <attribute name="Implementation-Version" value="${version}.${build.number}.${git_hash}" />
+        <attribute name="Implementation-Vendor" value="${company}" />
+        <attribute name="Git-Branch" value="${git_branch}" />
+      </manifest>
+    </jar>
+  </target>
 
 	<target name="compileUnitIntegrationTest" depends="compile_scommon" description="Compile unit/integration test source code">
 		<javac srcdir="${basedir}/tests/surveyor/unittest/mobile/source:${basedir}/tests/surveyor/unittest/source:${basedir}/tests/surveyor/sanity/source" includeantruntime="false" destdir="${build}" debug="true">
@@ -235,6 +256,26 @@
         </fileset>
       </batchtest>
     </junit>
+  </target>
+  <target name="apitests" depends="compile_api" description="Run api test suite">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="api" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/api/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+           <include name="**/AuthenticationApiTest.class" />
+           <include name="**/ReportsApiTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <echo message="junit build : ${build}" />
   </target>
   <target name="performancetests-setup" depends="compileperformance" description="Run performance test cases">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
@@ -825,7 +866,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-    	  <include name="**/EQReportsPageTest.class" />
+    	  <include name="**/AnalyticsReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
