@@ -63,6 +63,10 @@ public class ImageSimilarityUtility {
 			ImageSimilarityUtility.debugMode = debugMode;
 		}
 
+		public static void setFactorN(int factorN) {
+			ImageSimilarityUtility.factorN = factorN;
+		}
+
 		public static boolean isSimilaryImage(String file1, String file2) {
 			String imgDiffFileName = file1+diffImageSuffix;
 			return isSimilaryImage(file1,file2,imgDiffFileName);
