@@ -6,10 +6,8 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
-import java.util.Map;
 import common.source.Log;
 
-import common.source.WebElementExtender;
 import org.junit.Assert;
 
 import org.junit.Before;
@@ -30,7 +28,6 @@ import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -41,8 +38,6 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
-
-import surveyor.scommon.source.DriverViewPage.SurveyType;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActionTest {
@@ -55,7 +50,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static MeasurementSessionsPage measurementSessionsPage;
 
 	private static ManageCustomerPageActions manageCustomerPageAction;
-	private static Map<String, String> testAccount, testSurvey, testReport;
 
 	private static ManageUsersPageActions manageUsersPageAction;
 	private static ManageLocationPageActions manageLocationPageAction;
@@ -63,8 +57,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 	private static ManageAnalyzerPageActions manageAnalyzerPageAction;
 	private static ManageSurveyorPageActions manageSurveyorPageAction;
 	private static ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
-
-
+	
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -80,12 +73,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 
 		// Select run mode here.
 		setPropertiesForTestRunMode();
-
-		if(testAccount == null){
-			testAccount = createTestAccount("CusWithoutAsset");
-			testSurvey = addTestSurvey(testAccount.get("analyzerName"), testAccount.get("analyzerSharedKey")
-					,testAccount.get("userName"), testAccount.get("userPassword"), SurveyType.Standard);
-		}
 	}
 
 	private void initializePageObjects() {
@@ -128,10 +115,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		manageAnalyzerPageAction = ActionBuilder.createManageAnalyzerPageAction();
 		manageSurveyorPageAction = ActionBuilder.createManageSurveyorPageAction();
 		manageRefGasBottlesPageAction = ActionBuilder.createManageRefGasBottlePageAction();
-	}
-
-	private ComplianceReportsPage getComplianceReportsPage() {
-		return (ComplianceReportsPage)getReportsPage();
 	}
 
 	/**
@@ -277,39 +260,6 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			}
 			return true;
 		}));
-	}
-
-	/**
-	 * Test Case ID: TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets
-	 * Script: -
-	 *  - - Log in to application as Customer admin user and navigate to New Compliance Report page
-	 *  - - Click on Cancel and navigate to Copy compliance screen
-	 * Results: -
-	 *	- - Percent Coverage Forecast check box is not present on UI
-	 */
-	@Test
-	public void TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets() throws Exception {
-		Log.info("\nRunning TC1307_CheckPercentCoverageForecastCheckBoxNotPresentNewCopyComplianceReportScreensOfCustomerUserNotHavingAssets ...");
-
-		String userName = testAccount.get("userName");
-		String userPassword = testAccount.get("userPassword");
-
-		testReport = addTestReport(testAccount.get("userName"), testAccount.get("userPassword"), SurveyModeFilter.Standard);
-
-		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, userPassword);
-
-		this.getComplianceReportsPage().open();
-
-		this.getComplianceReportsPage().getNewReportBtn().click();
-		this.getComplianceReportsPage().waitForNewPageLoad();
-
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
-		this.getComplianceReportsPage().clickOnCancelBtn();
-
-		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
-		this.getComplianceReportsPage().waitForCopyReportPagetoLoad();
-		assertFalse(WebElementExtender.isElementPresentAndDisplayed(this.getComplianceReportsPage().getPercentCoverForecast()));
 	}
 
 	/* * Test Case ID: TC1960_VerifyReportViewPDFandshapefilesWhenOnlyLISAGapsAndAssetsSelected

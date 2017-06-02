@@ -18,7 +18,6 @@ public class Peak extends BaseEntity {
 
 	private Object position;
 	private float windSpeedEast;
-	private String surveyModeTypeId;
 	private Float carSpeedEast;
 	private float cH4;
 	private float minor;
@@ -89,14 +88,6 @@ public class Peak extends BaseEntity {
 
 	public void setAnalyzerId(String analyzerId) {
 		this.analyzerId = analyzerId;
-	}
-
-	public String getSurveyModeTypeId() {
-		return surveyModeTypeId;
-	}
-
-	public void setSurveyModeTypeId(String surveyModeTypeId) {
-		this.surveyModeTypeId = surveyModeTypeId;
 	}
 
 	public Float getCarBearing() {
@@ -250,46 +241,42 @@ public class Peak extends BaseEntity {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Peak> getPeaks(String tag, String analyzer, String mode) {
+	public static List<Peak> getPeaks(String tag, String analyzer) {
 		Peak objPeak = new Peak();
 		List<Peak> objPeakList = new ArrayList<Peak>();
-
 		Survey objSurvey = Survey.getSurvey(tag);
 		String surveyId = objSurvey.getId();
 		Analyzer objAnalyzer = Analyzer.getAnalyzerBySerialNumber(analyzer);
 		String analyzerId = objAnalyzer.getId().toString();
-		
-		SurveyModeType objSurveyModeType = SurveyModeType.getSurveyModeTypeByDescription(mode);
-		String surveyModeTypeId = objSurveyModeType.getId();
-		
+
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId+ "_" + surveyModeTypeId)) {
-			objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId +  "_" + surveyModeTypeId);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + surveyId)) {
+			objPeakList = (List<Peak>)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + surveyId);
 		} 
 		else {
-			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "' AND SurveyModeTypeId= '" + surveyModeTypeId + "'";
+			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND SurveyId = '" + surveyId + "'";
 			objPeakList = objPeak.load(SQL);
 			if (objPeakList!=null && objPeakList.size()>0)
 			{
-				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId + "_" + surveyModeTypeId, objPeakList);
+				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + surveyId, objPeakList);
 				
 			}
 		}
 		return objPeakList;
 	}
 
-	public Peak getFirst(String  analyzerId, Double startEpochTime, Double endEpochTime, String surveyModeTypeId) {
+	public Peak getFirst(String  analyzerId, Double startEpochTime, Double endEpochTime) {
 		Peak objPeak = null;
 
 		// Get from cache if present. Else fetch from Database.
-		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime + "_" + surveyModeTypeId)) {
-			objPeak = (Peak)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime + "_" + surveyModeTypeId);
+		if (DBCache.INSTANCE.containsKey(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime)) {
+			objPeak = (Peak)DBCache.INSTANCE.get(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime);
 		} else {
-			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime >= " + startEpochTime + " AND EpochTime <= " + endEpochTime + " AND SurveyModeTypeId = '" + surveyModeTypeId + "'";
+			String SQL = "SELECT * FROM dbo.[Peak] WHERE AnalyzerId='" + analyzerId + "' AND EpochTime >= " + startEpochTime + " AND EpochTime <= " + endEpochTime + "'";
 			ArrayList<Peak> objPeakList = load(SQL);
 			if (objPeakList!=null && objPeakList.size()>0) {
 				objPeak = objPeakList.get(0);
-				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime + "_" + surveyModeTypeId, objPeak);
+				DBCache.INSTANCE.set(CACHE_KEY + analyzerId + "_" + startEpochTime + "_" + endEpochTime, objPeak);
 			}
 		}
 		return objPeak;
@@ -304,7 +291,6 @@ public class Peak extends BaseEntity {
 			objPeak.setSigma(getFloatColumnValue(resultSet,"Sigma"));
 			objPeak.setSurveyId(resultSet.getString("SurveyId"));
 			objPeak.setAnalyzerId(resultSet.getString("AnalyzerId"));
-			objPeak.setSurveyModeTypeId(resultSet.getString("SurveyModeTypeId"));
 			objPeak.setCarBearing(getFloatColumnValue(resultSet,"CarBearing"));
 			objPeak.setWindSpeedNorth(getFloatColumnValue(resultSet,"WindSpeedNorth"));
 			objPeak.setGpsLatitude(getFloatColumnValue(resultSet,"GpsLatitude"));
