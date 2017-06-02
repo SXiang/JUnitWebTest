@@ -41,6 +41,7 @@ import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -410,13 +411,20 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
+		return addTestReport(userName, Password, null/*customer*/, surveyTag, testRowID, surveyModeFilter);
+		}
+	
+	public Map<String, String> addTestReport(String userName, String Password, String customer, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
 		SurveyModeFilter[] defaultTestSurveyModeFilter =  {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
 			surveyModeFilter = defaultTestSurveyModeFilter;
 		}
-
+		String[] surTags = {};
+		if(surveyTag!=null){
+			surTags = surveyTag.split(":");
+		}
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
 		getLoginPage().open();
@@ -424,7 +432,6 @@ public class BaseTest {
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
-		ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 
 		for(SurveyModeFilter sm:surveyModeFilter){
 			boolean found = false;
@@ -442,31 +449,43 @@ public class BaseTest {
 
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
+			if(customer!=null){
+				rpt.setCustomer(customer);
+			}
 			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
+			complianceReportsPageAction.getWorkingReportsDataRow().title = rpt.getRptTitle();
 			rpt.setReportModeFilter(rm);
 			rpt.setSurveyModeFilter(sm);
 			rpt.setStrCreatedBy(userName);
 
-			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
+			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+			for(int i=0;i<surveyInfoList.size(); i++){
+				ReportsSurveyInfo smf = surveyInfoList.get(i);
+				String tag = "";
 				if(smf!=null) {
 					smf.setSurveyModeFilter(sm);
-					if (surveyTag != null && surveyTag != "") {
-						smf.setTag(surveyTag);
+					if (surTags.length>i) {
+						tag = surTags[i];
+					}
+					if(!tag.isEmpty()){
+						smf.setTag(tag);
 					}
 				}
 			}
+			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
+			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 			complianceReportsPage.addNewReport(rpt, true);
 			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
 			testReport.put(sm.toString()+"ReportName", reportName);
 		}
-
 		return Collections.synchronizedMap(testReport);
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane);
 	}
+	
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
@@ -481,9 +500,18 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
+		String db3DefnFile = replayScriptDefnFile;
+		if(analyzerType.equals(CapabilityType.Ethane)){
+			db3DefnFile = replayScriptEthaneDefnFile;
+		}
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
@@ -529,10 +557,6 @@ public class BaseTest {
 			}
 
 			String db3file = replayScriptDB3File;
-			String db3DefnFile = replayScriptDefnFile;
-			if(analyzerType.equals(CapabilityType.Ethane)){
-				db3DefnFile = replayScriptEthaneDefnFile;
-			}
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
 			}

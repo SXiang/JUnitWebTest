@@ -584,6 +584,8 @@
           <include name="**/ObserverViewPageStressTest.class" />
           <include name="**/SimulatorGeneralTests.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+          <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+          <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
         </fileset>
       </batchtest>
     </junit>
