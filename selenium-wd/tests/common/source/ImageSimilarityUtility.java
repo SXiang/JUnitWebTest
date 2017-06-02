@@ -21,6 +21,7 @@ public class ImageSimilarityUtility {
 		private static  int comparex;	// The number of vertical columns in the comparison grid.
 		private static  int comparey;	// The number of horizontal rows in the comparison grid.
 		private static  int factorA = 5;	// The threshold value: If the difference in brightness exceeds this then the region is considered different.
+		private static  int factorN = 5; //The threshold - number of different region 
 		private static  int factorD = 50;	// The stabilization factor.
 		private static int debugMode = 0; // 0: show only exception message; 1: textual indication of change; 2: difference of factors
 		private static boolean match = false;
@@ -123,7 +124,7 @@ public class ImageSimilarityUtility {
 
 			// set to a match by default, if a change is found then flag non-match
 			match = true;
-
+			int numDiffs = 0;
 			// loop through whole image and compare individual blocks of images
 			for (int y = 1; y < comparey-1; y++) {
 				for (int x = 1; x < comparex-1; x++) {
@@ -136,14 +137,15 @@ public class ImageSimilarityUtility {
 						// draw an indicator on the change image to show where change was detected.
 						Log.warn("Brightness difference is too high - "+diff+" > "+factorA);
 						gc.drawRect(x*blocksx, y*blocksy, blocksx - 1, blocksy - 1);
-						match = false;
-					}else if(diff>0){
-						if(debugMode>0){
+						numDiffs++;
+					}else if(diff > 0){
+						if(debugMode > 0){
 							Log.debug("Brightness difference found - "+diff);
 						}
 					}
 				}
 			}
+			match = numDiffs < factorN;
 		}
 
 		// returns a value specifying some kind of average brightness in the image.
@@ -214,11 +216,11 @@ public class ImageSimilarityUtility {
 					"\\view\\TC700\\View_View030_1.png"};
 			String[] actualImages = {"\\pdf\\TC700_2\\Page_1.png","\\pdf\\TC700_2\\Page_2.png","\\pdf\\TC700_2\\Page_3.png",
 					"\\view\\TC700_2\\View_View030_1.png"};
-			String[] expectedGISImages = {"\\mobile\\TC1628\\investigationMap.png"};
-			String[] actualGISImages = {"\\mobile\\TC1628_2\\investigationMap.png"};
+			String[] expectedGISImages = {"\\mobile\\TC1628\\investigationMap.png","\\mobile\\TC1628\\investigationMap.png"};
+			String[] actualGISImages = {"\\mobile\\TC1628_2\\investigationMap.png","\\mobile\\TC1628_2\\investigationMap1.png"};
 			
-			String[] modifiedGISImages = {"\\mobile\\TC1628_2\\_investigationMap.png"};
-			String[] smallerGISImages = {"\\mobile\\TC1628_2\\investigationMap_smaller.png"};
+			String[] modifiedGISImages = {"\\mobile\\TC1628_2\\_investigationMap.png","\\mobile\\TC1628_2\\investigationMap_smaller.png"};
+			boolean matches = false;
 				for (int i=0; i<expectedImages.length; i++) {
 					Assert.assertTrue(isEqual(screenshotDirectory+actualImages[i], screenshotDirectory+expectedImages[i]));
 				}
@@ -236,15 +238,13 @@ public class ImageSimilarityUtility {
 				}
 				
 				for (int i=0; i<expectedGISImages.length; i++) {
-					Assert.assertTrue(ImageSimilarityUtility.isSimilaryImage(screenshotDirectory+actualGISImages[i], screenshotDirectory+expectedGISImages[i]));
+					matches = ImageSimilarityUtility.isSimilaryImage(screenshotDirectory+actualGISImages[i], screenshotDirectory+expectedGISImages[i]);
+					Assert.assertTrue(matches);
 				}
 				
 				for (int i=0; i<expectedGISImages.length; i++) {
-					Assert.assertFalse(ImageSimilarityUtility.isSimilaryImage(screenshotDirectory+modifiedGISImages[i], screenshotDirectory+expectedGISImages[i]));
-				}
-				
-				for (int i=0; i<expectedGISImages.length; i++) {
-					Assert.assertFalse(ImageSimilarityUtility.isSimilaryImage(screenshotDirectory+smallerGISImages[i], screenshotDirectory+expectedGISImages[i]));
+					matches = ImageSimilarityUtility.isSimilaryImage(screenshotDirectory+modifiedGISImages[i], screenshotDirectory+expectedGISImages[i]);
+					Assert.assertFalse(matches);
 				}
 		}
 		public static boolean isEqual(String actualImage, String baselineImage){
