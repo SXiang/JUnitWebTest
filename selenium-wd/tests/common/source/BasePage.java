@@ -622,13 +622,13 @@ public class BasePage {
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		
-		if (!verifyGISImageWithBase(actualFile, baseFile, generateBaseline)) {
+		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
 		Files.delete(Paths.get(actualFile));
 		return true;
 	}
-	public boolean verifyGISImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+	public boolean verifyScreenshotWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
 		if(generateBaseline){
 			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
 			return true;
