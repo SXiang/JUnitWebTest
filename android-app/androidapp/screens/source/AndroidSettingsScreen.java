@@ -30,47 +30,28 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	public void saveSettings(String backpackAddress, String picServerAddress, String username) {
 		Log.method("saveSettings", backpackAddress, picServerAddress, username);
-//		bpackServerAddressEditText = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[1]"));
-//		if (bpackServerAddressEditText != null) {
-			Log.info(String.format("bpackServerAddressEditText=[%s]", bpackServerAddressEditText));
-			Log.info("Clicking on bpackServerAddressEditText ...");
-			bpackServerAddressEditText.click();
-			bpackServerAddressEditText.sendKeys(backpackAddress);
-//		}
+		Log.info("Clicking on bpackServerAddressEditText ...");
+		bpackServerAddressEditText.click();
+		bpackServerAddressEditText.sendKeys(backpackAddress);
 
-//		picServerAddressEditText = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[2]"));
-//		if (picServerAddressEditText != null) {
-			Log.info(String.format("picServerAddressEditText=[%s]", picServerAddressEditText));
-			Log.info("Clicking on picServerAddressEditText ...");
-			picServerAddressEditText.click();
-			picServerAddressEditText.sendKeys(picServerAddress);
-//		}
+		Log.info("Clicking on picServerAddressEditText ...");
+		picServerAddressEditText.click();
+		picServerAddressEditText.sendKeys(picServerAddress);
 
-//		usernameEditText = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[3]"));
-//		if (usernameEditText != null) {
-			Log.info(String.format("usernameEditText=[%s]", usernameEditText));
-			Log.info("Clicking on usernameEditText ...");
-			usernameEditText.click();
-			usernameEditText.sendKeys(username);
-//		}
+		Log.info("Clicking on usernameEditText ...");
+		usernameEditText.click();
+		usernameEditText.sendKeys(username);
 
 		Log.info("Hiding keyboard, before clicking on Save button");
 		((AppiumDriver)this.driver).hideKeyboard();
 
-//		saveButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]"));
-//		if (saveButton != null) {
-			Log.info(String.format("saveButton=[%s]", saveButton));
-			Log.info("Clicking on saveButton ...");
-			saveButton.click();
-//		}
+		Log.info("Clicking on saveButton ...");
+		saveButton.click();
 	}
 
 	public void clearSettings() {
 		Log.method("clearSettings");
-//		clearButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]"));
-//		if (clearButton != null) {
-			clearButton.click();
-//		}
+		clearButton.click();
 	}
 
 	@Override
