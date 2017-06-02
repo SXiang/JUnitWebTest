@@ -34,10 +34,11 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
-public class BaseAndroidTest {
+public class BaseAndroidTest extends BaseTest {
 	protected AppiumDriver<WebElement> appiumDriver;
 
 	protected AndroidSettingsScreen settingsScreen;

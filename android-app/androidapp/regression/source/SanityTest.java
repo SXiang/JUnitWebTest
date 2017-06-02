@@ -10,7 +10,7 @@ import common.source.AndroidAutomationTools;
 import common.source.Log;
 import common.source.TestContext;
 
-public class SanityTests extends BaseAndroidTest {
+public class SanityTest extends BaseAndroidTest {
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -26,8 +26,8 @@ public class SanityTests extends BaseAndroidTest {
 	}
 
 	@Test
-	public void testAppLoadAndNavigationToMapScreen() {
-		Log.info("Executing testAppLoadAndNavigationToMapScreen ...");
+	public void testSettingsScreenAndElementsShownOnMapScreen() {
+		Log.info("Executing testSettingsScreenAndElementsShownOnMapScreen ...");
 
 		String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
