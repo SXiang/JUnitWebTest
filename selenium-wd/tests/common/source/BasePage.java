@@ -618,8 +618,7 @@ public class BasePage {
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";
 		String actualFile = Paths
-				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-data\\screenshots")
-				.toString() + File.separator + testCaseID + File.separator + name + ".png";
+				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		

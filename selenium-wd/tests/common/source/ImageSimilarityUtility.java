@@ -5,8 +5,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,19 +14,14 @@ import javax.swing.GrayFilter;
 
 import org.junit.Assert;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 public class ImageSimilarityUtility {
 
 		// parameters might need tune-up
 		private static  int comparex;	// The number of vertical columns in the comparison grid.
 		private static  int comparey;	// The number of horizontal rows in the comparison grid.
-		private static  int factorA = 0;	// The threshold value: If the difference in brightness exceeds this then the region is considered different.
-		private static  int factorD = 10;	// The stabilization factor.
+		private static  int factorA = 5;	// The threshold value: If the difference in brightness exceeds this then the region is considered different.
+		private static  int factorD = 50;	// The stabilization factor.
 		private static int debugMode = 0; // 0: show only exception message; 1: textual indication of change; 2: difference of factors
 		private static boolean match = false;
 		private static boolean average = true;
@@ -37,7 +30,7 @@ public class ImageSimilarityUtility {
 		private static BufferedImage img2;
 		private static BufferedImage imgc;
 		
-		public static final String diffImageSuffix = "_diff.jpeg";
+		public static final String diffImageSuffix = "_diff.png";
 
 		public static boolean isSimilaryImage(String file1, String file2,boolean small){
 			factorA = 0;
@@ -83,7 +76,7 @@ public class ImageSimilarityUtility {
 			}
 				if(! match) {			
 					Log.error("Not Match: check image difference in file [" + imgDiffFileName + "]");
-					saveJPG(imgc, imgDiffFileName);
+					saveImage(imgc, imgDiffFileName);
 				}
 
 			return match;
@@ -133,8 +126,6 @@ public class ImageSimilarityUtility {
 
 			// loop through whole image and compare individual blocks of images
 			for (int y = 1; y < comparey-1; y++) {
-				if (debugMode > 0) System.out.print("|");
-
 				for (int x = 1; x < comparex-1; x++) {
 					int b1 = getAverageBrightness(img1.getSubimage(x*blocksx, y*blocksy, blocksx - 1, blocksy - 1));
 					int b2 = getAverageBrightness(img2.getSubimage(x*blocksx, y*blocksy, blocksx - 1, blocksy - 1));
@@ -183,27 +174,17 @@ public class ImageSimilarityUtility {
 			return bi;
 		}
 
-		private static void saveJPG(Image img, String filename) {
+		private static void saveImage(Image img, String filename) {
 			BufferedImage bi = imageToBufferedImage(img);
-			FileOutputStream out = null;
 			File file = new File(filename);
 			if(file.exists()){
 				file.delete();
 			}
+			
 			try { 
-				out = new FileOutputStream(filename);
-			} catch (java.io.FileNotFoundException io) { 
+				ImageIO.write(bi, "png", file);
+			} catch (java.io.IOException io) { 
 				System.out.println("File Not Found"); 
-			}
-			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bi);
-			param.setQuality(0.8f, false);
-			encoder.setJPEGEncodeParam(param);
-			try { 
-				encoder.encode(bi); 
-				out.close(); 
-			} catch (java.io.IOException io) {
-				System.out.println("IOException"); 
 			}
 		}
 
@@ -214,21 +195,6 @@ public class ImageSimilarityUtility {
 					bi = ImageIO.read(new File(filename));
 				}catch(java.io.IOException io){ 
 					Log.warn("File Not Found"); 
-				}
-			}else if(filename.endsWith(".jpeg")||filename.endsWith(".jpg")){
-				FileInputStream in = null;
-				try { 
-					in = new FileInputStream(filename);
-				} catch (java.io.FileNotFoundException io) { 
-					Log.warn("File Not Found"); 
-				}
-
-				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(in);
-				try { 
-					bi = decoder.decodeAsBufferedImage(); 
-					in.close(); 
-				} catch (java.io.IOException io) {
-					Log.warn("IOException");
 				}
 			}else{
 				Log.warn("Image format is not supported: "+filename);
