@@ -775,6 +775,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String outputFileName = reportName + "_" + viewName + ".pdf";
 			String outputFileFullPath = Paths.get(testSetup.getDownloadPath(), outputFileName).toString();
 			Downloader.downloadFile(downloadFileRelativeUrl, outputFileFullPath);
+		}else{
+			Log.warn("PDF view(s) are not showing");
 		}
 	}
 

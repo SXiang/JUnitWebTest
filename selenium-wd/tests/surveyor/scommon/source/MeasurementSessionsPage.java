@@ -110,6 +110,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			JavascriptExecutor js = (JavascriptExecutor)driver; 
 			js.executeScript("arguments[0].click();", btnDelete);
 		}
+		this.waitForAJAXCallsToComplete();
 	}
 
 	public enum DrivingSurveyButtonType {
@@ -460,7 +461,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			List<Map<String, String>> rows = dUtil.getAllRows();
 			Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
 
-			List<Peak> listOfDBPeak = Peak.getPeaks(tag, analyzer, mode);
+			List<Peak> listOfDBPeak = Peak.getPeaks(tag, analyzer);
 
 			if (rows.size() > 0 && listOfDBPeak.size() > 0) {
 				if (rows.size() == listOfDBPeak.size()) {

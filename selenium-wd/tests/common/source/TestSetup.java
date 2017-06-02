@@ -1021,10 +1021,12 @@ public class TestSetup {
 			String rootFolder = getExecutionPath(getRootPath()) + "data";
 			String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
 			String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
-
+			if(new File(defnFileName).isAbsolute()){
+				defnFullPath = defnFileName;
+				defnFileName = new File(defnFileName).getName();
+			}
 			String workingDefnFile = getUUIDString() + "_" + defnFileName;
 			String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
-
 			// Create a copy of the defn file in %TEMP% folder.
 			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
 
