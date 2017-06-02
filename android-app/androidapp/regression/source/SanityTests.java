@@ -41,7 +41,7 @@ public class SanityTests extends BaseAndroidTest {
 		assertTrue("Amplitude text should NOT be empty.", amplitudeText.length() > 2);
 
 		Float maxValue = Float.valueOf(mapScreen.getMaxText().replace("Max:", "").trim());
-		Log.info(String.format("amplitudeText = [%f]", maxValue));
+		Log.info(String.format("maxValue = [%f]", maxValue));
 		assertTrue("Max value should be positive.", maxValue > 0.0f);
 	}
 }
