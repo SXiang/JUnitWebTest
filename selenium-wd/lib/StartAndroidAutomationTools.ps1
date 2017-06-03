@@ -9,6 +9,9 @@ Write-Host "[ANDROID-TOOLS]: Starting Android Emulator ..."
 $ANDROIDHOME = $env:ANDROID_HOME
 Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $AvdName"
 
+# emulator boot time in CI is much longer than in dev box. adding wait for Appium server to be able to connect to emulator correctly in CI.
+sleep -Seconds 60
+
 $APPDATA = $env:APPDATA
 $appiumCmdPath = "$APPDATA\npm\appium"
 
