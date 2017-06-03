@@ -40,6 +40,12 @@ param
 . "$BuildScriptsBaseDir\selenium-wd\lib\ApplicationInstaller.ps1"
 
 # 0.
+cd $BuildWorkingDir
+"Updating NPM to latest..."
+npm install npm@$CHOCO_NPM_VERSION -g
+npm install
+
+# 1.
 $overrideSet = Pre-AutoInstallationCheck
 if ($overrideSet) {
     Write-Host "Override found in $AUTO_PRE_INSTALL_CHECK_FILE to skip installation of Android automation pre-requisites"
@@ -48,17 +54,11 @@ if ($overrideSet) {
     exit
 }
 
-# 1.
+# 2.
 [string]$missingPackages = $AndroidSDKPackageIDs
 if ($ForceInstallAllSDKPackages -ne "1") {
     $missingPackages = Get-MissingPackageIDs -currentPackageIds $AndroidSDKPackageIDs
 }
-
-# 2.
-cd $BuildWorkingDir
-"Updating NPM to latest..."
-npm install npm@$CHOCO_NPM_VERSION -g
-npm install
 
 # 3. 
 Write-Host "[INSTALL_EMULATOR_AND_PREREQS]: Check/Install Android Build Tools, HAXM and Emulator System Image"

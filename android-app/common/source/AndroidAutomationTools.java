@@ -38,7 +38,7 @@ public class AndroidAutomationTools {
 	}
 
 	public static void startReactNative() throws IOException {
-		Log.method("start");
+		Log.method("startReactNative");
 		String startReactNativeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String workingFolder = TestSetup.getRootPath();
 		String repoRootFolder = TestSetup.getRootPath().replace("\\surveyor-qa", "");
@@ -68,6 +68,6 @@ public class AndroidAutomationTools {
 
 	private static void waitForReactNativePackagerToCatchUp() {
 		Log.method("waitForReactNativePackagerToCatchUp");
-		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
+		TestContext.INSTANCE.stayIdle(3 * CATCH_UP_TIME_IN_SECS);
 	}
 }

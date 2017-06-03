@@ -1,7 +1,7 @@
 param
 (
-  [Parameter(Mandatory=$false)]
-  [string] $RootFolder="C:\Repositories"                      # Eg. "C:\Repositories"
+  [Parameter(Mandatory=$true)]
+  [string] $RootFolder                      # Eg. "C:\Repositories"
 )
 
 $REACT_NATIVE_NODEJS_APP_BASEURL = "http://localhost:8081"
