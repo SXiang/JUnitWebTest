@@ -41,7 +41,6 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/jsoup-1.8.3.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/freemarker-2.3.23.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/browsermob-dist-2.1.0-beta-4.jar"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/jsonassert-1.2.3.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/shapefilereader-1.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpclient-4.5.1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpclient-cache-4.5.1.jar"/>
@@ -49,7 +48,7 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/httpcore-4.4.3.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/httpmime-4.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.42.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-server-standalone-2.53.1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/gson-2.6.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/log4j-core-2.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/log4j-api-2.5.jar"/>
@@ -57,6 +56,11 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/junit-toolbox-2.2.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-io-2.5.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/commons-collections-3.2.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/java-client-4.1.2.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/selenium-android-driver-2.39.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/jsonassert-1.5.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/android-json-0.0.20131108.vaadin1.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/retrofit-2.3.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/converter-jackson-2.3.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/jackson-core-2.8.8.jar"/>
