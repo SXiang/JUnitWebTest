@@ -700,7 +700,7 @@
         <formatter type="xml" />
 			<fileset dir="${build}">
 				<include name="**/DriverViewPageTest.class" />
-				<include name="**/DriverViewPageTest_Analytics.class" />
+				<include name="**/ComplianceReportsPageTest6.class" />
 			</fileset>
       </batchtest>
     </junit>
