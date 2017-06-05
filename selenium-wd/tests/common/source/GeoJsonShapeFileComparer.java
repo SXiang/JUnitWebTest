@@ -138,7 +138,6 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Json String - converted -> Json String" );
 
-		//
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String" );
 

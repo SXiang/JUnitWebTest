@@ -33,11 +33,6 @@ function IsEndPointAlive($url) {
 $REACT_NATIVE_NODEJS_APP_BASEURL = "http://localhost:8081"
 $MAX_ITERATIONS = 300
 
-# WORKAROUND [MAY NOT BE NEEDED]
-# workaround for .babel.json becoming readonly on machine.
-#$userProfile = $env:USERPROFILE
-#Set-ItemProperty "$userProfile\.babel.json" -name IsReadOnly -value $false
-
 cd "$BuildWorkingDir"
 Start-Process "react-native" -ArgumentList "start"
 
@@ -48,16 +43,6 @@ while((-not (IsEndPointAlive -url $REACT_NATIVE_NODEJS_APP_BASEURL)) -and ($iter
     Write-Host "." -NoNewLine
 	Start-Sleep -Milliseconds 1000
 }
-
-# WORKAROUND [MAY NOT BE NEEDED]
-# if (-not (Test-path "$BuildWorkingDir\app\src\main\assets\")) {
-#     New-Item -ItemType Directory "$BuildWorkingDir\app\src\main\assets\"
-# }
-#
-# Bundle the application first before triggering Gradle build:
-#   http://stackoverflow.com/questions/38870710/error-could-not-get-batchedbridge-make-sure-your-bundle-is-packaged-properly
-#(curl $REACT_NATIVE_NODEJS_APP_BASEURL/index.android.js?platform=Android).Content | Out-File "app/src/main/assets/index.android.bundle"
-
 
 # 2. 
 # INSTALL APK on Emulator.

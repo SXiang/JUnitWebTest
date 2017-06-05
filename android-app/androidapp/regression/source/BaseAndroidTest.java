@@ -116,24 +116,16 @@ public class BaseAndroidTest extends BaseTest {
 
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
-		boolean addBundleFetchTime = false;
-		if (apkFilePath.toLowerCase().contains("debug")) {
-			addBundleFetchTime = true;
-		}
-
 		if (appiumDriver != null) {
 			appiumDriver.installApp(apkFile.getAbsolutePath());
 			appiumDriver.launchApp();
 			initializeScreenObjects();
-			waitForAppLoad(addBundleFetchTime);
+			waitForAppLoad();
 		}
 	}
 
-	private void waitForAppLoad(boolean addBundleFetchTime) {
+	private void waitForAppLoad() {
 		settingsScreen.waitForFirstAppLoad();
-		if (addBundleFetchTime) {
-			//TestContext.INSTANCE.stayIdle(Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT);
-		}
 	}
 
 	private void initializeScreenObjects() {
