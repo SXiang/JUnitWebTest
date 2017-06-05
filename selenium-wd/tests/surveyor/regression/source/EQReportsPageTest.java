@@ -6,13 +6,17 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
@@ -310,17 +314,49 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 
 		eqReportsPage.openNewReportPage();
-		assertTrue(eqReportsPage.isAllSurveyModeShown());
-		assertTrue(eqReportsPage.isManualSurveyModeShown());
-		assertTrue(eqReportsPage.isStandardSurveyModeShown());
-		assertTrue(eqReportsPage.isOperatorSurveyModeShown());
-		assertTrue(eqReportsPage.isAnalyticsSurveyModeShown());
-		assertTrue(eqReportsPage.isRapidResponseSurveyModeShown());
-		assertTrue(eqReportsPage.isEQSurveyModeShown());
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
 		eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1));
 		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+	}
+
+	/**
+	 * Test Case ID: TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck
+	 * Test Description: Generate EQ report with the location parameter which has Min cluster size 1 and DBScan uncheck
+	 * Script:
+	 * - Customer should have EQ license
+	 * - Customer should have EQ survey with peaks.
+	 * - login to pcube
+	 * - Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck
+	 * -Generate EQ report using above created location parameter and include survey which has indications.
+	 * -Reprocess the same report for (min-2 and max-6 times -depends on howmany linux nodes are there in the environment) 
+	 * 	 * Results:
+	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
+	 */
+	@Ignore  // Complete test case implementation once US4475 completes.  Enable the test case once US4403 gets fixed.
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2409, location = EQReportDataProvider.class)
+	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck ...");
+
+		
+		// Implementation left for "Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck"
+		 
+		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+
+		eqReportsPage.openNewReportPage();
+		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
+		assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
+		
+		for (int i=0; i <4; i++)
+		{
+			eqReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
+			assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));					
+		}
+		
 	}
 }
