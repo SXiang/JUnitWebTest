@@ -1,4 +1,4 @@
-﻿$PRE_INSTALL_CHECK_FILE = "C:\install-overrides.txt"
+$PRE_INSTALL_CHECK_FILE = "C:\install-overrides.txt"
 $OVERRIDE_TEXT = "android-pre-reqs-present=1"
 
 $AUTO_PRE_INSTALL_CHECK_FILE = "C:\automation-install-overrides.txt"

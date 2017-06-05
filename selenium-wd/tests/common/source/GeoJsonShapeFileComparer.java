@@ -47,6 +47,7 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		}
 		Log.info("jsonString1=" + jsonString1);
 		Log.info("jsonString2=" + jsonString2);
+
 		JSONAssert.assertEquals(jsonString1, jsonString2, JSONCompareMode.NON_EXTENSIBLE);
 	}
 
@@ -120,7 +121,6 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String coordChangeJsonFile = Paths.get(dir,"jsonString_coordchange.json").toString();
 		String idOrderCoordChangeJsonFile = Paths.get(dir,"jsonString_idOrderCoordchange.json").toString();
 
-
 		String shpString = ShapeToGeoJsonConverter.convertToJsonString(oriShpFile);
 		FileUtility.writeToFile(jsonFile, shpString);
 		String jsonString = FileUtility.readFileContents(jsonFile);
@@ -132,15 +132,21 @@ public class GeoJsonShapeFileComparer implements IShapeFileComparer {
 		String idOrderCoordChangeJsonString = FileUtility.readFileContents(idOrderCoordChangeJsonFile, true);
 
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(jsonString), JSONCompareMode.NON_EXTENSIBLE);
+
 		Log.info("Equals: Shape file -> Json String - convered" );
+
 		JSONAssert.assertEquals(removeIncomparableShapeValue(jsonString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Json String - converted -> Json String" );
+
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(oriJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String" );
+
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(orderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - order changed" );
+
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - id changed" );
+
 		JSONAssert.assertEquals(removeIncomparableShapeValue(shpString), removeIncomparableShapeValue(idOrderChangeJsonString), JSONCompareMode.NON_EXTENSIBLE);
 		Log.info("Equals: Shape file -> Json String - id and order changed" );
 
