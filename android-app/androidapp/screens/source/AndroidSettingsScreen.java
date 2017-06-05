@@ -1,0 +1,63 @@
+package androidapp.screens.source;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import common.source.Log;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+
+public class AndroidSettingsScreen extends AndroidBaseScreen {
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[1]")
+	private MobileElement bpackServerAddressEditText;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[2]")
+	private MobileElement picServerAddressEditText;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[3]")
+	private MobileElement usernameEditText;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]")
+	private MobileElement clearButton;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]")
+	private MobileElement saveButton;
+
+	public AndroidSettingsScreen(WebDriver driver) {
+		super(driver);
+	}
+
+	public void saveSettings(String backpackAddress, String picServerAddress, String username) {
+		Log.method("saveSettings", backpackAddress, picServerAddress, username);
+		Log.info("Clicking on bpackServerAddressEditText ...");
+		bpackServerAddressEditText.click();
+		bpackServerAddressEditText.sendKeys(backpackAddress);
+
+		Log.info("Clicking on picServerAddressEditText ...");
+		picServerAddressEditText.click();
+		picServerAddressEditText.sendKeys(picServerAddress);
+
+		Log.info("Clicking on usernameEditText ...");
+		usernameEditText.click();
+		usernameEditText.sendKeys(username);
+
+		Log.info("Hiding keyboard, before clicking on Save button");
+		((AppiumDriver)this.driver).hideKeyboard();
+
+		Log.info("Clicking on saveButton ...");
+		saveButton.click();
+	}
+
+	public void clearSettings() {
+		Log.method("clearSettings");
+		clearButton.click();
+	}
+
+	@Override
+	public Boolean screenLoadCondition() {
+		saveButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]"));
+		Log.info(String.format("Found saveButton - %s", (saveButton==null)?"NULL":saveButton.toString()));
+		return saveButton!=null && saveButton.isDisplayed();
+	}
+}

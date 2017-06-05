@@ -1,9 +1,3 @@
-﻿# ---------------------------------------------------------------
-# SAMPLE USAGE:
-#   .\StartAndroidAutomationTools.ps1 `
-#           -AvdName "android_23_google_apis_x86"
-# ---------------------------------------------------------------
-
 param
 (
   [Parameter(Mandatory=$true)]
@@ -14,6 +8,9 @@ Write-Host "[ANDROID-TOOLS]: Starting Android Emulator ..."
 
 $ANDROIDHOME = $env:ANDROID_HOME
 Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $AvdName"
+
+# emulator boot time in CI is much longer than in dev box. adding wait for Appium server to be able to connect to emulator correctly in CI.
+sleep -Seconds 60
 
 $APPDATA = $env:APPDATA
 $appiumCmdPath = "$APPDATA\npm\appium"
@@ -29,5 +26,5 @@ if ($procs -ne $null) {
     }
 }
 
-Start-Process -FilePath "$appiumCmdPath"
+Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override"
 sleep -Seconds 30
