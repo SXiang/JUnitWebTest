@@ -1,5 +1,5 @@
 ﻿<#--------------------------------------------------------------------------------------------------------------------------------
- DESCRIPTION: 
+ DESCRIPTION:
   - This script can be used to replace column values in survey csv files with the specified values.
     Column values that will be replaced are:
     1. AnalyzerId
@@ -7,53 +7,53 @@
     3. ReferenceGasBottleId
     4. UserId
   When changing the AnalyzerId we have the following 2 considerations to take care of:
-  a) Ensuring that we are using the correct hardware type for the Analyzer. 
+  a) Ensuring that we are using the correct hardware type for the Analyzer.
   EXECUTE following SQL script to get the new AnalyzerId, SurveyorUnitId, RefGasBottleId and UserId for a specific AnalyzerSerialNumber and CapabilityType.
     USE [Surveyor_BlankDB_20160926]  -- Change DB name.
     GO
-    SELECT A.[Id],A.[SurveyorUnitId],RGB.Id AS ReferenceGasBottleId, U.Id AS UserID, U.UserName,A.SerialNumber FROM [dbo].[Analyzer] AS A 
-	    INNER JOIN [dbo].[SurveyorUnit] AS SU ON A.SurveyorUnitId=SU.Id 
-	    INNER JOIN [dbo].[ReferenceGasBottle] AS RGB ON A.SurveyorUnitId=RGB.SurveyorUnitId 
+    SELECT A.[Id],A.[SurveyorUnitId],RGB.Id AS ReferenceGasBottleId, U.Id AS UserID, L.Id AS LocationId, U.UserName,A.SerialNumber FROM [dbo].[Analyzer] AS A
+	    INNER JOIN [dbo].[SurveyorUnit] AS SU ON A.SurveyorUnitId=SU.Id
+	    INNER JOIN [dbo].[ReferenceGasBottle] AS RGB ON A.SurveyorUnitId=RGB.SurveyorUnitId
 	    INNER JOIN [dbo].[AnalyzerHardwareCapabilityType] AS AHC ON A.Id = AHC.AnalyzerId
 	    INNER JOIN [dbo].[HardwareCapabilityTypes] AS HC ON AHC.HardwareCapabilityTypeId = HC.Id
 	    INNER JOIN [dbo].[Location] AS L ON L.Id = SU.LocationId
 	    INNER JOIN [dbo].[User] AS U on U.LocationId=L.Id
 	    WHERE A.SerialNumber='RFADS2004' AND HC.Name= 'Ethane' --AND U.Username='sqapicsu1@picarro.com'   -- (Uncomment username to get information for specific username)
-  
-  b) Ensuring that the values in the CSV are restamped to avoid PrimaryKey conflicts on tables with PK={AnalyzerId, EpochTime} 
 
- USAGE SCENARIOS: 
+  b) Ensuring that the values in the CSV are restamped to avoid PrimaryKey conflicts on tables with PK={AnalyzerId, EpochTime}
+
+ USAGE SCENARIOS:
   1. Use this script if you have survey data generated using an Analyzer that is NOT part of Automation seed data.
   2. To replicate survey data from one customer to another.
-  
- Sample Run Script: 
+
+ Sample Run Script:
    .\Replace-AnalyzerSurveyorFromCSV.ps1 `
-        -oldDatabaseIP "20.20.130.210"  `
-        -oldDatabaseName "SurveyorSQAAUTO_blankDB_20160823"  `
+        -oldDatabaseIP "20.20.130.238"  `
+        -oldDatabaseName "SurveyorSQA"  `
         -oldDatabaseUser "awssa"  `
-        -oldDatabasePwd "3Vf763pSg2"  `
+        -oldDatabasePwd "j!RuL1Gd7A"  `
         -newDatabaseIP "20.20.130.210"  `
-        -newDatabaseName "SurveyorSQAAUTO_blankDB_20160923"  `
+        -newDatabaseName "SurveyorSQAAuto_blankDB_20170420"  `
         -newDatabaseUser "awssa"  `
         -newDatabasePwd "3Vf763pSg2"  `
-        -surveyIds "31683DB5-3592-E0AC-3B49-39DA65CE0811,31683DB5-3592-E0AC-3B49-39DA65CE0810"  `
-        -inDirectory "C:\temp\P3300ManualSurvey\csvs"  `
+        -surveyIds "10E42534-6411-1117-5A52-39DEC3776FDA,0AB9CC3C-C299-D0CB-AF0E-39DEC377AD10,3210F764-F72C-9363-A37E-39DEC385F977,346B99F8-7644-C30C-7A1B-39DEC385FEB2"  `
+        -inDirectory "C:\temp\MEQ_FEQ_Surveys"  `
         -fileExtFilter "*.csv"  `
-        -outDirectory "C:\temp\P3300ManualSurvey\csvs\Replaced"  `
-        -newAnalyzerId "26F7026D-788B-0413-0D89-39D76AFCAAFE"  `
-        -newSurveyorUnitId "47FC54A4-26ED-7306-4D1D-39D76AFC27C4"  `
-        -newReferenceGasBottleId "34E929E4-CEF1-F8A6-C3A6-39D76AFD4CAC"  `
-        -newUserId "4A48E909-6264-5B94-C448-39D71E69823B"  `
-        -newLocationId "DE13ACD0-C158-ECAC-7F48-39D18113D702"  `
+        -outDirectory "C:\temp\MEQ_FEQ_Surveys\Replaced2"  `
+        -newAnalyzerId "6479A0F7-37C1-B40C-C53B-39DE6C1E9D69"  `
+        -newSurveyorUnitId "36D72DF6-2823-4542-8298-39DE6C296D8E"  `
+        -newReferenceGasBottleId "5D74209F-340A-3239-6905-39DE6C2A6A25"  `
+        -newUserId "DE734DDF-363E-49FC-8DBC-39C8C223D558"  `
+        -newLocationId "50C98274-034A-672A-38B1-39DEC2E650EE"  `
         -surveyTagFileMapCSVRelativePath "SurveyTagFileMap.csv"  `
-        -restampCSVs:$false  `
+        -restampCSVs:$true  `
         -generateNewGuidsForSurvey:$true
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param
 (
   ####--------------------------------------------------------------####
-  #### Old Database -> Database from where the survey is to be READ ####  
+  #### Old Database -> Database from where the survey is to be READ ####
   ####--------------------------------------------------------------####
 
   [Parameter(Mandatory=$false)]
@@ -105,7 +105,7 @@ param
   [String] $outDirectory="C:\temp\TC624Survey\Replaced",
 
   [Parameter(Mandatory=$false)]
-  [String] $outFileSuffix="",      
+  [String] $outFileSuffix="",
 
   ####--------------------------------------------------------------####
   #### New IDs to be used in the survey data CSV files              ####
@@ -161,7 +161,7 @@ $surveyMapCsvData | % {
     $SurveyTag = $_.SurveyTag
     $SurveyFileSuffix = $_.SurveyFileSuffix
 
-    $surveyMapObject = New-Object PSObject -Property @{                    SurveyId         = $SurveyId                         SurveyTag        = $SurveyTag                      SurveyFileSuffix = $SurveyFileSuffix                }  
+    $surveyMapObject = New-Object PSObject -Property @{        SurveyId         = $SurveyId        SurveyTag        = $SurveyTag        SurveyFileSuffix = $SurveyFileSuffix    }
 
     $script:surveyTagFileMap.Add($SurveyId, $surveyMapObject)
 }
@@ -205,9 +205,9 @@ $surveyIds -split "," | % {
 
     #### First replace AnalyzerId, SurveyorUnitId, ReferenceGasBottleId and UserId ####
     $i = 0
-    $objOldSurvey | foreach { 
+    $objOldSurvey | foreach {
         if ($i -gt 0) {     # first row is length of array. datarows are from index=1
-            $obj = $_; 
+            $obj = $_;
             $id = $obj.Id
             $tag = $obj.Tag
             $startEpoch = $obj.AdjustedStartEpoch
@@ -224,7 +224,7 @@ $surveyIds -split "," | % {
     }
 
     Write-Host ""
-    Write-Host "################################################################################################" 
+    Write-Host "################################################################################################"
     Write-Host "#### Processing Survey ID=$surveyId, OldSurveyID=${script:oldSurveyId}, NewSurveyId=$newSurveyId"
     Write-Host "################################################################################################"
     Write-Host ""
@@ -265,18 +265,18 @@ $surveyIds -split "," | % {
                 -or $filename.StartsWith("CaptureEvent-") `
                 -or $filename.StartsWith("Note-")) {
                 $fileLinesList = New-Object System.Collections.ArrayList
-            
+
                 $csvData = Import-Csv "$fileFullPath"
-                $csvData = @($csvData)       # convert to array to handle single line files. 
+                $csvData = @($csvData)       # convert to array to handle single line files.
 
                 # get headers in the same order and Write header line to fileLinesList.
                 $headers = $csvData[0].psObject.Properties | foreach { $_.Name }
-                $len = $headers.Length   
-            
+                $len = $headers.Length
+
                 # First write the Header line.
-                $k = 0                
-                $lineText = ""             
-                $headers | % { 
+                $k = 0
+                $lineText = ""
+                $headers | % {
                     $headerName = $_
                     $lineText += $headerName
                     if ($k -ne $len - 1) {
@@ -294,7 +294,7 @@ $surveyIds -split "," | % {
                     # Build line text from csvdata.
                     $lineText = ""
                     $k = 0
-                    $headers | % { 
+                    $headers | % {
                         $headerName = $_
                         if ($headerName -eq "Id") {
                             $lineText += [guid]::NewGuid().toString().toUpper()
@@ -304,8 +304,8 @@ $surveyIds -split "," | % {
                         if ($k -ne $len - 1) {
                             $lineText += ","
                         }
-                        $k++ 
-                    }            
+                        $k++
+                    }
 
                     # Replace old values with new values.
                     if ($generateNewGuidsForSurvey) {
@@ -333,16 +333,16 @@ $surveyIds -split "," | % {
 
 
             } else {
-            
+
                 $fileContent = ""
 
                 # replace IDs with specified IDs.
-                Get-Content $fileFullPath | % { 
+                Get-Content $fileFullPath | % {
                     $line = $_.trim()
                     if ($line -ne "") {
                         $fileContent += $line + "`r`n"
                     }
-                } 
+                }
 
                 # Replace old values with new values.
                 if ($generateNewGuidsForSurvey) {
@@ -364,11 +364,11 @@ $surveyIds -split "," | % {
 }
 
 if ($restampCSVs) {
-        
-    # RESTAMP LOGIC: NOTE that we process one survey at a time in the Restamp script.	
+
+    # RESTAMP LOGIC: NOTE that we process one survey at a time in the Restamp script.
     #  1. Place files related to a survey in temp folder
-    #  2. Restamp survey files 
-    #  3. Move all restamped files back to an OUT directory 
+    #  2. Restamp survey files
+    #  3. Move all restamped files back to an OUT directory
 
     $TEMP_PATH = [System.IO.Path]::GetTempPath()
 
@@ -381,7 +381,7 @@ if ($restampCSVs) {
         $srvFileSuffix = $srvMapObject.SurveyFileSuffix
         if (([String]$srvFileSuffix).EndsWith("$")) {
             $srvFileSuffix = $srvFileSuffix.Replace("$", "")
-        } 
+        }
 
         $tempInDirForRestamp = "$TEMP_PATH\$srvFileSuffix"
         $tempOutDirForRestamp = "$tempInDirForRestamp\Restamped"
@@ -413,7 +413,7 @@ if ($restampCSVs) {
         $fileName = $file.Name
         $fileNameWithoutExt = $fileName.Replace(".csv", "")
         $fileFullName = $file.FullName
-    
+
         $doneCopy = $false
         $surveyTempDirectoryMap.Keys | % {
             if (-not $doneCopy) {
@@ -448,7 +448,7 @@ if ($restampCSVs) {
                 $csvData = Import-Csv $fileFullName
                 $csvData | % {
                     $objSur = $_
-                    $startEpoch = $objSur.StartEpoch;        
+                    $startEpoch = $objSur.StartEpoch;
                     $endEpoch = $objSur.EndEpoch;
 
                     $diff = $endEpoch - $startEpoch + 1200  # some buffer.
@@ -460,7 +460,7 @@ if ($restampCSVs) {
         Write-host "[RESTAMPING] -> newDatabaseIP=$newDatabaseIP, newDatabaseName=$newDatabaseName, newDatabaseUser=$newDatabaseUser, newDatabasePwd=$newDatabasePwd, inDirectory=$tempInDir, fileExtFilter=$fileExtFilter, outDirectory=$tempOutDir, offsetInRestamp=$offset"
         Restamp-EpochTimes -newDatabaseIP $newDatabaseIP -newDatabaseName $newDatabaseName -newDatabaseUser $newDatabaseUser  `
             -newDatabasePwd $newDatabasePwd -inDirectory $tempInDir -fileExtFilter $fileExtFilter -outDirectory $tempOutDir -offsetInRestamp $offset
-            
+
     }
 
     # 3. Move all restamped files to an OUT dir

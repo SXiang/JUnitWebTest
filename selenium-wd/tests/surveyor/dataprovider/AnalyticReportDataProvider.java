@@ -15,6 +15,7 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2389 = "dataProviderAnalyticReports_TC2389";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2401 = "dataProviderAnalyticReports_TC2401";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2421 = "dataProviderAnalyticReports_TC2421";
+	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2398 = "dataProviderAnalyticReports_TC2398";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2425 = "dataProviderAnalyticReports_TC2425";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2422 = "dataProviderAnalyticReports_TC2422";
 	public static final String ANALYTIC_REPORT_DATA_PROVIDER_TC2424 = "dataProviderAnalyticReports_TC2424";
@@ -82,6 +83,13 @@ public class AnalyticReportDataProvider extends ReportDataProvider {
 		return new Object[][] {
 		{ "TC2401" /*TestCaseID*/, 6 /*userDataRowID*/,  221 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
+	}
+
+@DataProvider
+	public static Object[][] dataProviderAnalyticReports_TC2398() {
+		return new Object[][] {
+		{ "TC2398" /*TestCaseID*/, 6 /*userDataRowID*/,  227 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+				};
 	}
 	
 	@DataProvider

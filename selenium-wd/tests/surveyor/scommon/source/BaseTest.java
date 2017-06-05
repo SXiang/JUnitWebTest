@@ -41,6 +41,7 @@ import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -266,11 +267,11 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase){
 		return createTestAccount(testCase, CapabilityType.IsotopicMethane);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType){
 		return createTestAccount(testCase,  null, analyzerType, true, true);
 	}
-	
+
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
 		return createTestAccount(testCase, addTestSurveyor, true);
 	}
@@ -350,7 +351,7 @@ public class BaseTest {
 
 		Customer customer = Customer.getCustomer(customerName);
 		testAccount.put("customerId", customer.getId());
-		
+
 		if(!addTestSurveyor){
 			return testAccount;
 		}
@@ -395,7 +396,7 @@ public class BaseTest {
 			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
 		}
 	}
-	
+
 	public Map<String, String> addTestReport() throws Exception{
 		return addTestReport(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
@@ -410,13 +411,20 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
+		return addTestReport(userName, Password, null/*customer*/, surveyTag, testRowID, surveyModeFilter);
+		}
+	
+	public Map<String, String> addTestReport(String userName, String Password, String customer, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
 		SurveyModeFilter[] defaultTestSurveyModeFilter =  {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
 		if(surveyModeFilter==null||surveyModeFilter.length==0){
 			surveyModeFilter = defaultTestSurveyModeFilter;
 		}
-
+		String[] surTags = {};
+		if(surveyTag!=null){
+			surTags = surveyTag.split(":");
+		}
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
 		getLoginPage().open();
@@ -424,7 +432,6 @@ public class BaseTest {
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
-		ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 
 		for(SurveyModeFilter sm:surveyModeFilter){
 			boolean found = false;
@@ -442,31 +449,43 @@ public class BaseTest {
 
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
+			if(customer!=null){
+				rpt.setCustomer(customer);
+			}
 			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
+			complianceReportsPageAction.getWorkingReportsDataRow().title = rpt.getRptTitle();
 			rpt.setReportModeFilter(rm);
 			rpt.setSurveyModeFilter(sm);
 			rpt.setStrCreatedBy(userName);
 
-			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
+			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+			for(int i=0;i<surveyInfoList.size(); i++){
+				ReportsSurveyInfo smf = surveyInfoList.get(i);
+				String tag = "";
 				if(smf!=null) {
 					smf.setSurveyModeFilter(sm);
-					if (surveyTag != null && surveyTag != "") {
-						smf.setTag(surveyTag);
+					if (surTags.length>i) {
+						tag = surTags[i];
+					}
+					if(!tag.isEmpty()){
+						smf.setTag(tag);
 					}
 				}
 			}
+			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
+			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 			complianceReportsPage.addNewReport(rpt, true);
 			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
 			testReport.put(sm.toString()+"ReportName", reportName);
 		}
-
 		return Collections.synchronizedMap(testReport);
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane);
 	}
+	
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
@@ -477,13 +496,22 @@ public class BaseTest {
 		int surveyRuntimeInSeconds = 2;
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
-	
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
 		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
+		String db3DefnFile = replayScriptDefnFile;
+		if(analyzerType.equals(CapabilityType.Ethane)){
+			db3DefnFile = replayScriptEthaneDefnFile;
+		}
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
@@ -508,7 +536,7 @@ public class BaseTest {
 
 		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
-		
+
 		/*Step 1. setup analyzer configuration */
 		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, TEST_ENVIRONMENT_DATA_ROW_ID);
 
@@ -527,12 +555,8 @@ public class BaseTest {
 			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
 				continue;
 			}
-			
+
 			String db3file = replayScriptDB3File;
-			String db3DefnFile = replayScriptDefnFile;
-			if(analyzerType.equals(CapabilityType.Ethane)){
-				db3DefnFile = replayScriptEthaneDefnFile;
-			}
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
 			}
@@ -567,7 +591,7 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
-	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
 			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
@@ -578,7 +602,7 @@ public class BaseTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
 	}
 
-	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction, 
+	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
 			String analyzerName, String analyzerSharedKey, String surveyorName) throws Exception{
 		driverViewPageAction.clickOnModeButton("", -1);
 		driverViewPageAction.stopDrivingSurvey("", -1);
@@ -601,7 +625,7 @@ public class BaseTest {
 		}
 		return true;
 	}
-	
+
 	protected static boolean cleanUpGisData(String customerId){
 		try {
 				DbSeedExecutor.cleanUpGisSeed(customerId);
@@ -611,7 +635,7 @@ public class BaseTest {
 			}
 		return true;
 	}
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */

@@ -93,6 +93,7 @@ public final class SurveyorConstants {
 	public static final String DRIVER1PIC = "driver1@picarro.com";
 	public static final String DRIVER2PIC = "driver2@picarro.com";
 	public static final String PICDR = "picdr@picarro.com";
+	public static final String PICDR2 = "picdr2@picarro.com";
 
 	public static final String SQAPICLOCSUR = "sqapiclocsur";
 	public static final String SQAPICLOC0SUR = "sqapicloc0sur";
@@ -118,6 +119,7 @@ public final class SurveyorConstants {
 	public static final String RFADS2004ANZ = "RFADS2004";
 	public static final String RFADS2004PICARRO = "RFADS2004-PICARRO";
 	public static final String RFADS2004FEQ = "RFADS2004-FEQ";
+	public static final String RFADS2003 = "RFADS2003";
 
 	public static final String SQAETHCUST= CUSTOMER_PGE;
 	public static final String SQAETHSUR="Black Dodge-P3300";
@@ -401,6 +403,7 @@ public final class SurveyorConstants {
 	public static final String SURVEYOR_SQACUSUNIT1 = "SQACusSrvUnit-1";
 	public static final String SURVEYOR_NISSANROGUEPICARRO = "Nissan Rogue - Picarro";
 	public static final String SURVEYOR_BLACKRHINOFEQ = "Black Rhino FEQ";
+	public static final String SURVEYOR_WHITERHINO2003 = "White Rhino 2003 Picarro";
 
 	/*
 	 * Compliance Report Surveyor Units
