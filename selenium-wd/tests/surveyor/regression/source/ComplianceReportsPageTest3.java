@@ -199,7 +199,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
 	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
