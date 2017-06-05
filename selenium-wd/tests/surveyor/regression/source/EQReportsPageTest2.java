@@ -119,7 +119,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Deleted report is not present on EQ report list screen
 		 * - Report title, customer id, survey details, View Content details are not present in Report, ReportEQ and ReportEQArea tables (Check attached db schema in US850 for more detials)
 		 */
-//		@Test
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC535, location = EQReportDataProvider.class)
 		public void TC535_DeleteEQReportAsCustomerSupervisor(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -195,7 +195,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * - Deleted report is not present on EQ report list screen
 		 * - Report title, customer id, survey details, View Content details are not present in Report, ReportEQ and ReportEQArea tables (Check attached db schema in US850 for more detials)
 		 */
-//		@Test
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC542, location = EQReportDataProvider.class)
 		public void TC542_DeleteEQReportAsPicarroSupportUser(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -305,7 +305,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 * Results:
 		 *	-  EQ customer's surveys should be present in the searched list along with surveyor surveys.
 		 */
-//		@Test
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC556, location = EQReportDataProvider.class)
 		public void TC556_EQReportCanIncludeEQSurveysAndSurveyorSurveys(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -334,7 +334,7 @@ public class EQReportsPageTest2 extends BaseReportsPageActionTest {
 		 *	- "Please add a survey" message is displayed
 		 *	- "Please select more than one line segment" message should be present
 		 */
-//		@Test
+		@Test
 		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC559, location = EQReportDataProvider.class)
 		public void TC559_EQReportCannotBeGeneratedUnlessAllRequiredFieldsAreFilled(
 				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
