@@ -879,8 +879,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.error(e.toString());
 			return false;
 		}
-		String unzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName).toString();
-		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
 		if (zipMeta.isDisplayed()) {
 			invokeMetaZipFileDownload(rptTitle);
@@ -1031,49 +1029,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 		}
 		return isGenerateBaselineSSRSImages;
-	}
-
-	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
-		Log.method("ReportsCommonPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
-		PDFUtility pdfUtility = new PDFUtility();
-		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-		if (isGenerateBaselineViewImages) {
-			File downLoadedFolder = new File(unzipFolder);
-			File[] listOfViews;
-			if (downLoadedFolder.isFile()) {
-				listOfViews = new File[1];
-				listOfViews[0] = downLoadedFolder;
-			} else {
-				listOfViews = downLoadedFolder.listFiles();
-			}
-			int counter = 1;
-			for (File file : listOfViews) {
-				if (file.isFile()) {
-					if (file.getName().contains("View")) {
-						String actualView = Paths.get(unzipFolder, file.getName()).toString();
-						String imageExtractFolder = pdfUtility.extractPDFImages(actualView, testCaseID);
-						File folder = new File(imageExtractFolder);
-						File[] listOfFiles = folder.listFiles();
-						for (File extractedImeg : listOfFiles) {
-							if (extractedImeg.isFile()) {
-								BufferedImage image = ImageIO.read(extractedImeg);
-								int width = image.getWidth();
-								int height = image.getHeight();
-								Rectangle rect = new Rectangle(0, 0, width, height - 40);
-								image = cropImage(image, rect);
-								String outputfile = Paths.get(TestSetup.getSystemTempDirectory(),
-										testCaseID + "_View" + counter + ".png").toString();
-								File croppedFile = new File(outputfile);
-								ImageIO.write(image, "png", croppedFile);
-								generateBaselineViewImage(testCaseID, outputfile, counter);
-								counter++;
-							}
-						}
-					}
-				}
-			}
-		}
-		return isGenerateBaselineViewImages;
 	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime,
