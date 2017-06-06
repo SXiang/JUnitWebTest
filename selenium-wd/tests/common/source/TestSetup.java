@@ -176,6 +176,8 @@ public class TestSetup {
 
 	private ScreenShotOnFailure screenCapture;
 
+	private String backPackServerIpAddress;
+
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
 
@@ -629,6 +631,7 @@ public class TestSetup {
 			this.setIosDeviceName(this.testProp.getProperty("iosDeviceName"));
 			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
 			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
+			this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -1558,5 +1561,13 @@ public class TestSetup {
 
 	public String getAnalyzerDebugLogPath() {
 		return ANALYZER_DEBUG_LOG_FILE;
+	}
+
+	public String getBackPackServerIpAddress() {
+		return backPackServerIpAddress;
+	}
+
+	public void setBackPackServerIpAddress(String backPackServerIpAddress) {
+		this.backPackServerIpAddress = backPackServerIpAddress;
 	}
 }

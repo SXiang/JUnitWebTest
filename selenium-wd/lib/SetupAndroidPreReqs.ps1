@@ -1,4 +1,4 @@
-﻿# ---------------------------------------------------------------
+# ---------------------------------------------------------------
 # SAMPLE USAGE:
 #   .\SetupAndroidPreReqs.ps1 `
 #           -BuildWorkingDir "C:\Repositories\surveyor-qa"
