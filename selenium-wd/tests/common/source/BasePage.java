@@ -650,11 +650,11 @@ public class BasePage {
 		return dest;
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
+	public boolean _verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage) throws IOException{
 		return verifyActualImageWithBase(pathToActualImage, pathToBaseImage, false);
 	}
 
-	public boolean verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+	public boolean _verifyActualImageWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
 		if(generateBaseline){
 			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
 			return true;
