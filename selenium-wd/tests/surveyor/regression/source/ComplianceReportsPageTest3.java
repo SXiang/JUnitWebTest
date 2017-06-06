@@ -125,7 +125,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 
 		final int DB3_ANALYZER_ROW_ID = 73;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
-		final int SURVEY_RUNTIME_IN_SECONDS = 180; /* Number of seconds to run the survey for. */
+		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 15;
 		final int newLocationRowID = 21;
 		final int newCustomerUserRowID = 31;
@@ -147,7 +147,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 			String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
-					custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds());
+					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
 			
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
@@ -199,7 +199,7 @@ public class ComplianceReportsPageTest3 extends BaseReportsPageActionTest {
 	 *  - - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select at least two surveys with different tags"
 	 *	- - Error message will not be displayed to user when different tag value surveys are included
 	 */
-	@Test
+	@Ignore
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1339, location = ComplianceReportDataProvider.class)
 	public void TC1339_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2, Integer reportDataRowID3) throws Exception {
