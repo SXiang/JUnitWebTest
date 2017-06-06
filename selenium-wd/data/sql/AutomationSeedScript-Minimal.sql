@@ -590,7 +590,6 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Analyzer] ([Id], [SurveyorUnitId], [SerialNumber], [SharedKey]) VALUES (N'B89BF795-F1FA-45E6-A6DC-F674A84F5E47', N'52D4D54B-1179-4712-AFB4-FA70DDEBA96A', N'SimAuto-EQAnalyzer1', N'SimAuto-EQAnalyzer1Key')
 END
 -- Analyzer - (SimAuto-EQAnalyzer-SqaCus-1) 
--- NOTE: Cert creation failed for this analyzer when DevOps tried to create an Analyzer cert for this analyzer. Use this Analyzer for DB3 replay post proper cert has been provisioned. Tracked by DE3006.
 IF NOT EXISTS (SELECT * FROM [dbo].[Analyzer] WHERE [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-1' AND [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-1Key')
 BEGIN 
 UPDATE [dbo].[Analyzer] SET [SurveyorUnitId]=N'400F642D-F2F3-4A0A-8F11-601F9FDCC217', [SerialNumber]=N'SimAuto-EQAnalyzer-SqaCus-1', [SharedKey]=N'SimAuto-EQAnalyzer-SqaCus-1Key' WHERE [Id]='3029DBB8-F824-491D-8D90-6CBD92CFDF8F'
