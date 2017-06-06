@@ -868,17 +868,19 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-<!--
+        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+        	<include name="**/AssessmentReportsPageTest.class" />
             <include name="**/ComplianceReportsTestSuite1.class" />
             <include name="**/ComplianceReportsTestSuite2.class" />
             <include name="**/ComplianceReportsTestSuite3.class" />
             <include name="**/ComplianceReportsTestSuite4.class" />
--->
+<!--
   		  <include name="**/ComplianceReportsTestSuite5.class" />
             <include name="**/ComplianceReportsTestSuite6.class" />
             <include name="**/ReportsTestSuite2.class" />
             <include name="**/LatLongSelectionReportsPageTest.class" />
             <include name="**/LatLongSelectionReportsPageTest2.class" />
+-->
         </fileset>
       </batchtest>
     </junit>
