@@ -3546,43 +3546,44 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName,
 			boolean inZipFolder) throws IOException {
 		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
-		PDFUtility pdfUtility = new PDFUtility();
-		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
-		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
-		String actualReport = null;
-		if (inZipFolder) {
-			actualReport = Paths.get(actualPath, reportZipName + File.separator
-					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
-					.toString();
-		} else {
-			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
-		}
-		setReportName(reportName);
-		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
-		File folder = new File(imageExtractFolder);
-		File[] listOfFiles = folder.listFiles();
-		int numFiles = 0;
-		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				numFiles++;
-				BufferedImage image = ImageIO.read(file);
-				int width = image.getWidth();
-				int height = image.getHeight();
-				Rectangle rect = new Rectangle(0, 0, width, height - 40);
-				image = cropImage(image, rect);
-				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images"
-							+ File.separator + testCase + File.separator + "View_"+ viewName + "_"+numFiles + ".png").toString();
-				String actualViewPath = Paths.get(testSetup.getDownloadPath(), testCase + "View_"
-							+ viewName + "_"+numFiles + ".png").toString();
-				File outputfile = new File(actualViewPath);
-				ImageIO.write(image, "png", outputfile);
-				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
-					return false;
-				}
-				Files.delete(Paths.get(actualViewPath));
-			}
-		}
+		/* Disabled view images verification as the Lisa bubbles, annotations are dynamically placed */
+//		PDFUtility pdfUtility = new PDFUtility();
+//		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
+//		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
+//		String actualReport = null;
+//		if (inZipFolder) {
+//			actualReport = Paths.get(actualPath, reportZipName + File.separator
+//					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
+//					.toString();
+//		} else {
+//			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
+//		}
+//		setReportName(reportName);
+//		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
+//		File folder = new File(imageExtractFolder);
+//		File[] listOfFiles = folder.listFiles();
+//		int numFiles = 0;
+//		for (File file : listOfFiles) {
+//			if (file.isFile()) {
+//				numFiles++;
+//				BufferedImage image = ImageIO.read(file);
+//				int width = image.getWidth();
+//				int height = image.getHeight();
+//				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+//				image = cropImage(image, rect);
+//				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images"
+//							+ File.separator + testCase + File.separator + "View_"+ viewName + "_"+numFiles + ".png").toString();
+//				String actualViewPath = Paths.get(testSetup.getDownloadPath(), testCase + "View_"
+//							+ viewName + "_"+numFiles + ".png").toString();
+//				File outputfile = new File(actualViewPath);
+//				ImageIO.write(image, "png", outputfile);
+//				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+//				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
+//					return false;
+//				}
+//				Files.delete(Paths.get(actualViewPath));
+//			}
+//		}
 		return true;
 	}
 
