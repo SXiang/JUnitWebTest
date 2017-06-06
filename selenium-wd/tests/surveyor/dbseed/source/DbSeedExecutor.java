@@ -58,7 +58,7 @@ public class DbSeedExecutor {
 			"rr-sqacudr-1-sqacus","rr-sqacudr-2-sqacus","stnd-pic-sqacus", "standard_test-1-sqacus", "standard_test-2-sqacus", "standard_test-3-sqacus", "stnd-sqacudr-sqacus","stnd-sqacudr-1-sqacus",
 			"stnd-sqacudr-2-sqacus","stnd-sqacudr-3-sqacus","StandardWithLeak-sqacus", "NoFOV-1-sqacus", "NoFOV-2-sqacus", "NoFOV-3-sqacus",
 			"daysurvey3.2-1-sqacus", "daysurvey3.2-2-sqacus", "daysurvey4-1-sqacus", "daysurvey5-1-sqacus", "daysurvey7-1-sqacus", "daysurvey8.2-1-sqacus", "daysurvey8-1-sqacus", "daysurvey8-2-sqacus",
-			"AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus", "AnalyticsTagC-1-sqacus", "FeqNoPeaks-1", "FeqWithPeaks-1", "MeqNoPeaks-1", "MeqWithPeaks-1"};
+			"AnalyticsTagA-1-sqacus", "AnalyticsTagB-1-sqacus", "AnalyticsTagC-1-sqacus", "FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus"};
 
 	/* Method to push all the seed data required for automation. */
 
