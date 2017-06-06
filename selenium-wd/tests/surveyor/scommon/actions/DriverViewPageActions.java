@@ -52,6 +52,21 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		setDataReader(new DriverViewDataReader(this.excelUtility));
 	}
 
+	public static enum DrivingSurveyType {
+		Default ("Default"),
+		EQ ("EQ");
+
+		private final String name;
+
+		DrivingSurveyType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	// Note: Not thread-safe.
 	public static void clearStoredObjects() {
 		workingDataRow.set(null);
@@ -248,49 +263,20 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	 */
 	public boolean startDrivingSurvey(String commaSeperatedValues, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.startDrivingSurvey", commaSeperatedValues, dataRowID);
-		String surveyTag = null;
-		SurveyTime time = SurveyTime.Day;
-		SolarRadiation radiation = SolarRadiation.Moderate;
-		Wind wind = Wind.Calm;
-		CloudCover cloudCover = CloudCover.LessThan50;
-		SurveyType type = SurveyType.Standard;
-		Float minAmplitude = -1.0F;
-		if (!ActionArguments.isEmpty(commaSeperatedValues)){
-			List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
-			time = getSurveyTime(listValues.get(1));
-			radiation = getSolarRadiation(listValues.get(2));
-			wind = getWind(listValues.get(3));
-			cloudCover = getCloudCover(listValues.get(4));
-			type = getSurveyType(listValues.get(5));
-			if (listValues.size() > 6 && listValues.get(6) != "") {
-				minAmplitude = Float.valueOf(listValues.get(6));
-			}
+		return startDrivingSurveyInternal(commaSeperatedValues, dataRowID, DrivingSurveyType.Default);
+	}
 
-		} else {
-			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
-			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			surveyTag = ActionArguments.evaluateArgForFunction(dataRow.surveyTag);
-			time = getSurveyTime(dataRow.surveyTime);
-			radiation = getSolarRadiation(dataRow.solarRadiation);
-			wind = getWind(dataRow.wind);
-			cloudCover = getCloudCover(dataRow.wind);
-			type = getSurveyType(dataRow.surveyType);
-			if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
-				minAmplitude = Float.valueOf(dataRow.minAmplitude);
-			}
-
-			// store the working datarow.
-			workingDataRow.set(dataRow);
-			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
-		}
-		try {
-			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
+	/**
+	 *
+	 * @param commaSeperatedValues - colon seperated values in this format:
+	 * 		[Survey Tag]:[Survey Time]:[Solar Radiation]:[Wind]:[CloudCover]:[Survey Type]
+	 * @param dataRowID (Required) - RowID in Survey test data sheet from where data for starting survey will be read.
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean startEQDrivingSurvey(String commaSeperatedValues, Integer dataRowID) throws Exception {
+		logAction("DriverViewPageActions.startEQDrivingSurvey", commaSeperatedValues, dataRowID);
+		return startDrivingSurveyInternal(commaSeperatedValues, dataRowID, DrivingSurveyType.EQ);
 	}
 
 	public static String getCurrentSurveyCSVValues() {
@@ -298,68 +284,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return String.format("%s,%s,%s,%s,%s,%s", driverViewDataRow.surveyTag,
 				driverViewDataRow.surveyTime, driverViewDataRow.solarRadiation, driverViewDataRow.wind,
 				driverViewDataRow.cloudCover, driverViewDataRow.surveyType, driverViewDataRow.minAmplitude);
-	}
-
-	private SurveyType getSurveyType(String surveyType) {
-		SurveyType type = SurveyType.Manual;
-		if (surveyType.equalsIgnoreCase("Manual")) {
-			type = SurveyType.Manual;
-		} else if (surveyType.equalsIgnoreCase("Operator")) {
-			type = SurveyType.Operator;
-		} else if (surveyType.equalsIgnoreCase("RapidResponse")) {
-			type = SurveyType.RapidResponse;
-		} else if (surveyType.equalsIgnoreCase("Assessment")) {
-			type = SurveyType.Assessment;
-		} else if (surveyType.equalsIgnoreCase("Standard")) {
-			type = SurveyType.Standard;
-		} else if (surveyType.equalsIgnoreCase("Analytics")) {
-			type = SurveyType.Analytics;
-		}
-		return type;
-	}
-
-	private Wind getWind(String windValue) {
-		Wind wind = Wind.Calm;
-		if (windValue.equalsIgnoreCase("Calm")) {
-			wind = Wind.Calm;
-		} else if (windValue.equalsIgnoreCase("Light")) {
-			wind = Wind.Light;
-		} else {
-			wind = Wind.Strong;
-		}
-		return wind;
-	}
-
-	private CloudCover getCloudCover(String cloudCoverValue) {
-		CloudCover cloudCover = CloudCover.LessThan50;
-		if (cloudCoverValue.equalsIgnoreCase("LessThan50")) {
-			cloudCover = CloudCover.LessThan50;
-		} else if (cloudCoverValue.equalsIgnoreCase("MoreThan50")) {
-			cloudCover = CloudCover.MoreThan50;
-		}
-		return cloudCover;
-	}
-
-	private SolarRadiation getSolarRadiation(String solarRadiation) {
-		SolarRadiation radiation = SolarRadiation.Moderate;
-		if (solarRadiation.equalsIgnoreCase("Moderate")) {
-			radiation = SolarRadiation.Moderate;
-		} else if (solarRadiation.equalsIgnoreCase("Overcast")) {
-			radiation = SolarRadiation.Overcast;
-		} else {
-			radiation = SolarRadiation.Strong;
-		}
-		return radiation;
-	}
-
-	private SurveyTime getSurveyTime(String surveyTime) {
-		SurveyTime time = SurveyTime.Day;
-		if (surveyTime.equalsIgnoreCase("Day")) {
-			time = SurveyTime.Day;
-		} else {
-			time = SurveyTime.Night;
-		}
-		return time;
 	}
 
 	public boolean stopDrivingSurvey(String data, Integer dataRowID) {
@@ -1667,5 +1591,124 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		Log.info(String.format("Indications detected in view = %d", allIndications.size()));
 		allIndications.forEach(i -> Log.info(i.toString()));
 		return allIndications;
+	}
+
+	private boolean startDrivingSurveyInternal(String commaSeperatedValues, Integer dataRowID, DrivingSurveyType surveyType) throws Exception {
+		String surveyTag = null;
+		SurveyTime time = SurveyTime.Day;
+		SolarRadiation radiation = SolarRadiation.Moderate;
+		Wind wind = Wind.Calm;
+		CloudCover cloudCover = CloudCover.LessThan50;
+		SurveyType type = SurveyType.Standard;
+		Float minAmplitude = -1.0F;
+		if (!ActionArguments.isEmpty(commaSeperatedValues)){
+			final List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
+			time = getSurveyTime(listValues.get(1));
+			radiation = getSolarRadiation(listValues.get(2));
+			wind = getWind(listValues.get(3));
+			cloudCover = getCloudCover(listValues.get(4));
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				type = getSurveyType(listValues.get(5));
+				if (listValues.size() > 6 && listValues.get(6) != "") {
+					minAmplitude = Float.valueOf(listValues.get(6));
+				}
+			}
+
+		} else {
+			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
+			final DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			surveyTag = ActionArguments.evaluateArgForFunction(dataRow.surveyTag);
+			time = getSurveyTime(dataRow.surveyTime);
+			radiation = getSolarRadiation(dataRow.solarRadiation);
+			wind = getWind(dataRow.wind);
+			cloudCover = getCloudCover(dataRow.wind);
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				type = getSurveyType(dataRow.surveyType);
+				if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
+					minAmplitude = Float.valueOf(dataRow.minAmplitude);
+				}
+			}
+
+			// store the working datarow.
+			workingDataRow.set(dataRow);
+			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
+		}
+		try {
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
+			} else if (surveyType.equals(DrivingSurveyType.EQ)) {
+				getDriverViewPage().startEQDrivingSurvey(surveyTag, time, radiation, wind, cloudCover);
+			} else {
+				throw new IllegalArgumentException(String.format("DrivingSurveyType-[%s] NOT supported."));
+			}
+
+		} catch (final Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		return true;
+	}
+
+	private SurveyType getSurveyType(String surveyType) {
+		SurveyType type = SurveyType.Manual;
+		if (surveyType.equalsIgnoreCase("Manual")) {
+			type = SurveyType.Manual;
+		} else if (surveyType.equalsIgnoreCase("Operator")) {
+			type = SurveyType.Operator;
+		} else if (surveyType.equalsIgnoreCase("RapidResponse")) {
+			type = SurveyType.RapidResponse;
+		} else if (surveyType.equalsIgnoreCase("Assessment")) {
+			type = SurveyType.Assessment;
+		} else if (surveyType.equalsIgnoreCase("Standard")) {
+			type = SurveyType.Standard;
+		} else if (surveyType.equalsIgnoreCase("Analytics")) {
+			type = SurveyType.Analytics;
+		}
+		return type;
+	}
+
+	private Wind getWind(String windValue) {
+		Wind wind = Wind.Calm;
+		if (windValue.equalsIgnoreCase("Calm")) {
+			wind = Wind.Calm;
+		} else if (windValue.equalsIgnoreCase("Light")) {
+			wind = Wind.Light;
+		} else {
+			wind = Wind.Strong;
+		}
+		return wind;
+	}
+
+	private CloudCover getCloudCover(String cloudCoverValue) {
+		CloudCover cloudCover = CloudCover.LessThan50;
+		if (cloudCoverValue.equalsIgnoreCase("LessThan50")) {
+			cloudCover = CloudCover.LessThan50;
+		} else if (cloudCoverValue.equalsIgnoreCase("MoreThan50")) {
+			cloudCover = CloudCover.MoreThan50;
+		}
+		return cloudCover;
+	}
+
+	private SolarRadiation getSolarRadiation(String solarRadiation) {
+		SolarRadiation radiation = SolarRadiation.Moderate;
+		if (solarRadiation.equalsIgnoreCase("Moderate")) {
+			radiation = SolarRadiation.Moderate;
+		} else if (solarRadiation.equalsIgnoreCase("Overcast")) {
+			radiation = SolarRadiation.Overcast;
+		} else {
+			radiation = SolarRadiation.Strong;
+		}
+		return radiation;
+	}
+
+	private SurveyTime getSurveyTime(String surveyTime) {
+		SurveyTime time = SurveyTime.Day;
+		if (surveyTime.equalsIgnoreCase("Day")) {
+			time = SurveyTime.Day;
+		} else {
+			time = SurveyTime.Night;
+		}
+		return time;
 	}
 }

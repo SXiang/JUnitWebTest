@@ -267,7 +267,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 	public void TC_SimulatorTest_DriverViewStartDrivingSurvey_EQ_MethSurvey() {
 		try {
 			final int analyzerDb3DataRowID = 73;
-			final int surveyDataRowID = 52;
+			final int surveyDataRowID = 65;
 
 			loginPageAction.open(EMPTY, NOTSET);
 			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
@@ -278,10 +278,45 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
 
-			driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
+			driverViewPageAction.startEQDrivingSurvey(EMPTY, surveyDataRowID);
 			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
 
-			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: Manual",NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: EQ",NOTSET));
+			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
+
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+
+			assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY,NOTSET));
+
+			driverViewPageAction.stopDrivingSurvey(EMPTY,NOTSET);
+
+		} catch (Exception e) {
+			Log.error(e.toString());
+		}
+	}
+
+	@Test
+	public void TC_SimulatorTest_DriverViewStartDrivingSurvey_EQ_EthSurvey() {
+		try {
+			final Integer analyzerDb3DataRowID = 74;
+			final Integer surveyDataRowID = 65;
+			final Integer WAIT_TIME_IN_SECONDS = 35;
+
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(SurveyorConstants.PICDFADMIN + ":" + SurveyorConstants.PICADMINPSWD, NOTSET);
+
+			testEnvironmentAction.startAnalyzer(EMPTY, analyzerDb3DataRowID);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
+			testEnvironmentAction.startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
+			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
+
+			driverViewPageAction.startEQDrivingSurvey(EMPTY, surveyDataRowID);
+
+			testEnvironmentAction.idleForSeconds(String.valueOf(WAIT_TIME_IN_SECONDS), NOTSET);
+
+			driverViewPageAction.clickOnHeaderInfoBox(EMPTY,NOTSET);
+			assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals("Mode: EQ",NOTSET));
 			assertTrue(driverViewPageAction.verifySurveyInfoSurveyStatusLabelEquals("Survey Active",NOTSET));
 
 			driverViewPageAction.clickOnModeButton(EMPTY,NOTSET);
