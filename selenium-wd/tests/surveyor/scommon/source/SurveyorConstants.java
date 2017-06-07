@@ -378,6 +378,10 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_ANALYZER3 = "SimAuto-Analyzer3";
 	public static final String SIMAUTO_ANALYZER4 = "SimAuto-Analyzer4";
 	public static final String SIMAUTO_ANALYZER5 = "SimAuto-Analyzer5";
+	public static final String SIMAUTO_EQANALYZER1 = "SimAuto-EQAnalyzer1";
+	public static final String SIMAUTO_EQANALYZER_SQACUS1 = "SimAuto-EQAnalyzer-SqaCus-1";
+	public static final String SIMAUTO_EQANALYZER_ETH1 = "SimAuto-EQAnalyzer-Eth1";
+	public static final String SIMAUTO_EQANALYZER_SQACUS_ETH1 = "SimAuto-EQAnalyzer-SqaCus-Eth1";
 
 	/*
 	 * Simulator SurveyorUnits
@@ -387,6 +391,10 @@ public final class SurveyorConstants {
 	public static final String SIMAUTO_SURVEYOR3 = "SimAuto-Surveyor3";
 	public static final String SIMAUTO_SURVEYOR4 = "SimAuto-Surveyor4";
 	public static final String SIMAUTO_SURVEYOR5 = "SimAuto-Surveyor5";
+	public static final String SIMAUTO_EQSURVEYOR1 = "SimAuto-EQSrvUnit1";
+	public static final String SIMAUTO_EQSURVEYOR_SQACUS1 = "SimAuto-EQSrvUnitSqaCus-1";
+	public static final String SIMAUTO_EQSURVEYOR_ETH1 = "SimAuto-EQSrvUnit-Eth1";
+	public static final String SIMAUTO_EQSURVEYOR_SQACUS_ETH1 = "SimAuto-EQSrvUnitSqaCus-Eth1";
 
 	/*
 	 * Surveyor Units
