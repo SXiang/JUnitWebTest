@@ -401,7 +401,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 15;
-		final int newLocationRowID = 21;
+		final int newLocationRowID = 23;
 		final int newCustomerUserRowID = 31;
 		final int newSurveyorRowID = 29;
 		final int newAnalyzerRowID = 27;
