@@ -46,4 +46,10 @@ public class AndroidAutomationToolsTest {
 	public void testRestart() throws IOException {
 		AndroidAutomationTools.restart();
 	}
+
+	@Test
+	public void testInstallLaunchAPK() throws IOException {
+		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-48.apk";
+		AndroidAutomationTools.installLaunchAPK(apkFilePath);
+	}
 }

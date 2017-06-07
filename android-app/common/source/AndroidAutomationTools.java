@@ -10,6 +10,7 @@ public class AndroidAutomationTools {
 	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
+	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer PING_TIMEOUT = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
@@ -47,6 +48,16 @@ public class AndroidAutomationTools {
 		Log.info("Executing start react native packager command. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 		waitForReactNativePackagerToCatchUp();
+	}
+
+	public static void installLaunchAPK(String apkFilePath) throws IOException {
+		Log.method("start");
+		String installLaunchAPKCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String installLaunchAPKCmd = INSTALL_LAUNCH_APK_CMD + String.format(" %s %s", "\"" + repoRootFolder + "\"", "\"" + apkFilePath + "\"");
+		String command = "cd \"" + installLaunchAPKCmdFolder + "\" && " + installLaunchAPKCmd;
+		Log.info("Executing install/launch APK command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public static void restart() throws IOException {

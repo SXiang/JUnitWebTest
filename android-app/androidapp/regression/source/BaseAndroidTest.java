@@ -61,14 +61,20 @@ public class BaseAndroidTest extends BaseTest {
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
 		// Start backpack simulator and android automation tools (emulator, appium server).
-	    BackPackSimulator.restartSimulator();
-	    AndroidAutomationTools.restart();
+		cleanupProcesses();
+	    BackPackSimulator.startSimulator();
+	    AndroidAutomationTools.start();
 	}
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
+		cleanupProcesses();
+	}
+
+	private static void cleanupProcesses() throws IOException {
 		BackPackSimulator.stopSimulator();
 		AndroidAutomationTools.stop();
+		TestContext.INSTANCE.stayIdle(3);
 	}
 
 	@Before
@@ -117,8 +123,7 @@ public class BaseAndroidTest extends BaseTest {
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
 		if (appiumDriver != null) {
-			appiumDriver.installApp(apkFile.getAbsolutePath());
-			appiumDriver.launchApp();
+			AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath());
 			initializeScreenObjects();
 			waitForAppLoad();
 		}
