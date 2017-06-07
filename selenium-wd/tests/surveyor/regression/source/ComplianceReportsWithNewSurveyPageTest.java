@@ -397,7 +397,7 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
 			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
 
-		final int DB3_ANALYZER_ROW_ID = 73;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int DB3_ANALYZER_ROW_ID = 75;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 15;
