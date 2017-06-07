@@ -98,11 +98,16 @@ public class DbStateVerifier {
 		Analyzer feds2055Picarro = Analyzer.getAnalyzerBySerialNumber(FEDS2055PICARRO);
 		Analyzer rfAds2004FEQ = Analyzer.getAnalyzerBySerialNumber(RFADS2004FEQ);
 		Analyzer rfAds2003 = Analyzer.getAnalyzerBySerialNumber(RFADS2003);
+		Analyzer simautoEQAnalyzer1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER1);
+		Analyzer simautoEQAnalyzerSqaCus1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER_SQACUS1);
+		Analyzer simautoEQAnalyzerEth1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER_ETH1);
+		Analyzer simautoEQAnalyzerSqaCusEth1 = Analyzer.getAnalyzerBySerialNumber(SIMAUTO_EQANALYZER_SQACUS_ETH1);
 
 		if (fdds2037 == null || fdds2038 == null || fdds2037_2 == null || feds2015 == null || feds2050 == null || feds2055 == null
 				|| fdds2037_1 == null || rfads2004 == null || simautoAnalyzer1 == null || simautoAnalyzer2 == null
-				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || rfads2004Picarro == null
-				|| sqacus2016_1 == null || feds2055Picarro == null || rfAds2004FEQ == null || rfAds2003 == null) {
+				|| simautoAnalyzer3 == null || simautoAnalyzer4 == null || simautoAnalyzer5 == null || simautoEQAnalyzer1 == null
+				|| simautoEQAnalyzerSqaCus1 == null || simautoEQAnalyzerEth1 == null || simautoEQAnalyzerSqaCusEth1 == null
+				|| rfads2004Picarro == null || sqacus2016_1 == null || feds2055Picarro == null || rfAds2004FEQ == null || rfAds2003 == null) {
 			return false;
 		}
 
@@ -127,12 +132,17 @@ public class DbStateVerifier {
 		SurveyorUnit surveyorNissanRoguePicarro = SurveyorUnit.getSurveyorUnit(SURVEYOR_NISSANROGUEPICARRO);
 		SurveyorUnit surveyorBlackRhinoFEQ = SurveyorUnit.getSurveyorUnit(SURVEYOR_BLACKRHINOFEQ);
 		SurveyorUnit surveyorWhiteRhino2003 = SurveyorUnit.getSurveyorUnit(SURVEYOR_WHITERHINO2003);
+		SurveyorUnit simautoEQSurveyor1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_EQSURVEYOR1);
+		SurveyorUnit simautoEQSurveyorSqaCus1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_EQSURVEYOR_SQACUS1);
+		SurveyorUnit simautoEQSurveyorEth1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_EQSURVEYOR_ETH1);
+		SurveyorUnit simautoEQSurveyorSqaCusEth1 = SurveyorUnit.getSurveyorUnit(SIMAUTO_EQSURVEYOR_SQACUS_ETH1);
 
 		if (softwarecar_2037_picarro == null || softwarecar_2037_cust == null || pgefeds2015 == null
 				|| silverNissanRogue == null || picProd10 == null || lightBlueEsc == null || blackDodge3300 == null
 				|| softwarecar_2037_testcust == null || softwareCar == null || simautoSurveyor1 == null
-				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null
-				|| simautoSurveyor5 == null || whiteDodge == null || surveyorIGPSCar == null
+				|| simautoSurveyor2 == null || simautoSurveyor3 == null || simautoSurveyor4 == null || simautoSurveyor5 == null
+				|| simautoEQSurveyor1 == null || simautoEQSurveyorSqaCus1 == null || simautoEQSurveyorEth1 == null
+				|| simautoEQSurveyorSqaCusEth1 == null || whiteDodge == null || surveyorIGPSCar == null
 				|| surveyorSqacus1 == null || surveyorNissanRoguePicarro == null || surveyorBlackRhinoFEQ == null || surveyorWhiteRhino2003 == null) {
 			return false;
 		}
