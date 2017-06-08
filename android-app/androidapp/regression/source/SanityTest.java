@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import common.source.AndroidAutomationTools;
 import common.source.Log;
 import common.source.TestContext;
@@ -16,7 +17,13 @@ public class SanityTest extends BaseAndroidTest {
 	public void beforeTest() throws Exception {
 		initializeAppiumDriver();
 		AndroidAutomationTools.startReactNative();
-		installLaunchApp();
+		installLaunchApp(APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
+	    if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
+	    	handleAppPermissionsPrompt();
+	    	installLaunchApp(MAIN_ACTIVITY);
+	    }
+
+	    waitForAppLoad();
 	}
 
 	@Ignore     // Use this test for debugging purpose.

@@ -9,6 +9,7 @@ public class AndroidAutomationTools {
 	private static final Integer APPIUM_SERVER_PORT = 4723;
 	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
+	private static final String START_APPIUM_SERVER_CMD = "StartAppiumServer.cmd";
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
 	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
@@ -18,14 +19,26 @@ public class AndroidAutomationTools {
 
 	public static void start() throws IOException {
 		Log.method("start");
+
+		// start emulator.
 		String startAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
 		String startAndroidToolsCmd = START_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"") + " \"" + DEFAULT_EMULATOR_AVD_NAME + "\"";
 		String command = "cd \"" + startAndroidToolsCmdFolder + "\" && " + startAndroidToolsCmd;
 		Log.info("Executing start android automation tools command. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
-		waitForAppiumServerToStart();
-		waitForAppiumServerToCatchUp();
+
+		// wait for device to boot.
+		AdbInterface.waitForDeviceToBeReady(AdbInterface.DEFAULT_ADB_LOCATION);
+		//TestContext.INSTANCE.stayIdle(5);
+
+		// start appium server.
+		startAppiumServer();
+	}
+
+	public static boolean isAppDrawOverlayDisplayed() throws Exception {
+		return AdbInterface.executeShellCmd(AdbInterface.DEFAULT_ADB_LOCATION, "dumpsys activity", result -> result.contains("AppDrawOverlaySettingsActivity") &&
+				result.contains("MANAGE_OVERLAY_PERMISSION"));
 	}
 
 	public static void stop() throws IOException {
@@ -50,11 +63,11 @@ public class AndroidAutomationTools {
 		waitForReactNativePackagerToCatchUp();
 	}
 
-	public static void installLaunchAPK(String apkFilePath) throws IOException {
+	public static void installLaunchAPK(String apkFilePath, String waitActivityName) throws IOException {
 		Log.method("start");
 		String installLaunchAPKCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
-		String installLaunchAPKCmd = INSTALL_LAUNCH_APK_CMD + String.format(" %s %s", "\"" + repoRootFolder + "\"", "\"" + apkFilePath + "\"");
+		String installLaunchAPKCmd = INSTALL_LAUNCH_APK_CMD + String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + apkFilePath + "\"", "\"" + waitActivityName + "\"");
 		String command = "cd \"" + installLaunchAPKCmdFolder + "\" && " + installLaunchAPKCmd;
 		Log.info("Executing install/launch APK command. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
@@ -66,10 +79,22 @@ public class AndroidAutomationTools {
 		start();
 	}
 
+	private static void startAppiumServer() throws IOException {
+		Log.method("startAppiumServer");
+		String startAppiumServerCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String startAppiumServerCmd = START_APPIUM_SERVER_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
+		String command = "cd \"" + startAppiumServerCmdFolder + "\" && " + startAppiumServerCmd;
+		Log.info("Executing start appium server command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
+		waitForAppiumServerToStart();
+		waitForAppiumServerToCatchUp();
+	}
+
 	private static void waitForAppiumServerToStart() {
 		Log.method("waitForAppiumServerToStart");
 		PollManager.poll(()-> !PingUtility.isEndPointAlive(APPIUM_SERVER_HOSTNAME, APPIUM_SERVER_PORT, PING_TIMEOUT),
-				DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, MAX_RETRIES_IN_POLL);;
+				DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, MAX_RETRIES_IN_POLL);
 	}
 
 	private static void waitForAppiumServerToCatchUp() {

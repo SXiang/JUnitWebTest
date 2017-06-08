@@ -21,6 +21,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidSettingsScreen;
+import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.BackPackSimulator;
 import common.source.FileUtility;
@@ -44,7 +45,9 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidSettingsScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
-	private static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
+	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
+	protected static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
+	protected static final String MAIN_ACTIVITY = "MainActivity";
 
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
@@ -63,11 +66,13 @@ public class BaseAndroidTest extends BaseTest {
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
 	    BackPackSimulator.startSimulator();
+		AdbInterface.init();
 	    AndroidAutomationTools.start();
 	}
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
+		AdbInterface.stop();
 		cleanupProcesses();
 	}
 
@@ -78,7 +83,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	@Before
-	public void setupBeforeTest() throws MalformedURLException, IOException {
+	public void setupBeforeTest() throws Exception {
 	}
 
 	@After
@@ -113,7 +118,7 @@ public class BaseAndroidTest extends BaseTest {
 		appiumDriver =  new AndroidDriver<WebElement>(url, capabilities);
 	}
 
-	protected void installLaunchApp() throws IOException {
+	protected void installLaunchApp(String waitActivityName) throws IOException {
 		Path apkFolderPath = Paths.get(TestSetup.getRootPath(), "apk");
 		List<String> apkFiles = FileUtility.getFilesInDirectory(apkFolderPath, "*.apk");
 		if (apkFiles == null || apkFiles.size() == 0) {
@@ -123,13 +128,12 @@ public class BaseAndroidTest extends BaseTest {
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
 		if (appiumDriver != null) {
-			AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath());
+			AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath(), waitActivityName);
 			initializeScreenObjects();
-			waitForAppLoad();
 		}
 	}
 
-	private void waitForAppLoad() {
+	public void waitForAppLoad() {
 		settingsScreen.waitForFirstAppLoad();
 	}
 

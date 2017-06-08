@@ -1,5 +1,7 @@
 package unittest.source;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import org.junit.BeforeClass;
@@ -48,8 +50,15 @@ public class AndroidAutomationToolsTest {
 	}
 
 	@Test
+	public void testIsAppDrawOverlayDisplayed() throws Exception {
+		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
+		AndroidAutomationTools.installLaunchAPK(apkFilePath, "AppDrawOverlaySettingsActivity");
+		assertTrue(AndroidAutomationTools.isAppDrawOverlayDisplayed());
+	}
+
+	@Test
 	public void testInstallLaunchAPK() throws IOException {
-		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-48.apk";
-		AndroidAutomationTools.installLaunchAPK(apkFilePath);
+		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
+		AndroidAutomationTools.installLaunchAPK(apkFilePath, "AppDrawOverlaySettingsActivity");
 	}
 }

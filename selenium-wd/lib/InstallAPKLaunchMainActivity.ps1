@@ -1,12 +1,15 @@
 param
 (
   [Parameter(Mandatory=$true)]
-  [string] $APKFilePath                           # eg. "C:\Repositories\PicarroApp"
+  [string] $APKFilePath,                           # eg. "C:\Repositories\PicarroApp"
+
+  [Parameter(Mandatory=$true)]
+  [string] $ActivityToWaitFor                      # eg. "MainActivity", "AppDrawOverlaySettingsActivity"
 )
 
 function WaitFor-ActivityToGainFocus($activityName) {
     Write-Host "Waiting for $activityName to gain focus." -NoNewLine
-    $cnt = 0;$MAX_ITER = 200;
+    $cnt = 0;$MAX_ITER = 10;
     $found = $false
     while((-not $found) -and ($cnt -lt $MAX_ITER)) {
         $cnt++
@@ -31,9 +34,13 @@ adb install -r -d -g "$APKFilePath"
 
 adb shell am start -n com.picarroapp/com.picarroapp.MainActivity
 sleep -Seconds 5
-$smokeTestPassed = WaitFor-ActivityToGainFocus -activityName "MainActivity"
-if ($smokeTestPassed) {
-    Write-Host "MainActivity was launched successfully."
+$activityFound = WaitFor-ActivityToGainFocus -activityName "$ActivityToWaitFor"
+if ($activityFound) {
+    Write-Host "$ActivityToWaitFor was launched successfully."
 } else {
-    Write-Error "MainActivity failed to be launched."
+    Write-Host "$ActivityToWaitFor was NOT found. Searching for default activity instead."
+    $activityFound = WaitFor-ActivityToGainFocus -activityName "MainActivity"
+    if (-not $activityFound) {
+        Write-Error "Neither $activityName nor MainActivity was found."
+    }
 }
