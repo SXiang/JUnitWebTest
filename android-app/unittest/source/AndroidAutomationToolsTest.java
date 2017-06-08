@@ -14,6 +14,9 @@ import common.source.TestSetup;
 
 public class AndroidAutomationToolsTest {
 
+	private static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
+	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// Initialize TestSetup to instantiate the TestContext.
@@ -51,14 +54,12 @@ public class AndroidAutomationToolsTest {
 
 	@Test
 	public void testIsAppDrawOverlayDisplayed() throws Exception {
-		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
-		AndroidAutomationTools.installLaunchAPK(apkFilePath, "AppDrawOverlaySettingsActivity");
+		AndroidAutomationTools.installLaunchAPK(TEST_APK_LOCATION, APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 		assertTrue(AndroidAutomationTools.isAppDrawOverlayDisplayed());
 	}
 
 	@Test
 	public void testInstallLaunchAPK() throws IOException {
-		String apkFilePath = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
-		AndroidAutomationTools.installLaunchAPK(apkFilePath, "AppDrawOverlaySettingsActivity");
+		AndroidAutomationTools.installLaunchAPK(TEST_APK_LOCATION, APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 	}
 }
