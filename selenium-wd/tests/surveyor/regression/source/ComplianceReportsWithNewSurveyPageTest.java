@@ -7,33 +7,35 @@ import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_RO
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMNSTDTAG2;
 import common.source.Log;
+import common.source.TestContext;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import surveyor.dataaccess.source.Customer;
 import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.scommon.actions.LoginPageActions;
-
 import surveyor.scommon.actions.ManageAnalyzerPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.actions.ManageRefGasBottlesPageActions;
 import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
-
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.BaseReportsPageActionTest;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
@@ -373,5 +375,83 @@ public class ComplianceReportsWithNewSurveyPageTest extends BaseReportsPageActio
 			}
 			return true;
 		}));
+	}
+	
+	/**
+	 * Test Case ID: TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags
+	 * Test Description: - Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags
+	 * Script: -
+	 *	- - Log in as Customer Admin user (Eg. PG&amp;E Util Admin)
+	 *	- - On Home Page, click Reports -& Compliance -& 'New Compliance Report' button
+	 *	- - Add 2 Surveys (present in the selected plat) with different tag values (try to include approx 8 hours surveys)
+	 *	- - Add View with base map value: map
+	 *	- - Click on OK and click Compliance Viewer button
+	 * Results: -
+	 *	- - Report generated successfully- Percent Service Coverage with LISAs , Percent Service Coverage Without LISAs (No decimals should be present for the calculation)
+	 *  - - Additional Surveys, Probability to Obtain 70% Coverage (No decimals should be present)
+	 */
+	@Test
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1320, location = ComplianceReportDataProvider.class)
+	public void TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC1320_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast2SurveysDifferentTags ..." +
+			 "\nTest Description: Generate Compliance Report as Customer Admin, include Percent Coverage Forecast and 2 surveys with different tags");
+
+		final int DB3_ANALYZER_ROW_ID = 75;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 5;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 120; /* Number of seconds to run the survey for. */
+		final int newCustomerRowID = 15;
+		final int newLocationRowID = 23;
+		final int newCustomerUserRowID = 31;
+		final int newSurveyorRowID = 29;
+		final int newAnalyzerRowID = 27;
+		final int newRefGasBottleRowID = 11;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));   /* Picarro Admin */
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
+		custSrvInfo.setPushGISSeedData(true);
+		custSrvInfo.setRetainGISSeedData(true);
+
+		try {
+			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+
+			String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+			String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
+			TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
+					DB3_ANALYZER_ROW_ID, SURVEY_ROW_ID, SURVEY_RUNTIME_IN_SECONDS);
+			
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.getLoginPage().loginNormalAs(ManageUsersPageActions.workingDataRow.get().username, ManageUsersPageActions.workingDataRow.get().password);
+
+			complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+			createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+			waitForReportGenerationToComplete(complianceReportsPageAction, getReportRowID(reportDataRowID1));
+
+			complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+			complianceReportsPageAction.clickOnComplianceViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+			assertTrue(complianceReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+
+			assertTrue(complianceReportsPageAction.verifySSRSCoverageTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+			assertTrue(complianceReportsPageAction.verifySSRSCoverageForecastTableInfo(EMPTY, getReportRowID(reportDataRowID1)));
+			
+		} catch (Exception ex) {
+			BaseTest.reportTestFailed(ex, ComplianceReportsPageTest3.class.getName());
+		} finally {
+			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		}
+	}
+
+	private void cleanupReports(String rptTitle, String strCreatedBy) throws Exception {
+		// Delete report before deleting GIS data pushed by test to prevent FK constraint violation.
+		for (int i = 0; i < 1; i++) {
+			loginPageAction.open(EMPTY, NOTSET);
+			loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+			complianceReportsPageAction.open(EMPTY, NOTSET);
+			complianceReportsPageAction.getComplianceReportsPage().searchAndDeleteReport(rptTitle, strCreatedBy);
+		}
 	}
 }
