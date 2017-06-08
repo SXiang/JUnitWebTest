@@ -17,7 +17,7 @@ public class PollManager {
 				retryAttempt++;
 				Log.info(String.format("polling attempt -> [%d]", retryAttempt));
 				Thread.sleep(waitInMSecsBetweenPoll);
-			} catch (InterruptedException | NullPointerException e) {
+			} catch (InterruptedException e) {
 				Log.error(ExceptionUtil.getStackTrace(e));
 			}
 		} while (pollCondition.waitCondition() && (retryAttempt < maxRetries));

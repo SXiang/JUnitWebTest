@@ -40,14 +40,23 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
-	protected AppiumDriver<WebElement> appiumDriver;
+	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
+	    @Override
+	    protected Boolean initialValue() {
+	    	return false;
+	    }
+	};
 
+	protected AppiumDriver<WebElement> appiumDriver;
 	protected AndroidSettingsScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
 	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
-	protected static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
-	protected static final String MAIN_ACTIVITY = "MainActivity";
+
+	public static class AndroidActivities {
+		public static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
+		public static final String MAIN_ACTIVITY = "MainActivity";
+	}
 
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
@@ -66,7 +75,7 @@ public class BaseAndroidTest extends BaseTest {
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
 	    BackPackSimulator.startSimulator();
-		AdbInterface.init();
+		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
 	}
 
@@ -79,7 +88,7 @@ public class BaseAndroidTest extends BaseTest {
 	private static void cleanupProcesses() throws IOException {
 		BackPackSimulator.stopSimulator();
 		AndroidAutomationTools.stop();
-		TestContext.INSTANCE.stayIdle(3);
+		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
 	}
 
 	@Before
@@ -91,11 +100,23 @@ public class BaseAndroidTest extends BaseTest {
 		cleanUp();
 	}
 
-	protected void handleAppPermissionsPrompt() {
+	protected void handlePermissionsPrompt() {
 		List<WebElement> permissionPrompts = appiumDriver.findElements(MobileBy.xpath("//*[@class='android.widget.Switch']"));
 		if (permissionPrompts.size() > 0) {
 			permissionPrompts.get(0).click();
 		}
+	}
+
+	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
+		initializeAppiumDriver();
+		startReactNativePackager();
+		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
+		if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
+			handlePermissionsPrompt();
+			installLaunchApp(AndroidActivities.MAIN_ACTIVITY);
+		}
+
+		waitForAppLoad();
 	}
 
 	protected void initializeAppiumDriver() throws MalformedURLException {
@@ -137,8 +158,11 @@ public class BaseAndroidTest extends BaseTest {
 		settingsScreen.waitForFirstAppLoad();
 	}
 
+	protected void cleanUp() {
+		appiumDriver.quit();
+	}
+
 	private void initializeScreenObjects() {
-		// Time out is set because test can be run on slow Android SDK emulator
 		settingsScreen = new AndroidSettingsScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
 
@@ -146,7 +170,10 @@ public class BaseAndroidTest extends BaseTest {
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mapScreen);
 	}
 
-	protected void cleanUp() {
-		appiumDriver.quit();
+	private void startReactNativePackager() throws IOException {
+		if (!reactNativeInitStatus.get()) {
+			AndroidAutomationTools.startReactNative();
+			reactNativeInitStatus.set(true);
+		}
 	}
 }

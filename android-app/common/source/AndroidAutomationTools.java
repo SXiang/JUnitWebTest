@@ -4,18 +4,49 @@ import java.io.File;
 import java.io.IOException;
 
 public class AndroidAutomationTools {
-	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86";
 	private static final String APPIUM_SERVER_HOSTNAME = "localhost";
-	private static final Integer APPIUM_SERVER_PORT = 4723;
-	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
+	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86";
+	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
 	private static final String START_APPIUM_SERVER_CMD = "StartAppiumServer.cmd";
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
-	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
-	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
-	private static final Integer PING_TIMEOUT = 1000;
-	private static final Integer MAX_RETRIES_IN_POLL = 30;
+	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
+	private static final Integer APPIUM_SERVER_PORT = 4723;
 	private static final Integer CATCH_UP_TIME_IN_SECS = 5;
+	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
+	private static final Integer MAX_RETRIES_IN_POLL = 30;
+	private static final Integer PING_TIMEOUT = 1000;
+
+	public static class ShellCommands {
+		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
+		public static final String GETPROP_INIT_SVC_BOOTANIM = "getprop init.svc.bootanim";
+	}
+
+	public static class AndroidPaths {
+		public static final String DEFAULT_ADB_LOCATION = "C:\\Program Files\\Android\\android-sdk\\platform-tools\\adb.exe";
+	}
+
+	public static void installLaunchAPK(String apkFilePath, String waitActivityName) throws IOException {
+		Log.method("installLaunchAPK", apkFilePath, waitActivityName);
+		String installLaunchAPKCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String installLaunchAPKCmd = INSTALL_LAUNCH_APK_CMD + String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + apkFilePath + "\"", "\"" + waitActivityName + "\"");
+		String command = "cd \"" + installLaunchAPKCmdFolder + "\" && " + installLaunchAPKCmd;
+		Log.info("Executing install/launch APK command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+	}
+
+	public static boolean isAppDrawOverlayDisplayed() throws Exception {
+		Log.method("isAppDrawOverlayDisplayed");
+		return AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.DUMPSYS_ACTIVITY, result -> result.contains("AppDrawOverlaySettingsActivity") &&
+				result.contains("MANAGE_OVERLAY_PERMISSION"));
+	}
+
+	public static void restart() throws IOException {
+		Log.method("restart");
+		stop();
+		start();
+	}
 
 	public static void start() throws IOException {
 		Log.method("start");
@@ -29,26 +60,11 @@ public class AndroidAutomationTools {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 
 		// wait for device to boot.
-		AdbInterface.waitForDeviceToBeReady(AdbInterface.DEFAULT_ADB_LOCATION);
-		//TestContext.INSTANCE.stayIdle(5);
+		AdbInterface.waitForDeviceToBeReady(AdbInterface.getAdbLocation());
+		waitForDeviceToBoot();
 
 		// start appium server.
 		startAppiumServer();
-	}
-
-	public static boolean isAppDrawOverlayDisplayed() throws Exception {
-		return AdbInterface.executeShellCmd(AdbInterface.DEFAULT_ADB_LOCATION, "dumpsys activity", result -> result.contains("AppDrawOverlaySettingsActivity") &&
-				result.contains("MANAGE_OVERLAY_PERMISSION"));
-	}
-
-	public static void stop() throws IOException {
-		Log.method("stop");
-		String stopAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-		String repoRootFolder = TestSetup.getRootPath();
-		String stopAndroidToolsCmdFullPath = stopAndroidToolsCmdFolder + File.separator + STOP_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
-		String command = "cd \"" + stopAndroidToolsCmdFolder + "\" && " + stopAndroidToolsCmdFullPath;
-		Log.info("Executing stop android automation tools. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 	}
 
 	public static void startReactNative() throws IOException {
@@ -63,20 +79,14 @@ public class AndroidAutomationTools {
 		waitForReactNativePackagerToCatchUp();
 	}
 
-	public static void installLaunchAPK(String apkFilePath, String waitActivityName) throws IOException {
-		Log.method("start");
-		String installLaunchAPKCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+	public static void stop() throws IOException {
+		Log.method("stop");
+		String stopAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
-		String installLaunchAPKCmd = INSTALL_LAUNCH_APK_CMD + String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + apkFilePath + "\"", "\"" + waitActivityName + "\"");
-		String command = "cd \"" + installLaunchAPKCmdFolder + "\" && " + installLaunchAPKCmd;
-		Log.info("Executing install/launch APK command. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
-	}
-
-	public static void restart() throws IOException {
-		Log.method("restart");
-		stop();
-		start();
+		String stopAndroidToolsCmdFullPath = stopAndroidToolsCmdFolder + File.separator + STOP_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
+		String command = "cd \"" + stopAndroidToolsCmdFolder + "\" && " + stopAndroidToolsCmdFullPath;
+		Log.info("Executing stop android automation tools. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 	}
 
 	private static void startAppiumServer() throws IOException {
@@ -89,6 +99,12 @@ public class AndroidAutomationTools {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 		waitForAppiumServerToStart();
 		waitForAppiumServerToCatchUp();
+	}
+
+	private static void waitForDeviceToBoot() {
+		Log.method("waitForDeviceToBoot");
+		PollManager.poll(()-> !AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.GETPROP_INIT_SVC_BOOTANIM, result -> result.contains("stopped")),
+				DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 3 * MAX_RETRIES_IN_POLL);
 	}
 
 	private static void waitForAppiumServerToStart() {

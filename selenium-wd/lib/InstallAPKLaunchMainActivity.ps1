@@ -38,9 +38,13 @@ $activityFound = WaitFor-ActivityToGainFocus -activityName "$ActivityToWaitFor"
 if ($activityFound) {
     Write-Host "$ActivityToWaitFor was launched successfully."
 } else {
-    Write-Host "$ActivityToWaitFor was NOT found. Searching for default activity instead."
-    $activityFound = WaitFor-ActivityToGainFocus -activityName "MainActivity"
-    if (-not $activityFound) {
-        Write-Error "Neither $activityName nor MainActivity was found."
+    if ($ActivityToWaitFor -ne "MainActivity") {
+        Write-Host "$ActivityToWaitFor was NOT found. Searching for default activity instead."
+        $activityFound = WaitFor-ActivityToGainFocus -activityName "MainActivity"
+        if (-not $activityFound) {
+            Write-Error "Neither $activityName nor MainActivity was found."
+        }
+    } else {
+        Write-Error "MainActivity was NOT found."
     }
 }
