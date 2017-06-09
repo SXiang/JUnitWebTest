@@ -1,5 +1,7 @@
 package unittest.source;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import org.junit.BeforeClass;
@@ -11,6 +13,9 @@ import common.source.TestContext;
 import common.source.TestSetup;
 
 public class AndroidAutomationToolsTest {
+
+	private static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
+	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -45,5 +50,16 @@ public class AndroidAutomationToolsTest {
 	@Test
 	public void testRestart() throws IOException {
 		AndroidAutomationTools.restart();
+	}
+
+	@Test
+	public void testIsAppDrawOverlayDisplayed() throws Exception {
+		AndroidAutomationTools.installLaunchAPK(TEST_APK_LOCATION, APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
+		assertTrue(AndroidAutomationTools.isAppDrawOverlayDisplayed());
+	}
+
+	@Test
+	public void testInstallLaunchAPK() throws IOException {
+		AndroidAutomationTools.installLaunchAPK(TEST_APK_LOCATION, APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 	}
 }

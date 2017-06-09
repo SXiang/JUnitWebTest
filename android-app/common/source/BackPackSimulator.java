@@ -37,6 +37,7 @@ public class BackPackSimulator {
 	public static void restartSimulator() throws IOException {
 		Log.method("restartSimulator");
 		stopSimulator();
+		TestContext.INSTANCE.stayIdle(3);
 		startSimulator();
 	}
 

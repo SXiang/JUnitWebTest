@@ -1,4 +1,4 @@
-REM This script starts android automation tools (emulator, appium server) on a Windows machine.
+REM This script starts android automation tools (emulator) on a Windows machine.
 SETLOCAL
 SET me=%~n0
 
