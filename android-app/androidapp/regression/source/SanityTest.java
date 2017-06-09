@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import common.source.AndroidAutomationTools;
+
 import common.source.Log;
 import common.source.TestContext;
 
@@ -14,12 +14,10 @@ public class SanityTest extends BaseAndroidTest {
 
 	@Before
 	public void beforeTest() throws Exception {
-		initializeAppiumDriver();
-		AndroidAutomationTools.startReactNative();
-		installLaunchApp();
+		initializeAppiumTest();
 	}
 
-	@Ignore     // Use this test for debugging purpose.
+	@Ignore   // Sample test to check Appium driver creation. Use for debugging.
 	public void testMobileDriverLaunch() throws IOException {
 		Log.info("Executing testMobileDriverLaunch ...");
 		assertTrue("Appium Driver was NOT initialized correctly.", appiumDriver != null);

@@ -67,5 +67,6 @@
 	<classpathentry kind="lib" path="selenium-wd/lib/jackson-databind-2.8.8.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/okhttp-3.8.0.jar"/>
 	<classpathentry kind="lib" path="selenium-wd/lib/okio-1.13.0.jar"/>
+	<classpathentry kind="lib" path="selenium-wd/lib/ddmlib-24.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
