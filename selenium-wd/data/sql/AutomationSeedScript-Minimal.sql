@@ -1096,9 +1096,9 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Anemometer] ([CalibrationRecordId], [Index], [Offset], [SpeedFactor], [Height], [Rotation]) VALUES (N'c9cf29da-0f18-0782-e93c-39dbd3f8f705', 3, 0, 1, 0, 0)	
 
 -- Calibration record for 'SimAuto-EQSrvUnit1'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='52D4D54B-1179-4712-AFB4-FA70DDEBA96A',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='52D4D54B-1179-4712-AFB4-FA70DDEBA96A',[StartEpoch]=1479366940,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD'
 IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD','52D4D54B-1179-4712-AFB4-FA70DDEBA96A',1485109206,0,0,-4)
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD','52D4D54B-1179-4712-AFB4-FA70DDEBA96A',1479366940,0,0,-4)
 
 -- Anemometer entry for 'SimAuto-EQSrvUnit1', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=2, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD' AND [Index]=0
@@ -1156,9 +1156,9 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'BAFB6AF2-44F4-460D-B208-F2FE42E1A0BD', 15,2.5)
 
 -- Calibration record for 'SimAuto-EQSrvUnitSqaCus-1'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='400F642D-F2F3-4A0A-8F11-601F9FDCC217',[StartEpoch]=1483809491,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='400F642D-F2F3-4A0A-8F11-601F9FDCC217',[StartEpoch]=1479366940,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1'
 IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1','400F642D-F2F3-4A0A-8F11-601F9FDCC217',1483809491,0,0,-4)
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1','400F642D-F2F3-4A0A-8F11-601F9FDCC217',1479366940,0,0,-4)
 
 -- Anemometer entry for 'SimAuto-EQSrvUnitSqaCus-1', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1' AND [Index]=0
@@ -1216,9 +1216,9 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'37C0C6C3-ECD5-4DA5-9B28-C3E986CB1ED1', 15,2.5)
 
 -- Calibration record for 'SimAuto-EQSrvUnit-Eth1'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7',[StartEpoch]=1485109206,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='2BC10730-A313-4C13-AB22-AADE43267721'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7',[StartEpoch]=1479366940,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='2BC10730-A313-4C13-AB22-AADE43267721'
 IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('2BC10730-A313-4C13-AB22-AADE43267721','1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7',1485109206,0,0,-4)
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('2BC10730-A313-4C13-AB22-AADE43267721','1C374486-FF8A-4117-BCBA-5E0C2B9D3DF7',1479366940,0,0,-4)
 
 -- Anemometer entry for 'SimAuto-EQSrvUnit-Eth1', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=2, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'2BC10730-A313-4C13-AB22-AADE43267721' AND [Index]=0
@@ -1276,9 +1276,9 @@ IF @@ROWCOUNT=0
 	INSERT [dbo].[Inlet] ([CalibrationRecordId], [Index], [Height]) VALUES (N'2BC10730-A313-4C13-AB22-AADE43267721', 15,2.5)
 
 -- Calibration record for 'SimAuto-EQSrvUnitSqaCus-Eth1'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='C5354534-336F-44D1-9FB9-6270DFE2EAD7',[StartEpoch]=1483809491,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='2BC9C664-99BD-4842-B86D-10E13C37DDB0'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='C5354534-336F-44D1-9FB9-6270DFE2EAD7',[StartEpoch]=1479366940,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='2BC9C664-99BD-4842-B86D-10E13C37DDB0'
 IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('2BC9C664-99BD-4842-B86D-10E13C37DDB0','C5354534-336F-44D1-9FB9-6270DFE2EAD7',1483809491,0,0,-4)
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('2BC9C664-99BD-4842-B86D-10E13C37DDB0','C5354534-336F-44D1-9FB9-6270DFE2EAD7',1479366940,0,0,-4)
 
 -- Anemometer entry for 'SimAuto-EQSrvUnitSqaCus-Eth1', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'2BC9C664-99BD-4842-B86D-10E13C37DDB0' AND [Index]=0
