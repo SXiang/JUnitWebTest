@@ -807,7 +807,7 @@
           <include name="**/ComplianceReportsTestSuite2.class" />
           <include name="**/ComplianceReportsTestSuite3.class" />
           <include name="**/ComplianceReportsTestSuite4.class" />
-          <include name="**/ComplianceReportsTestSuite5.class" />
+		  <include name="**/ComplianceReportsTestSuite5.class" />
           <include name="**/ComplianceReportsTestSuite6.class" />
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/LatLongSelectionReportsPageTest.class" />
@@ -854,7 +854,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compileregression" description="Run local branch tests ">
+  <target name="tc_localrun" depends="compiletestsuite, compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="JUnitParallel" />
       <sysproperty key="maxParallelTestThreads" value="1" />
@@ -868,7 +868,13 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/EQReportsPageTest.class" />
+        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+        	<include name="**/AssessmentReportsPageTest.class" />
+        	<include name="**/ComplianceReportsPageTest10.class" />
+        	<include name="**/ComplianceReportsPageTest11.class" />
+        	<include name="**/ComplianceReportsPageTest3.class" />
+        	<include name="**/ComplianceReportsPageTest6.class" />
+        	<include name="**/ComplianceReportsPageTest_Ethane.class" />   	
         </fileset>
       </batchtest>
     </junit>

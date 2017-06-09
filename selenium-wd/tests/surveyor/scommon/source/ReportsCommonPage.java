@@ -879,8 +879,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.error(e.toString());
 			return false;
 		}
-		String unzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName).toString();
-		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
 		if (zipMeta.isDisplayed()) {
 			invokeMetaZipFileDownload(rptTitle);
@@ -1031,49 +1029,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 		}
 		return isGenerateBaselineSSRSImages;
-	}
-
-	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
-		Log.method("ReportsCommonPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
-		PDFUtility pdfUtility = new PDFUtility();
-		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-		if (isGenerateBaselineViewImages) {
-			File downLoadedFolder = new File(unzipFolder);
-			File[] listOfViews;
-			if (downLoadedFolder.isFile()) {
-				listOfViews = new File[1];
-				listOfViews[0] = downLoadedFolder;
-			} else {
-				listOfViews = downLoadedFolder.listFiles();
-			}
-			int counter = 1;
-			for (File file : listOfViews) {
-				if (file.isFile()) {
-					if (file.getName().contains("View")) {
-						String actualView = Paths.get(unzipFolder, file.getName()).toString();
-						String imageExtractFolder = pdfUtility.extractPDFImages(actualView, testCaseID);
-						File folder = new File(imageExtractFolder);
-						File[] listOfFiles = folder.listFiles();
-						for (File extractedImeg : listOfFiles) {
-							if (extractedImeg.isFile()) {
-								BufferedImage image = ImageIO.read(extractedImeg);
-								int width = image.getWidth();
-								int height = image.getHeight();
-								Rectangle rect = new Rectangle(0, 0, width, height - 40);
-								image = cropImage(image, rect);
-								String outputfile = Paths.get(TestSetup.getSystemTempDirectory(),
-										testCaseID + "_View" + counter + ".png").toString();
-								File croppedFile = new File(outputfile);
-								ImageIO.write(image, "png", croppedFile);
-								generateBaselineViewImage(testCaseID, outputfile, counter);
-								counter++;
-							}
-						}
-					}
-				}
-			}
-		}
-		return isGenerateBaselineViewImages;
 	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime,
@@ -3447,7 +3402,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
-					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
 					return false;
 				}
@@ -3592,54 +3546,44 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName,
 			boolean inZipFolder) throws IOException {
 		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
-		PDFUtility pdfUtility = new PDFUtility();
-		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
-		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
-		String actualReport = null;
-		if (inZipFolder) {
-			actualReport = Paths.get(actualPath, reportZipName + File.separator
-					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
-					.toString();
-		} else {
-			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
-		}
-		setReportName(reportName);
-		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
-		File folder = new File(imageExtractFolder);
-		File[] listOfFiles = folder.listFiles();
-
-		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				BufferedImage image = ImageIO.read(file);
-				int width = image.getWidth();
-				int height = image.getHeight();
-				Rectangle rect = new Rectangle(0, 0, width, height - 40);
-				image = cropImage(image, rect);
-				String actualViewPath = Paths
-						.get(TestSetup.getSystemTempDirectory(), file.getName().replace(".pdf", "") + ".png")
-						.toString();
-				File outputfile = new File(actualViewPath);
-				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = "";
-				if (inZipFolder) {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + "View"
-							+ new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
-				} else {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + viewName + ".png";
-				}
-
-				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
-					Files.delete(Paths.get(actualViewPath));
-					return false;
-				}
-				Files.delete(Paths.get(actualViewPath));
-			}
-		}
+		/* Disabled view images verification as the Lisa bubbles, annotations are dynamically placed */
+//		PDFUtility pdfUtility = new PDFUtility();
+//		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
+//		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
+//		String actualReport = null;
+//		if (inZipFolder) {
+//			actualReport = Paths.get(actualPath, reportZipName + File.separator
+//					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
+//					.toString();
+//		} else {
+//			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
+//		}
+//		setReportName(reportName);
+//		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
+//		File folder = new File(imageExtractFolder);
+//		File[] listOfFiles = folder.listFiles();
+//		int numFiles = 0;
+//		for (File file : listOfFiles) {
+//			if (file.isFile()) {
+//				numFiles++;
+//				BufferedImage image = ImageIO.read(file);
+//				int width = image.getWidth();
+//				int height = image.getHeight();
+//				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+//				image = cropImage(image, rect);
+//				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images"
+//							+ File.separator + testCase + File.separator + "View_"+ viewName + "_"+numFiles + ".png").toString();
+//				String actualViewPath = Paths.get(testSetup.getDownloadPath(), testCase + "View_"
+//							+ viewName + "_"+numFiles + ".png").toString();
+//				File outputfile = new File(actualViewPath);
+//				ImageIO.write(image, "png", outputfile);
+//				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+//				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
+//					return false;
+//				}
+//				Files.delete(Paths.get(actualViewPath));
+//			}
+//		}
 		return true;
 	}
 
