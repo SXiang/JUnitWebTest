@@ -424,7 +424,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[contains(@id,'-table-pdf-download')]")
 	protected WebElement pdfImg;
 
-	@FindBy(how = How.XPATH, using = "//p[contains(@id,'view') and @class='thumbnail-label']")
+	@FindBy(how = How.CSS, using = ".image > a[href *=DownloadReportView] > img.img-responsive")
 	protected WebElement viewImg;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
