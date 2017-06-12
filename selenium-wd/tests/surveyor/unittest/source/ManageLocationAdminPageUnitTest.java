@@ -8,9 +8,6 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,9 +22,7 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorTestRunner;
-import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.TestSetup;
 
 @RunWith(SurveyorTestRunner.class)
 public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
