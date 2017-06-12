@@ -1660,9 +1660,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
-							if(!strReportName.startsWith("FEQ")){
-								this.waitForReportViewImagetoAppear();
-							}
+							this.waitForReportViewImagetoAppear();
 						} else {
 							Log.info(String.format("First call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
 							int currRowNum = rowNum;
