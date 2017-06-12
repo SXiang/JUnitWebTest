@@ -115,7 +115,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		this.getReportsCommonPage().invokeViewFileDownload(reportName, ReportFileType.EQView.toString(), 1);
 		return true;
 	}
-	
+
 	/**
 	 * Executes verifyViewsImageWithBaseline action.
 	 * @param data - specifies the input data passed to the action.
@@ -139,12 +139,12 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		Log.info("Executing verifyEmissionsQuantificationTable()...");
 		boolean verifyEmissionsQuantificationTable = this.getEQReportsPage().verifyEmissionsQuantificationTable(downloadPath, getWorkingReportsDataRow().title);
 		Log.info(String.format("verifyEmissionsQuantificationTable() returned - '%b'", verifyEmissionsQuantificationTable));
-		
+
 		Log.info(String.format("verifyEmissionsQuantificationTable = %b; verifyDrivingSurveysTable = %b",
 				verifyEmissionsQuantificationTable, verifyDrivingSurveysTable));
 		return verifyEmissionsQuantificationTable && verifyDrivingSurveysTable;
 	}
-	
+
 	/**
 	 * Executes verifyViewsImagesWithBaselines action.
 	 * @param data - specifies the input data passed to the action.
@@ -225,31 +225,33 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			break;
 		}
 	}
-	
+
 	@Override
 	public boolean waitForViewDownloadToComplete(String data, Integer dataRowID) throws Exception {
 		logAction("EQReportsPageActions.waitForViewDownloadToComplete", data, dataRowID);
 		waitForReportFileDownload(dataRowID, ReportFileType.EQView, 1);
 		return true;
 	}
-	
+
 	@Override
 	protected ReportCommonEntity createNewReportsEntity() throws Exception {
 		return new EQReportEntity();
 	}
-	
+
 	protected EQReportEntity createNewReportsEntity(String rptTitle, String customer, String timeZone, String eqLocationParameter,
-			List<List<Coordinates>> lineSegments) {		
+			List<List<Coordinates>> lineSegments) {
 		return new EQReportEntity(rptTitle, customer, timeZone, eqLocationParameter, lineSegments);
 	}
 
 	@Override
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
 		EQReportEntity rpt = (EQReportEntity)reportEntity;
-		String eqLocationParameter = getWorkingReportsDataRow().eqLocationParameter;
-		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(getWorkingReportsDataRow(), this.excelUtility);
-		
+		EQReportsDataRow workingReportsDataRow = getWorkingReportsDataRow();
+		String eqLocationParameter = workingReportsDataRow.eqLocationParameter;
+		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(workingReportsDataRow, this.excelUtility);
+
 		rpt.setEQLocationParameter(eqLocationParameter);
+		rpt.setSelectLineSegmentsUsingJS(isSelectLineSegmentsUsingJS(workingReportsDataRow));
 		rpt.setLineSegments(lineSegments);
     }
 
@@ -267,7 +269,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			}
 			LineSegmentDataReader lineSegmentDataReader = new LineSegmentDataReader(excelUtility);
 			LineSegmentDataRow lineSegmentDataRow = lineSegmentDataReader.getDataRow(rowID);
-			
+
 			List<Integer> coordinatesRowIDs = ActionArguments.getNumericList(lineSegmentDataRow.coordinatesRowIDs);
 			lineSegmentInfoList.add(getCoordinatesInfoList(excelUtility, coordinatesRowIDs));
 		}
@@ -282,9 +284,24 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			}
 			CoordinateDataReader coordinateDataReader = new CoordinateDataReader(excelUtility);
 			CoordinateDataRow coordinateDataRow = coordinateDataReader.getDataRow(rowID);
-			
 			coordinates.add(new Coordinates(coordinateDataRow.longitude, coordinateDataRow.latitude));
 		}
 		return coordinates;
+	}
+
+	private Boolean isSelectLineSegmentsUsingJS(EQReportsDataRow dataRow) throws Exception {
+		List<Integer> lineSegmentRowIDs = ActionArguments.getNumericList(dataRow.lineSegmentRowIDs);
+		if (lineSegmentRowIDs != null && lineSegmentRowIDs.size() > 0) {
+			for (Integer lSegRowID : lineSegmentRowIDs) {
+				LineSegmentDataReader lineSegmentDataReader = new LineSegmentDataReader(excelUtility);
+				LineSegmentDataRow lineSegmentDataRow = lineSegmentDataReader.getDataRow(lSegRowID);
+				Boolean useJS = Boolean.valueOf(lineSegmentDataRow.setUsingJS);
+				if (useJS) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }

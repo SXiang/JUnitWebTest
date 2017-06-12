@@ -45,7 +45,7 @@
         -newReferenceGasBottleId "5D74209F-340A-3239-6905-39DE6C2A6A25"  `
         -newUserId "DE734DDF-363E-49FC-8DBC-39C8C223D558"  `
         -newLocationId "50C98274-034A-672A-38B1-39DEC2E650EE"  `
-        -surveyTagFileMapCSVRelativePath "SurveyTagFileMap.csv"  `
+        -surveyTagFileMapCSVRelativePath "SurveyTagFileMap.csv"  `          # make sure surveyIds used above have a mapping in this .csv file.
         -restampCSVs:$true  `
         -generateNewGuidsForSurvey:$true
 ----------------------------------------------------------------------------------------------------------------------------------#>

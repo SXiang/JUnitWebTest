@@ -27,17 +27,23 @@ public class StoredProcEQGetEQData extends BaseEntity {
 	public String toString() {
 		DecimalFormat decimalFormat = new DecimalFormat("#.#####");
 		String emissionRate = decimalFormat.format(this.getEmissionRate());
+		if (emissionRate.equals("0")) {
+			emissionRate = "0.0";
+		}
 		String length = decimalFormat.format(this.getLength());
 		String emissionFactor = decimalFormat.format(this.getEmissionFactor());
 		String numLeaks = decimalFormat.format(this.getNumLeaks());
 		String leaksPerFt = decimalFormat.format(this.getLeaksPerFt());
 		String ratePerLeak = decimalFormat.format(this.getRatePerLeak());
+		if (ratePerLeak.equals("0")) {
+			ratePerLeak = "0.0";
+		}
 		return this.getName().concat(this.getEmissionRank().concat(emissionRate)
 				.concat(this.getConfideneceGroup().concat(length)
 				.concat(emissionFactor+"").concat(numLeaks)
 				.concat(leaksPerFt).concat(ratePerLeak)));
 	}
-	
+
 	public String getName() {
 		return name;
 	}

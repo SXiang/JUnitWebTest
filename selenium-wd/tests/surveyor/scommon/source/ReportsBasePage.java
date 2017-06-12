@@ -196,7 +196,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='EQ']")
 	protected WebElement inputSurModeFilterEQ;
-	
+
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
 
@@ -809,7 +809,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
-
 	}
 
 	public void addReport(){
@@ -3001,7 +3000,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean isEQSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterEQ);
 	}
-	
+
 	public boolean isManualSurveyModeSelected() {
 		return inputSurModeFilterManual.isSelected();
 	}

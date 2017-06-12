@@ -14,21 +14,7 @@ import surveyor.scommon.source.Coordinates;
 public class EQReportEntity extends ReportCommonEntity {
 	protected String eqLocationParameter;
 	protected List<List<Coordinates>> lineSegments;
-	public String getEQLocationParameter() {
-		return eqLocationParameter;
-	}
-
-	public List<List<Coordinates>> getLineSegments() {
-		return lineSegments;
-	}
-
-	public void setEQLocationParameter(String eqLocationParameter) {
-		this.eqLocationParameter = eqLocationParameter;
-	}
-	
-	public void setLineSegments(List<List<Coordinates>> lineSegments) {
-		this.lineSegments = lineSegments;
-	}
+	private Boolean selectLineSegmentsUsingJS;
 
 	public EQReportEntity() {
 		super();
@@ -42,7 +28,31 @@ public class EQReportEntity extends ReportCommonEntity {
 		this.eqLocationParameter = eqLocationParameter;
 		this.lineSegments = lineSegments;
 	}
-	
+
+	public String getEQLocationParameter() {
+		return eqLocationParameter;
+	}
+
+	public List<List<Coordinates>> getLineSegments() {
+		return lineSegments;
+	}
+
+	public void setEQLocationParameter(String eqLocationParameter) {
+		this.eqLocationParameter = eqLocationParameter;
+	}
+
+	public void setLineSegments(List<List<Coordinates>> lineSegments) {
+		this.lineSegments = lineSegments;
+	}
+
+	public Boolean getSelectLineSegmentsUsingJS() {
+		return selectLineSegmentsUsingJS;
+	}
+
+	public void setSelectLineSegmentsUsingJS(Boolean selectLineSegmentsUsingJS) {
+		this.selectLineSegmentsUsingJS = selectLineSegmentsUsingJS;
+	}
+
 	public enum EmissionsQuantificationTableColumns {
 		SegmentID ("Segment ID", 0),
 		SegmentRank ("Segment Rank", 1),

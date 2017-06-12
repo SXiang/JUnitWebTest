@@ -4,7 +4,7 @@
 
  Sample Run Script:
    .\Generate-SurveyCSVs.ps1 `
-        -surveyIDs "10E42534-6411-1117-5A52-39DEC3776FDA,0AB9CC3C-C299-D0CB-AF0E-39DEC377AD10,3210F764-F72C-9363-A37E-39DEC385F977,346B99F8-7644-C30C-7A1B-39DEC385FEB2"  `
+        -surveyIDs "2329A3D7-5C3B-3B93-4B5E-39DB887753E5,B2FA11F7-D62C-7331-1D16-39DB88775916"  `
         -databaseIPAddress "20.20.130.238"  `
         -databaseName "SurveyorSQA"  `
         -databaseUser "awssa"  `
@@ -73,7 +73,9 @@ $surveyIDArr | % {
 
             $currSurveyTag = $tag
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$tag-$counter.csv"
+            $fileTag = $tag.Replace("/", "-").Replace(" ", "-")
+
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for AnemometerRaw -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("AnemometerRaw-")
             $colHeaders = $COLUMN_HEADINGS.get_item("AnemometerRaw-")
@@ -103,7 +105,7 @@ $surveyIDArr | % {
 
             # --- CaptureEvent ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\CaptureEvent-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\CaptureEvent-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for CaptureEvent -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("CaptureEvent-")
             $colHeaders = $COLUMN_HEADINGS.get_item("CaptureEvent-")
@@ -147,7 +149,7 @@ $surveyIDArr | % {
 
             # --- FieldOfView ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\FieldOfView-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\FieldOfView-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for FieldOfView -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("FieldOfView-")
             $colHeaders = $COLUMN_HEADINGS.get_item("FieldOfView-")
@@ -175,7 +177,7 @@ $surveyIDArr | % {
 
             # --- GPSRaw ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for GPSRaw -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("GPSRaw-")
             $colHeaders = $COLUMN_HEADINGS.get_item("GPSRaw-")
@@ -207,7 +209,7 @@ $surveyIDArr | % {
 
             # --- Measurement ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Measurement -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Measurement-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Measurement-")
@@ -265,7 +267,7 @@ $surveyIDArr | % {
 
             # --- Note ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Note-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Note-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Note -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Note-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Note-")
@@ -297,7 +299,7 @@ $surveyIDArr | % {
 
             # --- Peak ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Peak-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Peak-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Peak -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Peak-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Peak-")
@@ -355,7 +357,7 @@ $surveyIDArr | % {
 
             # --- Segment ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Segment -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Segment-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Segment-")
@@ -383,7 +385,7 @@ $surveyIDArr | % {
 
             # --- Survey ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Survey-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Survey-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Survey -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Survey-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Survey-")
@@ -426,7 +428,7 @@ $surveyIDArr | % {
 
             # --- SurveyCondition ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyCondition-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyCondition-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for SurveyCondition -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("SurveyCondition-")
             $colHeaders = $COLUMN_HEADINGS.get_item("SurveyCondition-")
@@ -454,7 +456,7 @@ $surveyIDArr | % {
 
             # --- SurveyResult ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for SurveyResult -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("SurveyResult-")
             $colHeaders = $COLUMN_HEADINGS.get_item("SurveyResult-")
@@ -482,7 +484,7 @@ $surveyIDArr | % {
             # --- SurveyResult-Geom ---
 
             # Create GEOM file for SurveyResult
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-Geom-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-Geom-$fileTag-$counter.csv"
             $i12=0
             Write-Host "Generating SurveyResult-Geom file for Survey Tag: $tag"
             $query = "SELECT [FieldOfView].STAsText() AS SurveyResultFieldOfViewAsWKT FROM [$databaseName].[dbo].[SurveyResult] WHERE SurveyId='$id'"
@@ -502,7 +504,7 @@ $surveyIDArr | % {
             # --- Segment-Geom ---
 
             # Create GEOM file for Segment
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-Geom-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-Geom-$fileTag-$counter.csv"
             $i13=0
             Write-Host "Generating Segment-Geom file for Survey Tag: $tag"
             $query = "SELECT [Shape].STAsText() AS SegmentShapeWKT FROM [$databaseName].[dbo].[Segment] WHERE SurveyId='$id'"
