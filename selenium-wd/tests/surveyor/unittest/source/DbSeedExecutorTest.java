@@ -63,7 +63,8 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"FeqNoPeaks-1-sqacus", "FeqWithPeaks-1-sqacus", "MeqNoPeaks-1-sqacus", "MeqWithPeaks-1-sqacus"};
+		final String[] surveyTags = {"menlo-night-11-17-EQ-1", "menlo-night-11-17-EQ-2", "standard-survey-for-EQ-Rpt-1", "standard-survey-for-EQ-Rpt-2",
+				"menlo-night-11-17-EQ-1-sqacus", "menlo-night-11-17-EQ-2-sqacus", "standard-survey-for-EQ-Rpt-1-sqacus", "standard-survey-for-EQ-Rpt-2-sqacus"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}
