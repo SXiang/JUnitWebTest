@@ -177,6 +177,7 @@ public class TestSetup {
 	private ScreenShotOnFailure screenCapture;
 
 	private String backPackServerIpAddress;
+	private String adbLocation;
 
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
@@ -632,6 +633,7 @@ public class TestSetup {
 			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
 			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
 			this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
+			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -1569,5 +1571,13 @@ public class TestSetup {
 
 	public void setBackPackServerIpAddress(String backPackServerIpAddress) {
 		this.backPackServerIpAddress = backPackServerIpAddress;
+	}
+
+	public String getAdbLocation() {
+		return adbLocation;
+	}
+
+	public void setAdbLocation(String adbLocation) {
+		this.adbLocation = adbLocation;
 	}
 }

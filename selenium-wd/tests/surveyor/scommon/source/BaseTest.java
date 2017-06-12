@@ -82,24 +82,28 @@ public class BaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			Log.method("BaseTest.starting");
 			BaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
+			Log.method("BaseTest.finished");
 			BaseTest.reportTestFinished(description.getClassName());
 			TestSetup.simulatorTestFinishing(description);
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
+			Log.method("BaseTest.failed");
 			BaseTest.reportTestFailed(e, description.getClassName());
 			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
+			Log.method("BaseTest.succeeded");
 			BaseTest.reportTestSucceeded(description.getClassName());
 			postTestMethodProcessing();
 		}
@@ -413,7 +417,7 @@ public class BaseTest {
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		return addTestReport(userName, Password, null/*customer*/, surveyTag, testRowID, surveyModeFilter);
 		}
-	
+
 	public Map<String, String> addTestReport(String userName, String Password, String customer, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
 		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
@@ -485,7 +489,7 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane);
 	}
-	
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
