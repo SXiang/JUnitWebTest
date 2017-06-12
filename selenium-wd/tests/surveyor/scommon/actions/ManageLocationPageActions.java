@@ -12,7 +12,6 @@ import surveyor.scommon.source.SurveyorConstants.SurveyModeType;
 
 public class ManageLocationPageActions extends BasePageActions {
 
-	private LocationDataReader dataReader = null;
 	public static ThreadLocal<LocationDataRow> workingDataRow = new ThreadLocal<LocationDataRow>();    // Stores the workingDataRow from createNewLocation action
 
 	public ManageLocationPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
@@ -22,7 +21,6 @@ public class ManageLocationPageActions extends BasePageActions {
 	}
 
 	private void setDataReader(LocationDataReader customerDataReader) {
-		this.dataReader = customerDataReader;
 	}
 
 	// Note: Not thread-safe.
@@ -81,13 +79,94 @@ public class ManageLocationPageActions extends BasePageActions {
 		String inflationPower = locationDataRow.inflationPower;
 		String percentile = locationDataRow.percentile;
 		boolean checkForError = false;
+		boolean fEQEnabled = true;
+		String shapeCorrelationMin = locationDataRow.shapeCorrelationMin;
+		String peakIDXBuffer = locationDataRow.peakIDXBuffer;
+		String peakSEPDistanceScale = locationDataRow.peakSEPDistanceScale;
+		String widthMin = locationDataRow.widthMin;
+		String widthMax = locationDataRow.widthMax;
+		String variationMax = locationDataRow.variationMax;
+		String carSpeedMin = locationDataRow.carSpeedMin;
+		String carSpeedMax = locationDataRow.carSpeedMax;
+		String carWindAngleMin = locationDataRow.carWindAngleMin;
+		String carWindAngleMax = locationDataRow.carWindAngleMax;
+		String dBScanSpatialScale = locationDataRow.dBScanSpatialScale;
+		String eQMinClusterSize = locationDataRow.eQMinClusterSize;
+		String backgroundFilterThreshold = locationDataRow.backgroundFilterThreshold;
+		String pPMTriggerThreshold = locationDataRow.pPMTriggerThreshold;
+		String accelerationMax = locationDataRow.accelerationMax;
+		boolean justDBScan = true;
+
 		this.getManageLocationsPage().setLatitude(locationDataRow.latitude);
 		this.getManageLocationsPage().setLongitude(locationDataRow.longitude);
-		this.getManageLocationsPage().addNewLocation(locationDesc, customer,
-				newLocationName, useLatLongSelector, ethMthMin, ethMthMax,
-				surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS,
-				dbScanRd, minClusterSz, maxClusterScale, expansionPower,
-				inflationPower, percentile, checkForError);
+		this.getManageLocationsPage().addNewLocation(locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS,
+				dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, fEQEnabled, shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, 
+				carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, justDBScan, checkForError);
+
+		workingDataRow.set(locationDataRow);
+
+		return true;
+	}
+
+	/*
+	 * Executes createNewLocation action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean findExistingLocation(String data, Integer dataRowID) throws Exception {
+		logAction("ManageLocationPageActions.addNewLocation", data, dataRowID);
+		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+		locationDataReader.getDataRow(dataRowID);
+
+		this.getManageLocationsPage().findExistingLocation(workingDataRow.get().customerDataRowID, workingDataRow.get().name);
+
+		return true;
+	}
+
+	/**
+	 * Executes createNewLocation action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean editFEQLocationParameters(String data, Integer dataRowID) throws Exception {
+		logAction("ManageLocationPageActions.addNewLocation", data, dataRowID);
+		LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+		LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
+
+		String shapeCorrelationMin = locationDataRow.shapeCorrelationMin;
+		String peakIDXBuffer = locationDataRow.peakIDXBuffer;
+		String peakSEPDistanceScale = locationDataRow.peakSEPDistanceScale;
+		String widthMin = locationDataRow.widthMin;
+		String widthMax = locationDataRow.widthMax;
+		String variationMax = locationDataRow.variationMax;
+		String carSpeedMin = locationDataRow.carSpeedMin;
+		String carSpeedMax = locationDataRow.carSpeedMax;
+		String carWindAngleMin = locationDataRow.carWindAngleMin;
+		String carWindAngleMax = locationDataRow.carWindAngleMax;
+		String dBScanSpatialScale = locationDataRow.dBScanSpatialScale;
+		String eQMinClusterSize = locationDataRow.eQMinClusterSize;
+		String backgroundFilterThreshold = locationDataRow.backgroundFilterThreshold;
+		String pPMTriggerThreshold = locationDataRow.pPMTriggerThreshold;
+		String accelerationMax = locationDataRow.accelerationMax;
+		boolean eQJustDBScan = false;
+
+		String customer = "";
+		if (ManageCustomerPageActions.workingDataRow.get() != null) {
+			customer = ManageCustomerPageActions.workingDataRow.get().name;
+		} else {
+			CustomerDataReader customerDataReader = new CustomerDataReader(excelUtility);
+			CustomerDataRow customerDataRow = customerDataReader.getDataRow(Integer.valueOf(locationDataRow.customerDataRowID));
+			customer = customerDataRow.name;
+		}
+
+		this.getManageLocationsPage().editFEQLocationParameters(customer, workingDataRow.get().name, shapeCorrelationMin, peakIDXBuffer, 
+				peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, 
+				backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
+
 
 		workingDataRow.set(locationDataRow);
 

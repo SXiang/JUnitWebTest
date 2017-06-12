@@ -9,6 +9,7 @@ import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSA
 import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -24,6 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -91,6 +93,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='YesUpperBound']")
 	protected WebElement YesUpper;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='hasFacilityEQ']")
+	protected WebElement facilityEQCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
@@ -177,6 +182,55 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(id = "LocationAnalyticsParameter_JustDbScan")
 	protected WebElement justDBScan;
 
+	@FindBy(id = "LocationEQParameterList_0__EQShapeCorrelationMin")
+	protected WebElement shapeCorrelationMin;
+
+	@FindBy(id = "LocationEQParameterList_0__EQPeakIDXBuffer")
+	protected WebElement peakIDXBuffer;
+
+	@FindBy(id = "LocationEQParameterList_0__EQPeakSEPDistanceScale")
+	protected WebElement peakSEPDistanceScale;
+
+	@FindBy(id = "LocationEQParameterList_0__EQWidthMin")
+	protected WebElement widthMin;
+
+	@FindBy(id = "LocationEQParameterList_0__EQWidthMax")
+	protected WebElement widthMax;
+
+
+	@FindBy(id = "LocationEQParameterList_0__EQVariationMax")
+	protected WebElement variationMax;
+
+	@FindBy(id = "LocationEQParameterList_0__EQCarSpeedMin")
+	protected WebElement carSpeedMin;
+
+	@FindBy(id = "LocationEQParameterList_0__EQCarSpeedMax")
+	protected WebElement carSpeedMax;
+
+	@FindBy(id = "LocationEQParameterList_0__EQCarWindAngleMin")
+	protected WebElement carWindAngleMin;
+
+	@FindBy(id = "LocationEQParameterList_0__EQCarWindAngleMax")
+	protected WebElement carWindAngleMax;
+
+	@FindBy(id = "LocationEQParameterList_0__EQDBScanSpatialScale")
+	protected WebElement dBScanSpatialScale;
+
+	@FindBy(id = "LocationEQParameterList_0__EQMinClusterSize")
+	protected WebElement minClusterSize;
+
+	@FindBy(id = "LocationEQParameterList_0__EQBackgroundFilterThreshold")
+	protected WebElement backgroundFilterThreshold;
+
+	@FindBy(id = "LocationEQParameterList_0__EQPPMTriggerThreshold")
+	protected WebElement pPMTriggerThreshold;
+
+	@FindBy(id = "LocationEQParameterList_0__EQAccelerationMax")
+	protected WebElement accelerationMax;
+
+	@FindBy(id = "LocationEQParameterList_0__EQJustDBScan")
+	protected WebElement eQJustDBScan;
+
 	private LatLongSelectionControl latLongSelectionControl = null;
 
 	private String latitude;
@@ -226,9 +280,20 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String ethMthMax) {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
 				customer, newLocationName, ethMthMin, ethMthMax);
+		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax, "","", "", "", "", "", "", "", "", "", "", "", 
+				false,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
+	}
+
+	public boolean addNewLocationwithFEQ(String locationDesc,
+			String customer, String newLocationName, String ethMthMin, String ethMthMax, String ShapeCorrelationMin, String PeakIDXBuffer,String PeakSEPDistanceScale, 
+			String WidthMin, String WidthMax, String VariationMax, String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, 
+			String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold, String PPMTriggerThreshold,	String AccelerationMax) {
+		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
+				customer, newLocationName, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName,
-				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "",
-				"", "", "", "", "", "", "", "", "", "", "", true);
+				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "", "", "", "", "", "", "", "", "", "", "", "", true,ShapeCorrelationMin, PeakIDXBuffer, 
+				PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin, CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize,
+				BackgroundFilterThreshold, PPMTriggerThreshold,	AccelerationMax, true, true);
 	}
 
 	private boolean addNewLocation(String locationDesc, String customer,
@@ -237,37 +302,30 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName,
 				useLatLongSelector, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName,
-				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "",
-				"", "", "", "", "", "", "", true);
+				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "", "", "", "", "", "", "", "", false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
+	}
+
+	public boolean addNewLocation(String locationDesc, String customer,	String newLocationName, String surMinAmp, String rankingMinAmp, String top10PS, String top25PS,
+			String top50PS, String psFilter, String dbScanRd, String minClusterSz, String maxClusterScale, String expansionPower, String inflationPower, String percentile) {
+
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS,	top50PS, dbScanRd, minClusterSz,
+				maxClusterScale, expansionPower, inflationPower, percentile);
+
+		return addNewLocation(locationDesc, customer, newLocationName, false, "1", "2", surMinAmp, rankingMinAmp, psFilter, top10PS,
+				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, false, null, 
+				null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
 	public boolean addNewLocation(String locationDesc, String customer,
-			String newLocationName, String surMinAmp, String rankingMinAmp,
-			String top10PS, String top25PS, String top50PS, String psFilter,
-			String dbScanRd, String minClusterSz, String maxClusterScale,
-			String expansionPower, String inflationPower, String percentile) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName,
-				surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS,
-				top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower,
-				inflationPower, percentile);
-		return addNewLocation(locationDesc, customer, newLocationName, false,
-				"1", "2", surMinAmp, rankingMinAmp, psFilter, top10PS,
-				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale,
-				expansionPower, inflationPower, percentile, true);
-	}
-
-	public boolean addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector,
-			String ethMthMin, String ethMthMax, String surMinAmp,
-			String rankingMinAmp, String psFilter, String top10PS,
-			String top25PS, String top50PS, String dbScanRd,
-			String minClusterSz, String maxClusterScale, String expansionPower,
-			String inflationPower, String percentile, boolean checkForError) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName,
-				useLatLongSelector, ethMthMin, ethMthMax, surMinAmp,
-				rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd,
-				minClusterSz, maxClusterScale, expansionPower, inflationPower,
-				percentile, checkForError);
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, String surMinAmp, String rankingMinAmp, String psFilter, 
+			String top10PS, String top25PS, String top50PS, String dbScanRd, String minClusterSz, String maxClusterScale, String expansionPower, String inflationPower, 
+			String percentile, boolean fEQEnabled, String ShapeCorrelationMin, String PeakIDXBuffer, String PeakSEPDistanceScale, String WidthMin, String WidthMax, String VariationMax, 
+			String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold, 
+			String PPMTriggerThreshold,String AccelerationMax, boolean JustDBScan, boolean checkForError) {
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, fEQEnabled, ShapeCorrelationMin, PeakIDXBuffer, 
+				PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin, CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize,
+				BackgroundFilterThreshold, PPMTriggerThreshold,	AccelerationMax, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSz,
+				maxClusterScale, expansionPower, inflationPower, percentile, checkForError);
 		if (newLocationName.equalsIgnoreCase("Santa Clara")) {
 			setLatitude("37.3971035425739");
 			setLongitude("-121.98343231897");
@@ -293,7 +351,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			final int Y_OFFSET = 100;
 
 			this.clickOnLatLongSelectorBtn();
-            this.selectOnLatLong(X_OFFSET, Y_OFFSET);
+			this.selectOnLatLong(X_OFFSET, Y_OFFSET);
 			this.clickOnLatLongOkBtn();
 
 			String locationLatitudeText = this.getLocationLatitudeText();
@@ -423,7 +481,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
-		clickOnOkButton();
+		// wait necessary for FEQ Location parameters get added correctly.
+		this.waitForPageToLoad();
+
+		if (!fEQEnabled) {
+			clickOnOkButton();
+		} else {
+
+			inputFEQParameters(ShapeCorrelationMin, PeakIDXBuffer, PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin,
+					CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize, BackgroundFilterThreshold, PPMTriggerThreshold,
+					AccelerationMax, JustDBScan);
+		}
 
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			Log.clickElementInfo("Cancel");
@@ -502,6 +570,141 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return found;
 	}
 
+	public void inputFEQParameters(String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
+			String carSpeedMin,	String carSpeedMax, String carWindAngleMin, String carWindAngleMax, String dBScanSpatialScale, String minClusterSize, String backgroundFilterThreshold,
+			String pPMTriggerThreshold,	String accelerationMax, boolean eQJustDBScan){
+		Log.method("inputFEQParameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
+				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
+		this.facilityEQCheckbox.click();
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.shapeCorrelationMin)) {
+			if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+				Log.info("Set shapeCorrelationMin - '" + shapeCorrelationMin + "'");
+				this.shapeCorrelationMin.clear();
+				this.shapeCorrelationMin.sendKeys(shapeCorrelationMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.peakIDXBuffer)) {
+			if (peakIDXBuffer != null && peakIDXBuffer != "") {
+				Log.info("Set peakIDXBuffer - '"+ peakIDXBuffer+"'");
+				this.peakIDXBuffer.clear();
+				this.peakIDXBuffer.sendKeys(peakIDXBuffer);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.peakSEPDistanceScale)) {
+			if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+				Log.info("Set peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
+				this.peakSEPDistanceScale.clear();
+				this.peakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.widthMin)) {
+			if (widthMin != null && widthMin != "") {
+				Log.info("Set widthMin - '"+ widthMin+"'");
+				this.widthMin.clear();
+				this.widthMin.sendKeys(widthMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.widthMax)) {
+			if (widthMax != null && widthMax != "") {
+				Log.info("Set widthMax - '"+ widthMax+"'");
+				this.widthMax.clear();
+				this.widthMax.sendKeys(widthMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.variationMax)) {
+			if (variationMax != null && variationMax != "") {
+				Log.info("Set variationMax - '"+ variationMax+"'");
+				this.variationMax.clear();
+				this.variationMax.sendKeys(variationMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.carSpeedMin)) {
+			if (carSpeedMin != null && carSpeedMin != "") {
+				Log.info("Set CarSpeedMin - '"+ carSpeedMin+"'");
+				this.carSpeedMin.clear();
+				this.carSpeedMin.sendKeys(carSpeedMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.carSpeedMin)) {
+			if (carSpeedMin != null && carSpeedMin != "") {
+				Log.info("Set carSpeedMax - '"+ carSpeedMax+"'");
+				this.carSpeedMax.clear();
+				this.carSpeedMax.sendKeys(carSpeedMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.carWindAngleMin)) {
+			if (carWindAngleMin != null && carWindAngleMin != "") {
+				Log.info("Set carWindAngleMin - '"+ carWindAngleMin+"'");
+				this.carWindAngleMin.clear();
+				this.carWindAngleMin.sendKeys(carWindAngleMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.carWindAngleMax)) {
+			if (carWindAngleMax != null && carWindAngleMax != "") {
+				Log.info("Set carWindAngleMax - '"+ carWindAngleMax+"'");
+				this.carWindAngleMax.clear();
+				this.carWindAngleMax.sendKeys(carWindAngleMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.dBScanSpatialScale)) {
+			if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+				Log.info("Set dBScanSpatialScale - '"+ dBScanSpatialScale+"'");
+				this.dBScanSpatialScale.clear();
+				this.dBScanSpatialScale.sendKeys(dBScanSpatialScale);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSize)) {
+			if (minClusterSize != null && minClusterSize != "") {
+				Log.info("Set minClusterSize - '"+ minClusterSize+"'");
+				this.minClusterSize.clear();
+				this.minClusterSize.sendKeys(minClusterSize);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.backgroundFilterThreshold)) {
+			if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+				Log.info("Set backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
+				this.backgroundFilterThreshold.clear();
+				this.backgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.pPMTriggerThreshold)) {
+			if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+				Log.info("Set pPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
+				this.pPMTriggerThreshold.clear();
+				this.pPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.accelerationMax)) {
+			if (accelerationMax != null && accelerationMax != "") {
+				Log.info("Set accelerationMax - '"+ accelerationMax+"'");
+				this.accelerationMax.clear();
+				this.accelerationMax.sendKeys(accelerationMax);
+			}
+		}
+
+		if(eQJustDBScan != this.eQJustDBScan.isSelected()){
+			this.eQJustDBScan.click();
+		}
+
+		clickOnOkButton();
+	}
+
+
 	public void inputLatLong(String latitude, String longitude){
 		Log.method("inputLatLong", latitude, longitude);
 		this.inputLocationLat.clear();
@@ -563,9 +766,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.waitForAJAXCallsToComplete();
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
-        	// revert back search field.
-        	this.clearSearchField();
-        	return false;
+			// revert back search field.
+			this.clearSearchField();
+			return false;
 		}
 
 		String customerNameXPath;
@@ -598,8 +801,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			if ((customerNameCell.getText().trim()).equalsIgnoreCase(customerName)
 					&& (locationNameCell.getText().trim()).equalsIgnoreCase(locationName)) {
 				Log.info("Found entry at row=" + rowNum);
-            	// revert back search field.
-            	this.clearSearchField();
+				// revert back search field.
+				this.clearSearchField();
 				return true;
 			}
 
@@ -619,9 +822,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
-    	// revert back search field.
-    	this.clearSearchField();
-    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+		// revert back search field.
+		this.clearSearchField();
+		Log.error(String.format("Location not found: '%s', customer = '%s'",
 				locationName, customerName));
 		return false;
 	}
@@ -701,9 +904,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		this.searchTable(locationName);
 		if (this.searchHasNoMatchingRecords()) {
-        	// revert back search field.
-        	this.clearSearchField();
-        	return false;
+			// revert back search field.
+			this.clearSearchField();
+			return false;
 		}
 
 		String customerNameXPath;
@@ -740,9 +943,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				actionEditCell.click();
 				this.waitForEditPageLoad();
 
-                if(openEditorOnly){
-                	return true;
-                }
+				if(openEditorOnly){
+					return true;
+				}
 
 				if (this.inputLocationDesc != null) {
 					Log.info("Set location desc - '"+newLocationName+"'");
@@ -861,18 +1064,18 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				String curURL = driver.getCurrentUrl();
 				this.btnOK.click();
 				Log.info("ok button clicked");
-                if(!checkForError){
-                	Log.info("Not checking for errors");
-                	if (isElementPresent(this.panelDuplicationErrorXPath)) {
-                		// We are still on the new locations page. Return.
-                    	Log.info("Error on page. Returning to caller.");
-                    	return true;
-                	}
+				if(!checkForError){
+					Log.info("Not checking for errors");
+					if (isElementPresent(this.panelDuplicationErrorXPath)) {
+						// We are still on the new locations page. Return.
+						Log.info("Error on page. Returning to caller.");
+						return true;
+					}
 
-                	// Redirected to Manage location page. Revert back search field and return.
-                	this.clearSearchField();
-                	return true;
-                }
+					// Redirected to Manage location page. Revert back search field and return.
+					this.clearSearchField();
+					return true;
+				}
 				if (newLocationName.equalsIgnoreCase("")) {
 					// Required field validation message should be shown.
 					this.waitUntilPresenceOfElementLocated(labelLocDescErrorID);
@@ -890,8 +1093,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 					}
 				}
 
-            	// revert back search field.
-            	this.clearSearchField();
+				// revert back search field.
+				this.clearSearchField();
 				return true;
 			}
 
@@ -911,9 +1114,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			}
 		}
 
-	   	// revert back search field.
-    	this.clearSearchField();
-    	Log.error(String.format("Location not found: '%s', customer = '%s'",
+		// revert back search field.
+		this.clearSearchField();
+		Log.error(String.format("Location not found: '%s', customer = '%s'",
 				locationName, customerName));
 		return false;
 
@@ -931,22 +1134,22 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		String pt = null;
 		try{
-		    pt = (new WebDriverWait(driver,timeout)).until(new ExpectedCondition<String>(){
-			public String apply(WebDriver d){
-				String text = null;
-				try{
-					text = selectedPoint.getText();
-					if(text.indexOf("[")>=0){
-						text = text.substring(text.indexOf("[")+1,text.indexOf("]"));
+			pt = (new WebDriverWait(driver,timeout)).until(new ExpectedCondition<String>(){
+				public String apply(WebDriver d){
+					String text = null;
+					try{
+						text = selectedPoint.getText();
+						if(text.indexOf("[")>=0){
+							text = text.substring(text.indexOf("[")+1,text.indexOf("]"));
 						}else{
 							text = null;
 						}
-				}catch(Exception e){
-					text = null;
+					}catch(Exception e){
+						text = null;
+					}
+					return text;
 				}
-				return text;
-			}
-		});
+			});
 		}catch(Exception e){
 			pt = null;
 			Log.warn(e.toString() + "Selected point is "+pt+"?");
@@ -1159,11 +1362,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	public void editEthaneToMethaneMinRatio(String customerName, String locationName, String newEthMthMin){
 		editEthaneToMethaneRatio(customerName, locationName, newEthMthMin, null);
 	}
-	
+
 	public void editEthaneToMethaneMaxRatio(String customerName, String locationName, String newEthMthMax){
 		editEthaneToMethaneRatio(customerName, locationName, null, newEthMthMax);
 	}
-	
+
 	public void editEthaneToMethaneRatio(String customerName, String locationName, String newEthMthMin, String newEthMthMax){
 		findExistingLocationAndClickEdit(customerName, locationName);
 		if(newEthMthMax!=null&&!newEthMthMax.isEmpty()){
@@ -1177,6 +1380,20 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.ethMthMinUnit.sendKeys(newEthMthMin);
 		}
 		clickOnOkBtn();
+	}
+
+	public void editFEQLocationParameters(String customerName, String locationName, String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale,
+			String widthMin, String widthMax, String variationMax, String carSpeedMin, String carSpeedMax, String carWindAngleMin, String carWindAngleMax,
+			String dBScanSpatialScale, String minClusterSize, String backgroundFilterThreshold, String pPMTriggerThreshold, String accelerationMax, boolean eQJustDBScan){
+
+		findExistingLocationAndClickEdit(customerName, locationName);
+
+		this.waitForPageToLoad();
+
+		// wait necessary for FEQ Location parameters get added correctly.
+		inputFEQParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
+				carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold,
+				accelerationMax, eQJustDBScan);
 	}
 	
 	public boolean isSurveyMinAmpShowing() {

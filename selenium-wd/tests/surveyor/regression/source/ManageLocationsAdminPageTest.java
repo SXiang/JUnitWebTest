@@ -6,6 +6,8 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS_NOLISABOX;
+import static surveyor.scommon.source.SurveyorConstants.ALL_LICENSED_FEATURES_ROWIDS;
 import static surveyor.scommon.source.SurveyorConstants.BLANKFIELDERROR;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMERNAMEPREFIX;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
@@ -47,6 +49,7 @@ import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorBaseTest;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.source.SurveyorConstants.UserTimezone;
 import surveyor.scommon.source.SurveyorTestRunner;
 import common.source.BaseHelper;
@@ -84,7 +87,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestObjects();
-		
+
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
 		homePage = pageObjectFactory.getHomePage();
 		PageFactory.initElements(getDriver(), homePage);
@@ -173,16 +176,16 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 		String customerName = CUSTOMERNAMEPREFIX + getTestSetup().getFixedSizeRandomNumber(12) + "TC22";
 		String eula = customerName + ": " + EULASTRING;
 		String location = "Santa Clara";
-		
+
 		Log.info("\nRunning - TC22_CancelEditLatLongSelector_PicAdmin - "+
 				"Test Description: Verify Cancel button of editing Lat/Long on map screen\n");		
-		
+
 		// *** Add a new location/customer for this test ***
 		loginPage.open();
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
-		
+
 		manageLocationsPage.open();
 		manageLocationsPage.addNewLocation(location, customerName, location);
 
@@ -255,7 +258,7 @@ public class ManageLocationsAdminPageTest extends SurveyorBaseTest {
 	 *  - Click on OK button
 	 * Excepted Result:
 	 *  - A message will appear under the Longitude field, "This field is required"
-     *  - A message will appear under the Latitude field, "This field is required"
+	 *  - A message will appear under the Latitude field, "This field is required"
 	 */
 	@Test
 	public void TC24_NotificationLatLongValueMissing_PicAdmin(){

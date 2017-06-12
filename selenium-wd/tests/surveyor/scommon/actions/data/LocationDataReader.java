@@ -43,6 +43,24 @@ public class LocationDataReader extends BaseDataReader {
 	public static final int Excel_TestData__Col_ExpansionPower = 25;
 	public static final int Excel_TestData__Col_InflationPower = 26;
 	public static final int Excel_TestData__Col_Percentile = 27;
+	public static final int Excel_TestData_Col_FEQEnabled = 28;
+	public static final int Excel_TestData_Col_ShapeCorrelationMin = 29;
+	public static final int Excel_TestData_Col_PeakIDXBuffer = 30;
+	public static final int Excel_TestData_Col_PeakSEPDistanceScale = 31;
+	public static final int Excel_TestData_Col_WidthMin = 32;
+	public static final int Excel_TestData_Col_WidthMax = 33;
+	public static final int Excel_TestData_Col_VariationMax = 34;
+	public static final int Excel_TestData_Col_CarSpeedMin = 35;
+	public static final int Excel_TestData_Col_CarSpeedMax = 36;
+	public static final int Excel_TestData_Col_CarWindAngleMin = 37;
+	public static final int Excel_TestData_Col_CarWindAngleMax = 38;
+	public static final int Excel_TestData_Col_DBScanSpatialScale = 39;
+	public static final int Excel_TestData_Col_MinClusterSize = 40;
+	public static final int Excel_TestData_Col_BackgroundFilterThreshold  = 41;
+	public static final int Excel_TestData_Col_PPMTriggerThreshold = 42;
+	public static final int Excel_TestData_Col_AccelerationMax = 43;
+	public static final int Excel_TestData_Col_JustDBScan = 44;
+	
 
 	public class LocationDataRow {
 		public String rowID;
@@ -73,6 +91,24 @@ public class LocationDataReader extends BaseDataReader {
 		public String expansionPower;
 		public String inflationPower;
 		public String percentile;
+		public String fEQEnabled;
+		public String shapeCorrelationMin;
+		public String peakIDXBuffer;
+		public String peakSEPDistanceScale;
+		public String widthMin;
+		public String widthMax;
+		public String variationMax;
+		public String carSpeedMin;
+		public String carSpeedMax;
+		public String carWindAngleMin;
+		public String carWindAngleMax;
+		public String dBScanSpatialScale;
+		public String eQMinClusterSize;
+		public String backgroundFilterThreshold;
+		public String pPMTriggerThreshold;
+		public String accelerationMax;
+		public String justDBScan;
+		
 
 		public LocationDataRow(String rowID, String name, String latitude,
 				String longitude, String standardMinAmplitude,
@@ -86,7 +122,12 @@ public class LocationDataReader extends BaseDataReader {
 				String surMinAmp, String rankingMinAmp, String psFilter,
 				String top10PS, String top25PS, String top50PS,
 				String dbScanRd, String minClusterSz, String maxClusterScale,
-				String expansionPower, String inflationPower, String percentile) {
+				String expansionPower, String inflationPower, String percentile,
+				String fEQEnabled, String shapeCorrelationMin, String peakIDXBuffer,
+				String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
+				String carSpeedMin, String carSpeedMax, String carWindAngleMin, String carWindAngleMax,
+				String dBScanSpatialScale, String eQMinClusterSize, String backgroundFilterThreshold, String pPMTriggerThreshold,
+				String accelerationMax, String justDBScan) {
 			this.rowID = rowID;
 			this.name = name;
 			this.latitude = latitude;
@@ -115,6 +156,24 @@ public class LocationDataReader extends BaseDataReader {
 			this.expansionPower = expansionPower;
 			this.inflationPower = inflationPower;
 			this.percentile = percentile;
+			this.fEQEnabled = fEQEnabled;
+			this.shapeCorrelationMin = shapeCorrelationMin;
+			this.peakIDXBuffer = peakIDXBuffer;
+			this.peakSEPDistanceScale = peakSEPDistanceScale;
+			this.widthMin = widthMin;
+			this.widthMax = widthMax;
+			this.variationMax = variationMax;
+			this.carSpeedMin = carSpeedMin;
+			this.carSpeedMax = carSpeedMax;
+			this.carWindAngleMin = carWindAngleMin;
+			this.carWindAngleMax = carWindAngleMax;
+			this.dBScanSpatialScale = dBScanSpatialScale;
+			this.eQMinClusterSize = eQMinClusterSize;
+			this.backgroundFilterThreshold = backgroundFilterThreshold;
+			this.pPMTriggerThreshold = pPMTriggerThreshold;
+			this.accelerationMax = accelerationMax;
+			this.justDBScan = justDBScan;
+			
 		}
 	}
 
@@ -193,21 +252,44 @@ public class LocationDataReader extends BaseDataReader {
 		String expansionPower = excelUtility.getIntegerCellData(dataRowID, Excel_TestData__Col_ExpansionPower, TESTDATA_SHEET_NAME);
 		String inflationPower = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_InflationPower, TESTDATA_SHEET_NAME);
 		String percentile = excelUtility.getNumericCellData(dataRowID, Excel_TestData__Col_Percentile, TESTDATA_SHEET_NAME);
+		String fEQEnabled = excelUtility.getCellData(dataRowID, Excel_TestData_Col_FEQEnabled, TESTDATA_SHEET_NAME);
+		String shapeCorrelationMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_ShapeCorrelationMin, TESTDATA_SHEET_NAME);
+		String peakIDXBuffer = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_PeakIDXBuffer, TESTDATA_SHEET_NAME);
+		String peakSEPDistanceScale = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_PeakSEPDistanceScale, TESTDATA_SHEET_NAME);
+		String widthMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_WidthMin, TESTDATA_SHEET_NAME);
+		String widthMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_WidthMax, TESTDATA_SHEET_NAME);
+		String variationMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_VariationMax, TESTDATA_SHEET_NAME);
+		String carSpeedMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarSpeedMin, TESTDATA_SHEET_NAME);
+		String carSpeedMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarSpeedMax, TESTDATA_SHEET_NAME);
+		String carWindAngleMin = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarWindAngleMin, TESTDATA_SHEET_NAME);
+		String carWindAngleMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_CarWindAngleMax, TESTDATA_SHEET_NAME);
+		String dBScanSpatialScale = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_DBScanSpatialScale, TESTDATA_SHEET_NAME);
+		String eQMinClusterSize = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_MinClusterSize, TESTDATA_SHEET_NAME);
+		String backgroundFilterThreshold = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_BackgroundFilterThreshold, TESTDATA_SHEET_NAME);
+		String pPMTriggerThreshold = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_PPMTriggerThreshold, TESTDATA_SHEET_NAME);
+		String accelerationMax = excelUtility.getNumericCellData(dataRowID, Excel_TestData_Col_AccelerationMax, TESTDATA_SHEET_NAME);
+		String eQJustDBScan = excelUtility.getCellData(dataRowID, Excel_TestData_Col_JustDBScan, TESTDATA_SHEET_NAME);
 
 		Log.info(String.format("Found data row: rowID=[%s], name=[%s], latitude=[%s], longitude=[%s], standardMinAmplitude=[%s], "
 				+ "operatorMinAmplitude=[%s], rapidResponseMinAmplitude=[%s], assessmentMinAmplitude=[%s], eQMinAmplitude=[%s], "
 				+ "isotopicIdentityNoLowerBound=[%s], isotopicIdentityYesLowerBound=[%s], isotopicIdentityYesUpperBound=[%s], "
 				+ "isotopicIdentityNoUpperBound=[%s], ethMethRatioMin=[%s], ethMethRatioMax=[%s], customerDataRowID=[%s], "
 				+ "surMinAmplitude=[%s], rankingMinAmplitude=[%s], psFilter=[%s], top10PS=[%s], top25PS=[%s], top50PS=[%s], "
-				+ "dbScanRd=[%s], minClusterSize=[%s], maxClusterScale=[%s], expansionPower=[%s], inflationPower=[%s], percentile=[%s]",
+				+ "dbScanRd=[%s], minClusterSize=[%s], maxClusterScale=[%s], expansionPower=[%s], inflationPower=[%s], percentile=[%s]"
+				+ "fEQEnabled=[%s],shapeCorrelationMin=[%s],peakIDXBuffer=[%s],peakSEPDistanceScale=[%s],widthMin=[%s],widthMax=[%s]"
+				+ "variationMax=[%s],carSpeedMin=[%s],carSpeedMax=[%s],carWindAngleMin=[%s],carWindAngleMax=[%s],dBScanSpatialScale=[%s]"
+				+ "eQMinClusterSize=[%s],backgroundFilterThreshold=[%s],pPMTriggerThreshold=[%s],accelerationMax=[%s],eQJustDBScan=[%s]",
 				rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude,
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound,
 				isotopicIdentityYesUpperBound, isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID, surMinAmp,
-				rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile));
+				rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile, 
+				fEQEnabled, shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax,
+				carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan));
 
 		return new LocationDataRow(rowID, name, latitude, longitude, standardMinAmplitude, operatorMinAmplitude, rapidResponseMinAmplitude,
 				assessmentMinAmplitude, eQMinAmplitude, isotopicIdentityNoLowerBound, isotopicIdentityYesLowerBound, isotopicIdentityYesUpperBound,
 				isotopicIdentityNoUpperBound, ethMethRatioMin, ethMethRatioMax, customerDataRowID, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS,
-				top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile);
+				top50PS, dbScanRd, minClusterSize, maxClusterScale, expansionPower, inflationPower, percentile,fEQEnabled, shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax,
+				carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
 	}
 }
