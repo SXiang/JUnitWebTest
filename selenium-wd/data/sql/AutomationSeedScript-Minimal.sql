@@ -871,9 +871,9 @@ IF @@ROWCOUNT=0
 	
 	
 -- Calibration record for 'White Rhino 2003 Picarro'
-UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='36d72df6-2823-4542-8298-39de6c296d8e',[StartEpoch]=1493318659,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='39650697-2f7c-9fa0-a12d-39dec2e766aa'
+UPDATE [dbo].[CalibrationRecord] SET [SurveyorUnitId]='36d72df6-2823-4542-8298-39de6c296d8e',[StartEpoch]=1479366940,[BackgroundFilterThreshold]=0,[TriggerThresholdPPM]=0,[GPSOffset]=-4 WHERE [Id]='39650697-2f7c-9fa0-a12d-39dec2e766aa'
 IF @@ROWCOUNT=0
-	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('39650697-2f7c-9fa0-a12d-39dec2e766aa','36d72df6-2823-4542-8298-39de6c296d8e',1493318659,0,0,-4)
+	INSERT INTO [dbo].[CalibrationRecord] ([Id],[SurveyorUnitId],[StartEpoch],[BackgroundFilterThreshold],[TriggerThresholdPPM],[GPSOffset]) VALUES ('39650697-2f7c-9fa0-a12d-39dec2e766aa','36d72df6-2823-4542-8298-39de6c296d8e',1479366940,0,0,-4)
 
 -- Anemometer entry for 'White Rhino 2003 Picarro', calibration record
 UPDATE [dbo].[Anemometer] SET [Offset]=-3.6, [SpeedFactor]=1, [Height]=2, [Rotation]=0 WHERE [CalibrationRecordId]=N'39650697-2f7c-9fa0-a12d-39dec2e766aa' AND [Index]=0
