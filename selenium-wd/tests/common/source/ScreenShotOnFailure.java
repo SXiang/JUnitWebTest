@@ -82,8 +82,13 @@ public class ScreenShotOnFailure{
 			}
 
 			String imgFileFullPath = Paths.get(imgPath, imgFile).toString();
-			String s3Url = uploadScreenShotToS3(imgFileFullPath);
-			logReportScreenShot(reportLogger, fname, s3Url, logStatus);
+			String imgUrl = imgLink + imgFile;
+			try {
+				imgUrl = uploadScreenShotToS3(imgFileFullPath);
+			} catch (Exception ex) {
+				Log.warn(ExceptionUtility.getStackTraceString(ex));
+			}
+			logReportScreenShot(reportLogger, fname, imgUrl, logStatus);
 		}catch(Exception e){
 			Log.warn("Failed to take screenshot: "+e);
 		}
@@ -94,7 +99,7 @@ public class ScreenShotOnFailure{
 		S3Interface s3Interface = S3Interface.newInterface();
 		S3File s3File = S3File.fromFileAndUri(Paths.get(fileFullPath), URI.create(TestContext.INSTANCE.getBaseUrl()));
 		String fileKey = s3Interface.uploadFile(s3File);
-		return String.format("%s/%s", S3Interface.S3_BUCKET_BASE_URL, fileKey);
+		return String.format("%s/" + Constants.BASE_URL_API_DOWNLOAD_IMAGE + "%s", TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint(), fileKey);
 	}
 
 	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile, LogStatus logStatus) {

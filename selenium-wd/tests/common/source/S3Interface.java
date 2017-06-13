@@ -22,9 +22,11 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 public class S3Interface {
-	public final static String S3_BUCKET_BASE_URL = "https://picarro-p3sqa.s3.amazonaws.com";
+	private static final Integer BYTE_LEN = 1024;
 	private final static String DEFAULT_BUCKET = "picarro-p3sqa";
 	private AmazonS3 s3Client = null;
+
+	public final static String S3_BUCKET_BASE_URL = "https://" + DEFAULT_BUCKET + ".amazonaws.com";
 
 	private S3Interface() {
 		BasicAWSCredentials awsCreds = new BasicAWSCredentials(TestContext.INSTANCE.getTestSetup().getAwsAccessKeyId(),
@@ -131,7 +133,7 @@ public class S3Interface {
 		    S3Object s3Obj = s3Client.getObject(bucketName, keyName);
 		    try (S3ObjectInputStream s3IStream = s3Obj.getObjectContent()) {
 			    try (FileOutputStream fStream = new FileOutputStream(new File(Paths.get(outputDirectory, outFileName).toString()))) {
-				    byte[] readBuffer = new byte[1024];
+				    byte[] readBuffer = new byte[BYTE_LEN];
 				    int readLen = 0;
 				    while ((readLen = s3IStream.read(readBuffer)) > 0) {
 				        fStream.write(readBuffer, 0, readLen);
