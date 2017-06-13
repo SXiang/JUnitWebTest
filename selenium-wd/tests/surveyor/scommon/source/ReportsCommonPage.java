@@ -330,10 +330,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div[text()='Analysis']")
 	protected WebElement viewsAnalysesColumn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[8]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[8]/div[text()='Field Notes']")
 	protected WebElement viewsFieldNoteColumn;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
