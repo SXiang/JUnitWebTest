@@ -869,6 +869,9 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/ManageLocationAdminPageUnitTest.class" />
+          <include name="**/ManageLocationsAdminPageTest.class" />
+          <include name="**/ManageLocationsPageTest_Ethane.class" />
+          <include name="**/ManageLocationsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

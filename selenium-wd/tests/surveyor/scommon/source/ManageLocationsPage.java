@@ -97,6 +97,9 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='hasFacilityEQ']")
 	protected WebElement facilityEQCheckbox;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='hasMobileEQ']")
+	protected WebElement mobileEQCheckbox;
+
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
 
@@ -183,53 +186,101 @@ public class ManageLocationsPage extends SurveyorBasePage {
 	protected WebElement justDBScan;
 
 	@FindBy(id = "LocationEQParameterList_0__EQShapeCorrelationMin")
-	protected WebElement shapeCorrelationMin;
+	protected WebElement feqShapeCorrelationMin;
 
 	@FindBy(id = "LocationEQParameterList_0__EQPeakIDXBuffer")
-	protected WebElement peakIDXBuffer;
+	protected WebElement feqPeakIDXBuffer;
 
 	@FindBy(id = "LocationEQParameterList_0__EQPeakSEPDistanceScale")
-	protected WebElement peakSEPDistanceScale;
+	protected WebElement feqPeakSEPDistanceScale;
 
 	@FindBy(id = "LocationEQParameterList_0__EQWidthMin")
-	protected WebElement widthMin;
+	protected WebElement feqWidthMin;
 
 	@FindBy(id = "LocationEQParameterList_0__EQWidthMax")
-	protected WebElement widthMax;
-
+	protected WebElement feqWidthMax;
 
 	@FindBy(id = "LocationEQParameterList_0__EQVariationMax")
-	protected WebElement variationMax;
+	protected WebElement feqVariationMax;
 
 	@FindBy(id = "LocationEQParameterList_0__EQCarSpeedMin")
-	protected WebElement carSpeedMin;
+	protected WebElement feqCarSpeedMin;
 
 	@FindBy(id = "LocationEQParameterList_0__EQCarSpeedMax")
-	protected WebElement carSpeedMax;
+	protected WebElement feqCarSpeedMax;
 
 	@FindBy(id = "LocationEQParameterList_0__EQCarWindAngleMin")
-	protected WebElement carWindAngleMin;
+	protected WebElement feqCarWindAngleMin;
 
 	@FindBy(id = "LocationEQParameterList_0__EQCarWindAngleMax")
-	protected WebElement carWindAngleMax;
+	protected WebElement feqCarWindAngleMax;
 
 	@FindBy(id = "LocationEQParameterList_0__EQDBScanSpatialScale")
-	protected WebElement dBScanSpatialScale;
+	protected WebElement feqDBScanSpatialScale;
 
 	@FindBy(id = "LocationEQParameterList_0__EQMinClusterSize")
-	protected WebElement minClusterSize;
+	protected WebElement feqMinClusterSize;
 
 	@FindBy(id = "LocationEQParameterList_0__EQBackgroundFilterThreshold")
-	protected WebElement backgroundFilterThreshold;
+	protected WebElement feqBackgroundFilterThreshold;
 
 	@FindBy(id = "LocationEQParameterList_0__EQPPMTriggerThreshold")
-	protected WebElement pPMTriggerThreshold;
+	protected WebElement feqPPMTriggerThreshold;
 
 	@FindBy(id = "LocationEQParameterList_0__EQAccelerationMax")
-	protected WebElement accelerationMax;
+	protected WebElement feqAccelerationMax;
 
 	@FindBy(id = "LocationEQParameterList_0__EQJustDBScan")
-	protected WebElement eQJustDBScan;
+	protected WebElement feqJustDBScan;
+
+	@FindBy(id = "LocationEQParameterList_1__EQShapeCorrelationMin")
+	protected WebElement meqShapeCorrelationMin;
+
+	@FindBy(id = "LocationEQParameterList_1__EQPeakIDXBuffer")
+	protected WebElement meqPeakIDXBuffer;
+
+	@FindBy(id = "LocationEQParameterList_1__EQPeakSEPDistanceScale")
+	protected WebElement meqPeakSEPDistanceScale;
+
+	@FindBy(id = "LocationEQParameterList_1__EQWidthMin")
+	protected WebElement meqWidthMin;
+
+	@FindBy(id = "LocationEQParameterList_1__EQWidthMax")
+	protected WebElement meqWidthMax;
+
+
+	@FindBy(id = "LocationEQParameterList_1__EQVariationMax")
+	protected WebElement meqVariationMax;
+
+	@FindBy(id = "LocationEQParameterList_1__EQCarSpeedMin")
+	protected WebElement meqCarSpeedMin;
+
+	@FindBy(id = "LocationEQParameterList_1__EQCarSpeedMax")
+	protected WebElement meqCarSpeedMax;
+
+	@FindBy(id = "LocationEQParameterList_1__EQCarWindAngleMin")
+	protected WebElement meqCarWindAngleMin;
+
+	@FindBy(id = "LocationEQParameterList_1__EQCarWindAngleMax")
+	protected WebElement meqCarWindAngleMax;
+
+	@FindBy(id = "LocationEQParameterList_1__EQDBScanSpatialScale")
+	protected WebElement meqDBScanSpatialScale;
+
+	@FindBy(id = "LocationEQParameterList_1__EQMinClusterSize")
+	protected WebElement meqMinClusterSize;
+
+	@FindBy(id = "LocationEQParameterList_1__EQBackgroundFilterThreshold")
+	protected WebElement meqBackgroundFilterThreshold;
+
+	@FindBy(id = "LocationEQParameterList_1__EQPPMTriggerThreshold")
+	protected WebElement meqPPMTriggerThreshold;
+
+	@FindBy(id = "LocationEQParameterList_1__EQAccelerationMax")
+	protected WebElement meqAccelerationMax;
+
+	@FindBy(id = "LocationEQParameterList_1__EQJustDBScan")
+	protected WebElement meqJustDBScan;
 
 	private LatLongSelectionControl latLongSelectionControl = null;
 
@@ -281,19 +332,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
 				customer, newLocationName, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax, "","", "", "", "", "", "", "", "", "", "", "", 
-				false,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
-	}
-
-	public boolean addNewLocationwithFEQ(String locationDesc,
-			String customer, String newLocationName, String ethMthMin, String ethMthMax, String ShapeCorrelationMin, String PeakIDXBuffer,String PeakSEPDistanceScale, 
-			String WidthMin, String WidthMax, String VariationMax, String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, 
-			String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold, String PPMTriggerThreshold,	String AccelerationMax) {
-		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
-				customer, newLocationName, ethMthMin, ethMthMax);
-		return addNewLocation(locationDesc, customer, newLocationName,
-				true /* UseLatLongSelector */, ethMthMin, ethMthMax, "", "", "", "", "", "", "", "", "", "", "", "", true,ShapeCorrelationMin, PeakIDXBuffer, 
-				PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin, CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize,
-				BackgroundFilterThreshold, PPMTriggerThreshold,	AccelerationMax, true, true);
+				null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
 	private boolean addNewLocation(String locationDesc, String customer,
@@ -302,7 +341,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("addNewLocation", locationDesc, customer, newLocationName,
 				useLatLongSelector, ethMthMin, ethMthMax);
 		return addNewLocation(locationDesc, customer, newLocationName,
-				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "", "", "", "", "", "", "", "", false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
+				useLatLongSelector, ethMthMin, ethMthMax, "", "", "", "", "", "", "", "", "", "", "", "", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
 	public boolean addNewLocation(String locationDesc, String customer,	String newLocationName, String surMinAmp, String rankingMinAmp, String top10PS, String top25PS,
@@ -312,17 +351,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				maxClusterScale, expansionPower, inflationPower, percentile);
 
 		return addNewLocation(locationDesc, customer, newLocationName, false, "1", "2", surMinAmp, rankingMinAmp, psFilter, top10PS,
-				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, false, null, 
+				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, null, null, 
 				null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
 	public boolean addNewLocation(String locationDesc, String customer,
 			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, String surMinAmp, String rankingMinAmp, String psFilter, 
 			String top10PS, String top25PS, String top50PS, String dbScanRd, String minClusterSz, String maxClusterScale, String expansionPower, String inflationPower, 
-			String percentile, boolean fEQEnabled, String ShapeCorrelationMin, String PeakIDXBuffer, String PeakSEPDistanceScale, String WidthMin, String WidthMax, String VariationMax, 
+			String percentile, String surveyMode, String ShapeCorrelationMin, String PeakIDXBuffer, String PeakSEPDistanceScale, String WidthMin, String WidthMax, String VariationMax, 
 			String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold, 
 			String PPMTriggerThreshold,String AccelerationMax, boolean JustDBScan, boolean checkForError) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, fEQEnabled, ShapeCorrelationMin, PeakIDXBuffer, 
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, surveyMode, ShapeCorrelationMin, PeakIDXBuffer, 
 				PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin, CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize,
 				BackgroundFilterThreshold, PPMTriggerThreshold,	AccelerationMax, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSz,
 				maxClusterScale, expansionPower, inflationPower, percentile, checkForError);
@@ -481,16 +520,31 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
-		// wait necessary for FEQ Location parameters get added correctly.
+		// wait necessary for FEE or MEQ Location parameters get added correctly.
 		this.waitForPageToLoad();
 
-		if (!fEQEnabled) {
-			clickOnOkButton();
-		} else {
+		if (surveyMode != null && surveyMode != "") {
 
-			inputFEQParameters(ShapeCorrelationMin, PeakIDXBuffer, PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin,
-					CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize, BackgroundFilterThreshold, PPMTriggerThreshold,
-					AccelerationMax, JustDBScan);
+			if (surveyMode.equals("FEQ")){
+				assertTrue(this.facilityEQCheckbox.isDisplayed());
+				this.facilityEQCheckbox.click();
+				inputFeqParameters(ShapeCorrelationMin, PeakIDXBuffer, PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin,
+						CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize, BackgroundFilterThreshold, PPMTriggerThreshold,
+						AccelerationMax, JustDBScan);
+			}
+			else if(surveyMode.equals("MEQ")){
+				assertTrue(this.mobileEQCheckbox.isDisplayed());
+				this.mobileEQCheckbox.click();
+				inputMeqParameters(ShapeCorrelationMin, PeakIDXBuffer, PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin,
+						CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize, BackgroundFilterThreshold, PPMTriggerThreshold,
+						AccelerationMax, JustDBScan);
+			}
+			else{
+				Log.info("Do not surpport this location parameters." + surveyMode);
+			}
+		}
+		else{
+			clickOnOkButton();
 		}
 
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
@@ -570,140 +624,273 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return found;
 	}
 
-	public void inputFEQParameters(String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
+	public void inputFeqParameters(String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
 			String carSpeedMin,	String carSpeedMax, String carWindAngleMin, String carWindAngleMax, String dBScanSpatialScale, String minClusterSize, String backgroundFilterThreshold,
-			String pPMTriggerThreshold,	String accelerationMax, boolean eQJustDBScan){
-		Log.method("inputFEQParameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
-				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
-		this.facilityEQCheckbox.click();
+			String pPMTriggerThreshold,	String accelerationMax, boolean justDBScan){
+		Log.method("input FEQ Parameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
+				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, justDBScan);
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.shapeCorrelationMin)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqShapeCorrelationMin)) {
 			if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
-				Log.info("Set shapeCorrelationMin - '" + shapeCorrelationMin + "'");
-				this.shapeCorrelationMin.clear();
-				this.shapeCorrelationMin.sendKeys(shapeCorrelationMin);
+				Log.info("Set FEQ shapeCorrelationMin - '" + shapeCorrelationMin + "'");
+				this.feqShapeCorrelationMin.clear();
+				this.feqShapeCorrelationMin.sendKeys(shapeCorrelationMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.peakIDXBuffer)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakIDXBuffer)) {
 			if (peakIDXBuffer != null && peakIDXBuffer != "") {
-				Log.info("Set peakIDXBuffer - '"+ peakIDXBuffer+"'");
-				this.peakIDXBuffer.clear();
-				this.peakIDXBuffer.sendKeys(peakIDXBuffer);
+				Log.info("Set FEQ peakIDXBuffer - '"+ peakIDXBuffer+"'");
+				this.feqPeakIDXBuffer.clear();
+				this.feqPeakIDXBuffer.sendKeys(peakIDXBuffer);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.peakSEPDistanceScale)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakSEPDistanceScale)) {
 			if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
-				Log.info("Set peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
-				this.peakSEPDistanceScale.clear();
-				this.peakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
+				Log.info("Set FEQ peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
+				this.feqPeakSEPDistanceScale.clear();
+				this.feqPeakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.widthMin)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMin)) {
 			if (widthMin != null && widthMin != "") {
-				Log.info("Set widthMin - '"+ widthMin+"'");
-				this.widthMin.clear();
-				this.widthMin.sendKeys(widthMin);
+				Log.info("Set FEQ widthMin - '"+ widthMin+"'");
+				this.feqWidthMin.clear();
+				this.feqWidthMin.sendKeys(widthMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.widthMax)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMax)) {
 			if (widthMax != null && widthMax != "") {
-				Log.info("Set widthMax - '"+ widthMax+"'");
-				this.widthMax.clear();
-				this.widthMax.sendKeys(widthMax);
+				Log.info("Set FEQ widthMax - '"+ widthMax+"'");
+				this.feqWidthMax.clear();
+				this.feqWidthMax.sendKeys(widthMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.variationMax)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqVariationMax)) {
 			if (variationMax != null && variationMax != "") {
-				Log.info("Set variationMax - '"+ variationMax+"'");
-				this.variationMax.clear();
-				this.variationMax.sendKeys(variationMax);
+				Log.info("Set FEQ variationMax - '"+ variationMax+"'");
+				this.feqVariationMax.clear();
+				this.feqVariationMax.sendKeys(variationMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.carSpeedMin)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
 			if (carSpeedMin != null && carSpeedMin != "") {
-				Log.info("Set CarSpeedMin - '"+ carSpeedMin+"'");
-				this.carSpeedMin.clear();
-				this.carSpeedMin.sendKeys(carSpeedMin);
+				Log.info("Set FEQ CarSpeedMin - '"+ carSpeedMin+"'");
+				this.feqCarSpeedMin.clear();
+				this.feqCarSpeedMin.sendKeys(carSpeedMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.carSpeedMin)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
 			if (carSpeedMin != null && carSpeedMin != "") {
-				Log.info("Set carSpeedMax - '"+ carSpeedMax+"'");
-				this.carSpeedMax.clear();
-				this.carSpeedMax.sendKeys(carSpeedMax);
+				Log.info("Set FEQ carSpeedMax - '"+ carSpeedMax+"'");
+				this.feqCarSpeedMax.clear();
+				this.feqCarSpeedMax.sendKeys(carSpeedMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.carWindAngleMin)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMin)) {
 			if (carWindAngleMin != null && carWindAngleMin != "") {
-				Log.info("Set carWindAngleMin - '"+ carWindAngleMin+"'");
-				this.carWindAngleMin.clear();
-				this.carWindAngleMin.sendKeys(carWindAngleMin);
+				Log.info("Set FEQ carWindAngleMin - '"+ carWindAngleMin+"'");
+				this.feqCarWindAngleMin.clear();
+				this.feqCarWindAngleMin.sendKeys(carWindAngleMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.carWindAngleMax)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMax)) {
 			if (carWindAngleMax != null && carWindAngleMax != "") {
-				Log.info("Set carWindAngleMax - '"+ carWindAngleMax+"'");
-				this.carWindAngleMax.clear();
-				this.carWindAngleMax.sendKeys(carWindAngleMax);
+				Log.info("Set FEQ carWindAngleMax - '"+ carWindAngleMax+"'");
+				this.feqCarWindAngleMax.clear();
+				this.feqCarWindAngleMax.sendKeys(carWindAngleMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.dBScanSpatialScale)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqDBScanSpatialScale)) {
 			if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
-				Log.info("Set dBScanSpatialScale - '"+ dBScanSpatialScale+"'");
-				this.dBScanSpatialScale.clear();
-				this.dBScanSpatialScale.sendKeys(dBScanSpatialScale);
+				Log.info("Set FEQ DBScanSpatialScale - '"+ dBScanSpatialScale+"'");
+				this.feqDBScanSpatialScale.clear();
+				this.feqDBScanSpatialScale.sendKeys(dBScanSpatialScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSize)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqMinClusterSize)) {
 			if (minClusterSize != null && minClusterSize != "") {
-				Log.info("Set minClusterSize - '"+ minClusterSize+"'");
-				this.minClusterSize.clear();
-				this.minClusterSize.sendKeys(minClusterSize);
+				Log.info("Set FEQ minClusterSize - '"+ minClusterSize+"'");
+				this.feqMinClusterSize.clear();
+				this.feqMinClusterSize.sendKeys(minClusterSize);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.backgroundFilterThreshold)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqBackgroundFilterThreshold)) {
 			if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
-				Log.info("Set backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
-				this.backgroundFilterThreshold.clear();
-				this.backgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
+				Log.info("Set FEQ backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
+				this.feqBackgroundFilterThreshold.clear();
+				this.feqBackgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.pPMTriggerThreshold)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPPMTriggerThreshold)) {
 			if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
-				Log.info("Set pPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
-				this.pPMTriggerThreshold.clear();
-				this.pPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
+				Log.info("Set FEQ PPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
+				this.feqPPMTriggerThreshold.clear();
+				this.feqPPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.accelerationMax)) {
+		if (WebElementExtender.isElementPresentAndDisplayed(this.feqAccelerationMax)) {
 			if (accelerationMax != null && accelerationMax != "") {
-				Log.info("Set accelerationMax - '"+ accelerationMax+"'");
-				this.accelerationMax.clear();
-				this.accelerationMax.sendKeys(accelerationMax);
+				Log.info("Set FEQ accelerationMax - '"+ accelerationMax+"'");
+				this.feqAccelerationMax.clear();
+				this.feqAccelerationMax.sendKeys(accelerationMax);
 			}
 		}
 
-		if(eQJustDBScan != this.eQJustDBScan.isSelected()){
-			this.eQJustDBScan.click();
+		if(justDBScan != this.feqJustDBScan.isSelected()){
+			Log.info("Select FEQ JustDBScan - '"+ justDBScan +"'");
+			this.feqJustDBScan.click();
 		}
 
 		clickOnOkButton();
 	}
 
+	public void inputMeqParameters(String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
+			String carSpeedMin,	String carSpeedMax, String carWindAngleMin, String carWindAngleMax, String dBScanSpatialScale, String minClusterSize, String backgroundFilterThreshold,
+			String pPMTriggerThreshold,	String accelerationMax, boolean justDBScan){
+		Log.method("input MEQ Parameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
+				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, justDBScan);
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqShapeCorrelationMin)) {
+			if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+				Log.info("Set MEQ shapeCorrelationMin - '" + shapeCorrelationMin + "'");
+				this.meqShapeCorrelationMin.clear();
+				this.meqShapeCorrelationMin.sendKeys(shapeCorrelationMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakIDXBuffer)) {
+			if (peakIDXBuffer != null && peakIDXBuffer != "") {
+				Log.info("Set MEQ peakIDXBuffer - '"+ peakIDXBuffer+"'");
+				this.meqPeakIDXBuffer.clear();
+				this.meqPeakIDXBuffer.sendKeys(peakIDXBuffer);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakSEPDistanceScale)) {
+			if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+				Log.info("Set MEQ peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
+				this.meqPeakSEPDistanceScale.clear();
+				this.meqPeakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMin)) {
+			if (widthMin != null && widthMin != "") {
+				Log.info("Set MEQ widthMin - '"+ widthMin+"'");
+				this.meqWidthMin.clear();
+				this.meqWidthMin.sendKeys(widthMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMax)) {
+			if (widthMax != null && widthMax != "") {
+				Log.info("Set MEQ widthMax - '"+ widthMax+"'");
+				this.meqWidthMax.clear();
+				this.meqWidthMax.sendKeys(widthMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqVariationMax)) {
+			if (variationMax != null && variationMax != "") {
+				Log.info("Set MEQ variationMax - '"+ variationMax+"'");
+				this.meqVariationMax.clear();
+				this.meqVariationMax.sendKeys(variationMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
+			if (carSpeedMin != null && carSpeedMin != "") {
+				Log.info("Set MEQ CarSpeedMin - '"+ carSpeedMin+"'");
+				this.meqCarSpeedMin.clear();
+				this.meqCarSpeedMin.sendKeys(carSpeedMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
+			if (carSpeedMin != null && carSpeedMin != "") {
+				Log.info("Set MEQ carSpeedMax - '"+ carSpeedMax+"'");
+				this.meqCarSpeedMax.clear();
+				this.meqCarSpeedMax.sendKeys(carSpeedMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMin)) {
+			if (carWindAngleMin != null && carWindAngleMin != "") {
+				Log.info("Set MEQ carWindAngleMin - '"+ carWindAngleMin+"'");
+				this.meqCarWindAngleMin.clear();
+				this.meqCarWindAngleMin.sendKeys(carWindAngleMin);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMax)) {
+			if (carWindAngleMax != null && carWindAngleMax != "") {
+				Log.info("Set MEQ carWindAngleMax - '"+ carWindAngleMax+"'");
+				this.meqCarWindAngleMax.clear();
+				this.meqCarWindAngleMax.sendKeys(carWindAngleMax);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqDBScanSpatialScale)) {
+			if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+				Log.info("Set MEQ DBScanSpatialScale - '"+ dBScanSpatialScale+"'");
+				this.meqDBScanSpatialScale.clear();
+				this.meqDBScanSpatialScale.sendKeys(dBScanSpatialScale);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqMinClusterSize)) {
+			if (minClusterSize != null && minClusterSize != "") {
+				Log.info("Set MEQ minClusterSize - '"+ minClusterSize+"'");
+				this.meqMinClusterSize.clear();
+				this.meqMinClusterSize.sendKeys(minClusterSize);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqBackgroundFilterThreshold)) {
+			if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+				Log.info("Set MEQ backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
+				this.meqBackgroundFilterThreshold.clear();
+				this.meqBackgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPPMTriggerThreshold)) {
+			if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+				Log.info("Set MEQ PPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
+				this.meqPPMTriggerThreshold.clear();
+				this.meqPPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
+			}
+		}
+
+		if (WebElementExtender.isElementPresentAndDisplayed(this.meqAccelerationMax)) {
+			if (accelerationMax != null && accelerationMax != "") {
+				Log.info("Set MEQ accelerationMax - '"+ accelerationMax+"'");
+				this.meqAccelerationMax.clear();
+				this.meqAccelerationMax.sendKeys(accelerationMax);
+			}
+		}
+
+		if(justDBScan != this.meqJustDBScan.isSelected()){
+			Log.info("Select MEQ JustDBScan - '"+ justDBScan +"'");
+			this.meqJustDBScan.click();
+		}
+
+		clickOnOkButton();
+	}
 
 	public void inputLatLong(String latitude, String longitude){
 		Log.method("inputLatLong", latitude, longitude);
@@ -1391,11 +1578,25 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.waitForPageToLoad();
 
 		// wait necessary for FEQ Location parameters get added correctly.
-		inputFEQParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
+		inputFeqParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
 				carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold,
 				accelerationMax, eQJustDBScan);
 	}
-	
+
+	public void editMEQLocationParameters(String customerName, String locationName, String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale,
+			String widthMin, String widthMax, String variationMax, String carSpeedMin, String carSpeedMax, String carWindAngleMin, String carWindAngleMax,
+			String dBScanSpatialScale, String minClusterSize, String backgroundFilterThreshold, String pPMTriggerThreshold, String accelerationMax, boolean eQJustDBScan){
+
+		findExistingLocationAndClickEdit(customerName, locationName);
+
+		this.waitForPageToLoad();
+
+		// wait necessary for FEQ Location parameters get added correctly.
+		inputMeqParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
+				carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold,
+				accelerationMax, eQJustDBScan);
+	}
+
 	public boolean isSurveyMinAmpShowing() {
 		return WebElementExtender.isElementPresentAndDisplayed(surMinAmp);
 	}
@@ -1448,3 +1649,4 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(justDBScan);
 	}
 }
+

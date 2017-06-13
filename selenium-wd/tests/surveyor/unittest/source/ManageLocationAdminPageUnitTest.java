@@ -35,7 +35,6 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 	public static void beforeTestClass() {
 		initializeTestObjects();
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
-		ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
 		}
 
@@ -56,7 +55,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 	 */
 	@Test
 	public void AddLocationWithFEQLocationParameters() throws Exception{
-		Log.info("\nTestcase - TC2332_DriverViewAnalyticsSurveyModeForLicensedCustomers\n");
+		Log.info("\nTestcase - AddLocationWithFEQLocationParameters\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -76,7 +75,7 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 	 */
 	@Test
 	public void EditLocationWithFEQLocationParameters() throws Exception{
-		Log.info("\nTestcase - TC2332_DriverViewAnalyticsSurveyModeForLicensedCustomers\n");
+		Log.info("\nTestcase - EditLocationWithFEQLocationParameters\n");
 
 		loginPage.open();
 		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
@@ -92,6 +91,51 @@ public class ManageLocationAdminPageUnitTest extends BaseMapViewTest {
 		///Edit FEQ location parameters for the existing location
 		manageLocationPageAction.editFEQLocationParameters(EMPTY, 25/*locationRowID*/);
 		assertTrue(manageLocationPageAction.findExistingLocation(EMPTY, 25));
+
+	}
+
+	/**
+	 * Test Description: Add MEQ location for new customer
+	 * attributes present
+	 */
+	@Test
+	public void AddLocationWithMEQLocationParameters() throws Exception{
+		Log.info("\nTestcase - AddLocationWithMEQLocationParameters\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		// Create new customer.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, 14 /*customerRowID*/);
+
+		// Create new location.
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 26 /*locationRowID*/);
+	}
+	
+	/**
+	 * Test Description: Add and Edit MEQ location for new customer
+	 * attributes present
+	 */
+	@Test
+	public void EditLocationWithMEQLocationParameters() throws Exception{
+		Log.info("\nTestcase - EditLocationWithMEQLocationParameters\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(PICDFADMIN, PICADMINPSWD);
+
+		// Create new customer.
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, 14 /*customerRowID*/);
+
+		// Create new location.
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 26 /*locationRowID*/);
+		
+		///Edit MEQ location parameters for the existing location
+		manageLocationPageAction.editMEQLocationParameters(EMPTY, 27/*locationRowID*/);
+		assertTrue(manageLocationPageAction.findExistingLocation(EMPTY, 27));
 
 	}
 
