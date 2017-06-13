@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -16,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
+
+import common.source.S3Interface.S3File;
 
 /**
  * Capturing ScreenShots Failed Selenium Test
@@ -62,7 +66,7 @@ public class ScreenShotOnFailure{
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
 		return takeScreenshot(driver, className, takeBrowserScreenShot, logStatus, false);
 	}
-	
+
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus, boolean isMobile) {
 		this.driver = driver;
 		String imgName = imgPath;
@@ -76,11 +80,21 @@ public class ScreenShotOnFailure{
 			}else{
 				captureDesktopScreenShot(imgName);
 			}
-			logReportScreenShot(reportLogger, fname, imgLink+imgFile, logStatus);
+
+			String imgFileFullPath = Paths.get(imgPath, imgFile).toString();
+			String s3Url = uploadScreenShotToS3(imgFileFullPath);
+			logReportScreenShot(reportLogger, fname, s3Url, logStatus);
 		}catch(Exception e){
 			Log.warn("Failed to take screenshot: "+e);
 		}
 		return imgName;
+	}
+
+	private String uploadScreenShotToS3(String fileFullPath) {
+		S3Interface s3Interface = S3Interface.newInterface();
+		S3File s3File = S3File.fromFileAndUri(Paths.get(fileFullPath), URI.create(TestContext.INSTANCE.getBaseUrl()));
+		String fileKey = s3Interface.uploadFile(s3File);
+		return String.format("%s/%s", S3Interface.S3_BUCKET_BASE_URL, fileKey);
 	}
 
 	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile, LogStatus logStatus) {
@@ -91,7 +105,7 @@ public class ScreenShotOnFailure{
 	public void captureBrowserScreenShot(String fileName) {
 		captureBrowserScreenShot(driver, fileName, null);
 	}
-	
+
 	public static void captureBrowserScreenShot(WebDriver driver, String fileName, Rectangle rect) {
 		try{
 			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -107,7 +121,7 @@ public class ScreenShotOnFailure{
 
 	public static File getSubImage(File scrFile, Rectangle rect) throws IOException{
 		BufferedImage img = ImageIO.read(scrFile);
-		/* if(width/height is <=0, they represent the deviations on width/height */ 
+		/* if(width/height is <=0, they represent the deviations on width/height */
 		if(rect.width<=0){
 			rect.width = img.getWidth() - rect.x + rect.width;
 		}
@@ -118,7 +132,7 @@ public class ScreenShotOnFailure{
 		ImageIO.write(dest, "png", scrFile);
 		return scrFile;
 	}
-	
+
 	public void captureDesktopScreenShot(String fileName) {
 		try{
 			Robot robot = new Robot();
