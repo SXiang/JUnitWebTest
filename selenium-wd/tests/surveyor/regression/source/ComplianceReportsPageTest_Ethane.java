@@ -418,7 +418,7 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 
 		this.getComplianceReportsPage().waitForReportGenerationtoComplete(rptTitle, getTestSetup().getLoginUser());
 
-		this.getComplianceReportsPage().getInputSearch().sendKeys(rptTitle);
+		this.getComplianceReportsPage().performSearch(rptTitle);
 		this.getComplianceReportsPage().clickOnFirstCopyComplianceBtn();
 
 		this.getComplianceReportsPage().verifyIfInDrivingSurvey(KEYINDCLR);
