@@ -44,7 +44,7 @@ public class FacilityEQReportDataReader extends ReportsBaseDataReader {
 		columnIdxMap.put("Col_Title", Excel_TestData__Col_Title);
 		columnIdxMap.put("Col_CustomerRowID", Excel_TestData__Col_CustomerRowID);
 		columnIdxMap.put("Col_Timezone", Excel_TestData__Col_Timezone);
-		columnIdxMap.put("Col_facilityEQLocationParameter", Excel_TestData__Col_FacilityEQLocationParameter);
+		columnIdxMap.put("Col_FacilityEQLocationParameter", Excel_TestData__Col_FacilityEQLocationParameter);
 		columnIdxMap.put("Col_ReportSurveyRowIDs", Excel_TestData__Col_ReportSurveyRowIDs);
 		columnIdxMap.put("Col_ShapeCoordinatesRowIDs", Excel_TestData__Col_ShapeCoordinatesRowIDs);
 		columnIdxMap.put("Col_ShowLisas", Excel_TestData__Col_ShowLisas);

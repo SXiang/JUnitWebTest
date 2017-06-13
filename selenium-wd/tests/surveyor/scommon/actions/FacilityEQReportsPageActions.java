@@ -30,7 +30,7 @@ import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
 public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 
 	private FacilityEQReportDataReader dataReader = null;
-	public static ThreadLocal<FacilityEQReportEntity> workingReportsEntity = new ThreadLocal<FacilityEQReportEntity>();      		// Stores the ReportsCompliance object from createNewReport action
+	public static ThreadLocal<FacilityEQReportEntity> workingReportsEntity = new ThreadLocal<FacilityEQReportEntity>();      		// Stores the FacilityEQReport object from createNewReport action
 	public static ThreadLocal<FacilityEQReportsDataRow> workingDataRow = new ThreadLocal<FacilityEQReportsDataRow>();   // Stores the workingDataRow from createNewReport action
 
 	public FacilityEQReportsPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
@@ -163,6 +163,10 @@ public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
 		if (actionName.equals("findReportByName")) { return this.findReportByName(data, dataRowID); }
 		else if (actionName.equals("verifyReportModeIsNotShownOnPage")) { return this.verifyReportModeIsNotShownOnPage(data, dataRowID); }
+		else if (actionName.equals("waitForConcentrationChartZIPFileDownloadToComplete")) { return this.waitForConcentrationChartZIPFileDownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("waitForEmissionDataZIPFileDownloadToComplete")) { return this.waitForEmissionDataZIPFileDownloadToComplete(data, dataRowID); }
+		else if (actionName.equals("clickOnViewerConcentrationChartZIP")) { return this.clickOnViewerConcentrationChartZIP(data, dataRowID); }
+		else if (actionName.equals("clickOnViewerEmissionDataZIP")) { return this.clickOnViewerEmissionDataZIP(data, dataRowID); }
 		return false;
 	}
 
