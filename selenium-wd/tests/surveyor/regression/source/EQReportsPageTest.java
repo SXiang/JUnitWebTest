@@ -22,8 +22,10 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.dataprovider.EQReportDataProvider;
+import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -37,6 +39,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	private static LoginPageActions loginPageAction;
 	private static EQReportsPageActions eqReportsPageAction;
 	private static EQReportsPage eqReportsPage;
+	private static ManageLocationPageActions manageLocationPageAction;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -67,6 +70,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
 		eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
 		setReportsPage(eqReportsPage);
@@ -334,29 +338,31 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * 	 * Results:
 	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
 	 */
-	@Ignore  // Complete test case implementation once US4475 completes.  Enable the test case once US4403 gets fixed.
+	@Ignore //Not able to implement TC due to DE3029  //Enable the test case once US4403 and DE3028 gets fixed.
 	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2409, location = EQReportDataProvider.class)
 	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck ...");
 
-		
-		// Implementation left for "Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck"
-		 
-		
+
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		// Create new location where Min cluster size = 1 and DBScan uncheck
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 21 /*locationRowID*/);
+
 		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 
 		eqReportsPage.openNewReportPage();
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
 		assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
-		
+
 		for (int i=0; i <4; i++)
 		{
 			eqReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
 			assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));					
 		}
-		
+
 	}
 }
