@@ -435,7 +435,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='licenseMissingModal']/div/div/div[3]/a")
 	protected WebElement dialoadModelOK;
-	
+
 	public WebElement getDialoadModelOK() {
 		return this.dialoadModelOK;
 	}
