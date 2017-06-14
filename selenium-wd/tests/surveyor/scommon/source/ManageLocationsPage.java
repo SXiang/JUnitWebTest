@@ -9,7 +9,6 @@ import static surveyor.scommon.source.SurveyorConstants.REQUIRED_FIELD_VAL_MESSA
 import static surveyor.scommon.source.SurveyorConstants.SECONDS_10;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -25,7 +24,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -520,9 +518,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
-		// wait necessary for FEE or MEQ Location parameters get added correctly.
-		this.waitForPageToLoad();
-
 		if (surveyMode != null && surveyMode != "") {
 
 			if (surveyMode.equals("FEQ")){
@@ -630,120 +625,122 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("input FEQ Parameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
 				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, justDBScan);
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqShapeCorrelationMin)) {
-			if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+		this.waitForElementToBeClickable(feqShapeCorrelationMin);
+
+		if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqShapeCorrelationMin)) {
 				Log.info("Set FEQ shapeCorrelationMin - '" + shapeCorrelationMin + "'");
 				this.feqShapeCorrelationMin.clear();
 				this.feqShapeCorrelationMin.sendKeys(shapeCorrelationMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakIDXBuffer)) {
-			if (peakIDXBuffer != null && peakIDXBuffer != "") {
+		if (peakIDXBuffer != null && peakIDXBuffer != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakIDXBuffer)) {
 				Log.info("Set FEQ peakIDXBuffer - '"+ peakIDXBuffer+"'");
 				this.feqPeakIDXBuffer.clear();
 				this.feqPeakIDXBuffer.sendKeys(peakIDXBuffer);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakSEPDistanceScale)) {
-			if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+		if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqPeakSEPDistanceScale)) {
 				Log.info("Set FEQ peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
 				this.feqPeakSEPDistanceScale.clear();
 				this.feqPeakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMin)) {
-			if (widthMin != null && widthMin != "") {
+		if (widthMin != null && widthMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMin)) {
 				Log.info("Set FEQ widthMin - '"+ widthMin+"'");
 				this.feqWidthMin.clear();
 				this.feqWidthMin.sendKeys(widthMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMax)) {
-			if (widthMax != null && widthMax != "") {
+		if (widthMax != null && widthMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqWidthMax)) {
 				Log.info("Set FEQ widthMax - '"+ widthMax+"'");
 				this.feqWidthMax.clear();
 				this.feqWidthMax.sendKeys(widthMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqVariationMax)) {
-			if (variationMax != null && variationMax != "") {
+		if (variationMax != null && variationMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqVariationMax)) {
 				Log.info("Set FEQ variationMax - '"+ variationMax+"'");
 				this.feqVariationMax.clear();
 				this.feqVariationMax.sendKeys(variationMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
-			if (carSpeedMin != null && carSpeedMin != "") {
+		if (carSpeedMin != null && carSpeedMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
 				Log.info("Set FEQ CarSpeedMin - '"+ carSpeedMin+"'");
 				this.feqCarSpeedMin.clear();
 				this.feqCarSpeedMin.sendKeys(carSpeedMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
-			if (carSpeedMin != null && carSpeedMin != "") {
+		if (carSpeedMin != null && carSpeedMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarSpeedMin)) {
 				Log.info("Set FEQ carSpeedMax - '"+ carSpeedMax+"'");
 				this.feqCarSpeedMax.clear();
 				this.feqCarSpeedMax.sendKeys(carSpeedMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMin)) {
-			if (carWindAngleMin != null && carWindAngleMin != "") {
+		if (carWindAngleMin != null && carWindAngleMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMin)) {
 				Log.info("Set FEQ carWindAngleMin - '"+ carWindAngleMin+"'");
 				this.feqCarWindAngleMin.clear();
 				this.feqCarWindAngleMin.sendKeys(carWindAngleMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMax)) {
-			if (carWindAngleMax != null && carWindAngleMax != "") {
+		if (carWindAngleMax != null && carWindAngleMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqCarWindAngleMax)) {
 				Log.info("Set FEQ carWindAngleMax - '"+ carWindAngleMax+"'");
 				this.feqCarWindAngleMax.clear();
 				this.feqCarWindAngleMax.sendKeys(carWindAngleMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqDBScanSpatialScale)) {
-			if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+		if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqDBScanSpatialScale)) {
 				Log.info("Set FEQ DBScanSpatialScale - '"+ dBScanSpatialScale+"'");
 				this.feqDBScanSpatialScale.clear();
 				this.feqDBScanSpatialScale.sendKeys(dBScanSpatialScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqMinClusterSize)) {
-			if (minClusterSize != null && minClusterSize != "") {
+		if (minClusterSize != null && minClusterSize != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqMinClusterSize)) {
 				Log.info("Set FEQ minClusterSize - '"+ minClusterSize+"'");
 				this.feqMinClusterSize.clear();
 				this.feqMinClusterSize.sendKeys(minClusterSize);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqBackgroundFilterThreshold)) {
-			if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+		if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqBackgroundFilterThreshold)) {
 				Log.info("Set FEQ backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
 				this.feqBackgroundFilterThreshold.clear();
 				this.feqBackgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqPPMTriggerThreshold)) {
-			if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+		if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqPPMTriggerThreshold)) {
 				Log.info("Set FEQ PPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
 				this.feqPPMTriggerThreshold.clear();
 				this.feqPPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.feqAccelerationMax)) {
-			if (accelerationMax != null && accelerationMax != "") {
+		if (accelerationMax != null && accelerationMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.feqAccelerationMax)) {
 				Log.info("Set FEQ accelerationMax - '"+ accelerationMax+"'");
 				this.feqAccelerationMax.clear();
 				this.feqAccelerationMax.sendKeys(accelerationMax);
@@ -764,120 +761,122 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		Log.method("input MEQ Parameters", shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin,
 				carWindAngleMax, dBScanSpatialScale, minClusterSize, backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, justDBScan);
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqShapeCorrelationMin)) {
-			if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+		this.waitForElementToBeClickable(meqShapeCorrelationMin);
+
+		if (shapeCorrelationMin != null && shapeCorrelationMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqShapeCorrelationMin)) {
 				Log.info("Set MEQ shapeCorrelationMin - '" + shapeCorrelationMin + "'");
 				this.meqShapeCorrelationMin.clear();
 				this.meqShapeCorrelationMin.sendKeys(shapeCorrelationMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakIDXBuffer)) {
-			if (peakIDXBuffer != null && peakIDXBuffer != "") {
+		if (peakIDXBuffer != null && peakIDXBuffer != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakIDXBuffer)) {
 				Log.info("Set MEQ peakIDXBuffer - '"+ peakIDXBuffer+"'");
 				this.meqPeakIDXBuffer.clear();
 				this.meqPeakIDXBuffer.sendKeys(peakIDXBuffer);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakSEPDistanceScale)) {
-			if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+		if (peakSEPDistanceScale != null && peakSEPDistanceScale != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqPeakSEPDistanceScale)) {
 				Log.info("Set MEQ peakSEPDistanceScale - '"+ peakSEPDistanceScale+"'");
 				this.meqPeakSEPDistanceScale.clear();
 				this.meqPeakSEPDistanceScale.sendKeys(peakSEPDistanceScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMin)) {
-			if (widthMin != null && widthMin != "") {
+		if (widthMin != null && widthMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMin)) {
 				Log.info("Set MEQ widthMin - '"+ widthMin+"'");
 				this.meqWidthMin.clear();
 				this.meqWidthMin.sendKeys(widthMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMax)) {
-			if (widthMax != null && widthMax != "") {
+		if (widthMax != null && widthMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqWidthMax)) {
 				Log.info("Set MEQ widthMax - '"+ widthMax+"'");
 				this.meqWidthMax.clear();
 				this.meqWidthMax.sendKeys(widthMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqVariationMax)) {
-			if (variationMax != null && variationMax != "") {
+		if (variationMax != null && variationMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqVariationMax)) {
 				Log.info("Set MEQ variationMax - '"+ variationMax+"'");
 				this.meqVariationMax.clear();
 				this.meqVariationMax.sendKeys(variationMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
-			if (carSpeedMin != null && carSpeedMin != "") {
+		if (carSpeedMin != null && carSpeedMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
 				Log.info("Set MEQ CarSpeedMin - '"+ carSpeedMin+"'");
 				this.meqCarSpeedMin.clear();
 				this.meqCarSpeedMin.sendKeys(carSpeedMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
-			if (carSpeedMin != null && carSpeedMin != "") {
+		if (carSpeedMin != null && carSpeedMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarSpeedMin)) {
 				Log.info("Set MEQ carSpeedMax - '"+ carSpeedMax+"'");
 				this.meqCarSpeedMax.clear();
 				this.meqCarSpeedMax.sendKeys(carSpeedMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMin)) {
-			if (carWindAngleMin != null && carWindAngleMin != "") {
+		if (carWindAngleMin != null && carWindAngleMin != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMin)) {
 				Log.info("Set MEQ carWindAngleMin - '"+ carWindAngleMin+"'");
 				this.meqCarWindAngleMin.clear();
 				this.meqCarWindAngleMin.sendKeys(carWindAngleMin);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMax)) {
-			if (carWindAngleMax != null && carWindAngleMax != "") {
+		if (carWindAngleMax != null && carWindAngleMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqCarWindAngleMax)) {
 				Log.info("Set MEQ carWindAngleMax - '"+ carWindAngleMax+"'");
 				this.meqCarWindAngleMax.clear();
 				this.meqCarWindAngleMax.sendKeys(carWindAngleMax);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqDBScanSpatialScale)) {
-			if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+		if (dBScanSpatialScale != null && dBScanSpatialScale != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqDBScanSpatialScale)) {
 				Log.info("Set MEQ DBScanSpatialScale - '"+ dBScanSpatialScale+"'");
 				this.meqDBScanSpatialScale.clear();
 				this.meqDBScanSpatialScale.sendKeys(dBScanSpatialScale);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqMinClusterSize)) {
-			if (minClusterSize != null && minClusterSize != "") {
+		if (minClusterSize != null && minClusterSize != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqMinClusterSize)) {
 				Log.info("Set MEQ minClusterSize - '"+ minClusterSize+"'");
 				this.meqMinClusterSize.clear();
 				this.meqMinClusterSize.sendKeys(minClusterSize);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqBackgroundFilterThreshold)) {
-			if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+		if (backgroundFilterThreshold != null && backgroundFilterThreshold != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqBackgroundFilterThreshold)) {
 				Log.info("Set MEQ backgroundFilterThreshold - '"+ backgroundFilterThreshold+"'");
 				this.meqBackgroundFilterThreshold.clear();
 				this.meqBackgroundFilterThreshold.sendKeys(backgroundFilterThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqPPMTriggerThreshold)) {
-			if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+		if (pPMTriggerThreshold != null && pPMTriggerThreshold != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqPPMTriggerThreshold)) {
 				Log.info("Set MEQ PPMTriggerThreshold - '"+ pPMTriggerThreshold+"'");
 				this.meqPPMTriggerThreshold.clear();
 				this.meqPPMTriggerThreshold.sendKeys(pPMTriggerThreshold);
 			}
 		}
 
-		if (WebElementExtender.isElementPresentAndDisplayed(this.meqAccelerationMax)) {
-			if (accelerationMax != null && accelerationMax != "") {
+		if (accelerationMax != null && accelerationMax != "") {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.meqAccelerationMax)) {
 				Log.info("Set MEQ accelerationMax - '"+ accelerationMax+"'");
 				this.meqAccelerationMax.clear();
 				this.meqAccelerationMax.sendKeys(accelerationMax);
@@ -1575,7 +1574,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		findExistingLocationAndClickEdit(customerName, locationName);
 
-		this.waitForPageToLoad();
+		this.waitForEditPageLoad();
 
 		// wait necessary for FEQ Location parameters get added correctly.
 		inputFeqParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
@@ -1589,7 +1588,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 
 		findExistingLocationAndClickEdit(customerName, locationName);
 
-		this.waitForPageToLoad();
+		this.waitForEditPageLoad();
 
 		// wait necessary for FEQ Location parameters get added correctly.
 		inputMeqParameters(shapeCorrelationMin, peakIDXBuffer, peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin,
