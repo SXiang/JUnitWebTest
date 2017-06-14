@@ -53,7 +53,7 @@ public class FacilityEQReportDataReader extends ReportsBaseDataReader {
 
 	public FacilityEQReportsDataRow getDataRow(Integer dataRowID) throws Exception {
 			ReportsBaseDataRow reportsDataRow = super.getDataRow(dataRowID);
-			String facilityEQLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_facilityEQLocationParameter"), sheetName);			
+			String facilityEQLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_FacilityEQLocationParameter"), sheetName);			
 			String shapeCoordinatesRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_ShapeCoordinatesRowIDs"), sheetName);
 			String showLisas = excelUtility.getBooleanCellData(dataRowID, columnIndexMap.get("Col_ShowLisas"), sheetName);
 			Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], facilityEQLocationParameter=[%s], "
