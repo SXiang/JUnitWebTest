@@ -868,8 +868,7 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-        	<include name="**/ComplianceReportsPageTest_Ethane.class" />
-        	<include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
+        	<include name="**/ComplianceReportsPageTest9.class" />
         </fileset>
       </batchtest>
     </junit>
