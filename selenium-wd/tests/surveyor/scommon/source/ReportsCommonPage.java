@@ -169,8 +169,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String PDF_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadPdf?reportId=%s&ReportType=Compliance";
 	private static final String META_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadReportMeta?reportId=%s&ReportType=Compliance";
 	private static final String SHAPE_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadShapefile?reportId=%s&ReportType=Compliance";
-	private static final String EmissionData_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadEmissionDataZip?reportId=%s&ReportType=FacilityEQ";
-	private static final String ConcentrationChart_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadDownloadConcentrationChart?reportId=%s&ReportType=FacilityEQ";
+	private static final String EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadEmissionDataZip?reportId=%s&ReportType=FacilityEQ";
+	private static final String CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadDownloadConcentrationChart?reportId=%s&ReportType=FacilityEQ";
 	private static final String VIEW_FILE_DOWNLOAD_URL = "Reports/DownloadReportView?id=%s";
 
 	/*
@@ -821,10 +821,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 			downloadFileRelativeUrl = String.format(SHAPE_ZIP_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportShapeZipFileName(rptTitle, true /* includeExtension */);
 		} else if (fileType == ReportFileType.EmissionDataZIP) {
-			downloadFileRelativeUrl = String.format(EmissionData_ZIP_FILE_DOWNLOAD_URL, reportId);
+			downloadFileRelativeUrl = String.format(EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportEmissionDataZipFileName(rptTitle, true /* includeExtension */);
 		} else if (fileType == ReportFileType.ConcentrationChartZIP) {
-			downloadFileRelativeUrl = String.format(ConcentrationChart_ZIP_FILE_DOWNLOAD_URL, reportId);
+			downloadFileRelativeUrl = String.format(CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportConcentrationChartZipFileName(rptTitle, true /* includeExtension */);
 		} else {
 			throw new Exception(
