@@ -338,6 +338,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		// Search for report without creation (non-existent report)
 		assertFalse(assessmentReportsPageAction.getAssessmentReportsPage().searchReport("INVALID_REPORT_TITLE987", LoginPageActions.workingDataRow.get().username));
 		assertEquals(NOMATCHINGSEARCH, assessmentReportsPageAction.getAssessmentReportsPage().getEmptyTableMessage());
