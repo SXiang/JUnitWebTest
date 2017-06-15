@@ -337,7 +337,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-
+		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 		// Search for report without creation (non-existent report)
 		assertFalse(assessmentReportsPageAction.getAssessmentReportsPage().searchReport("INVALID_REPORT_TITLE987", LoginPageActions.workingDataRow.get().username));
 		assertEquals(NOMATCHINGSEARCH, assessmentReportsPageAction.getAssessmentReportsPage().getEmptyTableMessage());
@@ -352,6 +352,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - TimeZone : PST/PDT , Survey Mode: Standard, Exclusion Radius: 0
 	 *	- - Provide lat long values
 	 *	- - Provide non-default FOV opacity value (E.g FOV opacity - 0.9)
+	 *
 	 *	- - Select Gap table, Percent Assets Covered and Percent Report Area covered
 	 *	- - Asset Layer : All. Boundary Layer : All levels
 	 *	- - Add Survey

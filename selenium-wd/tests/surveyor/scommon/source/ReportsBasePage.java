@@ -98,6 +98,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement btnNewReport;
 	protected String strBtnNewReport = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 
+	@FindBy(how = How.ID, using = "footer")
+	protected WebElement pageEnd;
+
+	@FindBy(how = How.ID, using = "#page-wrapper .row.row-thin-header")
+	protected WebElement pageBegin;
+	
 	@FindBy(how = How.ID, using = "report-title")
 	protected WebElement inputTitle;
 
@@ -262,6 +268,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
+	private String btnOKId = "buttonOK";
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cancel')]")
 	protected WebElement btnCancel;
@@ -1210,6 +1217,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnOKButton() {
 		Log.clickElementInfo("Ok");
+		focusOnPage(pageEnd);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].click();", btnOK);
 	}

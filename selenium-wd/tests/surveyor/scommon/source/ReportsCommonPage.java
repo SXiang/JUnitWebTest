@@ -1260,7 +1260,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 									Log.clickElementInfo("Confirm Resubmit");
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
-									this.waitForAJAXCallsToComplete();
 								}
 								if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
@@ -1276,6 +1275,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 								}
 							}
 						}
+						this.waitForAJAXCallsToComplete();
 						return true;
 					}
 					Log.error("Button image is not visible '" + buttonXPath + "'");
