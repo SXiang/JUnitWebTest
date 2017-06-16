@@ -268,7 +268,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='buttonOk']")
 	protected WebElement btnOK;
-	private String btnOKId = "buttonOK";
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cancel')]")
 	protected WebElement btnCancel;
