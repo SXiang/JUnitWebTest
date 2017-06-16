@@ -2339,8 +2339,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
-		this.inputSearchReport.clear();
-		this.inputSearchReport.sendKeys(reportTitle);
+		performSearch(reportTitle);
 		waitForSearchResultsToLoad();
 
 		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
@@ -3102,6 +3101,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
+		jsScrollToView(this.btnSurveySearch);
 		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}
