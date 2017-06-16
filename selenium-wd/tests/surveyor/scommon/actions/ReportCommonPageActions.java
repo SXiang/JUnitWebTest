@@ -800,6 +800,9 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		this.getReportsCommonPage().clickOnButtonInReportPage(getWorkingReportsDataRow().title,
 				LoginPageActions.workingDataRow.get().username, ReportsButtonType.InProgressCopy);
 		this.getReportsCommonPage().waitForCopyReportPagetoLoad();
+		this.getReportsCommonPage().waitForInputTitleToEnable();
+		this.getReportsCommonPage().waitForDeleteSurveyButtonToLoad();
+		this.getReportsCommonPage().waitForOkButtonToEnable();
 		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
 	}
