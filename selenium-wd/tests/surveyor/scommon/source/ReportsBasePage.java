@@ -1217,8 +1217,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void clickOnOKButton() {
 		Log.clickElementInfo("Ok");
 		focusOnPage(pageEnd);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", btnOK);
+		jsClick(this.btnOK);
 	}
 
 	public void inputSurveyTag(String tag) {
