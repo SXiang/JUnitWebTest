@@ -2906,6 +2906,10 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean found = false;
 		do{
 			found = searchReport(reportTitle, reportCreatedBy);
+			if(!found){
+				this.inputSearch.clear();
+				testSetup.slowdownInSeconds(timeout);
+			}
 		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
 		reportMode = this.reportMode.getText().trim();
 		return reportMode;
