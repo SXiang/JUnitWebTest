@@ -392,7 +392,7 @@ public class LatLongSelectionControl extends BaseControl {
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl selectSegment(List<Coordinates> gpsPosition) {
+	public LatLongSelectionControl selectCoordinates(List<Coordinates> gpsPosition) {
 		if (canvas != null && canvas.isDisplayed())
 		{
 			Log.info("[LatLongSelectionControl]: Found canvas element");

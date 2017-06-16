@@ -39,7 +39,7 @@ import common.source.WebElementExtender;
 import common.source.PDFTableUtility.PDFTable;
 
 /**
- * Assessment Reports Page model
+ * EQ Reports Page model
  */
 public class EQReportsPage extends ReportsCommonPage {
 
@@ -106,7 +106,7 @@ public class EQReportsPage extends ReportsCommonPage {
 	}
 
 	protected void selectEQLocationParameter(String eqLocationParameter) {
-		selectDropdownItem(eqLocationSelector, eqLocationParameter);
+		selectDropdownOption(eqLocationSelector, eqLocationParameter);
 	}
 
 	protected void openLineSegmentsSelector() {
@@ -154,7 +154,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		waitForAJAXCallsToComplete();
 		mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
 		for(List<Coordinates> line:lineSegments){
-			latLongSelectionControl.selectSegment(line);
+				latLongSelectionControl.selectCoordinates(line);
 		}
 		latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
 		latLongSelectionControl.waitForModalDialogToClose();
