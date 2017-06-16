@@ -245,7 +245,7 @@ public class ComplianceReportsWithNewSurveyPageTest2 extends BaseReportsPageActi
 		String reportName1 = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportId1.substring(0, 6);
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle1, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle1);
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName1);
 		
@@ -256,7 +256,7 @@ public class ComplianceReportsWithNewSurveyPageTest2 extends BaseReportsPageActi
 		
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle2, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle2);
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName2);
 	}

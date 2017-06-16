@@ -5,10 +5,6 @@ import org.junit.runners.model.InitializationError;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 
-import surveyor.scommon.entities.CustomerSurveyInfoEntity;
-import surveyor.scommon.generators.CustomerSurveyInfoBuilder;
-import surveyor.scommon.generators.TestDataGenerator;
-
 public class EQReportDataProvider extends ReportDataProvider {
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC561 = "dataProviderPageActionsEQReports_TC561";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC562 = "dataProviderPageActionsEQReports_TC562";
@@ -147,7 +143,7 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC2409() {
 		return new Object[][] {
-			{ "TC2409" /*TestCaseID*/, 4 /*userDataRowID*/,  17 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC2409" /*TestCaseID*/, 4 /*userDataRowID*/,  17 /*reportDataRowID1*/, 18 /*reportDataRowID2*/}
 		};
 	}
 
