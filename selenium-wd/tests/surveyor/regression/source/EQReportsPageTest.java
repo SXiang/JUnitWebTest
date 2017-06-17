@@ -338,7 +338,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * 	 * Results:
 	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
 	 */
-	@Test  // Complete test case implementation as part of  DE3029.  Enable the test case once US4403 gets fixed.
+	@Ignore  // Complete test case implementation as part of  DE3029.  Enable the test case once US4403 gets fixed.
 	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2409, location = EQReportDataProvider.class)
 	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
