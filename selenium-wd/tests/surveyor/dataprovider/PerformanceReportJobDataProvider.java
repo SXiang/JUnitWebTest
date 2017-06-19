@@ -103,6 +103,14 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	private static final int LARGE_AREA3_REPORT_DATA_ROW_ID = 151;
 	private static final int LARGE_AREA3_EXECUTIONS_FOR_BASELINES = 5;
 
+	private static final int LARGE_AREA4_USER_ROW_ID = 23;
+	private static final int LARGE_AREA4_REPORT_DATA_ROW_ID = 217;
+	private static final int LARGE_AREA4_EXECUTIONS_FOR_BASELINES = 5;
+
+	private static final int LARGE_AREA5_USER_ROW_ID = 23;
+	private static final int LARGE_AREA5_REPORT_DATA_ROW_ID = 218;
+	private static final int LARGE_AREA5_EXECUTIONS_FOR_BASELINES = 5;
+
 	private static final int LARGE_PIPES1_USER_ROW_ID = 24;
 	private static final int LARGE_PIPES1_REPORT_DATA_ROW_ID = 152;
 	private static final int LARGE_PIPES1_EXECUTIONS_FOR_BASELINES = 5;
@@ -123,6 +131,11 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEAREA = "dataProviderReportJobPerformanceLargeArea";
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_LARGEPIPES = "dataProviderReportJobPerformanceLargePipes";
+
+	public static final String REPORT_JOB_PERFORMANCE_REPORTGEN_PROVIDER_LARGEAREA = "dataProviderReportJobPerformanceLargeAreaReportGenTest";
+	public static final String REPORT_JOB_PERFORMANCE_ASSETBOX_MULTI_EXECUTION_PROVIDER = "dataProviderReportJobPerformanceAssetBox_MultiExecution";
+
+	private static final int TEST_CASE_MULTI_EXECUTION_TIMES = 15;
 
 	// asset box highlight dataproviders
 	public static final String REPORT_JOB_PERFORMANCE_PROVIDER_ASSETBOX1 = "dataProviderReportJobPerformanceAssetBox1";
@@ -391,6 +404,15 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 	}
 
 	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceLargeAreaReportGenTest() {
+
+		return new Object[][] {
+			{ "TC2315-4", LARGE_AREA4_USER_ROW_ID, LARGE_AREA4_REPORT_DATA_ROW_ID, LARGE_AREA4_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+			{ "TC2315-5", LARGE_AREA5_USER_ROW_ID, LARGE_AREA5_REPORT_DATA_ROW_ID, LARGE_AREA5_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.LargeArea.toString() },
+		};
+	}
+
+	@DataProvider
 	public static Object[][] dataProviderReportJobPerformanceLargePipes() {
 
 		return new Object[][] {
@@ -479,6 +501,14 @@ public class PerformanceReportJobDataProvider extends ReportDataProvider {
 			{ "TC2318-47", ASSET_BOX_HIGHLIGHT48_USER_ROW_ID, ASSET_BOX_HIGHLIGHT48_REPORT_DATA_ROW_ID, ASSET_BOX_HIGHLIGHT48_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.AssetBoxHighlightJob.toString() },
 			{ "TC2318-48", ASSET_BOX_HIGHLIGHT49_USER_ROW_ID, ASSET_BOX_HIGHLIGHT49_REPORT_DATA_ROW_ID, ASSET_BOX_HIGHLIGHT49_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.AssetBoxHighlightJob.toString() },
 			{ "TC2318-49", ASSET_BOX_HIGHLIGHT50_USER_ROW_ID, ASSET_BOX_HIGHLIGHT50_REPORT_DATA_ROW_ID, ASSET_BOX_HIGHLIGHT50_EXECUTIONS_FOR_BASELINES, ReportJobTestCategory.AssetBoxHighlightJob.toString() },
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportJobPerformanceAssetBox_MultiExecution() {
+
+		return new Object[][] {
+			{ "TC2318-46-Multi", ASSET_BOX_HIGHLIGHT47_USER_ROW_ID, ASSET_BOX_HIGHLIGHT47_REPORT_DATA_ROW_ID, TEST_CASE_MULTI_EXECUTION_TIMES, ReportJobTestCategory.AssetBoxHighlightJob.toString() },
 		};
 	}
 }

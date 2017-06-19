@@ -618,18 +618,30 @@ public class BasePage {
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";
 		String actualFile = Paths
-				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-data\\screenshots")
-				.toString() + File.separator + testCaseID + File.separator + name + ".png";
+				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		
-		if (!verifyActualImageWithBase(actualFile, baseFile, generateBaseline)) {
+		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
 		Files.delete(Paths.get(actualFile));
 		return true;
 	}
-	
+	public boolean verifyScreenshotWithBase(String pathToActualImage, String pathToBaseImage, boolean generateBaseline) throws IOException {
+		if(generateBaseline){
+			FileUtility.copyFile(pathToActualImage, pathToBaseImage);
+			return true;
+		}
+		boolean  isEqual = ImageSimilarityUtility.isSimilaryImage(pathToActualImage, pathToBaseImage);
+		if(!isEqual){
+			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+			Log.error("Images diff is saved in : "+pathToActualImage+ImageSimilarityUtility.diffImageSuffix);
+			return false;
+		}
+		return true;
+	}
+
 	public Dimension getBrowserSize(){
 		return driver.manage().window().getSize();
 	}
@@ -648,7 +660,10 @@ public class BasePage {
 			return true;
 		}
 		ImageComparisonResult result = ImagingUtility.compareImages(pathToActualImage, pathToBaseImage);
-		if ((result.getFailureMessage() != null) && (result.isEqual() == true)) {
+		if(!result.isEqual()){
+			Log.error("Images are not match - baseline: '"+pathToBaseImage+", actual '"+pathToActualImage+"'");
+			String error = result.getFailureMessage();
+			Log.error("Images comparison error: "+error);
 			return false;
 		}
 		return true;
@@ -678,7 +693,11 @@ public class BasePage {
 				return false;
 			}
 		};
-		(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
-		(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+		try{
+			(new WebDriverWait(driver, timeout)).until(jQueryActiveComplete);
+			(new WebDriverWait(driver, timeout)).until(documentReadyComplete);
+		}catch(Exception e){
+			Log.warn("Failed to waitForAJAXCallsToComplete: "+e);
+		}
 	}
 }

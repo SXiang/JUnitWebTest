@@ -1,15 +1,15 @@
 ﻿<#--------------------------------------------------------------------------------------------------------------------------------
- DESCRIPTION: 
+ DESCRIPTION:
   - This script can be used to generate seed data survey CSV files for list of Survey Ids in database.
-  
- Sample Run Script: 
+
+ Sample Run Script:
    .\Generate-SurveyCSVs.ps1 `
-        -surveyIDs "DA2C4869-58DD-70FE-3B6A-39DD2C131AAA,A0EE2DB5-1B37-B1B0-554C-39DD2C1D41B5,F5D5BF4C-A286-BB4E-9C08-39DD2C310655"  `
+        -surveyIDs "2329A3D7-5C3B-3B93-4B5E-39DB887753E5,B2FA11F7-D62C-7331-1D16-39DB88775916"  `
         -databaseIPAddress "20.20.130.238"  `
         -databaseName "SurveyorSQA"  `
         -databaseUser "awssa"  `
-        -databasePassword "<password>"  `
-        -outputFolder "C:\temp\SurveyCSVs"  
+        -databasePassword "j!RuL1Gd7A"  `
+        -outputFolder "C:\temp\MEQ_FEQ_Surveys"
 ----------------------------------------------------------------------------------------------------------------------------------#>
 
 param
@@ -54,12 +54,12 @@ $surveyIDArr | % {
 
     $idx = 0
 
-    $objSurveys | % { 
+    $objSurveys | % {
         if ($idx -gt 0) {     # first row is length of array. datarows are from index=1
-            
+
             # --- AnemometerRaw ---
-            
-            $obj = $_; 
+
+            $obj = $_;
             $id = $obj.Id
             $tag = $obj.Tag
             $startEpoch = $obj.AdjustedStartEpoch
@@ -73,7 +73,9 @@ $surveyIDArr | % {
 
             $currSurveyTag = $tag
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$tag-$counter.csv"
+            $fileTag = $tag.Replace("/", "-").Replace(" ", "-")
+
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\AnemometerRaw-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for AnemometerRaw -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("AnemometerRaw-")
             $colHeaders = $COLUMN_HEADINGS.get_item("AnemometerRaw-")
@@ -86,7 +88,7 @@ $surveyIDArr | % {
             $objAnemometerRaw | foreach {
                 if ($i1 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> AnemometerRaw, Survey Tag -> $tag - Processing row - $i1"
-                    
+
                     $objAne = $_;
                     $aneAnalyzerId = Null-ToValue -value $objAne.AnalyzerId;
                     $aneEpochTime = Null-ToValue -value $objAne.EpochTime;
@@ -103,7 +105,7 @@ $surveyIDArr | % {
 
             # --- CaptureEvent ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\CaptureEvent-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\CaptureEvent-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for CaptureEvent -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("CaptureEvent-")
             $colHeaders = $COLUMN_HEADINGS.get_item("CaptureEvent-")
@@ -116,7 +118,7 @@ $surveyIDArr | % {
             $objCaptureEvent | foreach {
                 if ($i2 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> CaptureEvent, Survey Tag -> $tag - Processing row - $i2"
-                    
+
                     $objCap = $_;
                     $capAnalyzerId = Null-ToValue -value $objCap.AnalyzerId;
                     $capCaptureType = Bool-ToBit -value $objCap.CaptureType;
@@ -147,7 +149,7 @@ $surveyIDArr | % {
 
             # --- FieldOfView ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\FieldOfView-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\FieldOfView-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for FieldOfView -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("FieldOfView-")
             $colHeaders = $COLUMN_HEADINGS.get_item("FieldOfView-")
@@ -160,7 +162,7 @@ $surveyIDArr | % {
             $objFieldOfView | foreach {
                 if ($i3 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> FieldOfView, Survey Tag -> $tag - Processing row - $i3"
-                    
+
                     $objFie = $_;
                     $fieAnalyzerId = Null-ToValue -value $objFie.AnalyzerId;
                     $fieEpochTime = Null-ToValue -value $objFie.EpochTime;
@@ -175,7 +177,7 @@ $surveyIDArr | % {
 
             # --- GPSRaw ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\GPSRaw-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for GPSRaw -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("GPSRaw-")
             $colHeaders = $COLUMN_HEADINGS.get_item("GPSRaw-")
@@ -188,7 +190,7 @@ $surveyIDArr | % {
             $objGPSRaw | foreach {
                 if ($i4 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> GPSRaw, Survey Tag -> $tag - Processing row - $i4"
-                    
+
                     $objGPS = $_;
                     $gPSAnalyzerId = Null-ToValue -value $objGPS.AnalyzerId;
                     $gPSEpochTime = Null-ToValue -value $objGPS.EpochTime;
@@ -207,7 +209,7 @@ $surveyIDArr | % {
 
             # --- Measurement ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Measurement-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Measurement -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Measurement-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Measurement-")
@@ -220,7 +222,7 @@ $surveyIDArr | % {
             $objMeasurement | foreach {
                 if ($i5 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Measurement, Survey Tag -> $tag - Processing row - $i5"
-                    
+
                     $objMea = $_;
                     $meaAnalyzerEthaneConcentrationUncertainty = $objMea.AnalyzerEthaneConcentrationUncertainty;
                     $meaAnalyzerId = Null-ToValue -value $objMea.AnalyzerId;
@@ -265,7 +267,7 @@ $surveyIDArr | % {
 
             # --- Note ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Note-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Note-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Note -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Note-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Note-")
@@ -278,7 +280,7 @@ $surveyIDArr | % {
             $objNote | foreach {
                 if ($i6 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Note, Survey Tag -> $tag - Processing row - $i6"
-                    
+
                     $objNot = $_;
                     $notAnalyzerId = Null-ToValue -value $objNot.AnalyzerId;
                     $notDeleted = Null-ToValue -value $objNot.Deleted;
@@ -297,7 +299,7 @@ $surveyIDArr | % {
 
             # --- Peak ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Peak-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Peak-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Peak -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Peak-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Peak-")
@@ -310,7 +312,7 @@ $surveyIDArr | % {
             $objPeak | foreach {
                 if ($i7 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Peak, Survey Tag -> $tag - Processing row - $i7"
-                    
+
                     $objPea = $_;
                     $peaAmplitude = $objPea.Amplitude;
                     $peaAnalyzerId = $objPea.AnalyzerId;
@@ -355,7 +357,7 @@ $surveyIDArr | % {
 
             # --- Segment ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Segment -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Segment-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Segment-")
@@ -368,7 +370,7 @@ $surveyIDArr | % {
             $objSegment | foreach {
                 if ($i8 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Segment, Survey Tag -> $tag - Processing row - $i8"
-                    
+
                     $objSeg = $_;
                     $segMode = Null-ToValue -value $objSeg.Mode;
                     $segOrder = Null-ToValue -value $objSeg.Order;
@@ -383,7 +385,7 @@ $surveyIDArr | % {
 
             # --- Survey ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Survey-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Survey-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for Survey -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("Survey-")
             $colHeaders = $COLUMN_HEADINGS.get_item("Survey-")
@@ -396,7 +398,7 @@ $surveyIDArr | % {
             $objSurvey | foreach {
                 if ($i9 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Survey, Survey Tag -> $tag - Processing row - $i9"
-                    
+
                     $objSur = $_;
                     $surAnalyzerId = Null-ToValue -value $objSur.AnalyzerId;
                     $surBuildNumber = $objSur.BuildNumber;
@@ -426,7 +428,7 @@ $surveyIDArr | % {
 
             # --- SurveyCondition ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyCondition-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyCondition-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for SurveyCondition -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("SurveyCondition-")
             $colHeaders = $COLUMN_HEADINGS.get_item("SurveyCondition-")
@@ -439,7 +441,7 @@ $surveyIDArr | % {
             $objSurveyCondition | foreach {
                 if ($i10 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyCondition, Survey Tag -> $tag - Processing row - $i10"
-                    
+
                     $objSur = $_;
                     $surId = Null-ToValue -value $objSur.Id;
                     $surName = Null-ToValue -value $objSur.Name;
@@ -454,7 +456,7 @@ $surveyIDArr | % {
 
             # --- SurveyResult ---
 
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-$fileTag-$counter.csv"
             Write-Host "Printing CSV header for SurveyResult -> Survey Tag: $tag"
             $COLUMN_HEADINGS.get_item("SurveyResult-")
             $colHeaders = $COLUMN_HEADINGS.get_item("SurveyResult-")
@@ -467,7 +469,7 @@ $surveyIDArr | % {
             $objSurveyResult | foreach {
                 if ($i11 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyResult, Survey Tag -> $tag - Processing row - $i11"
-                    
+
                     $objSur = $_;
                     $surBreadcrumb = Geometry-ToText -value $objSur.Breadcrumb;
                     $surFieldOfView = Geometry-ToText -value $objSur.FieldOfView;
@@ -482,7 +484,7 @@ $surveyIDArr | % {
             # --- SurveyResult-Geom ---
 
             # Create GEOM file for SurveyResult
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-Geom-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\SurveyResult-Geom-$fileTag-$counter.csv"
             $i12=0
             Write-Host "Generating SurveyResult-Geom file for Survey Tag: $tag"
             $query = "SELECT [FieldOfView].STAsText() AS SurveyResultFieldOfViewAsWKT FROM [$databaseName].[dbo].[SurveyResult] WHERE SurveyId='$id'"
@@ -490,7 +492,7 @@ $surveyIDArr | % {
             $objSurveyResult | foreach {
                 if ($i12 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> SurveyResult(-geom), Survey Tag -> $tag - Processing row - $i12"
-                    
+
                     $surSurveyResultFieldOfViewAsWKT = $_.SurveyResultFieldOfViewAsWKT;
 
                     Add-Content $OUTCSV "$surSurveyResultFieldOfViewAsWKT"
@@ -502,7 +504,7 @@ $surveyIDArr | % {
             # --- Segment-Geom ---
 
             # Create GEOM file for Segment
-            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-Geom-$tag-$counter.csv"
+            $OUTCSV = New-Item -ItemType "File" -Path "$outputFolder\Segment-Geom-$fileTag-$counter.csv"
             $i13=0
             Write-Host "Generating Segment-Geom file for Survey Tag: $tag"
             $query = "SELECT [Shape].STAsText() AS SegmentShapeWKT FROM [$databaseName].[dbo].[Segment] WHERE SurveyId='$id'"
@@ -510,7 +512,7 @@ $surveyIDArr | % {
             $objSegment | foreach {
                 if ($i13 -gt 0) {     # first row is length of array. datarows are from index=1
                     "Table -> Segment, Survey Tag -> $tag - Processing row - $i13"
-                    
+
                     $segSegmentShapeWKT = $_.SegmentShapeWKT;
 
                     Add-Content $OUTCSV "$segSegmentShapeWKT"

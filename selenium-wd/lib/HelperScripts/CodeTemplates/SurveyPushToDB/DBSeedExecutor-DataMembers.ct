@@ -1,0 +1,3 @@
+	public static final String[] PICARRO_CUSTOMER_SURVEYS = {%PICARRO_SURVEY_TAG%};
+
+	public static final String[] SQACUS_CUSTOMER_SURVEYS = {%SQACUS_SURVEY_TAG%};

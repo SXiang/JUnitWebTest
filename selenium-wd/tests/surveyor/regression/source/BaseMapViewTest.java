@@ -1,10 +1,13 @@
 package surveyor.regression.source;
 
+import static surveyor.regression.source.BaseMapViewTest.testIndex;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,6 +15,7 @@ import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.CheckedPredicate;
 import common.source.DateUtility;
 import common.source.Log;
 import common.source.TestContext;
@@ -33,12 +37,14 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final int ANALYZER3_REPLAY_LONG_ROW_ID = 32;
 	protected static final int ANALYZER3_REPLAY_ASSESSMENT_ROW_ID = 14;
 	protected static final int ANALYZER3_REPLAY_OPERATOR_ROW_ID = 17;
+	protected static final int ETH_ANALYZER1_REPLAY_ROW_ID = 60;
 	protected static final int NOLICANA_REPLAY_ROW_ID = 39;
 	protected static final int ONE_SECOND = 5;
 	protected static final int SURVEY_STANDARD1_ROW_ID = 3;
 	protected static final int SURVEY_OPERATOR1_ROW_ID = 5;
 	protected static final int SURVEY_ASSESSMENT1_ROW_ID = 30;
 	protected static final int SURVEY_MANUAL1_ROW_ID = 31;
+	protected static final int SURVEY_ANALYTICS1_ROW_ID = 63;
 	protected static final int USER_ROW_ID_AUTOMATION_ADMIN = 6;
 	protected static final int USER_ROW_ID_PICARRO_DRIVER = 16;
 	protected static final int USER_ROW_ID_PICARRO_UTILITYADMIN = 17;
@@ -112,6 +118,10 @@ public class BaseMapViewTest extends BaseTest{
 	protected List<WebDriver> driverList = Collections.synchronizedList(new ArrayList<WebDriver>());
 	protected List<String> baseURLList = Collections.synchronizedList(new ArrayList<String>());
 
+	// Data members for working with new webdriver instance/test.
+	protected static AtomicInteger testIndex = new AtomicInteger();
+	protected ThreadLocal<WebDriver> webDriver = new ThreadLocal<WebDriver>();
+
 	public BaseMapViewTest() {
 		initializeBasePageActions();
 	}
@@ -154,6 +164,41 @@ public class BaseMapViewTest extends BaseTest{
 			PageFactory.initElements(driver, homePageList.get(index));
 		}
 	}
+
+	// Data methods for working with new webdriver instance/test -->
+	protected WebDriver createDriver(boolean createNewDriver) {
+		WebDriver driver = null;
+		if (createNewDriver) {
+			driver = createNewDriver();
+			webDriver.set(driver);
+		} else {
+			driver = getDriver();
+		}
+		return driver;
+	}
+
+	protected WebDriver createNewDriver() {
+		return WebDriverFactory.getDriver(testIndex.incrementAndGet(), false /*reuse*/);
+	}
+
+	protected void executeAsNewWebDriver(CheckedPredicate<Object> testActions) throws Exception {
+		initializePageObjects(true /*createNewDriver*/);
+		try {
+			testActions.test(null);
+		} finally {
+			quitWebDriver();
+		}
+	}
+
+	protected void initializePageObjects(boolean createNewDriver) throws Exception {
+		throw new Exception("Implementation for this method needs to be provided by derived class.");
+	}
+
+	protected void quitWebDriver() {
+		this.webDriver.get().quit();
+	}
+
+	// <--
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {

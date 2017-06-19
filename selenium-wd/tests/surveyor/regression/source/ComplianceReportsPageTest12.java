@@ -101,7 +101,7 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.getComplianceReportsPage().openCustomerBoundarySelector();
 
-		String boundaryName = "Level 2-AA";
+		String boundaryName = "3350-F6";
 		latLongSelectionControl.waitForModalDialogOpen()
 			.switchMode(ControlMode.MapInteraction)
 			.waitForMapImageLoad()
@@ -115,7 +115,7 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		Log.info(String.format("Expected Boundary Selected TextField value = '%s'. Actual value = '%s'", boundaryName, actualValue));
 		assertTrue(actualValue.equals(boundaryName));
 	}
-	
+
 	/**
 	 * Test Case ID: TC557_ComplianceReportSurveySearchGridShouldNotDisplayEQModeSurvey
 	 * Test Description: Compliance Report survey search grid should not display EQ mode surveys
@@ -134,11 +134,11 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		
+
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.clickOnNewReportButton(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
-		
+
 		complianceReportsPageAction.getComplianceReportsPage().inputSurveyTag(EQDAYSURVEY);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
 		complianceReportsPageAction.getComplianceReportsPage().waitForSurveyTabletoLoad();

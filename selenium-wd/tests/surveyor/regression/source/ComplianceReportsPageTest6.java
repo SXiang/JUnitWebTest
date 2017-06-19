@@ -107,7 +107,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 
 		// Get min amplitude for the Analyzer and assert all values in Indication table > MinAmp.
 		List<Float> minAmps = complianceReportsPageAction.getMinAmplitudesForSurveys(reportDataRowID1);
-		Float locationMinAmp = manageLocationPageAction.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, SurveyModeType.Standard);
+		Float locationMinAmp = manageLocationPageAction.getMinAmplitudeForLocation(DEFAULT_LOCATION_DATAROWID, MinAmplitudeType.Survey_Standard);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(String.valueOf(locationMinAmp), NOTSET));
 	}
 
@@ -179,8 +179,8 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 		complianceReportsPageAction.openNewReportPage(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.enterCustomerBoundaryUsingAreaSelector(EMPTY, getReportRowID(reportDataRowID1));
 
-		// We type 'Level 2-A' in boundary name and expect the following 2 entries to show up in the auto-complete list.
-		String expectedBoundaries = "Level 2-AA,Level 2-AB";
+		// We type '3350-F,' in boundary name and expect the following 8 entries to show up in the auto-complete list.
+		String expectedBoundaries = "3350-F1,3350-F2,3350-F3,3350-F4,3350-F5,3350-F6,3350-F7,3350-F8";
 		assertTrue(complianceReportsPageAction.verifyBoundariesAutoCompleteListContains(expectedBoundaries/*comma seperated list of boundaries*/, getReportRowID(reportDataRowID1)));
 	}
 

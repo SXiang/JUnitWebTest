@@ -49,7 +49,8 @@ public class BaseReportEntity {
 		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
-		Assessment ("Assessment");
+		Assessment ("Assessment"),
+		Analytics ("Analytics");
 
 		private final String name;
 
@@ -69,7 +70,8 @@ public class BaseReportEntity {
 		RapidResponse ("Rapid Response"),
 		Manual ("Manual"),
 		EQ ("EQ"),
-		Assessment ("Assessment");
+		Assessment ("Assessment"),
+		Analytics ("Analytics");
 
 		private final String name;
 		ReportModeFilter(String nm) {
@@ -91,7 +93,14 @@ public class BaseReportEntity {
 		ReportMeta ("ReportMeta"),
 		PercentCoverageForecast ("PercentCoverageForecast"),
 		Zip ("Zip"),
-		AssetBoxHighlight ("AssetBoxHighlight");
+		AssetBoxHighlight ("AssetBoxHighlight"),
+		FacilityEQDataGeneration ("FacilityEQDataGeneration"),
+		FacilityEQMap ("FacilityEQMap"),
+		FacilityEQConcentrationChart ("FacilityEQConcentrationChart"),
+		FacilityEQReportMeta ("FacilityEQReportMeta"),
+		FTP ("FTP"),
+		AnalyticsRanking ("AnalyticsRanking"),
+		LISAAssetHighlight ("LISAAssetHighlight");
 
 		private final String name;
 
@@ -102,7 +111,8 @@ public class BaseReportEntity {
 		public String toString() {
 			return this.name;
 		}
- 	}
+	}
+
 
 	public enum ReportStatusType {
 		Pending ("Pending"),
@@ -363,6 +373,7 @@ public class BaseReportEntity {
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-TYLER HP|F07A7A0C-C857-415B-A956-039FD0625908");
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-HP/ LD SURVEY 2a|F46854AD-BB8C-4079-AE58-A803FC59A71C");
 		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O31560688|F61533EC-AF68-4E3A-A8C3-A536E67A6120");
+		ComplexBoundaryNames.add("Leak Survey Area|LeakSurveyMap-O30720800|9D5E66A8-C51D-4ABC-A291-C374F76CBDAF");
 	}
 
 	/**
@@ -381,6 +392,7 @@ public class BaseReportEntity {
 		SurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", SurveyModeFilter.Operator);
 		SurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", SurveyModeFilter.EQ);
 		SurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", SurveyModeFilter.Standard);
+		SurveyModeFilterGuids.put("7EA32138-5FA9-40C8-AC7F-2175054D2359", SurveyModeFilter.Analytics);
 
 		ReportSurveyModeFilterGuids.put("0514B92A-39AE-4111-AF16-4495440EC319", ReportModeFilter.Assessment);
 		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB310", ReportModeFilter.RapidResponse);
@@ -388,6 +400,7 @@ public class BaseReportEntity {
 		ReportSurveyModeFilterGuids.put("4901E67A-4C00-4436-ADC0-9CFB277BB312", ReportModeFilter.Operator);
 		ReportSurveyModeFilterGuids.put("E9DD9F53-E5CB-45B3-9517-9DC8E0276C6D", ReportModeFilter.EQ);
 		ReportSurveyModeFilterGuids.put("B310238A-A5AE-4E94-927B-F0F165E24522", ReportModeFilter.Standard);
+		ReportSurveyModeFilterGuids.put("7EA32138-5FA9-40C8-AC7F-2175054D2359", ReportModeFilter.Analytics);
 
 		ReportJobTypeGuids.put("00000000-0000-0000-0001-000000000000", ReportJobType.Map);
 		ReportJobTypeGuids.put("00000000-0000-0000-0002-000000000000", ReportJobType.SSRS);
@@ -400,6 +413,13 @@ public class BaseReportEntity {
 		ReportJobTypeGuids.put("00000000-0000-0000-0009-000000000000", ReportJobType.PercentCoverageForecast);
 		ReportJobTypeGuids.put("00000000-0000-0000-0010-000000000000", ReportJobType.Zip);
 		ReportJobTypeGuids.put("00000000-0000-0000-0011-000000000000", ReportJobType.AssetBoxHighlight);
+		ReportJobTypeGuids.put("00000000-0000-0000-0012-000000000000", ReportJobType.FacilityEQDataGeneration);
+		ReportJobTypeGuids.put("00000000-0000-0000-0013-000000000000", ReportJobType.FacilityEQMap);
+		ReportJobTypeGuids.put("00000000-0000-0000-0014-000000000000", ReportJobType.FacilityEQConcentrationChart);
+		ReportJobTypeGuids.put("00000000-0000-0000-0015-000000000000", ReportJobType.FacilityEQReportMeta);
+		ReportJobTypeGuids.put("00000000-0000-0000-0016-000000000000", ReportJobType.FTP);
+		ReportJobTypeGuids.put("00000000-0000-0000-0017-000000000000", ReportJobType.AnalyticsRanking);
+		ReportJobTypeGuids.put("00000000-0000-0000-0018-000000000000", ReportJobType.LISAAssetHighlight);
 
 		ReportJobTypeReverseGuids.put(ReportJobType.Map, "00000000-0000-0000-0001-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.SSRS, "00000000-0000-0000-0002-000000000000");
@@ -412,5 +432,12 @@ public class BaseReportEntity {
 		ReportJobTypeReverseGuids.put(ReportJobType.PercentCoverageForecast, "00000000-0000-0000-0009-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.Zip, "00000000-0000-0000-0010-000000000000");
 		ReportJobTypeReverseGuids.put(ReportJobType.AssetBoxHighlight, "00000000-0000-0000-0011-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.FacilityEQDataGeneration, "00000000-0000-0000-0012-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.FacilityEQMap, "00000000-0000-0000-0013-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.FacilityEQConcentrationChart, "00000000-0000-0000-0014-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.FacilityEQReportMeta, "00000000-0000-0000-0015-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.FTP, "00000000-0000-0000-0016-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.AnalyticsRanking, "00000000-0000-0000-0017-000000000000");
+		ReportJobTypeReverseGuids.put(ReportJobType.LISAAssetHighlight, "00000000-0000-0000-0018-000000000000");
 	}
 }

@@ -31,11 +31,59 @@ public class OLMapUtility {
 	}
 
 	public enum BreadcrumbColor {
-		Red,
-		Blue,
-		Black,
-		Gray
+		Red ("Red"),
+		Blue ("Blue"),
+		Black ("Black"),
+		Gray ("Gray");
+
+		private final String name;
+
+		BreadcrumbColor(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
 	}
+
+	private static final String GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS = "function getRGBPixelSumValues(imgData) { "
+			+ "var len = imgData.data.length; var rPixelSum = 0; var gPixelSum = 0; var bPixelSum = 0; for (var i = 0; i < len; i += 4) { "
+			+ "rPixelSum += imgData.data[i]; gPixelSum += imgData.data[i + 1]; bPixelSum += imgData.data[i + 2]; }; return [rPixelSum, gPixelSum, bPixelSum]; };";
+
+	private static final String IS_BUTTON_RED_FUNCTION_JS = "function isButtonRed(imgData) { var rgbSums = getRGBPixelSumValues(imgData); var rPixels = rgbSums[0]; "
+			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (rPixels > gPixels) && (rPixels > bPixels) && (((rPixels - gPixels) * 2) > bPixels); };";
+
+	private static final String IS_BUTTON_GREEN_FUNCTION_JS = "function isButtonGreen(imgData) { var rgbSums = getRGBPixelSumValues(imgData); var rPixels = rgbSums[0]; "
+			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (gPixels > rPixels) && (gPixels > bPixels); };";
+
+	private static final String IS_BUTTON_BLUE_FUNCTION_JS = "function isButtonBlue(imgData) { var rgbSums = getRGBPixelSumValues(imgData); var rPixels = rgbSums[0]; "
+			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (bPixels > rPixels) && (bPixels > gPixels); };";
+
+	private static final String IS_BUTTON_YELLOW_FUNCTION_JS = "function isButtonYellow(imgData) { var rgbSums = getRGBPixelSumValues(imgData); var rPixels = rgbSums[0]; "
+			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (rPixels > gPixels) && (rPixels > bPixels) && (((rPixels - gPixels) * 2) < bPixels); };";
+
+	private static final String GET_RGB_PIXEL_COUNT_FUNCTION_JS = "function getRGBPixelCount(imgData){"
+			+ "var len=imgData.data.length;var rPixelCount=0;var gPixelCount=0;var bPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
+			+ "if(imgData.data[i+1]==255){gPixelCount++;};if(imgData.data[i+2]==255){bPixelCount++;};};return[rPixelCount,gPixelCount,bPixelCount];};";
+
+	private static final String ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_JS = "function areRedPixelsGreaterThanGreen(imgData,delta){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(rPixelCount>(gPixelCount+delta));};";
+
+	private static final String ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_JS = "function areGreenPixelsGreaterThanRed(imgData,delta){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(gPixelCount>(rPixelCount+delta));};";
+
+	private static final String ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_JS = "function areRGBPixelCountsLesserThanValue(imgData,value){"
+			+ "var rgbCounts=getRGBPixelCount(imgData);var rPixelCount=rgbCounts[0];var gPixelCount=rgbCounts[1];var bPixelCount=rgbCounts[2];"
+			+ "return(rPixelCount<value)&&(gPixelCount<value)&&(bPixelCount<value);};";
+
+	private static final String ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_CALL = "%s;return areRedPixelsGreaterThanGreen(%s, %d);";
+
+	private static final String ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_CALL = "%s;return areGreenPixelsGreaterThanRed(%s, %d);";
+
+	private static final String ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_CALL = "%s;return areRGBPixelCountsLesserThanValue(%s, %d);";
 
 	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS = "function isRedArcShownOnButton(imgData){var len=imgData.data.length;"
 			+ "var rPixelCount=0;var gPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
@@ -43,6 +91,14 @@ public class OLMapUtility {
 			+ "return(rPixelCount>500)&&(rPixelCount<600)&&(gPixelCount>200)&&(gPixelCount<300);};";
 
 	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_CALL = "%s;return isRedArcShownOnButton(%s);";
+
+	private static final String IS_BUTTON_RED_FUNCTION_CALL = "%s;return isButtonRed(%s);";
+
+	private static final String IS_BUTTON_GREEN_FUNCTION_CALL = "%s;return isButtonGreen(%s);";
+
+	private static final String IS_BUTTON_BLUE_FUNCTION_CALL = "%s;return isButtonBlue(%s);";
+
+	private static final String IS_BUTTON_YELLOW_FUNCTION_CALL = "%s;return isButtonYellow(%s);";
 
 	private static final String GET_FIRST_INDICATION_NODE_PIXEL_FUNCTION_JS = "function getFirstIndicationNodePixels(){"
 			+ "var pixelX=-1;var pixelY=-1;if(lastConstellation){for(var i=0;i<lastConstellation.nodes.length;i++){"
@@ -88,9 +144,9 @@ public class OLMapUtility {
 			+ "var freshConstellation=JSON.parse(JSON.stringify(d3constellation));freshConstellation.nodes.forEach(function(d){"
 			+ "if(d.type=='annotation'){if(!d.fixed){if(d.text==note){noteFound=true;}}}});return noteFound&&showAnnotations;};";
 
-	private static final String IS_PEAK_INFO_POPUP_SHOWN_FUNCTION = "function isPeakInfoPopupShown(){"
+	private static final String IS_FEATURE_INFO_POPUP_SHOWN_FUNCTION = "function isFeatureInfoPopupShown(){"
 			+ "var shown=false;try{if(surveyormap){overlays=surveyormap.getOverlays();for(var i=0;i<overlays.getLength();i++){"
-			+ "overlay=overlays.item(i);if(overlay){element=overlay.getElement();if(element){if(element.id=='peakinfo_modal'){"
+			+ "overlay=overlays.item(i);if(overlay){element=overlay.getElement();if(element){if(element.id=='featureinfo_modal'){"
 			+ "return!(overlay.getPosition()==undefined);}}}}}}catch(err){shown=false;};return shown;};";
 
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION = "function isIsotopicCaptureResultPresent(result){"
@@ -175,13 +231,11 @@ public class OLMapUtility {
 			+ "if(features){for(var i=0;i<features.length;i++){if(features[i]&&features[i].getGeometry){geometry=features[i].getGeometry();"
 			+ "if(geometry&&geometry.getCoordinates){breadcrumbCoord.push(geometry.getCoordinates());}}}}}};}catch(err){};return breadcrumbCoord;};";
 
-	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){"
-			+ "var fillColorFound=false;try{if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();"
-			+ "if(features){for(var i=0;i<features.length;i++){feature=features[0];style=feature.getStyle();"
-			+ "if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
-			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fillColorFound=true;fcolor=fill.getColor();"
-			+ "scolor=stroke.getColor();if(fcolor!=color||scolor!=color){return false;}}}}}}}catch(err){fillColorFound=false;};"
-			+ "return fillColorFound;};";
+	private static final String MATCH_BREADCRUMB_COLOR_JS_FUNCTION = "function matchBreadCrumbColor(color){var fillColorFound=false;try{"
+			+ "if(sourceBreadCrumbLayer){layer=sourceBreadCrumbLayer;features=layer.getFeatures();if(features){for(var i=0;i<features.length;i++){"
+			+ "feature=features[i];style=feature.getStyle();if(style&&style.getStroke&&style.getFill){fill=style.getFill();stroke=style.getStroke();"
+			+ "if(fill&&fill.getColor&&stroke&&stroke.getColor){fcolor=fill.getColor();scolor=stroke.getColor();"
+			+ "if(fcolor==color&&scolor==color){fillColorFound=true;break;}}}}}}}catch(err){fillColorFound=false;};return fillColorFound;};";
 
 	private static final String IS_INDICATIONS_PRESENT_JS_FUNCTION = "function isIndicationsShownOnMap(){"
 			+ "var isIndicationsSwitchOn=showIndications;var indLinksCount=getIndicationLinksCount();"
@@ -238,7 +292,7 @@ public class OLMapUtility {
 	private static final String IS_FIELD_NOTES_DIALOG_SHOWN_JS_FUNCTION_CALL = "return isFieldNotesDialogShown();";
 	private static final String IS_FIELD_NOTE_SHOWN_JS_FUNCTION_CALL = "return isFieldNoteShownOnMap('%s');";
 
-	private static final String IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL = "return isPeakInfoPopupShown();";
+	private static final String IS_FEATURE_INFO_POPUP_SHOWN_JS_FUNCTION_CALL = "return isFeatureInfoPopupShown();";
 
 	private static final String IS_ISOTOPIC_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isIsotopicCaptureResultPresent('%s');";
 	private static final String IS_REFGAS_CAPTURE_RESULT_PRESENT_FUNCTION_CALL = "return isReferenceGasCaptureResultPresent('%s');";
@@ -672,13 +726,13 @@ public class OLMapUtility {
 	}
 
 	/*
-	 * Checks whether peak info popup is shown on the map.
-	 * Returns true if peak info popup is shown on the map, false otherwise.
+	 * Checks whether feature info popup is shown on the map.
+	 * Returns true if feature info popup is shown on the map, false otherwise.
 	 */
-	public boolean isPeakInfoPopupShown() {
-		String jsScript = IS_PEAK_INFO_POPUP_SHOWN_FUNCTION + IS_PEAK_INFO_POPUP_SHOWN_JS_FUNCTION_CALL;
-		Object peakInfoPopupShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
-		if (peakInfoPopupShown.toString().equalsIgnoreCase("true")) {
+	public boolean isFeatureInfoPopupShown() {
+		String jsScript = IS_FEATURE_INFO_POPUP_SHOWN_FUNCTION + IS_FEATURE_INFO_POPUP_SHOWN_JS_FUNCTION_CALL;
+		Object featureInfoPopupShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (featureInfoPopupShown.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;
@@ -719,6 +773,88 @@ public class OLMapUtility {
 		String jsScript = IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_JS + String.format(IS_RED_ARC_SHOWN_ON_BUTTON_FUNCTION_CALL, imgDataScript, imgDataVarName);
 		Object redArcShown = ((JavascriptExecutor)this.driver).executeScript(jsScript);
 		if (redArcShown.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether green pixels shown on a button are greater than red pixels by atleast the specified delta.
+	 * Returns true if green pixels count is greater.
+	 */
+	public boolean areGreenPixelsGreaterThanRedOnButton(String imgDataScript, String imgDataVarName, Integer delta) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_JS +
+				String.format(ARE_GREEN_PIXELS_GREATER_THAN_RED_FUNCTION_CALL, imgDataScript, imgDataVarName, delta);
+		Object gPxGreater = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (gPxGreater.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether red pixels shown on a button are greater than green pixels by atleast the specified delta.
+	 * Returns true if red pixels count is greater.
+	 */
+	public boolean areRedPixelsGreaterThanGreenOnButton(String imgDataScript, String imgDataVarName, Integer delta) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_JS +
+				String.format(ARE_RED_PIXELS_GREATER_THAN_GREEN_FUNCTION_CALL, imgDataScript, imgDataVarName, delta);
+		Object rPxGreater = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (rPxGreater.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	 * Checks whether RGB pixel counts are lesser than the specified value.
+	 * Returns true if RGB pixel count is lesser.
+	 */
+	public boolean areRGBPixelCountsLesserThanValue(String imgDataScript, String imgDataVarName, Integer value) {
+		String jsScript = GET_RGB_PIXEL_COUNT_FUNCTION_JS + ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_JS +
+				String.format(ARE_RGB_PIXEL_COUNTS_LESSER_THAN_FUNCTION_CALL, imgDataScript, imgDataVarName, value);
+		Object pxCountLesser = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (pxCountLesser.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isButtonRed(String imgDataScript, String imgDataVarName) {
+		String jsScript = GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS + IS_BUTTON_RED_FUNCTION_JS +
+				String.format(IS_BUTTON_RED_FUNCTION_CALL, imgDataScript, imgDataVarName);
+		Object isColorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (isColorMatch.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isButtonGreen(String imgDataScript, String imgDataVarName) {
+		String jsScript = GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS + IS_BUTTON_GREEN_FUNCTION_JS +
+				String.format(IS_BUTTON_GREEN_FUNCTION_CALL, imgDataScript, imgDataVarName);
+		Object isColorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (isColorMatch.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isButtonBlue(String imgDataScript, String imgDataVarName) {
+		String jsScript = GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS + IS_BUTTON_BLUE_FUNCTION_JS +
+				String.format(IS_BUTTON_BLUE_FUNCTION_CALL, imgDataScript, imgDataVarName);
+		Object isColorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (isColorMatch.toString().equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isButtonYellow(String imgDataScript, String imgDataVarName) {
+		String jsScript = GET_RGB_PIXEL_SUM_VALUES_FUNCTION_JS + IS_BUTTON_YELLOW_FUNCTION_JS +
+				String.format(IS_BUTTON_YELLOW_FUNCTION_CALL, imgDataScript, imgDataVarName);
+		Object isColorMatch = ((JavascriptExecutor)this.driver).executeScript(jsScript);
+		if (isColorMatch.toString().equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;

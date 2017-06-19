@@ -1,11 +1,23 @@
 package surveyor.scommon.actions;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
+import org.junit.Assert;
+
+import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
+import common.source.FileUtility;
+import common.source.HostSimDefinitionGenerator;
 import common.source.Log;
 import common.source.NetworkProxyHandler;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.HostSimDefinitionGenerator.iGPSMode;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
@@ -77,7 +89,8 @@ public class TestEnvironmentActions extends BaseActions {
 
 	/**
 	 * Executes startReplay action.
-	 * @param data - specifies the input data passed to the action.
+	 * @param data - [Optional] colon separated full path to instruction files. Eg.
+	 * 		<full_path_to_instruction_file_1>:<full_path_to_instruction_file_2>:<full_path_to_instruction_file_3>
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 * @throws Exception
@@ -86,10 +99,14 @@ public class TestEnvironmentActions extends BaseActions {
 		logAction("TestEnvironmentActions.startReplay", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero(CLS_TEST_ENVIRONMENT_ACTIONS + FN_START_REPLAY, ARG_DATA_ROW_ID, dataRowID);
 		try {
-			TestEnvironmentDataRow dataRow = getDataReader().getDataRow(dataRowID);
-
+			TestEnvironmentDataRow dataRow = getWorkingDataRow(dataRowID);
 			if (!ActionArguments.isEmpty(dataRow.replayScriptDB3File)) {
-				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
+				if (!ActionArguments.isEmpty(data)) {
+					List<String> insFiles = RegexUtility.split(data, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+					TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File, insFiles.toArray(new String[insFiles.size()]));
+				} else {
+					TestSetup.replayDB3Script(dataRow.replayScriptDefnFile, dataRow.replayScriptDB3File);
+				}
 			} else {
 				TestSetup.replayDB3Script(dataRow.replayScriptDefnFile);
 			}
@@ -97,6 +114,18 @@ public class TestEnvironmentActions extends BaseActions {
 			Log.error(e.toString());
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * Executes stopReplay action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean stopReplay(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.stopReplay", data, dataRowID);
+		TestContext.INSTANCE.getTestSetup().stopReplay();
 		return true;
 	}
 
@@ -219,6 +248,15 @@ public class TestEnvironmentActions extends BaseActions {
 		this.dataReader = dataReader;
 	}
 
+	public TestEnvironmentDataRow getWorkingDataRow(Integer dataRowID) throws Exception {
+		TestEnvironmentDataRow dataRow = workingDataRow.get();
+		if (dataRow == null) {
+			dataRow = getDataReader().getDataRow(dataRowID);
+		}
+
+		return dataRow;
+	}
+
 	public String getWorkingAnalyzerSerialNumber() throws NumberFormatException, Exception {
 		if (TestEnvironmentActions.workingDataRow.get() != null) {
 			if (!ActionArguments.isEmpty(TestEnvironmentActions.workingDataRow.get().analyzerRowID)) {
@@ -271,6 +309,74 @@ public class TestEnvironmentActions extends BaseActions {
 		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerSerialNumber, analyzerSharedKey, surveyor);
 	}
 
+	private static void updateWorkingDataRowDefnPath(String defnFilePath) {
+		TestEnvironmentActions.workingDataRow.get().replayScriptDefnFile = defnFilePath;
+	}
+
+	private String createCopyInDefnFolder(String defnFilePath) throws IOException {
+		String defnFilename = Paths.get(defnFilePath).getFileName().toString();
+		String defnFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data" + File.separator + "defn";
+		String defnFullPath = Paths.get(defnFolder, defnFilename).toString();
+		Files.copy(Paths.get(defnFilePath), Paths.get(defnFullPath));
+		FileUtility.deleteFile(Paths.get(defnFilePath));
+		return defnFilename;
+	}
+
+	private void copyAndUpdateDefnFile(String defnFilePath) throws IOException {
+		String defnFilename = createCopyInDefnFolder(defnFilePath);
+		updateWorkingDataRowDefnPath(defnFilename);
+	}
+
+	public void generateiGPSGoingToBlueDefnForMethaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSMode(iGPSMode.None);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueWithPeaksDefnForMethaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSMode(iGPSMode.None, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueDefnForEthaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.None);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.None, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToYellowWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.Warning, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToRedWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.Error, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedDefnForMethaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed();
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForMethaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedDefnForEthaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed();
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
 	/**
 	 * Generates a survey with specified Analyzer/Surveyor/DB3 for the specified user.
 	 * Remarks:
@@ -284,6 +390,11 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public static void generateSurveyForUser(int loginUserRowID, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds) throws Exception {
+		generateSurveyForUser(loginUserRowID, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null/*testActions Predicate*/);
+	}
+
+	public static void generateSurveyForUser(int loginUserRowID, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -293,7 +404,7 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, loginUserRowID);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	/**
@@ -311,6 +422,17 @@ public class TestEnvironmentActions extends BaseActions {
 	 */
 	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
 			int surveyRuntimeInSeconds) throws Exception {
+		generateSurveyForUser(username, password, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null /*testActions Predicate*/);
+	}
+
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(username, password, db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds,
+				null /*instructionFiles*/, testActions);
+	}
+
+	public static void generateSurveyForUser(String username, String password, int db3AnalyzerRowID, int surveyRowID,
+			int surveyRuntimeInSeconds, String[] instructionFiles, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
 		LoginPageActions loginPageAction = ActionBuilder.createLoginPageAction();
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
@@ -318,22 +440,46 @@ public class TestEnvironmentActions extends BaseActions {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", username, password), NOTSET);
 
-		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, driverViewPageAction, testEnvironmentAction);
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, instructionFiles,
+				driverViewPageAction, testEnvironmentAction, testActions);
 	}
 
 	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds,
-			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction) throws Exception {
-		testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
-		driverViewPageAction.open(EMPTY,NOTSET);
-		driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
-		testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
-		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
-		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
-		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
-		testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
-		testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		generateSurveyForUser(db3AnalyzerRowID, surveyRowID, surveyRuntimeInSeconds, null /*instructionFiles*/,
+				driverViewPageAction, testEnvironmentAction, testActions);
+	}
+
+	private static void generateSurveyForUser(int db3AnalyzerRowID, int surveyRowID, int surveyRuntimeInSeconds, String[] instructionFiles,
+			DriverViewPageActions driverViewPageAction, TestEnvironmentActions testEnvironmentAction, CheckedPredicate<DriverViewPageActions> testActions) throws Exception {
+		try {
+			testEnvironmentAction.startAnalyzer(EMPTY, db3AnalyzerRowID);
+			driverViewPageAction.open(EMPTY,NOTSET);
+			driverViewPageAction.waitForConnectionToComplete(EMPTY, NOTSET);
+
+			if (instructionFiles != null && instructionFiles.length > 0) {
+				testEnvironmentAction.startReplay(String.join(",", instructionFiles), db3AnalyzerRowID);
+			} else {
+				testEnvironmentAction.startReplay(EMPTY, db3AnalyzerRowID);
+			}
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.startDrivingSurvey(EMPTY, surveyRowID);
+			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
+
+			if (testActions != null) {
+				testActions.test(driverViewPageAction);
+			}
+
+			driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
+			driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
+			testEnvironmentAction.idleForSeconds(String.valueOf(20), NOTSET);
+			testEnvironmentAction.checkPostSurveySessionsFromDB3ToCloud(EMPTY, db3AnalyzerRowID);
+			testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
+
+		}
 	}
 }

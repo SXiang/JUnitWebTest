@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
 import common.source.Log;
@@ -14,6 +16,9 @@ import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;
@@ -27,7 +32,6 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.DriverViewPage.Wind;
 
 public class DriverViewPageActions extends BaseDrivingViewPageActions {
-
 	private static final String FN_ENTER_FIELD_NOTES = "enterFieldNotes";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_OFF = "verifyGisSwitchIsOff";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_OFF = "verifyDisplaySwitchIsOff";
@@ -46,6 +50,21 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		super(driver, strBaseURL, testSetup);
 		initializePageObject(driver, new DriverViewPage(driver, strBaseURL, testSetup));
 		setDataReader(new DriverViewDataReader(this.excelUtility));
+	}
+
+	public static enum DrivingSurveyType {
+		Default ("Default"),
+		EQ ("EQ");
+
+		private final String name;
+
+		DrivingSurveyType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	// Note: Not thread-safe.
@@ -108,7 +127,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		boolean retVal = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
 		if (retVal) {
-			getDriverViewPage().waitForFeatureInfoDialogToOpen();
+			getDriverViewPage().waitForFeatureInfoPopupToOpen();
 		}
 		return retVal;
 	}
@@ -244,49 +263,20 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	 */
 	public boolean startDrivingSurvey(String commaSeperatedValues, Integer dataRowID) throws Exception {
 		logAction("DriverViewPageActions.startDrivingSurvey", commaSeperatedValues, dataRowID);
-		String surveyTag = null;
-		SurveyTime time = SurveyTime.Day;
-		SolarRadiation radiation = SolarRadiation.Moderate;
-		Wind wind = Wind.Calm;
-		CloudCover cloudCover = CloudCover.LessThan50;
-		SurveyType type = SurveyType.Standard;
-		Float minAmplitude = -1.0F;
-		if (!ActionArguments.isEmpty(commaSeperatedValues)){
-			List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
-			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
-			time = getSurveyTime(listValues.get(1));
-			radiation = getSolarRadiation(listValues.get(2));
-			wind = getWind(listValues.get(3));
-			cloudCover = getCloudCover(listValues.get(4));
-			type = getSurveyType(listValues.get(5));
-			if (listValues.size() > 6 && listValues.get(6) != "") {
-				minAmplitude = Float.valueOf(listValues.get(6));
-			}
+		return startDrivingSurveyInternal(commaSeperatedValues, dataRowID, DrivingSurveyType.Default);
+	}
 
-		} else {
-			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
-			DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
-			surveyTag = ActionArguments.evaluateArgForFunction(dataRow.surveyTag);
-			time = getSurveyTime(dataRow.surveyTime);
-			radiation = getSolarRadiation(dataRow.solarRadiation);
-			wind = getWind(dataRow.wind);
-			cloudCover = getCloudCover(dataRow.wind);
-			type = getSurveyType(dataRow.surveyType);
-			if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
-				minAmplitude = Float.valueOf(dataRow.minAmplitude);
-			}
-
-			// store the working datarow.
-			workingDataRow.set(dataRow);
-			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
-		}
-		try {
-			getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
-		} catch (Exception e) {
-			Log.error(e.toString());
-			return false;
-		}
-		return true;
+	/**
+	 *
+	 * @param commaSeperatedValues - colon seperated values in this format:
+	 * 		[Survey Tag]:[Survey Time]:[Solar Radiation]:[Wind]:[CloudCover]:[Survey Type]
+	 * @param dataRowID (Required) - RowID in Survey test data sheet from where data for starting survey will be read.
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean startEQDrivingSurvey(String commaSeperatedValues, Integer dataRowID) throws Exception {
+		logAction("DriverViewPageActions.startEQDrivingSurvey", commaSeperatedValues, dataRowID);
+		return startDrivingSurveyInternal(commaSeperatedValues, dataRowID, DrivingSurveyType.EQ);
 	}
 
 	public static String getCurrentSurveyCSVValues() {
@@ -294,66 +284,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return String.format("%s,%s,%s,%s,%s,%s", driverViewDataRow.surveyTag,
 				driverViewDataRow.surveyTime, driverViewDataRow.solarRadiation, driverViewDataRow.wind,
 				driverViewDataRow.cloudCover, driverViewDataRow.surveyType, driverViewDataRow.minAmplitude);
-	}
-
-	private SurveyType getSurveyType(String surveyType) {
-		SurveyType type = SurveyType.Manual;
-		if (surveyType.equalsIgnoreCase("Manual")) {
-			type = SurveyType.Manual;
-		} else if (surveyType.equalsIgnoreCase("Operator")) {
-			type = SurveyType.Operator;
-		} else if (surveyType.equalsIgnoreCase("RapidResponse")) {
-			type = SurveyType.RapidResponse;
-		} else if (surveyType.equalsIgnoreCase("Assessment")) {
-			type = SurveyType.Assessment;
-		} else {
-			type = SurveyType.Standard;
-		}
-		return type;
-	}
-
-	private Wind getWind(String windValue) {
-		Wind wind = Wind.Calm;
-		if (windValue.equalsIgnoreCase("Calm")) {
-			wind = Wind.Calm;
-		} else if (windValue.equalsIgnoreCase("Light")) {
-			wind = Wind.Light;
-		} else {
-			wind = Wind.Strong;
-		}
-		return wind;
-	}
-
-	private CloudCover getCloudCover(String cloudCoverValue) {
-		CloudCover cloudCover = CloudCover.LessThan50;
-		if (cloudCoverValue.equalsIgnoreCase("LessThan50")) {
-			cloudCover = CloudCover.LessThan50;
-		} else if (cloudCoverValue.equalsIgnoreCase("MoreThan50")) {
-			cloudCover = CloudCover.MoreThan50;
-		}
-		return cloudCover;
-	}
-
-	private SolarRadiation getSolarRadiation(String solarRadiation) {
-		SolarRadiation radiation = SolarRadiation.Moderate;
-		if (solarRadiation.equalsIgnoreCase("Moderate")) {
-			radiation = SolarRadiation.Moderate;
-		} else if (solarRadiation.equalsIgnoreCase("Overcast")) {
-			radiation = SolarRadiation.Overcast;
-		} else {
-			radiation = SolarRadiation.Strong;
-		}
-		return radiation;
-	}
-
-	private SurveyTime getSurveyTime(String surveyTime) {
-		SurveyTime time = SurveyTime.Day;
-		if (surveyTime.equalsIgnoreCase("Day")) {
-			time = SurveyTime.Day;
-		} else {
-			time = SurveyTime.Night;
-		}
-		return time;
 	}
 
 	public boolean stopDrivingSurvey(String data, Integer dataRowID) {
@@ -771,6 +701,34 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		this.getDriverViewPage().setFieldNotesTextField(data);
 		this.getDriverViewPage().clickFieldNotesSaveButton();
 		return true;
+	}
+
+	/**
+	 * Executes verifyFieldNotesDialogIsShown action.
+	 * NOTES:
+	 * - Use this method - 'verifyFieldNotesDialogIsShown' to verify field notes dialog is showing.
+	 * - Use 'verifyFieldNotesIsShownOnMap' method to verify field note inputed by user is NOT showing on the map.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFieldNotesDialogIsShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyFieldNotesDialogIsShown", data, dataRowID);
+		return this.getDriverViewPage().verifyFieldNotesDialogIsShown();
+	}
+
+	/**
+	 * Executes verifyFieldNotesDialogIsNotShown action.
+	 * NOTES:
+	 * - Use this method - 'verifyFieldNotesDialogIsNotShown' to verify field notes dialog is NOT showing.
+	 * - Use 'verifyFieldNotesIsNotShownOnMap' method to verify field note inputed by user is NOT showing on the map.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyFieldNotesDialogIsNotShown(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyFieldNotesDialogIsNotShown", data, dataRowID);
+		return !this.getDriverViewPage().verifyFieldNotesDialogIsShown();
 	}
 
 	/**
@@ -1336,6 +1294,28 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return !getDriverViewPage().isRefBottleMeasButtonVisible();
 	}
 
+	/**
+	 * Executes verifyiGPSDriftErrorMessageIsShowing action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyiGPSDriftErrorMessageIsShowing(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyiGPSDriftErrorMessageIsShowing", data, dataRowID);
+		return getDriverViewPage().isiGPSDriftErrorMessageShowing();
+	}
+
+	/**
+	 * Executes verifyiGPSDriftWarningMessageIsShowing action.
+	 * @param data - specifies the input data passed to the action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 */
+	public boolean verifyiGPSDriftWarningMessageIsShowing(String data, Integer dataRowID) {
+		logAction("DriverViewPageActions.verifyiGPSDriftWarningMessageIsShowing", data, dataRowID);
+		return getDriverViewPage().isiGPSDriftWarningMessageShowing();
+	}
+
 	/* Invoke action using specified ActionName */
 	@Override
 	public boolean invokeAction(String actionName, String data, Integer dataRowID) throws Exception {
@@ -1429,6 +1409,9 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsGreen")) { return this.verifyAnemometerButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsRed")) { return this.verifyAnemometerButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
@@ -1448,6 +1431,10 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesDialogIsShown")) { return this.verifyFieldNotesDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyFieldNotesDialogIsNotShown")) { return this.verifyFieldNotesDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
@@ -1460,6 +1447,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyGPSButtonIsRed")) { return this.verifyGPSButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyHBTempButtonIsGreen")) { return this.verifyHBTempButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyHBTempButtonIsRed")) { return this.verifyHBTempButtonIsRed(data, dataRowID); }
+		else if (actionName.equals("verifyiGPSDriftErrorMessageIsShowing")) { return this.verifyiGPSDriftErrorMessageIsShowing(data, dataRowID); }
+		else if (actionName.equals("verifyiGPSDriftWarningMessageIsShowing")) { return this.verifyiGPSDriftWarningMessageIsShowing(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationsIsNotShownOnMap")) { return this.verifyIndicationsIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyIndicationsIsShownOnMap")) { return this.verifyIndicationsIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyLISAIsNotShownOnMap")) { return this.verifyLISAIsNotShownOnMap(data, dataRowID); }
@@ -1568,6 +1557,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyRefGasCaptureResultIsPresentOnMap")) { return this.verifyRefGasCaptureResultIsPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }
+		else if (actionName.equals("verifySurveyAmplitudes")) { return this.verifySurveyAmplitudes(data, dataRowID); }
 		return false;
 	}
 
@@ -1601,5 +1591,124 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		Log.info(String.format("Indications detected in view = %d", allIndications.size()));
 		allIndications.forEach(i -> Log.info(i.toString()));
 		return allIndications;
+	}
+
+	private boolean startDrivingSurveyInternal(String commaSeperatedValues, Integer dataRowID, DrivingSurveyType surveyType) throws Exception {
+		String surveyTag = null;
+		SurveyTime time = SurveyTime.Day;
+		SolarRadiation radiation = SolarRadiation.Moderate;
+		Wind wind = Wind.Calm;
+		CloudCover cloudCover = CloudCover.LessThan50;
+		SurveyType type = SurveyType.Standard;
+		Float minAmplitude = -1.0F;
+		if (!ActionArguments.isEmpty(commaSeperatedValues)){
+			final List<String> listValues = RegexUtility.split(commaSeperatedValues, RegexUtility.COMMA_SPLIT_REGEX_PATTERN);
+			surveyTag = ActionArguments.evaluateArgForFunction(listValues.get(0));
+			time = getSurveyTime(listValues.get(1));
+			radiation = getSolarRadiation(listValues.get(2));
+			wind = getWind(listValues.get(3));
+			cloudCover = getCloudCover(listValues.get(4));
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				type = getSurveyType(listValues.get(5));
+				if (listValues.size() > 6 && listValues.get(6) != "") {
+					minAmplitude = Float.valueOf(listValues.get(6));
+				}
+			}
+
+		} else {
+			ActionArguments.verifyGreaterThanZero(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_START_DRIVING_SURVEY, ARG_DATA_ROW_ID, dataRowID);
+			final DriverViewDataRow dataRow = getDataReader().getDataRow(dataRowID);
+			surveyTag = ActionArguments.evaluateArgForFunction(dataRow.surveyTag);
+			time = getSurveyTime(dataRow.surveyTime);
+			radiation = getSolarRadiation(dataRow.solarRadiation);
+			wind = getWind(dataRow.wind);
+			cloudCover = getCloudCover(dataRow.wind);
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				type = getSurveyType(dataRow.surveyType);
+				if (!ActionArguments.isEmpty(dataRow.minAmplitude)) {
+					minAmplitude = Float.valueOf(dataRow.minAmplitude);
+				}
+			}
+
+			// store the working datarow.
+			workingDataRow.set(dataRow);
+			workingDataRow.get().surveyTag = surveyTag;	// update the tag to value evaluated by function.
+		}
+		try {
+			if (surveyType.equals(DrivingSurveyType.Default)) {
+				getDriverViewPage().startDrivingSurvey(surveyTag, time, radiation, wind, cloudCover, type, minAmplitude);
+			} else if (surveyType.equals(DrivingSurveyType.EQ)) {
+				getDriverViewPage().startEQDrivingSurvey(surveyTag, time, radiation, wind, cloudCover);
+			} else {
+				throw new IllegalArgumentException(String.format("DrivingSurveyType-[%s] NOT supported."));
+			}
+
+		} catch (final Exception e) {
+			Log.error(e.toString());
+			return false;
+		}
+		return true;
+	}
+
+	private SurveyType getSurveyType(String surveyType) {
+		SurveyType type = SurveyType.Manual;
+		if (surveyType.equalsIgnoreCase("Manual")) {
+			type = SurveyType.Manual;
+		} else if (surveyType.equalsIgnoreCase("Operator")) {
+			type = SurveyType.Operator;
+		} else if (surveyType.equalsIgnoreCase("RapidResponse")) {
+			type = SurveyType.RapidResponse;
+		} else if (surveyType.equalsIgnoreCase("Assessment")) {
+			type = SurveyType.Assessment;
+		} else if (surveyType.equalsIgnoreCase("Standard")) {
+			type = SurveyType.Standard;
+		} else if (surveyType.equalsIgnoreCase("Analytics")) {
+			type = SurveyType.Analytics;
+		}
+		return type;
+	}
+
+	private Wind getWind(String windValue) {
+		Wind wind = Wind.Calm;
+		if (windValue.equalsIgnoreCase("Calm")) {
+			wind = Wind.Calm;
+		} else if (windValue.equalsIgnoreCase("Light")) {
+			wind = Wind.Light;
+		} else {
+			wind = Wind.Strong;
+		}
+		return wind;
+	}
+
+	private CloudCover getCloudCover(String cloudCoverValue) {
+		CloudCover cloudCover = CloudCover.LessThan50;
+		if (cloudCoverValue.equalsIgnoreCase("LessThan50")) {
+			cloudCover = CloudCover.LessThan50;
+		} else if (cloudCoverValue.equalsIgnoreCase("MoreThan50")) {
+			cloudCover = CloudCover.MoreThan50;
+		}
+		return cloudCover;
+	}
+
+	private SolarRadiation getSolarRadiation(String solarRadiation) {
+		SolarRadiation radiation = SolarRadiation.Moderate;
+		if (solarRadiation.equalsIgnoreCase("Moderate")) {
+			radiation = SolarRadiation.Moderate;
+		} else if (solarRadiation.equalsIgnoreCase("Overcast")) {
+			radiation = SolarRadiation.Overcast;
+		} else {
+			radiation = SolarRadiation.Strong;
+		}
+		return radiation;
+	}
+
+	private SurveyTime getSurveyTime(String surveyTime) {
+		SurveyTime time = SurveyTime.Day;
+		if (surveyTime.equalsIgnoreCase("Day")) {
+			time = SurveyTime.Day;
+		} else {
+			time = SurveyTime.Night;
+		}
+		return time;
 	}
 }

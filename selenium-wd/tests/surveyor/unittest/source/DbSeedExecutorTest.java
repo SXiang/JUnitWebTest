@@ -42,6 +42,13 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 	}
 
 	@Test
+	public void execute02_GisDataSeedSpecifiedCustomer() throws Exception {
+		String customerId = "5D073EF1-40E1-9BA0-E7BC-39DA8027337E";
+		DbSeedExecutor.executeGisSeed(customerId);
+		verifyGisSeedDataIsPresent(customerId);
+	}
+
+	@Test
 	public void execute03_SurveyDataSeedTest() throws Exception {
 		DbSeedExecutor.executeSurveyDataSeed();
 		verifySurveySeedDataIsPresent();
@@ -56,7 +63,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
+		final String[] surveyTags = {"FeqWithPeaks02-1", "FeqWithPeaks02-1-sqacus"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}

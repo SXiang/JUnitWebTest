@@ -234,7 +234,7 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 
 	private static void createTestCaseMap() {
 		testCaseMap.put("1", "TC192");
-		testCaseMap.put("2", "TC202");
+		testCaseMap.put("2", "TC202-1");
 		testCaseMap.put("3", "TC210");
 		testCaseMap.put("4", "TC217");
 		testCaseMap.put("5", "TC223");

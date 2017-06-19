@@ -175,6 +175,8 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
+		surveyViewPage.waitForUIUnBlock();
+		surveyViewPage.waitForAJAXCallsToComplete();
 		surveyViewPage.clickGisButton();
 
 		surveyViewPage.clickPicarroLogoButton();
@@ -186,7 +188,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(homePage.getLinkCompliance().isDisplayed());
 		homePage.getLinkCompliance().click();
 		complinaceReportsPage.waitForPageLoad();
-		String createdByXPath = "//*[@id='datatable']/tbody/tr[1]/td[3]";
+		String createdByXPath = "//*[@id='datatable']/tbody/tr[1]/td[4]";
 		String createdByCellText = complinaceReportsPage.getTable().findElement(By.xpath(createdByXPath)).getText().trim();
 		assertTrue(createdByCellText.equals(testAccount.get("userName")));
 		homePage.logout();

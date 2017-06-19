@@ -1,0 +1,13 @@
+options iCH4=False,Ethane=True
+node anemometer_reader target=dbreader.anemometer_reader
+     out=anemometer_out args='%DB3_FILE_PATH%'
+node gps_reader target=dbreader.gps_reader
+     out=gps_out args='%DB3_FILE_PATH%'
+node meas_reader target=dbreader.measurement_reader
+     out=meas_out args='%DB3_FILE_PATH%'
+node meas_conditioner target=data_conditioner.transformer
+     in=meas_out out=meas_conditioner_out args='%INSTRUCTION_FILE_0%' kwargs=after=100
+node merger target=stream_merger.stream_merger
+     in=gps_out,anemometer_out,meas_conditioner_out out=merge_out
+node zmq_pub target=zmqsender.zmq_sender in=merge_out
+     args=True,60,RFADS_mode,True

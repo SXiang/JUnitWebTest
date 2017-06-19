@@ -22,6 +22,15 @@ public class ResourceKeys {
 	public static final String EQReports_AddNew = "EQReports_AddNew";
 	public static final String EQReports_PageTitle = "EQReports_PageTitle";
 
+	// FacilityEQ report resource keys.
+	public static final String FacilityEQReport_ConcentrationChart = "FacilityEQReport_ConcentrationChart";
+	public static final String FacilityEQReport_EmissionDatZIP = "FacilityEQReport_EmissionDatZIP";
+	public static final String FacilityEQReport_MissingLocation = "FacilityEQReport_MissingLocation";
+	public static final String FacilityEQReport_PolygonMessage = "FacilityEQReport_PolygonMessage";
+	public static final String FacilityEQReport_PageTitle = "FacilityEQReport_PageTitle";
+	public static final String FacilityEQReports_AddNew = "FacilityEQReports_AddNew";
+	public static final String FacilityEQReports_PageTitle = "FacilityEQReports_PageTitle";
+	
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
@@ -93,6 +102,7 @@ public class ResourceKeys {
 	public static final String ComplianceReportSSRS_ViewTable = "ComplianceReportSSRS_ViewTable";
 	public static final String ComplianceReport_SurveyMissingMessage = "ComplianceReport_SurveyMissingMessage";
 	public static final String ComplianceReportSSRS_EthaneAnalysisTable="ComplianceReportSSRS_EthaneAnalysisTable";
+	public static final String ComplianceReport_ChangeModeWarning = "ComplianceReport_ChangeModeWarning";
 
 	public static final String Constant_Assets = "Constant_Assets";
 	public static final String Constant_BaseMap = "Constant_BaseMap";
@@ -227,7 +237,7 @@ public class ResourceKeys {
 	public static final String Survey_NotNaturalGas = "Survey_NotNaturalGas";
 	public static final String Survey_NaturalGas = "Survey_NaturalGas";
 
-	// Peak info popup constants.
+	// Feature info popup constants.
 	public static final String Survey_Disposition = "Survey_Disposition";
 	public static final String Survey_ClassificationConfidence = "Survey_ClassificationConfidence";
 	public static final String Survey_CH4 = "Survey_CH4";
@@ -322,4 +332,11 @@ public class ResourceKeys {
 	public static final String Dialog_ProceedMessage = "Dialog_ProceedMessage";
 
 	public static final String Reports_ErrorProcessing = "Reports_ErrorProcessing";
+
+	// Analytics constants.
+	public static final String Dialog_AnalyticsModeActive = "Dialog_AnalyticsModeActive";
+
+	// iGPS modal messages.
+	public static final String Dialog_IGPSWarning = "Dialog_IGPSWarning";
+	public static final String Dialog_IGPSError = "Dialog_IGPSError";
 }

@@ -21,6 +21,9 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	private static final String[] RedRGBPixels = new String[] { "255", "2", "0" };
 	private static final String[] GreyRGBPixels = new String[] { "153", "153", "153" };
 
+	private static final Integer PIXEL_DIFF_400 = 400;
+	private static final Integer VALUE_700 = 700;
+
 	public static final String STATUS_PRESSURE_CANVAS_CTX = "test_ctx = $(\"#status_pressure_canvas\")[0].getContext('2d');";
 	public static final String STATUS_WARM_CANVAS_CTX = "test_ctx = $(\"#status_warm_canvas\")[0].getContext('2d');";
 	public static final String STATUS_TEMP_CANVAS_CTX = "test_ctx = $(\"#status_temp_canvas\")[0].getContext('2d');";
@@ -29,7 +32,8 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	public static final String STATUS_ANEMOMETER_CANVAS_CTX = "test_ctx = $(\"#status_anemometer_canvas\")[0].getContext('2d');";
 	private static final String CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA = "centerX = 40;centerY = 40;fontY = 12;paddingY = 5;rectWidth = 1;rectHeight = 1;var imgData=test_ctx.getImageData(centerX,centerY-fontY-paddingY,rectWidth,rectHeight);";
 
-	private static final String IS_RED_ARC_SHOWN_ON_BUTTON_DATA = "var IMG_WIDTH=80;var IMG_HEIGHT=74;var imgData=test_ctx.getImageData(0,0,IMG_WIDTH,IMG_HEIGHT);";
+	private static final String RGB_PIXELS_IMAGE_DATA = "var IMG_WIDTH=80;var IMG_HEIGHT=74;var imgData=test_ctx.getImageData(0,0,IMG_WIDTH,IMG_HEIGHT);";
+	//private static final String
 
 	@FindBy(id = "header_info_box_upper_left")
 	private WebElement divHeaderInfoBox;
@@ -170,128 +174,67 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isPressureButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		return new OLMapUtility(driver).areRedPixelsGreaterThanGreenOnButton(STATUS_PRESSURE_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isPressureButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_PRESSURE_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		return new OLMapUtility(driver).areGreenPixelsGreaterThanRedOnButton(STATUS_PRESSURE_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isHBTempButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		return new OLMapUtility(driver).areRedPixelsGreaterThanGreenOnButton(STATUS_WARM_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isHBTempButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_WARM_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		return new OLMapUtility(driver).areGreenPixelsGreaterThanRedOnButton(STATUS_WARM_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isWBTempButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		return new OLMapUtility(driver).areRedPixelsGreaterThanGreenOnButton(STATUS_TEMP_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isWBTempButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_TEMP_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		return new OLMapUtility(driver).areGreenPixelsGreaterThanRedOnButton(STATUS_TEMP_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isRedArcShownOnFlowButton() {
-		return new OLMapUtility(driver).isRedArcShownOnButton(STATUS_FLOW_CANVAS_CTX + IS_RED_ARC_SHOWN_ON_BUTTON_DATA, IMG_DATA_VAR_NAME);
+		return new OLMapUtility(driver).isRedArcShownOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isFlowButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		return new OLMapUtility(driver).areRedPixelsGreaterThanGreenOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isFlowButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		return new OLMapUtility(driver).areGreenPixelsGreaterThanRedOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
 	}
 
 	public boolean isFlowButtonGrey() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_FLOW_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreyRGBPixels[0]) && pixelGreen.toString().equals(GreyRGBPixels[1])
-				&& pixelBlue.toString().equals(GreyRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		boolean redPixelsGreater = olMapUtility.areRedPixelsGreaterThanGreenOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
+		boolean greenPixelsGreater = olMapUtility.areGreenPixelsGreaterThanRedOnButton(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, PIXEL_DIFF_400);
+		boolean rgbCountsLesser = olMapUtility.areRGBPixelCountsLesserThanValue(STATUS_FLOW_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME, VALUE_700);
+		return rgbCountsLesser && !redPixelsGreater && !greenPixelsGreater;
 	}
 
 	public boolean isGPSButtonRed() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(RedRGBPixels[0]) && pixelGreen.toString().equals(RedRGBPixels[1])
-				&& pixelBlue.toString().equals(RedRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonRed(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isGPSButtonYellow() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonYellow(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
+	}
+
+	public boolean isGPSButtonBlue() {
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonBlue(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isGPSButtonGreen() {
-		Object pixelRed = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_0);
-		Object pixelGreen = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_1);
-		Object pixelBlue = ((JavascriptExecutor) driver)
-				.executeScript(STATUS_GPS_CANVAS_CTX + CIRCLE_BACK_COLOR_1PX_GET_IMAGE_DATA + IMG_DATA_DATA_2);
-		return pixelRed.toString().equals(GreenRGBPixels[0]) && pixelGreen.toString().equals(GreenRGBPixels[1])
-				&& pixelBlue.toString().equals(GreenRGBPixels[2]);
+		OLMapUtility olMapUtility = new OLMapUtility(driver);
+		return olMapUtility.isButtonGreen(STATUS_GPS_CANVAS_CTX + RGB_PIXELS_IMAGE_DATA, IMG_DATA_VAR_NAME);
 	}
 
 	public boolean isAnemometerButtonRed() {

@@ -133,12 +133,12 @@ public class ManageCustomersPage extends SurveyorBasePage {
 			if (enableFeature) {
 				if (!inputBox.isSelected()){
 					Log.info("Select licensed features - '"+lf+"'");
-					inputBox.click();
+					jsClick(inputBox);
 				}
 			} else {
 				if (inputBox.isSelected()){
 					Log.info("Unselect licensed features - '"+lf+"'");
-					inputBox.click();
+					jsClick(inputBox);
 				}
 			}
 		}

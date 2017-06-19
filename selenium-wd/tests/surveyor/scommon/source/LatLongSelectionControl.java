@@ -30,7 +30,6 @@ public class LatLongSelectionControl extends BaseControl {
 		MapInteraction,
 		Default
 	}
-
 	private static final String GET_BOUNDARY_SELECTOR_CANVAS_IMAGE_DATA_JS_FUNCTION = "function getBoundarySelectorCanvasImageData(){var imgData=null;var mapFrame=window.frames[1];"
 			+ "if(mapFrame){frameDoc=mapFrame.document;if(frameDoc){divEl=frameDoc.getElementById(\"map\");"
 			+ "if(divEl){canvasElement=divEl.getElementsByClassName(\"ol-unselectable\")[0];ctx=canvasElement.getContext('2d');"
@@ -384,12 +383,16 @@ public class LatLongSelectionControl extends BaseControl {
 		return this;
 	}
 
+	public WebElement getOkButton() {
+		return okButton;
+	}
+
 	/**
 	 *
 	 *
 	 * @return the LatLongSelectionControl class instance.
 	 */
-	public LatLongSelectionControl selectSegment(List<Coordinates> gpsPosition) {
+	public LatLongSelectionControl selectCoordinates(List<Coordinates> gpsPosition) {
 		if (canvas != null && canvas.isDisplayed())
 		{
 			Log.info("[LatLongSelectionControl]: Found canvas element");
@@ -400,6 +403,7 @@ public class LatLongSelectionControl extends BaseControl {
 		for (int i =0; i < coordinates.size(); i++)
 		{
 			Point coord = coordinates.get(i);
+			Log.info("Click on point '"+coord+"'");
 			builder.moveToElement(canvas, coord.x, coord.y)
 			.click()
 			.build()
@@ -407,6 +411,7 @@ public class LatLongSelectionControl extends BaseControl {
 
 			if (i == coordinates.size()-1)
 			{
+				Log.info("DoubleClick on point '"+coord+"'");
 				builder.moveToElement(canvas, coord.x, coord.y)
 				.doubleClick()
 				.build()
@@ -426,7 +431,7 @@ public class LatLongSelectionControl extends BaseControl {
 		List<Point> coordinates = new ArrayList<Point>();
 
 		Dimension dimension = canvas.getSize();
-		int div = 1, buttomdiv = 100;
+		int div = 200, buttomdiv = 200;
 		int legendHight = legendContainer.getSize().height;
 
 		Coordinates lt = getGPSPosition(canvas, 0+div, legendHight+div);

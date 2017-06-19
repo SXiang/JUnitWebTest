@@ -27,15 +27,19 @@ import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.ArrayUtility;
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFUtility;
+import common.source.RetryUtil;
 import common.source.SortHelper;
 import common.source.TestSetup;
+import common.source.WKTUtility;
+import common.source.WebElementExtender;
 import common.source.PDFTableUtility.PDFTable;
 
 /**
- * Assessment Reports Page model
+ * EQ Reports Page model
  */
 public class EQReportsPage extends ReportsCommonPage {
 
@@ -44,11 +48,19 @@ public class EQReportsPage extends ReportsCommonPage {
 	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReports_AddNew);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 	public static final String EQReportSSRS_EmissionsQuantificationTable = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationReport);
+
 	@FindBy(id = "report-locationID")
 	protected WebElement eqLocationSelector;
 
 	@FindBy(id = "btn-EQ-select-area")
 	protected WebElement lineSegmentsSelectorBtn;
+
+	@FindBy(id = "eq-selected-shapes-WKT")
+	protected WebElement eqSelectedShapesWKT;
+
+	@FindBy(id = "eq-selected-text")
+	protected WebElement eqSelectedText;
+
 	/**
 	 * @param driver
 	 * @param strBaseURL
@@ -85,7 +97,7 @@ public class EQReportsPage extends ReportsCommonPage {
 
 		// 3. Line Selector
 		List<List<Coordinates>> lineSegments = reportsEQ.getLineSegments();
-		selectLineSegments(lineSegments);
+		selectLineSegments(reportsEQ.getSelectLineSegmentsUsingJS(), lineSegments);
 	}
 
 	@Override
@@ -94,30 +106,67 @@ public class EQReportsPage extends ReportsCommonPage {
 	}
 
 	protected void selectEQLocationParameter(String eqLocationParameter) {
-		selectDropdownItem(eqLocationSelector, eqLocationParameter);
+		selectDropdownOption(eqLocationSelector, eqLocationParameter);
 	}
 
-	protected void clickLineSegmentsSelectorBtn() {
-		Log.clickElementInfo("Line Segments Selector");
+	protected void openLineSegmentsSelector() {
+		Log.clickElementInfo("Open Line Segments Selector");
+		// Try few times before failure
+		boolean actionSuccess = RetryUtil.retryOnException(
+				() -> { return clickLineSegmentsSelector();},
+				() -> { return true; },
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+		if (!actionSuccess) {
+			Log.error(String.format("clickLineSegmentsSelector() executed %d times and resulted in exception.", Constants.DEFAULT_MAX_RETRIES));
+		}
+	}
+
+	protected boolean clickLineSegmentsSelector() {
+		Log.clickElementInfo("Click Line Segments Selector");
 		this.lineSegmentsSelectorBtn.click();
+		return WebElementExtender.verifyElementIsDisplayed(driver, latLongSelectionControl.getOkButton(), timeout);
 	}
 
-	protected void selectLineSegments(List<List<Coordinates>> lineSegments) {
-			if(lineSegments.isEmpty())
-				return;
-			clickLineSegmentsSelectorBtn();
-			latLongSelectionControl.waitForModalDialogOpen();
-			latLongSelectionControl.switchMode(ControlMode.MapInteraction);
-			latLongSelectionControl.waitForMapImageLoad();
-			waitForAJAXCallsToComplete();
-			mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
-			for(List<Coordinates> line:lineSegments){
-				latLongSelectionControl.selectSegment(line);
-			}
-			latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
-			latLongSelectionControl.waitForModalDialogToClose();
+	protected void selectLineSegments(Boolean isSelectLineSegUsingJS, List<List<Coordinates>> lineSegments) {
+		if(lineSegments.isEmpty())
+			return;
+
+		if (isSelectLineSegUsingJS) {
+			selectLineSegmentsUsingJS(lineSegments);
+		} else {
+			selectLineSegmentsUsingMap(lineSegments);
+		}
 	}
 
+	private void selectLineSegmentsUsingJS(List<List<Coordinates>> lineSegments) {
+		String wktText = WKTUtility.buildShapeWKTForLineSegments(lineSegments);
+		String selLinesText = String.format("%d line(s) selected", lineSegments.size());
+		setEQSelectedShapesWKT(wktText);
+		setEQSelectedText(selLinesText);
+	}
+
+	private void selectLineSegmentsUsingMap(List<List<Coordinates>> lineSegments) {
+		openLineSegmentsSelector();
+		latLongSelectionControl.waitForModalDialogOpen();
+		latLongSelectionControl.switchMode(ControlMode.MapInteraction);
+		latLongSelectionControl.waitForMapImageLoad();
+		waitForAJAXCallsToComplete();
+		mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
+		for(List<Coordinates> line:lineSegments){
+				latLongSelectionControl.selectCoordinates(line);
+		}
+		latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
+		latLongSelectionControl.waitForModalDialogToClose();
+	}
+
+	private void setEQSelectedShapesWKT(String value) {
+		WebElementExtender.executeScript(this.eqSelectedShapesWKT, driver, String.format("arguments[0].value = '%s';", value));
+	}
+
+	private void setEQSelectedText(String value) {
+		WebElementExtender.executeScript(this.eqSelectedText, driver, String.format("arguments[0].value = '%s';", value));
+	}
 
 	@Override
 	protected void handleExtraAddSurveyInfoParameters(BaseReportEntity reports) {
@@ -152,7 +201,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		String elementXPath = "//*[@id='btn-EQ-select-area']";
 		refreshPageUntilElementFound(elementXPath);
 	}
-	
+
 	/**
 	 * Method to verify the Emissions Quantification Data Table in SSRS
 	 *
@@ -185,7 +234,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		}
 
 		List<String[]> emissionsQuantificationTblList = getSSRSPDFTableValues(PDFTable.EQDATATABLE, reportTitle);
-		
+
 		ArrayList<StoredProcEQGetEQData> storedProcEQDataList = StoredProcEQGetEQData.getEQData(reportId);
 		Iterator<StoredProcEQGetEQData> lineIterator = storedProcEQDataList.iterator();
 		ArrayList<String> storedProcConvStringList = new ArrayList<String>();
@@ -203,6 +252,7 @@ public class EQReportsPage extends ReportsCommonPage {
 			Log.error("Expect "+storedProcConvStringList.size()+" records, found "+emissionsQuantificationTblList.size()+" records in PDF");
 			return false;
 		}
+
 		for(String[] row:emissionsQuantificationTblList){
 			String tableRow="";
 			for(String field:row){
@@ -211,6 +261,7 @@ public class EQReportsPage extends ReportsCommonPage {
 			tableRow = tableRow.replaceAll("\\s+", "").trim();
 			if(!storedProcConvStringList.contains(tableRow)){
 				Log.error("Emissions Quantification data table verification failed");
+				Log.error(String.format("Row Entry -> [%s] was NOT found", tableRow));
 				return false;
 			}
 		}
@@ -232,5 +283,4 @@ public class EQReportsPage extends ReportsCommonPage {
 		Log.info("Emissions Quantification table verification passed");
 		return true;
 	}
-
 }

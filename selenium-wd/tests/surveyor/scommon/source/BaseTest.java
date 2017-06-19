@@ -14,9 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -39,8 +39,12 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
 import surveyor.dataaccess.source.Analyzer;
+import surveyor.dataaccess.source.Analyzer.CapabilityType;
+import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
+import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
@@ -78,24 +82,28 @@ public class BaseTest {
 	public TestWatcher watcher = new TestWatcher() {
 		@Override
 		public void starting(Description description) {
+			Log.method("BaseTest.starting");
 			BaseTest.reportTestStarting(description);
 			TestSetup.simulatorTestStarting(description);
 		}
 
 		@Override
 		public void finished(Description description) {
+			Log.method("BaseTest.finished");
 			BaseTest.reportTestFinished(description.getClassName());
 			TestSetup.simulatorTestFinishing(description);
 		}
 
 		@Override
 		protected void failed(Throwable e, Description description) {
+			Log.method("BaseTest.failed");
 			BaseTest.reportTestFailed(e, description.getClassName());
 			postTestMethodProcessing();
 		}
 
 		 @Override
 		 protected void succeeded(Description description) {
+			Log.method("BaseTest.succeeded");
 			BaseTest.reportTestSucceeded(description.getClassName());
 			postTestMethodProcessing();
 		}
@@ -261,15 +269,19 @@ public class BaseTest {
 	}
 
 	public Map<String, String> createTestAccount(String testCase){
-		return createTestAccount(testCase, null);
+		return createTestAccount(testCase, CapabilityType.IsotopicMethane);
+	}
+
+	public Map<String, String> createTestAccount(String testCase, CapabilityType analyzerType){
+		return createTestAccount(testCase,  null, analyzerType, true, true);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor){
-		return createTestAccount(testCase, null, addTestSurveyor);
+		return createTestAccount(testCase, addTestSurveyor, true);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
-		return createTestAccount(testCase, null, addTestSurveyor, fetchAnalyzerFromPool);
+		return createTestAccount(testCase,  null, CapabilityType.IsotopicMethane, addTestSurveyor, fetchAnalyzerFromPool);
 	}
 
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude){
@@ -279,9 +291,11 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
 		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
-
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
-		String uniqueNumber = getTestSetup().getFixedSizeRandomNumber(6);
+		return createTestAccount(testCase, lfsToExclude, CapabilityType.IsotopicMethane, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
+	}
+	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
+		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
 		String userName = uniqueNumber + REGBASEUSERNAME;
 		String userRole = CUSUSERROLEUA;
@@ -299,8 +313,9 @@ public class BaseTest {
 			Log.info(String.format("Fetched Analyzer with serial number-'%s' from pool", analyzerName));
 			Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 			if (analyzer != null) {
-				Log.info(String.format("Analyzer with serial number-'%s' fetched from pool ALREADY EXISTS in DB. "
-						+ "Deleting Analyzer.", analyzerName));
+				analyzerSharedKey = analyzer.getSharedKey();
+				Log.info(String.format("Analyzer with serial number-'%s', sharedKey-'%s' fetched from pool ALREADY EXISTS in DB. "
+						+ "Deleting Analyzer.", analyzerName, analyzerSharedKey));
 				analyzer.cascadeDeleteAnalyzer();
 			}
 		}
@@ -319,30 +334,27 @@ public class BaseTest {
 		testAccount.put("userRole", userRole);
 		testAccount.put("eula", eula);
 
-		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(),  manageCustomersPage);
-		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageLocationsPage);
-
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
+		ManageCustomersPage	manageCustomersPage = new ManageCustomersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(),  manageCustomersPage);
 		manageCustomersPage.open();
 		if(!manageCustomersPage.addNewCustomer(customerName, eula, true,lfs)){
 			fail(String.format("Failed to add a new customer %s, %s, %s",customerName, eula, true));
 		}
 
+		ManageLocationsPage	manageLocationsPage = new ManageLocationsPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageLocationsPage);
 		manageLocationsPage.open();
 		if(!manageLocationsPage.addNewLocation(locationName, customerName, cityName)){
 			fail(String.format("Failed to add a new location %s, %s, %s",locationName, customerName, cityName));
 		}
 
-		manageUsersPage.open();
-		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
-			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
-		}
+		addTestUser(customerName, userName, userPassword, userRole, locationName);
+
+		Customer customer = Customer.getCustomer(customerName);
+		testAccount.put("customerId", customer.getId());
 
 		if(!addTestSurveyor){
 			return testAccount;
@@ -350,6 +362,7 @@ public class BaseTest {
 
 		testAccount.put("analyzerSharedKey", analyzerSharedKey);
 		testAccount.put("analyzerName", analyzerName);
+		testAccount.put("analyzerType", analyzerType.toString());
 		testAccount.put("surveyorName", surveyorName);
 
 		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(getDriver(), getBaseURL(), getTestSetup());
@@ -368,6 +381,8 @@ public class BaseTest {
 		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
 		}
+		Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
+		analyzer.updateCapabilityType(analyzerType);
 
 		manageRefGasBottlesPage.open();
 		if(!manageRefGasBottlesPage.addNewRefGasBottle(lotNum, isoValue, customerName, locationName, surveyorName)){
@@ -375,6 +390,15 @@ public class BaseTest {
 		}
 
 		return Collections.synchronizedMap(testAccount);
+	}
+
+	public void addTestUser(String customerName, String userName, String userPassword, String userRole, String locationName){
+		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
+		PageFactory.initElements(getDriver(), manageUsersPage);
+		manageUsersPage.open();
+		if(!manageUsersPage.addNewCustomerUser(customerName, userName, userPassword, userRole, locationName)){
+			fail(String.format("Failed to add a new customer user %s, %s, %s, %s, %s",customerName, userName, userPassword, userRole, locationName));
+		}
 	}
 
 	public Map<String, String> addTestReport() throws Exception{
@@ -391,12 +415,20 @@ public class BaseTest {
 	}
 
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
-		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual};
-		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
-		if(surveyModeFilter==null||surveyModeFilter.length==0){
-			surveyModeFilter = SurveyModeFilter.values();
+		return addTestReport(userName, Password, null/*customer*/, surveyTag, testRowID, surveyModeFilter);
 		}
 
+	public Map<String, String> addTestReport(String userName, String Password, String customer, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
+		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
+		SurveyModeFilter[] surveyMode = {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual, SurveyModeFilter.Analytics};
+		SurveyModeFilter[] defaultTestSurveyModeFilter =  {SurveyModeFilter.Standard, SurveyModeFilter.Operator, SurveyModeFilter.RapidResponse, SurveyModeFilter.Manual};
+		if(surveyModeFilter==null||surveyModeFilter.length==0){
+			surveyModeFilter = defaultTestSurveyModeFilter;
+		}
+		String[] surTags = {};
+		if(surveyTag!=null){
+			surTags = surveyTag.split(":");
+		}
 		HashMap<String, String> testReport = new HashMap<String, String>();
 
 		getLoginPage().open();
@@ -404,7 +436,6 @@ public class BaseTest {
 		testReport.put("userName", userName);
 
 		ComplianceReportsPageActions complianceReportsPageAction = ActionBuilder.createComplianceReportsPageAction();
-		ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 
 		for(SurveyModeFilter sm:surveyModeFilter){
 			boolean found = false;
@@ -422,45 +453,78 @@ public class BaseTest {
 
 			complianceReportsPageAction.open("", -1);
 			ComplianceReportEntity rpt = (ComplianceReportEntity) complianceReportsPageAction.fillWorkingDataForReports(testRowID);
+			if(customer!=null){
+				rpt.setCustomer(customer);
+			}
 			rpt.setRptTitle(rpt.getRptTitle() + rm.toString()+sm.toString());
+			complianceReportsPageAction.getWorkingReportsDataRow().title = rpt.getRptTitle();
 			rpt.setReportModeFilter(rm);
 			rpt.setSurveyModeFilter(sm);
 			rpt.setStrCreatedBy(userName);
 
-			for(ReportsSurveyInfo smf:rpt.getSurveyInfoList()){
+			List<ReportsSurveyInfo> surveyInfoList = rpt.getSurveyInfoList();
+			for(int i=0;i<surveyInfoList.size(); i++){
+				ReportsSurveyInfo smf = surveyInfoList.get(i);
+				String tag = "";
 				if(smf!=null) {
 					smf.setSurveyModeFilter(sm);
-					if (surveyTag != null && surveyTag != "") {
-						smf.setTag(surveyTag);
+					if (surTags.length>i) {
+						tag = surTags[i];
+					}
+					if(!tag.isEmpty()){
+						smf.setTag(tag);
 					}
 				}
 			}
+			complianceReportsPageAction.setWorkingReportsEntity(rpt);
 			testReport.put(sm.toString()+"Title", rpt.getRptTitle());
-
+			ComplianceReportsPage complianceReportsPage = complianceReportsPageAction.getComplianceReportsPage();
 			complianceReportsPage.addNewReport(rpt, true);
-			complianceReportsPage.waitForReportGenerationtoComplete(rpt.getRptTitle(), rpt.getStrCreatedBy());
+			String reportName = complianceReportsPage.waitForReportGenerationtoCompleteAndGetReportName(rpt.getRptTitle(), rpt.getStrCreatedBy(), null, null);
+			testReport.put(sm.toString()+"ReportName", reportName);
 		}
-
 		return Collections.synchronizedMap(testReport);
 	}
 
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey) throws Exception{
-		return addTestSurvey(analyzerName, analyzerSharedKey, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane);
 	}
 
-	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, SurveyType... surveyTypes) throws Exception{
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+	}
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, SurveyType... surveyTypes) throws Exception{
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyTypes);
+	}
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, SurveyType... surveyTypes) throws Exception{
 		int surveyRuntimeInSeconds = 2;
-		return addTestSurvey(analyzerName, analyzerSharedKey, userName, Password, surveyRuntimeInSeconds, surveyTypes);
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, userName, password, surveyRuntimeInSeconds, surveyTypes);
 	}
 
-	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String Password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
+		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDefnFile = "replay-db3.defn";
+		String replayScriptEthaneDefnFile = "replay-db3-eth.defn";
+		String db3DefnFile = replayScriptDefnFile;
+		if(analyzerType.equals(CapabilityType.Ethane)){
+			db3DefnFile = replayScriptEthaneDefnFile;
+		}
+		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, db3DefnFile, userName, password, surveyRuntimeInSeconds, surveyTypes);
+	}
+
+	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDB3File = "Surveyor.db3";
-		int[] surveyRowIDs = {3, 5, 9, 31, 30};
-		String[] surveyType = {"Standard", "Operator", "RapidResponse", "Assessment", "Manual"};
+		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
+		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
+		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
+		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
+		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
 
 		if(surveyTypes==null||surveyTypes.length==0){
-			surveyTypes = SurveyType.values();
+			surveyTypes = defaultTestSurveyType;
 		}
 
 		HashMap<String, String> testSurvey = new HashMap<String, String>();
@@ -471,54 +535,109 @@ public class BaseTest {
 		String surveyorName = new SurveyorUnit().getById(surveyorUnitId).getDescription();
 
 		getLoginPage().open();
-		getLoginPage().loginNormalAs(userName, Password);
+		getLoginPage().loginNormalAs(userName, password);
 		DriverViewPageActions driverViewPageAction = ActionBuilder.createDriverViewPageAction();
-		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
-		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
 
 		final int TEST_ENVIRONMENT_DATA_ROW_ID = 3;
+		TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
+
+		/*Step 1. setup analyzer configuration */
+		updateAnalyzerConfiguration(testEnvironmentAction, analyzerName, analyzerSharedKey, TEST_ENVIRONMENT_DATA_ROW_ID);
+
+		for(SurveyType st : surveyTypes){
+			int i=0;
+			while(i<surveyType.length){
+				if(st.equals(surveyType[i])){
+					break;
+				}
+				i++;
+			}
+			if(i==surveyType.length){
+				Log.warn("SurveyType '"+st+"' is not valid");
+				continue;
+			}
+			if(!CapabilityType.fromString(db3Type[i]).equals(analyzerType)){
+				continue;
+			}
+
+			String db3file = replayScriptDB3File;
+			if(st.equals(SurveyType.Analytics)){
+				db3file = replayAnalyticsScriptDB3File;
+			}
+			int surveyRowID = surveyRowIDs[0];
+			for(int j=0; j<surveyType.length; j++){
+				if(st.equals(surveyType[j])){
+					surveyRowID = surveyRowIDs[j];
+					break;
+				}
+			}
+
+			/* Step 2: startAnalyzerSurvey */
+			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+			/* Step 3: stopAnalyzerSurvey */
+			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
+			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
+		}
+
+		/* Step 4: stopAnalyzer */
+		TestSetup.stopAnalyzer();
+
+		return Collections.synchronizedMap(testSurvey);
+	}
+
+	protected void updateAnalyzerConfiguration(TestEnvironmentActions testEnvironmentAction, String analyzerName, String analyzerSharedKey, int TEST_ENVIRONMENT_DATA_ROW_ID) throws Exception{
+		//Using analyzer created at runtime for this test - impacts open Rrl of driver view
 		TestEnvironmentActions.workingDataRow.set(testEnvironmentAction.getDataReader().getDataRow(TEST_ENVIRONMENT_DATA_ROW_ID));
 		TestEnvironmentActions.workingDataRow.get().analyzerSerialNumber = analyzerName;
 		TestEnvironmentActions.workingDataRow.get().analyzerSharedKey = analyzerSharedKey;
 		TestEnvironmentActions.workingDataRow.get().analyzerRowID = "";
-
 		TestSetup.updateAnalyzerConfiguration(TestContext.INSTANCE.getBaseUrl(),
-				analyzerName, analyzerSharedKey);
+			analyzerName, analyzerSharedKey);
+	}
 
-		for(SurveyType st:surveyTypes){
-			TestSetup.restartAnalyzer();
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+		TestSetup.restartAnalyzer();
+		driverViewPageAction.open("", -1);
+		driverViewPageAction.waitForConnectionToComplete("", -1);
+		TestSetup.replayDB3Script(db3DefnFile, db3file);
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.startDrivingSurvey("", surveyRowID);
+		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
+	}
 
-			driverViewPageAction.open("", -1);
-			driverViewPageAction.waitForConnectionToComplete("", -1);
+	protected void stopAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+			String analyzerName, String analyzerSharedKey, String surveyorName) throws Exception{
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.stopDrivingSurvey("", -1);
 
-			int surveyRowID = surveyRowIDs[0];
-			for(int i=0; i<surveyType.length; i++){
-				if(st.toString().equalsIgnoreCase(surveyType[i])){
-					surveyRowID = surveyRowIDs[i];
-					break;
-				}
-			}
-			TestSetup.replayDB3Script(replayScriptDefnFile, replayScriptDB3File);
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.startDrivingSurvey("", surveyRowID);
-			testSurvey.put(st.toString()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
-			testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.stopDrivingSurvey("", -1);
+		// wait for a while before shutting down Analyzer.
+		testEnvironmentAction.idleForSeconds(String.valueOf(30), -1);
 
-			// wait for a while before shutting down Analyzer.
-			testEnvironmentAction.idleForSeconds(String.valueOf(30), -1);
-
-			driverViewPageAction.clickOnModeButton("", -1);
-			driverViewPageAction.clickOnShutdownButton("", -1);
-			driverViewPageAction.clickOnShutdownConfirmButton("", -1);
-			testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
-			TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
+		driverViewPageAction.clickOnModeButton("", -1);
+		driverViewPageAction.clickOnShutdownButton("", -1);
+		driverViewPageAction.clickOnShutdownConfirmButton("", -1);
+		testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
+		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
+	}
+	protected static boolean pushGisData(String customerId) {
+		try {
+			// Add GIS seed for customer.
+			DbSeedExecutor.executeGisSeed(customerId);
+		} catch (Exception ex) {
+			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 		}
+		return true;
+	}
 
-		TestSetup.stopAnalyzer();
-
-		return Collections.synchronizedMap(testSurvey);
+	protected static boolean cleanUpGisData(String customerId){
+		try {
+				DbSeedExecutor.cleanUpGisSeed(customerId);
+			} catch (Exception e) {
+				Log.error(String.format("Error in cleanUpGisSeed. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+				return false;
+			}
+		return true;
 	}
 
 	/**
@@ -604,5 +723,5 @@ public class BaseTest {
 
 	public static void setHomePage(HomePage homePage) {
 		BaseTest.homePage = homePage;
-	}
+}
 }

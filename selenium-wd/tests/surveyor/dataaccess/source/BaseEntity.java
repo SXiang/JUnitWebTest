@@ -23,6 +23,10 @@ public class BaseEntity {
     	this.connection = ConnectionFactory.createConnection();
     }
 
+    public BaseEntity(Connection conn) {
+    	this.connection = conn;
+    }
+
     public Connection getConnection() {
 		return connection;
 	}
@@ -48,6 +52,18 @@ public class BaseEntity {
 			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
 		}
 		return -1;
+	}
+
+	public ResultSet executeQuery(String SQL) {
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(SQL);
+			return rs;
+
+		} catch (SQLException e) {
+			Log.error(String.format("Class %s | ", this.getClass().toString()) + e.toString());
+		}
+		return null;
 	}
 
 	/**

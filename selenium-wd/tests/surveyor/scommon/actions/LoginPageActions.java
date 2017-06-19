@@ -124,4 +124,8 @@ public class LoginPageActions extends BasePageActions {
 		else if (actionName.equals("verifyAccountEnabled")) { return this.verifyAccountEnabled(data, dataRowID); }
 		return false;
 	}
+	
+	public LoginPage getLoginPage(){
+		return loginPage;
+	}
 }

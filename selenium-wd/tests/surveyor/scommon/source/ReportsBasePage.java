@@ -1,6 +1,3 @@
-/**
- *
- */
 package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
@@ -91,9 +88,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	private static final Integer COL_IDX_REPORT_TITLE = 1;
 	private static final Integer COL_IDX_REPORT_NAME = 2;
-	private static final Integer COL_IDX_CREATED_BY = 3;
-	private static final Integer COL_IDX_DATE = 4;
-	private static final Integer COL_IDX_ACTION = 5;
+	private static final Integer COL_IDX_CREATED_BY = 4;
+	private static final Integer COL_IDX_DATE = 5;
+	private static final Integer COL_IDX_ACTION = 6;
 
 	public static final String STRSurveyPaginationMsgPattern = "Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries \\(filtered from [\\d,]+ total entries\\)|Showing [\\d,]+ to [\\d,]+ of [\\d,]+ entries";
 
@@ -121,6 +118,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Manual")
 	protected WebElement inputReportModeManual;
+
+	@FindBy(css = "#page-wrapper  fieldset  div.radio > .report-survey-mode-text > #Analytics")
+	protected WebElement inputReportModeAnalytics;
 
 	@FindBy(how = How.ID, using = "report-survey-mode-minimum-amplitude")
 	protected WebElement inputMinAmp;
@@ -190,6 +190,12 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Manual']")
 	protected WebElement inputSurModeFilterManual;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Analytics']")
+	protected WebElement inputSurModeFilterAnalytics;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='EQ']")
+	protected WebElement inputSurModeFilterEQ;
 
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
@@ -263,13 +269,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_length']/label/select")
 	protected WebElement paginationInput;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/img")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/img")
 	protected WebElement actionStatus;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/a[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[3]")
 	protected WebElement btnReportViewer;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[4]/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/span")
 	protected WebElement errorSpan;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
@@ -306,7 +312,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='surveyor']")
 	protected WebElement cbSurveyUnit;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[5]/a[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr[1]/td[6]/a[2]")
 	protected WebElement btnDownload;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
@@ -342,7 +348,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
 	protected WebElement tdReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]")
 	protected WebElement tdReportCreatedBy;
 
 	@FindBy(how = How.XPATH, using = "//div[@id='datatable_info']")
@@ -376,7 +382,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.ID, using = "button_ok")
 	protected WebElement btnCustomOK;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[5]/a[@title='Copy']")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[6]/a[@title='Copy']")
 	protected WebElement btnFirstCopyCompliance;
 
 	@FindBy(how = How.ID, using = "report-FOV-opacity")
@@ -406,7 +412,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[1]")
 	protected WebElement tdCReportTitle;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatable']/tbody/tr/td[4]")
 	protected WebElement tdCReportCreatedBy;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='dataTables_empty']")
@@ -418,12 +424,21 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[contains(@id,'-table-pdf-download')]")
 	protected WebElement pdfImg;
 
+	@FindBy(how = How.CSS, using = ".image > a[href *=DownloadReportView] > img.img-responsive")
+	protected WebElement viewImg;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
 	protected WebElement surveyTableRows;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody")
 	protected WebElement surveyTable;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='licenseMissingModal']/div/div/div[3]/a")
+	protected WebElement dialoadModelOK;
+
+	public WebElement getDialoadModelOK() {
+		return this.dialoadModelOK;
+	}
 	private String reportName;
 	private String reportId;
 	@FindBy(name = "survey-mode-type")
@@ -794,7 +809,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
-
 	}
 
 	public void addReport(){
@@ -845,7 +859,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
-			handleExtraAddSurveyInfoParameters(reportsSurveyInfo.getSurveyModeFilter());
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
 			inputSurveyTag(reportsSurveyInfo.getTag());
 
@@ -921,7 +934,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.info("Wait for survey checkbox to be clickable");
 				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
-				checkBoxActionCell.click();
+				jsClick(checkBoxActionCell);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
@@ -999,13 +1012,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectSurveyInfoEndDate(String endDate) {
 		if ((endDate != null) && (!endDate.isEmpty())) {
-			selectEndDateForSurvey(endDate);
+			inputSurveyEndDateTime(endDate);
 		}
 	}
 
 	public void selectSurveyInfoStartDate(String startDate) {
 		if ((startDate != null) && (!startDate.isEmpty())) {
-			selectStartDateForSurvey(startDate);
+			inputSurveyStartDateTime(startDate);
 		}
 	}
 
@@ -1101,7 +1114,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
+	
+	public void inputSurveyStartDateTime(String dateTime) {
+		Log.info(String.format("Input survey Start Date/Time - '%s'", dateTime));
+		jsSendKeys(inputStartDate, dateTime);
+		inputStartDate.click();
+	}
 
+	public void inputSurveyEndDateTime(String dateTime) {
+		Log.info(String.format("Input survey End Date/Time - '%s'", dateTime));
+		jsSendKeys(inputEndDate, dateTime);
+		inputEndDate.click();
+	}
+	
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
@@ -1141,6 +1166,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void waitForNewPageLoad() {
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean result = false;
@@ -1160,12 +1186,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		this.inputTitle.sendKeys(rptTitle);
 	}
 
+	protected boolean isCustomerSelectDisplayed() {
+		return WebElementExtender.isElementPresentAndDisplayed(dropdownCustomer);
+	}
+
 	public void selectCustomer(String customer) {
 		selectCustomer(customer, true);
 	}
 
 	public void selectCustomer(String customer, boolean confirm) {
-		if (dropdownCustomer.isDisplayed()) {
+		if (isCustomerSelectDisplayed()) {
 			List<WebElement> optionsCustomer = this.dropdownCustomer.findElements(By.tagName("option"));
 			for (WebElement option : optionsCustomer) {
 				if (customer.equalsIgnoreCase(option.getText().trim())) {
@@ -1192,6 +1222,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void waitForSurveyTabletoLoad() {
 		Log.method("waitForSurveyTabletoLoad");
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = false;
@@ -1519,14 +1550,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 			}));
 	}
 
-	private String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
+	protected String waitForReportGenerationtoCompleteAndGetReportName(String rptTitle, String strCreatedBy, String allowedErrorMsg, Predicate<String> allowedErrorCheck) throws Exception {
 		Log.method("waitForReportGenerationtoCompleteAndGetReportName", rptTitle, strCreatedBy,
 				(allowedErrorMsg==null)?"":allowedErrorMsg, (allowedErrorCheck==null)?"allowedErrorCheck=NULL": "allowedErrorCheck NOT NULL");
 
 		StringBuilder rptNameBuilder = new StringBuilder();
 		boolean retVal = FunctionUtil.wrapException(rptTitle, (s1) ->
 			waitForReportGenerationToCompleteAndExecuteAction(rptTitle, strCreatedBy, "" /*testCaseID*/,
-				rptNameBuilder, allowedErrorMsg, allowedErrorCheck, 
+				rptNameBuilder, allowedErrorMsg, allowedErrorCheck,
 				(s2) -> {
 					FunctionUtil.warnOnError(() -> {
 						if (isReportViewerDialogOpen()) {
@@ -1629,7 +1660,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
-							this.waitForPdfReportIcontoAppear();
+							this.waitForReportViewImagetoAppear();
 						} else {
 							Log.info(String.format("First call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
 							int currRowNum = rowNum;
@@ -1666,7 +1697,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
-							this.waitForPdfReportIcontoAppear();
+							this.waitForReportViewImagetoAppear();
 						}
 
 						// Caller provided checks.
@@ -1720,7 +1751,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 						elapsedTime = System.currentTimeMillis() - startTime;
 						if (elapsedTime >= (getReportGenerationTimeout() * 1000)) {
-							Log.error(String.format("Wait action timed out in checkActionsStatus() method call. Elapsed time = %d",
+							Log.error(String.format("Wait action timed out in waitForReportGenerationToCompleteAndExecuteAction() method call. Elapsed time = %d",
 									elapsedTime));
 							return false;
 						}
@@ -2301,6 +2332,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
+		this.inputSearchReport.clear();
 		this.inputSearchReport.sendKeys(reportTitle);
 		waitForSearchResultsToLoad();
 
@@ -2529,11 +2561,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void waitForPdfReportIcontoAppear() {
+	public void waitForReportViewImagetoAppear() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return pdfImg.isDisplayed();
-
+				return viewImg.isDisplayed();
 			}
 		});
 	}
@@ -2721,8 +2752,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		setPostDBStatList(new ArrayList<ReportJobPerfDBStat>());
 		List<surveyor.api.source.ReportJob> reportJobs = reportJobsStatObj.ReportJobs;
 		for (surveyor.api.source.ReportJob reportJob : reportJobs) {
-			String reportJobTypeId = BaseReportEntity.ReportJobTypeReverseGuids
-					.get(ReportJobType.valueOf(reportJob.ReportJobType));
+			String reportJobTypeId = BaseReportEntity.ReportJobTypeReverseGuids.get(ReportJobType.valueOf(reportJob.ReportJobType));
 
 			// validate report job.
 			validateReportJobStatus(reportJobsStatObj.ReportTitle, reportJob);
@@ -2937,6 +2967,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeManual);
 	}
 
+	public boolean isAnalyticsReportModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputReportModeAnalytics);
+	}
+
+	public boolean isExclusionRadiusParameterShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputExclusionRadius);
+	}
+
 	public boolean isStandardSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterStd);
 	}
@@ -2951,6 +2989,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isManualSurveyModeShown() {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterManual);
+	}
+
+	public boolean isAnalyticsSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAnalytics);
+	}
+
+	public boolean isEQSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterEQ);
 	}
 
 	public boolean isManualSurveyModeSelected() {
@@ -2989,6 +3035,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 		case Manual:
 			validType.add(SurveyModeFilter.Manual.toString());
 			break;
+		case Analytics:
+			validType.add(SurveyModeFilter.Analytics.toString());
 		default:
 			if (inputReportModeRapidR.isSelected()) {
 				validType.add(SurveyModeFilter.Standard.toString());
@@ -3047,7 +3095,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
-		this.btnSurveySearch.click();
+		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}
 

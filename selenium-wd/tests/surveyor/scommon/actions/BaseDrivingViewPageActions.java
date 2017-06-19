@@ -7,7 +7,7 @@ import common.source.TestSetup;
 import surveyor.scommon.source.BaseDrivingViewPage;
 
 public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
-	
+
 	private static final String FN_VERIFY_SURVEY_INFO_ANALYZER_LABEL_EQUALS = "verifySurveyInfoAnalyzerLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_SURVEYOR_LABEL_EQUALS = "verifySurveyInfoSurveyorLabelEquals";
 	private static final String FN_VERIFY_SURVEY_INFO_DRIVER_LABEL_EQUALS = "verifySurveyInfoDriverLabelEquals";
@@ -21,9 +21,8 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_ELAPSED_LABEL_STARTS_WITH = "verifySurveyInfoTimeElapsedLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_TIME_REMAINING_LABEL_STARTS_WITH = "verifySurveyInfoTimeRemainingLabelStartsWith";
 	private static final String FN_VERIFY_SURVEY_INFO_MODE_LABEL_EQUALS = "verifySurveyInfoModeLabelEquals";
-
 	private static final String CLS_BASE_DRIVING_VIEW_PAGE_ACTIONS = "BaseDrivingViewPageActions::";
-	
+
 	public BaseDrivingViewPageActions(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup);
 	}
@@ -39,7 +38,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		getBaseDrivingViewPage().clickStatusButton();
 		return true;
 	}
-	
+
 	public boolean clickOnHeaderInfoBox(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".clickOnHeaderInfoBox", data, dataRowID);
 		getBaseDrivingViewPage().clickHeaderInfoBox();
@@ -69,7 +68,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		logAction(getRuntimeType() + ".verifyAnemometerButtonIsRed", data, dataRowID);
 		return getBaseDrivingViewPage().isAnemometerButtonRed();
 	}
-	
+
 	public boolean verifyWindRoseIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyWindRoseIsShownOnMap", data, dataRowID);
 		return this.getBaseDrivingViewPage().isWindRoseShown();
@@ -85,7 +84,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		getBaseDrivingViewPage().waitForConnectionComplete();
 		return true;
 	}
-	
+
 	public boolean verifyPageLoaded(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyPageLoaded", data, dataRowID);
 		this.getBaseDrivingViewPage().waitForPageLoad();
@@ -171,6 +170,16 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	public boolean verifyGPSButtonIsRed(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGPSButtonIsRed", data, dataRowID);
 		return getBaseDrivingViewPage().isGPSButtonRed();
+	}
+
+	public boolean verifyGPSButtonIsBlue(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyGPSButtonIsBlue", data, dataRowID);
+		return getBaseDrivingViewPage().isGPSButtonBlue();
+	}
+
+	public boolean verifyGPSButtonIsYellow(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyGPSButtonIsYellow", data, dataRowID);
+		return getBaseDrivingViewPage().isGPSButtonYellow();
 	}
 
 	public boolean verifyHBTempButtonIsGreen(String data, Integer dataRowID) {
@@ -262,37 +271,37 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		log(String.format("Looking for Text-[%s], Found Time Remaining Label Text-[%s]", data, getBaseDrivingViewPage().getTimeRemainingLabelText()));
 		return getBaseDrivingViewPage().getTimeRemainingLabelText().startsWith(data);
 	}
-	
+
 	/**
 	 * Executes verifySurveyInfoTimeElapsedIsTickingForward action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public boolean verifySurveyInfoTimeElapsedIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
 		logAction(getRuntimeType() + ".verifySurveyInfoTimeElapsedIsTickingForward", data, dataRowID);
 		return DateUtility.isTimeTickingForward(getBaseDrivingViewPage().getTimeElapsedLabel());
 	}
- 
+
 	/**
 	 * Executes verifySurveyInfoTimeLabelIsTickingForward action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public boolean verifySurveyInfoTimeLabelIsTickingForward(String data, Integer dataRowID) throws InterruptedException {
 		logAction(getRuntimeType() + ".verifySurveyInfoTimeLabelIsTickingForward", data, dataRowID);
 		return DateUtility.isTimeTickingForward(getBaseDrivingViewPage().getTimeLabel());
 	}
- 
+
 	/**
 	 * Executes verifySurveyInfoTimeRemainingLabelIsTickingBackward action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public boolean verifySurveyInfoTimeRemainingLabelIsTickingBackward(String data, Integer dataRowID) throws InterruptedException {
 		logAction(getRuntimeType() + ".verifySurveyInfoTimeRemainingLabelIsTickingBackward", data, dataRowID);
@@ -304,7 +313,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	/*TBD*/
 	public boolean verifyRedCursorIsMovingWithCarPosition(String data, Integer dataRowID) {
@@ -312,13 +321,13 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		//return getBaseDrivingViewPage().isRedCursorIsMovingWithCarPosition();
 		return false;
 	}
-	
+
 	/**
 	 * Executes verifySpikesAreDisplayed action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	/*TBD*/
 	public boolean verifySpikesAreDisplayed(String data, Integer dataRowID) {
@@ -326,7 +335,7 @@ public class BaseDrivingViewPageActions extends BaseMapViewPageActions {
 		//return getBaseDrivingViewPage().areSpikesDisplayed();
 		return false;
 	}
-	
+
 	public BaseDrivingViewPage getBaseDrivingViewPage() {
 		return (BaseDrivingViewPage)this.getPageObject();
 	}
