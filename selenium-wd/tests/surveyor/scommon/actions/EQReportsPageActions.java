@@ -246,7 +246,7 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		EQReportsDataRow workingReportsDataRow = getWorkingReportsDataRow();
 		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(workingReportsDataRow, this.excelUtility);
 		String locationRowID = workingReportsDataRow.locationRowID;
-		if (!ActionArguments.isEmpty(locationRowID)) {
+		if (!ActionArguments.isEmpty(locationRowID) && (Integer.valueOf(locationRowID) > 0)) {
 			LocationDataRow locationDataRow = getLocationDataRow(Integer.valueOf(locationRowID));
 			String eqLocationParameter = locationDataRow.name;
 			rpt.setEQLocationParameter(eqLocationParameter);

@@ -27,6 +27,7 @@ import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.ArrayUtility;
+import common.source.BaseHelper;
 import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
@@ -95,7 +96,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		}
 
 		// 2. EQ Location Parameter
-		if (!reportsEQ.getEQLocationParameter().isEmpty()) {
+		if (!BaseHelper.isNullOrEmpty(reportsEQ.getEQLocationParameter())) {
 			selectEQLocationParameter(reportsEQ.getEQLocationParameter());
 		}
 
