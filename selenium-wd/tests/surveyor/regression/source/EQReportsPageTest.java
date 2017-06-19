@@ -6,7 +6,6 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
@@ -334,7 +333,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * 	 * Results:
 	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
 	 */
-	@Test  // Complete test case implementation once US4475 completes.  Enable the test case once US4403 gets fixed.
+	@Ignore  // Complete test case implementation once US4475 completes.  Enable the test case once US4403 gets fixed.
 	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2409, location = EQReportDataProvider.class)
 	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
