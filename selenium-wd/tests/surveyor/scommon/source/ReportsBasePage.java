@@ -1722,6 +1722,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
 							Log.info("Did NOT find error processing label");
+						} catch (Exception e2){
+							Log.warn("Exception caught - "+e2);
 						}
 
 						if (foundErrorLabel) {

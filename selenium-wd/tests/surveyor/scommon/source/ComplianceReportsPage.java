@@ -30,6 +30,7 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -304,6 +305,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @throws Exception
 	 */
 
+	@Override
 	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
 		Log.method("ComplianceReportsPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
@@ -414,7 +416,12 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
