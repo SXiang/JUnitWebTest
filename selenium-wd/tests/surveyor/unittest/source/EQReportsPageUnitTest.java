@@ -84,6 +84,7 @@ public class EQReportsPageUnitTest  extends BaseReportsPageActionTest {
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", newUsername, newUserPass), NOTSET);
 
+		// Create new EQ report w/ new user and verify EQ location parameter was set correctly.
 		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		EQReportEntity entity = (EQReportEntity)eqReportsPageAction.fillWorkingDataForReports(getReportRowID(reportDataRowID1));
 		eqReportsPageAction.getEQReportsPage().clickOnNewReportBtn();

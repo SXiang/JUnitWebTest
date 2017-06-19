@@ -291,8 +291,8 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	}
 
 	/**
-	 * Returns the location data row for the specified user data row.
-	 * @param dataRow - user data row with location row id information.
+	 * Returns the location data row for specified location data row id.
+	 * @param dataRowID - location row id.
 	 * @return - location data row
 	 * @throws Exception
 	 */
