@@ -353,7 +353,6 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - TimeZone : PST/PDT , Survey Mode: Standard, Exclusion Radius: 0
 	 *	- - Provide lat long values
 	 *	- - Provide non-default FOV opacity value (E.g FOV opacity - 0.9)
-	 *
 	 *	- - Select Gap table, Percent Assets Covered and Percent Report Area covered
 	 *	- - Asset Layer : All. Boundary Layer : All levels
 	 *	- - Add Survey

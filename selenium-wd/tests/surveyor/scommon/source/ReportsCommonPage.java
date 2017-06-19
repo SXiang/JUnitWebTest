@@ -1260,6 +1260,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 									Log.clickElementInfo("Confirm Resubmit");
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
+									this.waitForAJAXCallsToComplete();
 								}
 								if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
@@ -1269,13 +1270,17 @@ public class ReportsCommonPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
 							}
 						}
-						this.waitForAJAXCallsToComplete();
 						return true;
 					}
 					Log.error("Button image is not visible '" + buttonXPath + "'");
