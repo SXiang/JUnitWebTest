@@ -45,12 +45,12 @@ public class EQReportsPage extends ReportsCommonPage {
 
 	public static final String STRURLPath = "/Reports/EQReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.EQReports_PageTitle);
-	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReports_AddNew);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 	public static final String EQReportSSRS_EmissionsQuantificationTable = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationReport);
 
 	@FindBy(id = "report-locationID")
-	protected WebElement eqLocationSelector;
+	private WebElement eqLocationSelector;
 
 	@FindBy(id = "btn-EQ-select-area")
 	protected WebElement lineSegmentsSelectorBtn;
@@ -74,6 +74,10 @@ public class EQReportsPage extends ReportsCommonPage {
 
 	public String getFullReportName(String rptTitle) {
 		return getReportPrefix() + "-" + getReportName(rptTitle);
+	}
+
+	public WebElement getEqLocationSelector() {
+		return eqLocationSelector;
 	}
 
 	@Override
@@ -105,8 +109,8 @@ public class EQReportsPage extends ReportsCommonPage {
 		return "EQ";
 	}
 
-	protected void selectEQLocationParameter(String eqLocationParameter) {
-		selectDropdownOption(eqLocationSelector, eqLocationParameter);
+	public void selectEQLocationParameter(String locationParameter) {
+		selectDropdownOption(getEqLocationSelector(), locationParameter);
 	}
 
 	protected void openLineSegmentsSelector() {
