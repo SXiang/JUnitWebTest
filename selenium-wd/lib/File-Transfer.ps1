@@ -13,23 +13,23 @@
 
 param
 (
-  [Parameter(Mandatory=$false)]
-  [String] $BuildWorkingDir = "C:\Repositories\surveyor-qa",
+  [Parameter(Mandatory=$true)]
+  [String] $BuildWorkingDir,
 
-  [Parameter(Mandatory=$false)]
-  [String] $DestMachineIPAddress="10.100.1.200",
+  [Parameter(Mandatory=$true)]
+  [String] $DestMachineIPAddress,
 
-  [Parameter(Mandatory=$false)]
-  [String] $DestMachineUsername="Win2k12-Android\picarro",
+  [Parameter(Mandatory=$true)]
+  [String] $DestMachineUsername,
 
-  [Parameter(Mandatory=$false)]
-  [String] $DestMachinePassword="Extreme_Science!",
+  [Parameter(Mandatory=$true)]
+  [String] $DestMachinePassword,
 
-  [Parameter(Mandatory=$false)]
-  [String] $SourceFileLocation="C:\Repositories\surveyor-qa\selenium-wd\data\sql\Asset.BA.dat",
+  [Parameter(Mandatory=$true)]
+  [String] $SourceFileLocation,
 
-  [Parameter(Mandatory=$false)]
-  [String] $DestFileLocation="C:\temp\Asset.BA.dat"
+  [Parameter(Mandatory=$true)]
+  [String] $DestFileLocation
 )
 
 <#
