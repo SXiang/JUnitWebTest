@@ -235,6 +235,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return verifyFieldNotBlank(this.lblNameError, "Name");
 	}
 
+	public WebElement getCancelAddBtn(){
+		return this.cancelAddBtn;
+	}
+	
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));

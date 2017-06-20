@@ -354,6 +354,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
+		// Verification method is not present "Customer specific Surveyors should be displayed"  # DE3036
 	}
 
 	/**
@@ -533,8 +534,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
+		// Verification method is not present "Customer specific Surveyors should be displayed"  # DE3036
 	}
-
 	/**
 	 * Test Case ID: TC38_CheckACLV_PicAdminRole Test Description: Check ACLV
 	 * for Picarro Administrator role, non-default Administrator account

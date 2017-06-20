@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.scene.control.ButtonType;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -118,6 +120,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	}
 
+	public boolean isButtonPresent(DrivingSurveyButtonType button) throws Exception{
+		
+		if (this.getButtonXpath(button).toString().equals(button)){
+			return true;
+			
+		}
+		
+		return false;
+		
+	}
 	public enum UserRoleType {
 		Driver("Driver"), Supervisor("Supervisor"), UtilityAdmin("Utility Administrator"), Admin("Administrator");
 		private final String name;
