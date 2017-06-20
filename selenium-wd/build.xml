@@ -869,9 +869,7 @@
         <formatter type="xml" />
         <fileset dir="${build}">
         	<include name="**/EQReportsPageTest.class" />
-        	<include name="**/FacilityEQReportsPageUnitTest.class" />
-        	<include name="**/ComplianceReportsPageTest3.class" />
-        	<include name="**/AnalyticsReportsPageTest.class" />
+        	<include name="**/FEQReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
