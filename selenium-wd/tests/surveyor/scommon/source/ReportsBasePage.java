@@ -2566,8 +2566,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForReportViewImagetoAppear() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				WebElement viewImg = driver.findElement(By.cssSelector(viewImgCSS));
-				return viewImg.isDisplayed();
+				boolean displayed = false;
+				try{
+					displayed = viewImg.isDisplayed();
+				}catch(StaleElementReferenceException e){
+					Log.warn(e.toString());
+				}
+				return displayed;
 			}
 		});
 	}
