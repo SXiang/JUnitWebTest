@@ -426,6 +426,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.CSS, using = ".image > a[href *=DownloadReportView] > img.img-responsive")
 	protected WebElement viewImg;
+	protected String viewImgCSS = ".image > a[href *=DownloadReportView] > img.img-responsive";
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
 	protected WebElement surveyTableRows;
@@ -2565,6 +2566,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForReportViewImagetoAppear() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
+				WebElement viewImg = driver.findElement(By.cssSelector(viewImgCSS));
 				return viewImg.isDisplayed();
 			}
 		});
