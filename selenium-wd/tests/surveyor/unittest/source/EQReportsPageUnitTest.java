@@ -62,7 +62,7 @@ public class EQReportsPageUnitTest  extends BaseReportsPageActionTest {
 		final Integer customerRowID = 14;
 		final Integer locationRowID = 26;
 		final Integer userRowID = 32;
-		final Integer reportDataRowID1 = 18;
+		final Integer reportDataRowID1 = 19;
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, LOGIN_USER_ROW_ID);

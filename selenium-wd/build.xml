@@ -869,7 +869,11 @@
         <formatter type="xml" />
         <fileset dir="${build}">
         	<include name="**/EQReportsPageTest.class" />
+<<<<<<< HEAD
         	<include name="**/EQReportsPageTest2.class" />
+=======
+        	<include name="**/FEQReportsPageTest.class" />
+>>>>>>> master
         </fileset>
       </batchtest>
     </junit>
