@@ -426,7 +426,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.CSS, using = ".image > a[href *=DownloadReportView] > img.img-responsive")
 	protected WebElement viewImg;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
 	protected WebElement surveyTableRows;
 
@@ -1722,6 +1722,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
 							Log.info("Did NOT find error processing label");
+						} catch (Exception e2){
+							Log.warn("Exception caught - "+e2);
 						}
 
 						if (foundErrorLabel) {
@@ -2332,16 +2334,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
-		this.inputSearchReport.clear();
-		this.inputSearchReport.sendKeys(reportTitle);
+		performSearch(reportTitle);
 		waitForSearchResultsToLoad();
-
-		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
-			return false;
-		}
-
-		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
-			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
+		if (getElementText(this.tdCReportTitle).contentEquals(reportTitle)) {
+			if (getElementText(this.tdCReportCreatedBy).contentEquals(reportCreatedBy))
 				return true;
 		}
 		return false;
@@ -2564,7 +2560,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void waitForReportViewImagetoAppear() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return viewImg.isDisplayed();
+				boolean displayed = false;
+				try{
+					displayed = viewImg.isDisplayed();
+				}catch(StaleElementReferenceException e){
+					Log.warn(e.toString());
+				}
+				return displayed;
 			}
 		});
 	}
@@ -3095,6 +3097,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
+		jsScrollToView(this.btnSurveySearch);
 		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}

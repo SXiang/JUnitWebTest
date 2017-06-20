@@ -1270,7 +1270,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}

@@ -3,6 +3,8 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.source.Log;
 
 public class SurveyorUnit extends BaseEntity {
@@ -58,6 +60,10 @@ public class SurveyorUnit extends BaseEntity {
 		return objSurveyorUnit;
 	}
 
+	public static List<SurveyorUnit> getSurveyorUnitsByCustomer(String customerName) {
+		return new SurveyorUnit().getByCustomer(customerName);
+	}
+
 	public SurveyorUnit getById(String surveyorUnitId) {
 		SurveyorUnit objSurveyorUnit = null;
 
@@ -110,6 +116,11 @@ public class SurveyorUnit extends BaseEntity {
 		return load(SQL);
 	}
 
+	public List<SurveyorUnit> getByCustomer(String customerName) {
+		String SQL = "SELECT DISTINCT SU.* FROM dbo.[SurveyorUnit] AS SU INNER JOIN dbo.[Location] AS L ON SU.LocationId=L.ID INNER JOIN dbo.[Customer] AS C ON L.CustomerId = C.Id WHERE C.Name ='" + customerName + "'";
+		return load(SQL);
+	}
+
 	public ArrayList<SurveyorUnit> load(String SQL) {
 		ArrayList<SurveyorUnit> objSurveyorUnitList = new ArrayList<SurveyorUnit>();
 
@@ -130,5 +141,10 @@ public class SurveyorUnit extends BaseEntity {
 		}
 
 		return objSurveyorUnitList;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("id=%s; description=%s; locationId=%s", id, description, locationId);
 	}
 }
