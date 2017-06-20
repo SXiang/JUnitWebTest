@@ -2911,14 +2911,13 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		String reportMode = "";
 		int numTry = 0;
 		boolean found = false;
+		
 		do{
 			found = searchReport(reportTitle, reportCreatedBy);
-			if(!found){
-				this.inputSearch.clear();
-				testSetup.slowdownInSeconds(timeout);
-			}
+			reportMode =getElementText(this.reportMode).trim();
+			performSearch("");
 		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
-		reportMode = this.reportMode.getText().trim();
+		
 		return reportMode;
 	}
 }

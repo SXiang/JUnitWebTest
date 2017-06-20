@@ -2337,13 +2337,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
 		performSearch(reportTitle);
 		waitForSearchResultsToLoad();
-
-		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
-			return false;
-		}
-
-		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
-			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
+		if (getElementText(this.tdCReportTitle).contentEquals(reportTitle)) {
+			if (getElementText(this.tdCReportCreatedBy).contentEquals(reportCreatedBy))
 				return true;
 		}
 		return false;
