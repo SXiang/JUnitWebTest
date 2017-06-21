@@ -2,8 +2,8 @@
 # SAMPLE USAGE:
 #   .\SetupAndroidBuildPreReqsStep02.ps1 `
 #           -BuildWorkingDir "C:\Repositories\surveyor-qa" `
-#           -AndroidSDKPackageIDs "2,13,15,38,166,173"  `
-#           -ForceInstallAllSDKPackages "1"
+#           -AndroidSDKPackageIDs "2,12,14,38,171,177,179"  `
+#           -ForceInstallAllSDKPackages "0"
 # ---------------------------------------------------------------
 
 param
@@ -12,15 +12,16 @@ param
   [string] $BuildWorkingDir,              # Eg. "C:\Repositories\surveyor-qa"
 
   [Parameter(Mandatory=$true)]
-  [string] $AndroidSDKPackageIDs,         # Eg. $AndroidSDKPackageIDs = "2,13,15,38,166,173"    # comma-seperated list of ids from => android list sdk --all
+  [string] $AndroidSDKPackageIDs,         # Eg. $AndroidSDKPackageIDs = "2,12,14,38,171,177,179"    # comma-seperated list of ids from => android list sdk --all
                                                 # Includes at the time of writing this script :->
                                                 # IMPORTANT: The package IDs will need to be looked up during the execution time of the script as the IDs might have changed with new packages added to sdkmanager
-                                                #      2 - Android SDK Platform-tools, revision 25.0.4 
-                                                #     13 - Android SDK Build-tools, revision 23.0.3
-                                                #     15 - Android SDK Build-tools, revision 23.0.1
+                                                #      2 - Android SDK Platform-tools, revision 26 
+                                                #     12 - Android SDK Build-tools, revision 23.0.3
+                                                #     14 - Android SDK Build-tools, revision 23.0.1
                                                 #     38 - SDK Platform Android 6.0, API 23, revision 3
-                                                #    166 - Android Support Repository, revision 47
-                                                #    173 - Google Repository, revision 46
+                                                #    171 - Android Support Repository, revision 47
+                                                #    177 - Google Play services, revision 41
+                                                #    179 - Google Repository, revision 53
 
    [Parameter(Mandatory=$true)]
    [string] $ForceInstallAllSDKPackages   # By default only missing SDK packages will be installed. To force install all the packages set this flag to "1". NOTE: We currently only detect packages that cause errors on re-install and prevent their reinstallation. Some packages might get reinstalled even if this flag is OFF.
@@ -44,6 +45,8 @@ if ($ForceInstallAllSDKPackages -ne "1") {
     $missingPackages = Get-MissingPackageIDs -currentPackageIds $AndroidSDKPackageIDs
 }
 
+Write-Host "MISSING Android SDK Packages are : $missingPackages"
+
 # 2.
 Write-Host "[INSTALL_PRE-REQS]: Check/Install pre-requisite applications"
 $installApplications = @{
@@ -56,3 +59,4 @@ Write-Host "[INSTALL_PRE-REQS]: Done installing pre-requisite applications"
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Creating pre-req install success marker file..."
 Create-PreReqsInstallSuccessMarkerFile
 Write-Host "[PRE-REQS INSTALL SUCCESS]: Done creating pre-req install success marker file."
+#>
