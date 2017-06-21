@@ -118,5 +118,7 @@ public class DriverViewPageTest_EQ extends BaseMapViewTest {
 			assertTrue(driverPageAction.verifySurveyModeWarningCorrect(Resources.getResource(ResourceKeys.Dialog_EQModeActive), NOTSET));
 			return true;
 		});
+		
+		
 	}
 }

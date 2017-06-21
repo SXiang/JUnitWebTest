@@ -83,6 +83,8 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final String SURVEY_INFO_STABILITY_CLASS_B = "Stability Class: B";
 	protected static final String SURVEY_INFO_STABILITY_CLASS_C = "Stability Class: C";
 	protected static final String SURVEY_INFO_STABILITY_CLASS_D = "Stability Class: D";
+	protected static final String SURVEY_INFO_STABILITY_CLASS_E = "Stability Class: E";
+	protected static final String SURVEY_INFO_STABILITY_CLASS_F = "Stability Class: F";
 	protected static final String SIM_AUTO_ANALYZER1 = "SimAuto-Analyzer1";
 	protected static final String SIM_AUTO_SURVEYOR1 = "SimAuto-Surveyor1";
 	protected static final String SURVEYOR_DB3 = "Surveyor.db3";
