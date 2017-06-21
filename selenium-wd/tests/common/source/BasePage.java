@@ -52,7 +52,7 @@ public class BasePage {
 	protected TestSetup testSetup;
 
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
-	
+
 	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
 	public WebElement siteLogo;
 
@@ -608,11 +608,11 @@ public class BasePage {
 			webDriver.switchTo().window(parentWindow);
 		}
 	}
-	
+
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
 		return verifyScreenshotWithBaseline(testCaseID, name, null);
 	}
-	
+
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
@@ -621,7 +621,7 @@ public class BasePage {
 				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
-		
+
 		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
