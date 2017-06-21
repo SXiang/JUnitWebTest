@@ -6,7 +6,6 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
@@ -81,7 +80,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Pagination - EQ Report - Picarro Admin user
 	 * Script:
 	 *	- Login as Picarro Admin user
-	 *	- On Home Page, click Reports -> EQ 
+	 *	- On Home Page, click Reports -> EQ
 	 *	- 10,25,50 and 100 Reports selection on EQ report screen
 	 * Results:
 	 *	- Selected number of reports will be listed in the table
@@ -119,7 +118,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Picarro Admin user - Sort EQ Report list based on Title, Created by, date and other attibutes if any
 	 * Script:
 	 *	- Login as Picarro Admin user
-	 *	- On Home Page, click Reports -> EQ 
+	 *	- On Home Page, click Reports -> EQ
 	 *	- Sort report list by report title or created by or date attributes
 	 * Results:
 	 *	- User is able to sort the list of reports based on selected attribute
@@ -249,7 +248,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting50)));
 		eqReportsPage.setSurveyRowsPagination(paginationSetting100);
 		assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
-	}		
+	}
 
 	/**
 	 * Test Case ID: TC2419_MobileEQReportsWithAnalyticsSurveys
@@ -334,7 +333,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * - login to pcube
 	 * - Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck
 	 * -Generate EQ report using above created location parameter and include survey which has indications.
-	 * -Reprocess the same report for (min-2 and max-6 times -depends on howmany linux nodes are there in the environment) 
+	 * -Reprocess the same report for (min-2 and max-6 times -depends on howmany linux nodes are there in the environment)
 	 * 	 * Results:
 	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
 	 */
@@ -343,7 +342,6 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck ...");
-
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
@@ -355,16 +353,17 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 
 		eqReportsPage.openNewReportPage();
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
+
 		//Reports still gets generated successfully, which is product defect and getting tracked #US4403.
 	/*	assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
-	
+
 		for (int i=0; i <3; i++)
 		{
 			int y = i++;
 			Log.info("Resubmiting report for " + y + " times ...");
-			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));					
+			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));
 		}
-		
+
 */		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
 		modifyReport(eqReportsPageAction, getReportRowID(reportDataRowID2));
 		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID2));

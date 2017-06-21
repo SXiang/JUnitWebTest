@@ -1,16 +1,11 @@
 package surveyor.scommon.actions;
 
-import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
 
 import common.source.ExcelUtility;
 import common.source.Log;
-import common.source.NumberUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
@@ -18,7 +13,9 @@ import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
+import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -247,10 +244,14 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
 		EQReportEntity rpt = (EQReportEntity)reportEntity;
 		EQReportsDataRow workingReportsDataRow = getWorkingReportsDataRow();
-		String eqLocationParameter = workingReportsDataRow.eqLocationParameter;
 		List<List<Coordinates>> lineSegments = buildLineSegmentInfoList(workingReportsDataRow, this.excelUtility);
+		String locationRowID = workingReportsDataRow.locationRowID;
+		if (!ActionArguments.isEmpty(locationRowID) && (Integer.valueOf(locationRowID) > 0)) {
+			LocationDataRow locationDataRow = getLocationDataRow(Integer.valueOf(locationRowID));
+			String eqLocationParameter = locationDataRow.name;
+			rpt.setEQLocationParameter(eqLocationParameter);
+		}
 
-		rpt.setEQLocationParameter(eqLocationParameter);
 		rpt.setSelectLineSegmentsUsingJS(isSelectLineSegmentsUsingJS(workingReportsDataRow));
 		rpt.setLineSegments(lineSegments);
     }
@@ -287,6 +288,22 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			coordinates.add(new Coordinates(coordinateDataRow.longitude, coordinateDataRow.latitude));
 		}
 		return coordinates;
+	}
+
+	/**
+	 * Returns the location data row for specified location data row id.
+	 * @param dataRowID - location row id.
+	 * @return - location data row
+	 * @throws Exception
+	 */
+	private LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			return ManageLocationPageActions.workingDataRow.get();
+		} else {
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
+			return locationDataRow;
+		}
 	}
 
 	private Boolean isSelectLineSegmentsUsingJS(EQReportsDataRow dataRow) throws Exception {
