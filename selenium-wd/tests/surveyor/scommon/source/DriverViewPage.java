@@ -224,6 +224,18 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	@FindBy(xpath = "//*[@id='button_close_survey_modal']/..")
 	protected WebElement closeSurveyModalButton;
 
+	@FindBy(id = "iGPS_drift_error")
+	protected WebElement iGPSDriftErrorModal;
+
+	@FindBy(id = "iGPS_drift_warning")
+	protected WebElement iGPSDriftWarningModal;
+
+	@FindBy(id = "iGPS_drift_error_message")
+	protected WebElement iGPSDriftErrorMessage;
+
+	@FindBy(id = "iGPS_drift_warning_message")
+	protected WebElement iGPSDriftWarningMessage;
+
 	private boolean useAnalyzerReadyLongTimeout = false;
 
 	/**
@@ -1106,6 +1118,30 @@ public class DriverViewPage extends BaseDrivingViewPage {
 		this.getStopDrivingSurveyButton().click();
 		this.waitForUIUnBlock();
 		return this;
+	}
+
+	public boolean isiGPSDriftErrorMessageShowing() {
+		boolean isErrorModalShown = WebElementExtender.isElementPresentAndDisplayed(iGPSDriftErrorModal);
+		String actualErrorText = iGPSDriftErrorMessage.getText();
+		String expectedErrorText = Resources.getResource(ResourceKeys.Dialog_IGPSError);
+		Log.info(String.format("iGPSDriftErrorModal showing=[%b]", isErrorModalShown));
+		Log.info(String.format("Error text matches = [%b]", actualErrorText.equals(expectedErrorText)));
+		Log.info(String.format("iGPSDriftErrorMessage.getText()=[%s]", actualErrorText));
+		Log.info(String.format("Resources.getResource(ResourceKeys.Dialog_IGPSError)=[%s]", expectedErrorText));
+		return isErrorModalShown
+				&& actualErrorText.equals(expectedErrorText);
+	}
+
+	public boolean isiGPSDriftWarningMessageShowing() {
+		boolean isWarningModalShown = WebElementExtender.isElementPresentAndDisplayed(iGPSDriftWarningModal);
+		String actualWarningText = iGPSDriftWarningMessage.getText();
+		String expectedWarningText = Resources.getResource(ResourceKeys.Dialog_IGPSWarning);
+		Log.info(String.format("iGPSDriftWarningModal showing=[%b]", isWarningModalShown));
+		Log.info(String.format("Warning text matches = [%b]", actualWarningText.equals(expectedWarningText)));
+		Log.info(String.format("iGPSDriftWarningMessage.getText()=[%s]", actualWarningText));
+		Log.info(String.format("Resources.getResource(ResourceKeys.Dialog_IGPSWarning)=[%s]", expectedWarningText));
+		return isWarningModalShown
+				&& actualWarningText.equals(expectedWarningText);
 	}
 
 	/**

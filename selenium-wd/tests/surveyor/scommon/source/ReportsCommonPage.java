@@ -169,6 +169,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String PDF_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadPdf?reportId=%s&ReportType=Compliance";
 	private static final String META_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadReportMeta?reportId=%s&ReportType=Compliance";
 	private static final String SHAPE_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadShapefile?reportId=%s&ReportType=Compliance";
+	private static final String EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadEmissionDataZip?reportId=%s&ReportType=FacilityEQ";
+	private static final String CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadDownloadConcentrationChart?reportId=%s&ReportType=FacilityEQ";
 	private static final String VIEW_FILE_DOWNLOAD_URL = "Reports/DownloadReportView?id=%s";
 
 	/*
@@ -330,10 +332,10 @@ public class ReportsCommonPage extends ReportsBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='dvErrorText']/ul/li[2]")
 	protected WebElement boundaryErrorText;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[7]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[7]/div[text()='Analysis']")
 	protected WebElement viewsAnalysesColumn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/th[8]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/thead/tr/th[8]/div[text()='Field Notes']")
 	protected WebElement viewsFieldNoteColumn;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[3]/div/div[11]/div/div/div/div[2]/div/label")
@@ -436,7 +438,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public enum ReportFileType {
 		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), EQPDF("EQPDF"), ZIP("ZIP"), MetaDataZIP(
-				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View");
+				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View"), 
+				FacilityEQView("FEQ-View"), EmissionDataZIP("EmissionDataZip"), ConcentrationChartZIP("ConcentrationChartZIP");
 
 		private final String name;
 
@@ -762,6 +765,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.MetaDataZIP);
 	}
 
+	public void invokeEmissionDataZipFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeEmissionDataZipFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.EmissionDataZIP);
+	}
+
+	public void invokeConcentrationChartZipFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeConcentrationChartZipFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.ConcentrationChartZIP);
+	}
+	
 	public void invokeShapeZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokeShapeZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
@@ -775,6 +788,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String outputFileName = reportName + "_" + viewName + ".pdf";
 			String outputFileFullPath = Paths.get(testSetup.getDownloadPath(), outputFileName).toString();
 			Downloader.downloadFile(downloadFileRelativeUrl, outputFileFullPath);
+		}else{
+			Log.warn("PDF view(s) are not showing");
 		}
 	}
 
@@ -805,6 +820,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		} else if (fileType == ReportFileType.ShapeZIP) {
 			downloadFileRelativeUrl = String.format(SHAPE_ZIP_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportShapeZipFileName(rptTitle, true /* includeExtension */);
+		} else if (fileType == ReportFileType.EmissionDataZIP) {
+			downloadFileRelativeUrl = String.format(EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportEmissionDataZipFileName(rptTitle, true /* includeExtension */);
+		} else if (fileType == ReportFileType.ConcentrationChartZIP) {
+			downloadFileRelativeUrl = String.format(CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportConcentrationChartZipFileName(rptTitle, true /* includeExtension */);
 		} else {
 			throw new Exception(
 					String.format("FileType-'%s' not handled by invokeFileDownload() method.", fileType.toString()));
@@ -877,8 +898,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			Log.error(e.toString());
 			return false;
 		}
-		String unzipFolder = Paths.get(testSetup.getDownloadPath(), zipFileName).toString();
-		checkAndGenerateBaselineViewImages(unzipFolder, testCaseID);
 
 		if (zipMeta.isDisplayed()) {
 			invokeMetaZipFileDownload(rptTitle);
@@ -937,6 +956,32 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return getReportShapeZipFileName(rptTitle, 0, includeExtension);
 	}
 
+	public String getReportEmissionDataZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportEmissionDataZipFileName(rptTitle, 0, includeExtension);
+	}
+
+	public String getReportConcentrationChartZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportConcentrationChartZipFileName(rptTitle, 0, includeExtension);
+	}
+	
+	public String getReportEmissionDataZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-RawEmission";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportConcentrationChartZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-Concentration";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+	
 	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-PDF";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
@@ -1029,49 +1074,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 		}
 		return isGenerateBaselineSSRSImages;
-	}
-
-	public boolean checkAndGenerateBaselineViewImages(String unzipFolder, String testCaseID) throws Exception {
-		Log.method("ReportsCommonPage.checkAndGenerateBaselineViewImages", unzipFolder, testCaseID);
-		PDFUtility pdfUtility = new PDFUtility();
-		boolean isGenerateBaselineViewImages = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-		if (isGenerateBaselineViewImages) {
-			File downLoadedFolder = new File(unzipFolder);
-			File[] listOfViews;
-			if (downLoadedFolder.isFile()) {
-				listOfViews = new File[1];
-				listOfViews[0] = downLoadedFolder;
-			} else {
-				listOfViews = downLoadedFolder.listFiles();
-			}
-			int counter = 1;
-			for (File file : listOfViews) {
-				if (file.isFile()) {
-					if (file.getName().contains("View")) {
-						String actualView = Paths.get(unzipFolder, file.getName()).toString();
-						String imageExtractFolder = pdfUtility.extractPDFImages(actualView, testCaseID);
-						File folder = new File(imageExtractFolder);
-						File[] listOfFiles = folder.listFiles();
-						for (File extractedImeg : listOfFiles) {
-							if (extractedImeg.isFile()) {
-								BufferedImage image = ImageIO.read(extractedImeg);
-								int width = image.getWidth();
-								int height = image.getHeight();
-								Rectangle rect = new Rectangle(0, 0, width, height - 40);
-								image = cropImage(image, rect);
-								String outputfile = Paths.get(TestSetup.getSystemTempDirectory(),
-										testCaseID + "_View" + counter + ".png").toString();
-								File croppedFile = new File(outputfile);
-								ImageIO.write(image, "png", croppedFile);
-								generateBaselineViewImage(testCaseID, outputfile, counter);
-								counter++;
-							}
-						}
-					}
-				}
-			}
-		}
-		return isGenerateBaselineViewImages;
 	}
 
 	protected void generateBaselinePerfFiles(String testCaseID, String reportId, String startTime, String endTime,
@@ -1268,7 +1270,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -3445,7 +3452,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 						+ "\\" + testCase + "\\" + "Page_" + pageCounter + ".png";
 				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineSSRSImages();
 				if (!verifyActualImageWithBase(pathToActualImage, pathToBaseImage, generateBaseline)) {
-					Files.delete(Paths.get(pathToActualImage));
 					Log.info("Image verification failed");
 					return false;
 				}
@@ -3590,54 +3596,44 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean verifyViewsImages(String actualPath, String reportTitle, String testCase, String viewName,
 			boolean inZipFolder) throws IOException {
 		Log.method("ReportsCommonPage.verifyViewsImages", actualPath, reportTitle, testCase, viewName, inZipFolder);
-		PDFUtility pdfUtility = new PDFUtility();
-		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
-		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
-		String actualReport = null;
-		if (inZipFolder) {
-			actualReport = Paths.get(actualPath, reportZipName + File.separator
-					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
-					.toString();
-		} else {
-			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
-		}
-		setReportName(reportName);
-		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
-		File folder = new File(imageExtractFolder);
-		File[] listOfFiles = folder.listFiles();
-
-		for (File file : listOfFiles) {
-			if (file.isFile()) {
-				BufferedImage image = ImageIO.read(file);
-				int width = image.getWidth();
-				int height = image.getHeight();
-				Rectangle rect = new Rectangle(0, 0, width, height - 40);
-				image = cropImage(image, rect);
-				String actualViewPath = Paths
-						.get(TestSetup.getSystemTempDirectory(), file.getName().replace(".pdf", "") + ".png")
-						.toString();
-				File outputfile = new File(actualViewPath);
-				ImageIO.write(image, "png", outputfile);
-				String baseViewFile = "";
-				if (inZipFolder) {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + "View"
-							+ new NumberUtility().getOrdinalNumber(file.getName()) + ".png";
-				} else {
-					baseViewFile = Paths
-							.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images")
-							.toString() + File.separator + testCase + File.separator + viewName + ".png";
-				}
-
-				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
-				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
-					Files.delete(Paths.get(actualViewPath));
-					return false;
-				}
-				Files.delete(Paths.get(actualViewPath));
-			}
-		}
+		/* Disabled view images verification as the Lisa bubbles, annotations are dynamically placed */
+//		PDFUtility pdfUtility = new PDFUtility();
+//		String reportName = getReportPDFFileName(reportTitle, false /* includeExtension */);
+//		String reportZipName = getReportPDFZipFileName(reportTitle, false /* includeExtension */);
+//		String actualReport = null;
+//		if (inZipFolder) {
+//			actualReport = Paths.get(actualPath, reportZipName + File.separator
+//					+ RegexUtility.replaceSpecialChars(reportTitle.replaceAll("\\s+", "")) + "_" + viewName + ".pdf")
+//					.toString();
+//		} else {
+//			actualReport = Paths.get(actualPath, reportName + "_" + viewName + ".pdf").toString();
+//		}
+//		setReportName(reportName);
+//		String imageExtractFolder = pdfUtility.extractPDFImages(actualReport, testCase);
+//		File folder = new File(imageExtractFolder);
+//		File[] listOfFiles = folder.listFiles();
+//		int numFiles = 0;
+//		for (File file : listOfFiles) {
+//			if (file.isFile()) {
+//				numFiles++;
+//				BufferedImage image = ImageIO.read(file);
+//				int width = image.getWidth();
+//				int height = image.getHeight();
+//				Rectangle rect = new Rectangle(0, 0, width, height - 40);
+//				image = cropImage(image, rect);
+//				String baseViewFile = Paths.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\views-images"
+//							+ File.separator + testCase + File.separator + "View_"+ viewName + "_"+numFiles + ".png").toString();
+//				String actualViewPath = Paths.get(testSetup.getDownloadPath(), testCase + "View_"
+//							+ viewName + "_"+numFiles + ".png").toString();
+//				File outputfile = new File(actualViewPath);
+//				ImageIO.write(image, "png", outputfile);
+//				boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineViewImages();
+//				if (!verifyActualImageWithBase(actualViewPath, baseViewFile, generateBaseline)) {
+//					return false;
+//				}
+//				Files.delete(Paths.get(actualViewPath));
+//			}
+//		}
 		return true;
 	}
 
@@ -3878,6 +3874,23 @@ public class ReportsCommonPage extends ReportsBasePage {
 		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
 	}
 
+	public void waitForEmissionDataZIPFileDownload(String reportName) {
+		waitForEmissionDataZIPFileDownload(reportName, 0);
+	}
+
+	public void waitForEmissionDataZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-RawEmission.zip", testSetup.getDownloadPath());
+	}
+
+	public void waitForConcentrationChartZIPFileDownload(String reportName) {
+		waitForConcentrationChartZIPFileDownload(reportName, 0);
+	}
+
+	public void waitForConcentrationChartZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-Concentration.zip", testSetup.getDownloadPath());
+	}
 	private String getZipFileNameWithIndex(String name, int zipIndex) {
 		return zipIndex == 0 ? name : name + " (" + zipIndex + ")";
 	}
@@ -4135,6 +4148,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 			break;
 		case Analytics:
 			radioBox = this.inputSurModeFilterAnalytics;
+			break;
+		case EQ:
+			radioBox = this.inputSurModeFilterEQ;
 			break;
 		default:
 			break;

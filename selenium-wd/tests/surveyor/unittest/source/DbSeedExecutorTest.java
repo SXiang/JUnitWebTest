@@ -63,7 +63,7 @@ public class DbSeedExecutorTest extends DbSeedExecutorBaseTest {
 
 	@Test
 	public void execute03_SurveyDataSeedTest_SpecificSurveys() throws Exception {
-		final String[] surveyTags = {"GreaterThan4Hour-1", "8HourSurvey-1", "LessThan4Hour-1"};
+		final String[] surveyTags = {"FeqWithPeaks02-1", "FeqWithPeaks02-1-sqacus"};
 		DbSeedExecutor.executeSurveyDataSeed(surveyTags);
 		verifySurveySeedDataIsPresent(surveyTags);
 	}

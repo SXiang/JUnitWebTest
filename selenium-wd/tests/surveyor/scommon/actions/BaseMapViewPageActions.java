@@ -12,6 +12,7 @@ import common.source.Log;
 import common.source.OLMapEntities.Indication;
 import common.source.OLMapUtility;
 import common.source.TestContext;
+import common.source.OLMapUtility.BreadcrumbColor;
 import common.source.OLMapUtility.IconColor;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -154,7 +155,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @return - returns whether the action was successful or not.
 	 */
 	public boolean clickOnFirst3300IndicationShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".clickOnFirstIndicationShownOnMap", data, dataRowID);
+		logAction(getRuntimeType() + ".clickOnFirst3300IndicationShownOnMap", data, dataRowID);
 		String mapCanvasXPath = "//*[@id='map']/div/canvas";
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		boolean retVal = mapUtility.clickFirst3300IndicationOnMap(mapCanvasXPath, data);
@@ -728,6 +729,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyBreadcrumbIsShownOnMap(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyBreadcrumbIsShownOnMap", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
+		if (!ActionArguments.isEmpty(data)) {
+			BreadcrumbColor brColor = BreadcrumbColor.valueOf(data);
+			mapUtility.isBreadcrumbShownOnMap(brColor);
+		}
+
 		return mapUtility.isBreadcrumbShownOnMap();
 	}
 	public boolean verifyFOVIsShownOnMap(String data, Integer dataRowID) {
@@ -1282,6 +1288,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyStopSurveyIsNotShownOnMap", data, dataRowID);
 		return !getBaseMapViewPageObject().isShutdownAnalyzerButtonVisible();
 	}
+
 	/**
 	 * Executes verifyFieldNotesIsShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
@@ -1291,8 +1298,12 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifyFieldNotesIsShownOnMap", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
-		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
-		return mapUtility.isFieldNoteShown(data);
+		return (new WebDriverWait(this.getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				OLMapUtility mapUtility = new OLMapUtility(d);
+				return mapUtility.isFieldNoteShown(data);
+			}
+		});
 	}
 
 	/**

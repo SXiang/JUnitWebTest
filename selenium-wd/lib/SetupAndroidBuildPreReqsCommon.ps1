@@ -1,8 +1,14 @@
-﻿$PRE_INSTALL_CHECK_FILE = "C:\install-overrides.txt"
+$PRE_INSTALL_CHECK_FILE = "C:\install-overrides.txt"
 $OVERRIDE_TEXT = "android-pre-reqs-present=1"
 
 $AUTO_PRE_INSTALL_CHECK_FILE = "C:\automation-install-overrides.txt"
 $AUTO_OVERRIDE_TEXT = "android-automation-pre-reqs-present=1"
+
+$SDK_MANAGER_PACKAGE_INSTALL_CHECK_MAP = @{
+    "Android Support Repository"="extras\android\m2repository"
+    "Google Play services"="extras\google\"
+    "Google Repository"="extras\google\m2repository"
+}
 
 # This check is added to override installation of pre-requisites on the machine once we have determined no re-install is necessary on the box.
 # To force installation remove $OVERRIDE_TEXT from $PRE_INSTALL_CHECK_FILE
@@ -108,6 +114,7 @@ function Get-AndroidPackageDirectory([string]$packageName, [string]$packageVersi
         }
     }
 
+    Write-Host "Android Package Directory for package=[$packageName], version=[$packageVersion] -> [$packageDirName]"
     $packageDirName
 }
 
@@ -120,11 +127,23 @@ function Get-AndroidPackageDirectory([string]$packageName, [string]$packageVersi
 #  Intel x86 Emulator Accelerator - checks whether Hardware_Accelerated_Execution_Manager is installed
 function IsInstalled-AndroidSDKPackage($packageName, $packageVersion) {
     $isInstalled = $false
-    $packageDirectory = Get-AndroidPackageDirectory -packageName $packageName -packageVersion $packageVersion
-    if (($packageDirectory -ne "") -and (Test-Path $packageDirectory)) {
-        $itemsInDir = (Get-ChildItem $packageDirectory | Measure-Object).Count
-        if ($itemsInDir -gt 0) {
-            $isInstalled = $true
+    if ($SDK_MANAGER_PACKAGE_INSTALL_CHECK_MAP.ContainsKey($packageName)) {
+        $andHome = $env:ANDROID_HOME
+        $instPkgs = . "$andHome\tools\bin\sdkmanager.bat" --list
+        $pkgLocation = $SDK_MANAGER_PACKAGE_INSTALL_CHECK_MAP.get_item($packageName)
+        $instPkgs | % {
+            [string]$line = [string]$_; 
+            if ($line.tolower().contains($packageName.tolower()) -and $line.contains($pkgLocation)) { 
+                $isInstalled = $true
+            } 
+        }
+    } else {
+        $packageDirectory = Get-AndroidPackageDirectory -packageName $packageName -packageVersion $packageVersion
+        if (($packageDirectory -ne "") -and (Test-Path $packageDirectory)) {
+            $itemsInDir = (Get-ChildItem $packageDirectory | Measure-Object).Count
+            if ($itemsInDir -gt 0) {
+                $isInstalled = $true
+            }
         }
     }
 
@@ -139,7 +158,9 @@ function Get-MissingPackageIDs($currentPackageIds) {
         $pckObj = Get-PackageNameAndVersionForPackageId -packageId $pckId
         $pckName = $pckObj.PackageName
         $pckVersion = $pckObj.PackageVersion
+        Write-Host "Checking if package id=[$pckId] is installed..."
         $installed = IsInstalled-AndroidSDKPackage -packageName "$pckName" -packageVersion "$pckVersion"
+        Write-Host "Installed=[$installed]"
         if (-not $installed) {
             if ($missingPackages -eq "") {
                 $missingPackages = "$pckId"

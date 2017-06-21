@@ -22,6 +22,15 @@ public class ResourceKeys {
 	public static final String EQReports_AddNew = "EQReports_AddNew";
 	public static final String EQReports_PageTitle = "EQReports_PageTitle";
 
+	// FacilityEQ report resource keys.
+	public static final String FacilityEQReport_ConcentrationChart = "FacilityEQReport_ConcentrationChart";
+	public static final String FacilityEQReport_EmissionDatZIP = "FacilityEQReport_EmissionDatZIP";
+	public static final String FacilityEQReport_MissingLocation = "FacilityEQReport_MissingLocation";
+	public static final String FacilityEQReport_PolygonMessage = "FacilityEQReport_PolygonMessage";
+	public static final String FacilityEQReport_PageTitle = "FacilityEQReport_PageTitle";
+	public static final String FacilityEQReports_AddNew = "FacilityEQReports_AddNew";
+	public static final String FacilityEQReports_PageTitle = "FacilityEQReports_PageTitle";
+	
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
@@ -326,4 +335,8 @@ public class ResourceKeys {
 
 	// Analytics constants.
 	public static final String Dialog_AnalyticsModeActive = "Dialog_AnalyticsModeActive";
+
+	// iGPS modal messages.
+	public static final String Dialog_IGPSWarning = "Dialog_IGPSWarning";
+	public static final String Dialog_IGPSError = "Dialog_IGPSError";
 }

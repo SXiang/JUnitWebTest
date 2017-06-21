@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Security;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -56,6 +57,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
 public class TestSetup {
 
 	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
+	private static final String NETWORKADDRESS_CACHE_TTL = "networkaddress.cache.ttl";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
@@ -75,6 +77,8 @@ public class TestSetup {
 	public static final String DATA_FOLDER = "data";
 	public static final String SQL_DATA_FOLDER = "data\\sql";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
+
+	private static final Integer DEFAULT_JVM_TTL = 60;
 
 	private static Process analyzerProcess;
 
@@ -175,6 +179,12 @@ public class TestSetup {
 	private String numAnalyzersInPool;
 
 	private ScreenShotOnFailure screenCapture;
+
+	private String backPackServerIpAddress;
+	private String adbLocation;
+
+	private String awsAccessKeyId;
+	private String awsSecretKeyId;
 
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
@@ -629,6 +639,8 @@ public class TestSetup {
 			this.setIosDeviceName(this.testProp.getProperty("iosDeviceName"));
 			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
 			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
+			this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
+			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -698,6 +710,11 @@ public class TestSetup {
 			this.setNumAnalyzersInPool(this.testProp.getProperty("numAnalyzersInPool"));
 
 			inputStream.close();
+
+			// Set JVM TTL to handle DNS refresh for AWS calls.
+			Security.setProperty(NETWORKADDRESS_CACHE_TTL, String.valueOf(DEFAULT_JVM_TTL));
+
+			this.setAWSProperties();
 
 			// create thread specific objects.
 			TestContext.INSTANCE.setTestSetup(this);
@@ -812,6 +829,11 @@ public class TestSetup {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
 		}
+	}
+
+	private void setAWSProperties() {
+		this.setAwsAccessKeyId(this.testProp.getProperty("awsAccessKeyId"));
+		this.setAwsSecretKeyId(this.testProp.getProperty("awsSecretKeyId"));
 	}
 
 	private void setRunUUIDProperty() {
@@ -1021,10 +1043,12 @@ public class TestSetup {
 			String rootFolder = getExecutionPath(getRootPath()) + "data";
 			String defnFullPath = rootFolder + File.separator + "defn" + File.separator + defnFileName;
 			String db3FileFullPath = rootFolder + File.separator + "db3" + File.separator + db3FileName;
-
+			if(new File(defnFileName).isAbsolute()){
+				defnFullPath = defnFileName;
+				defnFileName = new File(defnFileName).getName();
+			}
 			String workingDefnFile = getUUIDString() + "_" + defnFileName;
 			String workingDefnFullPath = Paths.get(rootFolder + File.separator + "defn", workingDefnFile).toString();
-
 			// Create a copy of the defn file in %TEMP% folder.
 			Files.copy(Paths.get(defnFullPath), Paths.get(workingDefnFullPath));
 
@@ -1133,14 +1157,6 @@ public class TestSetup {
 		ProcessUtility.killProcess("chrome.exe", /* killChildProcesses */ true);
 	}
 
-	public void startReplay(String defnFileName) throws InstantiationException, IllegalAccessException, IOException {
-		String replayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-		String defnFullPath = replayCmdFolder + File.separator + defnFileName;
-
-		HostSimInvoker simulator = new HostSimInvoker();
-		simulator.startReplay(defnFullPath);
-	}
-
 	public static void stopAnalyzer() {
 		ProcessUtility.killProcess("Picarro.Surveyor.Analyzer.exe", /* killChildProcesses */ true);
 		ProcessUtility.killProcess("DataManagerPublisher.exe", /* killChildProcesses */ true);
@@ -1155,17 +1171,9 @@ public class TestSetup {
 		}
 	}
 
-	public void stopReplay() {
-		// Execute replay script from the contained folder.
-		try {
-			String stopReplayCmdFolder = getExecutionPath(getRootPath()) + "data" + File.separator + "defn";
-			String stopReplayCmdFullPath = stopReplayCmdFolder + File.separator + STOP_REPLAY_CURL_FILE;
-			String command = "cd \"" + stopReplayCmdFolder + "\" && " + stopReplayCmdFullPath;
-			Log.info("Executing stop replay command. Command -> " + command);
-			ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
-		} catch (IOException e) {
-			Log.error(e.toString());
-		}
+	public boolean stopReplay() throws IOException {
+		Log.method("stopReplay");
+		return new HostSimInvoker().stopReplay();
 	}
 
 	public static void updateAnalyzerConfiguration() {
@@ -1572,5 +1580,37 @@ public class TestSetup {
 
 	public String getAnalyzerDebugLogPath() {
 		return ANALYZER_DEBUG_LOG_FILE;
+	}
+
+	public String getBackPackServerIpAddress() {
+		return backPackServerIpAddress;
+	}
+
+	public void setBackPackServerIpAddress(String backPackServerIpAddress) {
+		this.backPackServerIpAddress = backPackServerIpAddress;
+	}
+
+	public String getAdbLocation() {
+		return adbLocation;
+	}
+
+	public void setAdbLocation(String adbLocation) {
+		this.adbLocation = adbLocation;
+	}
+
+	public String getAwsAccessKeyId() {
+		return awsAccessKeyId;
+	}
+
+	public void setAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+	}
+
+	public String getAwsSecretKeyId() {
+		return awsSecretKeyId;
+	}
+
+	public void setAwsSecretKeyId(String awsSecretKeyId) {
+		this.awsSecretKeyId = awsSecretKeyId;
 	}
 }

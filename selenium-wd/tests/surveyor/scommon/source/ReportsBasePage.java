@@ -1,6 +1,3 @@
-/**
- *
- */
 package surveyor.scommon.source;
 
 import static org.junit.Assert.fail;
@@ -196,6 +193,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='Analytics']")
 	protected WebElement inputSurModeFilterAnalytics;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='survey-mode-type' and @id='EQ']")
+	protected WebElement inputSurModeFilterEQ;
 
 	@FindBy(how = How.ID, using = "buttonSearchSurvey")
 	protected WebElement btnSurveySearch;
@@ -423,6 +423,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[contains(@id,'-table-pdf-download')]")
 	protected WebElement pdfImg;
+
+	@FindBy(how = How.CSS, using = ".image > a[href *=DownloadReportView] > img.img-responsive")
+	protected WebElement viewImg;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys_length']/label/select")
 	protected WebElement surveyTableRows;
@@ -806,7 +809,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		setReportStartEpochTime(DateUtility.getCurrentUnixEpochTime());
-
 	}
 
 	public void addReport(){
@@ -857,7 +859,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
-			handleExtraAddSurveyInfoParameters(reportsSurveyInfo.getSurveyModeFilter());
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
 			inputSurveyTag(reportsSurveyInfo.getTag());
 
@@ -933,7 +934,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.info("Wait for survey checkbox to be clickable");
 				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
-				checkBoxActionCell.click();
+				jsClick(checkBoxActionCell);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
@@ -1011,13 +1012,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void selectSurveyInfoEndDate(String endDate) {
 		if ((endDate != null) && (!endDate.isEmpty())) {
-			selectEndDateForSurvey(endDate);
+			inputSurveyEndDateTime(endDate);
 		}
 	}
 
 	public void selectSurveyInfoStartDate(String startDate) {
 		if ((startDate != null) && (!startDate.isEmpty())) {
-			selectStartDateForSurvey(startDate);
+			inputSurveyStartDateTime(startDate);
 		}
 	}
 
@@ -1113,7 +1114,19 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
+	
+	public void inputSurveyStartDateTime(String dateTime) {
+		Log.info(String.format("Input survey Start Date/Time - '%s'", dateTime));
+		jsSendKeys(inputStartDate, dateTime);
+		inputStartDate.click();
+	}
 
+	public void inputSurveyEndDateTime(String dateTime) {
+		Log.info(String.format("Input survey End Date/Time - '%s'", dateTime));
+		jsSendKeys(inputEndDate, dateTime);
+		inputEndDate.click();
+	}
+	
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
@@ -1647,7 +1660,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
-							this.waitForPdfReportIcontoAppear();
+							this.waitForReportViewImagetoAppear();
 						} else {
 							Log.info(String.format("First call -> skipNewlyAddedRows() : RowNum=%d", rowNum));
 							int currRowNum = rowNum;
@@ -1684,7 +1697,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
-							this.waitForPdfReportIcontoAppear();
+							this.waitForReportViewImagetoAppear();
 						}
 
 						// Caller provided checks.
@@ -1709,6 +1722,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
 							Log.info("Did NOT find error processing label");
+						} catch (Exception e2){
+							Log.warn("Exception caught - "+e2);
 						}
 
 						if (foundErrorLabel) {
@@ -2319,16 +2334,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public boolean searchReport(String reportTitle, String reportCreatedBy) {
-		this.inputSearchReport.clear();
-		this.inputSearchReport.sendKeys(reportTitle);
+		performSearch(reportTitle);
 		waitForSearchResultsToLoad();
-
-		if (driver.findElements(By.xpath("//*[@class='dataTables_empty']")).size() == 1) {
-			return false;
-		}
-
-		if (this.tdCReportTitle.getText().contentEquals(reportTitle)) {
-			if (this.tdCReportCreatedBy.getText().contentEquals(reportCreatedBy))
+		if (getElementText(this.tdCReportTitle).contentEquals(reportTitle)) {
+			if (getElementText(this.tdCReportCreatedBy).contentEquals(reportCreatedBy))
 				return true;
 		}
 		return false;
@@ -2548,11 +2557,16 @@ public class ReportsBasePage extends SurveyorBasePage {
 		throw new Exception("Not implemented");
 	}
 
-	public void waitForPdfReportIcontoAppear() {
+	public void waitForReportViewImagetoAppear() {
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return pdfImg.isDisplayed();
-
+				boolean displayed = false;
+				try{
+					displayed = viewImg.isDisplayed();
+				}catch(StaleElementReferenceException e){
+					Log.warn(e.toString());
+				}
+				return displayed;
 			}
 		});
 	}
@@ -2983,6 +2997,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterAnalytics);
 	}
 
+	public boolean isEQSurveyModeShown() {
+		return WebElementExtender.isElementPresentAndDisplayed(inputSurModeFilterEQ);
+	}
+
 	public boolean isManualSurveyModeSelected() {
 		return inputSurModeFilterManual.isSelected();
 	}
@@ -3079,7 +3097,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
-		this.btnSurveySearch.click();
+		jsScrollToView(this.btnSurveySearch);
+		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}
 

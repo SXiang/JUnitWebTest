@@ -1,17 +1,23 @@
 package surveyor.scommon.actions;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Assert;
 
 import common.source.CheckedPredicate;
 import common.source.ExceptionUtility;
+import common.source.FileUtility;
+import common.source.HostSimDefinitionGenerator;
 import common.source.Log;
 import common.source.NetworkProxyHandler;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.HostSimDefinitionGenerator.iGPSMode;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.scommon.actions.data.AnalyzerDataReader;
@@ -108,6 +114,18 @@ public class TestEnvironmentActions extends BaseActions {
 			Log.error(e.toString());
 			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * Executes stopReplay action.
+	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
+	 * @return - returns whether the action was successful or not.
+	 * @throws Exception
+	 */
+	public boolean stopReplay(String data, Integer dataRowID) throws Exception {
+		logAction("TestEnvironmentActions.stopReplay", data, dataRowID);
+		TestContext.INSTANCE.getTestSetup().stopReplay();
 		return true;
 	}
 
@@ -233,7 +251,7 @@ public class TestEnvironmentActions extends BaseActions {
 	public TestEnvironmentDataRow getWorkingDataRow(Integer dataRowID) throws Exception {
 		TestEnvironmentDataRow dataRow = workingDataRow.get();
 		if (dataRow == null) {
-			getDataReader().getDataRow(dataRowID);
+			dataRow = getDataReader().getDataRow(dataRowID);
 		}
 
 		return dataRow;
@@ -289,6 +307,74 @@ public class TestEnvironmentActions extends BaseActions {
 		SurveyorUnit objSurveyorUnit = SurveyorUnit.getSurveyorUnitById(String.valueOf(objAnalyzer.getSurveyorUnitId()));
 		String surveyor = objSurveyorUnit.getDescription();
 		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerSerialNumber, analyzerSharedKey, surveyor);
+	}
+
+	private static void updateWorkingDataRowDefnPath(String defnFilePath) {
+		TestEnvironmentActions.workingDataRow.get().replayScriptDefnFile = defnFilePath;
+	}
+
+	private String createCopyInDefnFolder(String defnFilePath) throws IOException {
+		String defnFilename = Paths.get(defnFilePath).getFileName().toString();
+		String defnFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "data" + File.separator + "defn";
+		String defnFullPath = Paths.get(defnFolder, defnFilename).toString();
+		Files.copy(Paths.get(defnFilePath), Paths.get(defnFullPath));
+		FileUtility.deleteFile(Paths.get(defnFilePath));
+		return defnFilename;
+	}
+
+	private void copyAndUpdateDefnFile(String defnFilePath) throws IOException {
+		String defnFilename = createCopyInDefnFolder(defnFilePath);
+		updateWorkingDataRowDefnPath(defnFilename);
+	}
+
+	public void generateiGPSGoingToBlueDefnForMethaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSMode(iGPSMode.None);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueWithPeaksDefnForMethaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSMode(iGPSMode.None, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueDefnForEthaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.None);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToBlueWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.None, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToYellowWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.Warning, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingToRedWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSMode(iGPSMode.Error, ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedDefnForMethaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed();
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForMethaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateMethDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedDefnForEthaneSurvey() throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed();
+		copyAndUpdateDefnFile(defnFilePath);
+	}
+
+	public void generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(String[] ch4Values, String[] c2h6Values) throws IOException {
+		String defnFilePath = new HostSimDefinitionGenerator().generateEthDefinitionForiGPSGoingFromBlueToYellowToRed(ch4Values, c2h6Values);
+		copyAndUpdateDefnFile(defnFilePath);
 	}
 
 	/**

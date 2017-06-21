@@ -187,6 +187,8 @@ public class Analyzer extends BaseEntity {
 
 		String SQL = String.format("DELETE [dbo].[Analyzer] WHERE SerialNumber='%s'", getSerialNumber());
 		executeNonQuery(SQL);
+		DBCache.INSTANCE.remove(CACHE_KEY + getSerialNumber());
+		DBCache.INSTANCE.remove(CACHE_KEY + getId());
 	}
 
 	public ArrayList<Analyzer> load(String SQL) {

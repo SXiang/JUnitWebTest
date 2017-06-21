@@ -258,6 +258,8 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 			modeFilter = SurveyModeFilter.Operator;
 		} else if (surveyModeFilter.equalsIgnoreCase("rapid response")) {
 			modeFilter = SurveyModeFilter.RapidResponse;
+		}else if (surveyModeFilter.equalsIgnoreCase("analytics")) {
+			modeFilter = SurveyModeFilter.Analytics;
 		}
 		return modeFilter;
 	}
@@ -370,7 +372,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		}
 	}
 
-	private boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
+	public boolean fillAndCreateNewReport(Integer dataRowID, boolean openNewReportsPage) throws Exception {
 		ReportCommonEntity rpt = fillWorkingDataForReports(dataRowID);
 		getReportsCommonPage().addNewReport(rpt, openNewReportsPage);
 		return true;
@@ -535,7 +537,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
 		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
-		this.getReportsCommonPage().waitForPdfReportIcontoAppear();
+		this.getReportsCommonPage().waitForReportViewImagetoAppear();
 	}
 
 	private List<Integer> verifyLatLongCoordinates(String data) throws Exception {
@@ -1445,7 +1447,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean selectSurveySelectorStartDateTime(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.selectSurveySelectorStartDateTime", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectSurveySelectorStartDateTime", ARG_DATA, data);
-		this.getReportsCommonPage().selectStartDateForSurvey(data);
+		this.getReportsCommonPage().inputSurveyStartDateTime(data);
 		return true;
 	}
 
@@ -1790,9 +1792,9 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		logAction("ReportsCommonPageActions.verifyMetaDataZIPFilesArePresent", data, dataRowID);
 		ActionArguments.verifyGreaterThanZero("verifyMetaDataZIPFilesArePresent", ARG_DATA_ROW_ID, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
-		
+
 		boolean[] verifyMetaPresent = {false, false, false, false};
-		/* verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent, 
+		/* verifyGapMetaPresent, verifyLisaMetaPresent, verifySurveyMetaPresent,
 		 * verifyIsotopicMetaPresent/verfiyLisaAnalyticsMetaPresent */
 		boolean checkPSFilter = getWorkingReportsEntity().getReportModeFilter() == ReportModeFilter.Analytics;
 		List<String> verifications = RegexUtility.split(data, RegexUtility.COLON_SPLIT_REGEX_PATTERN);
@@ -1800,7 +1802,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 			verifyMetaPresent[i]= Boolean.parseBoolean(verifications.get(i));
 		}
 		return this.getReportsCommonPage().verifyMetaDataFilesArePresent(downloadPath, getWorkingReportsDataRow().title,
-				verifyMetaPresent[0], verifyMetaPresent[1], verifyMetaPresent[2], 
+				verifyMetaPresent[0], verifyMetaPresent[1], verifyMetaPresent[2],
 				verifyMetaPresent[3]&&!checkPSFilter, verifyMetaPresent[3]&&checkPSFilter);
 	}
 
@@ -2342,30 +2344,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	}
 
 	/**
-	 * Executes verifyPercentCoverageForecastPresentInReport action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyPercentCoverageForecastPresentInReport(String data, Integer dataRowID) {
-		logAction("ReportsCommonPageActions.verifyPercentCoverageForecastPresentInReport", data, dataRowID);
-		// to be implemented
-		return false;
-	}
-
-	/**
-	 * Executes verifyPercentCoverageAssetsAndReportAreaValuesInReport action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyPercentCoverageAssetsAndReportAreaValuesInReport(String data, Integer dataRowID) {
-		logAction("ReportsCommonPageActions.verifyPercentCoverageAssetsAndReportAreaValuesInReport", data, dataRowID);
-		// to be implemented
-		return false;
-	}
-
-	/**
 	 * Executes verifyAssetsAreDisplayed action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
@@ -2698,7 +2676,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		getReportsCommonPage().waitForLicenseMissingPopupToShow();
 		return true;
 	}
-	
+
 	/**
 	 * Executes waitForChangeModelWarningPopupToShow action.
 	 * @param data - specifies the input data passed to the action.
@@ -2711,7 +2689,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		getReportsCommonPage().waitForChangeModeWarningPopupToShow();
 		return true;
 	}
-	
+
 	/**
 	 * Executes waitForConfirmDeletePopupToClose action.
 	 * @param data - specifies the input data passed to the action.
@@ -2808,7 +2786,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		if(checkPSFilter){
 			boolean verifyLISASAnalyticsMetaDataFile = this.getReportsCommonPage().verifyLISASAnalyticsMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 			Log.info(String.format("verifyReportSurveyMetaDataFile = %b; verifyLISASMetaDataFile = %b; verifyLISASAnalyticsMetaDataFile = %b",
-					verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile, verifyLISASAnalyticsMetaDataFile));	
+					verifyReportSurveyMetaDataFile, verifyLISASMetaDataFile, verifyLISASAnalyticsMetaDataFile));
 			return verifyReportSurveyMetaDataFile  && verifyLISASMetaDataFile && verifyLISASAnalyticsMetaDataFile;
 		}
 		Predicate<ReportsCommonPage> verifyMetadataFilesPredicate = this.getReportSpecificVerifyMetadataFilesPredicate(downloadPath, getWorkingReportsDataRow().title);
@@ -2940,7 +2918,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean verifyLISASMetaDataFile(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.verifyLISASMetaDataFile", data, dataRowID);
 		String downloadPath = getDownloadPath(ReportFileType.MetaDataZIP);
-		
+
 		return this.getReportsCommonPage().verifyLISASMetaDataFile(downloadPath, getWorkingReportsDataRow().title);
 	}
 
@@ -3537,8 +3515,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		else if (actionName.equals("verifyPDFZipFilesArePresent")) { return this.verifyPDFZipFilesArePresent(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailDownloadFromComplianceViewer")) { return this.verifyPDFZIPThumbnailDownloadFromComplianceViewer(data, dataRowID); }
 		else if (actionName.equals("verifyPDFZIPThumbnailIsShownInComplianceViewer")) { return this.verifyPDFZIPThumbnailIsShownInComplianceViewer(data, dataRowID); }
-		else if (actionName.equals("verifyPercentCoverageAssetsAndReportAreaValuesInReport")) { return this.verifyPercentCoverageAssetsAndReportAreaValuesInReport(data, dataRowID); }
-		else if (actionName.equals("verifyPercentCoverageForecastPresentInReport")) { return this.verifyPercentCoverageForecastPresentInReport(data, dataRowID); }
 		else if (actionName.equals("verifyReportDeletedSuccessfully")) { return this.verifyReportDeletedSuccessfully(data, dataRowID); }
 		else if (actionName.equals("verifyReportJobBaselines")) { return this.verifyReportJobBaselines(data, dataRowID); }
 		else if (actionName.equals("verifyReportPageFieldsAreCorrect")) { return this.verifyReportPageFieldsAreCorrect(data, dataRowID); }
