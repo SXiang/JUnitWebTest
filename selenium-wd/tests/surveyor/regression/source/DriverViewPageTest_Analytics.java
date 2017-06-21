@@ -558,7 +558,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		final int userDataRowID = 16;
 		final int analyzerDb3DataRowID = 62;
-		final int surveyRuntimeInSeconds = 75;
+		final int surveyRuntimeInSeconds = 90;
 		final int surveyDataRowID = 61;
 
 		getLoginPageAction().open(EMPTY, NOTSET);
@@ -569,7 +569,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		String[] ch4Values = {"5.5", "7.5", "8.5", "8.5", "9.5"};
+		String[] ch4Values = {"8.5", "9.5", "10.5", "11.5", "9.5"};
 		String[] c2h6Values = {"3.5", "3.5", "3.5", "3.5", "3.5"};
 		getTestEnvironmentAction().generateiGPSGoingToBlueWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
 
@@ -635,7 +635,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.open(EMPTY,NOTSET);
 		driverViewPageAction.waitForConnectionToComplete(EMPTY,NOTSET);
 
-		String[] ch4Values = {"5.5", "7.5"};
+		String[] ch4Values = {"9.5", "10.5"};
 		String[] c2h6Values = {"3.5", "3.5"};
 		getTestEnvironmentAction().generateiGPSGoingFromBlueToYellowToRedWithPeaksDefnForEthaneSurvey(ch4Values, c2h6Values);
 
@@ -675,8 +675,8 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		indicationsOnDriverView2.forEach(i -> Log.info(i.toString()));
 
 		// confirm correct number of indication. Totally 6 peaks generated. 2 generated right after setting iGPS to bad.
-		// not all 6 peaks should show. atleast 4 should show which were generated when iGPS is Blue,Yellow.
-		assertTrue(totalIndications > 3 && totalIndications < 6);
+		// show 3 or 4 peaks when iGPS is blue or yellow. no peaks when iGPS set to bad.
+		assertTrue(totalIndications == 3 || totalIndications == 4);
 	}
 
 	/* * Test Case ID: TC2406_CustomerCannotGenerateAnalyticsSurveyInFEDSAnalyzer
@@ -823,7 +823,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		} else if (testCaseId.equalsIgnoreCase("TC2413")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "9.5", "0.16", "0.01", "TC2413_insert_peak_ampl_6_5_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2414")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 			.addMeasurementAction(Action.Update, Measurement.Column.GPS_FIT, "0")
@@ -833,7 +833,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		} else if (testCaseId.equalsIgnoreCase("TC2417")) {
 			measInstructions.addSelector(Selector.WithProbability, 0.95)
 			.addMeasurementAction(Action.Update, Measurement.Column.C2H6, "numpy.float64(numpy.nan)")
-			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "6.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
+			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "12.0", "0.16", "0.01", "TC2417_insert_peak_ampl_6_0_sigma_0_1_6_randomizer_1.log");
 		} else if (testCaseId.equalsIgnoreCase("TC2345")) {
 			measInstructions.addSelector(Selector.EveryMK, 1000000, 2000)
 			.addMeasurementAction(Action.InsertPeak, Measurement.Column.CH4, "5.5", "0.16", "0.01", "TC2345_insert_peak_ampl_5_5_sigma_0_1_6_randomizer_1.log");
