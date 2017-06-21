@@ -1019,7 +1019,7 @@ public class HomePage extends SurveyorBasePage {
 	}
 
 	public void waitForFirstDrivingSurveyToBeCompleted() {
-		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+		(new WebDriverWait(driver, 2 * timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				BrowserCommands.refresh();
 				return firstDrivingSurveyLink.getText().equals("Completed");

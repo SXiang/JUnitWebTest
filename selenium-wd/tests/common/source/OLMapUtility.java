@@ -61,7 +61,7 @@ public class OLMapUtility {
 			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (bPixels > rPixels) && (bPixels > gPixels); };";
 
 	private static final String IS_BUTTON_YELLOW_FUNCTION_JS = "function isButtonYellow(imgData) { var rgbSums = getRGBPixelSumValues(imgData); var rPixels = rgbSums[0]; "
-			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (rPixels > gPixels) && (rPixels > bPixels) && (((rPixels - gPixels) * 2) < bPixels); };";
+			+ "var gPixels = rgbSums[1]; var bPixels = rgbSums[2]; return (rPixels > gPixels) && (rPixels > bPixels) && ((rPixels - gPixels) < bPixels); };";
 
 	private static final String GET_RGB_PIXEL_COUNT_FUNCTION_JS = "function getRGBPixelCount(imgData){"
 			+ "var len=imgData.data.length;var rPixelCount=0;var gPixelCount=0;var bPixelCount=0;for(var i=0;i<len;i+=4){if(imgData.data[i]==255){rPixelCount++;};"
