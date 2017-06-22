@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 
@@ -48,6 +49,7 @@ public class BaseAndroidTest extends BaseTest {
 	};
 
 	protected AppiumDriver<WebElement> appiumDriver;
+	protected AppiumDriver<WebElement> appiumWebDriver;
 	protected AndroidSettingsScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
@@ -85,12 +87,6 @@ public class BaseAndroidTest extends BaseTest {
 		cleanupProcesses();
 	}
 
-	private static void cleanupProcesses() throws IOException {
-		BackPackSimulator.stopSimulator();
-		AndroidAutomationTools.stop();
-		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
-	}
-
 	@Before
 	public void setupBeforeTest() throws Exception {
 	}
@@ -100,11 +96,35 @@ public class BaseAndroidTest extends BaseTest {
 		cleanUp();
 	}
 
+	private static void cleanupProcesses() throws IOException {
+		BackPackSimulator.stopSimulator();
+		AndroidAutomationTools.stop();
+		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
+	}
+
+	protected void cleanUp() {
+		if (appiumDriver != null) {
+			appiumDriver.quit();
+		}
+
+		if (appiumWebDriver != null) {
+			appiumWebDriver.quit();
+		}
+	}
+
 	protected void handlePermissionsPrompt() {
 		List<WebElement> permissionPrompts = appiumDriver.findElements(MobileBy.xpath("//*[@class='android.widget.Switch']"));
 		if (permissionPrompts.size() > 0) {
 			permissionPrompts.get(0).click();
 		}
+	}
+
+	private void initializeScreenObjects() {
+		settingsScreen = new AndroidSettingsScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+
+		mapScreen = new AndroidMapScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mapScreen);
 	}
 
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
@@ -139,6 +159,23 @@ public class BaseAndroidTest extends BaseTest {
 		appiumDriver =  new AndroidDriver<WebElement>(url, capabilities);
 	}
 
+	protected void initializeAppiumWebDriver() throws MalformedURLException {
+		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+		DesiredCapabilities capabilities=DesiredCapabilities.android();
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
+		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
+		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
+
+		// Create object of URL class and specify the appium server address
+		URL url= new URL(APPIUM_SERVER_HUB_HOST);
+
+		// Create object of  AndroidDriver class and pass the url and capability that we created
+		appiumWebDriver =  new AndroidDriver<WebElement>(url, capabilities);
+	}
+
 	protected void installLaunchApp(String waitActivityName) throws IOException {
 		Path apkFolderPath = Paths.get(TestSetup.getRootPath(), "apk");
 		List<String> apkFiles = FileUtility.getFilesInDirectory(apkFolderPath, "*.apk");
@@ -154,26 +191,14 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
-	public void waitForAppLoad() {
-		settingsScreen.waitForFirstAppLoad();
-	}
-
-	protected void cleanUp() {
-		appiumDriver.quit();
-	}
-
-	private void initializeScreenObjects() {
-		settingsScreen = new AndroidSettingsScreen(appiumDriver);
-		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
-
-		mapScreen = new AndroidMapScreen(appiumDriver);
-		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mapScreen);
-	}
-
 	private void startReactNativePackager() throws IOException {
 		if (!reactNativeInitStatus.get()) {
 			AndroidAutomationTools.startReactNative();
 			reactNativeInitStatus.set(true);
 		}
+	}
+
+	public void waitForAppLoad() {
+		settingsScreen.waitForFirstAppLoad();
 	}
 }
