@@ -934,6 +934,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.info("Wait for survey checkbox to be clickable");
 				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
+				jsScrollToView(checkBoxActionCell);
 				jsClick(checkBoxActionCell);
 				selectedSurveysCount++;
 
