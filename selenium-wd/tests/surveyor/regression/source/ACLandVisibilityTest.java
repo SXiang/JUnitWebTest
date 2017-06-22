@@ -353,8 +353,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.getLinkSurveyors().click();
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
-		assertTrue(surveyorPage.getTableRows().size() > 0);
-		// Verification method is not present "Customer specific Surveyors should be displayed"  # DE3036
+		assertTrue(surveyorPage.getTableRows().size() > 0);	
+		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
-		// Verification method is not present "Customer specific Surveyors should be displayed"  # DE3036
+		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
 	}
 	/**
 	 * Test Case ID: TC38_CheckACLV_PicAdminRole Test Description: Check ACLV
@@ -924,4 +924,47 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(homePage.checkVisibilityForPicarroSUP(userName));
 		homePage.logout();
 	}
+	
+	/**
+	 * Test Case ID: TC57_FleetMap_PicAdminRole
+	 * Test Description: Fleet Map displaying labels and last known locations of all vehicles to picarro admin
+	 * One or more surveyors are online 
+	 * Customer has Fleet map and Observer View priviledge
+	 * Steps:
+	 * - Log in and navigate to home page
+	 * - Click Fleet Map
+	 * - Zoom in/out
+	 * - Click on vehicle icon
+	 * - Click on the link for one of the surveyors that is online
+	 * Results:
+	 * - Fleet Map link is present
+	 * - If customer has any vehicles that were active in the past 30 days, these should appear on the map
+	 * - Car icons should appear as top view, not side view
+	 * - Vehicles which are online should show correct bearing (pointing in the right direction)
+	 * - Initial zoom level should include all vehicles on map
+	 * - Vehicles which are too close to each other should appear with a circle marker which contains the number of vehicles (clustered view)
+	 * - Zooming in/out should change view between clustered view and individual car icons (if vehicles are too close together, they will remain in clustered view even at maximum zoom)
+	 * - Vehicle is offline: icon will be displayed in black
+	 * - Vehicle is online: icon will be displayed in green
+	 * - User should see details for each vehicle - Status: offline (red font)/online (green font) IP Address of the analyzer, Customer Name, Driver, Build #
+	 * - User will be navigated to Observer View for that surveyor
+	 */
+	@Test
+	public void TC57_FleetMap_PicAdminRole() {
+		Log.info("\nRunning TC57_FleetMap_PicAdminRole - Test Description: Fleet Map displaying labels and last known locations of all vehicles to picarro admin\n");
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICAD, USERPASSWORD);
+
+		homePage.open();
+		homePage.waitForPageLoad();
+		homePage.getLinkFleetMap().click();
+
+		fleetMapPage.waitForPageLoad();
+		fleetMapPage.waitForFleetMaptoLoad();
+		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
+		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
+		homePage.logout();
+	}
+	
 }

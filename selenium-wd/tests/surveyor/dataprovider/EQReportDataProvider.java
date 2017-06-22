@@ -20,6 +20,7 @@ public class EQReportDataProvider extends ReportDataProvider {
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC556 = "dataProviderPageActionsEQReports_TC556";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC557 = "dataProviderPageActionsEQReports_TC557";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC558 = "dataProviderPageActionsEQReports_TC558";
+	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC574 = "dataProviderPageActionsEQReports_TC574";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC559 = "dataProviderPageActionsEQReports_TC559";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2419 = "dataProviderPageActionsEQReports_TC2419";
 	public static final String EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2407 = "dataProviderPageActionsEQReports_TC2407";
@@ -117,7 +118,13 @@ public class EQReportDataProvider extends ReportDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderPageActionsEQReports_TC558() {
 		return new Object[][] {
-			{ "TC558" /*TestCaseID*/, 2 /*userDataRowID*/,  13 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+			{ "TC558" /*TestCaseID*/, 6 /*userDataRowID*/,  13 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
+		};
+	}
+	@DataProvider
+	public static Object[][] dataProviderPageActionsEQReports_TC574() {
+		return new Object[][] {
+			{ "TC574" /*TestCaseID*/, 6 /*userDataRowID*/,  19 /*reportDataRowID1*/, -1 /*reportDataRowID2*/}
 		};
 	}
 	@DataProvider

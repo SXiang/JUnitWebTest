@@ -1,6 +1,7 @@
 package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
+import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -282,5 +284,5 @@ public class EQReportsPage extends ReportsCommonPage {
 
 		Log.info("Emissions Quantification table verification passed");
 		return true;
-	}
+	}	
 }

@@ -299,26 +299,14 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
 
 		manageCustomersPage.open();
-		manageCustomersPage.addNewCustomer(customerName, eula);		
-
-		Log.info(String.format("Looking for customer - '%s' with enabled status - '%b'", customerName, true));
-//		assertTrue(manageCustomersPage.findExistingCustomer(customerName, true));
-
-		// Verify cannot create duplicate customer.
-		//assertFalse(manageCustomersPage.addNewCustomer(customerName, eula));
-
 		manageCustomersPage.btnAddNewCustomer.click();
 		manageCustomersPage.waitForNewPageLoad();
-
-		Log.info("Set customer name - '"+customerName+"'");
-		manageCustomersPage.inputCustomerName.sendKeys(customerName);
-
+		
+		Log.info("Set customer name - '"+CUSTOMER_PICARRO+"'");
+		manageCustomersPage.getInputCustomerName().sendKeys(CUSTOMER_PICARRO);
 		manageCustomersPage.setEULAText(eula);
-
 		assertTrue(manageCustomersPage.lblNameError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg)));
-
 		manageCustomersPage.getCancelAddBtn().click();
-
 	}
 
 	/**

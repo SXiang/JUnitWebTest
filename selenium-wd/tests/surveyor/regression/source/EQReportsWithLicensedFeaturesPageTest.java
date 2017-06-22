@@ -3,28 +3,37 @@
  */
 package surveyor.regression.source;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 
-import java.util.Map;
-
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.support.PageFactory;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
+import common.source.TestContext;
+import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.EQReportsPage;
-import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.HomePage;
+import surveyor.scommon.source.LoginPage;
+import surveyor.scommon.source.ManageSurveyorAdminPage;
+import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.dataprovider.EQReportDataProvider;
+import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
+import surveyor.scommon.actions.ManageSurveyorPageActions;
+import surveyor.scommon.actions.ManageUsersPageActions;
+import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.generators.TestDataGenerator;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
@@ -36,99 +45,215 @@ import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 @RunWith(SurveyorTestRunner.class)
 public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageActionTest {
 
-		private static LoginPageActions loginPageAction;
-		private static EQReportsPageActions eqReportsPageAction;
-		private static EQReportsPage eqReportsPage;
-		private static ManageCustomerPageActions manageCustomerPageAction;
-		private static ManageUsersPage manageUsersPage;
-		private static Map<String, String> testAccount;
-		@BeforeClass
-		public static void beforeClass() {
-			initializeTestObjects();
+	private static LoginPageActions loginPageAction;
+	private static ManageCustomerPageActions manageCustomerPageAction;
+	private static ManageLocationPageActions manageLocationPageAction;
+	private static ManageUsersPageActions manageUsersPageAction;
+	private static EQReportsPageActions eqReportsPageAction;
+	private static ManageSurveyorPage manageSurveyorPage;
+	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects();
+	}
+
+	@Before
+	public void beforeTest() throws Exception {
+		initializeTestObjects();
+		initializePageActions();
+		initializePageObjects();
+
+		// Select run mode here.
+		setPropertiesForTestRunMode();
+
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 26;
+		final int newCustomerUserRowID = 32;
+		final int newSurveyorRowID = 35;
+		final int newAnalyzerRowID = 28;
+		final int newRefGasBottleRowID = 12;
+		final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+		boolean calibrationRecord = true;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+	}
+
+	private void initializePageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+
+		EQReportsPage eqReportsPage = pageObjectFactory.getEqReportsPage();
+		PageFactory.initElements(getDriver(),  eqReportsPage);
+
+		manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
+		PageFactory.initElements(getDriver(), manageSurveyorPage);
+
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
+		PageFactory.initElements(getDriver(), manageSurveyorAdminPage);
+
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
+	}
+
+	private static void setPropertiesForTestRunMode() throws Exception {
+		setTestRunMode(ReportTestRunMode.FullTestRun);
+
+		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
+			eqReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 		}
+	}
 
-		@Before
-		public void beforeTest() throws Exception {
-			initializeTestObjects();
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = ActionBuilder.createLoginPageAction();
+		eqReportsPageAction = ActionBuilder.createEQReportsPageAction();
+		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
+		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
+		/*ActionBuilder.createManageAnalyzerPageAction();
+		ActionBuilder.createManageSurveyorPageAction();
+		ActionBuilder.createManageRefGasBottlePageAction();
+*/	}
 
-			initializePageActions();
+	/**
+	 * Test Case ID: TC558_EQReportIsNotAccessibleWithoutEQPrivilege
+	 * Test Description: EQ Report page is not accessible if customer don’t have EQ privilege - Customer Supervisor user
+	 * Script:
+	 *	- Login as Customer1's Supervisor user
+	 * - Click on Reports (left side menu)
+	 * - Click on EQ and generate the EQ report
+	 * - Login as Customer2's Supervisor user
+	 * - Click on Reports (left side menu)
+	 * Results:
+	 *	- EQ Report option is present
+	 * - User can generate EQ report successfully
+	 * - EQ report link is not present for Customer2's user and user cannot access EQ report page
+	 */
+	@Test
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC558, location = EQReportDataProvider.class)
+	public void TC558_EQReportIsNotAccessibleWithoutEQPrivilege(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC558_EQReportIsNotAccessibleWithoutEQPrivilege ...");
 
-			// Select run mode here.
-			setPropertiesForTestRunMode();
-			
-			if(testAccount == null){
-				testAccount = createTestAccount("EQ_LicFeature", false, false);
-			}else{
-				getLoginPage().open();
-				getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-				manageCustomerPageAction.open(EMPTY, NOTSET);
-				manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(testAccount.get("customerName"), LicensedFeatures.values());
-			}
-		}
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
-		private static void setPropertiesForTestRunMode() throws Exception {
-			setTestRunMode(ReportTestRunMode.FullTestRun);
+		/*Login With EQ License */
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
 
-			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
-				eqReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
-			}
-		}
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		getHomePage().logout();
 
-		/**
-		 * Initializes the page action objects.
-		 * @throws Exception
-		 */
-		protected static void initializePageActions() throws Exception {
-			loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
-			eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
-			manageCustomerPageAction = new ManageCustomerPageActions(getDriver(), getBaseURL(), getTestSetup());
-			
-			PageObjectFactory pageObjectFactory = new PageObjectFactory();
-			manageUsersPage = pageObjectFactory.getManageUsersPage();
-			setLoginPage(pageObjectFactory.getLoginPage());
-			setHomePage(pageObjectFactory.getHomePage());
-			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
-			setReportsPage(eqReportsPage);
-		}
+		//Create customer user without EQ License
+		final int newCustomerRowID = 10;
+		final int newLocationRowID = 11;
+		final int newCustomerUserRowID = 21;
 
-		/**
-		 * Test Case ID: TC558_EQReportIsNotAccessibleWithoutEQPrivilege
-		 * Test Description: EQ Report page is not accessible if customer don’t have EQ privilege - Customer Supervisor user
-		 * Script:
-		 *	- Login as Customer1's Supervisor user
-		 * - Click on Reports (left side menu)
-		 * - Click on EQ and generate the EQ report
-		 * - Login as Customer2's Supervisor user
-		 * - Click on Reports (left side menu)
-		 * Results:
-		 *	- EQ Report option is present
-		 * - User can generate EQ report successfully
-		 * - EQ report link is not present for Customer2's user and user cannot access EQ report page
-		 */
-		@Test
-		@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC558, location = EQReportDataProvider.class)
-		public void TC558_EQReportIsNotAccessibleWithoutEQPrivilege(
-				String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-			Log.info("\nRunning TC558_EQReportIsNotAccessibleWithoutEQPrivilege ...");
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-			/* Skipped positive test as it's a common case already covered in other tests */
-			
-			String userName = testAccount.get("userName");
-			String userPassword = testAccount.get("userPassword");
-			String customerName = testAccount.get("customerName");
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID);
+	
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID);
+	
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID);	
+		getHomePage().logout();
 
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-			manageCustomerPageAction.open(EMPTY, NOTSET);
-			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
-			manageUsersPage.open();
-			manageUsersPage.editUser(userName, CUSUSERROLESU, TIMEZONEET,true, false);
-			getHomePage().logout();
+		String userName = ManageUsersPageActions.workingDataRow.get().username;
+		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
+	
+		/*Login Without EQ License */
+		loginPageAction.getLoginPage().open();
+		loginPageAction.getLoginPage().loginNormalAs(userName, userPassword);
+		getHomePage().clickOnReport();
+		assertFalse(getHomePage().isEQLinkVisible());
+		getHomePage().logout();
+	}
 
-			/* Without License */
-			getLoginPage().open();
-			getLoginPage().loginNormalAs(userName, userPassword);
-			getHomePage().clickOnReport();
-			assertFalse(getHomePage().isEQLinkVisible());
-		}
+	/**
+	 * Test Case ID: TC574_ReenableEQPrivileges
+	 * Test Description: Re-enable EQ privilege for customer - Customer Supervisor user
+	 * Script:
+	 * - Customer don't have EQ privilege
+	 * - Login as Customer's Supervisor user
+	 * - Click on Reports (left side menu)
+	 * - Login as Picarro Admin
+	 * - Navigate to Manage Customer - > Edit (Customer's page) 
+	 * - Enable EQ privilege for the customer
+	 * - Login again as Customer's Supervisor user
+	 * - Click on Reports (left side menu)
+	 * - Click on EQ and generate the EQ report
+	 * Results:
+	 * - EQ report link is not present for Customer's user and user cannot access EQ report page
+	 * - EQ Report option is present
+	 * - User can generate EQ report successfully
+	 **/
+	@Test
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC574, location = EQReportDataProvider.class)
+	public void TC574_ReenableEQPrivileges(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC574_ReenableEQPrivileges ...");
+
+		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
+
+		/* Unselect EQ*/
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
+		getHomePage().logout();
+
+		/*Login Without EQ License */
+		loginPageAction.getLoginPage().open();
+		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
+		getHomePage().clickOnReport();
+		assertFalse(getHomePage().isEQLinkVisible());
+		getHomePage().logout();
+
+		/* Select EQ*/
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
+		getHomePage().logout();
+		
+		/*Login With EQ License*/		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		getHomePage().logout();
+	}
 }
