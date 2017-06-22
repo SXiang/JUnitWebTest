@@ -92,14 +92,14 @@ public class DriverViewPageTest_EQ extends BaseMapViewTest {
 	 *	- EQ survey should be completed successfully
 	 *	- EQ survey mode option is not present and user cannot perform EQ survey
 	**/
-	@Ignore /* Depend on US4438 */
+	@Test /* Depend on US4438 */
 	public void TC1042_DisableEQFeatureAndCheckDriverView() throws Exception {
 		Log.info("\nTestcase - TC1042_DisableEQFeatureAndCheckDriverView ...\n");
 
 		final String testCaseId = "TC1042";
 
 		final int picAdminUserDataRowID = 6;
-		final int DB3_ANALYZER_ROW_ID = 69;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int DB3_ANALYZER_ROW_ID = 73;	 	/* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 7;	/* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 60; /* Number of seconds to run the survey for. */
 		final int newCustomerRowID = 14;
