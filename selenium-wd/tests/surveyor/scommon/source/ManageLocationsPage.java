@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import common.source.BaseHelper;
 import common.source.Log;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
@@ -329,7 +330,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			String ethMthMax) {
 		Log.method("addNewLocationUsingLatLongSelector", locationDesc,
 				customer, newLocationName, ethMthMin, ethMthMax);
-		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax, "","", "", "", "", "", "", "", "", "", "", "", 
+		return addNewLocation(locationDesc, customer, newLocationName, true /* UseLatLongSelector */, ethMthMin, ethMthMax, "","", "", "", "", "", "", "", "", "", "", "",
 				null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
@@ -349,17 +350,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				maxClusterScale, expansionPower, inflationPower, percentile);
 
 		return addNewLocation(locationDesc, customer, newLocationName, false, "1", "2", surMinAmp, rankingMinAmp, psFilter, top10PS,
-				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, null, null, 
+				top25PS, top50PS, dbScanRd, minClusterSz, maxClusterScale, expansionPower, inflationPower, percentile, null, null,
 				null, null, null, null, null, null, null, null, null, null, null, null, null, null, false, true);
 	}
 
 	public boolean addNewLocation(String locationDesc, String customer,
-			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, String surMinAmp, String rankingMinAmp, String psFilter, 
-			String top10PS, String top25PS, String top50PS, String dbScanRd, String minClusterSz, String maxClusterScale, String expansionPower, String inflationPower, 
-			String percentile, String surveyMode, String ShapeCorrelationMin, String PeakIDXBuffer, String PeakSEPDistanceScale, String WidthMin, String WidthMax, String VariationMax, 
-			String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold, 
+			String newLocationName, boolean useLatLongSelector, String ethMthMin, String ethMthMax, String surMinAmp, String rankingMinAmp, String psFilter,
+			String top10PS, String top25PS, String top50PS, String dbScanRd, String minClusterSz, String maxClusterScale, String expansionPower, String inflationPower,
+			String percentile, String surveyMode, String ShapeCorrelationMin, String PeakIDXBuffer, String PeakSEPDistanceScale, String WidthMin, String WidthMax, String VariationMax,
+			String CarSpeedMin, String CarSpeedMax, String CarWindAngleMin, String CarWindAngleMax, String DBScanSpatialScale, String MinClusterSize, String BackgroundFilterThreshold,
 			String PPMTriggerThreshold,String AccelerationMax, boolean JustDBScan, boolean checkForError) {
-		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, surveyMode, ShapeCorrelationMin, PeakIDXBuffer, 
+		Log.method("addNewLocation", locationDesc, customer, newLocationName, useLatLongSelector, ethMthMin, ethMthMax, surveyMode, ShapeCorrelationMin, PeakIDXBuffer,
 				PeakSEPDistanceScale, WidthMin, WidthMax, VariationMax, CarSpeedMin, CarSpeedMax, CarWindAngleMin, CarWindAngleMax, DBScanSpatialScale, MinClusterSize,
 				BackgroundFilterThreshold, PPMTriggerThreshold,	AccelerationMax, surMinAmp, rankingMinAmp, psFilter, top10PS, top25PS, top50PS, dbScanRd, minClusterSz,
 				maxClusterScale, expansionPower, inflationPower, percentile, checkForError);
@@ -423,76 +424,76 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				setSurveyMinAmp(surMinAmp);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.rankingMinAmp)) {
-			if (rankingMinAmp != null && rankingMinAmp != "") {
+		if (!BaseHelper.isNullOrEmpty(rankingMinAmp)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.rankingMinAmp)) {
 				Log.info("Set Ranking Min Amp - '" + rankingMinAmp + "'");
 				this.rankingMinAmp.clear();
 				this.rankingMinAmp.sendKeys(rankingMinAmp);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
-			if (top10PS != null && top10PS != "") {
+		if (!BaseHelper.isNullOrEmpty(top10PS)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.top10PS)) {
 				Log.info("Set Top 10 PS - '" + top10PS + "'");
 				this.top10PS.clear();
 				this.top10PS.sendKeys(top10PS);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.top25PS)) {
-			if (top25PS != null && top25PS != "") {
+		if (!BaseHelper.isNullOrEmpty(top25PS)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.top25PS)) {
 				Log.info("Set Top 25 PS - '" + top25PS + "'");
 				this.top25PS.clear();
 				this.top25PS.sendKeys(top25PS);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.top50PS)) {
-			if (top50PS != null && top50PS != "") {
+		if (!BaseHelper.isNullOrEmpty(top50PS)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.top50PS)) {
 				Log.info("Set Top 50 PS - '" + top50PS + "'");
 				this.top50PS.clear();
 				this.top50PS.sendKeys(top50PS);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
-			if (psFilter != null && psFilter != "") {
+		if (!BaseHelper.isNullOrEmpty(psFilter)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.psFilter)) {
 				setPsFilter(psFilter);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.dbScanRd)) {
-			if (dbScanRd != null && dbScanRd != "") {
+		if (!BaseHelper.isNullOrEmpty(dbScanRd)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.dbScanRd)) {
 				Log.info("Set DB Scan Radius - '" + dbScanRd + "'");
 				this.dbScanRd.clear();
 				this.dbScanRd.sendKeys(dbScanRd);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSz)) {
-			if (minClusterSz != null && minClusterSz != "") {
+		if (!BaseHelper.isNullOrEmpty(minClusterSz)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.minClusterSz)) {
 				Log.info("Set Min Cluster Size - '" + minClusterSz + "'");
 				this.minClusterSz.clear();
 				this.minClusterSz.sendKeys(minClusterSz);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.maxClusterScale)) {
-			if (maxClusterScale != null && maxClusterScale != "") {
+		if (!BaseHelper.isNullOrEmpty(maxClusterScale)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.maxClusterScale)) {
 				Log.info("Set Max Cluster Scale - '" + maxClusterScale + "'");
 				this.maxClusterScale.clear();
 				this.maxClusterScale.sendKeys(maxClusterScale);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.expansionPower)) {
-			if (expansionPower != null && expansionPower != "") {
+		if (!BaseHelper.isNullOrEmpty(expansionPower)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.expansionPower)) {
 				Log.info("Set Expansion Power - '" + expansionPower + "'");
 				this.expansionPower.clear();
 				this.expansionPower.sendKeys(expansionPower);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.inflationPower)) {
-			if (inflationPower != null && inflationPower != "") {
+		if (!BaseHelper.isNullOrEmpty(inflationPower)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.inflationPower)) {
 				Log.info("Set Inflation Power - '" + inflationPower + "'");
 				this.inflationPower.clear();
 				this.inflationPower.sendKeys(inflationPower);
 			}
 		}
-		if (WebElementExtender.isElementPresentAndDisplayed(this.percentile)) {
-			if (percentile != null && percentile != "") {
+		if (!BaseHelper.isNullOrEmpty(percentile)) {
+			if (WebElementExtender.isElementPresentAndDisplayed(this.percentile)) {
 				Log.info("Set Percentile - '" + percentile + "'");
 				this.percentile.clear();
 				this.percentile.sendKeys(percentile);
@@ -508,18 +509,17 @@ public class ManageLocationsPage extends SurveyorBasePage {
 		this.NoUpper.clear();
 		this.NoUpper.sendKeys("-25");
 
-		if (ethMthMin != null && ethMthMin != "") {
+		if (!BaseHelper.isNullOrEmpty(ethMthMin)) {
 			this.ethMthMinUnit.clear();
 			this.ethMthMinUnit.sendKeys(ethMthMin);
 		}
 
-		if (ethMthMax != null && ethMthMax != "") {
+		if (!BaseHelper.isNullOrEmpty(ethMthMax)) {
 			this.ethMthMaxUnit.clear();
 			this.ethMthMaxUnit.sendKeys(ethMthMax);
 		}
 
-		if (surveyMode != null && surveyMode != "") {
-
+		if (!BaseHelper.isNullOrEmpty(surveyMode)) {
 			if (surveyMode.equals("FEQ")){
 				assertTrue(this.facilityEQCheckbox.isDisplayed());
 				this.facilityEQCheckbox.click();
@@ -535,12 +535,11 @@ public class ManageLocationsPage extends SurveyorBasePage {
 						AccelerationMax, JustDBScan);
 			}
 			else{
-				Log.info("Do not surpport this location parameters." + surveyMode);
+				Log.warn(String.format("Do not support this location parameters. SurveyMode=[%s]", surveyMode));
 			}
 		}
-		else{
-			clickOnOkButton();
-		}
+
+		clickOnOkButton();
 
 		if(checkForError && verifyErrorMessage(null, true /*checkOnlyErrorSummary*/)){
 			Log.clickElementInfo("Cancel");

@@ -7,4 +7,4 @@ param
 Write-Host "[ANDROID-TOOLS]: Starting Android Emulator ..."
 
 $ANDROIDHOME = $env:ANDROID_HOME
-Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $AvdName"
+Start-Process -FilePath "$ANDROIDHOME\tools\emulator.exe" -ArgumentList "-avd $AvdName -no-boot-anim -netfast -gpu on"

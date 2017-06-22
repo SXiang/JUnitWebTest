@@ -37,8 +37,8 @@ public class EQReportEntity extends ReportCommonEntity {
 		return lineSegments;
 	}
 
-	public void setEQLocationParameter(String eqLocationParameter) {
-		this.eqLocationParameter = eqLocationParameter;
+	public void setEQLocationParameter(String locationParameter) {
+		this.eqLocationParameter = locationParameter;
 	}
 
 	public void setLineSegments(List<List<Coordinates>> lineSegments) {

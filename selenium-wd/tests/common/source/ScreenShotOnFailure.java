@@ -84,7 +84,9 @@ public class ScreenShotOnFailure{
 			String imgFileFullPath = Paths.get(imgPath, imgFile).toString();
 			String imgUrl = imgLink + imgFile;
 			try {
-				imgUrl = uploadScreenShotToS3(imgFileFullPath);
+				if (TestContext.INSTANCE.getTestSetup().isAutomationReportingApiEnabled()) {
+					imgUrl = uploadScreenShotToS3(imgFileFullPath);
+				}
 			} catch (Exception ex) {
 				Log.warn(ExceptionUtility.getStackTraceString(ex));
 			}

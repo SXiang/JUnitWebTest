@@ -6,6 +6,7 @@ import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
 import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.SurveyorConstants.MinAmplitudeType;
 
@@ -163,8 +164,8 @@ public class ManageLocationPageActions extends BasePageActions {
 			customer = customerDataRow.name;
 		}
 
-		this.getManageLocationsPage().editFEQLocationParameters(customer, workingDataRow.get().name, shapeCorrelationMin, peakIDXBuffer, 
-				peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, 
+		this.getManageLocationsPage().editFEQLocationParameters(customer, workingDataRow.get().name, shapeCorrelationMin, peakIDXBuffer,
+				peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize,
 				backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
 
 
@@ -211,8 +212,8 @@ public class ManageLocationPageActions extends BasePageActions {
 			customer = customerDataRow.name;
 		}
 
-		this.getManageLocationsPage().editMEQLocationParameters(customer, workingDataRow.get().name, shapeCorrelationMin, peakIDXBuffer, 
-				peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize, 
+		this.getManageLocationsPage().editMEQLocationParameters(customer, workingDataRow.get().name, shapeCorrelationMin, peakIDXBuffer,
+				peakSEPDistanceScale, widthMin, widthMax, variationMax, carSpeedMin, carSpeedMax, carWindAngleMin, carWindAngleMax, dBScanSpatialScale, eQMinClusterSize,
 				backgroundFilterThreshold, pPMTriggerThreshold, accelerationMax, eQJustDBScan);
 
 

@@ -191,6 +191,7 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC788_RemoveShapeFileMetaDataFeaturePermissionFromExistingCustomer_CopyComplianceReportVerification ...");
 
+		Boolean testFailed = false;
 		String userName = testAccount.get("userName");
 		String userPassword = testAccount.get("userPassword");
 		String customerName = testAccount.get("customerName");
@@ -233,11 +234,14 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			assertFalse(complianceReportsPageAction.verifyMetaDataZIPThumbnailIsShownInComplianceViewer(EMPTY, NOTSET));
 
 		} catch (Exception ex) {
+			testFailed = true;
 			BaseTest.reportTestFailed(ex, ComplianceReportsNewCustomerShapeMetadataTest.class.getName());
 		} finally {
-			cleanupReports(rptTitle, strCreatedBy);
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			if (!testFailed) {
+				cleanupReports(rptTitle, strCreatedBy);
+				// Remove GIS seed from the customer.
+				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			}
 		}
 	}
 
@@ -258,6 +262,8 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 	public void TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC790_ShapefileMetaDataReportFeaturePermissionCustomerGenerateComplianceReportPicarroAdminSpecifiedCustomer ...");
+
+		Boolean testFailed = false;
 
 		// Unselect Report metadata and Report ShapeFile license features for the new customer.
 		String customerName = testAccount.get("customerName");
@@ -297,12 +303,15 @@ public class ComplianceReportsNewCustomerShapeMetadataTest extends BaseReportsPa
 			verifyShapeAndMetaZipFilesAreGeneratedCorrectly(rptTitle);
 
 		} catch (Exception ex) {
+			testFailed = true;
 			Assert.fail(String.format("Exception: %s", ExceptionUtility.getStackTraceString(ex)));
 
 		} finally {
-			cleanupReports(rptTitle, strCreatedBy);
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			if (!testFailed) {
+				cleanupReports(rptTitle, strCreatedBy);
+				// Remove GIS seed from the customer.
+				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(customerId));
+			}
 		}
 	}
 

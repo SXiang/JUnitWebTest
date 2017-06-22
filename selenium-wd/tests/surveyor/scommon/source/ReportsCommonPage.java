@@ -1253,7 +1253,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 					createdByCellText));
 			if (rptTitleCellText.equalsIgnoreCase(rptTitle) && createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
-					buttonXPath = "tr[" + rowNum + "]/" + buttonXPath;
+					buttonXPath = "tr[td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]='"+rptTitle+"'" +
+					            " and td[" + getColumnIndex(COL_HEADER_CREATED_BY)  + "]='"+strCreatedBy+"']" +
+							    "/" + buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
@@ -1277,7 +1279,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}

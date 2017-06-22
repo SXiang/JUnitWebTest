@@ -57,6 +57,10 @@ public class ActionBuilder {
 		return new ManageUsersPageActions(driver, baseURL, testSetup);
 	}
 
+	public static EQReportsPageActions createEQReportsPageAction() {
+		return new EQReportsPageActions(driver, baseURL, testSetup);
+	}
+
 	public static ComplianceReportsPageActions createComplianceReportsPageAction() {
 		return new ComplianceReportsPageActions(driver, baseURL, testSetup);
 	}
