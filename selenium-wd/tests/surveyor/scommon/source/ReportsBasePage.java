@@ -1865,7 +1865,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return xPathBuilder.toString();
 	}
 
-	public boolean _copyReport(String rptTitle, String strCreatedBy) {
+	public boolean copyReport(String rptTitle, String strCreatedBy) {
 		Log.method("copyReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 		String reportTitleXPath;
