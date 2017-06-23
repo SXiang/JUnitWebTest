@@ -35,10 +35,8 @@ public class ReportListScreenTest extends BaseAndroidTest {
 
 	@BeforeClass
 	public static void beforeTestClass() throws Exception {
-		// TODO: Commented for testing.
-//		generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser("ReportListScreenTest_TCs",
-//				picUserDataRowID, picInvAssignedUserDataRowID, invReportDataRowID);
-		generatedInvReportId = "73ABC8EB-CF30-9610-2257-39DFE41A9507";
+		generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser("ReportListScreenTest_TCs",
+				picUserDataRowID, picInvAssignedUserDataRowID, invReportDataRowID);
 	}
 
 	@Before
