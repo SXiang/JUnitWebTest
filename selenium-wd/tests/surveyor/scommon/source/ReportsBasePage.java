@@ -857,10 +857,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// Enter the survey fields.
 			selectSurveyInfoSurveyorUnit(reportsSurveyInfo.getSurveyor());
 			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
+			inputSurveyTag(reportsSurveyInfo.getTag());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
-			inputSurveyTag(reportsSurveyInfo.getTag());
 
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
@@ -934,13 +934,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.info("Wait for survey checkbox to be clickable");
 				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
-				jsScrollToView(checkBoxActionCell);
+				moveToElement(checkBoxActionCell);
 				jsClick(checkBoxActionCell);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 						&& !this.surveyNextButton.getAttribute("class").contains("disabled")) {
 					Log.clickElementInfo("Next");
+					moveToElement(surveyNextButton);
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable.findElements(By.xpath("tr"));
@@ -987,6 +988,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnAddSurveysButton() {
 		Log.clickElementInfo("Add Surveys");
+		moveToElement(btnAddSurveys);
 		this.btnAddSurveys.click();
 	}
 
@@ -1211,8 +1213,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnOKButton() {
 		Log.clickElementInfo("Ok");
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", btnOK);
+		moveToElement(btnOK);
+		jsClick(btnOK);
 	}
 
 	public void inputSurveyTag(String tag) {
@@ -1863,7 +1865,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return xPathBuilder.toString();
 	}
 
-	public boolean copyReport(String rptTitle, String strCreatedBy) {
+	public boolean _copyReport(String rptTitle, String strCreatedBy) {
 		Log.method("copyReport", rptTitle, strCreatedBy);
 		setPagination(PAGINATIONSETTING);
 		String reportTitleXPath;
@@ -3098,7 +3100,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
-		jsScrollToView(this.btnSurveySearch);
+		moveToElement(this.btnSurveySearch);
 		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}

@@ -639,7 +639,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		String newRptTitle = rptTitle + "COPY";
 		List<String> surTag = new ArrayList<String>();
 		surTag.add(PICADMNRRTAG);
-		this.getComplianceReportsPage().copyReport(rptTitle, PICDFADMIN);
+		this.getComplianceReportsPage().clickOnButtonInReportPage(rptTitle, PICDFADMIN, ReportsButtonType.Copy);
 		initializePageObjects();
 		this.getComplianceReportsPage().modifyReportDetails(newRptTitle, "", surTag, true, ReportModeFilter.RapidResponse);
 		this.getComplianceReportsPage().waitForPageLoad();
