@@ -27,6 +27,7 @@ import surveyor.scommon.entities.BaseReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import common.source.ArrayUtility;
+import common.source.BaseHelper;
 import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
@@ -39,18 +40,18 @@ import common.source.WebElementExtender;
 import common.source.PDFTableUtility.PDFTable;
 
 /**
- * Assessment Reports Page model
+ * EQ Reports Page model
  */
 public class EQReportsPage extends ReportsCommonPage {
 
 	public static final String STRURLPath = "/Reports/EQReports";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.EQReports_PageTitle);
-	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReports_AddNew);
+	public static final String STRNewPageContentText = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 	public static final String STRCopyPageTitle = Resources.getResource(ResourceKeys.EQReport_PageTitle);
 	public static final String EQReportSSRS_EmissionsQuantificationTable = Resources.getResource(ResourceKeys.EQReportSSRS_EmissionsQuantificationReport);
 
 	@FindBy(id = "report-locationID")
-	protected WebElement eqLocationSelector;
+	private WebElement eqLocationSelector;
 
 	@FindBy(id = "btn-EQ-select-area")
 	protected WebElement lineSegmentsSelectorBtn;
@@ -76,6 +77,10 @@ public class EQReportsPage extends ReportsCommonPage {
 		return getReportPrefix() + "-" + getReportName(rptTitle);
 	}
 
+	public WebElement getEqLocationSelector() {
+		return eqLocationSelector;
+	}
+
 	@Override
 	public void fillReportSpecific(BaseReportEntity reports) {
 		EQReportEntity reportsEQ = (EQReportEntity) reports;
@@ -91,7 +96,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		}
 
 		// 2. EQ Location Parameter
-		if (!reportsEQ.getEQLocationParameter().isEmpty()) {
+		if (!BaseHelper.isNullOrEmpty(reportsEQ.getEQLocationParameter())) {
 			selectEQLocationParameter(reportsEQ.getEQLocationParameter());
 		}
 
@@ -105,8 +110,8 @@ public class EQReportsPage extends ReportsCommonPage {
 		return "EQ";
 	}
 
-	protected void selectEQLocationParameter(String eqLocationParameter) {
-		selectDropdownItem(eqLocationSelector, eqLocationParameter);
+	public void selectEQLocationParameter(String locationParameter) {
+		selectDropdownOption(getEqLocationSelector(), locationParameter);
 	}
 
 	protected void openLineSegmentsSelector() {
@@ -154,7 +159,7 @@ public class EQReportsPage extends ReportsCommonPage {
 		waitForAJAXCallsToComplete();
 		mapViewPage.setZoomLevel(LINE_SELECTOR_ZOOMLEVEL);
 		for(List<Coordinates> line:lineSegments){
-			latLongSelectionControl.selectSegment(line);
+				latLongSelectionControl.selectCoordinates(line);
 		}
 		latLongSelectionControl.switchMode(ControlMode.Default).clickOkButton();
 		latLongSelectionControl.waitForModalDialogToClose();

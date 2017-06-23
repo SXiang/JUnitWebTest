@@ -30,6 +30,7 @@ import surveyor.scommon.entities.ReportCommonEntity.EthaneFilter;
 import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -304,6 +305,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	 * @throws Exception
 	 */
 
+	@Override
 	public boolean checkButtonOnReportsPageAndClick(String rptTitle, String strCreatedBy,
 			ReportsButtonType buttonType, boolean clickButton, boolean confirmAction) throws Exception {
 		Log.method("ComplianceReportsPage.checkButtonOnReportsPageAndClick", rptTitle, strCreatedBy,
@@ -390,7 +392,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 					createdByCellText));
 			if (rptTitleCellText.equalsIgnoreCase(rptTitle) && createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
-					buttonXPath = "tr[" + rowNum + "]/" + buttonXPath;
+					buttonXPath = "tr[td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]='"+rptTitle+"'" +
+				            " and td[" + getColumnIndex(COL_HEADER_CREATED_BY)  + "]='"+strCreatedBy+"']" +
+						    "/" + buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
@@ -414,7 +418,12 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -2906,8 +2915,9 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		boolean found = false;
 		do{
 			found = searchReport(reportTitle, reportCreatedBy);
-		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
-		reportMode = this.reportMode.getText().trim();
+			reportMode =getElementText(this.reportMode).trim();
+			performSearch("");
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);		
 		return reportMode;
 	}
 }

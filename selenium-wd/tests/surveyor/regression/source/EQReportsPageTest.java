@@ -6,7 +6,6 @@ package surveyor.regression.source;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
-import static surveyor.scommon.source.SurveyorConstants.SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_SQACUS;
 import static surveyor.scommon.source.SurveyorConstants.EQDAYSURVEY;
@@ -22,8 +21,10 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import common.source.Log;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.dataprovider.EQReportDataProvider;
+import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -37,6 +38,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	private static LoginPageActions loginPageAction;
 	private static EQReportsPageActions eqReportsPageAction;
 	private static EQReportsPage eqReportsPage;
+	private static ManageLocationPageActions manageLocationPageAction;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -67,6 +69,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 */
 	protected static void initializePageActions() throws Exception {
 		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
 		eqReportsPageAction = new EQReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
 		setReportsPage(eqReportsPage);
@@ -77,7 +80,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Pagination - EQ Report - Picarro Admin user
 	 * Script:
 	 *	- Login as Picarro Admin user
-	 *	- On Home Page, click Reports -> EQ 
+	 *	- On Home Page, click Reports -> EQ
 	 *	- 10,25,50 and 100 Reports selection on EQ report screen
 	 * Results:
 	 *	- Selected number of reports will be listed in the table
@@ -115,7 +118,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * Test Description: Picarro Admin user - Sort EQ Report list based on Title, Created by, date and other attibutes if any
 	 * Script:
 	 *	- Login as Picarro Admin user
-	 *	- On Home Page, click Reports -> EQ 
+	 *	- On Home Page, click Reports -> EQ
 	 *	- Sort report list by report title or created by or date attributes
 	 * Results:
 	 *	- User is able to sort the list of reports based on selected attribute
@@ -245,7 +248,7 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 		assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting50)));
 		eqReportsPage.setSurveyRowsPagination(paginationSetting100);
 		assertTrue(!(eqReportsPage.getNumberofSurveyRecords() > Integer.parseInt(paginationSetting100)));
-	}		
+	}
 
 	/**
 	 * Test Case ID: TC2419_MobileEQReportsWithAnalyticsSurveys
@@ -330,33 +333,42 @@ public class EQReportsPageTest extends BaseReportsPageActionTest {
 	 * - login to pcube
 	 * - Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck
 	 * -Generate EQ report using above created location parameter and include survey which has indications.
-	 * -Reprocess the same report for (min-2 and max-6 times -depends on howmany linux nodes are there in the environment) 
+	 * -Reprocess the same report for (min-2 and max-6 times -depends on howmany linux nodes are there in the environment)
 	 * 	 * Results:
 	 * -Report should faild, but EQWorker should still be alive and user should generate other EQ report.
 	 */
-	@Ignore  // Complete test case implementation once US4475 completes.  Enable the test case once US4403 gets fixed.
+	@Ignore  // Complete test case implementation as part of  DE3029.  Enable the test case once US4403 gets fixed.
 	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2409, location = EQReportDataProvider.class)
 	public void TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2409_GenerateEQReportWithLocationParameterMinClusterSize1AndDBScanUncheck ...");
 
-		
-		// Implementation left for "Go to Manage Location and create new location for that customer where Min cluster size = 1 and DBScan uncheck"
-		 
-		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+
+		manageLocationPageAction.open(EMPTY, NOTSET);
+		manageLocationPageAction.createNewLocation(EMPTY, 29 /*locationRowID*/);
+
 		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 
 		eqReportsPage.openNewReportPage();
 		eqReportsPageAction.fillAndCreateNewReport(getReportRowID(reportDataRowID1),false);
-		assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));
-		
-		for (int i=0; i <4; i++)
+
+		//Reports still gets generated successfully, which is product defect and getting tracked #US4403.
+	/*	assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY, getReportRowID(reportDataRowID1)));
+
+		for (int i=0; i <3; i++)
 		{
-			eqReportsPageAction.clickOnResubmitButton(EMPTY, getReportRowID(reportDataRowID1));
-			assertFalse(eqReportsPageAction.waitForReportGenerationToComplete(EMPTY,  getReportRowID(reportDataRowID1)));					
+			int y = i++;
+			Log.info("Resubmiting report for " + y + " times ...");
+			assertTrue(eqReportsPageAction.verifyReportGenerationIsCancelled(EMPTY,  getReportRowID(reportDataRowID1)));
 		}
-		
+
+*/		eqReportsPageAction.copyReport(EQReportsPageActions.workingDataRow.get().title, getReportRowID(reportDataRowID1));
+		modifyReport(eqReportsPageAction, getReportRowID(reportDataRowID2));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID2));
+		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID2));
+		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID2));
+		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID2)));
 	}
 }

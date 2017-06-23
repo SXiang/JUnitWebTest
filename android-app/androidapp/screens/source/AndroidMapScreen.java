@@ -8,6 +8,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
 
+	private static final String AMPLITUDE_LABEL = "Max:";
+
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
 	private WebElement toggleModeButton;
 
@@ -42,7 +44,19 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		return toggleModeButton!=null && toggleModeButton.isDisplayed();
+		Log.method("AndroidMapScreen.screenLoadCondition");
+		boolean toggleModeButtonDisplayed = toggleModeButton!=null && toggleModeButton.isDisplayed();
+		boolean amplitudeTextDisplayed = amplitudeText!=null && amplitudeText.getText()!=null;
+		boolean amplitudeTextValid = false;
+		if (amplitudeTextDisplayed) {
+			Float amplitudeTextFloatValue = getAmplitudeTextFloatValue();
+			Log.info(String.format("amplitudeTextFloatValue=%f", amplitudeTextFloatValue));
+			amplitudeTextValid = (amplitudeTextFloatValue != Float.MIN_VALUE);
+		}
+
+		Log.info(String.format("toggleModeButtonDisplayed=[%b], amplitudeTextDisplayed=[%b], amplitudeTextValid=[%b]",
+				toggleModeButtonDisplayed, amplitudeTextDisplayed, amplitudeTextValid));
+		return toggleModeButtonDisplayed && amplitudeTextDisplayed && amplitudeTextValid;
 	}
 
 	public WebElement getToggleModeButton() {
@@ -56,6 +70,18 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public String getAmplitudeText() {
 		Log.method("getAmplitudeText");
 		return amplitudeText.getText();
+	}
+
+	public Float getAmplitudeTextFloatValue() {
+		Log.method("getAmplitudeTextFloatValue");
+		Float ampFloat = Float.MIN_VALUE;
+		try {
+			if (amplitudeText.getText()!=null) {
+				ampFloat = Float.valueOf(amplitudeText.getText().replace(AMPLITUDE_LABEL, ""));
+			}
+		} catch (Exception e) {/*ignore error*/}
+
+		return ampFloat;
 	}
 
 	public String getMaxText() {

@@ -204,7 +204,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
 		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
 		BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
@@ -227,7 +227,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokeMetaZipFileDownload(reportTitle);
 		complianceReportsPageAction.getComplianceReportsPage().waitForMetadataZIPFileDownload(reportName);
 		BaseHelper.deCompressZipFile(reportName+"-Meta", TestContext.INSTANCE.getTestSetup().getDownloadPath());
@@ -288,7 +288,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.getComplianceReportsPage().invokePDFFileDownload(reportTitle);
 		complianceReportsPageAction.getComplianceReportsPage().waitForPDFFileDownload(reportName);
 		assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(rankingMinAmplitudeHigh, NOTSET));
@@ -328,7 +328,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));
@@ -368,7 +368,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		
 		complianceReportsPageAction.getComplianceReportsPage().clickComplianceReportButton(reportTitle, userName, ReportsButtonType.ReportViewer, false);
 		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewerDialogToOpen();
-		complianceReportsPageAction.getComplianceReportsPage().waitForPdfReportIcontoAppear();
+		complianceReportsPageAction.getComplianceReportsPage().waitForReportViewImagetoAppear();
 		complianceReportsPageAction.clickOnReportViewerView(EMPTY, getReportRowID(reportDataRowID1));
 		complianceReportsPageAction.waitForViewDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(complianceReportsPageAction.verifyViewsImagesWithBaselines("FALSE", getReportRowID(reportDataRowID1)));

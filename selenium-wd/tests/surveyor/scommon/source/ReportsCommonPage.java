@@ -169,6 +169,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 	private static final String PDF_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadPdf?reportId=%s&ReportType=Compliance";
 	private static final String META_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadReportMeta?reportId=%s&ReportType=Compliance";
 	private static final String SHAPE_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadShapefile?reportId=%s&ReportType=Compliance";
+	private static final String EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadEmissionDataZip?reportId=%s&ReportType=FacilityEQ";
+	private static final String CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL = "Reports/DownloadDownloadConcentrationChart?reportId=%s&ReportType=FacilityEQ";
 	private static final String VIEW_FILE_DOWNLOAD_URL = "Reports/DownloadReportView?id=%s";
 
 	/*
@@ -436,7 +438,8 @@ public class ReportsCommonPage extends ReportsBasePage {
 
 	public enum ReportFileType {
 		InvestigationPDF("InvestigationPDF"), InvestigationCSV("InvestigationCSV"), PDF("PDF"), EQPDF("EQPDF"), ZIP("ZIP"), MetaDataZIP(
-				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View");
+				"MetaDataZIP"), ShapeZIP("ShapeZIP"), View("View"), EQView("EQ-View"), 
+				FacilityEQView("FEQ-View"), EmissionDataZIP("EmissionDataZip"), ConcentrationChartZIP("ConcentrationChartZIP");
 
 		private final String name;
 
@@ -762,6 +765,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 		invokeFileDownload(rptTitle, ReportFileType.MetaDataZIP);
 	}
 
+	public void invokeEmissionDataZipFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeEmissionDataZipFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.EmissionDataZIP);
+	}
+
+	public void invokeConcentrationChartZipFileDownload(String rptTitle) throws Exception {
+		Log.method("invokeConcentrationChartZipFileDownload", rptTitle);
+		invokeFileDownload(rptTitle, ReportFileType.ConcentrationChartZIP);
+	}
+	
 	public void invokeShapeZipFileDownload(String rptTitle) throws Exception {
 		Log.method("invokeShapeZipFileDownload", rptTitle);
 		invokeFileDownload(rptTitle, ReportFileType.ShapeZIP);
@@ -807,6 +820,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 		} else if (fileType == ReportFileType.ShapeZIP) {
 			downloadFileRelativeUrl = String.format(SHAPE_ZIP_FILE_DOWNLOAD_URL, reportId);
 			outputFileName = getReportShapeZipFileName(rptTitle, true /* includeExtension */);
+		} else if (fileType == ReportFileType.EmissionDataZIP) {
+			downloadFileRelativeUrl = String.format(EMISSIONDATA_ZIP_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportEmissionDataZipFileName(rptTitle, true /* includeExtension */);
+		} else if (fileType == ReportFileType.ConcentrationChartZIP) {
+			downloadFileRelativeUrl = String.format(CONCENTRATIONCHART_ZIP_FILE_DOWNLOAD_URL, reportId);
+			outputFileName = getReportConcentrationChartZipFileName(rptTitle, true /* includeExtension */);
 		} else {
 			throw new Exception(
 					String.format("FileType-'%s' not handled by invokeFileDownload() method.", fileType.toString()));
@@ -937,6 +956,32 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return getReportShapeZipFileName(rptTitle, 0, includeExtension);
 	}
 
+	public String getReportEmissionDataZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportEmissionDataZipFileName(rptTitle, 0, includeExtension);
+	}
+
+	public String getReportConcentrationChartZipFileName(String rptTitle, boolean includeExtension) {
+		return getReportConcentrationChartZipFileName(rptTitle, 0, includeExtension);
+	}
+	
+	public String getReportEmissionDataZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-RawEmission";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+
+	public String getReportConcentrationChartZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
+		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-Concentration";
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		if (includeExtension) {
+			reportName += ".zip";
+		}
+		return reportName;
+	}
+	
 	public String getReportPDFZipFileName(String rptTitle, int zipIndex, boolean includeExtension) {
 		String reportName = getReportPrefix() + "-" + getReportName(rptTitle) + "-PDF";
 		reportName = getZipFileNameWithIndex(reportName, zipIndex);
@@ -1201,7 +1246,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 					createdByCellText));
 			if (rptTitleCellText.equalsIgnoreCase(rptTitle) && createdByCellText.equalsIgnoreCase(strCreatedBy)) {
 				try {
-					buttonXPath = "tr[" + rowNum + "]/" + buttonXPath;
+					buttonXPath = "tr[td[" + getColumnIndex(COL_HEADER_REPORT_TITLE) + "]='"+rptTitle+"'" +
+					            " and td[" + getColumnIndex(COL_HEADER_CREATED_BY)  + "]='"+strCreatedBy+"']" +
+							    "/" + buttonXPath;
 					buttonImg = getTable().findElement(By.xpath(buttonXPath));
 					if (buttonImg.isDisplayed()) {
 						if (clickButton) {
@@ -1225,7 +1272,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 										this.waitForConfirmDeletePopupToClose();
 									}
 								}
-
+								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+									this.waitForCopyReportPagetoLoad();
+									this.waitForInputTitleToEnable();
+									this.waitForDeleteSurveyButtonToLoad();
+									this.waitForOkButtonToEnable();
+								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
 								}
@@ -3824,6 +3876,23 @@ public class ReportsCommonPage extends ReportsBasePage {
 		waitForFileDownload(reportName + "-Shape.zip", testSetup.getDownloadPath());
 	}
 
+	public void waitForEmissionDataZIPFileDownload(String reportName) {
+		waitForEmissionDataZIPFileDownload(reportName, 0);
+	}
+
+	public void waitForEmissionDataZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-RawEmission.zip", testSetup.getDownloadPath());
+	}
+
+	public void waitForConcentrationChartZIPFileDownload(String reportName) {
+		waitForConcentrationChartZIPFileDownload(reportName, 0);
+	}
+
+	public void waitForConcentrationChartZIPFileDownload(String reportName, int zipIndex) {
+		reportName = getZipFileNameWithIndex(reportName, zipIndex);
+		waitForFileDownload(reportName + "-Concentration.zip", testSetup.getDownloadPath());
+	}
 	private String getZipFileNameWithIndex(String name, int zipIndex) {
 		return zipIndex == 0 ? name : name + " (" + zipIndex + ")";
 	}

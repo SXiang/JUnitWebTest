@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Security;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -56,6 +57,7 @@ import surveyor.scommon.source.SurveyorConstants.Environment;
 public class TestSetup {
 
 	private static final String ANALYZER_DEBUG_LOG_FILE = "c:\\Logs\\AnalyzerDebugAutomationLog.log";
+	private static final String NETWORKADDRESS_CACHE_TTL = "networkaddress.cache.ttl";
 	private static final String UPDATE_ANALYZER_CONFIGURATION_CMD = "UpdateAnalyzerConfiguration.cmd";
 	private static final String POST_AUTOMATION_RUN_RESULT_CMD = "Post-AutomationRunResult.cmd";
 	private static final String POST_PRODUCT_TEST_BINARIES_MAP_CMD = "Post-ProductTestBinariesMap.cmd";
@@ -75,6 +77,8 @@ public class TestSetup {
 	public static final String DATA_FOLDER = "data";
 	public static final String SQL_DATA_FOLDER = "data\\sql";
 	public static final String TEST_DATA_XLSX = "TestCaseData.xlsx";
+
+	private static final Integer DEFAULT_JVM_TTL = 60;
 
 	private static Process analyzerProcess;
 
@@ -178,6 +182,9 @@ public class TestSetup {
 
 	private String backPackServerIpAddress;
 	private String adbLocation;
+
+	private String awsAccessKeyId;
+	private String awsSecretKeyId;
 
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
@@ -709,6 +716,11 @@ public class TestSetup {
 
 			inputStream.close();
 
+			// Set JVM TTL to handle DNS refresh for AWS calls.
+			Security.setProperty(NETWORKADDRESS_CACHE_TTL, String.valueOf(DEFAULT_JVM_TTL));
+
+			this.setAWSProperties();
+
 			// create thread specific objects.
 			TestContext.INSTANCE.setTestSetup(this);
 
@@ -822,6 +834,11 @@ public class TestSetup {
 				Log.error(String.format("ERROR when pushing DB seed. EXCEPTION: %s", e.toString()));
 			}
 		}
+	}
+
+	private void setAWSProperties() {
+		this.setAwsAccessKeyId(this.testProp.getProperty("awsAccessKeyId"));
+		this.setAwsSecretKeyId(this.testProp.getProperty("awsSecretKeyId"));
 	}
 
 	private void setRunUUIDProperty() {
@@ -1623,5 +1640,21 @@ public class TestSetup {
 
 	public void setDbServerMachinePassword(String dbServerMachinePassword) {
 		this.dbServerMachinePassword = dbServerMachinePassword;
+	}
+
+	public String getAwsAccessKeyId() {
+		return awsAccessKeyId;
+	}
+
+	public void setAwsAccessKeyId(String awsAccessKeyId) {
+		this.awsAccessKeyId = awsAccessKeyId;
+	}
+
+	public String getAwsSecretKeyId() {
+		return awsSecretKeyId;
+	}
+
+	public void setAwsSecretKeyId(String awsSecretKeyId) {
+		this.awsSecretKeyId = awsSecretKeyId;
 	}
 }

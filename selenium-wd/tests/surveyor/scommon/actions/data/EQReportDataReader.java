@@ -15,7 +15,7 @@ public class EQReportDataReader extends ReportsBaseDataReader {
 	public static final int Excel_TestData__Col_Title = 2;
 	public static final int Excel_TestData__Col_CustomerRowID = 3;
 	public static final int Excel_TestData__Col_Timezone = 4;
-	public static final int Excel_TestData__Col_EQLocationParameter = 5;
+	public static final int Excel_TestData__Col_LocationRowID = 5;
 	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 6;
 	public static final int Excel_TestData__Col_LineSegmentRowIDs = 7;
 
@@ -24,13 +24,13 @@ public class EQReportDataReader extends ReportsBaseDataReader {
 	}
 
 	public class EQReportsDataRow extends ReportsBaseDataRow {
-		public String eqLocationParameter;
+		public String locationRowID;
 		public String lineSegmentRowIDs;
 
-		public EQReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String eqLocationParameter,
+		public EQReportsDataRow(String rowID, String tCID, String title, String customerRowID, String timezone, String locationRowID,
 				String reportSurveyRowIDs, String lineSegmentRowIDs) {
 			super(rowID, tCID, title, customerRowID, timezone, reportSurveyRowIDs);
-			this.eqLocationParameter = eqLocationParameter;
+			this.locationRowID = locationRowID;
 			this.lineSegmentRowIDs = lineSegmentRowIDs;
 		}
 	}
@@ -41,7 +41,7 @@ public class EQReportDataReader extends ReportsBaseDataReader {
 		columnIdxMap.put("Col_Title", Excel_TestData__Col_Title);
 		columnIdxMap.put("Col_CustomerRowID", Excel_TestData__Col_CustomerRowID);
 		columnIdxMap.put("Col_Timezone", Excel_TestData__Col_Timezone);
-		columnIdxMap.put("Col_EQLocationParameter", Excel_TestData__Col_EQLocationParameter);
+		columnIdxMap.put("Col_LocationRowID", Excel_TestData__Col_LocationRowID);
 		columnIdxMap.put("Col_ReportSurveyRowIDs", Excel_TestData__Col_ReportSurveyRowIDs);
 		columnIdxMap.put("Col_LineSegmentRowIDs", Excel_TestData__Col_LineSegmentRowIDs);
 		return columnIdxMap;
@@ -49,14 +49,13 @@ public class EQReportDataReader extends ReportsBaseDataReader {
 
 	public EQReportsDataRow getDataRow(Integer dataRowID) throws Exception {
 			ReportsBaseDataRow reportsDataRow = super.getDataRow(dataRowID);
-			String eqLocationParameter = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_EQLocationParameter"), sheetName);			
+			String locationRowID = excelUtility.getIntegerCellData(dataRowID, columnIndexMap.get("Col_LocationRowID"), sheetName);
 			String lineSegmentRowIDs = excelUtility.getCellData(dataRowID, columnIndexMap.get("Col_LineSegmentRowIDs"), sheetName);
 
 			Log.info(String.format("Found data row: rowID=[%s], tCID=[%s], title=[%s], customerRowID=[%s], timezone=[%s], eqLocationParameter=[%s], "
-				
 				+ "reportSurveyRowIDs=[%s], lineSegmentRowIDs=[%s]", reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone,
-				eqLocationParameter, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs));
+				locationRowID, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs));
 
-		return new EQReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone, eqLocationParameter, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs);
+		return new EQReportsDataRow(reportsDataRow.rowID, reportsDataRow.tCID, reportsDataRow.title, reportsDataRow.customerRowID, reportsDataRow.timezone, locationRowID, reportsDataRow.reportSurveyRowIDs, lineSegmentRowIDs);
 	}
 }

@@ -130,6 +130,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
 
+		Boolean testFailed = false;
+
 		final int DB3_ANALYZER_ROW_ID = 71;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
 		final int SURVEY_RUNTIME_IN_SECONDS = 200; /* Number of seconds to run the survey for. */
@@ -195,11 +197,14 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyLISAsIndicationTableMinAmplitudeValues(newAnalyticsRankingMinAmp, NOTSET));
 
 		} catch (Exception ex) {
+			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
-			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+			if (!testFailed) {
+				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+				// Remove GIS seed from the customer.
+				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+			}
 		}
 	}
 
@@ -229,6 +234,8 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 		Log.info("\nRunning TC2401_AdminConfigurationScreenForCustomerLocationSpecificAnalyticsParametersTopPercentPS ...");
 
 		// Create location with desired min amp. Generate survey with multiple peaks above and below Ranking min amp.
+
+		Boolean testFailed = false;
 
 		final int DB3_ANALYZER_ROW_ID = 69;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 		final int SURVEY_ROW_ID = 61;	 		  /* Survey information  */
@@ -307,11 +314,14 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 			assertTrue(complianceReportsPageAction.verifyAllMetadataFiles(EMPTY, getReportRowID(reportDataRowID1)));
 
 		} catch (Exception ex) {
+			testFailed = true;
 			BaseTest.reportTestFailed(ex, AnalyticsReportsWithNewSurveyPageTest.class.getName());
 		} finally {
-			cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-			// Remove GIS seed from the customer.
-			FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+			if (!testFailed) {
+				cleanupReports(ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+				// Remove GIS seed from the customer.
+				FunctionUtil.warnOnError(() -> DbSeedExecutor.cleanUpGisSeed(Customer.getCustomer(ManageCustomerPageActions.workingDataRow.get().name).getId()));
+			}
 		}
 	}
 

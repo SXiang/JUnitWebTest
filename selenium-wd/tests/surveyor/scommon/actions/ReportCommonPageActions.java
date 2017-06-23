@@ -537,7 +537,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	private void openComplianceViewerDialog(Integer dataRowID) throws Exception {
 		clickComplianceReportButton(dataRowID, ReportsButtonType.ReportViewer);
 		this.getReportsCommonPage().waitForReportViewerDialogToOpen();
-		this.getReportsCommonPage().waitForPdfReportIcontoAppear();
+		this.getReportsCommonPage().waitForReportViewImagetoAppear();
 	}
 
 	private List<Integer> verifyLatLongCoordinates(String data) throws Exception {
@@ -1447,7 +1447,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	public boolean selectSurveySelectorStartDateTime(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.selectSurveySelectorStartDateTime", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("selectSurveySelectorStartDateTime", ARG_DATA, data);
-		this.getReportsCommonPage().selectStartDateForSurvey(data);
+		this.getReportsCommonPage().inputSurveyStartDateTime(data);
 		return true;
 	}
 

@@ -278,6 +278,7 @@ public final class SurveyorConstants {
 	public static final String DRIVINGSURVEYTITLE = "Measurement Sessions - Surveyor";
 	public static final String DRIVINGSURVEYHEADER = "Driving Surveys";
 	public static final int LINE_SELECTOR_ZOOMLEVEL = 13;
+	public static final int SHAPE_SELECTOR_ZOOMLEVEL = 13;
 
 	public static final String ETHMTHRTOLABEL = Resources.getResource(ResourceKeys.Constant_EthaneToMethaneRatio );
 	public static final String ETHMTHERRGRTMSG = Resources.getResource(ResourceKeys.Validation_EnterValueGreaterThanOrEqual).replace("{0}", "1");
@@ -370,6 +371,11 @@ public final class SurveyorConstants {
 	public static final String EQDAYSURVEY8 = "daysurvey8";
 	public static final String EQDAYSURVEY82 = "daysurvey8.2";
 	public static final String EQDAYSURVEY = "daysurvey";
+	/*
+	 * FEQ survey tags
+	 */
+	public static final String FEQWITHPEAKS01 = "FeqWithPeaks01";
+	public static final String FEQNOPEAKS01 = "FeqNoPeaks01";
 	/*
 	 * Simulator Analyzers
 	 */
@@ -513,7 +519,7 @@ public final class SurveyorConstants {
 	 */
 	public static final String ALL_LICENSED_FEATURES_ROWIDS_NO_ANALYTICS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20";
 
-	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21";
+	public static final String ALL_LICENSED_FEATURES_ROWIDS = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22";
 
 	/*
 	 * enum for list of constants
