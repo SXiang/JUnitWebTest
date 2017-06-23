@@ -814,6 +814,7 @@
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/LatLongSelectionReportsPageTest.class" />
           <include name="**/LatLongSelectionReportsPageTest2.class" />
+          <include name="**/FEQReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
