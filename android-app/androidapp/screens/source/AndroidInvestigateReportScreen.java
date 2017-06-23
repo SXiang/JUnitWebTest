@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import androidapp.entities.source.InvestigateReportEntity;
+import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
@@ -25,8 +25,8 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		super(driver);
 	}
 
-	public void clickOnFirstInvestigationReport() {
-		Log.method("clickOnFirstInvestigationReport");
+	public void clickOnFirstInvestigationMarker() {
+		Log.method("clickOnFirstInvestigationMarker");
 		if (this.listViewElements != null) {
 			WebElement webElement = this.listViewElements.get(0);
 			if (webElement != null) {
@@ -35,13 +35,13 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		}
 	}
 
-	public List<InvestigateReportEntity> getInvestigationReports() {
+	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
 		Log.method("getInvestigationReports");
-		List<InvestigateReportEntity> invReportList = new ArrayList<InvestigateReportEntity>();
+		List<InvestigationMarkerEntity> invReportList = new ArrayList<InvestigationMarkerEntity>();
 		for (WebElement el : this.listViewElements) {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
 			if (findElements != null && findElements.size() > 1) {
-				InvestigateReportEntity invEntity = new InvestigateReportEntity();
+				InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
 				invEntity.setReportTitle(findElements.get(0).getText());
 				invEntity.setReportName(findElements.get(1).getText());
 				invReportList.add(invEntity);

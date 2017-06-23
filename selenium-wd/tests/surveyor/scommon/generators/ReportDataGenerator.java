@@ -3,6 +3,7 @@ package surveyor.scommon.generators;
 import org.openqa.selenium.WebDriver;
 
 import common.source.Constants;
+import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebDriverFactory;
@@ -42,6 +43,7 @@ public class ReportDataGenerator {
 	}
 
 	public String createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		String reportId = "";
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
@@ -64,6 +66,7 @@ public class ReportDataGenerator {
 			this.cleanUp();
 		}
 
+		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return reportId;
 	}
 

@@ -12,7 +12,7 @@ public class AndroidAutomationTools {
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
 	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
 	private static final Integer APPIUM_SERVER_PORT = 4723;
-	private static final Integer CATCH_UP_TIME_IN_SECS = 5;
+	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
 	private static final Integer PING_TIMEOUT = 1000;

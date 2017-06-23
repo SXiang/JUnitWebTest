@@ -11,7 +11,7 @@ public class BackPackSimulator {
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer PING_TIMEOUT = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
-	private static final Integer CATCH_UP_TIME_IN_SECS = 10;
+	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
 
 	public static void startSimulator() throws IOException {
 		Log.method("startSimulator");

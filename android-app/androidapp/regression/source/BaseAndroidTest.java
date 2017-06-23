@@ -120,9 +120,16 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	private void initializeScreenObjects() {
+		initializeSettingsScreen();
+		initializeMapScreen();
+	}
+
+	protected void initializeSettingsScreen() {
 		settingsScreen = new AndroidSettingsScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+	}
 
+	protected void initializeMapScreen() {
 		mapScreen = new AndroidMapScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mapScreen);
 	}

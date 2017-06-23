@@ -3,10 +3,13 @@ package androidapp.screens.source;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import common.source.Log;
+import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import androidapp.entities.source.InvestigationEntity;
@@ -17,6 +20,9 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
 	private List<WebElement> listViewElements;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.EditText")
+	private WebElement searchEditView;
 
 	public AndroidInvestigationScreen(WebDriver driver) {
 		super(driver);
@@ -48,8 +54,36 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		return invList;
 	}
 
+	public void performSearch(String searchKeyword) {
+		Log.method("enterSearchText", searchKeyword);
+		getSearchEditView().sendKeys(searchKeyword);
+		getSearchEditView().sendKeys(Keys.RETURN);
+		waitForSearchResultsToLoad(searchKeyword);
+	}
+
+	public WebElement getSearchEditView() {
+		return searchEditView;
+	}
+
 	@Override
 	public Boolean screenLoadCondition() {
-		return mainFrameLayout!=null && mainFrameLayout.isDisplayed();
+		return mainFrameLayout!=null && mainFrameLayout.isDisplayed() &&
+				searchEditView!=null && searchEditView.isDisplayed();
+	}
+
+	private boolean isFirstEntryMatchingSearchKeyword(String searchKeyword) {
+		Log.method("isFirstEntryMatchingSearchKeyword", searchKeyword);
+		this.listViewElements = driver.findElements(By.xpath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup"));
+		if (this.listViewElements != null && this.listViewElements.size() > 0) {
+			String reportId = this.listViewElements.get(1).getText();
+			return reportId.contains(searchKeyword);
+		}
+
+		return false;
+	}
+
+	private void waitForSearchResultsToLoad(String searchKeyword) {
+		Log.method("waitForSearchResultsToLoad", searchKeyword);
+		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
 	}
 }

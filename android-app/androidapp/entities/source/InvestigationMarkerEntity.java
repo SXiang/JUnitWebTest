@@ -1,6 +1,9 @@
 package androidapp.entities.source;
 
-public class InvestigateReportEntity {
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class InvestigationMarkerEntity {
 	private String reportTitle;
 	private String reportName;
 
@@ -18,5 +21,10 @@ public class InvestigateReportEntity {
 
 	public void setReportName(String reportName) {
 		this.reportName = reportName;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 }
