@@ -19,6 +19,7 @@ import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import surveyor.api.entities.InvestigationReports;
+import surveyor.apitest.source.InvestigationBoxInfo;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -212,13 +213,45 @@ public class PCubedApiInvoker {
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
 		Call<ResponseBody> cmpRptsCall = apiInterface.getComplianceReportsPage();
 		return cmpRptsCall.execute();
+
 	}
 
 	public static <T> T successResponse(Response<T> response) {
-		if (response.isSuccessful()) {
-			return response.body();
+			if (response.isSuccessful()) {
+				return  response.body();
+			}
+		return null;
+	}
+	
+//	public static <S> Double successResponse2(Response<S> response2) {
+//		if (response2.isSuccessful()) {
+//			return (S) InvestigationBoxInfo.getLeaks();
+//			return (S) InvestigationBoxInfo.getMessage();
+//			return (S) InvestigationBoxInfo.getInvestigationStatusTypeId();
+//		}
+//
+//		return null;
+//	}
+	
+	public Response<InvestigationBoxInfo> getLeakListByBox(String boxId) throws IOException {
+		Log.method("getLeakListByBox");
+		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
+		//Call<InvestigationBoxInfo> invBoxInfoCall = apiInterface.getLeakListByBox(baseUrl);
+		//return invBoxInfoCall.execute();
+		try {
+			Call<InvestigationBoxInfo> invBoxInfoCall = apiInterface.getLeakListByBox(boxId);
+			return invBoxInfoCall.execute();
+		} catch (JsonParseException ex) {
+			Log.error("Error parsing response. Possible reasons -> 1) Non JSON response returned. 2) Non-authenticated call returns non-json response.");
 		}
 
 		return null;
 	}
+	
+//	public Response<InvestigationBoxInfo> getBoxesByReportId() throws IOException {
+//		Log.method("getBoxesByReportId");
+//		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
+//		Call<InvestigationBoxInfo> invBoxInfoCall = apiInterface.getBoxesByReportId(baseUrl, baseUrl);
+//		return invBoxInfoCall.execute();
+//	}
 }
