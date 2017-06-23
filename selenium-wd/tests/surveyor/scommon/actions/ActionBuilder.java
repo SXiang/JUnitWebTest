@@ -64,9 +64,6 @@ public class ActionBuilder {
 	public static ComplianceReportsPageActions createComplianceReportsPageAction() {
 		return new ComplianceReportsPageActions(driver, baseURL, testSetup);
 	}
-	public static EQReportsPageActions createEQReportsPageAction() {
-		return new EQReportsPageActions(driver, baseURL, testSetup);
-	}
 	public static TestEnvironmentActions createTestEnvironmentAction() {
 		return new TestEnvironmentActions();
 	}

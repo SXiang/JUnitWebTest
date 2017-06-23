@@ -16,8 +16,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
-import common.source.TestContext;
-import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.EQReportsPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
@@ -30,7 +28,6 @@ import surveyor.scommon.actions.EQReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
-import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
 import surveyor.scommon.generators.TestDataGenerator;
@@ -128,7 +125,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		/*ActionBuilder.createManageAnalyzerPageAction();
 		ActionBuilder.createManageSurveyorPageAction();
 		ActionBuilder.createManageRefGasBottlePageAction();
-*/	}
+		 */	}
 
 	/**
 	 * Test Case ID: TC558_EQReportIsNotAccessibleWithoutEQPrivilege
@@ -176,17 +173,17 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID);
-	
+
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID);
-	
+
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID);	
 		getHomePage().logout();
 
 		String userName = ManageUsersPageActions.workingDataRow.get().username;
 		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
-	
+
 		/*Login Without EQ License */
 		loginPageAction.getLoginPage().open();
 		loginPageAction.getLoginPage().loginNormalAs(userName, userPassword);
@@ -243,7 +240,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.getManageCustomersPage().editAndSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
 		getHomePage().logout();
-		
+
 		/*Login With EQ License*/		
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
@@ -256,4 +253,83 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		getHomePage().logout();
 	}
+
+	/**
+	 * Test Case ID: TC574_ReenableEQPrivileges
+	 * Test Description: Disable EQ feature for customer having EQ access
+	 * Script:
+	 * - Customer having EQ privilege
+	 * - Login as Customer's Supervisor user
+	 * - Click on Reports (left side menu)
+	 * - Click on EQ and generate the EQ report
+	 * - Login as Picarro Admin
+	 * - Navigate to Manage Customer Page
+	 * - Click on Edit button of Customer having EQ privilege
+	 * - Disable the EQ access by un-selecting the EQ check box
+	 * - Click on OK button
+	 * - Log in as Customer's Supervisor user
+	 * - Click on Report link
+	 * - Login as Customer's Util admin
+	 * - Click on Report link
+	 * Results:
+	 * - EQ Report option is present
+	 * - User can generate EQ report successfully
+	 * - EQ report link is not present for Customer's user and user cannot access EQ report page	 **/
+	@Test
+	@UseDataProvider(value = EQReportDataProvider.EQ_REPORT_PAGE_ACTION_DATA_PROVIDER_TC775, location = EQReportDataProvider.class)
+	public void TC775_DisableEQPrivileges(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC775_DisableEQPrivileges ...");
+
+		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
+		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
+
+
+		/*Login With EQ License*/		
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
+		eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
+		createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
+		eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
+		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
+		getHomePage().logout();
+
+		
+		/* Unselect EQ*/
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageCustomerPageAction.open(EMPTY, NOTSET);
+		manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, LicensedFeatures.EQ);
+		getHomePage().logout();
+
+		/*Login Supervisor Without EQ License */
+		loginPageAction.getLoginPage().open();
+		loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
+		getHomePage().clickOnReport();
+		assertFalse(getHomePage().isEQLinkVisible());
+		getHomePage().logout();
+
+		/* Add Customer Utility admin user*/
+		final int newCustomerUAUserRowID = 32;
+
+		getLoginPage().open();
+		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
+		manageUsersPageAction.open(EMPTY, NOTSET);
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUAUserRowID);	
+		String utilityAdminUsername = ManageUsersPageActions.workingDataRow.get().username;
+		getHomePage().logout();
+
+		/*Login as Utility Admin Without EQ License */
+		loginPageAction.getLoginPage().open();
+		loginPageAction.getLoginPage().loginNormalAs(utilityAdminUsername, newUserPass);
+		getHomePage().clickOnReport();
+		assertFalse(getHomePage().isEQLinkVisible());
+		getHomePage().logout();
+
+	}
+
 }
