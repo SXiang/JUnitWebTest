@@ -15,6 +15,7 @@ import java.util.Set;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 
+import common.source.BcpDatFileTransferUtility;
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
@@ -424,6 +425,10 @@ public class DbSeedExecutor {
 
 			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
 			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+
+			Log.info("[Step-0] Transfering .dat files to DB server ...");
+			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
+			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
 
 			Log.info("[Step-1] Preparing pre-GIS push steps ...");
 			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();

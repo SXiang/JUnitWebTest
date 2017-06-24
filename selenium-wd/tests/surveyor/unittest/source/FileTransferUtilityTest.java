@@ -37,8 +37,8 @@ public class FileTransferUtilityTest {
 		String destMachineIPAddress = TestContext.INSTANCE.getTestSetup().getDbServerMachineIPAddress();
 		String destMachineUsername = TestContext.INSTANCE.getTestSetup().getDbServerMachineUsername();
 		String destMachinePassword = TestContext.INSTANCE.getTestSetup().getDbServerMachinePassword();
-		String sourceFileLocation = Paths.get(executionPath, "data\\sql\\Asset.BA.dat").toString();
-		String destFileLocation = Paths.get(DESTINATION_DIR, "Asset.BA.dat").toString();
+		String sourceFileLocation = Paths.get(executionPath, "data\\sql\\Boundary.BA.dat").toString();
+		String destFileLocation = Paths.get(DESTINATION_DIR, "Boundary.BA.dat").toString();
 		FileTransferUtility.transferFile(destMachineIPAddress, destMachineUsername, destMachinePassword, sourceFileLocation, destFileLocation);
 	}
 }

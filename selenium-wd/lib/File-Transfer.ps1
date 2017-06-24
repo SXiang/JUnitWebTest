@@ -4,6 +4,7 @@
 #    MSDN: https://msdn.microsoft.com/en-us/library/ee677232(v=azure.10).aspx
 # SAMPLE USAGE:
 #   .\File-Transfer.ps1 `
+#           -BuildWorkingDir "C:\Repositories\surveyor-qa"  `
 #           -DestMachineIPAddress "10.100.1.200"  `
 #           -DestMachineUsername "Win2k12-Android\picarro" `
 #           -DestMachinePassword "<password>" `
@@ -232,15 +233,33 @@ Write-Host "Creating remote session to -> $DestMachineIPAddress"
 $session = New-PSSession -ConfigurationName microsoft.powershell -ComputerName "$DestMachineIPAddress" -Credential $credential -SessionOption $sOptions -UseSSL
 Write-Host "Successfully created remote session to -> $DestMachineIPAddress"
 
-
 try {
-    # Remote PSSession -> [START]
-    Enter-PSSession -Session $session
-    Write-Host "Ensuring destination folder is EMPTY in remote machine $DestMachineIPAddress | Folder -> $DestFileLocation"
-    if (Test-Path $DestFileLocation) {
-        Remove-Item "$DestFileLocation\*" -Recurse -Force 
-    }        
-    Exit-PSSession      # [End]
+    # Remote PSSession Script -> [Pre-Send Checks]
+    $ScriptBlockPreSendFileChecks = { 
+        $DestFileLocation = $args[0]
+
+        Write-Host "[Remote CHECK] If remote machine has a file same as folder we are trying to create, delete it. Executing on $DestMachineIPAddress | File -> $DestFileLocation"
+        if (Test-Path "$DestFileLocation" -PathType Leaf) {
+            Write-Host "[Remote] Removing file -> $DestFileLocation ..."
+            Remove-Item -Path $DestFileLocation -Force
+        }         
+
+        Write-Host "[Remote CHECK] Ensuring destination folder exists in remote machine. Executing on $DestMachineIPAddress | Folder -> $DestFileLocation"
+        if (-not (Test-Path "$DestFileLocation" -PathType Container)) {
+            Write-Host "[Remote] Creating directory -> $DestFileLocation ..."
+            New-Item -Path $DestFileLocation -ItemType Directory
+        }         
+
+        Write-Host "[Remote CHECK] Ensuring destination folder is EMPTY in remote machine. Executing on $DestMachineIPAddress | Folder -> $DestFileLocation"
+        if (Test-Path $DestFileLocation) {
+            Write-Host "[Remote] Removing files from directory -> $DestFileLocation ..."
+            Remove-Item "$DestFileLocation\*" -Recurse -Force 
+        }        
+    }
+
+    # Pre-Checks before sending file.
+    Write-Host "Executing checks on remote machine $DestMachineIPAddress"
+    Invoke-Command -Session $session -ScriptBlock $ScriptBlockPreSendFileChecks -ArgumentList $DestFileLocation
 
     # Send file.
     Get-ChildItem -Path $TEMP_DIR | % { 
@@ -256,7 +275,7 @@ try {
         }
     }
 
-    # Remote PSSession -> Join files script executed on remote server.
+    # Remote PSSession Script -> [Join files script executed on remote server.]
     $ScriptBlockJoinFilesOnServer = { 
         $DestFileLocation = $args[0]
         $joinFileName = [System.IO.Path]::GetFileName($DestFileLocation)
@@ -266,31 +285,36 @@ try {
         if (Test-Path "$outFilePath") {
 	        Remove-Item "$outFilePath" -Force
         }
-    
+
         Write-Host "[Remote] Initializing file writer ..."
         $fWriter = new-object System.IO.FileStream($outFilePath, [System.IO.FileMode]::CreateNew)
         $writer = new-object System.IO.BinaryWriter($fWriter)
-        $fileNamesMap = @{}
-        Get-childItem -Path "$DestFileLocation" | %{
-	        $file = $_
-	        [string]$filename = [string]$file.Name
-	        $fileFullPath = $file.FullName	
-	        if (-not ($filename.EndsWith(".zip"))) {	
-		        $parts = $filename.Split(".")
-		        $ext = $parts[$parts.length-1]
-		        [int]$key = [int]$ext
-		        $fileNamesMap.set_item($key, $fileFullPath)
-	        }
-        }
-        $fileNamesMap.keys | sort-object | %{
-	        $key = $_
-	        [string]$fileFullPath = [string]$fileNamesMap.get_item($key)
-	        Write-Host "[Remote] Reading '$fileFullPath' for joining"
-	        $fReader = new-object System.IO.FileStream($fileFullPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
-	        $reader = new-object System.IO.BinaryReader($fReader)
-	        $writer.write($reader.ReadBytes($fReader.Length))
-	        $reader.close()
-	        $fReader.close()
+        try {
+            $fileNamesMap = @{}
+            Get-childItem -Path "$DestFileLocation" | %{
+	            $file = $_
+	            [string]$filename = [string]$file.Name
+	            $fileFullPath = $file.FullName	
+	            if (-not ($filename.EndsWith(".zip"))) {	
+		            $parts = $filename.Split(".")
+		            $ext = $parts[$parts.length-1]
+		            [int]$key = [int]$ext
+		            $fileNamesMap.set_item($key, $fileFullPath)
+	            }
+            }
+            $fileNamesMap.keys | sort-object | %{
+	            $key = $_
+	            [string]$fileFullPath = [string]$fileNamesMap.get_item($key)
+	            Write-Host "[Remote] Reading '$fileFullPath' for joining"
+	            $fReader = new-object System.IO.FileStream($fileFullPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
+	            $reader = new-object System.IO.BinaryReader($fReader)
+	            $writer.write($reader.ReadBytes($fReader.Length))
+	            $reader.close()
+	            $fReader.close()
+            }
+        } catch {
+            $ex = $_.Exception
+            Write-Host "[WARNING] Error occured when writing joined file. Exception: $ex"
         }
         $writer.close()
         $fWriter.close()
@@ -300,9 +324,39 @@ try {
         Copy-Item "$outFilePath" "$destRootFolder" -Force
 
         # 4. 
-        # Cleanup files on the server.
+        # Cleanup files along with directory before unzipping to avoid access denied error.
+        Write-Host "[Remote] Cleaning folder and files on remote server | Folder -> $DestFileLocation ..."
         if (Test-Path $DestFileLocation) {
             Remove-Item "$DestFileLocation\*" -Recurse -Force 
+        }        
+        Remove-Item $DestFileLocation -Force
+
+        # 5. 
+        # Decompress files on server.
+        #Decompress-ArchiveFile($sourceArchiveFileName, $destinationDirectoryName, $overwriteFiles)
+        $sourceArchiveFileName = "$destRootFolder\$zipFileName"
+        $destinationDirectoryName = $destRootFolder
+        Write-Host "[Remote] Decompressing file - [$sourceArchiveFileName] to [$destinationDirectoryName]."
+        Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+        $zipArchive = [System.IO.Compression.ZipFile]::OpenRead($sourceArchiveFileName)
+        try {
+            $zipArchive.Entries | % {
+                $entry = $_
+                $destFile = [System.IO.Path]::Combine($destinationDirectoryName, $entry.FullName)
+                [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $destFile, $true)
+            } 
+        } catch {
+            $ex = $_.Exception
+            Write-Host "[WARNING] Error occured when decompressing files in remote session. Exception: $ex"
+        }
+        $zipArchive.Dispose()
+        Write-Host "[Remote] Done decompressing file."
+
+        # 6. 
+        # Cleanup files on the server.
+        Write-Host "[Remote] Cleaning up file on remote server| File -> $sourceArchiveFileName ..."
+        if (Test-Path $sourceArchiveFileName) {
+            Remove-Item $sourceArchiveFileName -Force
         }        
     }
 
@@ -310,7 +364,6 @@ try {
     # Join files on the server.
     Write-Host "JOINING files on remote machine $DestMachineIPAddress | Folder -> $DestFileLocation"
     Invoke-Command -Session $session -ScriptBlock $ScriptBlockJoinFilesOnServer -ArgumentList $DestFileLocation
-
 
 } catch {
     $ex = $_.Exception
