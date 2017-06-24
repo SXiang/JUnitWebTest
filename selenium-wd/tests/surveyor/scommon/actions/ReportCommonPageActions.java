@@ -990,7 +990,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean copyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.copyReport", data, dataRowID);
-		this.getReportsCommonPage().copyReport(data, LoginPageActions.workingDataRow.get().username);
+		this.getReportsCommonPage().clickOnButtonInReportPage(data, LoginPageActions.workingDataRow.get().username,ReportsButtonType.Copy);
 		this.getReportsCommonPage().waitForCopyReportPagetoLoad();
 		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
