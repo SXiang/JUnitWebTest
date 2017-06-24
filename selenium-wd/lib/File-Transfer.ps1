@@ -225,7 +225,7 @@ split $sourceArchiveFileName $SPLIT_FILE_CHUNK_SIZE
 Write-Host "Done splitting file"
 
 # 2. 
-# Remote copy each file file chunk to server machine.
+# Remote copy each file chunk to server machine.
 $securePwd = ConvertTo-SecureString “$DestMachinePassword” -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential($DestMachineUsername, $securePwd)
 $sOptions = New-PSSessionOption –SkipCACheck –SkipCNCheck –SkipRevocationCheck
@@ -373,7 +373,7 @@ try {
 # Disconnect PS sessions.
 Get-PSSession | Disconnect-PSSession
 
-# 5.
+# 7.
 # [Client] Cleanup temporary files.
 Write-Host "Cleaning up temporary files on current machine"
 Remove-Item "$TEMP_DIR\*" -Recurse -Force 
