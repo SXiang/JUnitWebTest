@@ -49,10 +49,12 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 	private static EQReportsPageActions eqReportsPageAction;
 	private static ManageSurveyorPage manageSurveyorPage;
 	private static ManageSurveyorAdminPage manageSurveyorAdminPage;
-
+	private static CustomerSurveyInfoEntity custSrvInfo ;
+	
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
+		custSrvInfo = null;
 	}
 
 	@Before
@@ -64,6 +66,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 
+		if (custSrvInfo ==null){
 		final int newCustomerRowID = 14;
 		final int newLocationRowID = 26;
 		final int newCustomerUserRowID = 32;
@@ -78,9 +81,10 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
-		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+		custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+		}
 	}
 
 	private void initializePageObjects() {
@@ -122,10 +126,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
 		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
-		/*ActionBuilder.createManageAnalyzerPageAction();
-		ActionBuilder.createManageSurveyorPageAction();
-		ActionBuilder.createManageRefGasBottlePageAction();
-		 */	}
+	}
 
 	/**
 	 * Test Case ID: TC558_EQReportIsNotAccessibleWithoutEQPrivilege
@@ -298,7 +299,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
 		getHomePage().logout();
 
-		
+
 		/* Unselect EQ*/
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);

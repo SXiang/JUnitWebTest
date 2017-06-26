@@ -76,11 +76,11 @@ public class LoginPageTest extends SurveyorBaseTest {
 	private static MeasurementSessionsPage measurementSessionsPage;
 	private static SurveyViewPage surveyViewPage;
 	private static Map<String, String> testReport;
-	
+
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
 		initializeTestObjects(); // ensures TestSetup and TestContext are
-									// initialized before Page object creation.
+		// initialized before Page object creation.
 
 	}
 
@@ -110,7 +110,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 		eulaPage = pageObjectFactory.getEULAPage();
 		PageFactory.initElements(getDriver(), eulaPage);
-		
+
 		complinaceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complinaceReportsPage);
 
@@ -125,7 +125,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), measurementSessionsPage);
-		
+
 		surveyViewPage = pageObjectFactory.getSurveyViewPage();
 		PageFactory.initElements(getDriver(), surveyViewPage);
 	}
@@ -213,7 +213,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 		List<String> strListTagCus = new ArrayList<String> ();
 		List<String> strListTagPic = new ArrayList<String> ();
-			
+
 		testReport = addTestReport(SQACUSSU, USERPASSWORD,
 				SurveyModeFilter.Standard);
 		String rptTitle = testReport.get(SurveyType.Standard + "Title");
@@ -226,7 +226,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 		complinaceReportsPage.open();
 		complinaceReportsPage.waitForPageLoad();
 		complinaceReportsPage.searchAndDeleteReport(rptTitle, strCreatedBy);
-		
+
 		homePage.open();
 		homePage.waitForPageLoad();
 		homePage.getDropDownLoginUser().click();
@@ -243,18 +243,13 @@ public class LoginPageTest extends SurveyorBaseTest {
 		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
-		
+
 		measurementSessionsPage.open();
 
 		strListTagCus.add(CUSDRVSTDTAG3200);
-		
-		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
 
-		try {
-			measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
-		} catch (Exception e) {
-			Log.error(e.toString());
-		}
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
+		measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 	}

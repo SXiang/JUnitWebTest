@@ -41,7 +41,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	private static List<String> strListTagCus = null;
 	private static List<String> strListTagPic = null;
 	private static List<String> strListTagCusDr = null;
-	
+
 	/**
 	 * This method is called by the 'main' thread
 	 */
@@ -76,7 +76,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
 		strListTagCusDr = new ArrayList<String>();
-		
+
 		strListTagCusDr.add(SQACUSDRTAG2);
 		strListTagCus.add(CUSDRVSTDTAG2);
 		strListTagCus.add(CUSDRVRRTAG2);
@@ -125,11 +125,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
 
-		try {
-			measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
-		} catch (Exception e) {
-			Log.error(e.toString());
-		}
+		measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
 
@@ -154,14 +150,10 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		measurementSessionsPage.open();
 
 		strListTagCus.add(CUSDRVSTDTAG3200);
-		
+
 		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
 
-		try {
-			measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
-		} catch (Exception e) {
-			Log.error(e.toString());
-		}
+		measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
 		surveyViewPage.waitForPageLoad();
 		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());	
 	}
