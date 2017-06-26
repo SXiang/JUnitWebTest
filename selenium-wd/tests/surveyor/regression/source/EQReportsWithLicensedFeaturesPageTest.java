@@ -54,7 +54,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
-		custSrvInfo = null;
 	}
 
 	@Before
@@ -66,25 +65,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		// Select run mode here.
 		setPropertiesForTestRunMode();
 
-		if (custSrvInfo ==null){
-		final int newCustomerRowID = 14;
-		final int newLocationRowID = 26;
-		final int newCustomerUserRowID = 32;
-		final int newSurveyorRowID = 35;
-		final int newAnalyzerRowID = 28;
-		final int newRefGasBottleRowID = 12;
-		final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
-		final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
-		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
-		boolean calibrationRecord = true;
-
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
-
-		custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
-				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
-		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
-		}
 	}
 
 	private void initializePageObjects() {
@@ -148,6 +128,24 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC558_EQReportIsNotAccessibleWithoutEQPrivilege ...");
 
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 26;
+		final int newCustomerUserRowID = 32;
+		final int newSurveyorRowID = 35;
+		final int newAnalyzerRowID = 28;
+		final int newRefGasBottleRowID = 12;
+		final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+		boolean calibrationRecord = true;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+		custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
+
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
 		String newUserPass = ManageUsersPageActions.workingDataRow.get().password;
 
@@ -165,21 +163,21 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		getHomePage().logout();
 
 		//Create customer user without EQ License
-		final int newCustomerRowID = 10;
-		final int newLocationRowID = 11;
-		final int newCustomerUserRowID = 21;
+		final int newCustomer2RowID = 10;
+		final int newLocation2RowID = 11;
+		final int newCustomer2UserRowID = 21;
 
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
 
 		manageCustomerPageAction.open(EMPTY, NOTSET);
-		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomerRowID);
+		manageCustomerPageAction.createNewCustomer(EMPTY, newCustomer2RowID);
 
 		manageLocationPageAction.open(EMPTY, NOTSET);
-		manageLocationPageAction.createNewLocation(EMPTY, newLocationRowID);
+		manageLocationPageAction.createNewLocation(EMPTY, newLocation2RowID);
 
 		manageUsersPageAction.open(EMPTY, NOTSET);
-		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomerUserRowID);	
+		manageUsersPageAction.createNewCustomerUser(EMPTY, newCustomer2UserRowID);	
 		getHomePage().logout();
 
 		String userName = ManageUsersPageActions.workingDataRow.get().username;
@@ -216,6 +214,24 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 	public void TC574_ReenableEQPrivileges(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC574_ReenableEQPrivileges ...");
+
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 26;
+		final int newCustomerUserRowID = 32;
+		final int newSurveyorRowID = 35;
+		final int newAnalyzerRowID = 28;
+		final int newRefGasBottleRowID = 12;
+		final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+		boolean calibrationRecord = true;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+		custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
 
 		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
@@ -281,6 +297,24 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 	public void TC775_DisableEQPrivileges(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC775_DisableEQPrivileges ...");
+
+		final int newCustomerRowID = 14;
+		final int newLocationRowID = 26;
+		final int newCustomerUserRowID = 32;
+		final int newSurveyorRowID = 35;
+		final int newAnalyzerRowID = 28;
+		final int newRefGasBottleRowID = 12;
+		final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
+		final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
+		final int SURVEY_RUNTIME_IN_SECONDS = 20; /* Number of seconds to run the survey for. */
+		boolean calibrationRecord = true;
+
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(String.format("%s:%s", PICDFADMIN, PICADMINPSWD), NOTSET);
+
+		custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
+				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, calibrationRecord);
+		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo);
 
 		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
 		String newUsername = ManageUsersPageActions.workingDataRow.get().username;
