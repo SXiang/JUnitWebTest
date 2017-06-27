@@ -80,7 +80,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	@SuppressWarnings("unchecked")
 	private boolean isFirstEntryMatchingSearchKeyword(String searchKeyword) {
 		Log.method("isFirstEntryMatchingSearchKeyword", searchKeyword);
-		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
+		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[2]");
 		if (firstRowReportTitle != null) {
 			String reportId = firstRowReportTitle.getText();
 			return reportId.contains(searchKeyword);
