@@ -131,7 +131,7 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		measurementSessionsPage.open();
 
-		assertFalse(measurementSessionsPage.isButtonPresent(DrivingSurveyButtonType.DeleteSurvey));
+		assertFalse(measurementSessionsPage.isButtonPresent(SQACUSDR, DrivingSurveyButtonType.DeleteSurvey));
 	}
 
 	/**

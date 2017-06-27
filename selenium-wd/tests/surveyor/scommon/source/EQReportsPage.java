@@ -1,7 +1,6 @@
 package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
-import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.CUSTOMER_PICARRO;
 import static surveyor.scommon.source.SurveyorConstants.LINE_SELECTOR_ZOOMLEVEL;
 

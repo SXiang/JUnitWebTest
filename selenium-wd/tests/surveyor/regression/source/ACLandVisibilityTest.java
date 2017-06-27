@@ -36,8 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import common.source.Log;
-import common.source.TestContext;
-import common.source.TestSetup;
 import common.source.WebElementExtender;
 
 /**
@@ -103,8 +101,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	@Test
 	public void TC35_CheckACLVCustomerUser_DriverRole() {
 		String customerName = SQACUS;
-		String eula = customerName + ": " + EULASTRING;
-
 		String userName = customerName + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUSLOC;
 
@@ -185,7 +181,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC36_CheckACLVCustomerUser_SupervisorRole() {
-		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUSLOC;
 
@@ -364,7 +359,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	 */
 	@Test
 	public void TC37_CheckACLVCustomerUser_UtilityAdminRole() {
-		String eula = SQACUS + ": " + EULASTRING;
 		String userName = SQACUS + getTestSetup().getFixedSizeRandomNumber(8) + REGBASEUSERNAME;
 		String location = SQACUSLOC;
 

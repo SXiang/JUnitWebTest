@@ -20,17 +20,9 @@ import static surveyor.scommon.source.SurveyorConstants.INVALIDPSWD;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSSU;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONE;
 import static surveyor.scommon.source.SurveyorConstants.SQACUSLOCSUR;
-import static surveyor.scommon.source.SurveyorConstants.ADMINISTRATORUSER;
 import static surveyor.scommon.source.SurveyorConstants.SQACUS20161;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYOR_SQACUSUNIT1;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
-
-
-
-
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
