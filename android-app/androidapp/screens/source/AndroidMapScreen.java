@@ -2,6 +2,7 @@ package androidapp.screens.source;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 
 import common.source.AccessibilityLabel;
 import common.source.Log;
@@ -16,41 +17,51 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	private static final String AMPLITUDE_LABEL = "Max:";
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
+	@CacheLookup
 	private WebElement toggleModeButton;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
+	@CacheLookup
 	private WebElement resetButton;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
+	@CacheLookup
 	private WebElement investigateButton;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@CacheLookup
 	private WebElement amplitudeText;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@CacheLookup
 	private WebElement maxText;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[4]")
+	@CacheLookup
 	private WebElement ppmText;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView")
+	@CacheLookup
 	private WebElement modeText;
 
-	// UserLogin dialog elements. Fetched at runtime on first access.
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText")
+	@CacheLookup
+	private WebElement passwordEditView;
+	private Boolean passwordEditViewLocated = true;    // element fetched at page load time. Set to false to detect element post page load.
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[5]")
+	@CacheLookup
+	private WebElement submitButton;
+	private Boolean submitButtonLocated = true;        // element fetched at page load time. Set to false to detect element post page load.
+
+	// Following user login elements are currently not used in normal test interaction and therefore NOT fetched at page load time for perf reason.
+	// If tests need to interact with these elements, fetch these using @AndroidFindBy.
 	private WebElement serverEditView = null;
 	private Boolean serverEditViewLocated = false;
-
 	private WebElement usernameEditView = null;
 	private Boolean usernameEditViewLocated = false;
-
-	private WebElement passwordEditView = null;
-	private Boolean passwordEditViewLocated = false;
-
 	private WebElement cancelButton = null;
 	private Boolean cancelButtonLocated = false;
-
-	private WebElement submitButton = null;
-	private Boolean submitButtonLocated = false;
 
 	public AndroidMapScreen(WebDriver driver) {
 		super(driver);
@@ -58,7 +69,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void clickOnSubmit() {
 		Log.method("clickOnSubmit");
-		getSubmitButton().click();
+		tap(getSubmitButton());
 	}
 
 	public void clickOnCancel() {
@@ -92,9 +103,9 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		getUsernameEditView().sendKeys(username);
 	}
 
-	public void enterPassword(String password) {
-		Log.method("enterPassword");
-		getPasswordEditView().sendKeys(password);
+	public void enterPassword(String password) throws Exception {
+		Log.method("enterPassword", password);
+		sendKeys(getPasswordEditView(), password);
 	}
 
 	public void waitForLoginDialogToShow() {
@@ -103,18 +114,15 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	private Boolean loginDialogLoadCondition() {
 		Log.method("AndroidMapScreen.loginDialogShownCondition");
-		boolean submitBtnDisplayed = false;
+		boolean passwordTextDisplayed = false;
 		try {
-			submitBtnDisplayed = getSubmitButton() != null && getSubmitButton().isDisplayed();
+			passwordTextDisplayed = getPasswordEditView() != null && getPasswordEditView().isDisplayed();
 		} catch (Exception ex) {
 			// ignore error.
 		}
 
-		Log.info(String.format("Submit button displayed=[%b]", submitBtnDisplayed));
-		Log.info("Page Source after dialog load -> ");
-		Log.info(driver.getPageSource());
-
-		return submitBtnDisplayed;
+		Log.info(String.format("Password text displayed=[%b]", passwordTextDisplayed));
+		return passwordTextDisplayed;
 	}
 
 	@Override

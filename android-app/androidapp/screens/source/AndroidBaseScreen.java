@@ -8,7 +8,9 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
+import common.source.MobileActions;
 import common.source.Timeout;
+import io.appium.java_client.MobileDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -25,8 +27,22 @@ public class AndroidBaseScreen {
 		this.driver = driver;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public AndroidDriver getAndroidDriver() {
 		return (AndroidDriver)driver;
+	}
+
+	protected void printPageSource() {
+		Log.method("printPageSource");
+		Log.info(driver.getPageSource());
+	}
+
+	public void tap(WebElement element) {
+		MobileActions.newAction((MobileDriver<?>)driver).tap(element);
+	}
+
+	public void sendKeys(WebElement element, String text) throws Exception {
+		MobileActions.newAction().sendKeys(element, text);
 	}
 
 	public void waitForFirstAppLoad() {
@@ -56,9 +72,6 @@ public class AndroidBaseScreen {
 				return predicateTest;
 			}
 		});
-
-		Log.info("Screen Page Source -> ");
-		Log.info(driver.getPageSource());
 
 		return true;
 	}

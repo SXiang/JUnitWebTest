@@ -28,19 +28,22 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 		super(driver);
 	}
 
-	public void saveSettings(String backpackAddress, String picServerAddress, String username) {
+	public void saveSettings(String backpackAddress, String picServerAddress, String username) throws Exception {
 		Log.method("saveSettings", backpackAddress, picServerAddress, username);
 		Log.info("Clicking on bpackServerAddressEditText ...");
-		bpackServerAddressEditText.click();
-		bpackServerAddressEditText.sendKeys(backpackAddress);
+		//bpackServerAddressEditText.click();
+		//bpackServerAddressEditText.sendKeys(backpackAddress);
+		sendKeys(bpackServerAddressEditText, backpackAddress);
 
 		Log.info("Clicking on picServerAddressEditText ...");
-		picServerAddressEditText.click();
-		picServerAddressEditText.sendKeys(picServerAddress);
+		//picServerAddressEditText.click();
+		//picServerAddressEditText.sendKeys(picServerAddress);
+		sendKeys(picServerAddressEditText, picServerAddress);
 
 		Log.info("Clicking on usernameEditText ...");
-		usernameEditText.click();
-		usernameEditText.sendKeys(username);
+		//usernameEditText.click();
+		//usernameEditText.sendKeys(username);
+		sendKeys(usernameEditText, username);
 
 		Log.info("Hiding keyboard, before clicking on Save button");
 		((AppiumDriver)this.driver).hideKeyboard();

@@ -2,7 +2,6 @@ package androidapp.regression.source;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
@@ -13,11 +12,9 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.ReportListDataProvider;
-import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -106,10 +103,10 @@ public class ReportListScreenTest extends BaseAndroidTest {
 		investigationScreen.waitForScreenLoad();
 		investigationScreen.performSearch(reportIdSuffix);
 
+		investigationScreen.clickOnFirstInvestigation();
 		investigateReportScreen.waitForScreenLoad();
-		List<InvestigationMarkerEntity> invReports = investigateReportScreen.getInvestigationMarkers();
-		Log.info(String.format("Found %d investigation markers", (invReports == null) ? 0 : invReports.size()));
-		assertTrue(invReports != null && invReports.size() == EXPECTED_INVESTIGATION_MARKERS);
-		Log.info(LogHelper.collectionToString(invReports, "Found investigation markers"));
+		Integer count = investigateReportScreen.getInvestigationMarkersCount();
+		Log.info(String.format("Found %d investigation markers", count));
+		assertTrue(count == EXPECTED_INVESTIGATION_MARKERS);
 	}
 }

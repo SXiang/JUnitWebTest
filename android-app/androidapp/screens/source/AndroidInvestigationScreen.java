@@ -3,12 +3,13 @@ package androidapp.screens.source;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
+import common.source.MobileActions;
+import common.source.MobileActions.KeyCode;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -19,10 +20,16 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
+	@CacheLookup
 	private List<WebElement> listViewElements;
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.EditText")
+	@CacheLookup
 	private WebElement searchEditView;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement firstRowReportTitle;
 
 	public AndroidInvestigationScreen(WebDriver driver) {
 		super(driver);
@@ -30,11 +37,8 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigation() {
 		Log.method("clickOnFirstInvestigation");
-		if (this.listViewElements != null) {
-			WebElement webElement = this.listViewElements.get(0);
-			if (webElement != null) {
-				webElement.click();
-			}
+		if (this.firstRowReportTitle != null) {
+			firstRowReportTitle.click();
 		}
 	}
 
@@ -54,10 +58,10 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		return invList;
 	}
 
-	public void performSearch(String searchKeyword) {
+	public void performSearch(String searchKeyword) throws Exception {
 		Log.method("enterSearchText", searchKeyword);
-		getSearchEditView().sendKeys(searchKeyword);
-		getSearchEditView().sendKeys(Keys.RETURN);
+		sendKeys(getSearchEditView(), searchKeyword);
+		MobileActions.newAction().pressKey(KeyCode.KEYCODE_ENTER);
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
@@ -67,15 +71,18 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		return mainFrameLayout!=null && mainFrameLayout.isDisplayed() &&
-				searchEditView!=null && searchEditView.isDisplayed();
+		Log.method("screenLoadCondition");
+		boolean searchEditViewShown = searchEditView!=null && searchEditView.isDisplayed();
+		Log.info(String.format("searchEditViewShown=[%b]", searchEditViewShown));
+		return searchEditViewShown;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean isFirstEntryMatchingSearchKeyword(String searchKeyword) {
 		Log.method("isFirstEntryMatchingSearchKeyword", searchKeyword);
-		this.listViewElements = driver.findElements(By.xpath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup"));
-		if (this.listViewElements != null && this.listViewElements.size() > 0) {
-			String reportId = this.listViewElements.get(1).getText();
+		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
+		if (firstRowReportTitle != null) {
+			String reportId = firstRowReportTitle.getText();
 			return reportId.contains(searchKeyword);
 		}
 

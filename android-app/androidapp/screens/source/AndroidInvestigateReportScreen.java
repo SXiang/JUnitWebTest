@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
 import io.appium.java_client.MobileBy;
@@ -15,11 +16,17 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 
-	@AndroidFindBy(className = "android.widget.ScrollView")
-	private WebElement scrollableView;
-
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
+	@CacheLookup
 	private List<WebElement> listViewElements;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement firstRowReportId;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement firstRowInvestigationStatus;
 
 	public AndroidInvestigateReportScreen(WebDriver driver) {
 		super(driver);
@@ -27,12 +34,22 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigationMarker() {
 		Log.method("clickOnFirstInvestigationMarker");
-		if (this.listViewElements != null) {
-			WebElement webElement = this.listViewElements.get(0);
-			if (webElement != null) {
-				webElement.click();
-			}
+		if (this.firstRowReportId != null) {
+			firstRowReportId.click();
 		}
+	}
+
+	public InvestigationMarkerEntity getFirstInvestigationMarker() {
+		Log.method("getFirstInvestigationMarker");
+		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
+		invEntity.setReportTitle(firstRowReportId.getText());
+		invEntity.setReportName(firstRowInvestigationStatus.getText());
+		return invEntity;
+	}
+
+	public Integer getInvestigationMarkersCount() {
+		Log.method("getInvestigationReportsCount");
+		return (this.listViewElements == null) ? 0 : this.listViewElements.size();
 	}
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {

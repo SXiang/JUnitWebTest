@@ -24,7 +24,7 @@ public class SanityTest extends BaseAndroidTest {
 	}
 
 	@Test
-	public void testSettingsScreenAndElementsShownOnMapScreen() {
+	public void testSettingsScreenAndElementsShownOnMapScreen() throws Exception {
 		Log.info("Executing testSettingsScreenAndElementsShownOnMapScreen ...");
 
 		String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();

@@ -159,6 +159,10 @@ public class BaseAndroidTest extends BaseTest {
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
 		capabilities.setCapability("autoGrantPermissions", "true");
 
+		// Hide keyboard.
+		capabilities.setCapability("resetKeyboard", true);
+		capabilities.setCapability("unicodeKeyboard", true);
+
 		// Create object of URL class and specify the appium server address
 		URL url= new URL(APPIUM_SERVER_HUB_HOST);
 
