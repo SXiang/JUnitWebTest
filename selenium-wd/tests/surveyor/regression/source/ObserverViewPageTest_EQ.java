@@ -40,40 +40,20 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
-//	private ManageLocationPageActions manageLocationPageActions;
 	private TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 	private DriverViewPage driverViewPage;
-//	private static Map<String, String> testAccount;
-//	private static String userName, observerName;
-//	private static String userPassword;
-//	private static String customerName;
-//	private static String locationName;
-//	private static String analyzerName;
-//	private static String analyzerSharedKey;
-//	private static String surveyorName;
-//	private int eqSurveyRowId = 74;
-//	private int zoomLevelForIndication = 13;
-//	private String db3DefnFile = "replay-db3-eth.defn";
-//	private String db3File = "Surveyor_2055-PICARRO_EQ6.db3";
-//    private int driverDataRowID = USER_ROW_ID_PICARRO_DRIVER;
-//	private int analyzerDb3DataRowID = 74;
-//	final int surveyDataRowID = 63;	
 	public ObserverViewPageTest_EQ() throws IOException {
 		super();
 	}
 
 	@BeforeClass
 	public static void beforeTestClass() {
-//		testAccount = null;
 		initializeTestObjects();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-//		if(testAccount!=null && testAccount.get("customerId")!=null){
-//			cleanUpGisData(testAccount.get("customerId"));
-//		}
 	}
 	
 	@Before
@@ -85,28 +65,9 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 			initializeBasePageActions();
 			initializeObserverViewPageActionList();
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
-//			manageLocationPageActions = new ManageLocationPageActions(getDriver(), getBaseURL(), getTestSetup());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-//		if(testAccount == null){
-//			testAccount = createTestAccount("EQ_ObserverView", CapabilityType.Ethane);
-//			observerName = testAccount.get("userName");
-//			userPassword = testAccount.get("userPassword");
-//			customerName = testAccount.get("customerName");
-//			locationName = testAccount.get("locationName");
-//			analyzerSharedKey = testAccount.get("analyzerSharedKey");
-//			analyzerName = testAccount.get("analyzerName");
-//			surveyorName = testAccount.get("surveyorName");
-//			userName = getTestSetup().getFixedSizeRandomNumber(6)+"td" + REGBASEUSERNAME;
-//			addTestUser(customerName, userName, userPassword, CUSUSERROLEDR, locationName);
-//			pushGisData(testAccount.get("customerId"));
-//		}
-//		getLoginPage().open();
-//		getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
-//		manageLocationPageActions.open(EMPTY, NOTSET);
-//		manageLocationPageActions.getManageLocationsPage().editSurveyMinAmplitude(customerName,locationName,"0.035");
 	}
 
 	private void initializePageObjects() {
@@ -182,7 +143,7 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 	public void TC1060_ObserveActiveAndInactiveEQSurvey() throws Exception{
 		Log.info("\nTestcase - TC1060_ObserveActiveAndInactiveEQSurvey\n");
 		final int userDataRowID = 16;
-		final int analyzerDb3DataRowID = 77;
+		final int analyzerDb3DataRowID = 78;
 		final int surveyDataRowID = 65;
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */
@@ -279,7 +240,7 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 		Log.info("\nTestcase - TC1067_ObserverViewEQSurveyAsCustomerDriver\n");
 		
 		final int userDataRowID = 3;
-		final int analyzerDb3DataRowID = 76;
+		final int analyzerDb3DataRowID = 77;
 		final int surveyDataRowID = 65;
 		getLoginPageAction().open(EMPTY, NOTSET);
 		getLoginPageAction().login(EMPTY, userDataRowID);   /* Picarro Driver */

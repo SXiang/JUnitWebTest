@@ -33,6 +33,17 @@ public class BackPackSimulatorTest {
 	}
 
 	@Test
+	public void testPauseSimulatorProcesses() throws IOException {
+		BackPackSimulator.startSimulator();
+		BackPackSimulator.pauseSimulatorProcesses();
+	}
+
+	@Test
+	public void testResumeSimulatorProcesses() throws IOException {
+		BackPackSimulator.resumeSimulatorProcesses();
+	}
+
+	@Test
 	public void testStopSimulator() throws IOException {
 		BackPackSimulator.stopSimulator();
 	}

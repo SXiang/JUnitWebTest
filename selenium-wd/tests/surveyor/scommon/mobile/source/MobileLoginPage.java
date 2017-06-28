@@ -1,9 +1,10 @@
 /**
- * 
+ *
  */
 package surveyor.scommon.mobile.source;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -29,16 +30,25 @@ public class MobileLoginPage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = "[type='submit']")
 	private WebElement btnLogin;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='validation-summary-errors'/ul/li")
-	private WebElement txtAccountDisabled;	
+	private WebElement txtAccountDisabled;
 
 	public MobileLoginPage(){
 		super(STRURLPath);
+		printPageUrl();
+	}
+
+	public MobileLoginPage(WebDriver driver) {
+		super(driver, STRURLPath);
+		printPageUrl();
+	}
+
+	private void printPageUrl() {
 		pageKey = By.cssSelector("[type='submit']");
 		Log.info("The Mobile Login Page URL is: " + this.strPageURL);
 	}
-	
+
 	private void handleEULA() {
 		waitForPageToLoad();
 		waitForAJAXCallsToComplete();
@@ -54,7 +64,7 @@ public class MobileLoginPage extends MobileBasePage {
 	public boolean checkIfAtLoginPage() {
 		if (driver.getTitle().equalsIgnoreCase(STRPageTitle))
 			return true;
-		
+
 		return false;
 	}
 
@@ -66,7 +76,7 @@ public class MobileLoginPage extends MobileBasePage {
 		reportsPage.clearFilter();
 		return reportsPage;
 	}
-	
+
 	private void login(String userName, String password) {
 		Log.info("Input username as '"+userName+"'");
 		this.tbUserName.sendKeys(userName);

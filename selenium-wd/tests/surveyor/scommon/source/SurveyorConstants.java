@@ -266,7 +266,7 @@ public final class SurveyorConstants {
 	public static final String NOMATCHINGSEARCH = Resources.getResource(ResourceKeys.Constant_NoMatchingRecordsFound);
 	public static final String REPORTERRORPROCESSING = Resources.getResource(ResourceKeys.Reports_ErrorProcessing);
 	public static final String INVALIDUSERPASS = Resources.getResource(ResourceKeys.Account_NotRecognized);
-
+	public static final String ManageCustomer_ErrorMsg = Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg);
 	public static final String DRIVINGSURVEYSEXPORTSURVEY = "SurveyExport";
 	public static final String DRIVINGSURVEYSEXPORTPEAKS = "PeakExport";
 	public static final String DRIVINGSURVEYSEXPORTANALYSIS = "AnalysisExport";

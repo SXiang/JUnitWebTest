@@ -19,11 +19,11 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.MeasurementSessionsPage.UserRoleType;
-
 import static surveyor.scommon.source.SurveyorConstants.*;
 import static surveyor.scommon.source.SurveyorP3URLs.*;
 
@@ -34,6 +34,7 @@ import static surveyor.scommon.source.SurveyorP3URLs.*;
 @RunWith(SurveyorTestRunner.class)
 public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 	private static MeasurementSessionsPage measurementSessionsPage;
+	private static SurveyViewPage surveyViewPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
 
@@ -69,16 +70,17 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
 		PageFactory.initElements(getDriver(), measurementSessionsPage);
 
+		surveyViewPage = pageObjectFactory.getSurveyViewPage();
+		PageFactory.initElements(getDriver(), surveyViewPage);
+
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
-
 		strListTagCusDr = new ArrayList<String>();
-		strListTagCusDr.add(SQACUSDRTAG2);
 
+		strListTagCusDr.add(SQACUSDRTAG2);
 		strListTagCus.add(CUSDRVSTDTAG2);
 		strListTagCus.add(CUSDRVRRTAG2);
 		strListTagCus.add(CUSDRVOPTAG2);
-
 		strListTagPic.add(PICADMNSTDTAG2);
 		strListTagPic.add(PICADMNRRTAG2);
 		strListTagPic.add(PICADMNOPTAG2);
@@ -119,8 +121,17 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		measurementSessionsPage.open();
 
+		strListTagCus.add(CUSDRVSTDTAG3200);
+
 		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
 
+		measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
+		surveyViewPage.waitForPageLoad();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());
+
+		measurementSessionsPage.open();
+
+		assertFalse(measurementSessionsPage.isButtonPresent(SQACUSDR, DrivingSurveyButtonType.DeleteSurvey));
 	}
 
 	/**
@@ -138,8 +149,13 @@ public class MeasurementSessionsPageTest extends SurveyorBaseTest {
 
 		measurementSessionsPage.open();
 
-		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSUA, UserRoleType.UtilityAdmin, strListTagCus, strListTagPic));
+		strListTagCus.add(CUSDRVSTDTAG3200);
 
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(SQACUSSU, UserRoleType.Supervisor, strListTagCus, strListTagPic));
+
+		measurementSessionsPage.actionOnDrivingSurvey(CUSDRVSTDTAG3200, SQACUSDR, SURVEYOR_SQACUSUNIT1, SQACUS20161, DrivingSurveyButtonType.ViewSurvey);
+		surveyViewPage.waitForPageLoad();
+		assertTrue(surveyViewPage.checkIfAtSurveyViewPage());	
 	}
 
 	/**

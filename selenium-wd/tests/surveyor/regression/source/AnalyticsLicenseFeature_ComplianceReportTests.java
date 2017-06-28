@@ -34,6 +34,7 @@ import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
+import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
@@ -444,7 +445,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		final Integer reportDataRowID = 212;
 		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		complianceReportsPageAction.getComplianceReportsPage().copyReport(reportTitle, userName);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(reportTitle, userName, ReportsButtonType.Copy);
 		complianceReportsPageAction.getComplianceReportsPage().selectReportModeNoConfirm(ReportModeFilter.Standard);
 		assertTrue(complianceReportsPageAction.waitForChangeModelWarningPopupToShow(EMPTY, NOTSET));
 		String warningMsg=  (complianceReportsPageAction.getComplianceReportsPage().getSurveyModalErrorMsg().getText());
@@ -526,7 +527,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		final Integer reportDataRowID = 212;
 		Map<String, String> testReport = addTestReport(userName, userPassword, surveyTag, reportDataRowID, SurveyModeFilter.Analytics);
 		String reportTitle = testReport.get(SurveyModeFilter.Analytics.toString()+"Title");
-		complianceReportsPageAction.getComplianceReportsPage().copyReport(reportTitle, userName);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(reportTitle, userName, ReportsButtonType.Copy);
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsReportModeShown());
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isExclusionRadiusParameterShown());
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());

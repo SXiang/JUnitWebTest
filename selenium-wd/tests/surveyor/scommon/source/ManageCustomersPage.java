@@ -44,15 +44,15 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a")
-	private WebElement btnAddNewCustomer;
+	public WebElement btnAddNewCustomer;
 	private String btnAddNewCustomerXPath = "//*[@id='page-wrapper']/div/div[2]/div/div/div[1]/div[1]/a";
 
-	@FindBy(id = "name")
-	private WebElement inputCustomerName;
+	@FindBy(how = How.XPATH, using = "//*[@id='name']")
+	public WebElement inputCustomerName;
 
-	@FindBy(id = "name-error")
-	private WebElement lblNameError;
-
+	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
+	public WebElement lblNameError;
+	
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
@@ -80,6 +80,14 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@FindBy(id = "LicencedFeatureId-Report ShapeFile")
 	private WebElement inputReportShapeFile;
 
+	public WebElement getLblNameError(){
+		return this.lblNameError;
+	}
+	
+	public WebElement getInputCustomerName(){
+		return this.inputCustomerName;
+	}
+	
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -184,7 +192,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 		if (isElementPresent(this.panelDuplicationErrorXPath)) {
 			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
-			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
+			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg))) {
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
 				return false;
@@ -227,6 +235,10 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		return verifyFieldNotBlank(this.lblNameError, "Name");
 	}
 
+	public WebElement getCancelAddBtn(){
+		return this.cancelAddBtn;
+	}
+	
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
@@ -648,13 +660,13 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	@Override
 	public void waitForPageLoad() {
 		RetryUtil.retryOnException(
-			() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+				() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
 					public Boolean apply(WebDriver d) {
 						return d.getPageSource().contains(STRPageContentText);
 					}
 				}); return true;
-			}, () -> { super.open(); return true;}, Constants.DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC,
-			Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+				}, () -> { super.open(); return true;}, Constants.DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 	}
 
 	public void waitForNewPageLoad() {

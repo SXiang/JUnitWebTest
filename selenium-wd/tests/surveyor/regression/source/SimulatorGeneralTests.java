@@ -143,7 +143,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		assertTrue(getHomePage().getLinkReports().isEnabled());
 		getHomePage().getLinkReports().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
-		
+
 		assertTrue(getHomePage().getLinkCusAdmin().isEnabled());
 		getHomePage().getLinkCusAdmin().click();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
@@ -178,7 +178,7 @@ public class SimulatorGeneralTests extends SurveyorBaseTest {
 		surveyViewPage.waitForUIUnBlock();
 		surveyViewPage.waitForAJAXCallsToComplete();
 		surveyViewPage.clickGisButton();
-		
+
 		surveyViewPage.clickPicarroLogoButton();
 		homePage.waitForPageLoad();
 		assertTrue(homePage.checkIfAtHomePage());

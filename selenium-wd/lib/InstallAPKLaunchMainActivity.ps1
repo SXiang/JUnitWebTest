@@ -9,7 +9,7 @@ param
 
 function WaitFor-ActivityToGainFocus($activityName) {
     Write-Host "Waiting for $activityName to gain focus." -NoNewLine
-    $cnt = 0;$MAX_ITER = 10;
+    $cnt = 0;$MAX_ITER = 5;
     $found = $false
     while((-not $found) -and ($cnt -lt $MAX_ITER)) {
         $cnt++
@@ -33,7 +33,7 @@ function WaitFor-ActivityToGainFocus($activityName) {
 adb install -r -d -g "$APKFilePath"
 
 adb shell am start -n com.picarroapp/com.picarroapp.MainActivity
-sleep -Seconds 5
+sleep -Seconds 2
 $activityFound = WaitFor-ActivityToGainFocus -activityName "$ActivityToWaitFor"
 if ($activityFound) {
     Write-Host "$ActivityToWaitFor was launched successfully."

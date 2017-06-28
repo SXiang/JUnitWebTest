@@ -220,7 +220,7 @@ public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActio
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(userName, userPassword);
 		complianceReportsPageAction.open(EMPTY, NOTSET);
-		complianceReportsPageAction.getComplianceReportsPage().copyReport(reportTitle, userName);
+		complianceReportsPageAction.getComplianceReportsPage().clickOnButtonInReportPage(reportTitle, userName, ReportsButtonType.Copy);
 		complianceReportsPageAction.getComplianceReportsPage().clickOnOKButton();
 		reportName = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(reportTitle, userName);
 		reportName = complianceReportsPageAction.getComplianceReportsPage().getReportPrefix() + "-"+reportName.substring(0, 6);
