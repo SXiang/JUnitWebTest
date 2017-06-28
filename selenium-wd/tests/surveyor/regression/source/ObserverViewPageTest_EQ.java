@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.OLMapUtility.IconColor;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -232,8 +234,7 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
 		
-		//TODO:Not implemented yet
-		//assertTrue(observerViewPageActionList.get(0).verifyRedCursorIsMovingWithCarPosition(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Red", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap("Blue", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap("EQ", NOTSET));
 
@@ -243,8 +244,7 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 		getTestEnvironmentAction().idleForSeconds("5", NOTSET);
 		
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_INACTIVE, NOTSET));
-		//TODO:Not implemented yet
-		//assertTrue(observerViewPageActionList.get(0).verifyGreyCursorIsMovingWithCarPosition(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Gray", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap("Black", NOTSET));
 		
 		// stop simulator and PSA.
