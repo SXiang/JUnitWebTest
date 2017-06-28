@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -287,5 +288,5 @@ public class EQReportsPage extends ReportsCommonPage {
 
 		Log.info("Emissions Quantification table verification passed");
 		return true;
-	}
+	}	
 }
