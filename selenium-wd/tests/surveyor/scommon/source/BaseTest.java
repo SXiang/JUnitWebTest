@@ -519,7 +519,7 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
-		String replayEQScriptDB3File = "Surveyor_2055-PICARRO_EQ6.db3";
+		String replayEQScriptDB3File = "Surveyor.db3";
 		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
 		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics, SurveyType.EQ};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};

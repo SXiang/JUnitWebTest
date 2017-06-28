@@ -27,9 +27,9 @@ import surveyor.scommon.source.BaseMapViewPage;
 public class BaseMapViewPageActions extends BasePageActions {
 	private static final int DEFAULT_ZOOM_LEVEL = 19;
 
-	private static final Float ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE = 1.01f;
-	private static final Float ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE = 10.01f;
-	private static final String ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE = "rgb(0, 128, 0)";
+	private static final Float SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE = 1.01f;
+	private static final Float SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE = 10.01f;
+	private static final String SURVEY_SPAN_CSS_COLOR_VALUE = "rgb(0, 128, 0)";
 
 	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
@@ -577,7 +577,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyAnalyticsModeDialogIsShown(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsShown", data, dataRowID);
-		return getBaseMapViewPageObject().isAnalyticsModeDialogShown();
+		return getBaseMapViewPageObject().isSurveyModeDialogShown();
 	}
 
 	/**
@@ -588,7 +588,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 */
 	public boolean verifyAnalyticsModeDialogIsNotShown(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsNotShown", data, dataRowID);
-		return getBaseMapViewPageObject().isAnalyticsModeDialogHidden();
+		return getBaseMapViewPageObject().isSurveyModeDialogHidden();
 	}
 
 	/**
@@ -597,15 +597,17 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap", data, dataRowID);
-		getBaseMapViewPageObject().waitForAnalyticsDialogToBeDisplayed();
-		boolean dialogShown = getBaseMapViewPageObject().isAnalyticsModeDialogShown();
-		WebElement analyticsModeDialog = getBaseMapViewPageObject().getAnalyticsModeDialog();
+	public boolean verifyCorrectSurveyActiveMessageIsShownOnMap(String data, Integer dataRowID) {
+		logAction(getRuntimeType() + ".verifyCorrectSurveyActiveMessageIsShownOnMap", data, dataRowID);
+		getBaseMapViewPageObject().waitForSurveyDialogToBeDisplayed();
+		boolean dialogShown = getBaseMapViewPageObject().isSurveyModeDialogShown();
+		WebElement analyticsModeDialog = getBaseMapViewPageObject().getSurveyModeDialog();
 		WebElement mapElement = getBaseMapViewPageObject().getMapElement();
 		String spanText = analyticsModeDialog.getText();
 		String expectedSpanText = Resources.getResource(ResourceKeys.Dialog_AnalyticsModeActive);
-
+		if(data!=null&&data.equalsIgnoreCase("EQ")){
+			expectedSpanText = Resources.getResource(ResourceKeys.Dialog_EQModeActive);
+		}
 		String leftCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "left").replace("px", "");
 		String topCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "top").replace("px", "");
 		String mapCssWidthValue = WebElementExtender.getCssPropertyValue(getDriver(), mapElement, "width").replace("px", "");
@@ -636,11 +638,11 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 		Log.info(String.format("Analytics Survey Active dialog shown = [%b]", dialogShown));
 		Log.info(String.format("Survey Active Text Check = [%b]; Actual Span Text = [%s]; Expected Span Text = [%s]", spanText.equals(expectedSpanText), spanText, expectedSpanText));
-		Log.info(String.format("CSS Left Formatting Check = [%b]; Left Percent=%f", (leftPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE), leftPerc));
-		Log.info(String.format("CSS Top Formatting Check = [%b]; Top Percent=%f", (topPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE), topPerc));
-		Log.info(String.format("CSS Color Check = [%b]; Color=%s", colorCssValue.equals(ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE), colorCssValue));
-		return dialogShown && spanText.equals(expectedSpanText) && (leftPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE) &&
-				(topPerc < ANALYTICS_SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE) && colorCssValue.equals(ANALYTICS_SURVEY_SPAN_CSS_COLOR_VALUE);
+		Log.info(String.format("CSS Left Formatting Check = [%b]; Left Percent=%f", (leftPerc < SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE), leftPerc));
+		Log.info(String.format("CSS Top Formatting Check = [%b]; Top Percent=%f", (topPerc < SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE), topPerc));
+		Log.info(String.format("CSS Color Check = [%b]; Color=%s", colorCssValue.equals(SURVEY_SPAN_CSS_COLOR_VALUE), colorCssValue));
+		return dialogShown && spanText.equals(expectedSpanText) && (leftPerc < SURVEY_SPAN_CSS_MAXLEFT_PERC_VALUE) &&
+				(topPerc < SURVEY_SPAN_CSS_MAXTOP_PERC_VALUE) && colorCssValue.equals(SURVEY_SPAN_CSS_COLOR_VALUE);
 	}
 
 	/* Button state verification methods */

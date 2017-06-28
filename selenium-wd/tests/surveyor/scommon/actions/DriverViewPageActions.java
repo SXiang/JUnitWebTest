@@ -1411,7 +1411,7 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsGreen")) { return this.verifyAnemometerButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsRed")) { return this.verifyAnemometerButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }

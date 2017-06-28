@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 /**
- * This class contains survey view Analytics tests.
- * @author spulikkal
+ * This class contains survey view EQ tests.
+ * @author steven xiang
  *
  */
 public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
@@ -37,7 +37,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 	 *	- User  should see Breadcrumb, FOV, Indications and LISA
 	 *	- All pipes and boundaries data are displayed
 	 */
-	@Test /* US4080 - Dev story defined - Enable verifications of Lisa/Indication when it is done */
+	@Test /* US4080 - Dev not completed - Enable verifications of Lisa/Indication when it is done */
 	public void TC1070_SurveyViewInSatelliteView_PicarroSupport() throws Exception {
 		Log.info("\nRunning TC1070_SurveyViewInSatelliteView_PicarroSupport ...");
 		getLoginPageAction().open(EMPTY, NOTSET);

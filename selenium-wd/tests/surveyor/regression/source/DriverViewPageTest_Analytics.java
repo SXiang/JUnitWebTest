@@ -120,7 +120,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, null /*instFiles*/);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			return true;
 		});
 
@@ -174,7 +174,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(2), NOTSET);
 
 		assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
-		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
 		driverViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		// assert visible buttons in Display menu
@@ -358,7 +358,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(2), NOTSET);
 
 		assertTrue(driverViewPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
-		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		assertTrue(driverViewPageAction.verifyStopDrivingSurveyButtonIsEnabled(EMPTY, NOTSET));
@@ -412,7 +412,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		driverViewPageAction.startDrivingSurvey(EMPTY, surveyDataRowID);
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(2), NOTSET);
 
-		assertTrue(driverViewPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(driverViewPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 		String expectedModeValue = SURVEY_INFO_MODE_PREFIX + DriverViewPageActions.workingDataRow.get().surveyType;
 		assertTrue(driverViewPageAction.verifySurveyInfoModeLabelEquals(expectedModeValue, NOTSET));
 
@@ -469,7 +469,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
 
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
@@ -523,7 +523,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID, instFiles);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			Set<Indication> indicationsOnDriverView = driverPageAction.getIndicationsShownOnPage();
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView.size()));
 
@@ -749,7 +749,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
 
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			Set<Indication> indicationsOnDriverView1 = driverPageAction.getIndicationsShownOnPage();
 
 			Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView1.size()));
@@ -782,7 +782,7 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 
 		TestEnvironmentActions. generateSurveyForUser(newUsername, newUserPass,
 				custSrvInfo.getDb3AnalyzerRowID(), custSrvInfo.getSurveyRowID(), custSrvInfo.getSurveyRuntimeInSeconds(), (driverPageAction) -> {
-					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+					assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 					Set<Indication> indicationsOnDriverView2 = driverPageAction.getIndicationsShownOnPage();
 
 					Log.info(String.format("Indications detected in DriverView = %d", indicationsOnDriverView2.size()));

@@ -65,7 +65,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		private static String customerId;
 		
 		private int TestEnvDataRowID = 3, surveyRowID = 65, surveyRuntimeInSeconds = 100;
-		private String db3DefnFile = "replay-db3-eth.defn", db3file = "Surveyor_2055-PICARRO_EQ6.db3";
+		private String db3DefnFile = "replay-db3.defn", db3file = "Surveyor.db3";
 		@BeforeClass
 		public static void beforeClass() {
 			testAccount = null;
@@ -88,7 +88,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			// Select run mode here.
 			setPropertiesForTestRunMode();
 			if(testAccount == null){
-				testAccount = createTestAccount("EQ_LicFeature", CapabilityType.Ethane);
+				testAccount = createTestAccount("EQ_LicFeature", CapabilityType.IsotopicMethane);
 				userName = testAccount.get("userName");
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");
@@ -193,7 +193,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		 *	- EQ survey should be completed successfully
 		 *	- EQ survey mode option is not present and user cannot perform EQ survey
 		**/
-		@Test /* Depend on US4438 */
+		@Test
 		public void TC1042_DisableEQFeatureAndCheckDriverView() throws Exception {
 			Log.info("\nTestcase - TC1042_DisableEQFeatureAndCheckDriverView ...\n");
 		
