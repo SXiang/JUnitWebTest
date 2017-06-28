@@ -17,18 +17,29 @@ public class CustomerSurveyInfoEntity {
 	private String[] instructionFiles;
 	private boolean pushGISSeedData;
 	private boolean retainGISSeedData;
+	private boolean calibrationRecord;
 
 	public CustomerSurveyInfoEntity() {
 	}
 
 	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
+			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID, String[] instructionFiles) {
+		this(customerRowID, locationRowID, userRowID, analyzerRowID, surveyorRowID, refGasBottleRowID,
+				db3AnalyzerRowID, surveyRuntimeInSeconds, surveyRowID, instructionFiles, false);
+	}
+	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
+			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID, Boolean calibrationRecord) {
+		this(customerRowID, locationRowID, userRowID, analyzerRowID, surveyorRowID, refGasBottleRowID,
+				db3AnalyzerRowID, surveyRuntimeInSeconds, surveyRowID, null /*instructionFiles*/, calibrationRecord);
+	}
+	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
 			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID) {
 		this(customerRowID, locationRowID, userRowID, analyzerRowID, surveyorRowID, refGasBottleRowID,
-				db3AnalyzerRowID, surveyRuntimeInSeconds, surveyRowID, null /*instructionFiles*/);
+				db3AnalyzerRowID, surveyRuntimeInSeconds, surveyRowID, null /*instructionFiles*/, false);
 	}
 
 	public CustomerSurveyInfoEntity(Integer customerRowID, Integer locationRowID, Integer userRowID, Integer analyzerRowID, Integer surveyorRowID, Integer refGasBottleRowID,
-			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID, String[] instructionFiles) {
+			Integer db3AnalyzerRowID, Integer surveyRuntimeInSeconds, Integer surveyRowID, String[] instructionFiles, Boolean CalibrationRecord) {
 		this.surveyRuntimeInSeconds = surveyRuntimeInSeconds;
 		this.locationRowID = locationRowID;
 		this.surveyorRowID = surveyorRowID;
@@ -39,6 +50,7 @@ public class CustomerSurveyInfoEntity {
 		this.customerRowID = customerRowID;
 		this.db3AnalyzerRowID = db3AnalyzerRowID;
 		this.instructionFiles = instructionFiles;
+		this.calibrationRecord= true;
 	}
 
 	public Integer getSurveyRuntimeInSeconds() {
@@ -137,6 +149,14 @@ public class CustomerSurveyInfoEntity {
 		this.retainGISSeedData = retainGISSeedData;
 	}
 
+	public boolean isCalibrationRecord() {
+		return calibrationRecord;
+	}
+
+	public void setCalibrationRecord(boolean calibrationRecord) {
+		this.calibrationRecord = calibrationRecord;
+	}
+	
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);

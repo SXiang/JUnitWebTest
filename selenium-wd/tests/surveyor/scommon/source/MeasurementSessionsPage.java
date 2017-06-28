@@ -104,7 +104,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		this.firstSurveyDeleteLink.click();
 
 		this.waitForConfirmDeletePopupToShow();
-		
+
 		if (this.isElementPresent(popupConfirmationBoxXPath) && this.isElementPresent(btnDeleteXPath)) {
 			Log.clickElementInfo("Confirm Deletion",ElementType.LINK);
 			JavascriptExecutor js = (JavascriptExecutor)driver; 
@@ -118,6 +118,16 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 
 	}
 
+	public boolean isButtonPresent(String user, DrivingSurveyButtonType button) throws Exception{
+
+		if (this.getButtonXpath(user, button).toString().equals(button)){
+			return true;
+
+		}
+
+		return false;
+
+	}
 	public enum UserRoleType {
 		Driver("Driver"), Supervisor("Supervisor"), UtilityAdmin("Utility Administrator"), Admin("Administrator");
 		private final String name;
@@ -135,13 +145,13 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		SurveyExport ("SurveyExport"),
 		AnalysisExport ("AnalysisExport"),
 		PeakExport ("PeakExport");
-		
+
 		private final String name;
 
 		ExportFileType(String nm) {
 			name = nm;
 		}
-		
+
 		public String toString() {
 			return this.name;
 		}
@@ -192,7 +202,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			userIndexMap.put(Constant_Analyzer, analyzer);
 		}
 		By tableContextBy = By.id("datatable_wrapper");
-		
+
 		this.searchTextBox.clear();
 		if (surveyTag != null) {
 			Log.info("Set search text - '"+surveyTag+"'");
@@ -204,8 +214,8 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		WebElement tableContext = driver.findElement(tableContextBy);
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		try {
-			WebElement row = dataTable.getMatchingRow(userIndexMap);
-			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
+			WebElement row = dataTable.getMatchingRow(userIndexMap);		
+			WebElement btn = row.findElement(By.xpath(getButtonXpath(user, buttonType)));
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
 				Log.clickElementInfo(buttonType.toString());
 				btn.click();
@@ -249,37 +259,57 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return result;
 	}
 
-	private String getButtonXpath(DrivingSurveyButtonType buttonType) throws Exception {
+	private String getButtonXpath(String user, DrivingSurveyButtonType buttonType) throws Exception {
 		Log.method("getButtonXpath", buttonType);
 		String buttonXPath;
-		switch (buttonType) {
-		case ViewSurvey:
-			buttonXPath = "td[11]/a[1]/img";
-			break;
-		case ExportSurvey:
-			buttonXPath = "td[11]/a[2]/img";
-			break;
-		case ExportCustomerSurvey:
-			buttonXPath = "td[11]/a[3]/img";
-			break;
-		case ExportPeaks:
-			buttonXPath = "td[11]/a[4]/img";
-			break;
-		case ExportAnalysis:
-			buttonXPath = "td[11]/a[5]/img";
-			break;
-		case Resubmit:
-			buttonXPath = "td[11]/a[6]/img";
-			break;
-		case DeleteSurvey:
-			buttonXPath = "td[11]/a[7]/img";
-			break;
-		default:
-			throw new Exception("ButtonType NOT supported.");
+		if (user.contains("sqacus"))
+		{
+			switch (buttonType) {
+			case ViewSurvey:
+				buttonXPath = "td[10]/a[1]/img";
+				break;
+			case ExportCustomerSurvey:
+				buttonXPath = "td[10]/a[2]/img";
+				break;
+			case DeleteSurvey:
+				buttonXPath = "td[10]/a[3]/img";
+				break;
+			default:
+				throw new Exception("ButtonType NOT supported.");
+			}
 		}
-		return buttonXPath;
-	}
+		else{
+			switch (buttonType) {
+			case ViewSurvey:
+				buttonXPath = "td[11]/a[1]/img";
+				break;
+			case ExportSurvey:
+				buttonXPath = "td[11]/a[2]/img";
+				break;
+			case ExportCustomerSurvey:
+				buttonXPath = "td[11]/a[3]/img";
+				break;
+			case ExportPeaks:
+				buttonXPath = "td[11]/a[4]/img";
+				break;
+			case ExportAnalysis:
+				buttonXPath = "td[11]/a[5]/img";
+				break;
+			case Resubmit:
+				buttonXPath = "td[11]/a[6]/img";
+				break;
+			case DeleteSurvey:
+				buttonXPath = "td[11]/a[7]/img";
+				break;
+			default:
+				throw new Exception("ButtonType NOT supported.");
+			}
 
+		}
+
+		return buttonXPath;
+
+	}
 	public List<String> getTagNameList() {
 		Log.method("getTagNameList");
 		return getTagNameList(null);
@@ -297,7 +327,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 			}
 		}
 		setPagination(PAGINATIONSETTING_100);
-		
+
 		WebElement tagCell;
 		List<WebElement> rows = this.getTable().findElements(By.xpath(this.strTRXPath));
 
@@ -419,7 +449,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 				zipFileName = files[i];
 				datFileName = zipFileName.replaceFirst(".zip", ".dat");
 				datFileFullPath = Paths.get(downloadPath, datFileName).toString();
-				
+
 				try {
 					BaseHelper.deCompressZipFile(zipFileName, downloadPath, true);
 
@@ -430,9 +460,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 					 * else if (datFileName.contains(DRIVINGSURVEYSEXPORTPEAKS)){ Assert.assertTrue((verifyPeakExportFile(Paths.get(downloadPath, datFileName).toString(), tag, analyzer, mode))); } else if
 					 * (datFileName.contains(DRIVINGSURVEYSEXPORTANALYSIS)){ Assert.assertTrue((verifyAnalysisExportFile(Paths.get(downloadPath, datFileName).toString(), tag, analyzer))); }
 					 */ } catch (Exception e) {
-					Log.error(e.toString());
-					return false;
-				}
+						 Log.error(e.toString());
+						 return false;
+					 }
 			}
 		}
 
@@ -577,7 +607,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		}
 		return false;
 	}
-	
+
 	public String getExportFileNamePrefix(String surveyTag, String analyzerSerialNum, ExportFileType exportFileType) {
 		Log.method("getExportFileNamePrefix", surveyTag, analyzerSerialNum, exportFileType);
 		StringBuilder fileNameBuilder = new StringBuilder();
@@ -603,7 +633,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		Log.clickElementInfo("View Survey",ElementType.LINK);
 		this.firstViewSurvey.click();
 	}
-	
+
 	public void clickOnConfirmInDeletePopup() {
 		WebElement confirmDelete = this.driver.findElement(By.xpath(DELETE_POPUP_CONFIRM_BUTTON_XPATH));
 		Log.clickElementInfo("Confirm Deletion",ElementType.LINK);

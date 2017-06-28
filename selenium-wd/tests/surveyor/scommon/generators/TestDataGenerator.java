@@ -2,10 +2,15 @@ package surveyor.scommon.generators;
 
 import java.util.function.Supplier;
 
+import org.openqa.selenium.support.PageFactory;
+
 import common.source.CheckedPredicate;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import surveyor.dataaccess.source.Customer;
+import surveyor.dataaccess.source.Location;
+import surveyor.dataaccess.source.SurveyorUnit;
+import surveyor.dataaccess.source.User;
 import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.BaseActions;
@@ -18,6 +23,8 @@ import surveyor.scommon.actions.ManageSurveyorPageActions;
 import surveyor.scommon.actions.ManageUsersPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.CustomerSurveyInfoEntity;
+import surveyor.scommon.source.ManageSurveyorAdminPage;
+import surveyor.scommon.source.PageObjectFactory;
 
 public class TestDataGenerator {
 
@@ -26,12 +33,16 @@ public class TestDataGenerator {
 	private ManageLocationPageActions manageLocationPageAction;
 	private ManageAnalyzerPageActions manageAnalyzerPageAction;
 	private ManageSurveyorPageActions manageSurveyorPageAction;
+	private ManageSurveyorAdminPage manageSurveyorAdminPage;
 	private ManageRefGasBottlesPageActions manageRefGasBottlesPageAction;
 
 	private static final String EMPTY = BaseActions.EMPTY;
 	private static final Integer NOTSET = BaseActions.NOTSET;
 
 	public TestDataGenerator() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		manageSurveyorAdminPage = pageObjectFactory.getManageSurveyorAdminPage();
+
 		manageCustomerPageAction = ActionBuilder.createManageCustomerPageAction();
 		manageUsersPageAction = ActionBuilder.createManageUsersPageAction();
 		manageLocationPageAction = ActionBuilder.createManageLocationPageAction();
@@ -52,18 +63,26 @@ public class TestDataGenerator {
 		// Create new customer.
 		manageCustomerPageAction.open(EMPTY, NOTSET);
 		manageCustomerPageAction.createNewCustomer(EMPTY, custSrvInfo.getCustomerRowID() /*customerRowID*/);
-
+		String customerName = ManageCustomerPageActions.workingDataRow.get().name;
+		
 		// Create new location.
 		manageLocationPageAction.open(EMPTY, NOTSET);
 		manageLocationPageAction.createNewLocation(EMPTY, custSrvInfo.getLocationRowID() /*locationRowID*/);
-
+		String locationName = ManageLocationPageActions.workingDataRow.get().name;
+		
 		// Create new user.
 		manageUsersPageAction.open(EMPTY, NOTSET);
 		manageUsersPageAction.createNewCustomerUser(EMPTY, custSrvInfo.getUserRowID() /*userRowID*/);
-
+		
 		// Create new surveyor.
 		manageSurveyorPageAction.open(EMPTY, NOTSET);
 		manageSurveyorPageAction.createNewSurveyor(EMPTY, custSrvInfo.getSurveyorRowID() /*surveyorRowID*/);
+		String surveyorName = ManageSurveyorPageActions.workingDataRow.get().description;
+		
+		if(custSrvInfo.isCalibrationRecord())
+		{
+			manageSurveyorAdminPage.editExistingSurveyor(customerName, locationName, surveyorName, locationName, surveyorName, true);		
+		}
 
 		// Create new analyzer.
 		manageAnalyzerPageAction.open(EMPTY, NOTSET);
