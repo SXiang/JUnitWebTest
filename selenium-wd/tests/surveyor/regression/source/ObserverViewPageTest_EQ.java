@@ -292,8 +292,7 @@ public class ObserverViewPageTest_EQ extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTimeRemainingLabelIsTickingBackward(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoAnalyzerLabelEquals(SURVEY_INFO_SURVEY_STATUS_ACTIVE, NOTSET));
 		
-		//TODO:Not implemented yet
-		//assertTrue(observerViewPageActionList.get(0).verifyRedCursorIsMovingWithCarPosition(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCrossHairIconIsShownOnMap("Red", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap("Blue", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap("EQ", NOTSET));
 

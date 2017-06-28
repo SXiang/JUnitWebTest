@@ -6,9 +6,7 @@ package surveyor.regression.source;
 import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
 import java.util.Map;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,7 +22,6 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
 import surveyor.scommon.source.ManageSurveyorPage;
-import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataprovider.EQReportDataProvider;
@@ -61,15 +58,12 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		private static ManageSurveyorAdminPage manageSurveyorAdminPage;
 		private static CustomerSurveyInfoEntity custSrvInfo ;
 		private static EQReportsPage eqReportsPage;
-		private static ManageUsersPage manageUsersPage;
 		private static Map<String, String> testAccount;
 		private static String userName;
 		private static String userPassword;
 		private static String customerName;
-		private static String locationName;
 		private static String analyzerSharedKey;
 		private static String analyzerName;
-		private static String analyzerType;
 		private static String surveyorName;
 		private static String customerId;
 		
@@ -102,10 +96,8 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 				userName = testAccount.get("userName");
 				userPassword = testAccount.get("userPassword");
 				customerName = testAccount.get("customerName");
-				locationName = testAccount.get("locationName");
 				analyzerSharedKey = testAccount.get("analyzerSharedKey");
 				analyzerName = testAccount.get("analyzerName");
-				analyzerType = testAccount.get("analyzerType");
 				surveyorName = testAccount.get("surveyorName");
 				customerId = testAccount.get("customerId");
 			} else {
@@ -139,7 +131,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		}
 		private static void setPropertiesForTestRunMode() throws Exception {
 			setTestRunMode(ReportTestRunMode.FullTestRun);
-
 			if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 				eqReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
 			}
@@ -158,7 +149,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			driverViewPageAction = ActionBuilder.createDriverViewPageAction();
 			testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 			PageObjectFactory pageObjectFactory = new PageObjectFactory();		
-			manageUsersPage = pageObjectFactory.getManageUsersPage();
 			setLoginPage(pageObjectFactory.getLoginPage());
 			setHomePage(pageObjectFactory.getHomePage());
 			eqReportsPage = (EQReportsPage)eqReportsPageAction.getPageObject();
