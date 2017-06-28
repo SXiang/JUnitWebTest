@@ -1,41 +1,26 @@
 package surveyor.regression.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
-import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.REGBASEUSERNAME;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-
 import common.source.FunctionUtil;
 import common.source.Log;
-import common.source.TestSetup;
-import common.source.OLMapEntities.Indication;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
-import surveyor.scommon.actions.ManageLocationPageActions;
 import surveyor.scommon.source.DriverViewPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.actions.ObserverViewPageActions;
 import surveyor.scommon.actions.TestEnvironmentActions;
-import surveyor.scommon.actions.DriverViewPageActions.DrivingSurveyType;
 import surveyor.scommon.source.ObserverViewPage;
 import surveyor.scommon.source.PageObjectFactory;
 

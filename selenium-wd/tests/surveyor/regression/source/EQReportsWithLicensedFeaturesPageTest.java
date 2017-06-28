@@ -61,7 +61,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 		private static String analyzerName;
 		private static String analyzerType;
 		private static String surveyorName;
-		private static String surveyTag;
 		private static String customerId;
 		
 		private int TestEnvDataRowID = 3, surveyRowID = 65, surveyRuntimeInSeconds = 100;

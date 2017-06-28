@@ -586,6 +586,8 @@
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
+          <include name="**/ObserverViewPageTest_EQ.class" />
+          <include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
         </fileset>
       </batchtest>
     </junit>

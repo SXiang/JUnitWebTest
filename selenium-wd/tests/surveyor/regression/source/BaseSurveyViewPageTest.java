@@ -73,12 +73,6 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
-//	protected static final String TEST_SURVEY_EQ_ID = "541567d0-a899-3418-8ce2-39dd2c61c355";
-//	protected static final String TEST_SURVEY_EQ_TAG = "daysurvey7";
-//	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
-//	protected static final String TEST_SURVEY_EQ_USERNAME = "driver1@picarro.com";
-//	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "a76f83a3-b0a2-47a9-9aed-1b8ab7921bdf";
-//	protected static final String TEST_SURVEY_EQ_USERNAME_SQACUS = "sqacusdr1@email.com";
 	protected static final String TEST_SURVEY_EQ_ID = "c7f7018c-2497-4818-a996-e8ad120526ab";
 	protected static final String TEST_SURVEY_EQ_TAG = "MenloNight11_17EQ02";
 	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
