@@ -268,8 +268,8 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
-		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
-		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifySurveyModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifySurveyModeDialogIsNotShown(data, dataRowID); }
 		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsShownOnMap")) { return this.verifyAssetIsShownOnMap(data, dataRowID); }

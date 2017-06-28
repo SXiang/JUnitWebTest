@@ -568,25 +568,24 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return true;
 	}
 
-	/* Verify Analytics methods */
 	/**
-	 * Executes verifyAnalyticsModeDialogIsShown action.
+	 * Executes verifySurveyModeDialogIsShown action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean verifyAnalyticsModeDialogIsShown(String data, Integer dataRowID) {
+	public boolean verifySurveyModeDialogIsShown(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsShown", data, dataRowID);
 		return getBaseMapViewPageObject().isSurveyModeDialogShown();
 	}
 
 	/**
-	 * Executes verifyAnalyticsModeDialogIsNotShown action.
+	 * Executes verifySurveyModeDialogIsNotShown action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
 	 */
-	public boolean verifyAnalyticsModeDialogIsNotShown(String data, Integer dataRowID) {
+	public boolean verifySurveyModeDialogIsNotShown(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyAnalyticsModeDialogIsNotShown", data, dataRowID);
 		return getBaseMapViewPageObject().isSurveyModeDialogHidden();
 	}

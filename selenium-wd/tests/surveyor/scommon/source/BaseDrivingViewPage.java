@@ -11,8 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.Log;
 import common.source.OLMapUtility;
 import common.source.TestSetup;
-import common.source.OLMapUtility.BreadcrumbColor;
-import surveyor.scommon.actions.ActionArguments;
 
 public class BaseDrivingViewPage extends BaseMapViewPage {
 	private static final String IMG_DATA_VAR_NAME = "imgData";

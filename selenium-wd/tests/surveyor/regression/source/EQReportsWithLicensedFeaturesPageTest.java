@@ -8,18 +8,14 @@ import static org.junit.Assert.assertTrue;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEET;
-
 import java.util.Map;
-
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLESU;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import common.source.Log;
 import common.source.TestSetup;
 import surveyor.scommon.source.EQReportsPage;
