@@ -85,15 +85,33 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public boolean selectLisa(String lisaNumber){
+		return selectMultipleLisas(new String[] { lisaNumber });
+	}
+
+	public boolean selectMultipleLisas(String[] lisaNumbers){
+		boolean retVal = true;
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
-		return selectBox(lisaNumber);
+		for (String lisaNumber : lisaNumbers) {
+			retVal = retVal && selectBox(lisaNumber);
+		}
+
+		return retVal;
 	}
 
 	public boolean selectGap(String gapNumber){
+		return selectMultipleGaps(new String[] { gapNumber });
+	}
+
+	public boolean selectMultipleGaps(String[] gapNumbers){
+		boolean retVal = true;
 		String boxType = "Gap";
 		selectDropdownItem(boxTypeDropdown, boxType);
-		return selectBox(gapNumber);
+		for (String gapNumber : gapNumbers) {
+			retVal = retVal && selectBox(gapNumber);
+		}
+
+		return retVal;
 	}
 
 	public boolean selectBox(String boxNumber){

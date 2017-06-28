@@ -8,6 +8,7 @@ $SDK_MANAGER_PACKAGE_INSTALL_CHECK_MAP = @{
     "Android Support Repository"="extras\android\m2repository"
     "Google Play services"="extras\google\"
     "Google Repository"="extras\google\m2repository"
+    "Google APIs, Android API 23"="add-ons\addon"
 }
 
 # This check is added to override installation of pre-requisites on the machine once we have determined no re-install is necessary on the box.

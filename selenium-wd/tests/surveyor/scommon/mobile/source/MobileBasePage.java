@@ -4,6 +4,7 @@
 package surveyor.scommon.mobile.source;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -35,7 +36,11 @@ public class MobileBasePage extends BasePage {
 	protected By pageKey;
 
 	public MobileBasePage(String strUrlPath){
-		super(TestContext.INSTANCE.getAppiumDriver(), TestContext.INSTANCE.getTestSetup(),
+		this(TestContext.INSTANCE.getAppiumDriver(), strUrlPath);
+	}
+
+	public MobileBasePage(WebDriver driver, String strUrlPath){
+		super(driver, TestContext.INSTANCE.getTestSetup(),
 				TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getBaseUrl()+strUrlPath);
 		PageFactory.initElements(driver, this);
 	}
@@ -43,7 +48,7 @@ public class MobileBasePage extends BasePage {
 	public boolean waitUntilPageLoad(){
 		return waitUntilPageLoad(pageKey);
 	}
-	
+
 	public boolean waitUntilPageLoad(By pageKey){
 		WebElement pageKeyElement = null;
 		try{
@@ -53,7 +58,7 @@ public class MobileBasePage extends BasePage {
 		}
 		return pageKeyElement != null;
 	}
-	
+
 	public MobileLoginPage logout() {
 		Log.method("logout");
 		return logout(false);
@@ -83,17 +88,17 @@ public class MobileBasePage extends BasePage {
 		}
 		return true;
 	}
-	
+
 	public boolean closeDropdownMenu(){
 		if(isMobileMenuExpanded()){
 			dropdownMenu.click();
 		}
 		return true;
 	}
-	
+
 	public boolean isMobileMenuExpanded(){
 		return Boolean.valueOf(getElementAttribute(dropdownMenu, "aria-expanded"));
 	}
-	
-	
+
+
 }

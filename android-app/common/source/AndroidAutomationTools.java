@@ -12,7 +12,7 @@ public class AndroidAutomationTools {
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
 	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
 	private static final Integer APPIUM_SERVER_PORT = 4723;
-	private static final Integer CATCH_UP_TIME_IN_SECS = 5;
+	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
 	private static final Integer PING_TIMEOUT = 1000;
@@ -20,6 +20,9 @@ public class AndroidAutomationTools {
 	public static class ShellCommands {
 		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
 		public static final String GETPROP_INIT_SVC_BOOTANIM = "getprop init.svc.bootanim";
+		public static final String SET_WINDOW_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"window_animation_scale\"'";
+		public static final String SET_TRANSITION_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"transition_animation_scale\"'";
+		public static final String SET_ANIMATOR_DURATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"animator_duration_scale\"'";
 	}
 
 	public static class AndroidPaths {
@@ -65,6 +68,12 @@ public class AndroidAutomationTools {
 
 		// start appium server.
 		startAppiumServer();
+	}
+
+	public static void disableAnimations() throws Exception {
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_ANIMATOR_DURATION_SCALE);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_TRANSITION_ANIMATION_SCALE);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_WINDOW_ANIMATION_SCALE);
 	}
 
 	public static void startReactNative() throws IOException {

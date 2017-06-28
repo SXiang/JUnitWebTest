@@ -43,6 +43,9 @@ public class WebDriverWrapper {
 	private DesiredCapabilities capabilities;
 	private boolean isRemoteBrowser;
 
+	private boolean deviceEmulationEnabled;
+	private String emulatedDeviceName;
+
 	public WebDriverWrapper() {
 		this.runningOnRemoteServer = TestContext.INSTANCE.getTestSetup().getRunningOnRemoteServer();
 		this.browser = TestContext.INSTANCE.getTestSetup().getBrowser();
@@ -68,7 +71,11 @@ public class WebDriverWrapper {
 
 	public void driverSetup() {
 		try {
-			if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("true")
+			if (this.isDeviceEmulationEnabled()) {
+				Log.info(String.format("-----Chrome : Using Device Emulation. (Emulated device name='%s') ----", this.getEmulatedDeviceName()));
+				setChromeBrowserCapabilities(null /*proxy*/, this.getEmulatedDeviceName());
+				Log.info("\nRunning WebDriver with device emulation enabled\n");
+			} else if (this.runningOnRemoteServer != null && this.runningOnRemoteServer.trim().equalsIgnoreCase("true")
 					&& this.browser != null) {
 				switch (this.browser.trim()) {
 				case "chrome":
@@ -161,10 +168,10 @@ public class WebDriverWrapper {
 	}
 
 	public void setChromeBrowserCapabilities() {
-		setChromeBrowserCapabilities(null);
+		setChromeBrowserCapabilities(null /*proxy*/, null /*emulatedDeviceName*/);
 	}
 
-	public void setChromeBrowserCapabilities(Proxy proxy) {
+	public void setChromeBrowserCapabilities(Proxy proxy, String emulatedDeviceName) {
 		Log.info("-----Chrome it is ----");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", this.downloadPath);
@@ -177,6 +184,13 @@ public class WebDriverWrapper {
 		options.addArguments(Arrays.asList("--incognito", "test-type"));
 		options.addArguments("chrome.switches", "--disable-extensions");
 		options.setExperimentalOption("prefs", prefs);
+
+		if (emulatedDeviceName != null) {
+			Map<String, String> mobileEmulation = new HashMap<String, String>();
+			mobileEmulation.put("deviceName", emulatedDeviceName);
+			options.setExperimentalOption("mobileEmulation", mobileEmulation);
+		}
+
 		this.capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		if (proxy != null) {
 			this.capabilities.setCapability(CapabilityType.PROXY, proxy);
@@ -244,5 +258,21 @@ public class WebDriverWrapper {
 		if (!checkbox.isSelected()) {
 		    checkbox.click();
 		}
+	}
+
+	public boolean isDeviceEmulationEnabled() {
+		return deviceEmulationEnabled;
+	}
+
+	public void setDeviceEmulationEnabled(boolean deviceEmulationEnabled) {
+		this.deviceEmulationEnabled = deviceEmulationEnabled;
+	}
+
+	public String getEmulatedDeviceName() {
+		return emulatedDeviceName;
+	}
+
+	public void setEmulatedDeviceName(String emulatedDeviceName) {
+		this.emulatedDeviceName = emulatedDeviceName;
 	}
 }

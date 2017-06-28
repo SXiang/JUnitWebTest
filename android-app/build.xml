@@ -124,6 +124,7 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/SanityTest.class" />
+          <include name="**/ReportListScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>

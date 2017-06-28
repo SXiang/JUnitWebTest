@@ -42,4 +42,8 @@ public class Constants {
 	public static final Integer DEFAULT_MAX_RETRIES = 3;
 
 	public static final String BASE_URL_API_DOWNLOAD_IMAGE = "api/DownloadImage?key=";
+
+	public static class MobileEmulationDevice {
+		public static final String GoogleNexus5 = "Google Nexus 5";
+	}
 }
