@@ -17,7 +17,6 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
-	@CacheLookup
 	private List<WebElement> listViewElements;
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
@@ -27,6 +26,14 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement firstRowInvestigationStatus;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement noInvestigationMarkersFoundTextView;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.widget.Spinner")
+	@CacheLookup
+	private WebElement markerTypeSelector;
 
 	public AndroidInvestigateReportScreen(WebDriver driver) {
 		super(driver);
@@ -39,6 +46,11 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		}
 	}
 
+	public void clickOnInvestigationMarkerType() {
+		Log.method("clickOnInvestigationMarkerType");
+		markerTypeSelector.click();
+	}
+
 	public InvestigationMarkerEntity getFirstInvestigationMarker() {
 		Log.method("getFirstInvestigationMarker");
 		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
@@ -49,7 +61,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public Integer getInvestigationMarkersCount() {
 		Log.method("getInvestigationReportsCount");
-		return (this.listViewElements == null) ? 0 : this.listViewElements.size();
+		return (this.listViewElements == null) ? 0 : this.listViewElements.size() - 1 /*exclude header*/;
 	}
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
@@ -66,6 +78,16 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		}
 
 		return invReportList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void reInitializeListItems() {
+		this.listViewElements = getAndroidDriver().findElementsByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup");
+	}
+
+	public boolean verifyNoInvestigationMarkersFoundInReport() {
+		Log.method("verifyNoInvestigationMarkersFoundInReport");
+		return noInvestigationMarkersFoundTextView.isDisplayed();
 	}
 
 	@Override

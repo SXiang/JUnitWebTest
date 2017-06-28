@@ -44,6 +44,26 @@ public class ReportDataGenerator {
 
 	public String createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
+
+		// Assign Lisas to specified user.
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		String[] lisasToSelect = new String[] {lisaNumberPrefix+1, lisaNumberPrefix+2, lisaNumberPrefix+3};
+		reportInvestigationsPage.selectMultipleLisas(lisasToSelect);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+
+		if (isSingleUse) {
+			this.cleanUp();
+		}
+
+		Log.info(String.format("Returning reportId=[%s]", reportId));
+		return reportId;
+	}
+
+	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
 		String reportId = "";
 		loginPageAction.open(EMPTY, NOTSET);
 		loginPageAction.login(EMPTY, userDataRowID);
@@ -51,15 +71,20 @@ public class ReportDataGenerator {
 		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
 		reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		return reportId;
+	}
 
-		// Assign Lisas to specified user.
+	public String createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
+
+		// Assign Gaps to specified user.
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
-		String lisaNumberPrefix = reportName+"-LISA-";
+		String gapNumberPrefix = reportName+"-Gap-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		String[] gapsToSelect = new String[] {gapNumberPrefix+1, gapNumberPrefix+2, gapNumberPrefix+3};
+		reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		if (isSingleUse) {

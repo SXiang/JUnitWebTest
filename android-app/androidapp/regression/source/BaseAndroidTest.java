@@ -25,6 +25,8 @@ import androidapp.screens.source.AndroidSettingsScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.BackPackSimulator;
+import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestContext;
@@ -79,6 +81,7 @@ public class BaseAndroidTest extends BaseTest {
 	    BackPackSimulator.startSimulator();
 		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
+	    AndroidAutomationTools.disableAnimations();  // perf optimization.
 	}
 
 	@AfterClass
@@ -94,6 +97,21 @@ public class BaseAndroidTest extends BaseTest {
 	@After
 	public void tearDownBeforeTest() throws MalformedURLException, IOException {
 		cleanUp();
+	}
+
+	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
+	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
+	protected boolean executeWithBackPackSimulatorPaused(CheckedPredicate<Object> predicate) throws IOException {
+		boolean retVal = false;
+		BackPackSimulator.pauseSimulatorProcesses();
+		try {
+			retVal = predicate.test(null);
+		} catch (Exception e) {
+			Log.error(ExceptionUtility.getStackTraceString(e));
+		}
+
+		BackPackSimulator.resumeSimulatorProcesses();
+		return retVal;
 	}
 
 	private static void cleanupProcesses() throws IOException {
@@ -159,9 +177,10 @@ public class BaseAndroidTest extends BaseTest {
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
 		capabilities.setCapability("autoGrantPermissions", "true");
 
-		// Hide keyboard.
-		capabilities.setCapability("resetKeyboard", true);
-		capabilities.setCapability("unicodeKeyboard", true);
+		// Following capabilities have been used for perf optimization.
+		capabilities.setCapability("disableAndroidWatchers", true);
+		capabilities.setCapability("resetKeyboard", true);  		// hide keyboard
+		capabilities.setCapability("unicodeKeyboard", true);		// hide keyboard
 
 		// Create object of URL class and specify the appium server address
 		URL url= new URL(APPIUM_SERVER_HUB_HOST);

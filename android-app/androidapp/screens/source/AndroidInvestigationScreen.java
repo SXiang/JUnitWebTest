@@ -9,6 +9,7 @@ import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.TestContext;
 import common.source.MobileActions.KeyCode;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
@@ -27,7 +28,11 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement searchEditView;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement firstRowViewGroup;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement firstRowReportTitle;
 
@@ -37,9 +42,8 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigation() {
 		Log.method("clickOnFirstInvestigation");
-		if (this.firstRowReportTitle != null) {
-			firstRowReportTitle.click();
-		}
+		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
+		tap(firstRowViewGroup);
 	}
 
 	public List<InvestigationEntity> getInvestigations() {
@@ -62,6 +66,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		Log.method("enterSearchText", searchKeyword);
 		sendKeys(getSearchEditView(), searchKeyword);
 		MobileActions.newAction().pressKey(KeyCode.KEYCODE_ENTER);
+		TestContext.INSTANCE.stayIdle(3);
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
@@ -83,9 +88,11 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[2]");
 		if (firstRowReportTitle != null) {
 			String reportId = firstRowReportTitle.getText();
+			Log.method("Found reportTitle element. Searching for-[%s], found-[%s]. Match = [%b]", searchKeyword, reportId, reportId.contains(searchKeyword));
 			return reportId.contains(searchKeyword);
 		}
 
+		Log.method("Match = [%b]", false);
 		return false;
 	}
 

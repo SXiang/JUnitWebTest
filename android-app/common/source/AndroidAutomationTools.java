@@ -20,6 +20,9 @@ public class AndroidAutomationTools {
 	public static class ShellCommands {
 		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
 		public static final String GETPROP_INIT_SVC_BOOTANIM = "getprop init.svc.bootanim";
+		public static final String SET_WINDOW_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"window_animation_scale\"'";
+		public static final String SET_TRANSITION_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"transition_animation_scale\"'";
+		public static final String SET_ANIMATOR_DURATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"animator_duration_scale\"'";
 	}
 
 	public static class AndroidPaths {
@@ -65,6 +68,12 @@ public class AndroidAutomationTools {
 
 		// start appium server.
 		startAppiumServer();
+	}
+
+	public static void disableAnimations() throws Exception {
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_ANIMATOR_DURATION_SCALE);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_TRANSITION_ANIMATION_SCALE);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_WINDOW_ANIMATION_SCALE);
 	}
 
 	public static void startReactNative() throws IOException {

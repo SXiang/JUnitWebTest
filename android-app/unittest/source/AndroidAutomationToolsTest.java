@@ -47,6 +47,12 @@ public class AndroidAutomationToolsTest {
 	}
 
 	@Test
+	public void testDisableAnimations() throws Exception {
+		AndroidAutomationTools.start();
+		AndroidAutomationTools.disableAnimations();
+	}
+
+	@Test
 	public void testStartReactNative() throws IOException {
 		AndroidAutomationTools.startReactNative();
 	}
