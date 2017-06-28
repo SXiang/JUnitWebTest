@@ -63,17 +63,6 @@ public class ReportDataGenerator {
 		return reportId;
 	}
 
-	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
-		String reportId = "";
-		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, userDataRowID);
-		complianceReportsPageAction.open(testCaseID, reportDataRowID);
-		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
-		reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
-				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-		return reportId;
-	}
-
 	public String createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
@@ -99,6 +88,24 @@ public class ReportDataGenerator {
 		this.isSingleUse = singleUse;
 	}
 
+	private void cleanUp() {
+		if (this.driver != null) {
+			driver.quit();
+			driver = null;
+		}
+	}
+
+	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
+		String reportId = "";
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		complianceReportsPageAction.open(testCaseID, reportDataRowID);
+		complianceReportsPageAction.createNewReport(EMPTY, reportDataRowID);
+		reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+		return reportId;
+	}
+
 	private void initialize() throws Exception {
 		initializePageActions();
 		initializePageObjects();
@@ -108,13 +115,6 @@ public class ReportDataGenerator {
 		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
 		mobileLoginPage = new MobileLoginPage(this.driver);
 		reportInvestigationsPage = new ReportInvestigationsPage(testSetup.getDriver(), testSetup.getBaseUrl(), testSetup);
-	}
-
-	private void cleanUp() {
-		if (this.driver != null) {
-			driver.quit();
-			driver = null;
-		}
 	}
 
 	/**

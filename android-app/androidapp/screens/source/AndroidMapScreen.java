@@ -140,7 +140,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
 				toggleModeButtonDisplayed, modeTextDisplayed, modeTextValid));
-		return toggleModeButtonDisplayed && modeTextDisplayed; // && modeTextValid;
+		return toggleModeButtonDisplayed && modeTextDisplayed;
 	}
 
 	public WebElement getToggleModeButton() {
