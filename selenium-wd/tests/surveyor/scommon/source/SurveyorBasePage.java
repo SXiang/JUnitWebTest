@@ -599,6 +599,7 @@ public class SurveyorBasePage extends BasePage {
 			}
 			headerLink.click();
 			waitForNumberOfRecords(STRPaginationMsgPattern_anyPage);
+			waitForTableDataToLoad();
 			try{
 				if(isAscending){
 					return dataTable.isTableSortedAsc(columnHeadings,str,paginationOption,tableContext, numRecords);

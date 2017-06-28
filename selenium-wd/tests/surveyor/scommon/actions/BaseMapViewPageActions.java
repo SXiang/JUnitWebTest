@@ -1440,7 +1440,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		Log.method("getIndicationsShownOnPage");
 		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 		Set<Indication> indicationsArray = mapUtility.getIndicationsArray();
-		Log.info(String.format("Indications detected in Driver view = %d", indicationsArray.size()));
+		Log.info(String.format("Indications detected in Map view = %d", indicationsArray.size()));
 		indicationsArray.forEach(i -> Log.info(i.toString()));
 		return indicationsArray;
 	}

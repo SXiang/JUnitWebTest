@@ -450,6 +450,15 @@ public class BasePage {
 		WebElementExtender.executeScript(element, driver, "arguments[0].scrollIntoView();");
 	}
 
+	public void moveToElement(WebElement element){
+		Actions action = new Actions(driver);
+		try{
+			action.moveToElement(element).perform();
+		}catch(Exception e){
+			Log.warn("Failed to move to element: "+e);
+		}
+	}
+	
 	public void focusOnPage(By locator){
 		WebElement element = waitUntilPresenceOfElementLocated(locator);
 		focusOnPage(element);

@@ -209,6 +209,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td/a")
 	protected WebElement firstSurveyLink;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td")
+	protected WebElement firstSurveyInTable;
+	
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -403,6 +406,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(id = "datatableSurveys")
 	protected WebElement surveysTable;
 
+	@FindBy(css = "#datatableSurveys > thead > tr > th[aria-controls=datatableSurveys]")
+	protected WebElement surveysTableHeader;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement textBoxReportSearch;
 
@@ -857,10 +863,10 @@ public class ReportsBasePage extends SurveyorBasePage {
 			// Enter the survey fields.
 			selectSurveyInfoSurveyorUnit(reportsSurveyInfo.getSurveyor());
 			enterSurveyInfoUsername(reportsSurveyInfo.getUsername());
+			inputSurveyTag(reportsSurveyInfo.getTag());
 			selectSurveyInfoStartDate(reportsSurveyInfo.getStartDate());
 			selectSurveyInfoEndDate(reportsSurveyInfo.getEndDate());
 			selectSurveyInfoGeoFilter(reportsSurveyInfo.isGeoFilterOn());
-			inputSurveyTag(reportsSurveyInfo.getTag());
 
 			// Click on Search survey button.
 			clickOnSearchSurveyButton();
@@ -904,7 +910,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		if (selectAll || numSurveysToSelect > 0) {
 			setSurveyRowsPagination(PAGINATIONSETTING);
 			this.waitForSurveyTabletoLoad();
-
+			this.verifySurveyTableIsNotEmpty();
 			Integer selectedSurveysCount = 0;
 			if (selectAll) {
 				numSurveysToSelect = Integer.MAX_VALUE;
@@ -916,9 +922,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 			List<WebElement> rows = surveyTable.findElements(By.xpath("tr"));
 
 			int rowSize = rows.size();
-
-			// Verify survey table is NOT empty.
-			verifySurveyTableIsNotEmpty(rows);
 
 			int loopCount = 0;
 
@@ -934,12 +937,14 @@ public class ReportsBasePage extends SurveyorBasePage {
 				Log.info("Wait for survey checkbox to be clickable");
 				WebElementExtender.waitForElementToBeClickable(timeout, driver, checkBoxActionCell);
 				Log.info(String.format("Select survey - row %d", rowNum));
+				moveToElement(checkBoxActionCell);
 				jsClick(checkBoxActionCell);
 				selectedSurveysCount++;
 
 				if (rowNum == Integer.parseInt(PAGINATIONSETTING)
 						&& !this.surveyNextButton.getAttribute("class").contains("disabled")) {
 					Log.clickElementInfo("Next");
+					moveToElement(surveyNextButton);
 					this.surveyNextButton.click();
 					this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
 					List<WebElement> newRows = surveyTable.findElements(By.xpath("tr"));
@@ -963,14 +968,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 	}
 
-	private void verifySurveyTableIsNotEmpty(List<WebElement> rows) throws Exception {
-		if (rows != null && rows.size() == 1) {
-			// Verify survey datatable is NOT empty.
-			if (rows.get(0).getAttribute("class").equals("dataTables_empty")) {
-				TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
-						TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.ERROR);
-				throw new Exception("Survey could NOT be selected. Verify specified survey exists in the environment.");
-			}
+	private void verifySurveyTableIsNotEmpty() throws Exception {
+		if (firstSurveyInTable.getAttribute("class").equals("dataTables_empty")) {
+			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(TestContext.INSTANCE.getDriver(),
+					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+			throw new Exception("Survey could NOT be selected. Verify specified survey exists in the environment.");
 		}
 	}
 
@@ -986,6 +988,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnAddSurveysButton() {
 		Log.clickElementInfo("Add Surveys");
+		moveToElement(btnAddSurveys);
 		this.btnAddSurveys.click();
 	}
 
@@ -1210,8 +1213,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public void clickOnOKButton() {
 		Log.clickElementInfo("Ok");
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click();", btnOK);
+		moveToElement(btnOK);
+		jsClick(btnOK);
 	}
 
 	public void inputSurveyTag(String tag) {
@@ -1227,11 +1230,11 @@ public class ReportsBasePage extends SurveyorBasePage {
 			public Boolean apply(WebDriver d) {
 				boolean displayed = false;
 				try {
-					displayed = surveysTable.isDisplayed();
-					Log.info(String.format("surveysTable.isDisplayed()=%b",displayed));
+					displayed = surveysTableHeader.isDisplayed();
+					Log.info(String.format("surveysTableHeader.isDisplayed()=%b",displayed));
 				}catch(StaleElementReferenceException e){
 					displayed = false;
-					Log.warn(String.format("surveysTable.isDisplayed()=%b",e.toString()));
+					Log.warn(String.format("surveysTableHeader.isDisplayed()=%b",e.toString()));
 				}
 				return displayed;
 			}
@@ -3097,7 +3100,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	 */
 	public void clickOnSearchSurveyButton() {
 		Log.clickElementInfo("Survey Search");
-		jsScrollToView(this.btnSurveySearch);
+		moveToElement(this.btnSurveySearch);
 		jsClick(this.btnSurveySearch);
 		this.waitForSurveyTabletoLoad();
 	}
