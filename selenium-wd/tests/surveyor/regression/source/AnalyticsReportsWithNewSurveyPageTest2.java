@@ -43,6 +43,9 @@ import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.ReportsCommonPage.ReportsButtonType;
 
+/*
+ * Use shared analyzer in this class only !!!
+ */
 @RunWith(SurveyorTestRunner.class)
 public class AnalyticsReportsWithNewSurveyPageTest2 extends BaseReportsPageActionTest {
 

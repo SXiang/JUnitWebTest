@@ -34,8 +34,8 @@ import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
- * Using shared analyzer in this class only !!!
- *
+ * 
+ * Use shared analyzer in this class only !!!
  */
 @RunWith(SurveyorTestRunner.class)
 public class DriverViewPageTest_EQ extends BaseReportsPageActionTest {
