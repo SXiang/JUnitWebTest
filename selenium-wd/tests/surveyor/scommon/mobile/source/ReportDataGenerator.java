@@ -1,4 +1,4 @@
-package surveyor.scommon.generators;
+package surveyor.scommon.mobile.source;
 
 import org.openqa.selenium.WebDriver;
 
@@ -11,7 +11,6 @@ import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
-import surveyor.scommon.mobile.source.MobileLoginPage;
 import surveyor.scommon.source.ReportInvestigationsPage;
 
 public class ReportDataGenerator {

@@ -22,7 +22,7 @@ import androidapp.screens.source.AndroidMarkerTypeDialog.MarkerType;
 import common.source.Log;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.scommon.generators.ReportDataGenerator;
+import surveyor.scommon.mobile.source.ReportDataGenerator;
 
 public class ReportListScreenTest extends BaseReportTest {
 
