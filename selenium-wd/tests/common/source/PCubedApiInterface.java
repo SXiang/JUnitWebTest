@@ -9,10 +9,10 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import surveyor.api.entities.InvestigationBoxInfo;
 import surveyor.api.entities.InvestigationReportBoxInfos;
 import surveyor.api.entities.InvestigationReports;
-import surveyor.apitest.source.InvestigationBoxInfo;
-import surveyor.apitest.source.Payload;
+import surveyor.api.entities.Payload;
 
 public interface PCubedApiInterface {
 	@GET("/Account/login")
