@@ -13,6 +13,9 @@ public class BaseReportTest extends BaseAndroidTest {
 	}
 
 	protected void navigateToInvestigationReportScreenWithDefaultCreds(AndroidInvestigationScreen investigationScreen) throws Exception {
+		mapScreen.waitForScreenLoad();
+		Log.info("Map screen loaded successfully!");
+
 		final String password = TestContext.INSTANCE.getTestSetup().getLoginPwd();
 		mapScreen.clickOnInvestigate();
 		initializeMapScreen();
@@ -22,14 +25,17 @@ public class BaseReportTest extends BaseAndroidTest {
 		investigationScreen.waitForScreenLoad();
 	}
 
-	protected void navigateToMapScreenUsingDefaultCreds() throws Exception {
+	protected void navigateToMapScreenUsingDefaultCreds(boolean waitForMapScreenLoad) throws Exception {
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 		final String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
 
 		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
-		mapScreen.waitForScreenLoad();
-		Log.info("Map screen loaded successfully!");
+
+		if (waitForMapScreenLoad) {
+			mapScreen.waitForScreenLoad();
+			Log.info("Map screen loaded successfully!");
+		}
 	}
 
 	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String suffixRptId) throws Exception {

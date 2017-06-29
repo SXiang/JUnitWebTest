@@ -73,7 +73,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2429_EnergyBackpackReportListScreen ...");
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
-		navigateToMapScreenUsingDefaultCreds();
+		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackSimulatorPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
@@ -112,7 +112,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2430_EnergyBackpackInvestigationItemScreenNoLISAsForInvestigation ...");
 
 		final Integer EXPECTED_GAP_MARKERS = 11;
-		navigateToMapScreenUsingDefaultCreds();
+		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackSimulatorPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
@@ -156,7 +156,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2431_EnergyBackpackInvestigationItemScreenNoGapsForInvestigation ...");
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
-		navigateToMapScreenUsingDefaultCreds();
+		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackSimulatorPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));

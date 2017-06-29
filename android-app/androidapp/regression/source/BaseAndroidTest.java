@@ -55,6 +55,7 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidSettingsScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
+	protected static final String APP_PACKAGE_NAME = "com.picarroapp";
 	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
 
 	public static class AndroidActivities {
@@ -115,6 +116,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	private static void cleanupProcesses() throws IOException {
+		Log.method("cleanupProcesses");
 		BackPackSimulator.stopSimulator();
 		AndroidAutomationTools.stop();
 		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
@@ -131,6 +133,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void handlePermissionsPrompt() {
+		Log.method("handlePermissionsPrompt");
 		List<WebElement> permissionPrompts = appiumDriver.findElements(MobileBy.xpath("//*[@class='android.widget.Switch']"));
 		if (permissionPrompts.size() > 0) {
 			permissionPrompts.get(0).click();
@@ -138,6 +141,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	private void initializeScreenObjects() {
+		Log.method("initializeScreenObjects");
 		initializeSettingsScreen();
 		initializeMapScreen();
 	}
@@ -153,6 +157,8 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
+		Log.method("initializeAppiumTest");
+		ensureApkExistsInConnectedDevice();
 		initializeAppiumDriver();
 		startReactNativePackager();
 		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
@@ -165,6 +171,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void initializeAppiumDriver() throws MalformedURLException {
+		Log.method("initializeAppiumDriver");
 		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 		DesiredCapabilities capabilities=DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
@@ -172,7 +179,7 @@ public class BaseAndroidTest extends BaseTest {
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
 		// NOTE: autoGrantPermissions capability is NOT working along with MobileCapabilityType.APP. Use appPackage and appActivity instead of app.
-		capabilities.setCapability("appPackage", "com.picarroapp");
+		capabilities.setCapability("appPackage", APP_PACKAGE_NAME);
 		capabilities.setCapability("appActivity", ".MainActivity");
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
 		capabilities.setCapability("autoGrantPermissions", "true");
@@ -190,6 +197,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void initializeAppiumWebDriver() throws MalformedURLException {
+		Log.method("initializeAppiumWebDriver");
 		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 		DesiredCapabilities capabilities=DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
@@ -207,6 +215,22 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void installLaunchApp(String waitActivityName) throws IOException {
+		Log.method("installLaunchApp", waitActivityName);
+		File apkFile = getApkFile();
+		if (appiumDriver != null) {
+			AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath(), waitActivityName);
+			initializeScreenObjects();
+		}
+	}
+
+	private void ensureApkExistsInConnectedDevice() throws Exception {
+		Log.method("ensureApkExistsInConnectedDevice");
+		if (!AndroidAutomationTools.isPackageInstalled(APP_PACKAGE_NAME)) {
+			AdbInterface.installPackage(getApkFile().getAbsolutePath(), true /*replaceExisting*/, true /*allowVersionDowngrade*/, true /*grantAllRuntimePermissions*/);
+		}
+	}
+
+	private File getApkFile() throws IOException {
 		Path apkFolderPath = Paths.get(TestSetup.getRootPath(), "apk");
 		List<String> apkFiles = FileUtility.getFilesInDirectory(apkFolderPath, "*.apk");
 		if (apkFiles == null || apkFiles.size() == 0) {
@@ -215,13 +239,11 @@ public class BaseAndroidTest extends BaseTest {
 
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
-		if (appiumDriver != null) {
-			AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath(), waitActivityName);
-			initializeScreenObjects();
-		}
+		return apkFile;
 	}
 
 	private void startReactNativePackager() throws IOException {
+		Log.method("startReactNativePackager");
 		if (!reactNativeInitStatus.get()) {
 			AndroidAutomationTools.startReactNative();
 			reactNativeInitStatus.set(true);

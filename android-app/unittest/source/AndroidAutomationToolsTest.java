@@ -17,7 +17,7 @@ import common.source.TestSetup;
 public class AndroidAutomationToolsTest {
 
 	private static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
-	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-53.apk";
+	private static final String TEST_APK_LOCATION = "C:\\Repositories\\surveyor-qa\\apk\\app-debug-1.0.0-SNAPSHOT-82.apk";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -65,6 +65,26 @@ public class AndroidAutomationToolsTest {
 	@Test
 	public void testRestart() throws IOException {
 		AndroidAutomationTools.restart();
+	}
+
+	@Test
+	public void testIsPackageInstalled_InstalledReturnsTrue() throws Exception {
+		final String EXPECTED_PACKAGE_NAME = "com.picarroapp";
+		AndroidAutomationTools.restart();
+		AdbInterface.installPackage(TEST_APK_LOCATION, true /*replaceExisting*/, true /*allowVersionDowngrade*/, true /*grantAllRuntimePermissions*/);
+		boolean installed = AndroidAutomationTools.isPackageInstalled(EXPECTED_PACKAGE_NAME);
+		Log.info(String.format("Package installed=[%b]", installed));
+		assertTrue("APK should be installed.", installed);
+	}
+
+	@Test
+	public void testIsPackageInstalled_UninstalledReturnsFalse() throws Exception {
+		final String EXPECTED_PACKAGE_NAME = "com.picarroapp";
+		AndroidAutomationTools.restart();
+		AdbInterface.uninstallPackage(EXPECTED_PACKAGE_NAME);
+		boolean installed = AndroidAutomationTools.isPackageInstalled(EXPECTED_PACKAGE_NAME);
+		Log.info(String.format("Package installed=[%b]", installed));
+		assertFalse("APK should be installed.", installed);
 	}
 
 	@Test

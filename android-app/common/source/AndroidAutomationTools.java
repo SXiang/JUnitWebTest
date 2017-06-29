@@ -19,6 +19,7 @@ public class AndroidAutomationTools {
 
 	public static class ShellCommands {
 		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
+		public static final String PM_LIST_PACKAGES = "pm list packages";
 		public static final String GETPROP_INIT_SVC_BOOTANIM = "getprop init.svc.bootanim";
 		public static final String SET_WINDOW_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"window_animation_scale\"'";
 		public static final String SET_TRANSITION_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"transition_animation_scale\"'";
@@ -74,6 +75,11 @@ public class AndroidAutomationTools {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_ANIMATOR_DURATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_TRANSITION_ANIMATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_WINDOW_ANIMATION_SCALE);
+	}
+
+	public static boolean isPackageInstalled(String packageName) throws Exception {
+		String installedPackages = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.PM_LIST_PACKAGES);
+		return installedPackages.toLowerCase().contains(packageName.toLowerCase());
 	}
 
 	public static void startReactNative() throws IOException {
