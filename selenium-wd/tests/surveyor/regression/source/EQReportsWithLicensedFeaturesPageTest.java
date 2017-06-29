@@ -134,7 +134,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			final int newLocationRowID = 26;
 			final int newCustomerUserRowID = 32;
 			final int newSurveyorRowID = 35;
-			final int newAnalyzerRowID = 28;
+			final int newAnalyzerRowID = 29;
 			final int newRefGasBottleRowID = 12;
 			final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 			final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
@@ -157,7 +157,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
@@ -221,7 +220,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			final int newLocationRowID = 26;
 			final int newCustomerUserRowID = 32;
 			final int newSurveyorRowID = 35;
-			final int newAnalyzerRowID = 28;
+			final int newAnalyzerRowID = 29;
 			final int newRefGasBottleRowID = 12;
 			final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 			final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
@@ -266,7 +265,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
 			assertTrue(eqReportsPageAction.waitForPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1)));
@@ -304,7 +302,7 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			final int newLocationRowID = 26;
 			final int newCustomerUserRowID = 32;
 			final int newSurveyorRowID = 35;
-			final int newAnalyzerRowID = 28;
+			final int newAnalyzerRowID = 29;
 			final int newRefGasBottleRowID = 12;
 			final int DB3_ANALYZER_ROW_ID = 76;	 	  /* TestEnvironment datasheet rowID (specifies Analyzer, Replay DB3) */
 			final int SURVEY_ROW_ID = 3;	 		  /* Survey information  */
@@ -328,7 +326,6 @@ public class EQReportsWithLicensedFeaturesPageTest extends BaseReportsPageAction
 			loginPageAction.getLoginPage().loginNormalAs(newUsername, newUserPass);
 			eqReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 			createNewReport(eqReportsPageAction, getReportRowID(reportDataRowID1));
-			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			waitForReportGenerationToComplete(eqReportsPageAction, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
 			eqReportsPageAction.clickOnViewerPDF(EMPTY, getReportRowID(reportDataRowID1));
