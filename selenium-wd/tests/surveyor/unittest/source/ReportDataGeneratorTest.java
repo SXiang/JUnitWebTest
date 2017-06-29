@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.source.Log;
-import surveyor.scommon.generators.ReportDataGenerator;
+import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.BaseTest;
 
 public class ReportDataGeneratorTest {
