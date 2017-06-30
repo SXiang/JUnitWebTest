@@ -13,7 +13,6 @@ import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
-import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
