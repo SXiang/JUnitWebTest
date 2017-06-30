@@ -256,14 +256,12 @@ public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
 		FacilityEQReportEntity rpt = (FacilityEQReportEntity)reportEntity;
 		String facilityEQLocationParameter = getWorkingReportsDataRow().facilityEQLocationParameter;
-		List<Coordinates> shapeCoordinates = buildShapeInfoList(getWorkingReportsDataRow(), this.excelUtility);		
+		List<Coordinates> shapeCoordinates = buildShapeInfoList(getWorkingReportsDataRow(), this.excelUtility);
 		boolean showLisas = getWorkingReportsDataRow().showLisas;
-
 		if (!ActionArguments.isEmpty(facilityEQLocationParameter) && (Integer.valueOf(facilityEQLocationParameter) > 0)) {
 			LocationDataRow locationDataRow = getLocationDataRow(Integer.valueOf(facilityEQLocationParameter));
 			facilityEQLocationParameter = locationDataRow.name;
 		}
-
 		rpt.setFacilityEQLocationParameter(facilityEQLocationParameter);
 		rpt.setShapeCoordinates(shapeCoordinates);
 		rpt.setShowLisas(showLisas);
