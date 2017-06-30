@@ -10,13 +10,16 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.scommon.actions.data.CoordinateDataReader;
 import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
+import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.FacilityEQReportDataReader;
 import surveyor.scommon.actions.data.FacilityEQReportDataReader.FacilityEQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
+import surveyor.scommon.entities.EQReportEntity;
 import surveyor.scommon.entities.FacilityEQReportEntity;
 import surveyor.scommon.source.Coordinates;
 import surveyor.scommon.source.FacilityEQReportsPage;
@@ -257,9 +260,14 @@ public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 	protected void fillReportSpecificWorkingDataForReports(ReportCommonEntity reportEntity) throws Exception {
 		FacilityEQReportEntity rpt = (FacilityEQReportEntity)reportEntity;
 		String facilityEQLocationParameter = getWorkingReportsDataRow().facilityEQLocationParameter;
-		List<Coordinates> shapeCoordinates = buildShapeInfoList(getWorkingReportsDataRow(), this.excelUtility);
+		List<Coordinates> shapeCoordinates = buildShapeInfoList(getWorkingReportsDataRow(), this.excelUtility);		
 		boolean showLisas = getWorkingReportsDataRow().showLisas;
-		
+
+		if (!ActionArguments.isEmpty(facilityEQLocationParameter) && (Integer.valueOf(facilityEQLocationParameter) > 0)) {
+			LocationDataRow locationDataRow = getLocationDataRow(Integer.valueOf(facilityEQLocationParameter));
+			facilityEQLocationParameter = locationDataRow.name;
+		}
+
 		rpt.setFacilityEQLocationParameter(facilityEQLocationParameter);
 		rpt.setShapeCoordinates(shapeCoordinates);
 		rpt.setShowLisas(showLisas);
