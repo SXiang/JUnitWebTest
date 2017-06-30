@@ -8,7 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import common.source.Log;
 import surveyor.regression.source.EQReportsPageTest;
 import surveyor.regression.source.EQReportsPageTest2;
-import surveyor.regression.source.DriverViewPageTest_EQ;
 import surveyor.scommon.source.SurveyorParallelSuite;
 
 @RunWith(SurveyorParallelSuite.class)
