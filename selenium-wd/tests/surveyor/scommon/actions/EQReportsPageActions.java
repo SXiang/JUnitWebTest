@@ -290,22 +290,6 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 		return coordinates;
 	}
 
-	/**
-	 * Returns the location data row for specified location data row id.
-	 * @param dataRowID - location row id.
-	 * @return - location data row
-	 * @throws Exception
-	 */
-	private LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
-		if (ManageLocationPageActions.workingDataRow.get() != null) {
-			return ManageLocationPageActions.workingDataRow.get();
-		} else {
-			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
-			return locationDataRow;
-		}
-	}
-
 	private Boolean isSelectLineSegmentsUsingJS(EQReportsDataRow dataRow) throws Exception {
 		List<Integer> lineSegmentRowIDs = ActionArguments.getNumericList(dataRow.lineSegmentRowIDs);
 		if (lineSegmentRowIDs != null && lineSegmentRowIDs.size() > 0) {
