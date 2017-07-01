@@ -181,6 +181,14 @@ public class Analyzer extends BaseEntity {
 				ReportEQDrivingSurvey.getReportEQDrivingSurveysBySurveyId(s.getId().toString()).forEach(
 						r -> ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_EQ_REPORTS_RELATIVE_URL, r.getReportEQId())));
 
+				// DE3052 prevents survey deletion when there is [EQMeasurementResult] or [ReportFieldOfViewAggregated] reference.
+				// Currently explicitly deleting referenced [EQMeasurementResult] and [ReportFieldOfViewAggregated] rows to ensure Test Analyzers with certs can be reused.
+				// Removing this workaround once DE3052 fixed tracked in automation user story - US4562
+				List<String> surveyDepsQ = new ArrayList<String>();
+				surveyDepsQ.add(String.format("DELETE [dbo].[EQMeasurementResult] WHERE SurveyId='%s'", s.getId()));
+				surveyDepsQ.add(String.format("DELETE [dbo].[ReportFieldOfViewAggregated] WHERE SurveyId='%s'", s.getId()));
+				surveyDepsQ.forEach(sql -> executeNonQuery(sql));
+
 				// Delete survey.
 				ApiUtility.getApiResponse(String.format(ApiUtility.DELETE_MEASUREMENT_SESSION_RELATIVE_URL, s.getId()));
 			});
