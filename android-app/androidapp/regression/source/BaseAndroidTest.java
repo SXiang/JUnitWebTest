@@ -21,7 +21,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidMapScreen;
-import androidapp.screens.source.AndroidSettingsScreen;
+import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.BackPackSimulator;
@@ -52,7 +52,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
-	protected AndroidSettingsScreen settingsScreen;
+	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
 	protected static final String APP_PACKAGE_NAME = "com.picarroapp";
@@ -102,15 +102,10 @@ public class BaseAndroidTest extends BaseTest {
 
 	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
-	protected boolean executeWithBackPackSimulatorPaused(CheckedPredicate<Object> predicate) throws IOException {
+	protected boolean executeWithBackPackSimulatorPaused(CheckedPredicate<Object> predicate) throws Exception {
 		boolean retVal = false;
 		BackPackSimulator.pauseSimulatorProcesses();
-		try {
-			retVal = predicate.test(null);
-		} catch (Exception e) {
-			Log.error(ExceptionUtility.getStackTraceString(e));
-		}
-
+		retVal = predicate.test(null);
 		BackPackSimulator.resumeSimulatorProcesses();
 		return retVal;
 	}
@@ -142,12 +137,12 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void initializeScreenObjects() {
 		Log.method("initializeScreenObjects");
-		initializeSettingsScreen();
+		initializeMainLoginScreen();
 		initializeMapScreen();
 	}
 
-	protected void initializeSettingsScreen() {
-		settingsScreen = new AndroidSettingsScreen(appiumDriver);
+	protected void initializeMainLoginScreen() {
+		settingsScreen = new AndroidMainLoginScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
 	}
 
@@ -247,6 +242,19 @@ public class BaseAndroidTest extends BaseTest {
 		if (!reactNativeInitStatus.get()) {
 			AndroidAutomationTools.startReactNative();
 			reactNativeInitStatus.set(true);
+		}
+	}
+
+	protected void navigateToMapScreenUsingDefaultCreds(boolean waitForMapScreenLoad) throws Exception {
+		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
+		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
+		final String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
+
+		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
+
+		if (waitForMapScreenLoad) {
+			mapScreen.waitForScreenLoad();
+			Log.info("Map screen loaded successfully!");
 		}
 	}
 

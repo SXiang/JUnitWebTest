@@ -25,19 +25,6 @@ public class BaseReportTest extends BaseAndroidTest {
 		investigationScreen.waitForScreenLoad();
 	}
 
-	protected void navigateToMapScreenUsingDefaultCreds(boolean waitForMapScreenLoad) throws Exception {
-		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
-		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-		final String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
-
-		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
-
-		if (waitForMapScreenLoad) {
-			mapScreen.waitForScreenLoad();
-			Log.info("Map screen loaded successfully!");
-		}
-	}
-
 	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String suffixRptId) throws Exception {
 		investigationScreen.performSearch(suffixRptId);
 	}

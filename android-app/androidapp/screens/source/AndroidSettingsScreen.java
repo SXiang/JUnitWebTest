@@ -1,60 +1,153 @@
 package androidapp.screens.source;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
+
 import common.source.Log;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidSettingsScreen extends AndroidBaseScreen {
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[1]")
-	private MobileElement bpackServerAddressEditText;
+	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[2]")
-	private MobileElement picServerAddressEditText;
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
+	@CacheLookup
+	private WebElement investigate;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[3]")
-	private MobileElement usernameEditText;
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
+	@CacheLookup
+	private WebElement mode_HR;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]")
-	private MobileElement clearButton;
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement resetMax;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]")
-	private MobileElement saveButton;
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
+	@CacheLookup
+	private WebElement toggleMode;
+
+	private WebElement clearHeatmap;
+	private boolean clearHeatmapDisplayed;
+	private WebElement alarmSettings;
+	private boolean alarmSettingsDisplayed;
+	private WebElement appSettings;
+	private boolean appSettingsDisplayed;
+	private WebElement shutdownInstrument;
+	private boolean shutdownInstrumentDisplayed;
 
 	public AndroidSettingsScreen(WebDriver driver) {
 		super(driver);
 	}
 
-	public void saveSettings(String backpackAddress, String picServerAddress, String username) throws Exception {
-		Log.method("saveSettings", backpackAddress, picServerAddress, username);
-		Log.info("Clicking on bpackServerAddressEditText ...");
-		sendKeys(bpackServerAddressEditText, backpackAddress);
+	/****** Button Methods ******/
 
-		Log.info("Clicking on picServerAddressEditText ...");
-		sendKeys(picServerAddressEditText, picServerAddress);
-
-		Log.info("Clicking on usernameEditText ...");
-		sendKeys(usernameEditText, username);
-
-		Log.info("Hiding keyboard, before clicking on Save button");
-		((AppiumDriver)this.driver).hideKeyboard();
-
-		Log.info("Clicking on saveButton ...");
-		saveButton.click();
+	public WebElement getInvestigate() {
+		Log.method("getInvestigate");
+		return investigate;
 	}
 
-	public void clearSettings() {
-		Log.method("clearSettings");
-		clearButton.click();
+	public void clickOnInvestigate() {
+		Log.method("clickOnInvestigate");
+		tap(investigate);
+	}
+
+	public WebElement getMode_HR() {
+		Log.method("getMode_HR");
+		return mode_HR;
+	}
+
+	public void clickOnMode_HR() {
+		Log.method("clickOnMode_HR");
+		tap(mode_HR);
+	}
+
+	public WebElement getResetMax() {
+		Log.method("getResetMax");
+		return resetMax;
+	}
+
+	public void clickOnResetMax() {
+		Log.method("clickOnResetMax");
+		tap(resetMax);
+	}
+
+	public WebElement getToggleMode() {
+		Log.method("getToggleMode");
+		return toggleMode;
+	}
+
+	public void clickOnToggleMode() {
+		Log.method("clickOnToggleMode");
+		tap(toggleMode);
+	}
+
+	/**** Elements in the Settings dialog. Shown after menuButton is clicked. ****/
+
+	public WebElement getAlarmSettings() {
+		Log.method("getAlarmSettings");
+		if (!alarmSettingsDisplayed) {
+			alarmSettings = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]");
+			alarmSettingsDisplayed = true;
+		}
+
+		return alarmSettings;
+	}
+
+	public void clickOnAlarmSettings() {
+		Log.method("clickOnAlarmSettings");
+		tap(alarmSettings);
+	}
+
+	public WebElement getAppSettings() {
+		Log.method("getAppSettings");
+		if (!appSettingsDisplayed) {
+			appSettings = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]");
+			appSettingsDisplayed = true;
+		}
+
+		return appSettings;
+	}
+
+	public void clickOnAppSettings() {
+		Log.method("clickOnAppSettings");
+		tap(appSettings);
+	}
+
+	public WebElement getClearHeatmap() {
+		Log.method("getClearHeatmap");
+		if (!clearHeatmapDisplayed) {
+			clearHeatmap = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]");
+			clearHeatmapDisplayed = true;
+		}
+
+		return clearHeatmap;
+	}
+
+	public void clickOnClearHeatmap() {
+		Log.method("clickOnClearHeatmap");
+		tap(clearHeatmap);
+	}
+
+	public WebElement getShutdownInstrument() {
+		Log.method("getShutdownInstrument");
+		if (!shutdownInstrumentDisplayed) {
+			shutdownInstrument = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]");
+			shutdownInstrumentDisplayed = true;
+		}
+
+		return shutdownInstrument;
+	}
+
+	public void clickOnShutdownInstrument() {
+		Log.method("clickOnShutdownInstrument");
+		tap(shutdownInstrument);
 	}
 
 	@Override
 	public Boolean screenLoadCondition() {
-		saveButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]"));
-		Log.info(String.format("Found saveButton - %s", (saveButton==null)?"NULL":saveButton.toString()));
-		return saveButton!=null && saveButton.isDisplayed();
+		Log.method("screenLoadCondition");
+		WebElement element = getShutdownInstrument();
+		return (element != null) && (element.isDisplayed());
 	}
 }

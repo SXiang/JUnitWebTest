@@ -146,6 +146,15 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input text %s", text));
 	}
 
+	public void slideBy(WebElement slider, WebElement sliderContainer, Integer percValue) {
+		Log.method("slideBy", slider, sliderContainer, percValue);
+		int width = sliderContainer.getSize().getWidth();
+		int x = slider.getLocation().getX();
+		int y = slider.getLocation().getY();
+		int moveBy = (int)(width * (percValue/100));
+		new TouchAction(this.mobileDriver).press(x, y).moveTo(moveBy, y).release().perform();
+	}
+
 	private String escapeText(String input) {
 		String escInput = input;
 		for (String ch : ESCAPE_CHARS) {

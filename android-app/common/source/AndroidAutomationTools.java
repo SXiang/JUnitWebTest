@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class AndroidAutomationTools {
 	private static final String APPIUM_SERVER_HOSTNAME = "localhost";
-	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_WXGA800-7in";
+	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_Tab_S_8.4_Black";
 	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
 	private static final String START_APPIUM_SERVER_CMD = "StartAppiumServer.cmd";
