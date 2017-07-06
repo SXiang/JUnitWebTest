@@ -45,8 +45,8 @@ public class AndroidBaseScreen {
 		MobileActions.newAction().sendKeys(element, text);
 	}
 
-	public void slideBy(WebElement element, WebElement elementContainer, /*WebElement leftDeltaElement,*/ Float value) {
-		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, /*leftDeltaElement, */value);
+	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
+		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
 	}
 
 	public void waitForFirstAppLoad() {
