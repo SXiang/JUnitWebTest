@@ -96,7 +96,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	public void clickOnAlarmSettings() {
 		Log.method("clickOnAlarmSettings");
-		tap(alarmSettings);
+		tap(getAlarmSettings());
 	}
 
 	public WebElement getAppSettings() {
@@ -111,7 +111,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	public void clickOnAppSettings() {
 		Log.method("clickOnAppSettings");
-		tap(appSettings);
+		tap(getAppSettings());
 	}
 
 	public WebElement getClearHeatmap() {
@@ -126,7 +126,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	public void clickOnClearHeatmap() {
 		Log.method("clickOnClearHeatmap");
-		tap(clearHeatmap);
+		tap(getClearHeatmap());
 	}
 
 	public WebElement getShutdownInstrument() {
@@ -141,7 +141,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	public void clickOnShutdownInstrument() {
 		Log.method("clickOnShutdownInstrument");
-		tap(shutdownInstrument);
+		tap(getShutdownInstrument());
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
 
+import androidapp.screens.source.AndroidAlarmSettingsScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeDialog;
@@ -26,6 +27,7 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidMarkerTypeDialog markerTypeDialog;
 	protected AndroidSettingsScreen settingsScreen;
+	protected AndroidAlarmSettingsScreen alarmSettingsScreen;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
@@ -101,14 +103,18 @@ public class SettingsScreenTest extends BaseAndroidTest {
 
 			mapScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
-			settingsScreen.clickOnAlarmSettings();
-
-
 			assertTrue("Clear HeatMap button should be displayed", settingsScreen.getClearHeatmap().isDisplayed());
 			assertTrue("Alarm Settings button should be displayed", settingsScreen.getAlarmSettings().isDisplayed());
 			assertTrue("App Settings button should be displayed", settingsScreen.getAppSettings().isDisplayed());
 			assertTrue("Shutdown Instrument button should be displayed", settingsScreen.getShutdownInstrument().isDisplayed());
 
+			settingsScreen.clickOnAlarmSettings();
+			alarmSettingsScreen.waitForScreenLoad();
+			alarmSettingsScreen.slideToVolume(5.0f);
+			alarmSettingsScreen.slideToAmplitudeppm(15.0f);
+			alarmSettingsScreen.slideToThresholdppm(20.0f);
+			alarmSettingsScreen.slideToBackgroundDuration(4.0f);
+			alarmSettingsScreen.clickOnApply();
 			return true;
 		});
 	}
@@ -117,6 +123,7 @@ public class SettingsScreenTest extends BaseAndroidTest {
 		initializeInvestigationScreen();
 		initializeInvestigateReportScreen();
 		initializeSettingsScreen();
+		initializeAlarmSettingsScreen();
 	}
 
 	private void initializeInvestigateReportScreen() {
@@ -132,6 +139,11 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	protected void initializeSettingsScreen() {
 		settingsScreen = new AndroidSettingsScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+	}
+
+	protected void initializeAlarmSettingsScreen() {
+		alarmSettingsScreen = new AndroidAlarmSettingsScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), alarmSettingsScreen);
 	}
 
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {

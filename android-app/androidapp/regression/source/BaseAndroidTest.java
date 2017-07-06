@@ -26,7 +26,6 @@ import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.BackPackSimulator;
 import common.source.CheckedPredicate;
-import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.Log;
 import common.source.TestContext;
@@ -79,7 +78,9 @@ public class BaseAndroidTest extends BaseTest {
 
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
-	    BackPackSimulator.startSimulator();
+
+		BackPackSimulator.startSimulator();
+
 		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
 	    AndroidAutomationTools.disableAnimations();  // perf optimization.

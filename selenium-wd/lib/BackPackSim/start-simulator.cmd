@@ -8,5 +8,6 @@ echo [%me%]: cd %~1\host\src\main\python\Host\Utilities\BackpackServer
 cd %~1\host\src\main\python\Host\Utilities\BackpackServer
 set BUILDROOT=%~1
 startsim.bat
+startsimextras.bat
 echo [%me%]: Started backpack simulator!
 @echo on

@@ -7,6 +7,7 @@ public class BackPackSimulator {
 	private static final String SIMULATOR_HOSTNAME = "localhost";
 	private static final String STOP_SIMULATOR_CMD = "stop-simulator.cmd";
 	private static final String START_SIMULATOR_CMD = "start-simulator.cmd";
+	private static final String SETUP_SIMULATOR_EXTRAS_CMD = "Setup-SimulatorExtras.cmd";
 	private static final String PAUSE_RESUME_WIN_PROCESSES_CMD = "PauseResumeWinProcesses.cmd";
 	private static final Integer SIMULATOR_PORT = 3000;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
@@ -16,6 +17,7 @@ public class BackPackSimulator {
 
 	public static void startSimulator() throws IOException {
 		Log.method("startSimulator");
+		ensureSimulatorExtrasPresent();
 		String startBackPackSimCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
 		String repoRootFolder = TestSetup.getRootPath().replace("\\surveyor-qa", "");
 		String startBackPackSimCmd = START_SIMULATOR_CMD + String.format(" %s", repoRootFolder);
@@ -24,6 +26,15 @@ public class BackPackSimulator {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 		waitForSimulatorProcessesToStart();
 		waitForSimulatorProcessesToCatchUp();
+	}
+
+	private static void ensureSimulatorExtrasPresent() throws IOException {
+		Log.method("ensureSimulatorExtrasPresent");
+		String setupBackPackSimExtrasCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
+		String setupBackPackSimExtrasCmdFullPath = setupBackPackSimExtrasCmdFolder + File.separator + SETUP_SIMULATOR_EXTRAS_CMD;
+		String command = "cd \"" + setupBackPackSimExtrasCmdFolder + "\" && " + setupBackPackSimExtrasCmdFullPath + " " + TestSetup.getRootPath();
+		Log.info("Executing setup simulator extras. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public static void stopSimulator() throws IOException {
