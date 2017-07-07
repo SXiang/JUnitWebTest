@@ -100,7 +100,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 
 // Test Method #1
 	
-	@Test
+	@Ignore
 	public void testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds() throws IOException{
 		Log.info("Executing API test --> testGetBoxesByReportId()...");
 		String verificationToken = getVerificationToken();
@@ -120,7 +120,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		assertTrue("testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos!=null);	
 	}
 
-	@Test
+	@Ignore
 	public void testGetBoxesByReportId_ValidReportId_ValidBoxType_InvalidBounds() throws IOException{
 		Log.info("Executing API test --> testGetBoxesByReportId()...");
 		String verificationToken = getVerificationToken();
@@ -154,7 +154,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		assertTrue("testGetBoxesByReportId_ValidReportId_InvalidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos==null);		
 	}
 
-	@Test
+	@Ignore
 	public void testGetBoxesByReportId_InvalidReportId_ValidBoxType_ValidBounds() throws IOException{
 		Log.info("Executing API test --> testGetBoxesByReportId()...");
 		String verificationToken = getVerificationToken();
@@ -206,7 +206,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		assertTrue("testGetBoxesByReportId_InvalidReportId_InvalidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos==null);		
 	}
 
-	@Test
+	@Ignore
 	public void testGetBoxesByReportId_InvalidReportId_ValidBoxType_InvalidBounds() throws IOException{
 		Log.info("Executing API test --> testGetBoxesByReportId()...");
 		String verificationToken = getVerificationToken();
