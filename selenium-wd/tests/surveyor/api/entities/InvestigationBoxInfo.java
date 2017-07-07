@@ -1,4 +1,4 @@
-package surveyor.apitest.source;
+package surveyor.api.entities;
 
 import java.util.ArrayList;
 import java.util.List;
