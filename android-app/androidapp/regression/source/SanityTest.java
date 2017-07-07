@@ -33,7 +33,7 @@ public class SanityTest extends BaseAndroidTest {
 
 		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
 
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			assertTrue("Map screen loaded successfully!", mapScreen.waitForScreenLoad());
 			String amplitudeText = mapScreen.getAmplitudeText();
 			Log.info(String.format("amplitudeText = [%s]", amplitudeText));

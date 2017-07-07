@@ -3,12 +3,13 @@ package common.source;
 import java.io.File;
 import java.io.IOException;
 
-public class BackPackSimulator {
+public class BackPackAnalyzer {
 	private static final String SIMULATOR_HOSTNAME = "localhost";
 	private static final String STOP_SIMULATOR_CMD = "stop-simulator.cmd";
 	private static final String START_SIMULATOR_CMD = "start-simulator.cmd";
 	private static final String SETUP_SIMULATOR_EXTRAS_CMD = "Setup-SimulatorExtras.cmd";
 	private static final String PAUSE_RESUME_WIN_PROCESSES_CMD = "PauseResumeWinProcesses.cmd";
+	private static final String PAUSE_RESUME_REMOTE_MAC_WIN_PROCESSES_CMD = "PauseResumeWinProcsOnRemoteMachine.cmd";
 	private static final Integer SIMULATOR_PORT = 3000;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer PING_TIMEOUT = 1000;
@@ -46,6 +47,22 @@ public class BackPackSimulator {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 	}
 
+	public static void pauseDataProcesses() throws IOException {
+		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			pauseBackPackAnalyzerDataProcesses();
+		} else {
+			pauseSimulatorProcesses();
+		}
+	}
+
+	public static void resumeDataProcesses() throws IOException {
+		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			resumeBackPackAnalyzerDataProcesses();
+		} else {
+			resumeSimulatorProcesses();
+		}
+	}
+
 	public static void pauseSimulatorProcesses() throws IOException {
 		pauseResumeSimulatorProcesses(false /*isResume*/);
 	}
@@ -64,6 +81,29 @@ public class BackPackSimulator {
 				String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + arguments + "\"", "\"" + pauseResumeArg + "\"");
 		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
 		Log.info("Executing pause/resume backpack simulator processes. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
+	}
+
+	public static void pauseBackPackAnalyzerDataProcesses() throws IOException {
+		pauseResumeBackPackAnalyzerDataProcesses(false /*isResume*/);
+	}
+
+	public static void resumeBackPackAnalyzerDataProcesses() throws IOException {
+		pauseResumeBackPackAnalyzerDataProcesses(true /*isResume*/);
+	}
+
+	private static void pauseResumeBackPackAnalyzerDataProcesses(boolean isResume) throws IOException {
+		Log.method("pauseResumeBackPackAnalyzerProcesses");
+		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
+		String repoRootFolder = TestSetup.getRootPath();
+		String backPackServerMachineIp = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineIp();
+		String backPackServerMachineUser = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineUser();
+		String backPackServerMachinePwd = TestContext.INSTANCE.getTestSetup().getBackPackServerMachinePwd();
+		String pauseResumeArg = isResume ? "true" : "false";
+		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_REMOTE_MAC_WIN_PROCESSES_CMD +
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", repoRootFolder, backPackServerMachineIp, backPackServerMachineUser, backPackServerMachinePwd, pauseResumeArg);
+		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
+		Log.info("Executing pause/resume backpack analyzer processes remotely. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 	}
 

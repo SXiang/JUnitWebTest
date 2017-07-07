@@ -74,7 +74,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
 			initializeInvestigationScreen();
@@ -83,7 +83,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			return true;
 		});
@@ -113,7 +113,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		final Integer EXPECTED_GAP_MARKERS = 11;
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
 			initializeInvestigationScreen();
@@ -122,7 +122,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue("No investigation markers of type=LISA expected in this report", investigateReportScreen.verifyNoInvestigationMarkersFoundInReport());
 			investigateReportScreen.clickOnInvestigationMarkerType();
@@ -157,7 +157,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
 			initializeInvestigationScreen();
@@ -166,7 +166,7 @@ public class ReportListScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			investigateReportScreen.clickOnInvestigationMarkerType();

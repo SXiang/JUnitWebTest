@@ -24,7 +24,7 @@ import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
-import common.source.BackPackSimulator;
+import common.source.BackPackAnalyzer;
 import common.source.CheckedPredicate;
 import common.source.FileUtility;
 import common.source.Log;
@@ -79,7 +79,9 @@ public class BaseAndroidTest extends BaseTest {
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
 
-		BackPackSimulator.startSimulator();
+		if (!testSetup.isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.startSimulator();
+		}
 
 		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
@@ -103,17 +105,21 @@ public class BaseAndroidTest extends BaseTest {
 
 	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
-	protected boolean executeWithBackPackSimulatorPaused(CheckedPredicate<Object> predicate) throws Exception {
+	protected boolean executeWithBackPackDataProcessesPaused(CheckedPredicate<Object> predicate) throws Exception {
 		boolean retVal = false;
-		BackPackSimulator.pauseSimulatorProcesses();
+		BackPackAnalyzer.pauseDataProcesses();
 		retVal = predicate.test(null);
-		BackPackSimulator.resumeSimulatorProcesses();
+		BackPackAnalyzer.resumeDataProcesses();
 		return retVal;
 	}
 
 	private static void cleanupProcesses() throws IOException {
 		Log.method("cleanupProcesses");
-		BackPackSimulator.stopSimulator();
+
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.stopSimulator();
+		}
+
 		AndroidAutomationTools.stop();
 		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
 	}

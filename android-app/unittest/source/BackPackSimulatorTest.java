@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import common.source.BackPackSimulator;
+import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -29,22 +29,22 @@ public class BackPackSimulatorTest {
 
 	@Test
 	public void testStartSimulator() throws IOException {
-		BackPackSimulator.startSimulator();
+		BackPackAnalyzer.startSimulator();
 	}
 
 	@Test
 	public void testPauseSimulatorProcesses() throws IOException {
-		BackPackSimulator.startSimulator();
-		BackPackSimulator.pauseSimulatorProcesses();
+		BackPackAnalyzer.startSimulator();
+		BackPackAnalyzer.pauseSimulatorProcesses();
 	}
 
 	@Test
 	public void testResumeSimulatorProcesses() throws IOException {
-		BackPackSimulator.resumeSimulatorProcesses();
+		BackPackAnalyzer.resumeSimulatorProcesses();
 	}
 
 	@Test
 	public void testStopSimulator() throws IOException {
-		BackPackSimulator.stopSimulator();
+		BackPackAnalyzer.stopSimulator();
 	}
 }

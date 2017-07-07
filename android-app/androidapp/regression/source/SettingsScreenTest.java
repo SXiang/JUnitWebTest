@@ -60,7 +60,7 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	public void TC2385_EnergyBackpackAppSettingsConfiguration() throws Exception {
 		Log.info("\nRunning TC2385_EnergyBackpackAppSettingsConfiguration ...");
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
 
@@ -97,7 +97,7 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	public void TC2386_EnergyBackpackAlarmSettings() throws Exception {
 		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettings ...");
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
-		executeWithBackPackSimulatorPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
 
