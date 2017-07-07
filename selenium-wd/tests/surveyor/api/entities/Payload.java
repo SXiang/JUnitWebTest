@@ -45,5 +45,7 @@ public class Payload {
 	public void setRight(double r){
 		this.Right = r;
 	}
+	
+	
 }			
 
