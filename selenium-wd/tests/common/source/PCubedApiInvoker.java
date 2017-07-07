@@ -19,10 +19,10 @@ import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.http.Body;
+import surveyor.api.entities.InvestigationBoxInfo;
 import surveyor.api.entities.InvestigationReportBoxInfos;
 import surveyor.api.entities.InvestigationReports;
-import surveyor.apitest.source.InvestigationBoxInfo;
-import surveyor.apitest.source.Payload;
+import surveyor.api.entities.Payload;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -243,8 +243,8 @@ public class PCubedApiInvoker {
 		Log.method("getBoxesByReportId");
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
 		try{
-			Call<InvestigationReportBoxInfos> invBoxInfoCall2 = apiInterface.getBoxesByReportId(reportId, type, body);
-			return invBoxInfoCall2.execute();
+			Call<InvestigationReportBoxInfos> invRepBoxInfosCall = apiInterface.getBoxesByReportId(reportId, type, body);
+			return invRepBoxInfosCall.execute();
 		} catch (JsonParseException ex) {
 			Log.error("Error parsing response. Possible reasons -> 1) Non JSON response returned. 2) Non-authenticated call returns non-json response.");
 		}
