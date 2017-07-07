@@ -272,6 +272,7 @@
         <fileset dir="${build}">
            <include name="**/AuthenticationApiTest.class" />
            <include name="**/ReportsApiTest.class" />
+           <include name="**/InvestigationReportsApiTest.class" />       	
         </fileset>
       </batchtest>
     </junit>
