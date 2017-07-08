@@ -101,23 +101,6 @@ function Find-NonEmptySiblingTextViewText([System.Xml.XmlNode] $node) {
         # search forward.
         $currNode = $node
         while ((-not $foundNd) -and ($currNode -ne $NULL)) {
-            $siblingNode = $currNode.NextSibling
-            $currNode = $siblingNode
-            if ($siblingNode -ne $null -and $siblingNode.Attributes -ne $null) {
-                if ($siblingNode.Attributes["class"] -ne $null) { 
-                    $clsVal = $siblingNode.Attributes["class"].Value 
-                }
-                if ($siblingNode.Attributes["text"] -ne $null) { 
-                    $txtVal = $siblingNode.Attributes["text"].Value 
-                }
-                if (($clsVal -eq "android.widget.TextView") -and ($txtVal -ne $null -and $txtVal -ne "")) {
-                    $foundNd = $true
-                    $foundText = $txtVal
-                }
-            }
-        }
-
-        if (-not $foundNd) {
             # search previous.
             $currNode = $node
             while ((-not $foundNd) -and ($currNode -ne $NULL)) {
@@ -134,6 +117,23 @@ function Find-NonEmptySiblingTextViewText([System.Xml.XmlNode] $node) {
                         $foundNd = $true
                         $foundText = $txtVal
                     }
+                }
+            }
+        }
+
+        if (-not $foundNd) {
+            $siblingNode = $currNode.NextSibling
+            $currNode = $siblingNode
+            if ($siblingNode -ne $null -and $siblingNode.Attributes -ne $null) {
+                if ($siblingNode.Attributes["class"] -ne $null) { 
+                    $clsVal = $siblingNode.Attributes["class"].Value 
+                }
+                if ($siblingNode.Attributes["text"] -ne $null) { 
+                    $txtVal = $siblingNode.Attributes["text"].Value 
+                }
+                if (($clsVal -eq "android.widget.TextView") -and ($txtVal -ne $null -and $txtVal -ne "")) {
+                    $foundNd = $true
+                    $foundText = $txtVal
                 }
             }
         }
@@ -169,12 +169,17 @@ function Is-Button([System.Xml.XmlNode] $nodeElement) {
 #------------------------------------------------------------------------------------
 # Returns whether current node can be classifed as a SelectBox.
 # Classification Criteria:
-#   Spinner element which has Children.
+#   Has single TextView child.
 #------------------------------------------------------------------------------------
 function Is-SelectBox([System.Xml.XmlNode] $nodeElement) {
     $isSelectBx = $true
-    if (($nodeElement.NextSibling -eq $null) -or ($nodeElement.PreviousSibling -eq $null)) {
+    if (($nodeElement.ChildNodes -eq $null) -or ($nodeElement.ChildNodes.Count -gt 1)) {
         $isSelectBx = $false
+    } else {
+        $firstChild = $nodeElement.ChildNodes[0]
+        if ($firstChild.Attributes["class"].Value -ne "android.widget.TextView") {
+            $isSelectBx = $false
+        }
     }
 
     $isSelectBx
@@ -512,8 +517,6 @@ $script:elementMap.Keys | sort-object | % {
     $obj = $script:elementMap.get_item($varName)
     $mXPath = $obj.XPath    $mIsSelectBox = $obj.IsSelectBox
     if ($mIsSelectBox) {
-        add-content $OUTFILE "	/****** SelectBox elements ******/"
-        add-content $OUTFILE ""
         add-content $OUTFILE "	@AndroidFindBy(xpath = ""$mXPath"")"
         add-content $OUTFILE "	@CacheLookup"
         add-content $OUTFILE "	private WebElement $varName;"
@@ -594,14 +597,14 @@ $script:elementMap.Keys | sort-object | % {
     $obj = $script:elementMap.get_item($varName)
     $mXPath = $obj.XPath    $mIsButton = $obj.IsButton    $upperVarName = To-FirstCharUpper -text $varName
     if ($mIsButton) {
-        add-content $OUTFILE "	public WebElement get${upperVarName}() {"
-        add-content $OUTFILE "		Log.method(""get${upperVarName}"");"
+        add-content $OUTFILE "	public WebElement get${upperVarName}Button() {"
+        add-content $OUTFILE "		Log.method(""get${upperVarName}Button"");"
         add-content $OUTFILE "		return ${varName};"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
         add-content $OUTFILE "	public void clickOn${upperVarName}() {"
         add-content $OUTFILE "		Log.method(""clickOn${upperVarName}"");"
-        add-content $OUTFILE "		tap(get${upperVarName}());"
+        add-content $OUTFILE "		tap(get${upperVarName}Button());"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
     }
@@ -624,7 +627,7 @@ $script:elementMap.Keys | sort-object | % {
         add-content $OUTFILE "		return ${varName}.getText();"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
-        add-content $OUTFILE "	public void enter${upperVarName}(String value) {"
+        add-content $OUTFILE "	public void enter${upperVarName}(String value) throws Exception {"
         add-content $OUTFILE "		Log.method(""enter${upperVarName}"");"
         add-content $OUTFILE "		sendKeys(${varName}, value);"
         add-content $OUTFILE "	}"

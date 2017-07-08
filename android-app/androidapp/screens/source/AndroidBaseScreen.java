@@ -49,11 +49,6 @@ public class AndroidBaseScreen {
 		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
 	}
 
-	public void waitForFirstAppLoad() {
-		Log.method("waitForFirstAppLoad");
-		waitForScreenLoad(driver, Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT, screenLoadPredicate);
-	}
-
 	public boolean waitForScreenLoad() {
 		Log.method("waitForScreenLoad");
 		return waitForScreenLoad(driver, Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT, screenLoadPredicate);
@@ -63,7 +58,7 @@ public class AndroidBaseScreen {
 		return waitForScreenLoad(this.driver, timeout, waitPredicate);
 	}
 
-	private boolean waitForScreenLoad(WebDriver drv, Integer timeout, Predicate<WebDriver> waitPredicate) {
+	protected boolean waitForScreenLoad(WebDriver drv, Integer timeout, Predicate<WebDriver> waitPredicate) {
 		Log.method("waitForScreenLoad", drv, timeout, waitPredicate);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
