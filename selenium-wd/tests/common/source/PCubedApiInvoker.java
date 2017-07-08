@@ -18,7 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-import retrofit2.http.Body;
 import surveyor.api.entities.InvestigationBoxInfo;
 import surveyor.api.entities.InvestigationReportBoxInfos;
 import surveyor.api.entities.InvestigationReports;
@@ -225,7 +224,7 @@ public class PCubedApiInvoker {
 			}
 		return null;
 	}
-	
+
 	public Response<InvestigationBoxInfo> getLeakListByBox(String boxId) throws IOException {
 		Log.method("getLeakListByBox");
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
@@ -238,7 +237,7 @@ public class PCubedApiInvoker {
 
 		return null;
 	}
-	
+
 	public Response<InvestigationReportBoxInfos> getBoxesByReportId(String reportId, String type, Payload body) throws IOException {
 		Log.method("getBoxesByReportId");
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
@@ -248,7 +247,7 @@ public class PCubedApiInvoker {
 		} catch (JsonParseException ex) {
 			Log.error("Error parsing response. Possible reasons -> 1) Non JSON response returned. 2) Non-authenticated call returns non-json response.");
 		}
-		
+
 		return null;
 	}
 }
