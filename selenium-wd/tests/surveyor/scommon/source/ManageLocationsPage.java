@@ -750,8 +750,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Select FEQ JustDBScan - '"+ justDBScan +"'");
 			this.feqJustDBScan.click();
 		}
-
-		clickOnOkButton();
 	}
 
 	public void inputMeqParameters(String shapeCorrelationMin, String peakIDXBuffer, String peakSEPDistanceScale, String widthMin, String widthMax, String variationMax,
@@ -886,8 +884,6 @@ public class ManageLocationsPage extends SurveyorBasePage {
 			Log.info("Select MEQ JustDBScan - '"+ justDBScan +"'");
 			this.meqJustDBScan.click();
 		}
-
-		clickOnOkButton();
 	}
 
 	public void inputLatLong(String latitude, String longitude){

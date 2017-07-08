@@ -5,43 +5,72 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import androidapp.entities.source.InvestigateReportEntity;
+import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 
-	@AndroidFindBy(className = "android.widget.ScrollView")
-	private WebElement scrollableView;
-
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
 	private List<WebElement> listViewElements;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement firstRowReportId;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement firstRowInvestigationStatus;
+
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement noInvestigationMarkersFoundTextView;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.widget.Spinner")
+	@CacheLookup
+	private WebElement markerTypeSelector;
 
 	public AndroidInvestigateReportScreen(WebDriver driver) {
 		super(driver);
 	}
 
-	public void clickOnFirstInvestigationReport() {
-		Log.method("clickOnFirstInvestigationReport");
-		if (this.listViewElements != null) {
-			WebElement webElement = this.listViewElements.get(0);
-			if (webElement != null) {
-				webElement.click();
-			}
+	public void clickOnFirstInvestigationMarker() {
+		Log.method("clickOnFirstInvestigationMarker");
+		if (this.firstRowReportId != null) {
+			firstRowReportId.click();
 		}
 	}
 
-	public List<InvestigateReportEntity> getInvestigationReports() {
+	public void clickOnInvestigationMarkerType() {
+		Log.method("clickOnInvestigationMarkerType");
+		markerTypeSelector.click();
+	}
+
+	public InvestigationMarkerEntity getFirstInvestigationMarker() {
+		Log.method("getFirstInvestigationMarker");
+		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
+		invEntity.setReportTitle(firstRowReportId.getText());
+		invEntity.setReportName(firstRowInvestigationStatus.getText());
+		return invEntity;
+	}
+
+	public Integer getInvestigationMarkersCount() {
+		Log.method("getInvestigationReportsCount");
+		return (this.listViewElements == null) ? 0 : this.listViewElements.size() - 1 /*exclude header*/;
+	}
+
+	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
 		Log.method("getInvestigationReports");
-		List<InvestigateReportEntity> invReportList = new ArrayList<InvestigateReportEntity>();
+		List<InvestigationMarkerEntity> invReportList = new ArrayList<InvestigationMarkerEntity>();
 		for (WebElement el : this.listViewElements) {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
 			if (findElements != null && findElements.size() > 1) {
-				InvestigateReportEntity invEntity = new InvestigateReportEntity();
+				InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
 				invEntity.setReportTitle(findElements.get(0).getText());
 				invEntity.setReportName(findElements.get(1).getText());
 				invReportList.add(invEntity);
@@ -49,6 +78,16 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		}
 
 		return invReportList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void reInitializeListItems() {
+		this.listViewElements = getAndroidDriver().findElementsByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup");
+	}
+
+	public boolean verifyNoInvestigationMarkersFoundInReport() {
+		Log.method("verifyNoInvestigationMarkersFoundInReport");
+		return noInvestigationMarkersFoundTextView.isDisplayed();
 	}
 
 	@Override

@@ -272,6 +272,7 @@
         <fileset dir="${build}">
            <include name="**/AuthenticationApiTest.class" />
            <include name="**/ReportsApiTest.class" />
+           <include name="**/InvestigationReportsApiTest.class" />       	
         </fileset>
       </batchtest>
     </junit>
@@ -701,10 +702,10 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-		        <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
-				<include name="**/DriverViewPageTests_PipelineRunner1.class" />
-				<include name="**/DriverViewPageTest_Analytics.class" />
-				<include name="**/ObserverViewPageTest_Analytics.class" />
+		        <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
+				<include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
 			</fileset>
       </batchtest>
     </junit>
@@ -814,6 +815,7 @@
           <include name="**/ReportsTestSuite2.class" />
           <include name="**/LatLongSelectionReportsPageTest.class" />
           <include name="**/LatLongSelectionReportsPageTest2.class" />
+          <include name="**/FEQReportsPageTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -870,8 +872,7 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	          <include name="**/ComplianceReportsTestSuite1.class" />
-  	          <include name="**/ReportsTestSuite2.class" />
+  	        	<include name="**/FEQReportsPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

@@ -935,4 +935,36 @@ public class ManageUsersPageTest extends SurveyorBaseTest {
 		manageUsersPage.open();
 		assertTrue(manageUsersPage.areTableColumnsSorted());
 	}
+	
+	/**
+	 * Test Case ID: TC91_AddUser_SamePassword
+	 * Test Description: Add User - Password and Confirm Password values different
+	 * Steps :
+	 * - On Home Page, and click Picarro Administration -> Manage Users
+	 * - Click on 'Add New User' button
+	 * - Provide different values for Password and Confirm Password fields
+	 * Results:
+	 * - "Please enter the same value again." message should be displayed
+	 */
+	@Test
+	public void TC91_AddUser_SamePassword() {
+		Log.info("\nRunning TC91_AddUser_SamePassword- " + "Test Description: Add User - Password and Confirm Password values different\n");
+		String errorMsg = PWDSAMEVALUE;
+		String email = PICNAMEPREFIX + "dr" + getTestSetup().getNewFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
+		String customerName = "Picarro";
+		String location = SQACUSSULOC;
+		String locationDesc = customerName + " - " + location;
+
+		loginPage.open();
+		loginPage.loginNormalAs(SQAPICSUP, USERPASSWORD);
+		manageUsersPage.open();
+
+		manageUsersPage.addNewPicarroUser(email, USERPASSWORD, USERPASSWORD + " ", CUSUSERROLEDR, locationDesc, TIMEZONECT);
+		String confirmPasswordError = manageUsersPage.getConfirmPasswordError();
+		Log.info(String.format("Picarro User error message comparison: Expected='%s', Actual='%s'", errorMsg, confirmPasswordError));
+		Log.info(String.format("Resource 'Validation_EnterSameValueAgain' value='%s'", Resources.getResource(ResourceKeys.Validation_EnterSameValueAgain)));
+		assertEquals(errorMsg, confirmPasswordError);
+
+		manageUsersPage.clickOnCancelAddBtn();
+	}
 }

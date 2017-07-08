@@ -2,6 +2,7 @@ package androidapp.screens.source;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -9,9 +10,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]")
+	@CacheLookup
 	private WebElement followButton;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Investigate\")")
+	@CacheLookup
 	private WebElement investigateButton;
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {

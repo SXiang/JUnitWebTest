@@ -75,7 +75,7 @@
   </target>
   <target name="compile_androidapp" depends="compile_scommon" description="Compiles android app source">
     <buildnumber file="build.number" />
-  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/screens/source:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
+  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/screens/source:${basedir}/androidapp/dataprovider:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
       <classpath>
       	<fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
@@ -124,6 +124,7 @@
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/SanityTest.class" />
+          <include name="**/ReportListScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -15,10 +15,19 @@ public class WebDriverFactory {
 		webDriverWrapper.driverSetup();
 		return webDriverWrapper;
 	}
+
 	public static WebDriver getAppiumDriver() {
 		return WebDriverWrapper.getAppiumDriver();
 	}
-	
+
+	public static WebDriver getEmulationDriver(String emulatedDeviceName) {
+		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
+		webDriverWrapper.setDeviceEmulationEnabled(true);
+		webDriverWrapper.setEmulatedDeviceName(emulatedDeviceName);
+		webDriverWrapper.driverSetup();
+		return webDriverWrapper.getDriver();
+	}
+
 	public static WebDriver getDriver() {
 		return getDriver(0);
 	}
@@ -87,6 +96,6 @@ public class WebDriverFactory {
 	}
 
 	public static void setChromeBrowserCapabilities(Proxy seleniumProxy, Integer index) {
-		threadLocalDriverList.get(index).get().setChromeBrowserCapabilities(seleniumProxy);
+		threadLocalDriverList.get(index).get().setChromeBrowserCapabilities(seleniumProxy, null /*emulatedDeviceName*/);
 	}
 }

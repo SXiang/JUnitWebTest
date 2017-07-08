@@ -990,7 +990,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 */
 	public boolean copyReport(String data, Integer dataRowID) throws Exception {
 		logAction("ReportsCommonPageActions.copyReport", data, dataRowID);
-		this.getReportsCommonPage().copyReport(data, LoginPageActions.workingDataRow.get().username);
+		this.getReportsCommonPage().clickOnButtonInReportPage(data, LoginPageActions.workingDataRow.get().username,ReportsButtonType.Copy);
 		this.getReportsCommonPage().waitForCopyReportPagetoLoad();
 		this.initializePageObject(TestContext.INSTANCE.getDriver(), this.createNewPageObject());
 		return true;
@@ -3706,5 +3706,21 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 
 	protected ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
+	}
+	
+	/**
+	 * Returns the location data row for specified location data row id.
+	 * @param dataRowID - location row id.
+	 * @return - location data row
+	 * @throws Exception
+	 */
+	protected LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			return ManageLocationPageActions.workingDataRow.get();
+		} else {
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
+			return locationDataRow;
+		}
 	}
 }

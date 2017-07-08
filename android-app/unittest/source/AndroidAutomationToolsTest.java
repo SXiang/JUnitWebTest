@@ -4,9 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.Log;
 import common.source.TestContext;
@@ -30,11 +32,24 @@ public class AndroidAutomationToolsTest {
 		}
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+
+		AdbInterface.init(testSetup.getAdbLocation());
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() {
+		AdbInterface.stop();
 	}
 
 	@Test
 	public void testStart() throws IOException {
 		AndroidAutomationTools.start();
+	}
+
+	@Test
+	public void testDisableAnimations() throws Exception {
+		AndroidAutomationTools.start();
+		AndroidAutomationTools.disableAnimations();
 	}
 
 	@Test

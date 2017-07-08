@@ -12,8 +12,7 @@ import surveyor.scommon.actions.data.CoordinateDataReader;
 import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.FacilityEQReportDataReader;
 import surveyor.scommon.actions.data.FacilityEQReportDataReader.FacilityEQReportsDataRow;
-import surveyor.scommon.actions.data.LineSegmentDataReader;
-import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
+import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
 import surveyor.scommon.actions.data.ReportsCommonDataReader.ReportsCommonDataRow;
 import surveyor.scommon.entities.ReportCommonEntity;
@@ -259,7 +258,10 @@ public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 		String facilityEQLocationParameter = getWorkingReportsDataRow().facilityEQLocationParameter;
 		List<Coordinates> shapeCoordinates = buildShapeInfoList(getWorkingReportsDataRow(), this.excelUtility);
 		boolean showLisas = getWorkingReportsDataRow().showLisas;
-		
+		if (!ActionArguments.isEmpty(facilityEQLocationParameter) && (Integer.valueOf(facilityEQLocationParameter) > 0)) {
+			LocationDataRow locationDataRow = getLocationDataRow(Integer.valueOf(facilityEQLocationParameter));
+			facilityEQLocationParameter = locationDataRow.name;
+		}
 		rpt.setFacilityEQLocationParameter(facilityEQLocationParameter);
 		rpt.setShapeCoordinates(shapeCoordinates);
 		rpt.setShowLisas(showLisas);

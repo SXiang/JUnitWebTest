@@ -29,7 +29,7 @@ import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import surveyor.scommon.source.SurveyorTestRunner;
-import androidapp.entities.source.InvestigateReportEntity;
+import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.InvestigationEntity;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
@@ -105,11 +105,11 @@ public class POCInvestigateReportTest {
 		Log.info("Executing test_ScreenInteractions ...");
 
 		investigateReportScreen.waitForScreenLoad();
-		List<InvestigateReportEntity> investigationReports = investigateReportScreen.getInvestigationReports();
+		List<InvestigationMarkerEntity> investigationReports = investigateReportScreen.getInvestigationMarkers();
 		Log.info(String.format("Found %d investigation reports", investigationReports.size()));
 		assertTrue("Investigation reports should be displayed", investigationReports != null && investigationReports.size() > 1);
 
-		investigateReportScreen.clickOnFirstInvestigationReport();
+		investigateReportScreen.clickOnFirstInvestigationMarker();
 		investigationScreen.waitForScreenLoad();
 		List<InvestigationEntity> investigations = investigationScreen.getInvestigations();
 		Log.info(String.format("Found %d investigations", investigations.size()));

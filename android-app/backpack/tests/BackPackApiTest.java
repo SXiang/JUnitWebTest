@@ -14,6 +14,7 @@ import common.source.ApiCaller;
 import common.source.BackPackApiInterface;
 import common.source.BackPackSimulator;
 import common.source.Log;
+import common.source.TestContext;
 import retrofit2.Call;
 import retrofit2.Response;
 import surveyor.scommon.source.BaseTest;
@@ -30,7 +31,10 @@ public class BackPackApiTest extends BaseTest {
 	@Test
 	public void testDataAPI() throws IOException {
 		Log.info("Executing testDataAPI() test...");
+		Log.info("Wait few seconds for data to be processed...");
+		TestContext.INSTANCE.stayIdle(10);
 		Data data = invokeGetV1DataApi();
+		Log.info(String.format("Heatmap image data is: %s", data));
 		assertTrue("Heatmap image invalid.", data.getData().getHeatmap().length() > 0);
 		assertTrue("Heatmap image timestamp invalid.", data.getData().getHeatmapImageTime() > 0.0);
 	}
