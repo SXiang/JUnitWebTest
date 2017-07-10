@@ -13,7 +13,6 @@ import surveyor.scommon.actions.data.CoordinateDataReader.CoordinateDataRow;
 import surveyor.scommon.actions.data.EQReportDataReader;
 import surveyor.scommon.actions.data.EQReportDataReader.EQReportsDataRow;
 import surveyor.scommon.actions.data.LineSegmentDataReader;
-import surveyor.scommon.actions.data.LocationDataReader;
 import surveyor.scommon.actions.data.LineSegmentDataReader.LineSegmentDataRow;
 import surveyor.scommon.actions.data.LocationDataReader.LocationDataRow;
 import surveyor.scommon.actions.data.ReportsBaseDataReader.ReportsBaseDataRow;
@@ -288,22 +287,6 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 			coordinates.add(new Coordinates(coordinateDataRow.longitude, coordinateDataRow.latitude));
 		}
 		return coordinates;
-	}
-
-	/**
-	 * Returns the location data row for specified location data row id.
-	 * @param dataRowID - location row id.
-	 * @return - location data row
-	 * @throws Exception
-	 */
-	private LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
-		if (ManageLocationPageActions.workingDataRow.get() != null) {
-			return ManageLocationPageActions.workingDataRow.get();
-		} else {
-			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
-			return locationDataRow;
-		}
 	}
 
 	private Boolean isSelectLineSegmentsUsingJS(EQReportsDataRow dataRow) throws Exception {

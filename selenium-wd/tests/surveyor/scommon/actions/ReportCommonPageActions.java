@@ -3707,4 +3707,20 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}
+	
+	/**
+	 * Returns the location data row for specified location data row id.
+	 * @param dataRowID - location row id.
+	 * @return - location data row
+	 * @throws Exception
+	 */
+	protected LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
+		if (ManageLocationPageActions.workingDataRow.get() != null) {
+			return ManageLocationPageActions.workingDataRow.get();
+		} else {
+			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
+			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
+			return locationDataRow;
+		}
+	}
 }

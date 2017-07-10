@@ -272,6 +272,7 @@
         <fileset dir="${build}">
            <include name="**/AuthenticationApiTest.class" />
            <include name="**/ReportsApiTest.class" />
+           <include name="**/InvestigationReportsApiTest.class" />       	
         </fileset>
       </batchtest>
     </junit>
@@ -705,10 +706,10 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-		        <include name="**/FEQReportsPageTest.class" />
-				<include name="**/EQReportsPageTest.class" />
-				<include name="**/EQReportsPageTest2.class" />
-				<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+		        <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
+				<include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
 			</fileset>
       </batchtest>
     </junit>

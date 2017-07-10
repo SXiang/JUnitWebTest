@@ -18,7 +18,7 @@ public class FacilityEQReportDataReader extends ReportsBaseDataReader {
 	public static final int Excel_TestData__Col_FacilityEQLocationParameter = 5;
 	public static final int Excel_TestData__Col_ReportSurveyRowIDs = 6;
 	public static final int Excel_TestData__Col_ShapeCoordinatesRowIDs = 7;
-	public static final int Excel_TestData__Col_ShowLisas = 7;
+	public static final int Excel_TestData__Col_ShowLisas = 8;
 
 	public FacilityEQReportDataReader(ExcelUtility excelUtility) {
 		super(excelUtility, () -> TESTDATA_SHEET_NAME, () -> buildColumnIndexMap());

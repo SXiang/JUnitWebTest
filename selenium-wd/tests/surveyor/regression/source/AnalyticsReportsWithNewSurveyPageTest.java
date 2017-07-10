@@ -10,15 +10,12 @@ import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
-import org.junit.rules.TestName;
-
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.ManageCustomerPageActions;
 import surveyor.scommon.actions.ManageLocationPageActions;
@@ -49,9 +46,6 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 	private static DriverViewPage driverViewPage;
 
 	private static MeasurementSessionsPage measurementSessionsPage;
-
-	@Rule
-	public TestName testName = new TestName();
 
 	@BeforeClass
 	public static void beforeClass() {
