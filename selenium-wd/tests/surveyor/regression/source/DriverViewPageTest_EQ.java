@@ -101,9 +101,6 @@ public class DriverViewPageTest_EQ extends BaseReportsPageActionTest {
 		private void initializePageObjects() {
 			PageObjectFactory pageObjectFactory = new PageObjectFactory();
 
-			EQReportsPage eqReportsPage = pageObjectFactory.getEqReportsPage();
-			PageFactory.initElements(getDriver(),  eqReportsPage);
-
 			manageSurveyorPage = pageObjectFactory.getManageSurveyorPage();
 			PageFactory.initElements(getDriver(), manageSurveyorPage);
 
