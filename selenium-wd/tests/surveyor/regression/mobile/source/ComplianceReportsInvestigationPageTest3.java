@@ -140,7 +140,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	}
 
 	/**
-	 * Test Case ID: TC1761_MoibleUserIsAbleToEditLeadInfomation
+	 * Test Case ID: TC1761_MoibleUserIsAbleToEditLeakDetails
 	 * Test Description: Mobile app user should be able to edit leak information associated with a given LISA
 	 * Script:
 	 * - Log into the mobile app as a user to whom LISAs have been assigned
@@ -163,9 +163,9 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 */
 	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1761, location = InvestigationReportDataProvider.class)
-	public void TC1761_MoibleUserIsAbleToEditLeadInfomation(
+	public void TC1761_MoibleUserIsAbleToEditLeakDetails(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		Log.info("\nRunning TC1761_MoibleUserIsAbleToEditLeadInfomation ..." +
+		Log.info("\nRunning TC1761_MoibleUserIsAbleToEditLeakDetails ..." +
 			 "\nTest Description: Mobile app user should be able to edit leak information associated with a given LISA");
 		//TODO: TBD
 	
