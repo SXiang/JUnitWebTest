@@ -400,6 +400,8 @@ public class DbSeedExecutor {
 
 		Connection connection = null;
 		DatFileBuilder datFileBuilder = null;
+		String assetDatFile = null;
+		String boundaryDatFile = null;
 		try {
 			connection = ConnectionFactory.createConnection();
 			connection.setAutoCommit(false);
@@ -415,8 +417,8 @@ public class DbSeedExecutor {
 				return;
 			}
 
-			String assetDatFile = Paths.get(datFolder, ASSET_DAT_FILE).toString();
-			String boundaryDatFile = Paths.get(datFolder, BOUNDARY_DAT_FILE).toString();
+			assetDatFile = Paths.get(datFolder, ASSET_DAT_FILE).toString();
+			boundaryDatFile = Paths.get(datFolder, BOUNDARY_DAT_FILE).toString();
 			if (isCustomerSpecified) {
 				datFileBuilder = new DatFileBuilder();
 				assetDatFile = datFileBuilder.build(assetDatFile, picarroCustomerId, customerId);
@@ -459,6 +461,12 @@ public class DbSeedExecutor {
 			connection.commit();
 
 		} finally {
+			if (assetDatFile != null && boundaryDatFile != null) {
+				Log.info("Cleanup remote bcp .dat files ...");
+				String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
+				BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+			}
+
 			connection.setAutoCommit(true);
 			connection.close();
 			if (datFileBuilder != null) {

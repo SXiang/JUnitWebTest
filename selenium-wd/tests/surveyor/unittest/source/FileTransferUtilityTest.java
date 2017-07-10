@@ -16,6 +16,7 @@ import common.source.TestSetup;
 public class FileTransferUtilityTest {
 
 	private static final String DESTINATION_DIR = "C:\\temp";
+	private static final String LOG_FOLDER = "C:\\QATestLogs";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -39,6 +40,6 @@ public class FileTransferUtilityTest {
 		String destMachinePassword = TestContext.INSTANCE.getTestSetup().getDbServerMachinePassword();
 		String sourceFileLocation = Paths.get(executionPath, "data\\sql\\Boundary.BA.dat").toString();
 		String destFileLocation = Paths.get(DESTINATION_DIR, "Boundary.BA.dat").toString();
-		FileTransferUtility.transferFile(destMachineIPAddress, destMachineUsername, destMachinePassword, sourceFileLocation, destFileLocation);
+		FileTransferUtility.transferFile(destMachineIPAddress, destMachineUsername, destMachinePassword, sourceFileLocation, destFileLocation, LOG_FOLDER);
 	}
 }

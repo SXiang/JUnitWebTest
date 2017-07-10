@@ -9,7 +9,8 @@
 #           -DestMachineUsername "Win2k12-Android\picarro" `
 #           -DestMachinePassword "<password>" `
 #           -SourceFileLocation "C:\Repositories\surveyor-qa\selenium-wd\data\sql\Asset.BA.dat" `
-#           -DestFileLocation "C:\temp\Asset.BA.dat"
+#           -DestFileLocation "C:\temp\Asset.BA.dat" `
+#           -LogFolder "C:\QATestLogs" `
 # ---------------------------------------------------------------
 
 param
@@ -30,7 +31,10 @@ param
   [String] $SourceFileLocation,
 
   [Parameter(Mandatory=$true)]
-  [String] $DestFileLocation
+  [String] $DestFileLocation,
+
+  [Parameter(Mandatory=$true)]
+  [String] $LogFolder
 )
 
 <#
@@ -237,6 +241,13 @@ try {
     # Remote PSSession Script -> [Pre-Send Checks]
     $ScriptBlockPreSendFileChecks = { 
         $DestFileLocation = $args[0]
+        $LogFolder = $args[1]
+
+        Write-Host "[Remote CHECK] Ensuring log folder exists in remote machine. Executing on $DestMachineIPAddress | Folder -> $LogFolder"
+        if (-not (Test-Path "$LogFolder" -PathType Container)) {
+            Write-Host "[Remote] Creating directory -> $LogFolder ..."
+            New-Item -Path $LogFolder -ItemType Directory
+        }         
 
         Write-Host "[Remote CHECK] If remote machine has a file same as folder we are trying to create, delete it. Executing on $DestMachineIPAddress | File -> $DestFileLocation"
         if (Test-Path "$DestFileLocation" -PathType Leaf) {
@@ -259,7 +270,7 @@ try {
 
     # Pre-Checks before sending file.
     Write-Host "Executing checks on remote machine $DestMachineIPAddress"
-    Invoke-Command -Session $session -ScriptBlock $ScriptBlockPreSendFileChecks -ArgumentList $DestFileLocation
+    Invoke-Command -Session $session -ScriptBlock $ScriptBlockPreSendFileChecks -ArgumentList $DestFileLocation, $LogFolder
 
     # Send file.
     Get-ChildItem -Path $TEMP_DIR | % { 
@@ -378,4 +389,3 @@ Get-PSSession | Disconnect-PSSession
 Write-Host "Cleaning up temporary files on current machine"
 Remove-Item "$TEMP_DIR\*" -Recurse -Force 
 Write-Host "Done cleanup of temporary files on current machine"
-
