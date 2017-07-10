@@ -344,7 +344,6 @@ try {
 
         # 5. 
         # Decompress files on server.
-        #Decompress-ArchiveFile($sourceArchiveFileName, $destinationDirectoryName, $overwriteFiles)
         $sourceArchiveFileName = "$destRootFolder\$zipFileName"
         $destinationDirectoryName = $destRootFolder
         Write-Host "[Remote] Decompressing file - [$sourceArchiveFileName] to [$destinationDirectoryName]."
