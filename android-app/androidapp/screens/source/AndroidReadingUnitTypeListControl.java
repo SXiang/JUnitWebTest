@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 
 public class AndroidReadingUnitTypeListControl extends AndroidBaseScreen {
 
@@ -23,22 +24,6 @@ public class AndroidReadingUnitTypeListControl extends AndroidBaseScreen {
 
 	public AndroidReadingUnitTypeListControl(WebDriver driver) {
 		super(driver);
-	}
-
-	public enum ReadingUnitType {
-		None ("None"),
-		PPM ("PPM"),
-		LEL ("LEL"),
-		PctGas ("% Gas");
-		private final String name;
-
-		ReadingUnitType(String nm) {
-			name = nm;
-		}
-
-		public String toString() {
-			return this.name;
-		}
 	}
 
 	public void selectReadingUnitType(ReadingUnitType readingUnitType) {

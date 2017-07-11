@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 public class AndroidLeakSourceTypeListControl extends AndroidBaseScreen {
 
@@ -35,26 +36,6 @@ public class AndroidLeakSourceTypeListControl extends AndroidBaseScreen {
 
 	public AndroidLeakSourceTypeListControl(WebDriver driver) {
 		super(driver);
-	}
-
-	public enum LeakSourceType {
-		Gas ("Gas"),
-		Sewer ("Sewer"),
-		Catch_Basin ("Catch_Basin"),
-		Landfill ("Landfill"),
-		Swamp ("Swamp"),
-		Customer ("Customer"),
-		Other_Enclosure ("Other_Enclosure"),
-		Other_Natural_Source ("Other_Natural_Source");
-		private final String name;
-
-		LeakSourceType(String nm) {
-			name = nm;
-		}
-
-		public String toString() {
-			return this.name;
-		}
 	}
 
 	public void selectLeakSourceType(LeakSourceType leakSourceType) {

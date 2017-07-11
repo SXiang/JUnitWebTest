@@ -14,7 +14,6 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.scommon.source.BaseMapViewPage.FeatureInfo;
 
 public class RegexUtilityTest {
 
@@ -31,6 +30,20 @@ public class RegexUtilityTest {
 		}
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
+	}
+
+	@Test
+	public void testInvAddLeakHeaderMatch() {
+		Log.info("Running test - testInvAddLeakHeaderMatch() ...");
+		String headerText = "CR-A38DB8-LISA-2  (In Progress)";
+		assertTrue(isInvAddLeakHeaderMatch(headerText));
+	}
+
+	@Test
+	public void testInvAddLeakHeaderNoMatch() {
+		Log.info("Running test - testInvAddLeakHeaderNoMatch() ...");
+		String headerText = "NoMatchText";
+		assertFalse(isInvAddLeakHeaderMatch(headerText));
 	}
 
 	@Test
@@ -59,6 +72,23 @@ public class RegexUtilityTest {
 		Log.info("Running test - testFeatureInfoNoneMatch() ...");
 		String fInfoText = "NO_MATCHING_RECORDS";
 		assertFalse(isFeatureInfoTextMatch(fInfoText));
+	}
+
+	private boolean isInvAddLeakHeaderMatch(String headerText) {
+		boolean match = false;
+		String regexPattern = RegexUtility.INV_ADD_LEAK_STATUS_HEADER_REGEX;
+		if (RegexUtility.matchesPattern(headerText, regexPattern)) {
+			List<String> matchingGroups = RegexUtility.getMatchingGroups(headerText, regexPattern, true);
+			String matchedText = matchingGroups.get(matchingGroups.size()-1);
+			matchingGroups.forEach(t -> Log.info("Matching Group: " + t));
+			Log.info(String.format("Matched Text=[%s]. Pattern=[%s]; Text=[%s]", matchedText, regexPattern, headerText));
+			match = true;
+		} else {
+			String failureMsg = String.format("FAILED match. Pattern=[%s]; Text=[%s]", regexPattern, headerText);
+			Log.warn(failureMsg);
+		}
+
+		return match;
 	}
 
 	private boolean isFeatureInfoTextMatch(String featureInfoText) {

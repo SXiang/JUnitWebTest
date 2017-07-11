@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.LeakLocationType;
 
 public class AndroidLeakLocationTypeListControl extends AndroidBaseScreen {
 
@@ -44,29 +45,6 @@ public class AndroidLeakLocationTypeListControl extends AndroidBaseScreen {
 
 	public AndroidLeakLocationTypeListControl(WebDriver driver) {
 		super(driver);
-	}
-
-	public enum LeakLocationType {
-		Main ("Main"),
-		Service ("Service"),
-		Service_T ("Service_T"),
-		Service_Branch ("Service_Branch"),
-		Riser ("Riser"),
-		Meter_Set ("Meter_Set"),
-		Customer_Equipment ("Customer_Equipment"),
-		Sewer_Manhole ("Sewer_Manhole"),
-		Catch_Basin ("Catch_Basin"),
-		Substructure ("Substructure"),
-		Other ("Other");
-		private final String name;
-
-		LeakLocationType(String nm) {
-			name = nm;
-		}
-
-		public String toString() {
-			return this.name;
-		}
 	}
 
 	public void selectLeakLocationType(LeakLocationType leakLocationType) {

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.LeakType;
 
 public class AndroidLeakTypeListControl extends AndroidBaseScreen {
 
@@ -17,20 +18,6 @@ public class AndroidLeakTypeListControl extends AndroidBaseScreen {
 
 	public AndroidLeakTypeListControl(WebDriver driver) {
 		super(driver);
-	}
-
-	public enum LeakType {
-		Above_Ground ("Above_Ground"),
-		Below_Ground ("Below_Ground");
-		private final String name;
-
-		LeakType(String nm) {
-			name = nm;
-		}
-
-		public String toString() {
-			return this.name;
-		}
 	}
 
 	public void selectLeakType(LeakType leakType) {

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.MobileActions.KeyCode;
 import common.source.Timeout;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -39,6 +40,14 @@ public class AndroidBaseScreen {
 
 	public void tap(WebElement element) {
 		MobileActions.newAction((MobileDriver<?>)driver).tap(element);
+	}
+
+	public void press(WebElement element) {
+		MobileActions.newAction((MobileDriver<?>)driver).press(element);
+	}
+
+	public void clickAndPressKey(WebElement element, KeyCode keyCode) throws Exception {
+		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
 	}
 
 	public void sendKeys(WebElement element, String text) throws Exception {

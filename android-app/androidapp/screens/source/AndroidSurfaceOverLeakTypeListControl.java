@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 
 public class AndroidSurfaceOverLeakTypeListControl extends AndroidBaseScreen {
 
@@ -29,24 +30,6 @@ public class AndroidSurfaceOverLeakTypeListControl extends AndroidBaseScreen {
 
 	public AndroidSurfaceOverLeakTypeListControl(WebDriver driver) {
 		super(driver);
-	}
-
-	public enum SurfaceOverLeakType {
-		Above_Ground ("Above_Ground"),
-		Concrete ("Concrete"),
-		Un_surfaced ("Un_surfaced"),
-		Tar_Component ("Tar_Component"),
-		In_Substructure ("In_Substructure"),
-		Other ("Other");
-		private final String name;
-
-		SurfaceOverLeakType(String nm) {
-			name = nm;
-		}
-
-		public String toString() {
-			return this.name;
-		}
 	}
 
 	public void selectSurfaceOverLeakType(SurfaceOverLeakType surfaceOverLeakType) {
