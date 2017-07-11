@@ -121,7 +121,7 @@ public class SurveyViewPageTest_Analytics extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 
-		assertTrue(getSurveyViewPageAction().verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(getSurveyViewPageAction().verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_ANALYTICS1_TYPE, NOTSET));
 	}
 }

@@ -562,7 +562,7 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 
 			// Include verifications to perform once the Survey has started and before Stop survey is called.
 			assertTrue(driverPageAction.verifyCrossHairIconIsShownOnMap("Red", NOTSET));
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
 			return true;
 		});

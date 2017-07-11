@@ -224,7 +224,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
 		/* Step 4: stopAnalyzerSurvey */
 		stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
@@ -316,7 +316,7 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		if(observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)){
 			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
 			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
-			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isAnalyticsModeDialogShown());
+			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isSurveyModeDialogShown());
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 			testEnvironmentAction.idleForSeconds("5", NOTSET);
 			assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
