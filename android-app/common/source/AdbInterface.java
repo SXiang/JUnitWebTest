@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
+import com.android.ddmlib.InstallException;
 import com.android.ddmlib.MultiLineReceiver;
 import com.android.ddmlib.ShellCommandUnresponsiveException;
 import com.android.ddmlib.TimeoutException;
@@ -63,16 +64,68 @@ public class AdbInterface {
 		return testCondition.test(executeShellCmdInternal(adbLocation, command));
 	}
 
-	private static String executeShellCmdInternal(final String adbLocation, final String command) {
-		Log.method("executeShellCmdInternal", command);
+	public static void installPackage(String packageFilePath, boolean replaceExisting, boolean allowVersionDowngrade, boolean grantAllRuntimePermissions)  {
+		Log.method("installPackage", packageFilePath, replaceExisting, allowVersionDowngrade, grantAllRuntimePermissions);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
+			try {
+				String extraArgs = "";
+				if (allowVersionDowngrade) {
+					extraArgs += " -d";
+				}
+				if (grantAllRuntimePermissions) {
+					extraArgs += " -g";
+				}
+
+				if (extraArgs.length() > 0) {
+					device.installPackage(packageFilePath, replaceExisting, extraArgs);
+				} else {
+					device.installPackage(packageFilePath, replaceExisting);
+				}
+			} catch (InstallException ex) {
+				Log.error(ExceptionUtility.getStackTraceString(ex));
+			}
+		} else {
+			Log.error("installPackage -> No connected devices found.");
+		}
+	}
+
+	public static void init(String adbLocation) {
+		setAdbLocation(adbLocation);
+		AndroidDebugBridge.init(false);
+	}
+
+	public static void stop() {
+		AndroidDebugBridge.disconnectBridge();
+		AndroidDebugBridge.terminate();
+	}
+
+	public static void uninstallPackage(String packageName) {
+		Log.method("uninstallPackage", packageName);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
+			try {
+				device.uninstallPackage(packageName);
+			} catch (InstallException ex) {
+				Log.error(ExceptionUtility.getStackTraceString(ex));
+			}
+		} else {
+			Log.error("uninstallPackage -> No connected devices found.");
+		}
+	}
+
+	public static void waitForDeviceToBeReady(final String adbLocation) {
+		Log.method("waitForDeviceToBeReady");
 		if (adb == null) {
 			adb = AndroidDebugBridge.createBridge(adbLocation, true);
 		}
-
 		PollManager.poll(() -> !adb.isConnected() || !adb.hasInitialDeviceList(), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 2 * MAX_RETRIES_IN_POLL);
-		IDevice[] devices = AndroidDebugBridge.getBridge().getDevices();
-		if (devices != null && devices.length > 0) {
-			IDevice device = devices[0];
+	}
+
+	private static String executeShellCmdInternal(final String adbLocation, final String command) {
+		Log.method("executeShellCmdInternal", command);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
 			ShellOutputReceiver receiver = new ShellOutputReceiver();
 			Log.info(String.format("Executing -> adb shell %s", command));
 			try {
@@ -92,21 +145,18 @@ public class AdbInterface {
 		return "";
 	}
 
-	public static void init(String adbLocation) {
-		setAdbLocation(adbLocation);
-		AndroidDebugBridge.init(false);
-	}
-
-	public static void stop() {
-		AndroidDebugBridge.disconnectBridge();
-		AndroidDebugBridge.terminate();
-	}
-
-	public static void waitForDeviceToBeReady(final String adbLocation) {
-		Log.method("waitForDeviceToBeReady");
+	private static IDevice getConnectedDevice() {
+		IDevice device = null;
 		if (adb == null) {
 			adb = AndroidDebugBridge.createBridge(adbLocation, true);
 		}
+
 		PollManager.poll(() -> !adb.isConnected() || !adb.hasInitialDeviceList(), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 2 * MAX_RETRIES_IN_POLL);
+		IDevice[] devices = AndroidDebugBridge.getBridge().getDevices();
+		if (devices != null && devices.length > 0) {
+			device = devices[0];
+		}
+
+		return device;
 	}
 }

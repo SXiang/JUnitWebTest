@@ -146,6 +146,23 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input text %s", text));
 	}
 
+	public void slideBy(WebElement slider, WebElement sliderContainer, Float percValue) {
+		Log.method("slideBy");
+		int width = sliderContainer.getSize().getWidth();
+		int x = slider.getLocation().getX();
+		int y = slider.getLocation().getY();
+		int percentX = (int)((width * percValue)/100);
+		int actualX = sliderContainer.getLocation().getX() + percentX;
+		final float CORRECTION_FACTOR = 1.4f;
+		int moveToX = (int)((actualX - x)/CORRECTION_FACTOR);   // Appium appears to move the element by a value larger than moveToX value provided. Adding this adjustment factor to workaround Appium likely buggy behaviour.
+		Log.info(String.format("SLIDER : Top LEFT=(%d, %d)", slider.getLocation().getX(), slider.getLocation().getY()));
+		Log.info(String.format("SLIDER : Width=%d; Height=%d", slider.getSize().getWidth(), slider.getSize().getHeight()));
+		Log.info(String.format("x=%d; y=%d; actualX=%d, width=%d", x, y, actualX, width));
+		Log.info(String.format("Moving slider by %f percent from start. percentX=%d; ", percValue, percentX));
+		Log.info(String.format("Performing action slideBy -> press(%d, %d) -> moveTo(%d, %d)", x, y, moveToX, 0));
+		new TouchAction(this.mobileDriver).press(x, y).moveTo(moveToX, 0).release().perform();
+	}
+
 	private String escapeText(String input) {
 		String escInput = input;
 		for (String ch : ESCAPE_CHARS) {

@@ -45,6 +45,10 @@ public class AndroidBaseScreen {
 		MobileActions.newAction().sendKeys(element, text);
 	}
 
+	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
+		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
+	}
+
 	public void waitForFirstAppLoad() {
 		Log.method("waitForFirstAppLoad");
 		waitForScreenLoad(driver, Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT, screenLoadPredicate);

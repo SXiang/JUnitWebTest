@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import backpack.api.entities.Data;
 import common.source.ApiCaller;
 import common.source.BackPackApiInterface;
-import common.source.BackPackSimulator;
+import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
 import retrofit2.Call;
@@ -25,7 +25,7 @@ public class BackPackApiTest extends BaseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		BackPackSimulator.restartSimulator();
+		BackPackAnalyzer.restartSimulator();
 	}
 
 	@Test
@@ -55,6 +55,6 @@ public class BackPackApiTest extends BaseTest {
 
 	@After
 	public void tearDown() throws Exception {
-		BackPackSimulator.stopSimulator();
+		BackPackAnalyzer.stopSimulator();
 	}
 }

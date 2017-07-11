@@ -40,9 +40,13 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement ppmText;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView")
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement modeText;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]")
+	@CacheLookup
+	private WebElement menuButton;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText")
 	@CacheLookup
@@ -85,6 +89,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void clickOnReset() {
 		Log.method("clickOnReset");
 		getResetButton().click();
+	}
+
+	public void clickOnMenuButton() {
+		Log.method("clickOnMenuButton");
+		getMenuButton().click();
 	}
 
 	public void clickOnInvestigate() {
@@ -140,7 +149,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
 				toggleModeButtonDisplayed, modeTextDisplayed, modeTextValid));
-		return toggleModeButtonDisplayed && modeTextDisplayed;
+		return toggleModeButtonDisplayed && modeTextDisplayed && modeTextValid;
+	}
+
+	public WebElement getMenuButton() {
+		return menuButton;
 	}
 
 	public WebElement getToggleModeButton() {

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class AndroidAutomationTools {
 	private static final String APPIUM_SERVER_HOSTNAME = "localhost";
-	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_WXGA800-7in";
+	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_Tab_S_8.4_Black";
 	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
 	private static final String START_APPIUM_SERVER_CMD = "StartAppiumServer.cmd";
@@ -19,6 +19,7 @@ public class AndroidAutomationTools {
 
 	public static class ShellCommands {
 		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
+		public static final String PM_LIST_PACKAGES = "pm list packages";
 		public static final String GETPROP_INIT_SVC_BOOTANIM = "getprop init.svc.bootanim";
 		public static final String SET_WINDOW_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"window_animation_scale\"'";
 		public static final String SET_TRANSITION_ANIMATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"transition_animation_scale\"'";
@@ -74,6 +75,11 @@ public class AndroidAutomationTools {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_ANIMATOR_DURATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_TRANSITION_ANIMATION_SCALE);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.SET_WINDOW_ANIMATION_SCALE);
+	}
+
+	public static boolean isPackageInstalled(String packageName) throws Exception {
+		String installedPackages = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.PM_LIST_PACKAGES);
+		return installedPackages.toLowerCase().contains(packageName.toLowerCase());
 	}
 
 	public static void startReactNative() throws IOException {

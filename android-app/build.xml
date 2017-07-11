@@ -125,6 +125,7 @@
         <fileset dir="${build}">
           <include name="**/SanityTest.class" />
           <include name="**/ReportListScreenTest.class" />
+          <include name="**/SettingsScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>
