@@ -194,6 +194,10 @@ public class TestSetup {
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
 
+	private String dbServerMachineIPAddress;
+	private String dbServerMachineUsername;
+	private String dbServerMachinePassword;
+
 	public TestSetup() {
 		initialize();
 	}
@@ -684,6 +688,7 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
+			setDBServerMachineProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -853,6 +858,21 @@ public class TestSetup {
 		String runUUID = this.testProp.getProperty("runUUID");
 		if (runUUID != null && runUUID != "") {
 			this.setRunUUID(Long.valueOf(runUUID));
+		}
+	}
+
+	private void setDBServerMachineProperties() {
+		String dbServerMachineIPAddress = this.testProp.getProperty("dbServerMachine.IPAddress");
+		if (dbServerMachineIPAddress != null && dbServerMachineIPAddress != "") {
+			this.setDbServerMachineIPAddress(dbServerMachineIPAddress);
+		}
+		String dbServerMachineUsername = this.testProp.getProperty("dbServerMachine.Username");
+		if (dbServerMachineUsername != null && dbServerMachineUsername != "") {
+			this.setDbServerMachineUsername(dbServerMachineUsername);
+		}
+		String dbServerMachinePassword = this.testProp.getProperty("dbServerMachine.Password");
+		if (dbServerMachinePassword != null && dbServerMachinePassword != "") {
+			this.setDbServerMachinePassword(dbServerMachinePassword);
 		}
 	}
 
@@ -1609,6 +1629,30 @@ public class TestSetup {
 
 	public void setAdbLocation(String adbLocation) {
 		this.adbLocation = adbLocation;
+	}
+
+	public String getDbServerMachineIPAddress() {
+		return dbServerMachineIPAddress;
+	}
+
+	public void setDbServerMachineIPAddress(String dbServerMachineIPAddress) {
+		this.dbServerMachineIPAddress = dbServerMachineIPAddress;
+	}
+
+	public String getDbServerMachineUsername() {
+		return dbServerMachineUsername;
+	}
+
+	public void setDbServerMachineUsername(String dbServerMachineUsername) {
+		this.dbServerMachineUsername = dbServerMachineUsername;
+	}
+
+	public String getDbServerMachinePassword() {
+		return dbServerMachinePassword;
+	}
+
+	public void setDbServerMachinePassword(String dbServerMachinePassword) {
+		this.dbServerMachinePassword = dbServerMachinePassword;
 	}
 
 	public String getAwsAccessKeyId() {
