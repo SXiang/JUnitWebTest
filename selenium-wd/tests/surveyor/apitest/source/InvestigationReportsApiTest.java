@@ -100,7 +100,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 
 // Test Method #1
 
-	@Test
+	@Ignore
 	public void testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds() throws IOException{
 		Log.info("Executing API test --> testGetBoxesByReportId()...");
 		String verificationToken = getVerificationToken();

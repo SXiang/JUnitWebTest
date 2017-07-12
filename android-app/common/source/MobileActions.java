@@ -285,17 +285,4 @@ public class MobileActions {
 		Log.info("Returning coordinate pair -> " + pair.toString());
 		return pair;
 	}
-
-	/*
-	private Map<String, String> buildScrollObject(boolean moveUp) {
-		Map<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("direction", moveUp ? "up" : "down");
-		return scrollObject;
-	}
-
-	private void scroll(Map<String, String> scrollObject) {
-		JavascriptExecutor js = (JavascriptExecutor) this.getAndroidDriver();
-		js.executeScript("mobile: scroll", scrollObject);
-	}
-	*/
 }

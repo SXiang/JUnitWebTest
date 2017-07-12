@@ -58,6 +58,7 @@ public class ReportDataGenerator {
 		reportInvestigationsPage.selectMultipleLisas(lisasToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
+		// Assign gaps to specified user.
 		String gapNumberPrefix = reportName+"-Gap-";
 		String[] gapsToSelect = new String[gapNumbers.length];
 		for (int i = 0; i < gapNumbers.length; i++) {
