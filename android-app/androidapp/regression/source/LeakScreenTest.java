@@ -264,6 +264,106 @@ public class LeakScreenTest extends BaseReportTest {
 		});
 	}
 
+	/**
+	 *	Test Case: TC2437_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinGaps
+	 *	Pre-Conditions:	Compliance Reports with Gaps assigned to user
+	 *	Script:
+	 *	- Log into Backpack tablet
+	 *	- Press Investigation button
+	 *	- Select a report
+	 *	- Press arrow near top right of screen
+	 *	- Select Gaps in popup
+	 *	- Select a Gap
+	 *	- Click Investigate button
+	 *	- Click on Add Source button
+	 *	- Click on Add Other Source button
+	 *	- Fill out all fields including GPS coordinates and click OK
+	 *	- Repeat last two steps
+	 *	Verifications:
+	 *	- User will see satellite map view
+	 *	- User will see a list of Compliance Reports assigned to him/her
+	 *	- User will see a list of LISAs from that report assigned to him/her
+	 *	- Popup appears where user can select LISAs or Gaps
+	 *	- User will see a list of Gaps from that report assigned to him/her
+	 *	- User is navigated to map showing user's position
+	 *	- Investigation Status at top of screen is set to In-Progress
+	 *	- A summary popup will appear that lists sources already added (if any) and has two buttons, Add Leak and Add Other Source
+	 *	- A popup appears where user can enter details for that leak
+	 *	- User is navigated to previous page and details of newly-added leak appear
+	 *	- All leaks entered should appear with correct data
+	**/
+	@Test
+	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2437, location = ReportListDataProvider.class)
+	public void TC2437_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinGaps(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2437_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinGaps ...");
+
+	}
+
+	/**
+	 *	Test Case: TC2438_EnergyBackpackLeakCanBeEdited
+	 *	Pre-Conditions:	Compliance Report with some LISAs that have already been investigated
+	 *	Script:
+	 *	- Log into the Backpack tablet
+	 *	- Click the Investigate button
+	 *	- Click on a report
+	 *	- Click on an already investigated LISA (marked as either Complete or In Progress)
+	 *	- Click on the Investigate button
+	 *	- Click on the Add Source button
+	 *	- Select an item marked as a Leak and click on it
+	 *	- Change some of the details - be sure that all fields are filled in - and click OK
+	 *	- Select the LISA again and verify the changes
+	 *	Verifications:
+	 *	- User should see a list of reports containing LISAs which were assigned to user
+	 *	- List of LISAs for that report should appear. If the user has a supervisory role, all LISAs for that report will appear. Otherwise, only LISAs assigned to the user will appear
+	 *	- The user is navigated to the map view showing user's position with Follow and Directions buttons on the right and Investigate button at bottom left
+	 *	- Add Source and Add CGI buttons will appear on the right
+	 *	- A popup will appear with the details of leak(s) for that LISA
+	 *	- The details for that leak will be displayed.
+	 *	- All drop-down menus should drop DOWN, not go UP. The user will be navigated to the previous screen showing the list of leaks
+	 *	- The edited details should persist
+	**/
+	@Test
+	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2438, location = ReportListDataProvider.class)
+	public void TC2438_EnergyBackpackLeakCanBeEdited(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2438_EnergyBackpackLeakCanBeEdited ...");
+
+	}
+
+	/**
+	 *	Test Case: TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA
+	 *	Pre-Conditions:	Compliance Report with some LISAs that were previously-investigated
+	 *	Script:
+	 *	1. Log into the mobile app as a user to whom LISAs have been assigned
+	 *	2. Click on a report
+	 *	3. Click on an already investigated LISA (marked as either Complete or In Progress)
+	 *	4. Click on the Investigate button
+	 *	5. Click on the Add Source button
+	 *	6. Select an item marked as a Leak and click on it
+	 *	7. Click the Delete button
+	 *	8. Click OK on the Confirmation
+	 *	Verifications:
+	 *	1. User should see a list of reports containing LISAs which were assigned to user
+	 *	2. List of LISAs for that report should appear. If the user has a supervisory role, all LISAs for that report will appear. Otherwise, only LISAs assigned to the user will appear
+	 *	3. The user is navigated to the map view showing user's position with Follow and Directions buttons on the right and Investigate button at bottom left
+	 *	4. Add Source and Add CGI buttons will appear on the right
+	 *	5. A popup will appear with the details of leak(s) for that LISA
+	 *	6. The details for that leak will be displayed.
+	 *	7. A confirmation will appear
+	 *	8. The deleted leak will no longer appear in the list
+	 *
+	 *
+	**/
+	@Test
+	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2439, location = ReportListDataProvider.class)
+	public void TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA ...");
+
+	}
+
+
 	private void createTestCaseData(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
 		Integer userDataRowID = defaultUserDataRowID;

@@ -12,6 +12,9 @@ public class ReportListDataProvider extends AndroidDataProvider {
 	public static final String REPORT_LIST_DATA_PROVIDER_TC2434 = "dataProviderReportList_TC2434";
 	public static final String REPORT_LIST_DATA_PROVIDER_TC2435 = "dataProviderReportList_TC2435";
 	public static final String REPORT_LIST_DATA_PROVIDER_TC2436 = "dataProviderReportList_TC2436";
+	public static final String REPORT_LIST_DATA_PROVIDER_TC2437 = "dataProviderReportList_TC2437";
+	public static final String REPORT_LIST_DATA_PROVIDER_TC2438 = "dataProviderReportList_TC2438";
+	public static final String REPORT_LIST_DATA_PROVIDER_TC2439 = "dataProviderReportList_TC2439";
 
 	public ReportListDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -45,5 +48,20 @@ public class ReportListDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderReportList_TC2436() {
 		return new Object[][] { { "TC2436" /* TestCaseID */, 6 /* userDataRowID */, 235 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportList_TC2437() {
+		return new Object[][] { { "TC2437" /* TestCaseID */, 6 /* userDataRowID */, 236 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportList_TC2438() {
+		return new Object[][] { { "TC2438" /* TestCaseID */, 6 /* userDataRowID */, 237 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderReportList_TC2439() {
+		return new Object[][] { { "TC2439" /* TestCaseID */, 6 /* userDataRowID */, 238 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
 }
