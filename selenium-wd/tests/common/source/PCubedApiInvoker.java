@@ -18,7 +18,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import surveyor.api.entities.InvestigationBoxInfo;
+import surveyor.api.entities.InvestigationReportBoxInfos;
 import surveyor.api.entities.InvestigationReports;
+import surveyor.api.entities.Payload;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -212,11 +215,37 @@ public class PCubedApiInvoker {
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
 		Call<ResponseBody> cmpRptsCall = apiInterface.getComplianceReportsPage();
 		return cmpRptsCall.execute();
+
 	}
 
 	public static <T> T successResponse(Response<T> response) {
-		if (response.isSuccessful()) {
-			return response.body();
+			if (response!= null && response.isSuccessful()) {
+				return  response.body();
+			}
+		return null;
+	}
+
+	public Response<InvestigationBoxInfo> getLeakListByBox(String boxId) throws IOException {
+		Log.method("getLeakListByBox");
+		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
+		try {
+			Call<InvestigationBoxInfo> invBoxInfoCall = apiInterface.getLeakListByBox(boxId);
+				return invBoxInfoCall.execute();
+		} catch (JsonParseException ex) {
+			Log.error("Error parsing response. Possible reasons -> 1) Non JSON response returned. 2) Non-authenticated call returns non-json response.");
+		}
+
+		return null;
+	}
+
+	public Response<InvestigationReportBoxInfos> getBoxesByReportId(String reportId, String type, Payload body) throws IOException {
+		Log.method("getBoxesByReportId");
+		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
+		try{
+			Call<InvestigationReportBoxInfos> invRepBoxInfosCall = apiInterface.getBoxesByReportId(reportId, type, body);
+			return invRepBoxInfosCall.execute();
+		} catch (JsonParseException ex) {
+			Log.error("Error parsing response. Possible reasons -> 1) Non JSON response returned. 2) Non-authenticated call returns non-json response.");
 		}
 
 		return null;

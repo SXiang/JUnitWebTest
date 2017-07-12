@@ -13,6 +13,7 @@ import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 public class LeakDataGenerator {
 
 	public static class DataKey {
+		public static final String USE_CURRENT_LOCATION = "USE_CURRENT_LOCATION";
 		public static final String LEAK_SOURCE_TYPE = "LEAK_SOURCE_TYPE";
 		public static final String LEAK_LOCATION_TYPE = "LEAK_LOCATION_TYPE";
 		public static final String LEAK_TYPE = "LEAK_TYPE";
@@ -60,9 +61,11 @@ public class LeakDataGenerator {
 		private String locationRemarks;
 		private String additionalNotes;
 		private Boolean isPavedWallToWall;
+		private Boolean useCurrentLocation;
 
 		public LeakDataBuilder setDefaultValues() {
 			this.setSourceType(LeakSourceType.Gas)
+				.setUseCurrentLocation(true)
 			 	.setStreetNumber("3105")
 			 	.setAptNumber("1")
 			 	.setStreetName("Patrick Henry Dr")
@@ -265,6 +268,15 @@ public class LeakDataGenerator {
 			return this;
 		}
 
+		public Boolean getUseCurrentLocation() {
+			return useCurrentLocation;
+		}
+
+		public LeakDataBuilder setUseCurrentLocation(Boolean useCurrentLocation) {
+			this.useCurrentLocation = useCurrentLocation;
+			return this;
+		}
+
 		public Map<String, Object> toMap() {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put(DataKey.LEAK_SOURCE_TYPE, getSourceType());
@@ -287,6 +299,7 @@ public class LeakDataGenerator {
 			map.put(DataKey.LOCATION_REMARKS, getLocationRemarks());
 			map.put(DataKey.ADDITIONAL_NOTES, getAdditionalNotes());
 			map.put(DataKey.IS_PAVED_WALL2WALL, getIsPavedWallToWall());
+			map.put(DataKey.USE_CURRENT_LOCATION, getUseCurrentLocation());
 			return map;
 		}
 	}

@@ -24,6 +24,7 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
+import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.Log;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -123,7 +124,7 @@ public class LeakScreenTest extends BaseReportTest {
 				.forEach(el -> {
 					assertTrue(el.getId().length()>0);
 					assertTrue(el.getTime().length()>10);
-					assertTrue(el.getAddress().equals(leakDataBuilder.getStreetNumber()));
+					assertTrue(el.getAddress().equals(String.format("Address: %s", leakDataBuilder.getStreetNumber())));
 				});
 			return true;
 		});
@@ -163,10 +164,50 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2435_EnergyBackpackLoggingMultipleLeaksWithinGaps ...");
 
+		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
+			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			return true;
+		});
+
+		investigateReportScreen.clickOnFirstInvestigationMarker();
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+			addSourceDialog.clickOnAddLeak();
+			addLeakSourceFormDialog.waitForScreenLoad();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().setDefaultValues();
+			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
+			addedLeakListDialog.waitForScreenLoad();
+			List<LeakListInfoEntity> leaksList = addedLeakListDialog.getLeaksList();
+			assertTrue(leaksList!=null && leaksList.size()>0);
+			leaksList.stream()
+				.forEach(el -> {
+					assertTrue(el.getId().length()>0);
+					assertTrue(el.getTime().length()>10);
+					assertTrue(el.getAddress().equals(String.format("Address: %s", leakDataBuilder.getStreetNumber())));
+				});
+			return true;
+		});
 	}
 
 	/**
-	 *	Test Case: TC2436EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs
+	 *	Test Case: TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs
 	 *	Pre-Conditions:	Compliance Reports with LISAs assigned to user
 	 *	Script:
 	 *	- Log into Backpack tablet
@@ -189,12 +230,38 @@ public class LeakScreenTest extends BaseReportTest {
 	 *	- User is navigated to previous page and details of newly-added leak appear
 	 *	- All leaks entered should appear with correct data
 	**/
+	// TBD: Click on Add Other Sources button is currently NOT present in latest APK published in Artifactory. To be implemented seperately post implementation in product.
 	@Test
 	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2436, location = ReportListDataProvider.class)
 	public void TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs ...");
 
+		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
+			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
+
+		investigateReportScreen.clickOnFirstInvestigationMarker();
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+			// TBD: Click on add other sources and fill out form. See comment above.
+			return true;
+		});
 	}
 
 	private void createTestCaseData(TestName testName) throws Exception {
@@ -202,30 +269,29 @@ public class LeakScreenTest extends BaseReportTest {
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
+		String[] lisaNumbers = {"2", "4", "6"};
+		String[] gapNumbers = {"1", "2", "3"};
 		if (methodName.startsWith("TC2434_")) {
 			Object[][] tc2434 = ReportListDataProvider.dataProviderReportList_TC2434();
 			userDataRowID = (Integer)tc2434[0][1];
 			reportDataRowID1 = (Integer)tc2434[0][2];
 			tcId = "TC2434";
-			String[] lisaNumbers = {"2", "4", "6"};
-			String[] gapNumbers = {"1", "2", "3"};
-			generatedInvReportId = "A38DB8";
-//			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
-//					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers);
+			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers);
 		} else if (methodName.startsWith("TC2435_")) {
 			Object[][] tc2435 = ReportListDataProvider.dataProviderReportList_TC2435();
 			userDataRowID = (Integer)tc2435[0][1];
 			reportDataRowID1 = (Integer)tc2435[0][2];
 			tcId = "TC2435";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers);
 		} else if (methodName.startsWith("TC2436_")) {
 			Object[][] tc2436 = ReportListDataProvider.dataProviderReportList_TC2436();
 			userDataRowID = (Integer)tc2436[0][1];
 			reportDataRowID1 = (Integer)tc2436[0][2];
 			tcId = "TC2436";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers);
 		}
 	}
 
@@ -236,6 +302,7 @@ public class LeakScreenTest extends BaseReportTest {
 		initializeAddSourceDialog();
 		initializeAddLeakSourceFormDialog();
 		initializeAndroidAddedLeakListDialog();
+		initializeMarkerTypeDialog();
 	}
 
 	private void initializeInvestigateReportScreen() {
@@ -248,22 +315,27 @@ public class LeakScreenTest extends BaseReportTest {
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigationScreen);
 	}
 
-	protected void initializeInvestigateMapScreen() {
+	private void initializeInvestigateMapScreen() {
 		investigateMapScreen = new AndroidInvestigateMapScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigateMapScreen);
 	}
 
-	protected void initializeAddSourceDialog() {
+	private void initializeAddSourceDialog() {
 		addSourceDialog = new AndroidAddSourceDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addSourceDialog);
 	}
 
-	protected void initializeAddLeakSourceFormDialog() {
+	private void initializeMarkerTypeDialog() {
+		markerTypeDialog = new AndroidMarkerTypeListControl(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), markerTypeDialog);
+	}
+
+	private void initializeAddLeakSourceFormDialog() {
 		addLeakSourceFormDialog = new AndroidAddLeakSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addLeakSourceFormDialog);
 	}
 
-	protected void initializeAndroidAddedLeakListDialog() {
+	private void initializeAndroidAddedLeakListDialog() {
 		addedLeakListDialog = new AndroidAddedLeakListDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addedLeakListDialog);
 	}

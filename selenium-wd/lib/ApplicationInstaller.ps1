@@ -31,6 +31,8 @@ $CHOCO_APPIUM_DOCTOR_VERSION = "1.4.2"
 $CHOCO_REACT_NATIVE_CLI_VERSION = "2.0.1"
 $CHOCO_NPM_VERSION = "4.5.0"
 
+$SPLIT_FOUND_TEXT = "File Splitter for Win32"
+
 #---------------------------------------------------------
 # Checks if specified application is installed or not.
 # Returns TRUE if installed, FALSE otherwise.
@@ -87,6 +89,9 @@ function IsInstalled($application) {
         $isInstalled = ($appCmd[2].Contains($GRADLE_APP_INSTALL_TEXT1) -and $appCmd[5].Contains($GRADLE_APP_INSTALL_TEXT2))
     } elseif ($application -eq 'react-native-cli') {
         $isInstalled = IsNodePackageInstalled -packageName $REACT_NATIVE_CLI_PACKAGE
+    } elseif ($application -eq 'split') {
+        $appCmdLines = split 2>&1
+        $isInstalled = Array-Contains -arrayLines $appCmdLines -positivematchText "$SPLIT_FOUND_TEXT"
     } elseif ($application -eq '7zip') {
         # get Install folder from Registry and check for presence of 7zip EXE in the folder.
         if ((Test-Path $7ZIP_REG_PATH -PathType Any) -eq $true) {
@@ -143,6 +148,8 @@ function InstallApplication($application, $param) {
         choco install gradle -y --force
     } elseif ($application -eq 'react-native-cli') {
         npm install -g react-native-cli@2.0.1
+    } elseif ($application -eq 'split') {
+        choco install split -y
     } elseif ($application -eq '7zip') {
         # Download msi and trigger quiet install.
         "Start downloading 7-zip .msi to $7zipDest"

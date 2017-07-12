@@ -181,7 +181,7 @@ public class AnalyticsLicenseFeature_DriverViewTests extends BaseMapViewTest {
 		TestEnvironmentActions.generateSurveyForUser(newUsername, newUserPass,
 				61, 64, 60, (driverPageAction) -> {
 					// Include verifications to perform once the Survey has started and before Stop survey is called.
-					assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+					assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 					return true;
 				});
 	}
@@ -229,7 +229,7 @@ public class AnalyticsLicenseFeature_DriverViewTests extends BaseMapViewTest {
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			return true;
 		});
 	}

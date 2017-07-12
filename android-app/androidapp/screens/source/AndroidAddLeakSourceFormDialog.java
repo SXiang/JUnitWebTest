@@ -36,6 +36,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement cancel;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement useCurrentLocation;
+
 	/****** TextField elements ******/
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.widget.EditText[2]")
@@ -198,7 +202,6 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnOK() throws Exception {
 		Log.method("clickOnOK");
-		// tap not working when clicking post swipe. using clickAndPressKey instead.
 		tap(getOKButton());
 		press(getOKButton());
 		clickAndPressKey(getOKButton(), KeyCode.KEYCODE_ENTER);
@@ -211,8 +214,19 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
-		// tap not working when clicking post swipe. using clickAndPressKey instead.
 		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+	}
+
+	public WebElement getUseCurrentLocationButton() {
+		Log.method("getUseCurrentLocationButton");
+		return useCurrentLocation;
+	}
+
+	public void clickOnUseCurrentLocation() throws Exception {
+		Log.method("clickOnUseCurrentLocation");
+		tap(getUseCurrentLocationButton());
+		press(getUseCurrentLocationButton());
+		clickAndPressKey(getUseCurrentLocationButton(), KeyCode.KEYCODE_ENTER);
 	}
 
 	/****** TextField Methods ******/
@@ -396,6 +410,11 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		String locationRemarks = (String)formValues.get(DataKey.LOCATION_REMARKS);
 		String additionalNotes = (String)formValues.get(DataKey.ADDITIONAL_NOTES);
 		Boolean isPavedWallToWall = (Boolean)formValues.get(DataKey.IS_PAVED_WALL2WALL);
+		Boolean useCurrentLocation = (Boolean)formValues.get(DataKey.USE_CURRENT_LOCATION);
+
+		if (useCurrentLocation) {
+			this.clickOnUseCurrentLocation();
+		}
 
 		this.enterStreetNumber(streetNum);
 		this.enterApartmentNumber(aptNum);
@@ -428,14 +447,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, 2000);
 
 		this.enterAdditionalNotes(additionalNotes);
-
-		// TODO: Added for debugging.
-		printPageSource();
-
-		Log.info(String.format("OK Button text is -> '%s'", this.getOKButton().getText()));
-
 		this.clickOnOK();
-
 	}
 
 	@Override

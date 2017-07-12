@@ -15,6 +15,7 @@ import java.util.Set;
 
 import com.microsoft.sqlserver.jdbc.SQLServerBulkCopy;
 
+import common.source.BcpDatFileTransferUtility;
 import common.source.CSVUtility;
 import common.source.ExceptionUtility;
 import common.source.FileUtility;
@@ -399,6 +400,8 @@ public class DbSeedExecutor {
 
 		Connection connection = null;
 		DatFileBuilder datFileBuilder = null;
+		String assetDatFile = null;
+		String boundaryDatFile = null;
 		try {
 			connection = ConnectionFactory.createConnection();
 			connection.setAutoCommit(false);
@@ -414,8 +417,8 @@ public class DbSeedExecutor {
 				return;
 			}
 
-			String assetDatFile = Paths.get(datFolder, ASSET_DAT_FILE).toString();
-			String boundaryDatFile = Paths.get(datFolder, BOUNDARY_DAT_FILE).toString();
+			assetDatFile = Paths.get(datFolder, ASSET_DAT_FILE).toString();
+			boundaryDatFile = Paths.get(datFolder, BOUNDARY_DAT_FILE).toString();
 			if (isCustomerSpecified) {
 				datFileBuilder = new DatFileBuilder();
 				assetDatFile = datFileBuilder.build(assetDatFile, picarroCustomerId, customerId);
@@ -424,6 +427,10 @@ public class DbSeedExecutor {
 
 			Log.info("GIS Refresh DB seed NOT found. Executing SQL script to push GIS refresh DB seed...");
 			String sqlCmdLogFilePath = Paths.get(TestSetup.getRootPath(), String.format("sqlcmd-%s.log", TestSetup.getUUIDString())).toString();
+
+			Log.info("[Step-0] Transfering .dat files to DB server ...");
+			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(assetDatFile).getFileName().toString());
+			BcpDatFileTransferUtility.transferDatFileToDBServer(Paths.get(boundaryDatFile).getFileName().toString());
 
 			Log.info("[Step-1] Preparing pre-GIS push steps ...");
 			String sqlFileFullPath = Paths.get(datFolder, "AutomationSeedScript-PreGISLoad.sql").toString();
@@ -454,6 +461,12 @@ public class DbSeedExecutor {
 			connection.commit();
 
 		} finally {
+			if (assetDatFile != null && boundaryDatFile != null) {
+				Log.info("Cleanup remote bcp .dat files ...");
+				String[] cleanupFilesPath = {assetDatFile, boundaryDatFile};
+				BcpDatFileTransferUtility.cleanupBcpDatFilesOnRemoteMachine(cleanupFilesPath);
+			}
+
 			connection.setAutoCommit(true);
 			connection.close();
 			if (datFileBuilder != null) {

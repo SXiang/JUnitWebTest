@@ -1,5 +1,8 @@
 package androidapp.entities.source;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class LeakListInfoEntity {
 	private String id;
 	private String time;
@@ -28,5 +31,10 @@ public class LeakListInfoEntity {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 	}
 }

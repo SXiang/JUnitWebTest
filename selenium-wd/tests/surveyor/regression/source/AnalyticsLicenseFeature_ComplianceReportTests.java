@@ -84,7 +84,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		CustomerSurveyInfoEntity custSrvInfo = new CustomerSurveyInfoEntity(newCustomerRowID, newLocationRowID, newCustomerUserRowID, newAnalyzerRowID,
 				newSurveyorRowID, newRefGasBottleRowID, DB3_ANALYZER_ROW_ID, SURVEY_RUNTIME_IN_SECONDS, SURVEY_ROW_ID);
 		new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-			assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+			assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 			return true;
 		});
 	}

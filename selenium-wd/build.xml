@@ -272,6 +272,7 @@
         <fileset dir="${build}">
            <include name="**/AuthenticationApiTest.class" />
            <include name="**/ReportsApiTest.class" />
+           <include name="**/InvestigationReportsApiTest.class" />       	
         </fileset>
       </batchtest>
     </junit>
@@ -586,6 +587,9 @@
           <include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
           <include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
           <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
+          <include name="**/ObserverViewPageTest_EQ.class" />
+          <include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+          <include name="**/DriverViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -647,6 +651,7 @@
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
+          <include name="**/SurveyViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -701,10 +706,10 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-		        <include name="**/FEQReportsPageTest.class" />
-				<include name="**/EQReportsPageTest.class" />
-				<include name="**/EQReportsPageTest2.class" />
-				<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+		        <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
+				<include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
+				<include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
 			</fileset>
       </batchtest>
     </junit>
@@ -857,7 +862,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite, compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
+  <target name="tc_localrun" depends="compiletestsuite,compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
   	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
   	      <sysproperty key="testReportCategory" value="JUnitParallel" />
   	      <sysproperty key="maxParallelTestThreads" value="3" />
@@ -871,8 +876,10 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ComplianceReportsPageTest3.class" />
-  	        	<include name="**/ComplianceReportsPageTest10.class" />
+  	        	<include name="**/SurveyViewPageTest_EQ.class" />
+  	        	<include name="**/DriverViewPageTest_EQ.class" />
+  	        	<include name="**/ObserverViewPageTest_EQ.class" />
+  	          	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

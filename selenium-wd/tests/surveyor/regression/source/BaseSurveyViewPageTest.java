@@ -19,6 +19,16 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
 	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
 	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
+	protected static final String SURVEY_INFO_SURVEYOR_2 = "Surveyor: Nissan Rogue - Picarro";
+	protected static final String SURVEY_INFO_ANALYZER_2 = "Analyzer: FEDS2055-PICARRO";
+	protected static final String SURVEY_INFO_SURVEYOR_3 = "Surveyor: SoftwareCar_2037_cust";
+	protected static final String SURVEY_INFO_ANALYZER_3 = "Analyzer: FDDS2037-1";
+	protected static final String SURVEY_INFO_SURVEYOR_4 = "Surveyor: SimAuto-EQSrvUnit-Eth1";
+	protected static final String SURVEY_INFO_ANALYZER_4 = "Analyzer: SimAuto-EQAnalyzer-Eth1";
+	protected static final String SURVEY_INFO_SURVEYOR_5 = "Surveyor: iGPS car";
+	protected static final String SURVEY_INFO_ANALYZER_5 = "Analyzer: RFADS2004-PICARRO";
+	protected static final String SURVEY_INFO_SURVEYOR_6 = "Surveyor: SimAuto-EQSrvUnitSqaCus-Eth1";
+	protected static final String SURVEY_INFO_ANALYZER_6 = "Analyzer: SimAuto-EQAnalyzer-SqaCus-Eth1";
 	protected static final String SURVEY_INFO_ASSESSMENT_SURVEYOR = "Surveyor: Picarro Production #10";
 	protected static final String SURVEY_INFO_ASSESSMENT_ANALYZER = "Analyzer: FEDS2055";
 	protected static final String SURVEY_INFO_MODE_PREFIX = "Mode: ";
@@ -63,6 +73,13 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_TYPE = "Standard";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_USERNAME = "picscdr@picarro.com";
 
+	protected static final String TEST_SURVEY_EQ_ID = "c7f7018c-2497-4818-a996-e8ad120526ab";
+	protected static final String TEST_SURVEY_EQ_TAG = "MenloNight11_17EQ02";
+	protected static final String TEST_SURVEY_EQ_TYPE = "EQ";
+	protected static final String TEST_SURVEY_EQ_USERNAME = "picdr@picarro.com";
+	protected static final String TEST_SURVEY_EQ_ID_SQACUS = "38b7995b-0e28-4f37-84a8-104b7f6f4a1a";
+	protected static final String TEST_SURVEY_EQ_USERNAME_SQACUS = "sqacusdr1@email.com";
+		
 	protected static final String EMPTY = "";
 	protected static final Integer NOTSET = -1;
 

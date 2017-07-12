@@ -4,6 +4,19 @@
         [System.IO.Compression.CompressionLevel]::Optimal, $false <#includeBaseDirectory#>)
 }
 
+function Compress-File($sourceFileName, $destinationArchiveFileName) {
+    Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+    Add-Type -AssemblyName "System.IO.Compression"
+    if (Test-Path $destinationArchiveFileName) {
+        Remove-Item $destinationArchiveFileName
+    }
+    
+    $entryName = [System.IO.Path]::GetFileName($sourceFileName)
+    $zipArchive = [System.IO.Compression.ZipFile]::Open($destinationArchiveFileName, [System.IO.Compression.ZipArchiveMode]::Create) 
+    [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zipArchive, $sourceFileName, $entryName)    
+    $zipArchive.Dispose()
+}
+
 function Decompress-ArchiveFile($sourceArchiveFileName, $destinationDirectoryName, $overwriteFiles) {
     Add-Type -AssemblyName "System.IO.Compression.FileSystem"
     if (-not $overwriteFiles) {
