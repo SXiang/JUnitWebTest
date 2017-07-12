@@ -15,7 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import androidapp.screens.source.AndroidAlarmSettingsScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
-import androidapp.screens.source.AndroidMarkerTypeDialog;
+import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidSettingsScreen;
 import common.source.Log;
 import common.source.Timeout;
@@ -25,14 +25,11 @@ public class SettingsScreenTest extends BaseAndroidTest {
 
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
-	protected AndroidMarkerTypeDialog markerTypeDialog;
+	protected AndroidMarkerTypeListControl markerTypeDialog;
 	protected AndroidSettingsScreen settingsScreen;
 	protected AndroidAlarmSettingsScreen alarmSettingsScreen;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
-
-	@Rule
-	public TestName testName = new TestName();
 
 	@Before
 	public void beforeTest() throws Exception {

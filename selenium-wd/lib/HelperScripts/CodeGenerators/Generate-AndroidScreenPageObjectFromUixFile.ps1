@@ -5,7 +5,8 @@ DESCRIPTION:
 EXAMPLE USAGE:   
  .\Generate-AndroidScreenPageObjectFromUixFile.ps1 -OutputFilePath "C:\temp\ScreenPageObjectClass.txt"  `
      -UixFilePath "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\dump_7186364136122891369.uix"   `
-     -ScreenClassName "AndroidSettingsScreen"
+     -ScreenClassName "AndroidSettingsScreen"   `
+     -DetectLabels:$false
 ------------------------------------------------------------------------------------------------#>
 
 param(
@@ -16,7 +17,10 @@ param(
    [string]$UixFilePath,                     # eg. "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\dump_7186364136122891369.uix"
 
    [Parameter(Mandatory=$true)]
-   [string]$ScreenClassName                  # eg. "AndroidSettingsScreen"
+   [string]$ScreenClassName,                  # eg. "AndroidSettingsScreen"
+
+   [Parameter(Mandatory=$false)]
+   [switch]$DetectLabels=$false
 )
 
 . "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\CommonHelpers.ps1"
@@ -25,6 +29,7 @@ $script:elementMap = @{}      # [Map] : variableName => {variableName, xpath, is
 $script:varNamesList = New-Object System.Collections.ArrayList
 
 $script:foundButton = $false
+$script:foundLabel = $false
 $script:foundTextField = $false
 $script:foundSelectBox = $false
 $script:foundSlider = $false
@@ -101,23 +106,6 @@ function Find-NonEmptySiblingTextViewText([System.Xml.XmlNode] $node) {
         # search forward.
         $currNode = $node
         while ((-not $foundNd) -and ($currNode -ne $NULL)) {
-            $siblingNode = $currNode.NextSibling
-            $currNode = $siblingNode
-            if ($siblingNode -ne $null -and $siblingNode.Attributes -ne $null) {
-                if ($siblingNode.Attributes["class"] -ne $null) { 
-                    $clsVal = $siblingNode.Attributes["class"].Value 
-                }
-                if ($siblingNode.Attributes["text"] -ne $null) { 
-                    $txtVal = $siblingNode.Attributes["text"].Value 
-                }
-                if (($clsVal -eq "android.widget.TextView") -and ($txtVal -ne $null -and $txtVal -ne "")) {
-                    $foundNd = $true
-                    $foundText = $txtVal
-                }
-            }
-        }
-
-        if (-not $foundNd) {
             # search previous.
             $currNode = $node
             while ((-not $foundNd) -and ($currNode -ne $NULL)) {
@@ -134,6 +122,23 @@ function Find-NonEmptySiblingTextViewText([System.Xml.XmlNode] $node) {
                         $foundNd = $true
                         $foundText = $txtVal
                     }
+                }
+            }
+        }
+
+        if (-not $foundNd) {
+            $siblingNode = $currNode.NextSibling
+            $currNode = $siblingNode
+            if ($siblingNode -ne $null -and $siblingNode.Attributes -ne $null) {
+                if ($siblingNode.Attributes["class"] -ne $null) { 
+                    $clsVal = $siblingNode.Attributes["class"].Value 
+                }
+                if ($siblingNode.Attributes["text"] -ne $null) { 
+                    $txtVal = $siblingNode.Attributes["text"].Value 
+                }
+                if (($clsVal -eq "android.widget.TextView") -and ($txtVal -ne $null -and $txtVal -ne "")) {
+                    $foundNd = $true
+                    $foundText = $txtVal
                 }
             }
         }
@@ -169,12 +174,17 @@ function Is-Button([System.Xml.XmlNode] $nodeElement) {
 #------------------------------------------------------------------------------------
 # Returns whether current node can be classifed as a SelectBox.
 # Classification Criteria:
-#   Spinner element which has Children.
+#   Has single TextView child.
 #------------------------------------------------------------------------------------
 function Is-SelectBox([System.Xml.XmlNode] $nodeElement) {
     $isSelectBx = $true
-    if (($nodeElement.NextSibling -eq $null) -or ($nodeElement.PreviousSibling -eq $null)) {
+    if (($nodeElement.ChildNodes -eq $null) -or ($nodeElement.ChildNodes.Count -gt 1)) {
         $isSelectBx = $false
+    } else {
+        $firstChild = $nodeElement.ChildNodes[0]
+        if ($firstChild.Attributes["class"].Value -ne "android.widget.TextView") {
+            $isSelectBx = $false
+        }
     }
 
     $isSelectBx
@@ -387,6 +397,7 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
                 }
 
                 $isButton = ($className -eq "android.widget.TextView") -and (Is-Button -nodeElement $node.ChildNodes[$i])
+                $isLabel = ($className -eq "android.widget.TextView") -and (-not $isButton)
                 $isTextBox = ($className -eq "android.widget.EditText")
                 $isSelectBox = ($className -eq "android.widget.Spinner") -and (Is-SelectBox -nodeElement $node.ChildNodes[$i])
                 $isSlider = ($className -eq "android.view.ViewGroup") -and (Is-Slider -nodeElement $node.ChildNodes[$i])
@@ -407,7 +418,7 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
                     $variableName = "${variableName}LeftDelta"
                 }
 
-                $valueObject = New-Object PSObject -Property @{                                VariableName  = $variableName                                     XPath         = $elXPath                                  IsButton      = $isButton                                IsTextBox     = $isTextBox                    IsSelectBox   = $isSelectBox
+                $valueObject = New-Object PSObject -Property @{                                VariableName  = $variableName                                     XPath         = $elXPath                                  IsButton      = $isButton                    IsLabel       = $isLabel                                IsTextBox     = $isTextBox                    IsSelectBox   = $isSelectBox
                     IsSlider      = $isSlider
                     IsSliderContainer = $isSliderContainer
                     IsSliderLeftDelta = $isSliderLeftDelta
@@ -416,6 +427,9 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
                 # Store element types which were found.
                 if ($isButton) {
                     $script:foundButton = $true
+                }
+                if ($isLabel) {
+                    $script:foundLabel = $true
                 }
                 if ($isTextBox) {
                     $script:foundTextField = $true
@@ -433,7 +447,7 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
                     $script:foundSliderLeftDelta = $true
                 }
 
-                Write-Host "Node=[$nodeName] -> variableName=[$variableName];isButton=[$isButton];isTextBox=[$isTextBox];isSelectBox=[$isSelectBox];isSlider=[$isSlider];class=[$className];xpath=[$childXpath];text=[$text];level=[$level]"
+                Write-Host "Node=[$nodeName] -> variableName=[$variableName];isButton=[$isButton];isLabel=[$isLabel];isTextBox=[$isTextBox];isSelectBox=[$isSelectBox];isSlider=[$isSlider];class=[$className];xpath=[$childXpath];text=[$text];level=[$level]"
 
                 $script:elementMap.set_item($variableName, $valueObject)
             }
@@ -482,6 +496,25 @@ $script:elementMap.Keys | sort-object | % {
     }
 }
 
+###  Label Elements
+if ($DetectLabels) {
+    if ($script:foundLabel) {
+        add-content $OUTFILE "	/****** Label elements ******/"
+        add-content $OUTFILE ""
+    }
+
+    $script:elementMap.Keys | sort-object | % { 
+        $varName = $_
+        $obj = $script:elementMap.get_item($varName)
+        $mXPath = $obj.XPath        $mIsLabel = $obj.IsLabel        if ($mIsLabel) {
+            add-content $OUTFILE "	@AndroidFindBy(xpath = ""$mXPath"")"
+            add-content $OUTFILE "	@CacheLookup"
+            add-content $OUTFILE "	private WebElement $varName;"
+            add-content $OUTFILE ""
+        }
+    }
+}
+
 ###  TextField Web Elements
 
 if ($script:foundTextField) {
@@ -512,8 +545,6 @@ $script:elementMap.Keys | sort-object | % {
     $obj = $script:elementMap.get_item($varName)
     $mXPath = $obj.XPath    $mIsSelectBox = $obj.IsSelectBox
     if ($mIsSelectBox) {
-        add-content $OUTFILE "	/****** SelectBox elements ******/"
-        add-content $OUTFILE ""
         add-content $OUTFILE "	@AndroidFindBy(xpath = ""$mXPath"")"
         add-content $OUTFILE "	@CacheLookup"
         add-content $OUTFILE "	private WebElement $varName;"
@@ -594,18 +625,40 @@ $script:elementMap.Keys | sort-object | % {
     $obj = $script:elementMap.get_item($varName)
     $mXPath = $obj.XPath    $mIsButton = $obj.IsButton    $upperVarName = To-FirstCharUpper -text $varName
     if ($mIsButton) {
-        add-content $OUTFILE "	public WebElement get${upperVarName}() {"
-        add-content $OUTFILE "		Log.method(""get${upperVarName}"");"
+        add-content $OUTFILE "	public WebElement get${upperVarName}Button() {"
+        add-content $OUTFILE "		Log.method(""get${upperVarName}Button"");"
         add-content $OUTFILE "		return ${varName};"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
         add-content $OUTFILE "	public void clickOn${upperVarName}() {"
         add-content $OUTFILE "		Log.method(""clickOn${upperVarName}"");"
-        add-content $OUTFILE "		tap(get${upperVarName}());"
+        add-content $OUTFILE "		tap(get${upperVarName}Button());"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
     }
 }
+
+### Label - getText()
+if ($DetectLabels) {
+    if ($script:foundLabel) {
+        add-content $OUTFILE "	/****** Label Methods ******/"
+        add-content $OUTFILE ""
+    }
+
+    $script:elementMap.Keys | sort-object | % { 
+        $varName = $_
+        $obj = $script:elementMap.get_item($varName)
+        $mXPath = $obj.XPath        $mIsLabel = $obj.IsLabel        $upperVarName = To-FirstCharUpper -text $varName
+        if ($mIsLabel) {
+            add-content $OUTFILE "	public String get${upperVarName}Text() {"
+            add-content $OUTFILE "		Log.method(""get${upperVarName}Text"");"
+            add-content $OUTFILE "		return ${varName}.getText();"
+            add-content $OUTFILE "	}"
+            add-content $OUTFILE ""
+        }
+    }
+}
+
 
 ### TextField - getText()
 
@@ -624,7 +677,7 @@ $script:elementMap.Keys | sort-object | % {
         add-content $OUTFILE "		return ${varName}.getText();"
         add-content $OUTFILE "	}"
         add-content $OUTFILE ""
-        add-content $OUTFILE "	public void enter${upperVarName}(String value) {"
+        add-content $OUTFILE "	public void enter${upperVarName}(String value) throws Exception {"
         add-content $OUTFILE "		Log.method(""enter${upperVarName}"");"
         add-content $OUTFILE "		sendKeys(${varName}, value);"
         add-content $OUTFILE "	}"

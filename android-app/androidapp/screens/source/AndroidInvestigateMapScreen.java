@@ -9,38 +9,72 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]")
-	@CacheLookup
-	private WebElement followButton;
+	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Investigate\")")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]")
 	@CacheLookup
-	private WebElement investigateButton;
+	private WebElement addSource;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
+	@CacheLookup
+	private WebElement directions;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement follow;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
+	@CacheLookup
+	private WebElement investigate;
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {
 		super(driver);
 	}
 
+	/****** Button Methods ******/
+
+	public WebElement getAddSourceButton() {
+		Log.method("getAddSourceButton");
+		return addSource;
+	}
+
+	public void clickOnAddSource() {
+		Log.method("clickOnAddSource");
+		tap(getAddSourceButton());
+	}
+
+	public WebElement getDirectionsButton() {
+		Log.method("getDirectionsButton");
+		return directions;
+	}
+
+	public void clickOnDirections() {
+		Log.method("clickOnDirections");
+		tap(getDirectionsButton());
+	}
+
+	public WebElement getFollowButton() {
+		Log.method("getFollowButton");
+		return follow;
+	}
+
 	public void clickOnFollow() {
 		Log.method("clickOnFollow");
-		getFollowButton().click();
+		tap(getFollowButton());
+	}
+
+	public WebElement getInvestigateButton() {
+		Log.method("getInvestigateButton");
+		return investigate;
 	}
 
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
-		getInvestigateButton().click();
+		tap(getInvestigateButton());
 	}
 
 	@Override
 	public Boolean screenLoadCondition() {
-		return mainFrameLayout!=null && mainFrameLayout.isDisplayed();
-	}
-
-	public WebElement getFollowButton() {
-		return followButton;
-	}
-
-	public WebElement getInvestigateButton() {
-		return investigateButton;
+		return getAddSourceButton()!=null && getAddSourceButton().isDisplayed();
 	}
 }

@@ -7,7 +7,7 @@ import common.source.Log;
 import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
-public class AndroidMarkerTypeDialog extends AndroidBaseScreen {
+public class AndroidMarkerTypeListControl extends AndroidBaseScreen {
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"LISA\")")
 	private WebElement lisaListItem;
@@ -15,7 +15,7 @@ public class AndroidMarkerTypeDialog extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Gap\")")
 	private WebElement gapListItem;
 
-	public AndroidMarkerTypeDialog(WebDriver driver) {
+	public AndroidMarkerTypeListControl(WebDriver driver) {
 		super(driver);
 	}
 
@@ -43,6 +43,6 @@ public class AndroidMarkerTypeDialog extends AndroidBaseScreen {
 		}
 
 		// allow time for dropdown value to get selected on screen.
-		TestContext.INSTANCE.stayIdle(3);
+		TestContext.INSTANCE.stayIdle(2);
 	}
 }

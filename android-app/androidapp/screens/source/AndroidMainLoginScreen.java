@@ -3,6 +3,7 @@ package androidapp.screens.source;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import common.source.Log;
+import common.source.Timeout;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -49,6 +50,11 @@ public class AndroidMainLoginScreen extends AndroidBaseScreen {
 	public void clearSettings() {
 		Log.method("clearSettings");
 		clearButton.click();
+	}
+
+	public void waitForFirstAppLoad() {
+		Log.method("waitForFirstAppLoad");
+		waitForScreenLoad(driver, Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT, screenLoadPredicate);
 	}
 
 	@Override
