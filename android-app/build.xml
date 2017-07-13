@@ -126,6 +126,7 @@
           <include name="**/SanityTest.class" />
           <include name="**/ReportListScreenTest.class" />
           <include name="**/SettingsScreenTest.class" />
+          <include name="**/LeakScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>
