@@ -29,7 +29,7 @@ public class ReportListScreenTest extends BaseReportTest {
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
-	private static String generatedInvReportId;
+	private static String generatedInvReportTitle;
 
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
@@ -76,7 +76,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
 			initializeInvestigationScreen();
 			return true;
 		});
@@ -115,7 +115,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
 			initializeInvestigationScreen();
 			return true;
 		});
@@ -159,7 +159,7 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
 			initializeInvestigationScreen();
 			return true;
 		});
@@ -187,22 +187,22 @@ public class ReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignGapsToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
 			Object[][] tc2431 = ReportListDataProvider.dataProviderReportList_TC2431();
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}
 

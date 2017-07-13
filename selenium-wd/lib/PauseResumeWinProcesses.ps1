@@ -1,12 +1,12 @@
 ﻿param (
-   [Parameter(Mandatory=$true)]
-   [string]$WorkingFolder,      # eg. C:\repositories\surveyor-qa
+   [Parameter(Mandatory=$false)]
+   [string]$WorkingFolder="C:\repositories\surveyor-qa",      # eg. C:\repositories\surveyor-qa
  
-   [Parameter(Mandatory=$true)]
-   [string]$WindowTitles,       # '|' seperated list of process window titles. eg. 'OdorCallServer|SimLinearFitter|SimDataBroadcaster'
+   [Parameter(Mandatory=$false)]
+   [string]$WindowTitles="OdorCallServer|SimLinearFitter|SimDataBroadcaster",       # '|' seperated list of process window titles. eg. 'OdorCallServer|SimLinearFitter|SimDataBroadcaster'
    
-   [Parameter(Mandatory=$true)]
-   [string]$IsResume            # true or false
+   [Parameter(Mandatory=$false)]
+   [string]$IsResume="false"            # true or false
 )
 
 $exeFolder = "$WorkingFolder\selenium-wd\lib\Exe"

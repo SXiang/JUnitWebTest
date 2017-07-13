@@ -14,37 +14,45 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class AndroidMapScreen extends AndroidBaseScreen {
 
 	private static final String MODE_HR = "HR";
-	private static final String AMPLITUDE_LABEL = "Max:";
+	private static final String MAX_LABEL = "Max:";
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
+	/******* Label elements *******/
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
-	private WebElement toggleMode;
+	private WebElement modeText;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
-	@CacheLookup
-	private WebElement resetMax;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
-	@CacheLookup
-	private WebElement investigate;
-
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[1]")
-	@CacheLookup
-	private WebElement amplitudeText;
-
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement maxText;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[3]")
+	@CacheLookup
+	private WebElement amplitude;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[4]")
+	@CacheLookup
+	private WebElement c2h6;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[5]")
 	@CacheLookup
 	private WebElement cH4ppm;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[1]/android.widget.TextView[1]")
-	@CacheLookup
-	private WebElement modeText;
+	/******* Button elements *******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.widget.TextView[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
+	@CacheLookup
+	private WebElement investigate;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement resetMax;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
+	@CacheLookup
+	private WebElement toggleMode;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]")
 	@CacheLookup
 	private WebElement menuButton;
 
@@ -195,7 +203,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getUsernameEditView() {
 		if (!usernameEditViewLocated) {
-			usernameEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]");
+			usernameEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]");
 			usernameEditViewLocated = true;
 		}
 
@@ -248,15 +256,15 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public String getAmplitudeText() {
 		Log.method("getAmplitudeText");
-		return amplitudeText.getText();
+		return amplitude.getText();
 	}
 
 	public Float getAmplitudeTextFloatValue() {
 		Log.method("getAmplitudeTextFloatValue");
 		Float ampFloat = Float.MIN_VALUE;
 		try {
-			if (amplitudeText.getText()!=null) {
-				ampFloat = Float.valueOf(amplitudeText.getText().replace(AMPLITUDE_LABEL, ""));
+			if (amplitude.getText()!=null) {
+				ampFloat = Float.valueOf(amplitude.getText());
 			}
 		} catch (Exception e) {/*ignore error*/}
 
@@ -268,9 +276,26 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		return maxText.getText();
 	}
 
-	public String getPpmText() {
+	public Float getMaxTextFloatValue() {
+		Log.method("getMaxTextFloatValue");
+		Float maxFloat = Float.MIN_VALUE;
+		try {
+			if (maxText.getText()!=null) {
+				maxFloat = Float.valueOf(maxText.getText().replace(MAX_LABEL, ""));
+			}
+		} catch (Exception e) {/*ignore error*/}
+
+		return maxFloat;
+	}
+
+	public String getCh4PpmText() {
 		Log.method("getPpmText");
 		return cH4ppm.getText();
+	}
+
+	public String getC2h6Text() {
+		Log.method("getC2h6Text");
+		return c2h6.getText();
 	}
 
 	public String getModeText() {

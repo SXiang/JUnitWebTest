@@ -38,8 +38,8 @@ public class ReportDataGeneratorTest {
 		final Integer userDataRowID = 6;
 		final Integer mobileUserDataRowID = 16;
 		final Integer reportDataRowID = 134;
-		String reportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
-		Log.info(String.format("Generated report [Id=%s] and assigned lisas to user", reportId));
-		assertTrue(reportId != null && reportId != "");
+		String reportName = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID).getReportName();
+		Log.info(String.format("Generated report [name=%s] and assigned lisas to user", reportName));
+		assertTrue(reportName != null && reportName != "");
 	}
 }

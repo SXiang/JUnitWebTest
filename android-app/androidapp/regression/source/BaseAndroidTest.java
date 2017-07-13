@@ -253,9 +253,12 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void navigateToMapScreenUsingDefaultCreds(boolean waitForMapScreenLoad) throws Exception {
+		navigateToMapScreen(waitForMapScreenLoad, TestContext.INSTANCE.getTestSetup().getLoginUser());
+	}
+
+	protected void navigateToMapScreen(boolean waitForMapScreenLoad, String username) throws Exception {
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-		final String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
 
 		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
 

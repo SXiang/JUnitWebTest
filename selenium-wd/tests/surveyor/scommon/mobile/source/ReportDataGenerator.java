@@ -11,6 +11,7 @@ import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.entities.ReportInfoEntity;
 import surveyor.scommon.source.ReportInvestigationsPage;
 
 public class ReportDataGenerator {
@@ -41,7 +42,7 @@ public class ReportDataGenerator {
 		return reportDataGenerator;
 	}
 
-	public String createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] lisaNumbers, String[] gapNumbers) throws Exception {
 		Log.method("createReportAndAssignLisasAndGapsToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
@@ -72,10 +73,10 @@ public class ReportDataGenerator {
 		}
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
-		return reportId;
+		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
-	public String createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
 
@@ -93,10 +94,10 @@ public class ReportDataGenerator {
 		}
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
-		return reportId;
+		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
-	public String createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
 
@@ -114,7 +115,7 @@ public class ReportDataGenerator {
 		}
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
-		return reportId;
+		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
 	protected void setSingleUse(Boolean singleUse) {
