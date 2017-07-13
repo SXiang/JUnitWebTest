@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
@@ -412,9 +413,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		Boolean isPavedWallToWall = (Boolean)formValues.get(DataKey.IS_PAVED_WALL2WALL);
 		Boolean useCurrentLocation = (Boolean)formValues.get(DataKey.USE_CURRENT_LOCATION);
 
-		if (useCurrentLocation) {
-			this.clickOnUseCurrentLocation();
-		}
+// TODO: Disabled for now. Error popup in debug screen.
+//		if (useCurrentLocation) {
+//			this.clickOnUseCurrentLocation();
+//		}
 
 		this.enterStreetNumber(streetNum);
 		this.enterApartmentNumber(aptNum);
