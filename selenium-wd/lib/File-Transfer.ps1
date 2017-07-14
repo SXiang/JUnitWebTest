@@ -193,8 +193,8 @@ function New-GuidNoDashes() {
 
 # Ensure file splitter tool is installed.
 Write-Host "Checking if File Splitter is installed ..."
-$curlInstalled = IsInstalled -application 'curl'
-if ($curlInstalled -eq $false) {
+$fileSplitInstalled = IsInstalled -application 'split'
+if ($fileSplitInstalled -eq $false) {
     "File Splitter NOT installed. Installing ..."
     InstallApplication -application 'split'
     
@@ -348,12 +348,16 @@ try {
         $destinationDirectoryName = $destRootFolder
         Write-Host "[Remote] Decompressing file - [$sourceArchiveFileName] to [$destinationDirectoryName]."
         Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+        Write-Host "[Remote] Decompress : Opening for reading - $sourceArchiveFileName ..."
         $zipArchive = [System.IO.Compression.ZipFile]::OpenRead($sourceArchiveFileName)
+        Write-Host "[Remote] Decompress : Done opening for reading - $sourceArchiveFileName"
         try {
             $zipArchive.Entries | % {
                 $entry = $_
                 $destFile = [System.IO.Path]::Combine($destinationDirectoryName, $entry.FullName)
+                Write-Host "[Remote] Decompress : Extracting to file - $destFile ..."
                 [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $destFile, $true)
+                Write-Host "[Remote] Decompress : Done extracting to file - $destFile"
             } 
         } catch {
             $ex = $_.Exception
@@ -366,8 +370,11 @@ try {
         # Cleanup files on the server.
         Write-Host "[Remote] Cleaning up file on remote server| File -> $sourceArchiveFileName ..."
         if (Test-Path $sourceArchiveFileName) {
+            Write-Host "[Remote] Deleting File -> $sourceArchiveFileName ..."
             Remove-Item $sourceArchiveFileName -Force
-        }        
+        } else {
+            Write-Host "[Remote] File NOT found for deletion -> $sourceArchiveFileName ..."
+        }       
     }
 
     # 3.
