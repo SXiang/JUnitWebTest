@@ -10,16 +10,25 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobileCapabilityType;
+
 public class WebDriverWrapper {
+	public static final String ANDROID_APP_PACKAGE_NAME = "com.picarroapp";
+	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
+
 	private String runningOnRemoteServer;
 	private String browser;
 	private String remoteServerHost;
@@ -45,6 +54,9 @@ public class WebDriverWrapper {
 
 	private boolean deviceEmulationEnabled;
 	private String emulatedDeviceName;
+
+	private WebDriver androidAppNativeDriver;
+	private WebDriver androidAppWebDriver;
 
 	public WebDriverWrapper() {
 		this.runningOnRemoteServer = TestContext.INSTANCE.getTestSetup().getRunningOnRemoteServer();
@@ -128,6 +140,51 @@ public class WebDriverWrapper {
 			System.exit(1);
 
 		}
+	}
+
+	public RemoteWebDriver createAndroidAppWebDriver() throws MalformedURLException{
+		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+		DesiredCapabilities capabilities=DesiredCapabilities.android();
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
+		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
+		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
+
+		// Create object of URL class and specify the appium server address
+		URL url= new URL(APPIUM_SERVER_HUB_HOST);
+
+		AndroidDriver<WebElement> androidDriver = new AndroidDriver<WebElement>(url, capabilities);
+		setAndroidAppWebDriver(androidDriver);
+		return androidDriver;
+	}
+
+	public RemoteWebDriver createAndroidAppNativeDriver() throws MalformedURLException{
+		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+		DesiredCapabilities capabilities=DesiredCapabilities.android();
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
+		// NOTE: autoGrantPermissions capability is NOT working along with MobileCapabilityType.APP. Use appPackage and appActivity instead of app.
+		capabilities.setCapability("appPackage", ANDROID_APP_PACKAGE_NAME);
+		capabilities.setCapability("appActivity", ".MainActivity");
+		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
+		capabilities.setCapability("autoGrantPermissions", "true");
+
+		// Following capabilities have been used for perf optimization.
+		capabilities.setCapability("disableAndroidWatchers", true);
+		capabilities.setCapability("resetKeyboard", true);  		// hide keyboard
+		capabilities.setCapability("unicodeKeyboard", true);		// hide keyboard
+
+		// Create object of URL class and specify the appium server address
+		URL url= new URL(APPIUM_SERVER_HUB_HOST);
+
+		// Create object of  AndroidDriver class and pass the url and capability that we created
+		AndroidDriver<WebElement> androidDriver = new AndroidDriver<WebElement>(url, capabilities);
+		setAndroidAppNativeDriver(androidDriver);
+		return androidDriver;
 	}
 
 	public RemoteWebDriver setupAppiumRemoteWebDriver(){
@@ -233,6 +290,19 @@ public class WebDriverWrapper {
 		setDriver(new RemoteWebDriver(new URL("http://" + this.remoteServerHost + ":" + this.remoteServerPort + "/wd/hub/"), this.capabilities));
 	}
 
+	public WebDriver checkGetDriver() {
+		WebDriver driver = getDriver();
+		if (driver == null) {
+			driver = getAndroidAppNativeDriver();
+		}
+
+		if (driver == null) {
+			driver = getAndroidAppWebDriver();
+		}
+
+		return driver;
+	}
+
 	public RemoteWebDriver getDriver() {
 		return driver;
 	}
@@ -274,5 +344,21 @@ public class WebDriverWrapper {
 
 	public void setEmulatedDeviceName(String emulatedDeviceName) {
 		this.emulatedDeviceName = emulatedDeviceName;
+	}
+
+	public WebDriver getAndroidAppNativeDriver() {
+		return androidAppNativeDriver;
+	}
+
+	public void setAndroidAppNativeDriver(WebDriver androidAppNativeDriver) {
+		this.androidAppNativeDriver = androidAppNativeDriver;
+	}
+
+	public WebDriver getAndroidAppWebDriver() {
+		return androidAppWebDriver;
+	}
+
+	public void setAndroidAppWebDriver(WebDriver androidAppWebDriver) {
+		this.androidAppWebDriver = androidAppWebDriver;
 	}
 }
