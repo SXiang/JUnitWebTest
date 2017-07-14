@@ -110,7 +110,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2434_EnergyBackpackLoggingMultipleLeaksWithinClassicLISAs ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -183,7 +183,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2435_EnergyBackpackLoggingMultipleLeaksWithinGaps ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -256,7 +256,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -317,7 +317,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2437_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinGaps ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -391,7 +391,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2438_EnergyBackpackLeakCanBeEdited ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
@@ -463,7 +463,7 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA ...");
 
-		navigateToMapScreen(false /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
