@@ -413,10 +413,9 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		Boolean isPavedWallToWall = (Boolean)formValues.get(DataKey.IS_PAVED_WALL2WALL);
 		Boolean useCurrentLocation = (Boolean)formValues.get(DataKey.USE_CURRENT_LOCATION);
 
-// TODO: Disabled for now. Error popup in debug screen.
-//		if (useCurrentLocation) {
-//			this.clickOnUseCurrentLocation();
-//		}
+		if (useCurrentLocation) {
+			this.clickOnUseCurrentLocation();
+		}
 
 		this.enterStreetNumber(streetNum);
 		this.enterApartmentNumber(aptNum);

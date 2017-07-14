@@ -91,7 +91,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
 		if (firstRowReportTitle != null) {
 			String reportId = firstRowReportTitle.getText();
-			Log.method("Found reportTitle element. Searching for-[%s], found-[%s]. Match = [%b]", searchKeyword, reportId, reportId.contains(searchKeyword));
+			Log.method(String.format("Found reportTitle element. Searching for-[%s], found-[%s]. Match = [%b]", searchKeyword, reportId, reportId.contains(searchKeyword)));
 			return reportId.contains(searchKeyword);
 		}
 

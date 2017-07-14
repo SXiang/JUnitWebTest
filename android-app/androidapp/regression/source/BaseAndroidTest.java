@@ -162,7 +162,10 @@ public class BaseAndroidTest extends BaseTest {
 		Log.method("initializeAppiumTest");
 		ensureApkExistsInConnectedDevice();
 		initializeAppiumDriver();
-		startReactNativePackager();
+		if (!TestContext.INSTANCE.getTestSetup().isAndroidTestReleaseEnabled()) {
+			startReactNativePackager();
+		}
+
 		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 		if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
 			handlePermissionsPrompt();

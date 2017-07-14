@@ -14,6 +14,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class AndroidMapScreen extends AndroidBaseScreen {
 
 	private static final String MODE_HR = "HR";
+	private static final String MODE_HP = "HP";
+
 	private static final String MAX_LABEL = "Max:";
 
 	/******* Label elements *******/
@@ -152,7 +154,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (modeTextDisplayed) {
 			String modeTextValue = getModeText();
 			Log.info(String.format("modeTextValue=%s", modeTextValue));
-			modeTextValid = modeTextValue.contains(MODE_HR);
+			modeTextValid = modeTextValue.contains(MODE_HP);
 		}
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
