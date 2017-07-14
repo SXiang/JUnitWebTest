@@ -71,10 +71,6 @@ public class BaseAndroidTest extends BaseTest {
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
 
-		if (!testSetup.isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.startSimulator();
-		}
-
 		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
 	    AndroidAutomationTools.disableAnimations();  // perf optimization.

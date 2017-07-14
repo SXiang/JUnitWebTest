@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +20,9 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
+import common.source.BackPackAnalyzer;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
@@ -45,6 +48,16 @@ public class ReportListScreenTest extends BaseReportTest {
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.restartSimulator();
+		}
+	}
+
+	@After
+	public void afterTest() throws IOException {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.stopSimulator();
+		}
 	}
 
 	/**
