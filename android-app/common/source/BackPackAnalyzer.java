@@ -75,7 +75,7 @@ public class BackPackAnalyzer {
 		Log.method("pauseResumeSimulatorProcesses");
 		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
-		String arguments = "OdorCallServer|SimLinearFitter|SimDataBroadcaster";
+		String arguments = "OdorCallServer|Select OdorCallServer|SimLinearFitter|SimDataBroadcaster";
 		String pauseResumeArg = isResume ? "true" : "false";
 		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_WIN_PROCESSES_CMD +
 				String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + arguments + "\"", "\"" + pauseResumeArg + "\"");
