@@ -2,13 +2,16 @@ package common.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Downloader {
 
 	private static final String DOWNLOAD_FILE_CMD = "DownloadFile.cmd";
 
-	public static void downloadFile(String downloadFileRelativeUrl, String outputFileFullPath) {
+	public static void downloadFile(String downloadFileRelativeUrl, String outputFileFullPath) {		
 		try {
+			Files.deleteIfExists(Paths.get(outputFileFullPath));
 			String workingFolder = TestSetup.getRootPath();
 			String downloadFileCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 			String downloadFileCmdFullPath = downloadFileCmdFolder + File.separator + DOWNLOAD_FILE_CMD;

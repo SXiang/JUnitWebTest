@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
 import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
+
+import java.util.List;
+
 import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
 import org.junit.Before;
@@ -17,6 +20,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
+import common.source.SortHelper;
 import common.source.TestContext;
 import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -27,6 +31,7 @@ import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
 import surveyor.scommon.mobile.source.MobileLeakSourcePage;
+import surveyor.scommon.mobile.source.MobileLeakSourcePage.InvestigateAction;
 import surveyor.scommon.mobile.source.MobileLoginPage;
 import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
@@ -138,43 +143,63 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * - Web View Lisa Assignment page and mobile view should show blue color for Investigated and no leak found Lisa
 	 * - Investigation PDF and csv files should not show deleted leak information
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, Leak source type, etc
-
-
 	 */
-	@Test
+	@Test /* Color of investigation status is not ready yet */
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC234, location = InvestigationReportDataProvider.class)
 	public void TC234_InvestigateLisaRandomlyAsDriverUser(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
 		Log.info("\nRunning TC234_InvestigateLisaRandomlyAsDriverUser ..." +
 			 "\nTest Description: Investigate Lisa randomly as driver user and check the lisa number on views and pdf reports");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
 
-		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
-
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
+		
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-
-		// Mobile - login and investigate lisas
+		reportInvestigationsPage.waitForPageLoad();
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+5);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
+		
+		// Mobile - login and investigate lisas - driver
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		List<String> reportIDs =	mobileReportsPage.getReports();	
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 1);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, leakDetails);
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -183,10 +208,104 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
-		// Mobile - add leak
+		
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
-		leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 2);
+		LeakDetailEntity leakDetails2 = new LeakDetailEntity(mobileUserDataRow.username, 8);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails2.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails2);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		//Reports(Mobile) are displayed in descending order by Date
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(4,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(4,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(8,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(8,reportDataRowID)));
+
+		//TODO: colors verification
+		//Violet color for In Progress Lisa, blue color for Investigated and no leak Lisa
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+8));
+		
+		//Web view - investigate
+		reportInvestigationsPage.investigateItem(lisaNumberPrefix+4);
+		reportInvestigationsPage.clickOnPauseInvestigation();
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
+		
+		//Mobile view - investigate
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnPauseInvestigation();
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+8));
+
+        //Delete leaks
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.deleteLeaks();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
+		
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+	
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		// Verify deleted leaks are not showing
+		assertFalse(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(8,reportDataRowID)));
+		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(8,reportDataRowID)));
+
+		// Mobile - login and investigate lisas - Supervisor
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
+
+		// Supervisor can see all the lisas
+		reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
@@ -194,28 +313,82 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		leakDetails.setDefaultTestData();
 		mobileLeakSourcePage.addLeakDetails(leakDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-
-		// Mobile - add other source
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
+		// Mobile - add other source and complete
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
-		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 3);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3, sourceDetails);
-		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
+		leakDetails2 = new LeakDetailEntity(mobileUserDataRow2.username, 5);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
 		mobileInvestigatePage.clickOnAddSource();
-		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
-		sourceDetails.setDefaultTestData();
-		mobileLeakSourcePage.addOtherSource(sourceDetails);
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails2.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails2);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
 
-		// Verify investigation status
+		// PDF and CSV
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(2,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(5,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(5,reportDataRowID)));
+
+
+		//Violet color for In Progress Lisa, blue color for Investigated and no leak Lisa
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-
-		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+1));
-		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
-		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+3));
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
 		
+		//Web view - investigate
+		reportInvestigationsPage.investigateItem(lisaNumberPrefix+2);
+		reportInvestigationsPage.clickOnPauseInvestigation();
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		
+		//Mobile view - investigate
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnPauseInvestigation();
+		
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
+
+        //Delete leaks
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.deleteLeaks();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
+			
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+	
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		// Verify deleted leaks are not showing
+		assertFalse(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(5,reportDataRowID)));
+		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(5,reportDataRowID)));
+
 		mobileLoginPage.logout();
 	}
 
@@ -268,24 +441,137 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC518, location = InvestigationReportDataProvider.class)
 	public void TC518_GenerateInvestigationReportAsCustomerSupervisorAndAssignLISAToMultiplePeople(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
 		Log.info("\nRunning TC518_GenerateInvestigationReportAsCustomerSupervisorAndAssignLISAToMultiplePeople ..." +
 			 "\nTest Description: Generate Investigation report as customer supervisor and assign LISA for investigation to multiple people");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); // Supervisor
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
 
+		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); //Utility Admin
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
+		
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
+		
+		// Mobile - login and investigate lisas - driver
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		List<String> reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
+		mobileInvestigatePage.clickOnDirections();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-4"));
+		mobileInvestigatePage.navigateBack();
+		mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
+
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		//Reports(Mobile) are displayed in descending order by Date
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
+		
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(4,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(4,reportDataRowID)));
+
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String lisaValue = reportInvestigationsPage.getLisaValue(lisaNumberPrefix+1);
-		assertTrue(reportInvestigationsPage.isLisaValueSearchable(lisaValue));
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
+
+		// Mobile - login and investigate lisas - UtilityAdmin
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
+
+		// UtilityAdmin can see all the lisas
+		reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
+		mobileInvestigatePage.clickOnDirections();
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-2"));
+		mobileInvestigatePage.navigateBack();
+		mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
+
+		// PDF and CSV
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
+
+		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(2,reportDataRowID)));
+		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
+
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		
+		mobileLoginPage.logout();
 	}
 
 	/**
@@ -318,71 +604,108 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1573, location = InvestigationReportDataProvider.class)
 	public void TC1573_DriverUserCannotViewUnassignedLISAOnMobileView(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,Integer mobileUserDataRowID2) throws Exception {
 		Log.info("\nRunning TC1573_DriverUserCannotViewUnassignedLISAOnMobileView ..." +
 			 "\nTest Description: Driver user cannot view unassigned LISA information on mobile view");
+
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-
-		// Create a new user
-		String userName = getTestSetup().getFixedSizeRandomNumber(6) + REGBASEPICUSERNAME;
-		ManageUsersPage	manageUsersPage = new ManageUsersPage(getDriver(), getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageUsersPage);
-		manageUsersPage.open();
-		if(!manageUsersPage.addNewPicarroUser(userName, USERPASSWORD,
-				CUSUSERROLEDR, "Picarro - Default", TIMEZONECT)){
-			fail(String.format("Failed to add a new picarro user %s, %s",userName, USERPASSWORD));
-		}
-
-		// Generate report
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 4;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.assignPeaks(userName);
 
-		// Mobile - login and investigate lisas
+		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
+		
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
+		
+		// Mobile - login and investigate lisas - driver
 		mobileLoginPage.open();
-		mobileReportsPage = mobileLoginPage.loginNormalAs(userName, USERPASSWORD);
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		List<String> reportIDs =	mobileReportsPage.getReports();	
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
-		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(userName, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
-		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		// Mobile - add other source and complete
+		OtherSourceEntity sourceDetails = new OtherSourceEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, sourceDetails);
+		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
 		mobileInvestigatePage.clickOnAddSource();
-		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
-		leakDetails.setDefaultTestData();
-		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
+		sourceDetails.setDefaultTestData();
+		mobileLeakSourcePage.addOtherSource(sourceDetails);
 		mobileLeakSourcePage.closeAddSourceDialog();
-		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
-
-		mobileLoginPage.logout();
+		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
-		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
-		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
-		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, getReportRowID(reportDataRowID));
-		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID));
-		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
-
-		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
-		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(workingLisa,reportDataRowID)));
-
-		// Verify investigation status
-		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		//Reports(Mobile) are displayed in descending order by Date
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
+        //FoundOtherSource status is showing
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 
-		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+workingLisa));
-		assertNotEquals(dateValue, reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa));
+		// Mobile - login and investigate lisas - UtilityAdmin
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
+
+		// Supervisor can see all the lisas
+		reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add other source and complete
+		sourceDetails = new OtherSourceEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, sourceDetails);
+		mobileInvestigatePage.clickOnInvestigate(sourceDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddOtherSource();
+		sourceDetails.setDefaultTestData();
+		mobileLeakSourcePage.addOtherSource(sourceDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(sourceDetails);
+
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		//Reports(Mobile) are displayed in descending order by Date
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
+        //FoundOtherSource status is showing
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+		
+		mobileLoginPage.logout();
 	}
 
 	/**
@@ -418,30 +741,46 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 			 "\nTest Description: Utility Admin user can view assigned LISA information on mobile view");
 
 		loginPageAction.open(EMPTY, NOTSET);
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		// Generate report
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
-		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
 		String lisaNumberPrefix = reportName+"-LISA-";
-		int workingLisa = 5;
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
-		// Mobile - login and investigate lisas
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Utility Admin
+		
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		// Mobile - login and investigate lisas - driver
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		List<String> reportIDs =	mobileReportsPage.getReports();	
 		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
 
 		// Mobile - add leak and complete
-		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, workingLisa);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+workingLisa, leakDetails);
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
@@ -450,14 +789,13 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);
 
-		mobileLoginPage.logout();
-
-		// Verify investigation data
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
-		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
-		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
-		/* Verification of Investigation PDF */
-		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(workingLisa,reportDataRowID)));
+		//Reports(Mobile) are displayed in descending order by Date
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
+        //FoundOtherSource status is showing
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
+
+		mobileLoginPage.logout();
 	}
 }

@@ -95,52 +95,52 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest2 */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC234() {
-		return new Object[][] { { "TC234" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC234" /* TestCaseID */, 1 /* userDataRowID */, 2 /* mobileUserDataRowID */, 233 /* reportDataRowID1 */,  3/* mobileUserDataRowID2 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC518() {
-		return new Object[][] { { "TC518" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC518" /* TestCaseID */, 2 /* userDataRowID */, 1 /* mobileUserDataRowID */, 233 /* reportDataRowID1 */,  3/* mobileUserDataRowID2 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1573() {
-		return new Object[][] { { "TC1573" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1573" /* TestCaseID */, 1 /* userDataRowID */,2 /* mobileUserDataRowID */, 235 /* reportDataRowID1 */, 3 /* mobileUserDataRowID */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1574() {
-		return new Object[][] { { "TC1574" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1574" /* TestCaseID */, 1 /* userDataRowID */, 1 /* mobileUserDataRowID */, 236 /* reportDataRowID1 */} };
 	}
 
 	/* ComplianceReportInvestigationPageTest3 */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1722() {
-		return new Object[][] { { "TC1722" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1722" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 237 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1723() {
-		return new Object[][] { { "TC1723" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1723" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 238 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1761() {
-		return new Object[][] { { "TC1761" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1761" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 239 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1763() {
-		return new Object[][] { { "TC1763" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1763" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 240 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1764() {
-		return new Object[][] { { "TC1764" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1764" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 241 /* reportDataRowID1 */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1767() {
-		return new Object[][] { { "TC1767" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, -1 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1767" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 242 /* reportDataRowID1 */} };
 	}
 }

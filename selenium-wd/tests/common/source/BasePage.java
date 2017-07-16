@@ -483,6 +483,15 @@ public class BasePage {
     	driver.manage().window().maximize();
 	}
 
+	public void navigateForward(){
+		Log.info("Navigate to next page");
+		driver.navigate().forward();
+	}
+
+    public void navigateBack(){
+    	Log.info("Navigate back to previous page");
+    	driver.navigate().back();
+	}
     public void SelectElement(WebElement checkbox) {
     	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){

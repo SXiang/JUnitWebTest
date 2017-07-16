@@ -87,13 +87,19 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	protected WebElement buttonOk;
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-footer > a.btn[ng-click='cancel()']")
 	protected WebElement buttonCancel;
-
+	@FindBy(how = How.CSS, using = ".modal-dialog .modal-footer > a.btn[ng-click='delete()']")
+	protected WebElement buttonDelete;
+	@FindBy(how = How.CSS, using = ".modal-dialog .modal-footer > button[ng-click='modalOptions.ok()']")
+	protected WebElement buttonConfirmDelete;
+	
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-header > button.close[ng-click='cancel()']")
 	protected WebElement buttonCloseAddSource;
-
+	
 	@FindBy(how = How.CSS, using = ".modal-dialog .row .list-group-item-text")
 	protected WebElement investigateTime;
 
+	public enum InvestigateAction {DELETE, OK, CANCEL};
+	
 	public MobileLeakSourcePage(){
 		super(STRURLPath);
 		pageKey = By.cssSelector("#leak_details.form-group");
@@ -101,6 +107,9 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public void addLeakDetails(LeakDetailEntity leakDetails){
+		addLeakDetails(leakDetails, InvestigateAction.OK);
+	}
+	public void addLeakDetails(LeakDetailEntity leakDetails, InvestigateAction action){
 		setStreetNumber(leakDetails.getStreetNumber());
 		setApartmentNumber(leakDetails.getApartmentNumber());
 		setStreetName(leakDetails.getStreetName());
@@ -120,8 +129,16 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		setMeterNumber(leakDetails.getMeterNumber());
 		setLeakLocationRemarks(leakDetails.getLeakLocationRemarks());
 		setAdditionalNotes(leakDetails.getAdditionalNotes());
-		
-		clickOkButton(leakDetails);
+		switch(action){
+		case OK:
+			clickOkButton(leakDetails);
+			break;
+		case DELETE:
+			clickDeleteButton();
+			break;
+		case CANCEL:
+			clickCancelButton();			
+		}
 	}
 
 	public void addOtherSource(OtherSourceEntity sourceDetails){
@@ -145,6 +162,14 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	public void clickCancelButton() {
 		this.buttonCancel.click();
+		waitForPageToLoad();
+	}
+
+	public void clickDeleteButton() {
+		waitForElementToBeClickable(buttonDelete);
+		this.buttonDelete.click();
+		waitForElementToBeClickable(buttonConfirmDelete);
+		this.buttonConfirmDelete.click();
 		waitForPageToLoad();
 	}
 	

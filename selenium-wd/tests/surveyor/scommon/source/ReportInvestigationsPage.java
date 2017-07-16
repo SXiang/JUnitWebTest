@@ -3,7 +3,12 @@
  */
 package surveyor.scommon.source;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +17,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import common.source.Log;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 
 /**
  * @author sxiang
@@ -28,6 +36,12 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.CSS, using = "#boxType > button.btn > #boxType_text")
 	protected WebElement boxTypeText;
 
+	@FindBy(how = How.ID, using = "buttonInvestigate")
+	protected WebElement buttonInvestigate;
+
+	@FindBy(how = How.ID, using = "investigate-button")
+	protected WebElement button_Investigate;
+	
 	@FindBy(how = How.ID, using = "buttonAssignPeaks")
 	protected WebElement buttonAssignPeaks;
 
@@ -42,12 +56,34 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "modal-cancel-btn")
 	protected WebElement buttonAssignCancel;
+	
+	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Investigation Markers')]")
+	protected WebElement investigationMarkers;
 
+	@FindBy(how = How.ID, using = "pause-button")
+	protected WebElement buttonPause;
+	
+	@FindBy(how = How.ID, using = "complete-button")
+	protected WebElement buttonMarkAsComplete;
+
+	@FindBy(how = How.ID, using = "directions-button")
+	protected WebElement button_Directions;
+
+	@FindBy(how = How.ID, using = "addsource-button")
+	protected WebElement button_AddSource;
+	
+	@FindBy(how = How.ID, using = "addcgi-button")
+	protected WebElement button_AddCgi;
+	
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
 	protected String itemDateXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[4]";
-
+	protected String itemNumberXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[1]";
+	
+    protected String itemMarkerXPath = "//a[@class='list-group-item' and contains(text(),'%s')]";
+	public static final String STRPageContentText = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
+	
 	public static enum IndicationStatus {
 		FOUNDGASLEAK ("Found Gas Leak"),
 		INPROGRESS ("In Progress"),
@@ -74,6 +110,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	 */
 	public ReportInvestigationsPage(WebDriver driver, String strBaseURL, TestSetup testSetup) {
 		super(driver, strBaseURL, testSetup, strBaseURL + STRURLPath);
+		resxProvider = getCommonResourceProvider();
 		Log.info(String.format("\nThe Compliance Reports Page URL is: %s\n", this.strPageURL));
 		PageFactory.initElements(driver, this);
 	}
@@ -132,6 +169,29 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		return userSelected;
 	}
 
+	public void investigateItem(String item){
+		investigateItem(item, "LISA");
+	}
+	
+	public void investigateItem(String item, String boxType){
+		buttonInvestigate.click();
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+		selectDropdownItem(boxTypeDropdown, boxType);
+		WebElement itemLink = driver.findElement(By.xpath(String.format(itemMarkerXPath, item)));
+		itemLink.click();
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
+		button_Investigate.click();
+	}
+	
+	public void clickOnPauseInvestigation(){
+		jsClick(buttonPause);
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+	}
+	public void clickOnMarkAsComplete(){
+		jsClick(buttonMarkAsComplete);
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+	}
+	
 	public String getLisaStatus(String lisaNumber){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
@@ -179,7 +239,6 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
 		performSearch(lisaValue);
-		boolean valueMatch = true;
 		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatableBoxes']//td[2]"));
 		for(WebElement item:itemValues){
 			String value = getElementText(item);
@@ -189,5 +248,45 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 			}
 		}
 		return true;
+	}
+
+	public boolean verifyLisasOrderByAmplitude(){
+		By xpathToItem = By.xpath("//*[@id='datatableBoxes']//td[1]");
+		selectDropdownItem(boxTypeDropdown, "LISA");
+		waitForElementToBeClickable(driver.findElement(xpathToItem));
+		List<WebElement> itemIDs = driver.findElements(xpathToItem);
+		List<String> itemSorted = new ArrayList<>();
+		itemIDs.stream().map((WebElement e) -> getElementText(e)).forEach((String s) -> itemSorted.add(s));
+
+		itemSorted.sort(
+				(String x, String y) -> {
+					String[] temp1 = x.split("-");
+					String[] temp2 = y.split("-");
+					return Integer.valueOf(temp1[temp1.length-1]).compareTo(Integer.valueOf(temp2[temp2.length-1]));
+				}
+				);
+		Double value1=null, value2=null;
+		for(String item:itemSorted){
+			if(item.isEmpty()){
+				continue;
+			}
+			value1 = value2;
+			value2 = Double.valueOf(getElementText(driver.findElement(By.xpath(String.format(itemValueXPattern, item)))));
+			if(value1==null){
+				value1=value2;
+			}
+			if(value2>value1){
+				Log.error("Indication with Amplitude = '"+value2+"' is assigned a number lower than the number assigned to Amplitude = '"+value1+"'");
+				return false;
+			}
+		}
+		return true;
+	}
+	private static ResourceProvider getCommonResourceProvider() {
+		return new ResourceProvider(() -> {
+			Map<String, String> resxMap = new HashMap<String, String>();
+			resxMap.put(ResourceTable.Key_PageText, STRPageContentText);
+			return new ResourceTable(resxMap);
+		});
 	}
 }
