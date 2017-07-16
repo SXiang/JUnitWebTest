@@ -56,7 +56,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "modal-cancel-btn")
 	protected WebElement buttonAssignCancel;
-	
+
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Investigation Markers')]")
 	protected WebElement investigationMarkers;
 
@@ -74,13 +74,12 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	
 	@FindBy(how = How.ID, using = "addcgi-button")
 	protected WebElement button_AddCgi;
-	
+
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
 	protected String itemDateXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[4]";
 	protected String itemNumberXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[1]";
-	
     protected String itemMarkerXPath = "//a[@class='list-group-item' and contains(text(),'%s')]";
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 	

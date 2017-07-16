@@ -94,7 +94,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-header > button.close[ng-click='cancel()']")
 	protected WebElement buttonCloseAddSource;
-	
+
 	@FindBy(how = How.CSS, using = ".modal-dialog .row .list-group-item-text")
 	protected WebElement investigateTime;
 
@@ -109,6 +109,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	public void addLeakDetails(LeakDetailEntity leakDetails){
 		addLeakDetails(leakDetails, InvestigateAction.OK);
 	}
+	
 	public void addLeakDetails(LeakDetailEntity leakDetails, InvestigateAction action){
 		setStreetNumber(leakDetails.getStreetNumber());
 		setApartmentNumber(leakDetails.getApartmentNumber());
