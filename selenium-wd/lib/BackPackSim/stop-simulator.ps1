@@ -11,6 +11,8 @@ $simDMHandle = -1
 $simLFHandle = -1
 $ocServerHandle = -1
 $mpProcessHandle = -1
+$dumInstrMgrHandle = -1
+$dumLnFitAlarmHandle = -1
 
 $procs = Get-WmiObject Win32_Process | Where-Object { $_.name -match "python.exe" }
 $procs | %{
@@ -28,6 +30,12 @@ $procs | %{
     if ($cmdLine.Trim().ToLowerInvariant().Contains("multiprocessing.forking")) {
         $mpProcessHandle = $proc.Handle        
     }
+    if ($cmdLine.Trim().ToLowerInvariant().EndsWith("dummyinstrmgr.py")) {
+        $dumInstrMgrHandle = $proc.Handle        
+    }
+    if ($cmdLine.Trim().ToLowerInvariant().EndsWith("dummylinearfitteralarm.py")) {
+        $dumLnFitAlarmHandle = $proc.Handle        
+    }
 }
 
 if ($simDMHandle -ne -1) {
@@ -44,4 +52,12 @@ if ($ocServerHandle -ne -1) {
 
 if ($mpProcessHandle -ne -1) {
     taskkill /F /pid $mpProcessHandle
+}
+
+if ($dumInstrMgrHandle -ne -1) {
+    taskkill /F /pid $dumInstrMgrHandle
+}
+
+if ($dumLnFitAlarmHandle -ne -1) {
+    taskkill /F /pid $dumLnFitAlarmHandle
 }

@@ -146,7 +146,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		try {
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-				assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+				assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 				return true;
 			});
 
@@ -251,7 +251,7 @@ public class AnalyticsReportsWithNewSurveyPageTest extends BaseReportsPageAction
 
 		try {
 			new TestDataGenerator().generateNewCustomerAndSurvey(custSrvInfo, (driverPageAction) -> {
-				assertTrue(driverPageAction.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+				assertTrue(driverPageAction.verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 				return true;
 			});
 

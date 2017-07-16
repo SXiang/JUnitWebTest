@@ -1,9 +1,13 @@
 package common.source;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
 
 public class MobileActions {
 	private MobileDriver<?> mobileDriver;
@@ -13,8 +17,37 @@ public class MobileActions {
 	private MobileActions() {
 	}
 
+	public static class CoordinatesPair {
+		public int x1;
+		public int y1;
+		public int x2;
+		public int y2;
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
+	}
+
 	private MobileActions(MobileDriver<?> driver) {
 		this.mobileDriver = driver;
+	}
+
+	public enum SwipeDirection {
+		UP ("UP"),
+		DOWN ("DOWN"),
+		LEFT ("LEFT"),
+		RIGHT ("RIGHT");
+
+		private final String name;
+
+		SwipeDirection(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
 	}
 
 	public enum KeyCode {
@@ -126,6 +159,10 @@ public class MobileActions {
 		}
 	}
 
+	public AndroidDriver<?> getAndroidDriver() {
+		return (AndroidDriver<?>)this.mobileDriver;
+	}
+
 	public static MobileActions newAction() {
 		return new MobileActions();
 	}
@@ -139,11 +176,33 @@ public class MobileActions {
 		new TouchAction(this.mobileDriver).tap(element).perform();
 	}
 
+	public void press(WebElement element) {
+		Log.method("press", element);
+		new TouchAction(this.mobileDriver).press(element).perform();
+	}
+
 	public void sendKeys(WebElement element, String text) throws Exception {
 		Log.method("sendKeys", element, text);
 		element.click();
 		text = escapeText(text);
-		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input text %s", text));
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input text \"%s\"", text));
+	}
+
+	public void slideBy(WebElement slider, WebElement sliderContainer, Float percValue) {
+		Log.method("slideBy");
+		int width = sliderContainer.getSize().getWidth();
+		int x = slider.getLocation().getX();
+		int y = slider.getLocation().getY();
+		int percentX = (int)((width * percValue)/100);
+		int actualX = sliderContainer.getLocation().getX() + percentX;
+		final float CORRECTION_FACTOR = 1.4f;
+		int moveToX = (int)((actualX - x)/CORRECTION_FACTOR);   // Appium appears to move the element by a value larger than moveToX value provided. Adding this adjustment factor to workaround Appium likely buggy behaviour.
+		Log.info(String.format("SLIDER : Top LEFT=(%d, %d)", slider.getLocation().getX(), slider.getLocation().getY()));
+		Log.info(String.format("SLIDER : Width=%d; Height=%d", slider.getSize().getWidth(), slider.getSize().getHeight()));
+		Log.info(String.format("x=%d; y=%d; actualX=%d, width=%d", x, y, actualX, width));
+		Log.info(String.format("Moving slider by %f percent from start. percentX=%d; ", percValue, percentX));
+		Log.info(String.format("Performing action slideBy -> press(%d, %d) -> moveTo(%d, %d)", x, y, moveToX, 0));
+		new TouchAction(this.mobileDriver).press(x, y).moveTo(moveToX, 0).release().perform();
 	}
 
 	private String escapeText(String input) {
@@ -160,9 +219,27 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("screencap /sdcard/%s.png", screenshotFileNameWithoutExt));
 	}
 
-	public void swipe(Integer top, Integer left, Integer bottom, Integer right) throws Exception {
-		Log.method("swipe", top, left, bottom, right);
-		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input swipe %d %d %d %d", top, left, bottom, right));
+	public void swipe(Integer x1, Integer y1, Integer x2, Integer y2) throws Exception {
+		Log.method("swipe", x1, y1, x2, y2);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input swipe %d %d %d %d", x1, y1, x2, y2));
+	}
+
+	/**
+	 * Executes swipe action using android driver.
+	 */
+	public void swipeFromCenter(SwipeDirection direction, int delta, int duration) {
+		Log.method("swipeUpFromCenter", direction, delta, duration);
+		CoordinatesPair pair = getSwipeFromCenterCoordinatesForDirection(direction, delta);
+		getAndroidDriver().swipe(pair.x1, pair.y1, pair.x2, pair.y2, duration);
+	}
+
+	/**
+	 * Executes swipe action using adb.
+	 */
+	public void swipeFromCenter(SwipeDirection direction, int delta) throws Exception {
+		Log.method("swipeFromCenterUsingDeviceAction", direction, delta);
+		CoordinatesPair pair = getSwipeFromCenterCoordinatesForDirection(direction, delta);
+		swipe(pair.x1, pair.y1, pair.x2, pair.y2);
 	}
 
 	public void clickAndPressKey(WebElement element, KeyCode keyCode) throws Exception {
@@ -174,5 +251,38 @@ public class MobileActions {
 	public void pressKey(KeyCode keyCode) throws Exception {
 		Log.method("pressKey", keyCode);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input keyevent %d", keyCode.getCode()));
+	}
+
+	private CoordinatesPair getSwipeFromCenterCoordinatesForDirection(SwipeDirection direction, int delta) {
+		Log.method("getSwipeFromCenterCoordinatesForDirection", direction, delta);
+		CoordinatesPair pair = null;
+		if (direction.equals(SwipeDirection.UP)) {
+			pair = getSwipeFromCenterCoordinates(delta /*upY*/, 0 /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
+		} else if (direction.equals(SwipeDirection.DOWN)) {
+			pair = getSwipeFromCenterCoordinates(0 /*upY*/, delta /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
+		} else if (direction.equals(SwipeDirection.LEFT)) {
+			pair = getSwipeFromCenterCoordinates(0 /*upY*/, 0 /*downY*/, delta /*leftX*/, 0 /*rightX*/);
+		} else if (direction.equals(SwipeDirection.RIGHT)) {
+			pair = getSwipeFromCenterCoordinates(0 /*upY*/, 0 /*downY*/, 0 /*leftX*/, delta /*rightX*/);
+		}
+
+		Log.info("Returning coordinate pair -> " + pair.toString());
+		return pair;
+	}
+
+	private CoordinatesPair getSwipeFromCenterCoordinates(int upY, int downY, int leftX, int rightX) {
+		Log.method("getSwipeFromCenterCoordinates", upY, downY, leftX, rightX);
+		CoordinatesPair pair = new CoordinatesPair();
+		AndroidDriver<?> androidDriver = getAndroidDriver();
+		Dimension size = androidDriver.manage().window().getSize();
+		int centerX = (int)(size.getWidth()/2);
+		int centerY = (int)(size.getHeight()/2);
+		pair.x1 = centerX;
+		pair.y1 = centerY;
+		pair.x2 = centerX-leftX+rightX;
+		pair.y2 = centerY-upY+downY;
+
+		Log.info("Returning coordinate pair -> " + pair.toString());
+		return pair;
 	}
 }

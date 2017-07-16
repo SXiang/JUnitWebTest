@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.MobileActions.KeyCode;
 import common.source.Timeout;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -41,13 +42,20 @@ public class AndroidBaseScreen {
 		MobileActions.newAction((MobileDriver<?>)driver).tap(element);
 	}
 
+	public void press(WebElement element) {
+		MobileActions.newAction((MobileDriver<?>)driver).press(element);
+	}
+
+	public void clickAndPressKey(WebElement element, KeyCode keyCode) throws Exception {
+		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
+	}
+
 	public void sendKeys(WebElement element, String text) throws Exception {
 		MobileActions.newAction().sendKeys(element, text);
 	}
 
-	public void waitForFirstAppLoad() {
-		Log.method("waitForFirstAppLoad");
-		waitForScreenLoad(driver, Timeout.ANDROID_APP_FIRST_APP_LOAD_TIMEOUT, screenLoadPredicate);
+	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
+		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
 	}
 
 	public boolean waitForScreenLoad() {
@@ -59,7 +67,7 @@ public class AndroidBaseScreen {
 		return waitForScreenLoad(this.driver, timeout, waitPredicate);
 	}
 
-	private boolean waitForScreenLoad(WebDriver drv, Integer timeout, Predicate<WebDriver> waitPredicate) {
+	protected boolean waitForScreenLoad(WebDriver drv, Integer timeout, Predicate<WebDriver> waitPredicate) {
 		Log.method("waitForScreenLoad", drv, timeout, waitPredicate);
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {

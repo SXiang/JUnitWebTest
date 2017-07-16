@@ -23,7 +23,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.source.DataTablePage.TableColumnType;
+import common.source.Constants;
 import common.source.Log;
+import common.source.RetryUtil;
 import common.source.TestSetup;
 
 /**
@@ -1575,11 +1577,14 @@ public class ManageUsersPage extends SurveyorBasePage {
 
     @Override
 	public void waitForPageLoad() {
-        (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-                return d.getPageSource().contains(STRPageContentText);
-            }
-        });
+    	RetryUtil.retryOnException(
+				() -> {new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+					public Boolean apply(WebDriver d) {
+						return d.getPageSource().contains(STRPageContentText);
+					}
+				}); return true;
+				}, () -> { super.open(); return true;}, Constants.DEFAULT_WAIT_BETWEEN_RETRIES_IN_MSEC,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
     }
 
 	public void waitForNewPageLoad() {

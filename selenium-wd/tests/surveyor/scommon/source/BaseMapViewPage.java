@@ -74,6 +74,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[8]")
 	private WebElement displaySwitchFovsDivElement;
 
+	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
+	private WebElement activeModeWarning;
+	
 	@FindBy(id = "display_switch_8hour_history")
 	protected WebElement displaySwitch8HourHistory;
 
@@ -242,8 +245,8 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map")
 	protected WebElement mapElement;
 
-	@FindBy(id = "analytics_mode_warning")
-	protected WebElement analyticsModeDialog;
+	@FindBy(css = "[id$='_mode_warning']")
+	protected WebElement surveyModeDialog;
 
 	// Feature info popup values are updated on each featureInfo click. Seek these elements newly when get*() method is called.
 	private WebElement featureInfoEpoch;
@@ -426,17 +429,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	/**
 	 * Verifies whether the Analytics Mode dialog is shown.
 	 */
-	public boolean isAnalyticsModeDialogShown() {
-		Log.method("isAnalyticsModeDialogShown");
-		Log.info(String.format("Expected=[%s], Actual=[%s]", "cssFade", analyticsModeDialog.getAttribute("class")));
-		return this.analyticsModeDialog.getAttribute("class").equals("cssFade");
+	public boolean isSurveyModeDialogShown() {
+		Log.method("isSurveyModeDialogShown");
+		Log.info(String.format("Expected=[%s], Actual=[%s]", "cssFade", surveyModeDialog.getAttribute("class")));
+		return this.surveyModeDialog.getAttribute("class").equals("cssFade");
 	}
 
 	/**
 	 * Verifies the Analytics Mode dialog is NOT shown.
 	 */
-	public boolean isAnalyticsModeDialogHidden() {
-		return this.analyticsModeDialog.getAttribute("class").equals("cssFade ng-hide");
+	public boolean isSurveyModeDialogHidden() {
+		return this.surveyModeDialog.getAttribute("class").equals("cssFade ng-hide");
 	}
 
 
@@ -684,6 +687,23 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isGisUseAllBoundariesButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.useAllBoundariesDivElement,"ng-cloak") ||
 					this.useAllBoundariesDivElement.getAttribute("class").contains("ng-hide"));
+	}
+
+	public boolean isSurveyModeWarningContentCorrect(String expectedText){
+		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
+		String text = getElementText(activeModeWarning);
+		if(!text.equals(expectedText)){
+			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
+			return false;
+		}
+		for(String[] css:cssValues){
+			String value = activeModeWarning.getCssValue(css[0]);
+			if(!value.equals(css[1])){
+				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws Exception {
@@ -1255,12 +1275,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	/**
-	 * Get Analytics mode dialog message.
+	 * Get Survey mode dialog message.
 	 *
 	 * @return the span WebElement.
 	 */
-	public WebElement getAnalyticsModeDialog() {
-		return analyticsModeDialog;
+	public WebElement getSurveyModeDialog() {
+		return surveyModeDialog;
 	}
 
 	public WebElement getMapElement() {
@@ -1686,12 +1706,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	/**
-	 * Waits for Analytics Survey message dialog to be displayed.
+	 * Waits for Survey message dialog to be displayed. (Analytics/EQ)
 	 */
-	public void waitForAnalyticsDialogToBeDisplayed() {
+	public void waitForSurveyDialogToBeDisplayed() {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return isAnalyticsModeDialogShown();
+				return isSurveyModeDialogShown();
 			}
 		});
 	}

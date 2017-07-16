@@ -180,14 +180,23 @@ public class TestSetup {
 
 	private ScreenShotOnFailure screenCapture;
 
-	private String backPackServerIpAddress;
 	private String adbLocation;
+	private String backPackServerIpAddress;
+	private String backPackServerMachineIp;
+	private String backPackServerMachineUser;
+	private String backPackServerMachinePwd;
+
+	private boolean isRunningOnBackPackAnalyzer;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
 
 	private static final AtomicBoolean singleExecutionUnitProcessed = new AtomicBoolean();
 	private static final CountDownLatch singleExecutionCountDown = new CountDownLatch(1);
+
+	private String dbServerMachineIPAddress;
+	private String dbServerMachineUsername;
+	private String dbServerMachinePassword;
 
 	public TestSetup() {
 		initialize();
@@ -639,8 +648,9 @@ public class TestSetup {
 			this.setIosDeviceName(this.testProp.getProperty("iosDeviceName"));
 			this.setAndroidVersion(this.testProp.getProperty("androidVersion"));
 			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
-			this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
 			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
+
+			setBackPackServerProperties(this.testProp);
 
 			this.setRunningOnRemoteServer(this.testProp.getProperty("runningOnRemoteServer"));
 			this.setRemoteServerHost(this.testProp.getProperty("remoteServerHost"));
@@ -678,6 +688,7 @@ public class TestSetup {
 			setUploadSurveyTestProperties();
 			setPushDBSeedTestProperties();
 			setParallelBuildTestProperties();
+			setDBServerMachineProperties();
 
 			this.language = this.testProp.getProperty("language");
 			this.culture = this.testProp.getProperty("culture");
@@ -738,6 +749,13 @@ public class TestSetup {
 		} catch (InterruptedException e) {
 			Log.error(e.toString());
 		}
+	}
+
+	private void setBackPackServerProperties(Properties testProp2) {
+		this.setBackPackServerIpAddress(this.testProp.getProperty("backPackServerIpAddress"));
+		this.setBackPackServerMachineIp(this.testProp.getProperty("backPackServerMachineIp"));
+		this.setBackPackServerMachineUser(this.testProp.getProperty("backPackServerMachineUser"));
+		this.setBackPackServerMachinePwd(this.testProp.getProperty("backPackServerMachinePwd"));
 	}
 
 	// Perform login with Administrator user. Not using page object intentionally to avoid cyclic dependency amongst packages.
@@ -840,6 +858,21 @@ public class TestSetup {
 		String runUUID = this.testProp.getProperty("runUUID");
 		if (runUUID != null && runUUID != "") {
 			this.setRunUUID(Long.valueOf(runUUID));
+		}
+	}
+
+	private void setDBServerMachineProperties() {
+		String dbServerMachineIPAddress = this.testProp.getProperty("dbServerMachine.IPAddress");
+		if (dbServerMachineIPAddress != null && dbServerMachineIPAddress != "") {
+			this.setDbServerMachineIPAddress(dbServerMachineIPAddress);
+		}
+		String dbServerMachineUsername = this.testProp.getProperty("dbServerMachine.Username");
+		if (dbServerMachineUsername != null && dbServerMachineUsername != "") {
+			this.setDbServerMachineUsername(dbServerMachineUsername);
+		}
+		String dbServerMachinePassword = this.testProp.getProperty("dbServerMachine.Password");
+		if (dbServerMachinePassword != null && dbServerMachinePassword != "") {
+			this.setDbServerMachinePassword(dbServerMachinePassword);
 		}
 	}
 
@@ -1598,6 +1631,30 @@ public class TestSetup {
 		this.adbLocation = adbLocation;
 	}
 
+	public String getDbServerMachineIPAddress() {
+		return dbServerMachineIPAddress;
+	}
+
+	public void setDbServerMachineIPAddress(String dbServerMachineIPAddress) {
+		this.dbServerMachineIPAddress = dbServerMachineIPAddress;
+	}
+
+	public String getDbServerMachineUsername() {
+		return dbServerMachineUsername;
+	}
+
+	public void setDbServerMachineUsername(String dbServerMachineUsername) {
+		this.dbServerMachineUsername = dbServerMachineUsername;
+	}
+
+	public String getDbServerMachinePassword() {
+		return dbServerMachinePassword;
+	}
+
+	public void setDbServerMachinePassword(String dbServerMachinePassword) {
+		this.dbServerMachinePassword = dbServerMachinePassword;
+	}
+
 	public String getAwsAccessKeyId() {
 		return awsAccessKeyId;
 	}
@@ -1612,5 +1669,33 @@ public class TestSetup {
 
 	public void setAwsSecretKeyId(String awsSecretKeyId) {
 		this.awsSecretKeyId = awsSecretKeyId;
+	}
+
+	public String getBackPackServerMachineIp() {
+		return backPackServerMachineIp;
+	}
+
+	public void setBackPackServerMachineIp(String backPackServerMachineIp) {
+		this.backPackServerMachineIp = backPackServerMachineIp;
+	}
+
+	public String getBackPackServerMachineUser() {
+		return backPackServerMachineUser;
+	}
+
+	public void setBackPackServerMachineUser(String backPackServerMachineUser) {
+		this.backPackServerMachineUser = backPackServerMachineUser;
+	}
+
+	public String getBackPackServerMachinePwd() {
+		return backPackServerMachinePwd;
+	}
+
+	public void setBackPackServerMachinePwd(String backPackServerMachinePwd) {
+		this.backPackServerMachinePwd = backPackServerMachinePwd;
+	}
+
+	public boolean isRunningOnBackPackAnalyzer() {
+		return this.getBackPackServerIpAddress().contains(this.getBackPackServerMachineIp());
 	}
 }

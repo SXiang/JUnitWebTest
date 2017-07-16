@@ -141,7 +141,7 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 
 		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 
 		observerViewPageActionList.get(0).clickOnDisplayButton(EMPTY, NOTSET);
 		// assert visible buttons in Display menu
@@ -202,7 +202,7 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyObserverViewPageIsOpened(EMPTY, NOTSET));
 
 		observerViewPageActionList.get(0).getObserverViewPage().waitForAJAXCallsToComplete();
-		assertTrue(observerViewPageActionList.get(0).verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
+		assertTrue(observerViewPageActionList.get(0).verifyCorrectSurveyActiveMessageIsShownOnMap(EMPTY, NOTSET));
 		getTestEnvironmentAction().idleForSeconds("10", NOTSET);
 
 		Set<Indication> indicationsOnObserverView = observerViewPageActionList.get(0).getIndicationsShownOnPage();

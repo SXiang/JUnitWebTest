@@ -48,6 +48,7 @@ import surveyor.dbseed.source.DbSeedExecutor;
 import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.DriverViewPageActions;
+import surveyor.scommon.actions.DriverViewPageActions.DrivingSurveyType;
 import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.actions.TestEnvironmentActions;
 import surveyor.scommon.entities.ComplianceReportEntity;
@@ -518,11 +519,12 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String db3DefnFile, String userName, String password, int surveyRuntimeInSeconds, SurveyType... surveyTypes) throws Exception{
 		String replayScriptDB3File = "Surveyor.db3";
 		String replayAnalyticsScriptDB3File = "AnalyticsSurvey-RFADS2024-03.db3";
-		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62};
-		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics};
+		String replayEQScriptDB3File = "Surveyor.db3";
+		int[] surveyRowIDs = {3, 5, 9, 31, 30, 62, 65};
+		SurveyType[] surveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual, SurveyType.Analytics, SurveyType.EQ};
 		SurveyType[] defaultTestSurveyType = {SurveyType.Standard, SurveyType.Operator, SurveyType.RapidResponse, SurveyType.Assessment, SurveyType.Manual};
-		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300"};
-
+		String[] db3Type = {"P3200", "P3200","P3200","P3200","P3200","P3300", "P3300"};
+		DrivingSurveyType drivingSurveyType = DrivingSurveyType.Default;
 		if(surveyTypes==null||surveyTypes.length==0){
 			surveyTypes = defaultTestSurveyType;
 		}
@@ -563,6 +565,9 @@ public class BaseTest {
 			String db3file = replayScriptDB3File;
 			if(st.equals(SurveyType.Analytics)){
 				db3file = replayAnalyticsScriptDB3File;
+			}else if(st.equals(SurveyType.EQ)){
+				db3file = replayEQScriptDB3File;
+				drivingSurveyType = DrivingSurveyType.EQ;
 			}
 			int surveyRowID = surveyRowIDs[0];
 			for(int j=0; j<surveyType.length; j++){
@@ -573,7 +578,7 @@ public class BaseTest {
 			}
 
 			/* Step 2: startAnalyzerSurvey */
-			startAnalyzerSurvey(testEnvironmentAction, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+			startAnalyzerSurvey(testEnvironmentAction, drivingSurveyType, driverViewPageAction, db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
 			/* Step 3: stopAnalyzerSurvey */
 			stopAnalyzerSurvey(testEnvironmentAction, driverViewPageAction,analyzerName, analyzerSharedKey, surveyorName);
 			testSurvey.put(st.name()+"Tag", DriverViewPageActions.workingDataRow.get().surveyTag);
@@ -595,14 +600,24 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
-	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+	    protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
 			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+	    	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
+	    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+	    }
+	    
+		protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+				String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
 		driverViewPageAction.waitForConnectionToComplete("", -1);
 		TestSetup.replayDB3Script(db3DefnFile, db3file);
 		driverViewPageAction.clickOnModeButton("", -1);
-		driverViewPageAction.startDrivingSurvey("", surveyRowID);
+		if(surveyType.equals(DrivingSurveyType.EQ)){
+			driverViewPageAction.startEQDrivingSurvey("", surveyRowID);
+		}else{
+			driverViewPageAction.startDrivingSurvey("", surveyRowID);
+		}
 		testEnvironmentAction.idleForSeconds(String.valueOf(surveyRuntimeInSeconds), -1);
 	}
 

@@ -168,9 +168,9 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOnWindRose")) { return this.turnOnWindRose(data, dataRowID); }
-		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifyAnalyticsModeDialogIsShown(data, dataRowID); }
-		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifyAnalyticsModeDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsShown")) { return this.verifySurveyModeDialogIsShown(data, dataRowID); }
+		else if (actionName.equals("verifyAnalyticsModeDialogIsNotShown")) { return this.verifySurveyModeDialogIsNotShown(data, dataRowID); }
+		else if (actionName.equals("verifyCorrectAnalyticsSurveyActiveMessageIsShownOnMap")) { return this.verifyCorrectSurveyActiveMessageIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsGreen")) { return this.verifyAnemometerButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyAnemometerButtonIsRed")) { return this.verifyAnemometerButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyAssetIsNotShownOnMap")) { return this.verifyAssetIsNotShownOnMap(data, dataRowID); }
@@ -286,6 +286,7 @@ public class ObserverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyRefGasCaptureResultIsNotPresentOnMap")) { return this.verifyRefGasCaptureResultIsNotPresentOnMap(data, dataRowID); }
 		else if (actionName.equals("waitForConnectionToComplete")) { return this.waitForConnectionToComplete(data, dataRowID); }
 		else if (actionName.equals("verifySurveyAmplitudes")) { return this.verifySurveyAmplitudes(data, dataRowID); }
+		else if (actionName.equals("verifySurveyModeWarningCorrect")) { return this.verifySurveyModeWarningCorrect(data, dataRowID); }
 		return false;
 	}
 
