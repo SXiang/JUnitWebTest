@@ -21,7 +21,7 @@ $processes | %{
         Write-Host "Resuming process id = $procId, windowTitle = $windowTitle ..."
         $null = . $exeFolder\pssuspend.exe -r $procId 2>&1
     } else {
-        Write-Host "Pausing process id = $procId ..."
+        Write-Host "Pausing process id = $procId, windowTitle = $windowTitle ..."
         $null = . $exeFolder\pssuspend.exe $procId 2>&1
     }
 }
