@@ -18,8 +18,6 @@ import androidapp.entities.source.InvestigationEntity;
 
 public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
-	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
-
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView")
 	@CacheLookup
 	private List<WebElement> listViewElements;
@@ -66,9 +64,9 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	}
 
 	public void performSearch(String searchKeyword) throws Exception {
-		Log.method("enterSearchText", searchKeyword);
+		Log.method("performSearch", searchKeyword);
 		sendKeys(getSearchEditView(), searchKeyword);
-		MobileActions.newAction().pressKey(KeyCode.KEYCODE_ENTER);
+		//MobileActions.newAction().pressKey(KeyCode.KEYCODE_ENTER);
 		TestContext.INSTANCE.stayIdle(3);
 		waitForSearchResultsToLoad(searchKeyword);
 	}
@@ -101,6 +99,6 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	private void waitForSearchResultsToLoad(String searchKeyword) {
 		Log.method("waitForSearchResultsToLoad", searchKeyword);
-		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
+		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 2, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
 	}
 }

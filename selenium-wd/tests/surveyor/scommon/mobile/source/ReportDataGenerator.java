@@ -179,11 +179,13 @@ public class ReportDataGenerator {
 		return reportId;
 	}
 
-	private ReportInfoEntity getMatchingReportEntityFromDB(String testCaseID) {
-		Report report = new Report().getTitleLike(testCaseID);
+	private ReportInfoEntity getMatchingReportEntityFromDB(String reportTitlePrefix) {
+		Log.method("getMatchingReportEntityFromDB", reportTitlePrefix);
+		Report report = new Report().getTitleLike(reportTitlePrefix);
 		if (report != null) {
 			String reportName = "CR-"+report.getId().substring(0,6).toUpperCase();
 			String reportTitle = report.getReportTitle();
+			Log.method(String.format("Found report in DB -> [reportName=%s; reportTitle=%s]", reportName, reportTitle));
 			return new ReportInfoEntity(reportTitle, reportName);
 		}
 

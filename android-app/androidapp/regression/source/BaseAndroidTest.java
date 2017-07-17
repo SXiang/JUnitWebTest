@@ -51,7 +51,7 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
-	private boolean devMachineOverride = false;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
+	private boolean devMachineOverride = true;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
 
 	public static class AndroidActivities {
 		public static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";

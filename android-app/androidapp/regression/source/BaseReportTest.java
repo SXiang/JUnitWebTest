@@ -36,8 +36,8 @@ public class BaseReportTest extends BaseAndroidTest {
 		TestContext.INSTANCE.stayIdle(2);    // even after screen has loaded, listview takes time to load all results.
 	}
 
-	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String suffixRptId) throws Exception {
-		investigationScreen.performSearch(suffixRptId);
+	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String reportTitle) throws Exception {
+		investigationScreen.performSearch(reportTitle);
 	}
 
 	protected boolean verifyExpectedMarkersShownOnInvestigationScreen(AndroidInvestigateReportScreen investigateReportScreen, final Boolean refetchItems, final Integer expectedInvestigationMarkers) {

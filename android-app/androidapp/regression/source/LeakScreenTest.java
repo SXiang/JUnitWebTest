@@ -322,7 +322,6 @@ public class LeakScreenTest extends BaseReportTest {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
-			investigationScreen.getInvestigations();
 			return true;
 		});
 
