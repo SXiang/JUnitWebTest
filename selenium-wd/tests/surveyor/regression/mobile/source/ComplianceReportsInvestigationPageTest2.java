@@ -4,23 +4,15 @@
 package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-
 import java.util.List;
-
-import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
-import common.source.SortHelper;
 import common.source.TestContext;
 import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
@@ -31,12 +23,10 @@ import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
 import surveyor.scommon.mobile.source.MobileLeakSourcePage;
-import surveyor.scommon.mobile.source.MobileLeakSourcePage.InvestigateAction;
 import surveyor.scommon.mobile.source.MobileLoginPage;
 import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportInvestigationsPage;
 import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
