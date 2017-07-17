@@ -144,7 +144,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * - Investigation PDF and csv files should not show deleted leak information
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, Leak source type, etc
 	 */
-	@Test /* Color of investigation status is not ready yet */
+	@Test /* Verification of indication colors is in TODOs */
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC234, location = InvestigationReportDataProvider.class)
 	public void TC234_InvestigateLisaRandomlyAsDriverUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
@@ -237,8 +237,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(8,reportDataRowID)));
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(8,reportDataRowID)));
 
-		//TODO: colors verification
-		//Violet color for In Progress Lisa, blue color for Investigated and no leak Lisa
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
@@ -327,6 +325,11 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileLeakSourcePage.closeAddSourceDialog();
 		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
 
+		// Todo: Mobile FoundLeak - color verification: Red
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-5"));
+		
 		// PDF and CSV
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 
@@ -342,19 +345,26 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(5,reportDataRowID)));
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(5,reportDataRowID)));
 
-
-		//Violet color for In Progress Lisa, blue color for Investigated and no leak Lisa
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
+
+		// TODO: Web FoundLeak - color verification: Red
+		reportInvestigationsPage.clickOnInvestigate();
+		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+5);
+		reportInvestigationsPage.clickOnFollow();
+//		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-5"));
 		
 		//Web view - investigate
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.investigateItem(lisaNumberPrefix+2);
 		reportInvestigationsPage.clickOnPauseInvestigation();
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
+
 		
 		//Mobile view - investigate
 		mobileReportsPage.open();
@@ -362,20 +372,36 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
 		mobileInvestigatePage.clickOnPauseInvestigation();
+
+		// TODO: Mobile InPerogress - color verification: Violet
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-5"));
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
 
+		// TODO: Web Inprogress - color verification: Violet
+		reportInvestigationsPage.clickOnInvestigate();
+		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+5);
+		reportInvestigationsPage.clickOnFollow();
+//		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-5"));
+		
         //Delete leaks
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails2);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.deleteLeaks();
 		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails2);
-			
+
+		// TODO: Mobile no leak - color verification: Blue
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNoLeak-2"));
+		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 	
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
@@ -386,9 +412,18 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, getReportRowID(reportDataRowID));
 
 		// Verify deleted leaks are not showing
-		assertFalse(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(5,reportDataRowID)));
-		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(5,reportDataRowID)));
+		assertFalse(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(2,reportDataRowID)));
+		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
 
+		complianceReportsPageAction.open(EMPTY, reportDataRowID);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+
+		// TODO: Web NoLeak - color verification: Blue
+		reportInvestigationsPage.clickOnInvestigate();
+		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.clickOnFollow();
+//		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-2"));
+		
 		mobileLoginPage.logout();
 	}
 
@@ -495,6 +530,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "addSourceCGI-4"));
 		mobileInvestigatePage.clickOnAddSource();
 		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
 		leakDetails.setDefaultTestData();

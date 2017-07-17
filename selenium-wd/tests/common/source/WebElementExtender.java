@@ -270,6 +270,16 @@ public class WebElementExtender {
 		return (new WebDriverWait(webDriver, timeout)).until(
 				ExpectedConditions.elementToBeClickable(element));
 	}
+	
+	public static Boolean waitForElementToBeDisplayed(final Integer timeout, WebDriver webDriver, By elementBy) {
+		return (new WebDriverWait(webDriver, timeout)).until (new ExpectedCondition<Boolean>(){
+			WebElement we = null;
+		    public Boolean apply(WebDriver d) {
+		        we = d.findElement(elementBy);
+		        return we.isDisplayed();
+		    }
+		});
+	}
 
 	public static void waitForPageLoad(final String pageText, final Integer timeout, WebDriver webDriver) {
 		(new WebDriverWait(webDriver, timeout)).until(new ExpectedCondition<Boolean>() {

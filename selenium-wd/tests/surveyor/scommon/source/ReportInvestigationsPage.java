@@ -20,6 +20,8 @@ import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.scommon.entities.InvestigationEntity;
+import surveyor.scommon.mobile.source.MobileInvestigatePage;
 
 /**
  * @author sxiang
@@ -75,12 +77,18 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "addcgi-button")
 	protected WebElement button_AddCgi;
 
+	@FindBy(how = How.ID, using = "geolocate")
+	protected WebElement buttonFollow;
+	
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
 	protected String itemDateXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[4]";
 	protected String itemNumberXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[1]";
     protected String itemMarkerXPath = "//a[@class='list-group-item' and contains(text(),'%s')]";
+	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
+	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
+	protected By mapKey = By.cssSelector(".map[id='map']>.ol-viewport > canvas");
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
 	
 	public static enum IndicationStatus {
@@ -173,15 +181,18 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 	
 	public void investigateItem(String item, String boxType){
-		buttonInvestigate.click();
-		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+		clickOnInvestigate();
 		selectDropdownItem(boxTypeDropdown, boxType);
 		WebElement itemLink = driver.findElement(By.xpath(String.format(itemMarkerXPath, item)));
 		itemLink.click();
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, button_Investigate);
 		button_Investigate.click();
 	}
-	
+
+	public void clickOnInvestigate(){
+		buttonInvestigate.click();
+		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+	}
 	public void clickOnPauseInvestigation(){
 		jsClick(buttonPause);
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
@@ -252,7 +263,8 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	public boolean verifyLisasOrderByAmplitude(){
 		By xpathToItem = By.xpath("//*[@id='datatableBoxes']//td[1]");
 		selectDropdownItem(boxTypeDropdown, "LISA");
-		waitForElementToBeClickable(driver.findElement(xpathToItem));
+		waitForAJAXCallsToComplete();
+		waitForElementToBeDisplayed(xpathToItem);
 		List<WebElement> itemIDs = driver.findElements(xpathToItem);
 		List<String> itemSorted = new ArrayList<>();
 		itemIDs.stream().map((WebElement e) -> getElementText(e)).forEach((String s) -> itemSorted.add(s));
@@ -281,6 +293,31 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		}
 		return true;
 	}
+	
+	public void clickOnLisa(String lisaNumber){
+		clickOnLisa(lisaNumber, null);
+	}
+	
+	public void clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
+		String boxType = "LISA";
+		selectDropdownItem(boxTypeDropdown, boxType);
+		if(investigationEntity!=null){
+			investigationEntity.setBoxType(boxType);
+		}
+		clickOnMarker(lisaNumber);
+	}
+
+	public void clickOnMarker(String boxNumber){
+		WebElement markerLink = driver.findElement(By.xpath(String.format(boxMarkerXPattern, boxNumber)));
+		markerLink.click();
+	}
+
+	public void clickOnFollow(){
+		buttonFollow.click();
+		waitForAJAXCallsToComplete();
+		waitForElementReady(mapKey);
+	}
+
 	private static ResourceProvider getCommonResourceProvider() {
 		return new ResourceProvider(() -> {
 			Map<String, String> resxMap = new HashMap<String, String>();

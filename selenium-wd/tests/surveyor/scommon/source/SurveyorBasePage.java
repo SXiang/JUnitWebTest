@@ -730,9 +730,14 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForElementReady(String elementID) {
 		Log.method("waitForElementReady", elementID);
-		(new WebDriverWait(TestContext.INSTANCE.getDriver(), this.timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(elementID)));
+        waitForElementReady(By.id(elementID));
 	}
-
+	
+	public void waitForElementReady(By elementBy) {
+		Log.method("waitForElementReady", elementBy);
+		(new WebDriverWait(TestContext.INSTANCE.getDriver(), this.timeout)).until(ExpectedConditions.presenceOfElementLocated(elementBy));
+	}
+	
 	/**
 	 * Waits for search results to load once user has performed search in datatable.
 	 */

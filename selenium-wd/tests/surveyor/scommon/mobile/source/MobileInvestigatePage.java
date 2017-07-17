@@ -101,6 +101,11 @@ public class MobileInvestigatePage extends MobileBasePage {
 		waitForElementToBeClickable(buttonAddLeak);
 	}
 
+	public void clickOnAddCGI(){
+		buttonAddSource.click();
+		waitForElementToBeClickable(buttonAddCGI);
+	}
+	
 	public MobileLeakSourcePage deleteLeaks(){
 		MobileLeakSourcePage mobileLeakSourcePage;
 		waitForElementToBeClickable(buttonAddLeak);
