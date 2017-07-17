@@ -144,7 +144,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 	 * - Investigation PDF and csv files should not show deleted leak information
 	 * - All data present on mobile app should be present in PDF and csv with same details. Eg. Lisa number, amplitude, Status, Investigation Date/Time, Investigator, Duration, Source, Lat/Long, Leak details, notes, Leak source type, etc
 	 */
-	@Test /* Verification of indication colors is in TODOs */
+	@Test /* Verification of indication colors is pending -US4581 */
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC234, location = InvestigationReportDataProvider.class)
 	public void TC234_InvestigateLisaRandomlyAsDriverUser(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
