@@ -89,14 +89,14 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			return true;
 		});
@@ -128,14 +128,14 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue("No investigation markers of type=LISA expected in this report", investigateReportScreen.verifyNoInvestigationMarkersFoundInReport());
 			investigateReportScreen.clickOnInvestigationMarkerType();
@@ -172,14 +172,14 @@ public class ReportListScreenTest extends BaseReportTest {
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportTitle.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			investigateReportScreen.clickOnInvestigationMarkerType();
@@ -200,21 +200,21 @@ public class ReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
 			Object[][] tc2431 = ReportListDataProvider.dataProviderReportList_TC2431();
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}

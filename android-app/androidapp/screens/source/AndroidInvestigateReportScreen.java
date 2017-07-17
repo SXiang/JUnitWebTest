@@ -31,6 +31,10 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement noInvestigationMarkersFoundTextView;
 
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView[1]")
+	@CacheLookup
+	private WebElement investigationMarkersContainerView;
+
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.widget.Spinner")
 	@CacheLookup
 	private WebElement markerTypeSelector;
@@ -61,7 +65,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public Integer getInvestigationMarkersCount() {
 		Log.method("getInvestigationReportsCount");
-		return (this.listViewElements == null) ? 0 : this.listViewElements.size() - 1 /*exclude header*/;
+		return (this.listViewElements == null) ? 0 : this.listViewElements.size();
 	}
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
@@ -92,6 +96,6 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		return mainFrameLayout!=null && mainFrameLayout.isDisplayed();
+		return investigationMarkersContainerView!=null && investigationMarkersContainerView.isDisplayed();
 	}
 }

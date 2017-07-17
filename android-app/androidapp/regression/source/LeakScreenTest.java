@@ -127,7 +127,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		investigateReportScreen.clickOnFirstInvestigationMarker();
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
@@ -193,7 +193,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
@@ -266,7 +266,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
@@ -328,7 +328,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			investigateReportScreen.clickOnInvestigationMarkerType();
 			markerTypeDialog.selectMarkerType(MarkerType.Gap);
@@ -402,7 +402,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
@@ -474,7 +474,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
@@ -518,42 +518,42 @@ public class LeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2434[0][1];
 			reportDataRowID1 = (Integer)tc2434[0][2];
 			tcId = "TC2434";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2435_")) {
 			Object[][] tc2435 = ReportListDataProvider.dataProviderReportList_TC2435();
 			userDataRowID = (Integer)tc2435[0][1];
 			reportDataRowID1 = (Integer)tc2435[0][2];
 			tcId = "TC2435";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2436_")) {
 			Object[][] tc2436 = ReportListDataProvider.dataProviderReportList_TC2436();
 			userDataRowID = (Integer)tc2436[0][1];
 			reportDataRowID1 = (Integer)tc2436[0][2];
 			tcId = "TC2436";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2437_")) {
 			Object[][] tc2437 = ReportListDataProvider.dataProviderReportList_TC2437();
 			userDataRowID = (Integer)tc2437[0][1];
 			reportDataRowID1 = (Integer)tc2437[0][2];
 			tcId = "TC2437";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2438_")) {
 			Object[][] tc2438 = ReportListDataProvider.dataProviderReportList_TC2438();
 			userDataRowID = (Integer)tc2438[0][1];
 			reportDataRowID1 = (Integer)tc2438[0][2];
 			tcId = "TC2438";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2439_")) {
 			Object[][] tc2439 = ReportListDataProvider.dataProviderReportList_TC2439();
 			userDataRowID = (Integer)tc2439[0][1];
 			reportDataRowID1 = (Integer)tc2439[0][2];
 			tcId = "TC2439";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}
 	}

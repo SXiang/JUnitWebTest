@@ -81,7 +81,7 @@ public class BackPackAnalyzer {
 				String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + arguments + "\"", "\"" + pauseResumeArg + "\"");
 		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
 		Log.info("Executing pause/resume backpack simulator processes. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public static void pauseBackPackAnalyzerDataProcesses() throws IOException {
@@ -104,7 +104,7 @@ public class BackPackAnalyzer {
 				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", repoRootFolder, backPackServerMachineIp, backPackServerMachineUser, backPackServerMachinePwd, pauseResumeArg);
 		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
 		Log.info("Executing pause/resume backpack analyzer processes remotely. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 
 	public static void restartSimulator() throws IOException {

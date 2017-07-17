@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidAlarmSettingsScreen;
@@ -17,7 +16,9 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidSettingsScreen;
+import common.source.BackPackAnalyzer;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
@@ -35,6 +36,16 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	public void beforeTest() throws Exception {
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.restartSimulator();
+		}
+	}
+
+	@After
+	public void afterTest() throws IOException {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.stopSimulator();
+		}
 	}
 
 	/**
@@ -56,9 +67,8 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	@Test
 	public void TC2385_EnergyBackpackAppSettingsConfiguration() throws Exception {
 		Log.info("\nRunning TC2385_EnergyBackpackAppSettingsConfiguration ...");
-		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
 
 			mapScreen.clickOnMenuButton();
@@ -93,9 +103,8 @@ public class SettingsScreenTest extends BaseAndroidTest {
 	@Test
 	public void TC2386_EnergyBackpackAlarmSettings() throws Exception {
 		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettings ...");
-		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
 
 			mapScreen.clickOnMenuButton();

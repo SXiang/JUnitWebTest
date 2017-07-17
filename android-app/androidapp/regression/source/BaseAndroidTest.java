@@ -44,10 +44,14 @@ public class BaseAndroidTest extends BaseTest {
 	    }
 	};
 
+	protected static Integer PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS = 1;
+
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
 	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
+
+	private boolean devMachineOverride = false;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
 
 	public static class AndroidActivities {
 		public static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
@@ -92,7 +96,15 @@ public class BaseAndroidTest extends BaseTest {
 
 	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
+	protected boolean executeWithBackPackDataProcessesPaused(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
+		return executeWithBackPackDataProcessesPausedInternal(applyInitialPause, predicate);
+	}
+
 	protected boolean executeWithBackPackDataProcessesPaused(CheckedPredicate<Object> predicate) throws Exception {
+		return executeWithBackPackDataProcessesPausedInternal(false /*applyInitialPause*/, predicate);
+	}
+
+	private boolean executeWithBackPackDataProcessesPausedInternal(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		boolean retVal = false;
 		BackPackAnalyzer.pauseDataProcesses();
 		retVal = predicate.test(null);
@@ -226,8 +238,12 @@ public class BaseAndroidTest extends BaseTest {
 		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
 
 		if (waitForMapScreenLoad) {
-			mapScreen.waitForScreenLoad();
-			Log.info("Map screen loaded successfully!");
+			if (devMachineOverride) {
+				TestContext.INSTANCE.stayIdle(1);
+			} else {
+				mapScreen.waitForScreenLoad();
+				Log.info("Map screen loaded successfully!");
+			}
 		}
 	}
 

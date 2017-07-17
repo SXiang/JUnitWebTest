@@ -7,6 +7,7 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebDriverFactory;
+import surveyor.dataaccess.source.Report;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -23,7 +24,8 @@ public class ReportDataGenerator {
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static ReportInvestigationsPage reportInvestigationsPage;
 	private static MobileLoginPage mobileLoginPage;
-	private Boolean isSingleUse = false;
+	private Boolean isSingleUse = false;					// when set to TRUE, object will be disposed after single use.
+	private Boolean isReusable = false;          			// when set to TRUE, if there is data already present in DB then existing data will be used.
 	private WebDriver driver;
 
 	private ReportDataGenerator() {
@@ -36,15 +38,38 @@ public class ReportDataGenerator {
 	 * @throws Exception
 	 */
 	public static ReportDataGenerator newSingleUseGenerator() throws Exception {
+		return newSingleUseGeneratorInternal(false /*isReusable*/);
+	}
+
+	/**
+	 * Returns a single use generator instance that disposes itself after create method has been called.
+	 * isReusable - if set to TRUE, if there is data already present in DB then existing data will be re-used.
+	 * @return - Generator instance.
+	 * @throws Exception
+	 */
+	public static ReportDataGenerator newSingleUseGenerator(boolean isReusable) throws Exception {
+		return newSingleUseGeneratorInternal(isReusable);
+	}
+
+	private static ReportDataGenerator newSingleUseGeneratorInternal(boolean isReusable) throws Exception {
 		ReportDataGenerator reportDataGenerator = new ReportDataGenerator();
 		reportDataGenerator.initialize();
 		reportDataGenerator.setSingleUse(true);
+		reportDataGenerator.setIsReusable(isReusable);
 		return reportDataGenerator;
 	}
 
 	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] lisaNumbers, String[] gapNumbers) throws Exception {
 		Log.method("createReportAndAssignLisasAndGapsToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+		if (isReusable) {
+			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
+			if (rptEntity != null) {
+				Log.info(String.format("isReusable set to TRUE. Found existing test data in DB. Reusing data from DB. ReportInfoEntity -> %s", rptEntity));
+				return rptEntity;
+			}
+		}
+
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
 
 		// Assign Lisas to specified user.
@@ -78,6 +103,13 @@ public class ReportDataGenerator {
 
 	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+		if (isReusable) {
+			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
+			if (rptEntity != null) {
+				return rptEntity;
+			}
+		}
+
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
 
 		// Assign Lisas to specified user.
@@ -99,6 +131,13 @@ public class ReportDataGenerator {
 
 	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+		if (isReusable) {
+			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
+			if (rptEntity != null) {
+				return rptEntity;
+			}
+		}
+
 		String reportId = createComplianceReportForInvestigation(testCaseID, userDataRowID, reportDataRowID);
 
 		// Assign Gaps to specified user.
@@ -140,6 +179,17 @@ public class ReportDataGenerator {
 		return reportId;
 	}
 
+	private ReportInfoEntity getMatchingReportEntityFromDB(String testCaseID) {
+		Report report = new Report().getTitleLike(testCaseID);
+		if (report != null) {
+			String reportName = "CR-"+report.getId().substring(0,6).toUpperCase();
+			String reportTitle = report.getReportTitle();
+			return new ReportInfoEntity(reportTitle, reportName);
+		}
+
+		return null;
+	}
+
 	private void initialize() throws Exception {
 		initializePageActions();
 		initializePageObjects();
@@ -159,5 +209,13 @@ public class ReportDataGenerator {
 		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
 		loginPageAction = new LoginPageActions(testSetup.getDriver(), testSetup.getBaseUrl(), testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(testSetup.getDriver(), testSetup.getBaseUrl(), testSetup);
+	}
+
+	public Boolean getIsReusable() {
+		return isReusable;
+	}
+
+	public void setIsReusable(Boolean isReusable) {
+		this.isReusable = isReusable;
 	}
 }
