@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
+import common.source.PollManager;
+import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -103,7 +105,8 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		return investigationMarkersContainerView!=null && investigationMarkersContainerView.isDisplayed()
-				&& markerTypeSelector!=null && markerTypeSelector.isDisplayed();
+		// This intentional wait is to prevent appium from polling for elements while 'loading investigations..' screen is shown.
+		TestContext.INSTANCE.stayIdle(3);
+		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed();
 	}
 }
