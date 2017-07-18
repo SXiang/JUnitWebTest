@@ -4,6 +4,8 @@
 package surveyor.regression.mobile.source;
 
 import static org.junit.Assert.*;
+
+import java.awt.Rectangle;
 import java.util.List;
 
 import org.junit.Before;
@@ -214,7 +216,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		//Reports(Mobile) are displayed in descending order by Date
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
-		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
@@ -516,7 +517,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
 		mobileInvestigatePage.clickOnDirections();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-4"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-4", new Rectangle(0,120,0,-1000)));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
@@ -531,7 +532,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
 		//Reports(Mobile) are displayed in descending order by Date
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
-		
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID));
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, getReportRowID(reportDataRowID));
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, getReportRowID(reportDataRowID)));
@@ -569,7 +569,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
 		mobileInvestigatePage.clickOnDirections();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-2"));
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "directionsMap-2", new Rectangle(0,120,0,-1000)));
 		mobileInvestigatePage.navigateBack();
 		mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
 		mobileInvestigatePage.clickOnInvestigate(leakDetails);
@@ -821,7 +821,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
         //FoundOtherSource status is showing
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
-
 		mobileLoginPage.logout();
 	}
 }

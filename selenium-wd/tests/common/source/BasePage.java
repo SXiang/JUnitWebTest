@@ -636,6 +636,7 @@ public class BasePage {
 	}
 
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
+		/* Mobile iOS size 750 x 1334 */
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";

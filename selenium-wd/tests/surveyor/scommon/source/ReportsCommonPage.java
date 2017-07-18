@@ -4312,13 +4312,16 @@ public class ReportsCommonPage extends ReportsBasePage {
 		String reportDateXPath = "//*[@id='datatable']/tbody/tr[td["+nameIndex+"]='%s']/td["+dateIndex+"]";
 		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
 		DateTime dateTime1, dateTime2=null;
+		boolean clearFilter = false;
 		for(int i=0; i<reportIDs.size(); i++){
+			clearFilter = false;
 			String reportID = reportIDs.get(i);
 			dateTime1 = dateTime2;
 			List<WebElement> dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
 			if(dateField.isEmpty()){
 				 performSearch(reportID);
 				 dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
+				 clearFilter = true;
 			}
 				dateTime2 = dateFormat.parseDateTime(getElementText(dateField.get(0)));
 				if(dateTime1==null){
@@ -4328,6 +4331,12 @@ public class ReportsCommonPage extends ReportsBasePage {
 					Log.error("Report '"+reportID+"' is not ordered by date in DESC='"+desc+"'");
 					return false;
 				}
+			if(clearFilter){
+				ClearSearchFilter();
+			}
+		}
+		if(clearFilter){
+			ClearSearchFilter();
 		}
 		return true;
 	}

@@ -411,6 +411,14 @@ public class SurveyorBasePage extends BasePage {
 		super.waitForPageLoad();
 	}
 
+	public void ClearSearchFilter() {
+		Log.method("ClearSearchFilter");
+		this.inputSearch.clear();
+		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
+		super.waitForPageLoad();
+		waitForSearchResultsToLoad();
+	}
+	
 	public boolean getListSize(List<String> listOfElements) {
 		Log.method("getListSize", LogHelper.strListToString(listOfElements));
 		String numTextString;
