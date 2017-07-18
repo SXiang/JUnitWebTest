@@ -264,16 +264,16 @@ public class LeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		clickOnFirstInvestigationReport(investigationScreen);
+        clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
-			investigateReportScreen.waitForScreenLoad();
-			return true;
-		});
+        executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+                investigateReportScreen.waitForScreenLoad();
+                return true;
+        });
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+        investigateReportScreen.clickOnFirstInvestigationMarker();
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+        executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();

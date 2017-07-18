@@ -60,7 +60,7 @@ public class AndroidBaseScreen {
 
 	public boolean waitForScreenLoad() {
 		Log.method("waitForScreenLoad");
-		return waitForScreenLoad(driver, Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT, screenLoadPredicate);
+		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenLoadPredicate);
 	}
 
 	protected boolean waitForScreenLoad(Integer timeout, Predicate<WebDriver> waitPredicate) {
@@ -82,6 +82,10 @@ public class AndroidBaseScreen {
 		});
 
 		return true;
+	}
+
+	protected Integer getScreenLoadTimeout() {
+		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
 	}
 
 	/* Methods to be implemented by derived class. */

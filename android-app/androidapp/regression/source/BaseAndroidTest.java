@@ -44,7 +44,7 @@ public class BaseAndroidTest extends BaseTest {
 	    }
 	};
 
-	protected static Integer PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS = 1;
+	protected static Integer PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS = 2;
 
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
@@ -106,6 +106,10 @@ public class BaseAndroidTest extends BaseTest {
 
 	private boolean executeWithBackPackDataProcessesPausedInternal(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		boolean retVal = false;
+		if (applyInitialPause) {
+			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
+		}
+
 		BackPackAnalyzer.pauseDataProcesses();
 		retVal = predicate.test(null);
 		BackPackAnalyzer.resumeDataProcesses();
@@ -239,7 +243,7 @@ public class BaseAndroidTest extends BaseTest {
 
 		if (waitForMapScreenLoad) {
 			if (devMachineOverride) {
-				TestContext.INSTANCE.stayIdle(1);
+				TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
 			} else {
 				mapScreen.waitForScreenLoad();
 				Log.info("Map screen loaded successfully!");

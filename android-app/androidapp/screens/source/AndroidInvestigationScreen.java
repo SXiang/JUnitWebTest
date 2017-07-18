@@ -38,10 +38,12 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		super(driver);
 	}
 
-	public void clickOnFirstInvestigation() {
+	public void clickOnFirstInvestigation() throws Exception {
 		Log.method("clickOnFirstInvestigation");
 		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
 		tap(firstRowViewGroup);
+		press(firstRowViewGroup);
+		clickAndPressKey(firstRowViewGroup, KeyCode.KEYCODE_ENTER);
 	}
 
 	public List<InvestigationEntity> getInvestigations() {
@@ -66,8 +68,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	public void performSearch(String searchKeyword) throws Exception {
 		Log.method("performSearch", searchKeyword);
 		sendKeys(getSearchEditView(), searchKeyword);
-		//MobileActions.newAction().pressKey(KeyCode.KEYCODE_ENTER);
-		TestContext.INSTANCE.stayIdle(3);
+		//TestContext.INSTANCE.stayIdle(60);              // This workaround is for issue described in product issue: DE3106
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
