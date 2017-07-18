@@ -442,6 +442,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='licenseMissingModal']/div/div/div[3]/a")
 	protected WebElement dialoadModelOK;
 
+	@FindBy(how = How.ID, using = "buttonInvestigate")
+	protected WebElement buttonInvestigate;
+	
 	public WebElement getDialoadModelOK() {
 		return this.dialoadModelOK;
 	}
@@ -2464,18 +2467,23 @@ public class ReportsBasePage extends SurveyorBasePage {
 		});
 	}
 
+
+	public void waitForReportInvestigationsPagetoLoad() {
+		super.waitForPageToLoad();
+		waitForAJAXCallsToComplete();
+		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {			
+				return buttonInvestigate.isDisplayed();
+
+			}
+		});
+	}
+	
 	public boolean waitForDeletePopupLoad() {
 		Log.method("waitForDeletePopupLoad");
 		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				boolean isDisplayed = false;
-				try {
-					isDisplayed = getBtnDeleteConfirm().isDisplayed();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				Log.info(String.format("Confirm delete button -> isDisplayed=[%b]", isDisplayed));
-				return isDisplayed;
+					return btnDeleteSurvey.isDisplayed();
 			}
 		});
 	}

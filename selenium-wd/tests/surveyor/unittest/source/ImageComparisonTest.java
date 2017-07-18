@@ -4,39 +4,27 @@
 package surveyor.unittest.source;
 
 import static org.junit.Assert.*;
-import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEDR;
-import static surveyor.scommon.source.SurveyorConstants.TIMEZONECT;
-import static surveyor.scommon.source.SurveyorConstants.USERPASSWORD;
-import static surveyor.scommon.source.SurveyorConstants.NOMATCHINGSEARCH;
-import static surveyor.scommon.source.SurveyorConstants.REGBASEPICUSERNAME;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.TestContext;
 import surveyor.dataprovider.ComplianceReportDataProvider;
+import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
-import surveyor.scommon.entities.LeakDetailEntity;
-import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
-import surveyor.scommon.mobile.source.MobileLeakSourcePage;
 import surveyor.scommon.mobile.source.MobileLoginPage;
 import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
-import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
 import surveyor.scommon.source.ReportInvestigationsPage;
-import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 /**
  *
@@ -51,8 +39,6 @@ public class ImageComparisonTest extends BaseReportsPageActionTest {
 	private static MobileReportsPage mobileReportsPage;
 	private static MobileInvestigationPage mobileInvestigationPage;
 	private static MobileInvestigatePage mobileInvestigatePage;
-	private static MobileLeakSourcePage mobileLeakSourcePage;
-
 	@BeforeClass
 	public static void beforeClass() {
 		initializeTestObjects();
@@ -149,7 +135,7 @@ public class ImageComparisonTest extends BaseReportsPageActionTest {
 	 * - On map, assets intersecting Classic LISAs are highlighted
 	 */
 	@Test
-	@UseDataProvider(value = ComplianceReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1628, location = ComplianceReportDataProvider.class)
 	public void TC1628_MobileViewClassicLISAshape(
 			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
 		Log.info("\nRunning TC1628_MobileViewClassicLISAshape ..." +

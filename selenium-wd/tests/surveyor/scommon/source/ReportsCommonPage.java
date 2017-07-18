@@ -33,6 +33,7 @@ import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
 import static surveyor.scommon.source.SurveyorConstants.RNELAT;
 import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
+import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES1;
 import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
 import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
@@ -94,6 +95,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -1270,20 +1274,20 @@ public class ReportsCommonPage extends ReportsBasePage {
 									this.btnProcessResubmit.click();
 									this.waitForPageLoad();
 									this.waitForAJAXCallsToComplete();
-								}
-								if (buttonType == ReportsButtonType.Delete) {
+								}else if (buttonType == ReportsButtonType.Delete) {
 									this.waitForConfirmDeletePopupToShow();
 									if (confirmAction) {
 										Log.clickElementInfo("Confirm Delete");
 										this.clickOnConfirmInDeleteReportPopup();
 										this.waitForConfirmDeletePopupToClose();
 									}
-								}
-								if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
+								}else if (buttonType.equals(ReportsButtonType.Copy)||buttonType.equals(ReportsButtonType.InProgressCopy)){
 									this.waitForCopyReportPagetoLoad();
 									this.waitForInputTitleToEnable();
 									this.waitForDeleteSurveyButtonToLoad();
 									this.waitForOkButtonToEnable();
+								}else if (buttonType.equals(ReportsButtonType.Investigate)){
+									this.waitForReportInvestigationsPagetoLoad();
 								}
 								if (removeDBCache) {
 									DBCache.INSTANCE.remove(Report.CACHE_KEY + rptTitle);
@@ -4298,6 +4302,36 @@ public class ReportsCommonPage extends ReportsBasePage {
 		return downloadPath;
 	}
 
+	public boolean verifyReportsAreOrderedByDate(List<String> reportIDs){
+		return verifyReportsAreOrderedByDate(reportIDs, true);
+	}
+	public boolean verifyReportsAreOrderedByDate(List<String> reportIDs, boolean desc){
+		setPagination(PAGINATIONSETTING_100);
+		int nameIndex = getColumnIndexMap().get(COL_HEADER_REPORT_NAME);
+		int dateIndex = getColumnIndexMap().get(COL_HEADER_DATE);
+		String reportDateXPath = "//*[@id='datatable']/tbody/tr[td["+nameIndex+"]='%s']/td["+dateIndex+"]";
+		DateTimeFormatter dateFormat=DateTimeFormat.forPattern(DateUtility.getShortSimpleDateFormat());
+		DateTime dateTime1, dateTime2=null;
+		for(int i=0; i<reportIDs.size(); i++){
+			String reportID = reportIDs.get(i);
+			dateTime1 = dateTime2;
+			List<WebElement> dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
+			if(dateField.isEmpty()){
+				 performSearch(reportID);
+				 dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
+			}
+				dateTime2 = dateFormat.parseDateTime(getElementText(dateField.get(0)));
+				if(dateTime1==null){
+					dateTime1 = dateTime2;
+				}
+				if(dateTime1.isBefore(dateTime2)==desc){
+					Log.error("Report '"+reportID+"' is not ordered by date in DESC='"+desc+"'");
+					return false;
+				}
+		}
+		return true;
+	}
+	
 	protected Map<String, Integer> getColumnIndexMap() {
 		Map<String, Integer> columnIdxMap = new HashMap<String, Integer>();
 		columnIdxMap.put(COL_HEADER_REPORT_TITLE, COL_IDX_REPORT_TITLE);
