@@ -3,7 +3,6 @@ package androidapp.regression.source;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -14,10 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.BrowserType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidMapScreen;
@@ -31,12 +27,11 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.Timeout;
+import common.source.WebDriverFactory;
+import common.source.WebDriverWrapper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.remote.AutomationName;
-import io.appium.java_client.remote.MobileCapabilityType;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
@@ -49,13 +44,14 @@ public class BaseAndroidTest extends BaseTest {
 	    }
 	};
 
+	protected static Integer PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS = 2;
+
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
 	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
-	protected static final String APP_PACKAGE_NAME = "com.picarroapp";
-	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
+	private boolean devMachineOverride = false;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
 
 	public static class AndroidActivities {
 		public static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
@@ -79,10 +75,6 @@ public class BaseAndroidTest extends BaseTest {
 		// Start backpack simulator and android automation tools (emulator, appium server).
 		cleanupProcesses();
 
-		if (!testSetup.isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.startSimulator();
-		}
-
 		AdbInterface.init(testSetup.getAdbLocation());
 	    AndroidAutomationTools.start();
 	    AndroidAutomationTools.disableAnimations();  // perf optimization.
@@ -99,14 +91,25 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	@After
-	public void tearDownBeforeTest() throws MalformedURLException, IOException {
-		cleanUp();
+	public void tearDownAfterTest() throws MalformedURLException, IOException {
 	}
 
 	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
+	protected boolean executeWithBackPackDataProcessesPaused(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
+		return executeWithBackPackDataProcessesPausedInternal(applyInitialPause, predicate);
+	}
+
 	protected boolean executeWithBackPackDataProcessesPaused(CheckedPredicate<Object> predicate) throws Exception {
+		return executeWithBackPackDataProcessesPausedInternal(false /*applyInitialPause*/, predicate);
+	}
+
+	private boolean executeWithBackPackDataProcessesPausedInternal(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		boolean retVal = false;
+		if (applyInitialPause) {
+			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
+		}
+
 		BackPackAnalyzer.pauseDataProcesses();
 		retVal = predicate.test(null);
 		BackPackAnalyzer.resumeDataProcesses();
@@ -122,6 +125,11 @@ public class BaseAndroidTest extends BaseTest {
 
 		AndroidAutomationTools.stop();
 		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
+	}
+
+	@Override
+	public void postTestMethodProcessing() {
+		cleanUp();
 	}
 
 	protected void cleanUp() {
@@ -162,7 +170,10 @@ public class BaseAndroidTest extends BaseTest {
 		Log.method("initializeAppiumTest");
 		ensureApkExistsInConnectedDevice();
 		initializeAppiumDriver();
-		startReactNativePackager();
+		if (!TestContext.INSTANCE.getTestSetup().isAndroidTestReleaseEnabled()) {
+			startReactNativePackager();
+		}
+
 		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 		if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
 			handlePermissionsPrompt();
@@ -172,48 +183,16 @@ public class BaseAndroidTest extends BaseTest {
 		waitForAppLoad();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void initializeAppiumDriver() throws MalformedURLException {
 		Log.method("initializeAppiumDriver");
-		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
-		DesiredCapabilities capabilities=DesiredCapabilities.android();
-		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
-		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
-		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
-		// NOTE: autoGrantPermissions capability is NOT working along with MobileCapabilityType.APP. Use appPackage and appActivity instead of app.
-		capabilities.setCapability("appPackage", APP_PACKAGE_NAME);
-		capabilities.setCapability("appActivity", ".MainActivity");
-		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
-		capabilities.setCapability("autoGrantPermissions", "true");
-
-		// Following capabilities have been used for perf optimization.
-		capabilities.setCapability("disableAndroidWatchers", true);
-		capabilities.setCapability("resetKeyboard", true);  		// hide keyboard
-		capabilities.setCapability("unicodeKeyboard", true);		// hide keyboard
-
-		// Create object of URL class and specify the appium server address
-		URL url= new URL(APPIUM_SERVER_HUB_HOST);
-
-		// Create object of  AndroidDriver class and pass the url and capability that we created
-		appiumDriver =  new AndroidDriver<WebElement>(url, capabilities);
+		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void initializeAppiumWebDriver() throws MalformedURLException {
 		Log.method("initializeAppiumWebDriver");
-		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
-		DesiredCapabilities capabilities=DesiredCapabilities.android();
-		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);
-		capabilities.setCapability(MobileCapabilityType.PLATFORM, Platform.ANDROID);
-		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
-		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Android Emulator");
-		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
-		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");    // timeout in seconds.
-
-		// Create object of URL class and specify the appium server address
-		URL url= new URL(APPIUM_SERVER_HUB_HOST);
-
-		// Create object of  AndroidDriver class and pass the url and capability that we created
-		appiumWebDriver =  new AndroidDriver<WebElement>(url, capabilities);
+		appiumWebDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppWebDriver();
 	}
 
 	protected void installLaunchApp(String waitActivityName) throws IOException {
@@ -227,7 +206,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void ensureApkExistsInConnectedDevice() throws Exception {
 		Log.method("ensureApkExistsInConnectedDevice");
-		if (!AndroidAutomationTools.isPackageInstalled(APP_PACKAGE_NAME)) {
+		if (!AndroidAutomationTools.isPackageInstalled(WebDriverWrapper.ANDROID_APP_PACKAGE_NAME)) {
 			AdbInterface.installPackage(getApkFile().getAbsolutePath(), true /*replaceExisting*/, true /*allowVersionDowngrade*/, true /*grantAllRuntimePermissions*/);
 		}
 	}
@@ -253,15 +232,22 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void navigateToMapScreenUsingDefaultCreds(boolean waitForMapScreenLoad) throws Exception {
+		navigateToMapScreen(waitForMapScreenLoad, TestContext.INSTANCE.getTestSetup().getLoginUser());
+	}
+
+	protected void navigateToMapScreen(boolean waitForMapScreenLoad, String username) throws Exception {
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-		final String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
 
 		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
 
 		if (waitForMapScreenLoad) {
-			mapScreen.waitForScreenLoad();
-			Log.info("Map screen loaded successfully!");
+			if (devMachineOverride) {
+				TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
+			} else {
+				mapScreen.waitForScreenLoad();
+				Log.info("Map screen loaded successfully!");
+			}
 		}
 	}
 

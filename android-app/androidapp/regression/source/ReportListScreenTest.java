@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +20,9 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
+import common.source.BackPackAnalyzer;
 import common.source.Log;
+import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
@@ -29,7 +32,7 @@ public class ReportListScreenTest extends BaseReportTest {
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
-	private static String generatedInvReportId;
+	private static String generatedInvReportTitle;
 
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
@@ -45,6 +48,16 @@ public class ReportListScreenTest extends BaseReportTest {
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.restartSimulator();
+		}
+	}
+
+	@After
+	public void afterTest() throws IOException {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			BackPackAnalyzer.stopSimulator();
+		}
 	}
 
 	/**
@@ -73,17 +86,17 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2429_EnergyBackpackReportListScreen ...");
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
-		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			return true;
 		});
@@ -112,17 +125,17 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2430_EnergyBackpackInvestigationItemScreenNoLISAsForInvestigation ...");
 
 		final Integer EXPECTED_GAP_MARKERS = 11;
-		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue("No investigation markers of type=LISA expected in this report", investigateReportScreen.verifyNoInvestigationMarkersFoundInReport());
 			investigateReportScreen.clickOnInvestigationMarkerType();
@@ -156,17 +169,17 @@ public class ReportListScreenTest extends BaseReportTest {
 		Log.info("\nRunning TC2431_EnergyBackpackInvestigationItemScreenNoGapsForInvestigation ...");
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
-		navigateToMapScreenUsingDefaultCreds(false /*waitForMapScreenLoad*/);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreenWithDefaultCreds(investigationScreen);
-			searchForReportId(investigationScreen, generatedInvReportId.substring(0, 6));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(verifyExpectedMarkersShownOnInvestigationScreen(investigateReportScreen, false /*refetchListItems*/, EXPECTED_LISA_MARKERS));
 			investigateReportScreen.clickOnInvestigationMarkerType();
@@ -187,22 +200,22 @@ public class ReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignGapsToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
 			Object[][] tc2431 = ReportListDataProvider.dataProviderReportList_TC2431();
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
-			generatedInvReportId = ReportDataGenerator.newSingleUseGenerator().createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1);
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}
 

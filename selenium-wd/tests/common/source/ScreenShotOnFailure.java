@@ -73,7 +73,7 @@ public class ScreenShotOnFailure{
 		try{
 			ExtentTest reportLogger = TestContext.INSTANCE.getExtentTest(className);
 			String fname = reportLogger.getTest().getName();
-			String imgFile = fname.split("\\[")[0]  + (isMobile?"_mobile":"") + "."+format;
+			String imgFile = fname.split("\\[")[0]  + (isMobile?"_mobile":"") + TestSetup.getUUIDString() + "."+format;
 			imgName += imgFile;
 			if(takeBrowserScreenShot && driver!=null){
 				captureBrowserScreenShot(imgName);
@@ -122,6 +122,7 @@ public class ScreenShotOnFailure{
 			FileUtils.copyFile(scrFile, new File(fileName));
 			Log.info("A browser screenshot saved! - '"+fileName+"'");
 		}catch(Exception e){
+			Log.warn("Type of Driver - " + driver.getClass().getName());
 			Log.warn(e.toString());
 		}
 	}

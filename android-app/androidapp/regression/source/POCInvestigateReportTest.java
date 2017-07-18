@@ -101,7 +101,7 @@ public class POCInvestigateReportTest {
 	}
 
 	@Test
-	public void test_ScreenInteractions() {
+	public void test_ScreenInteractions() throws Exception {
 		Log.info("Executing test_ScreenInteractions ...");
 
 		investigateReportScreen.waitForScreenLoad();

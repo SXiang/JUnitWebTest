@@ -13,13 +13,17 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]")
 	@CacheLookup
-	private WebElement addSource;
+	private WebElement addCGI;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
 	@CacheLookup
-	private WebElement directions;
+	private WebElement addSource;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement directions;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement follow;
 
@@ -32,6 +36,16 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	}
 
 	/****** Button Methods ******/
+
+	public WebElement getAddCGIButton() {
+		Log.method("getAddCGIButton");
+		return addCGI;
+	}
+
+	public void clickOnAddCGI() {
+		Log.method("clickOnAddCGI");
+		tap(getAddCGIButton());
+	}
 
 	public WebElement getAddSourceButton() {
 		Log.method("getAddSourceButton");

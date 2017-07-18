@@ -8,93 +8,93 @@ import java.sql.CallableStatement;
 import common.source.Log;
 
 public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
-	private int PeakNumber;
-	private float Amplitude;
-	private float CH4;
-	private String InvestigationStatus;
-	private String InvestigationDateTime;
-	private String PeakAssignedUserName;
-	private String TotalDuration;
+	private int numLeaks;
+	private int boxTypeId;
+	private int boxNumber;
+	private String investigationStatus;
+	private String investigationDateTime;
+	private String peakAssignedUserName;
+	private String totalDuration;
 
 	public StoredProcLisaInvestigationShowIndication() {
 		super();
 	}
 
-	public int getPeakNumber() {
-		return this.PeakNumber;
+	public int getNumLeaks() {
+		return this.numLeaks;
 	}
 
-	public void setPeakNumber(int peakNumber) {
-		this.PeakNumber = peakNumber;
-	}
-
-	public float getAmplitude() {
-		return this.Amplitude;
-	}
-
-	public void setAmplitude(float amplitude) {
-		this.Amplitude = amplitude;
-	}
-
-	public float getCH4() {
-		return this.CH4;
-	}
-
-	public void setCH4(float cH4) {
-		this.CH4 = cH4;
+	public void setNumLeaks(int peakNumber) {
+		this.numLeaks = peakNumber;
 	}
 
 	public String getInvestigationStatus() {
-		return this.InvestigationStatus;
+		return this.investigationStatus;
 	}
 
 	public void setInvestigationStatus(String investigationStatus) {
-		this.InvestigationStatus = investigationStatus;
+		this.investigationStatus = investigationStatus;
 	}
 
 	public String getInvestigationDateTime() {
-		return this.InvestigationDateTime;
+		return this.investigationDateTime;
 	}
 
 	public void setInvestigationDateTime(String investigationDateTime) {
-		this.InvestigationDateTime = investigationDateTime;
+		this.investigationDateTime = investigationDateTime;
 	}
 
-	public String getPeakAssignedUserName() {
-		return this.PeakAssignedUserName;
+	public String getAssignedUserName() {
+		return this.peakAssignedUserName;
 	}
 
-	public void setPeakAssignedUserName(String peakAssignedUserName) {
-		this.PeakAssignedUserName = peakAssignedUserName;
+	public void setAssignedUserName(String peakAssignedUserName) {
+		this.peakAssignedUserName = peakAssignedUserName;
 	}
 
 	public String getTotalDuration() {
-		return this.TotalDuration;
+		return this.totalDuration;
 	}
 
 	public void setTotalDuration(String totalDuration) {
-		this.TotalDuration = totalDuration;
+		this.totalDuration = totalDuration;
+	}
+
+	public int getBoxTypeId() {
+		return boxTypeId;
+	}
+
+	public void setBoxTypeId(int boxTypeId) {
+		this.boxTypeId = boxTypeId;
+	}
+
+	public int getBoxNumber() {
+		return boxNumber;
+	}
+
+	public void setBoxNumber(int boxNumber) {
+		this.boxNumber = boxNumber;
 	}
 
 	public String toString() {
-		return Integer.toString(this.getPeakNumber()).trim().concat(String.format("%.2f", this.getAmplitude())).concat(this.getInvestigationStatus())
-				.concat(this.getInvestigationDateTime()).concat(this.getPeakAssignedUserName()).concat(this.getTotalDuration());
+		return Integer.toString(this.getNumLeaks()).trim().concat(String.format("%d", this.getBoxNumber())).concat(String.format("%d", this.getBoxTypeId()))
+				.concat(this.getInvestigationStatus()).concat(this.getInvestigationDateTime()).concat(this.getAssignedUserName()).concat(this.getTotalDuration());
 	}
 
 	public boolean isEquals(StoredProcLisaInvestigationShowIndication obj) {
-		if (this.getPeakNumber()!=obj.getPeakNumber()) {
+		if (this.getNumLeaks()!=obj.getNumLeaks()) {
 			return false;
 		}
-		if (this.getAmplitude() != (obj.getAmplitude())) {
+		if (this.getBoxTypeId() != (obj.getBoxTypeId())) {
 			return false;
 		}
-		if (this.getCH4()!=obj.getCH4()) {
+		if (this.getBoxNumber() != (obj.getBoxNumber())) {
 			return false;
 		}
 		if (!this.getInvestigationStatus().equals(obj.getInvestigationStatus())) {
 			return false;
 		}
-		if (!this.getPeakAssignedUserName().equals(obj.getPeakAssignedUserName())) {
+		if (!this.getAssignedUserName().equals(obj.getAssignedUserName())) {
 			return false;
 		}
 		if (!this.getInvestigationDateTime().equals(obj.getInvestigationDateTime())) {
@@ -128,17 +128,17 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	private StoredProcLisaInvestigationShowIndication loadFrom(ResultSet resultSet) {
 		StoredProcLisaInvestigationShowIndication objReport = new StoredProcLisaInvestigationShowIndication();
 		try {
-			objReport.setPeakNumber(getIntColumnValue(resultSet,"PeakNumber"));
-			objReport.setAmplitude(getFloatColumnValue(resultSet,"Amplitude"));
-			objReport.setCH4(getFloatColumnValue(resultSet,"CH4"));
+			objReport.setNumLeaks(getIntColumnValue(resultSet,"NumLeaks"));
+			objReport.setBoxTypeId(getIntColumnValue(resultSet,"BoxTypeId"));
+			objReport.setBoxNumber(getIntColumnValue(resultSet,"BoxNumber"));
 			objReport.setInvestigationStatus(resultSet.getString("InvestigationStatus"));
 			objReport.setInvestigationDateTime(resultSet.getString("InvestigationDateTime"));
 			if (resultSet.wasNull()) {
 				objReport.setInvestigationDateTime(" ");
 			}
-			objReport.setPeakAssignedUserName(resultSet.getString("PeakAssignedUserName"));
+			objReport.setAssignedUserName(resultSet.getString("AssignedUserName"));
 			if (resultSet.wasNull()) {
-				objReport.setPeakAssignedUserName(" ");
+				objReport.setAssignedUserName(" ");
 			}
 			objReport.setTotalDuration(resultSet.getString("TotalDuration"));
 			if (resultSet.wasNull()) {
@@ -171,5 +171,4 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 
 		return objReportList;
 	}
-
 }
