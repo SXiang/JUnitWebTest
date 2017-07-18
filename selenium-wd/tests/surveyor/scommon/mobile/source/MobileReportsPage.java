@@ -5,6 +5,7 @@ package surveyor.scommon.mobile.source;
 
 import static surveyor.scommon.source.SurveyorConstants.UNKNOWN_TEXT;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -91,6 +92,13 @@ public class MobileReportsPage extends MobileBasePage {
 			}
 		}
 		return true;
+	}
+	
+	public List<String> getReports(){
+		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatable']//td[2]"));
+		List<String> reportIDs = new ArrayList<>();
+		itemValues.stream().forEach(e -> reportIDs.add(getElementText(e)));
+		return reportIDs;
 	}
 
 	public void clearFilter(){
