@@ -396,6 +396,7 @@ public class LeakScreenTest extends BaseReportTest {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			investigationScreen.waitForResultsToLoad();
 			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
@@ -468,6 +469,7 @@ public class LeakScreenTest extends BaseReportTest {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			investigationScreen.waitForResultsToLoad();
 			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
