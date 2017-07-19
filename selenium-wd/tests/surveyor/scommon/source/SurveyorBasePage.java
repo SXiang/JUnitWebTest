@@ -416,6 +416,8 @@ public class SurveyorBasePage extends BasePage {
 		this.inputSearch.clear();
 		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
 		super.waitForPageLoad();
+		this.inputSearch.sendKeys("");
+		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
 		waitForSearchResultsToLoad();
 	}
 	
