@@ -97,7 +97,7 @@ public class MobileReportsPage extends MobileBasePage {
 	public List<String> getReports(){
 		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatable']//td[2]"));
 		List<String> reportIDs = new ArrayList<>();
-		itemValues.stream().forEach(e -> reportIDs.add(getElementText(e)));
+		itemValues.stream().map((WebElement e) -> getElementText(e)).filter((String s) -> !s.isEmpty()).forEach((String s) -> reportIDs.add(s));
 		return reportIDs;
 	}
 

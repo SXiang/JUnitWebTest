@@ -264,7 +264,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		waitForElementToBeDisplayed(xpathToItem);
 		List<WebElement> itemIDs = driver.findElements(xpathToItem);
 		List<String> itemSorted = new ArrayList<>();
-		itemIDs.stream().map((WebElement e) -> getElementText(e)).forEach((String s) -> itemSorted.add(s));
+		itemIDs.stream().map((WebElement e) -> getElementText(e)).filter((String s) -> !s.isEmpty()).forEach((String s) -> itemSorted.add(s));
 
 		itemSorted.sort(
 				(String x, String y) -> {
@@ -275,9 +275,6 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 				);
 		Double value1=null, value2=null;
 		for(String item:itemSorted){
-			if(item.isEmpty()){
-				continue;
-			}
 			value1 = value2;
 			value2 = Double.valueOf(getElementText(driver.findElement(By.xpath(String.format(itemValueXPattern, item)))));
 			if(value1==null){
