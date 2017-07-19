@@ -488,14 +488,20 @@ public class BasePage {
 	}
 
 	public void navigateForward(){
-		Log.info("Navigate to next page");
 		driver.navigate().forward();
+		waitForPageToLoad();
 	}
 
     public void navigateBack(){
-    	Log.info("Navigate back to previous page");
     	driver.navigate().back();
+    	waitForPageToLoad();
 	}
+    
+    public void refreshPage(){
+    	driver.navigate().refresh();
+    	waitForPageToLoad();
+	}
+    
     public void SelectElement(WebElement checkbox) {
     	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){

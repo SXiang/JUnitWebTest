@@ -71,6 +71,9 @@ public class MobileInvestigatePage extends MobileBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Investigation Markers')]")
 	protected WebElement investigationMarkers;
+
+	@FindBy(how = How.ID, using = "geolocation_marker")
+	protected WebElement geoLocationMarker;
 	
 	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
@@ -179,6 +182,10 @@ public class MobileInvestigatePage extends MobileBasePage {
 		MobileLeakSourcePage otherSourcePage = new MobileLeakSourcePage();
 		otherSourcePage.waitUntilPageLoad();
 		return otherSourcePage;
+	}
+	
+	public boolean isGeoLocationMarkerShowing(){
+		return WebElementExtender.isElementPresentAndDisplayed(geoLocationMarker);
 	}
 	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{

@@ -22,7 +22,7 @@ public class MobileInvestigationPage extends MobileBasePage {
 	
 	@FindBy(how = How.CSS, using = "#boxType > button.btn > #boxType_text")
 	protected WebElement boxTypeText;
-
+	
 	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
 	

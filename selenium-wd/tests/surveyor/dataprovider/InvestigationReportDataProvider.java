@@ -116,12 +116,12 @@ public class InvestigationReportDataProvider extends ReportDataProvider {
 	/* ComplianceReportInvestigationPageTest3 */
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1722() {
-		return new Object[][] { { "TC1722" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 240 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1722" /* TestCaseID */, 1 /* userDataRowID */,2 /* mobileUserDataRowID */, 240 /* reportDataRowID1 */, 3 /* mobileUserDataRowID */} };
 	}
 	
 	@DataProvider
 	public static Object[][] dataProviderPageActionsInvestigationReports_TC1723() {
-		return new Object[][] { { "TC1723" /* TestCaseID */, -1 /* userDataRowID */,-1 /* mobileUserDataRowID */, 241 /* reportDataRowID1 */} };
+		return new Object[][] { { "TC1723" /* TestCaseID */, 1 /* userDataRowID */,2 /* mobileUserDataRowID */, 241 /* reportDataRowID1 */, 3 /* mobileUserDataRowID */} };
 	}
 	
 	@DataProvider

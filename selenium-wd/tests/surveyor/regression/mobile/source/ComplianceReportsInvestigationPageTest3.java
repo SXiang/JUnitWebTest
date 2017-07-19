@@ -3,6 +3,13 @@
  */
 package surveyor.regression.mobile.source;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.awt.Rectangle;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,9 +17,12 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
+import common.source.TestContext;
 import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
+import surveyor.scommon.entities.LeakDetailEntity;
 import surveyor.scommon.mobile.source.MobileInvestigatePage;
 import surveyor.scommon.mobile.source.MobileInvestigationPage;
 import surveyor.scommon.mobile.source.MobileLeakSourcePage;
@@ -21,6 +31,7 @@ import surveyor.scommon.mobile.source.MobileReportsPage;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 import surveyor.scommon.source.ReportInvestigationsPage;
 
 /**
@@ -90,11 +101,95 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	@Test
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1722, location = InvestigationReportDataProvider.class)
 	public void TC1722_InProgressStateForInvestigationsInMobileApp(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
 		Log.info("\nRunning TC1722_InProgressStateForInvestigationsInMobileApp ..." +
 			 "\nTest Description: Mobile: 'in progress' state for investigations in mobile app");
-		//TODO: TBD
-	
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
+		
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+
+		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
+		
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+5);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
+		
+		// Mobile - login and investigate lisas - driver
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		List<String> reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4+" ("+IndicationStatus.NOTINVESTIGATED, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-4"));
+		mobileInvestigatePage.navigateBack();
+		mobileInvestigationPage.waitUntilPageLoad();
+		mobileInvestigatePage.refreshPage();
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4+" ("+IndicationStatus.INPROGRESS));
+
+		// Mobile - login and investigate lisas - Supervisor
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
+
+		// Supervisor can see all the lisas
+		reportIDs =	mobileReportsPage.getReports();	
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2+" ("+IndicationStatus.NOTINVESTIGATED+")", leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "investigateMap-2"));
+		mobileInvestigatePage.navigateBack();
+		mobileInvestigationPage.waitUntilPageLoad();
+		mobileInvestigatePage.refreshPage();
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2+" ("+IndicationStatus.INPROGRESS+")"));
+
+		mobileLoginPage.logout();	
 	}
 
 	/**
@@ -129,14 +224,183 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 	 * -  The app will display all LISAs for that report regardless of assignment. All unassigned LISAs should be light orange (Not Investigated)
 	 * -  All assigned bot not investigated LISA should be displayed in light grey color (Not Investigated (Light Grey))
 	 */
-	@Test
+	@Test /* Lisa color verification is pending */
 	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1723, location = InvestigationReportDataProvider.class)
 	public void TC1723_MakeColorsOfInvestigationConsistentForDisposition(
-			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+			String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID, Integer mobileUserDataRowID2) throws Exception {
 		Log.info("\nRunning TC1723_MakeColorsOfInvestigationConsistentForDisposition ..." +
 			 "\nTest Description: Mobile: Make colors of investigation boxes and gaps consistent for their disposition");
-		//TODO: TBD
-	
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
+		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
+		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
+				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
+
+		// Verify Lisas are numbered based on their amplitude
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+
+		// Assign Lisas to user
+		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
+		String lisaNumberPrefix = reportName+"-LISA-";
+
+		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
+		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
+		
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+8,lisaNumberPrefix+6);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
+		reportInvestigationsPage.waitForPageLoad();
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2,lisaNumberPrefix+5,lisaNumberPrefix+3,lisaNumberPrefix+7);
+		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
+		
+		// Mobile - login and investigate lisas - driver
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow.username, mobileUserDataRow.password);
+
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertFalse(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		LeakDetailEntity leakDetails = new LeakDetailEntity(mobileUserDataRow.username, 4);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);		
+		// Todo: Mobile FoundLeak - color verification: Red
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+4);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-4"));
+		
+		// Mobile - add leak and pause
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		LeakDetailEntity leakDetails2 = new LeakDetailEntity(mobileUserDataRow.username, 8);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails2.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails2);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnPauseInvestigation();
+		// Todo: Mobile Inprogress - color verification: violet
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+8);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8"));
+		
+		// Mobile - no leak found
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		LeakDetailEntity leakDetails3 = new LeakDetailEntity(mobileUserDataRow.username, 1);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1, leakDetails3);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails3);
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails3, false);
+		// Todo: Mobile Found no Leak - color verification: blue
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+1);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotFoundLeak-1"));		
+
+		// Mobile - not investigated
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		// Todo: Mobile not investigated - color verification: light grey
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+6);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-6"));	
+		
+		// Mobile - login and investigate lisas - Supervisor
+		mobileLoginPage.open();
+		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
+
+		// Supervisor can see all the lisas
+		mobileInvestigationPage = mobileReportsPage.clickOnReportName(reportName);
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+1));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+4));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+8));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+2));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+5));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+3));
+		
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+6));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+7));
+		assertTrue(mobileInvestigationPage.isLisaShowing(lisaNumberPrefix+9));
+
+		// Mobile - add leak and complete
+		leakDetails = new LeakDetailEntity(mobileUserDataRow2.username, 2);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2, leakDetails);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails);		
+		// Todo: Mobile FoundLeak - color verification: Red
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+2);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileFoundLeak-2"));
+		
+		// Mobile - add leak and pause
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		leakDetails2 = new LeakDetailEntity(mobileUserDataRow2.username, 5);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5, leakDetails2);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails2);
+		mobileInvestigatePage.clickOnAddSource();
+		mobileLeakSourcePage = mobileInvestigatePage.clickOnAddLeak();
+		leakDetails2.setDefaultTestData();
+		mobileLeakSourcePage.addLeakDetails(leakDetails2);
+		mobileLeakSourcePage.closeAddSourceDialog();
+		mobileInvestigatePage.clickOnPauseInvestigation();
+		// Todo: Mobile Inprogress - color verification: violet
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+5);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-5"));
+		
+		// Mobile - no leak found
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		leakDetails3 = new LeakDetailEntity(mobileUserDataRow2.username, 3);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3, leakDetails3);
+		mobileInvestigatePage.clickOnInvestigate(leakDetails3);
+		mobileInvestigatePage.clickOnMarkAsComplete(leakDetails3, false);
+		// Todo: Mobile Found no Leak - color verification: blue
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+3);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotFoundLeak-3"));		
+
+		// Mobile - not investigated
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		// Todo: Mobile not investigated - color verification: light grey
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+7);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-7"));	
+		mobileLoginPage.logout();
+
+		// Mobile - not assigned
+		mobileReportsPage.open();
+		mobileReportsPage.clickOnReportName(reportName);
+		// Todo: Mobile not assigned - color verification: orange
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+9);
+		mobileInvestigatePage.clickOnFollow();
+//		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-9"));	
+		mobileLoginPage.logout();
 	}
 
 	/**
