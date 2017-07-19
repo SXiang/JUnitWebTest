@@ -4329,7 +4329,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 				return false;
 			}
 		}
-		ClearSearchFilter();
+		clearSearchFilter();
 		return true;
 	}
 	
