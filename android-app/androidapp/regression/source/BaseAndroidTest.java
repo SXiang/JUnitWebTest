@@ -21,9 +21,12 @@ import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.BackPackAnalyzer;
+import common.source.BaseHelper;
 import common.source.CheckedPredicate;
 import common.source.FileUtility;
 import common.source.Log;
+import common.source.MobileActions;
+import common.source.ScreenRecorder;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.Timeout;
@@ -37,6 +40,8 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override
 	    protected Boolean initialValue() {
@@ -50,6 +55,8 @@ public class BaseAndroidTest extends BaseTest {
 	protected AppiumDriver<WebElement> appiumWebDriver;
 	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
+
+	private ScreenRecorder screenRecorder;
 
 	private boolean devMachineOverride = false;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
 
@@ -92,6 +99,39 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+	}
+
+	private void initScreenRecorder() {
+		if (screenRecorder == null) {
+			screenRecorder = new ScreenRecorder();
+		}
+	}
+
+	public void startTestRecording(String testName) throws Exception {
+		Log.method("startTestRecording", testName);
+		testName = BaseHelper.toAlphaNumeric(testName, '_');
+		initScreenRecorder();
+		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
+	}
+
+	public void stopTestRecording(String testName) throws Exception {
+		Log.method("stopTestRecording", testName);
+		testName = BaseHelper.toAlphaNumeric(testName, '_');
+		MobileActions action = MobileActions.newAction();
+		String videoFileName = String.format("%s.mp4", testName);
+		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", videoFileName);
+		if(FileUtility.fileExists(saveFileLocation)) {
+			FileUtility.deleteFile(Paths.get(saveFileLocation));
+		}
+
+		Log.info("Stop recording");
+		screenRecorder.stopRecording();
+
+		Log.info(String.format("Pulling recording-'%s' from device to '%s'", videoFileName, saveFileLocation));
+		AdbInterface.pullFile(String.format("/sdcard/%s", videoFileName), saveFileLocation);
+
+		Log.info(String.format("Removing recording-'%s' from device", videoFileName));
+		action.removeSdcardFile(videoFileName);
 	}
 
 	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.

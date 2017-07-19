@@ -17,5 +17,5 @@ if ($procs -ne $null) {
 }
 
 $uuid = New-GuidNoDashes
-Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override --local-timezone --log c:\logs\automationappium-$uuid.log"
+Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override --local-timezone --log c:\QATestLogs\automationappium-$uuid.log"
 sleep -Seconds 30

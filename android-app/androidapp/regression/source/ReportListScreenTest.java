@@ -51,10 +51,13 @@ public class ReportListScreenTest extends BaseReportTest {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
+
+		startTestRecording(testName.getMethodName());
 	}
 
 	@After
-	public void afterTest() throws IOException {
+	public void afterTest() throws Exception {
+		stopTestRecording(testName.getMethodName());
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
