@@ -411,7 +411,7 @@ public class SurveyorBasePage extends BasePage {
 		super.waitForPageLoad();
 	}
 
-	public void ClearSearchFilter() {
+	public void clearSearchFilter() {
 		Log.method("ClearSearchFilter");
 		this.inputSearch.clear();
 		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
