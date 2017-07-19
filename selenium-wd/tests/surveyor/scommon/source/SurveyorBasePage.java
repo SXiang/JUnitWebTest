@@ -412,7 +412,7 @@ public class SurveyorBasePage extends BasePage {
 	}
 
 	public void clearSearchFilter() {
-		Log.method("ClearSearchFilter");
+		Log.method("clearSearchFilter");
 		this.inputSearch.clear();
 		this.inputSearch.sendKeys(Keys.ENTER,Keys.RETURN);
 		super.waitForPageLoad();
