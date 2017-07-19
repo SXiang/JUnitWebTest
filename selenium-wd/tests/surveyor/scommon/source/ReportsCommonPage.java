@@ -4317,18 +4317,19 @@ public class ReportsCommonPage extends ReportsBasePage {
 			dateTime1 = dateTime2;
 			List<WebElement> dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
 			if(dateField.isEmpty()){
-				 performSearch(reportID);
-				 dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
+				performSearch(reportID);
+				dateField = driver.findElements(By.xpath(String.format(reportDateXPath, reportID)));
 			}
-				dateTime2 = dateFormat.parseDateTime(getElementText(dateField.get(0)));
-				if(dateTime1==null){
-					dateTime1 = dateTime2;
-				}
-				if(dateTime1.isBefore(dateTime2)==desc){
-					Log.error("Report '"+reportID+"' is not ordered by date in DESC='"+desc+"'");
-					return false;
-				}
+			dateTime2 = dateFormat.parseDateTime(getElementText(dateField.get(0)));
+			if(dateTime1==null){
+				dateTime1 = dateTime2;
+			}
+			if(dateTime1.isBefore(dateTime2)==desc){
+				Log.error("Report '"+reportID+"' is not ordered by date in DESC='"+desc+"'");
+				return false;
+			}
 		}
+		clearSearchFilter();
 		return true;
 	}
 	
