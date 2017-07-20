@@ -73,7 +73,6 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		assertTrue(!loginResponse.contains(LOGIN_FAIL_ERROR_MESSAGE));
 		Response<InvestigationReports> response = apiInvoker.getInvestigationReports(COMPLIANCE_REPORT_TYPE, DEFAULT_START_IDX, DEFAULT_SIZE);
 		assertTrue("getInvestigationReports response should be null", response == null);
-
 	}
 
 	@Test
@@ -100,7 +99,7 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 	
 	@Test (expected = JsonMappingException.class)
 	public void testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -113,14 +112,13 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		PCubedApiInterface apiInterface = PCubedApiCall.createInterface(baseUrl);
 		Call<InvestigationReportBoxInfos> invRepBoxInfosCall = apiInterface.getBoxesByReportId(REPORT_ID, BOX_TYPE, payload);
 		invRepBoxInfosCall.execute();
-
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds()..."));
+		
 		assertTrue("testGetBoxesByReportId_ValidReportId_ValidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos!=null);
 	}
 
 	@Test (expected = JsonMappingException.class)
 	public void testGetBoxesByReportId_ValidReportId_ValidBoxType_InvalidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_ValidReportId_ValidBoxType_InvalidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -131,13 +129,12 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(REPORT_ID, BOX_TYPE, invalidPayload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_ValidReportId_ValidBoxType_InvalidBounds()..."));
 		assertTrue("testGetBoxesByReportId_ValidReportId_ValidBoxType_InvalidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test
 	public void testGetBoxesByReportId_ValidReportId_InvalidBoxType_ValidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_ValidReportId_InvalidBoxType_ValidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -148,13 +145,12 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(REPORT_ID, INVALID_BOX_TYPE, payload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_ValidReportId_InvalidBoxType_ValidBounds()..."));
 		assertTrue("testGetBoxesByReportId_ValidReportId_InvalidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test (expected = JsonMappingException.class)
 	public void testGetBoxesByReportId_InvalidReportId_ValidBoxType_ValidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_InvalidReportId_ValidBoxType_ValidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -162,17 +158,15 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 
 		Payload payload = new Payload(37.396346133189255, 37.39198194353354, -121.9866943359375, -121.981201171875);
 
-
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(INVALID_REPORT_ID, BOX_TYPE, payload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_InvalidReportId_ValidBoxType_ValidBounds()..."));
 		assertTrue("testGetBoxesByReportId_InvalidReportId_ValidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test
 	public void testGetBoxesByReportId_ValidReportId_InvalidBoxType_InvalidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_ValidReportId_InvalidBoxType_InvalidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -183,13 +177,12 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(REPORT_ID, INVALID_BOX_TYPE, invalidPayload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_ValidReportId_InvalidBoxType_InvalidBounds()..."));
 		assertTrue("testGetBoxesByReportId_ValidReportId_InvalidBoxType_InvalidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test
 	public void testGetBoxesByReportId_InvalidReportId_InvalidBoxType_ValidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_InvalidReportId_InvalidBoxType_ValidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -200,13 +193,12 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(INVALID_REPORT_ID, INVALID_BOX_TYPE, payload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_InvalidReportId_InvalidBoxType_ValidBounds()..."));
 		assertTrue("testGetBoxesByReportId_InvalidReportId_InvalidBoxType_ValidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test (expected = JsonMappingException.class)
 	public void testGetBoxesByReportId_InvalidReportId_ValidBoxType_InvalidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_InvalidReportId_ValidBoxType_InvalidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -217,13 +209,12 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(INVALID_REPORT_ID, BOX_TYPE, invalidPayload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_InvalidReportId_ValidBoxType_InvalidBounds()..."));
 		assertTrue("testGetBoxesByReportId_InvalidReportId_ValidBoxType_InvalidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 
 	@Test
 	public void testGetBoxesByReportId_InvalidReportId_InvalidBoxType_InvalidBounds() throws IOException{
-		Log.info("Executing API test --> testGetBoxesByReportId()...");
+		Log.info("Executing API test --> testGetBoxesByReportId_InvalidReportId_InvalidBoxType_InvalidBounds()...");
 		String verificationToken = getVerificationToken();
 		String loginResponse = executeLoginRequest(SurveyorConstants.PICDFADMIN, SurveyorConstants.USERPASSWORD, verificationToken);
 		Log.info(loginResponse);
@@ -234,7 +225,6 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationReportBoxInfos> response = apiInvoker.getBoxesByReportId(INVALID_REPORT_ID, INVALID_BOX_TYPE, invalidPayload);
 		InvestigationReportBoxInfos investigationReportBoxInfos = PCubedApiInvoker.successResponse(response);
 
-		Log.info(String.format("Executing API test -> testGetBoxesByReportId_InvalidReportId_InvalidBoxType_InvalidBounds()..."));
 		assertTrue("testGetBoxesByReportId_InvalidReportId_InvalidBoxType_InvalidBounds() returns correct list", investigationReportBoxInfos==null);
 	}
 		
@@ -252,7 +242,6 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Call<InvestigationBoxInfo> invBoxInfoCall = apiInterface.getLeakListByBox(BOX_ID);
 		invBoxInfoCall.execute();
 
-		Log.info(String.format("Executing API test -> testGetLeakListByBox_ValidBoxId()..."));
 		assertTrue(investigationBoxInfo!=null);
 	}
 	
@@ -268,8 +257,6 @@ public class InvestigationReportsApiTest extends BaseApiTest {
 		Response<InvestigationBoxInfo> response = apiInvoker.getLeakListByBox(INVALID_BOX_ID);
 		InvestigationBoxInfo investigationBoxInfo = PCubedApiInvoker.successResponse(response);
 
-
-		Log.info(String.format("Executing API test --> testGetLeakListByBox_InvalidBoxId()..."));
 		assertTrue("getLeakListByBox() returns null results", investigationBoxInfo == null);
 	}
 }
