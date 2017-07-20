@@ -8,7 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidAlarmSettingsScreen;
@@ -32,6 +34,9 @@ public class SettingsScreenTest extends BaseAndroidTest {
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
+	@Rule
+	public TestName testName = new TestName();
+
 	@Before
 	public void beforeTest() throws Exception {
 		initializeTestDriver();
@@ -39,10 +44,13 @@ public class SettingsScreenTest extends BaseAndroidTest {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
+
+		startTestRecording(testName.getMethodName());
 	}
 
 	@After
-	public void afterTest() throws IOException {
+	public void afterTest() throws Exception {
+		stopTestRecording(testName.getMethodName());
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}

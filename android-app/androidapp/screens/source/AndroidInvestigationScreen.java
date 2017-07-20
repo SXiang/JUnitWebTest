@@ -84,6 +84,11 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		return searchEditViewShown;
 	}
 
+	public void waitForResultsToLoad() {
+		Log.method("waitForResultsToLoad");
+		waitForScreenLoad(Timeout.ANDROID_APP_RESULTS_TIMEOUT * 2, d -> isFirstRowPresent());
+	}
+
 	@SuppressWarnings("unchecked")
 	private boolean isFirstEntryMatchingSearchKeyword(String searchKeyword) {
 		Log.method("isFirstEntryMatchingSearchKeyword", searchKeyword);
@@ -96,6 +101,12 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 		Log.method("Match = [%b]", false);
 		return false;
+	}
+
+	private boolean isFirstRowPresent() {
+		Log.method("isFirstRowPresent");
+		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
+		return firstRowReportTitle != null && firstRowReportTitle.isDisplayed();
 	}
 
 	private void waitForSearchResultsToLoad(String searchKeyword) {

@@ -1,6 +1,7 @@
 package common.source;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import com.android.ddmlib.AdbCommandRejectedException;
@@ -8,12 +9,19 @@ import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
 import com.android.ddmlib.InstallException;
 import com.android.ddmlib.MultiLineReceiver;
+import com.android.ddmlib.ScreenRecorderOptions;
 import com.android.ddmlib.ShellCommandUnresponsiveException;
+import com.android.ddmlib.SyncException;
 import com.android.ddmlib.TimeoutException;
 
 public class AdbInterface {
+	private static final Integer SCREENRECORD_MAX_TIMELIMIT_IN_SECS = 300;
+	private static final Integer SCREENRECORD_DEFAULT_BIT_MBPS = 3;
+	private static final Integer SCREENRECORD_HEIGHT = 720;
+	private static final Integer SCREENRECORD_WIDTH = 1280;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
+
 	private static String adbLocation = AndroidAutomationTools.AndroidPaths.DEFAULT_ADB_LOCATION;
 	private static AndroidDebugBridge adb;
     private static class ShellOutputReceiver extends MultiLineReceiver {
@@ -95,6 +103,20 @@ public class AdbInterface {
 		AndroidDebugBridge.init(false);
 	}
 
+	public static void pullFile(String deviceFileLocation, String saveFileLocation) {
+		Log.method("pullFile", deviceFileLocation, saveFileLocation);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
+			try {
+				device.pullFile(deviceFileLocation, saveFileLocation);
+			} catch (SyncException | IOException  | AdbCommandRejectedException | TimeoutException ex) {
+				Log.error(ExceptionUtility.getStackTraceString(ex));
+			}
+		} else {
+			Log.error("pullFile -> No connected devices found.");
+		}
+	}
+
 	public static void stop() {
 		AndroidDebugBridge.disconnectBridge();
 		AndroidDebugBridge.terminate();
@@ -122,6 +144,26 @@ public class AdbInterface {
 		PollManager.poll(() -> !adb.isConnected() || !adb.hasInitialDeviceList(), DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 2 * MAX_RETRIES_IN_POLL);
 	}
 
+	public static void startScreenRecording(String videoFilePath) {
+		Log.method("startScreenRecording", videoFilePath);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
+			ShellOutputReceiver receiver = new ShellOutputReceiver();
+			try {
+				ScreenRecorderOptions recorderOptions = new ScreenRecorderOptions.Builder()
+					.setBitRate(SCREENRECORD_DEFAULT_BIT_MBPS)
+					.setTimeLimit(SCREENRECORD_MAX_TIMELIMIT_IN_SECS, TimeUnit.SECONDS)
+					.setSize(SCREENRECORD_WIDTH, SCREENRECORD_HEIGHT)
+					.build();
+				device.startScreenRecorder(videoFilePath, recorderOptions, receiver);
+			} catch (IOException  | AdbCommandRejectedException | ShellCommandUnresponsiveException | TimeoutException ex) {
+				Log.warn(ex.getMessage());
+			}
+		} else {
+			Log.error("pullFile -> No connected devices found.");
+		}
+	}
+
 	private static String executeShellCmdInternal(final String adbLocation, final String command) {
 		Log.method("executeShellCmdInternal", command);
 		IDevice device = getConnectedDevice();
@@ -132,7 +174,7 @@ public class AdbInterface {
 				device.executeShellCommand(command, receiver);
 			} catch (TimeoutException | AdbCommandRejectedException | ShellCommandUnresponsiveException
 					| IOException ex) {
-				Log.error(ExceptionUtility.getStackTraceString(ex));
+				Log.warn(ExceptionUtility.getStackTraceString(ex));
 				return "";
 			}
 			String output = receiver.getOutput();

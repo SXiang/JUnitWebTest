@@ -53,8 +53,8 @@ public class BaseReportTest extends BaseAndroidTest {
 	protected boolean verifyReportsShownHaveLisasAssignedToUser(AndroidInvestigationScreen invScreen, String username) {
 		Log.method("verifyReportsShownHaveLisasAssignedToUser", invScreen, username);
 		List<InvestigationEntity> investigations = invScreen.getInvestigations();
-		boolean notMatch = investigations.stream()
-			.anyMatch(r -> {
+		boolean match = investigations.stream()
+			.allMatch(r -> {
 				Report reportObj = Report.getReport(r.getReportTitle());
 				String reportId = reportObj.getId();
 				Log.info(String.format("Searching for assigned LISAs in report id='%s'", reportId));
@@ -66,11 +66,11 @@ public class BaseReportTest extends BaseAndroidTest {
 						if (s.getAssignedUserName()!=null) {
 							if (!BaseHelper.isNullOrEmpty(s.getAssignedUserName().trim())) {
 								Log.info(String.format("Matching assigned username. Expected=[%s], Actual=[%s]", username, s.getAssignedUserName()));
-								return !s.getAssignedUserName().equals(username);
+								return s.getAssignedUserName().equals(username);
 							}
 						}
 
-						return false;
+						return true;
 					});
 				}
 
@@ -78,6 +78,6 @@ public class BaseReportTest extends BaseAndroidTest {
 				return true;
 			});
 
-		return !notMatch;
+		return match;
 	}
 }
