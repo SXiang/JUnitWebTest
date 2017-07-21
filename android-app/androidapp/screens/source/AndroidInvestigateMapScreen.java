@@ -11,25 +11,51 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
 	@CacheLookup
 	private WebElement addCGI;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement addSource;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
 	@CacheLookup
-	private WebElement directions;
+	private WebElement markasComplete;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[2]")
 	@CacheLookup
-	private WebElement follow;
+	private WebElement pause;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
 	@CacheLookup
+	private WebElement directions;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement follow;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
+	@CacheLookup
 	private WebElement investigate;
+
+	/****** Label elements ******/
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement markerInvestigationStatus;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[3]")
+	@CacheLookup
+	private WebElement latitudeLongitude;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@CacheLookup
+	private WebElement precison;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[4]")
+	@CacheLookup
+	private WebElement velocity;
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {
 		super(driver);
@@ -55,6 +81,26 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public void clickOnAddSource() {
 		Log.method("clickOnAddSource");
 		tap(getAddSourceButton());
+	}
+
+	public WebElement getMarkasCompleteButton() {
+		Log.method("getMarkasCompleteButton");
+		return markasComplete;
+	}
+
+	public void clickOnMarkasComplete() {
+		Log.method("clickOnMarkasComplete");
+		tap(getMarkasCompleteButton());
+	}
+
+	public WebElement getPauseButton() {
+		Log.method("getPauseButton");
+		return pause;
+	}
+
+	public void clickOnPause() {
+		Log.method("clickOnPause");
+		tap(getPauseButton());
 	}
 
 	public WebElement getDirectionsButton() {
@@ -85,6 +131,28 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
 		tap(getInvestigateButton());
+	}
+
+	/****** Label Methods ******/
+
+	public String getMarkerInvestigationStatusText() {
+		Log.method("getMarkerInvestigationStatusText");
+		return markerInvestigationStatus.getText();
+	}
+
+	public String getLatitudeLongitudeText() {
+		Log.method("getLatitudeLongitudeText");
+		return latitudeLongitude.getText();
+	}
+
+	public String getPrecisonText() {
+		Log.method("getPrecisonText");
+		return precison.getText();
+	}
+
+	public String getVelocityText() {
+		Log.method("getVelocityText");
+		return velocity.getText();
 	}
 
 	@Override

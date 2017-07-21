@@ -50,8 +50,8 @@ public class BaseReportTest extends BaseAndroidTest {
 		return (count == expectedInvestigationMarkers);
 	}
 
-	protected boolean verifyReportsShownHaveLisasAssignedToUser(AndroidInvestigationScreen invScreen, String username) {
-		Log.method("verifyReportsShownHaveLisasAssignedToUser", invScreen, username);
+	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) {
+		Log.method("verifyReportsAssignedToUserAreShown", invScreen, username);
 		List<InvestigationEntity> investigations = invScreen.getInvestigations();
 		boolean match = investigations.stream()
 			.allMatch(r -> {

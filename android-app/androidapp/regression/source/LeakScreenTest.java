@@ -132,6 +132,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
@@ -208,6 +209,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
@@ -278,6 +280,7 @@ public class LeakScreenTest extends BaseReportTest {
 
         executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
@@ -342,6 +345,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
@@ -397,7 +401,7 @@ public class LeakScreenTest extends BaseReportTest {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			investigationScreen.waitForResultsToLoad();
-			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -414,6 +418,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			assertTrue(investigateMapScreen.getAddCGIButton().isDisplayed());
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
@@ -470,7 +475,7 @@ public class LeakScreenTest extends BaseReportTest {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			investigationScreen.waitForResultsToLoad();
-			assertTrue(verifyReportsShownHaveLisasAssignedToUser(investigationScreen, SurveyorConstants.SQAPICDR));
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -487,6 +492,7 @@ public class LeakScreenTest extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
 			assertTrue(investigateMapScreen.getAddCGIButton().isDisplayed());
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
