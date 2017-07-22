@@ -1,6 +1,21 @@
 package surveyor.scommon.mobile.source;
 
 public class LeakDataTypes {
+	public enum SourceType {
+		Leak ("Leak"),
+		OtherSource ("OtherSource");
+
+		private final String name;
+
+		SourceType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum LeakLocationType {
 		Main ("Main"),
 		Service ("Service"),

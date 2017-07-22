@@ -24,7 +24,7 @@ import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class SettingsScreenTest extends BaseAndroidTest {
+public class AndroidSettingsScreenTest extends BaseAndroidTest {
 
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;

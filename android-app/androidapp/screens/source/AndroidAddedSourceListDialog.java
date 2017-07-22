@@ -13,6 +13,7 @@ import androidapp.entities.source.OtherSourceListInfoEntity;
 import common.source.Log;
 import common.source.RegexUtility;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 
 public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
@@ -96,6 +97,30 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	public void clickOnCancel() {
 		Log.method("clickOnCancel");
 		tap(getCancelButton());
+	}
+
+	public void clickOnFirstMatchingListItemOfType(SourceType sourceType) {
+		Log.method("clickOnFirstMatchingListItemOfType", sourceType);
+		for (WebElement srcEl : sourcesList) {
+			String text = srcEl.getText();
+			List<String> textParts = RegexUtility.split(text, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
+			if (textParts.size()==3) {
+				if (sourceType.equals(SourceType.Leak)) {
+					String id = textParts.get(0).trim();
+					String time = textParts.get(1).trim();
+					String address = textParts.get(2).trim();
+					Log.info(String.format("Clicking on a matching Leak found -> [id=%s; time=%s; address=%s]", id, time, address));
+					srcEl.click();
+					break;
+				}
+			} else {
+				String source = textParts.get(0).trim();
+				String time = textParts.get(1).trim();
+				Log.info(String.format("Clicking on a matching Other Source found -> [source=%s; time=%s]", source, time));
+				srcEl.click();
+				break;
+			}
+		}
 	}
 
 	/****** ListView Methods ******/

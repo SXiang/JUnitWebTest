@@ -21,7 +21,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
 	@CacheLookup
-	private WebElement markasComplete;
+	private WebElement markAsComplete;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[2]")
 	@CacheLookup
@@ -83,14 +83,14 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		tap(getAddSourceButton());
 	}
 
-	public WebElement getMarkasCompleteButton() {
-		Log.method("getMarkasCompleteButton");
-		return markasComplete;
+	public WebElement getMarkAsCompleteButton() {
+		Log.method("getMarkAsCompleteButton");
+		return markAsComplete;
 	}
 
-	public void clickOnMarkasComplete() {
-		Log.method("clickOnMarkasComplete");
-		tap(getMarkasCompleteButton());
+	public void clickOnMarkAsComplete() {
+		Log.method("clickOnMarkAsComplete");
+		tap(getMarkAsCompleteButton());
 	}
 
 	public WebElement getPauseButton() {

@@ -10,7 +10,7 @@ import org.junit.Test;
 import common.source.Log;
 import common.source.TestContext;
 
-public class SanityTest extends BaseAndroidTest {
+public class AndroidSanityTest extends BaseAndroidTest {
 
 	@Before
 	public void beforeTest() throws Exception {

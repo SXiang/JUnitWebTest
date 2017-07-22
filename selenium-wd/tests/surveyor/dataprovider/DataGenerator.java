@@ -3,6 +3,7 @@ package surveyor.dataprovider;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.testng.Assert;
@@ -12,9 +13,75 @@ import common.source.Log;
 import common.source.RegexUtility;
 
 public class DataGenerator {
+
+	private static String[] usStates = {"AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH",
+			"NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"};
+
+	public static class Address {
+		private String streetNumber;
+		private String streetName;
+		private String city;
+		private String state;
+
+		public Address(String streetNumber, String streetName, String city, String state) {
+			this.setStreetNumber(streetNumber);
+			this.setStreetName(streetName);
+			this.setCity(city);
+			this.setState(state);
+		}
+
+		public String getStreetNumber() {
+			return streetNumber;
+		}
+
+		public void setStreetNumber(String streetNumber) {
+			this.streetNumber = streetNumber;
+		}
+
+		public String getStreetName() {
+			return streetName;
+		}
+
+		public void setStreetName(String streetName) {
+			this.streetName = streetName;
+		}
+
+		public String getCity() {
+			return city;
+		}
+
+		public void setCity(String city) {
+			this.city = city;
+		}
+
+		public String getState() {
+			return state;
+		}
+
+		public void setState(String state) {
+			this.state = state;
+		}
+	}
+
 	public static Date getDateBetween(Date startDate, Date endDate) {
 		DataFactory df = new DataFactory();
 		return df.getDateBetween(startDate, endDate);
+	}
+
+	public static Address getAddress() {
+		DataFactory df = new DataFactory();
+		int arrIdx = new Random().nextInt(usStates.length);
+		return new Address(df.getStreetSuffix(), df.getStreetName(), df.getCity(), usStates[arrIdx]);
+	}
+
+	public static String getAddressString() {
+		DataFactory df = new DataFactory();
+		return df.getAddress();
+	}
+
+	public static Integer getNumberBetween(int min, int max) {
+		DataFactory df = new DataFactory();
+		return df.getNumberBetween(min, max);
 	}
 
 	public static String getRandomText(int minLength, int maxLength) {
@@ -24,7 +91,7 @@ public class DataGenerator {
 		DataFactory df = new DataFactory();
 		return df.getRandomText(minLength, maxLength);
 	}
-	
+
 	public static String getRandomChars(int length) {
 		if (length < 0) {
 			return "";
@@ -32,7 +99,7 @@ public class DataGenerator {
 		DataFactory df = new DataFactory();
 		return df.getRandomChars(length);
 	}
-	
+
 	public static String getRandomWord() {
 		DataFactory df = new DataFactory();
 		return df.getRandomWord();
@@ -49,7 +116,7 @@ public class DataGenerator {
 		}
 		return buffer.substring(0, length);
 	}
-	
+
 	public static void main(String[] args) {
 		Log.info("Executing testDataGenerator_GetDateBetween_Valid() ...");
 		testDataGenerator_GetDateBetween_ValidRange();
@@ -62,21 +129,21 @@ public class DataGenerator {
 		Log.info("Executing testDataGenerator_GetRandomText_SameLength() ...");
 		testDataGenerator_GetRandomText_SameLength();
 		Log.info("Executing testDataGenerator_GetRandomText_LengthZero() ...");
-		testDataGenerator_GetRandomText_LengthZero();	
+		testDataGenerator_GetRandomText_LengthZero();
 		Log.info("Executing testDataGenerator_GetRandomChars_ValidLength() ...");
 		testDataGenerator_GetRandomChars_ValidLength();
 		Log.info("Executing testDataGenerator_GetRandomChars_InvalidLength() ...");
 		testDataGenerator_GetRandomChars_InvalidLength();
 		Log.info("Executing testDataGenerator_GetRandomChars_LengthZero() ...");
-		testDataGenerator_GetRandomChars_LengthZero();	
+		testDataGenerator_GetRandomChars_LengthZero();
 		Log.info("Executing testDataGenerator_GetRandomWord_Valid() ...");
-		testDataGenerator_GetRandomWord_Valid();	
+		testDataGenerator_GetRandomWord_Valid();
 		Log.info("Executing testDataGenerator_GetRandomWords_ValidLength() ...");
 		testDataGenerator_GetRandomWords_ValidLength();
 		Log.info("Executing testDataGenerator_GetRandomWords_InvalidLength() ...");
 		testDataGenerator_GetRandomWords_InvalidLength();
 		Log.info("Executing testDataGenerator_GetRandomWords_LengthZero() ...");
-		testDataGenerator_GetRandomWords_LengthZero();	
+		testDataGenerator_GetRandomWords_LengthZero();
 	}
 
 	private static void testDataGenerator_GetDateBetween_ValidRange() {
@@ -132,7 +199,7 @@ public class DataGenerator {
 		Log.info("Result: " + randomText);
 		Assert.assertTrue((randomText.length()>=5) && (randomText.length()<=15));
 	}
-	
+
 	private static void testDataGenerator_GetRandomChars_LengthZero() {
 		String randomChars = DataGenerator.getRandomChars(0);
 		Log.info("Result: " + randomChars);

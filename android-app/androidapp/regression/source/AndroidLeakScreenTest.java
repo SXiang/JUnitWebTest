@@ -33,14 +33,16 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
 
-public class LeakScreenTest extends BaseReportTest {
+public class AndroidLeakScreenTest extends BaseReportTest {
 
+	private static final String OTHER_SOURCE = "Other Source";
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
@@ -66,20 +68,24 @@ public class LeakScreenTest extends BaseReportTest {
 	@Before
 	public void beforeTest() throws Exception {
 		createTestCaseData(testName);
-		initializeTestDriver();
-		initializeTestScreenObjects();
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.restartSimulator();
-		}
+		if (!isRunningInDataGenMode()) {
+			initializeTestDriver();
+			initializeTestScreenObjects();
+			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				BackPackAnalyzer.restartSimulator();
+			}
 
-		startTestRecording(testName.getMethodName());
+			startTestRecording(testName.getMethodName());
+		}
 	}
 
 	@After
 	public void afterTest() throws Exception {
-		stopTestRecording(testName.getMethodName());
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.stopSimulator();
+		if (!isRunningInDataGenMode()) {
+			stopTestRecording(testName.getMethodName());
+			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				BackPackAnalyzer.stopSimulator();
+			}
 		}
 	}
 
@@ -113,6 +119,11 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2434_EnergyBackpackLoggingMultipleLeaksWithinClassicLISAs ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -138,7 +149,7 @@ public class LeakScreenTest extends BaseReportTest {
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().setDefaultValues();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
 			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
@@ -187,6 +198,11 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2435_EnergyBackpackLoggingMultipleLeaksWithinGaps ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -215,7 +231,7 @@ public class LeakScreenTest extends BaseReportTest {
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().setDefaultValues();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
 			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
@@ -260,6 +276,11 @@ public class LeakScreenTest extends BaseReportTest {
 	public void TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs ...");
+
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -323,6 +344,11 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2437_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinGaps ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -353,14 +379,14 @@ public class LeakScreenTest extends BaseReportTest {
 			addOtherSourceFormDialog.waitForScreenLoad();
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
-			addOtherSourceFormDialog.enterAdditionalNotes("test additional notes");
+			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
 			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue(otherSourcesList!=null && otherSourcesList.size()>0);
 			otherSourcesList.stream()
 				.forEach(el -> {
-					assertTrue(el.getSource().trim().equals("Other Source"));
+					assertTrue(el.getSource().trim().equals(OTHER_SOURCE));
 					assertTrue(el.getTime().length()>10);
 				});
 			return true;
@@ -397,6 +423,11 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2438_EnergyBackpackLeakCanBeEdited ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -425,7 +456,7 @@ public class LeakScreenTest extends BaseReportTest {
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().setDefaultValues();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
 			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
@@ -471,6 +502,11 @@ public class LeakScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -499,7 +535,7 @@ public class LeakScreenTest extends BaseReportTest {
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().setDefaultValues();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
 			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
@@ -523,47 +559,49 @@ public class LeakScreenTest extends BaseReportTest {
 		String tcId = "";
 		String[] lisaNumbers = {"2", "4", "6"};
 		String[] gapNumbers = {"1", "2", "3"};
+		boolean reuseReports = !isRunningInDataGenMode();
+
 		if (methodName.startsWith("TC2434_")) {
 			Object[][] tc2434 = ReportListDataProvider.dataProviderReportList_TC2434();
 			userDataRowID = (Integer)tc2434[0][1];
 			reportDataRowID1 = (Integer)tc2434[0][2];
 			tcId = "TC2434";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2435_")) {
 			Object[][] tc2435 = ReportListDataProvider.dataProviderReportList_TC2435();
 			userDataRowID = (Integer)tc2435[0][1];
 			reportDataRowID1 = (Integer)tc2435[0][2];
 			tcId = "TC2435";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2436_")) {
 			Object[][] tc2436 = ReportListDataProvider.dataProviderReportList_TC2436();
 			userDataRowID = (Integer)tc2436[0][1];
 			reportDataRowID1 = (Integer)tc2436[0][2];
 			tcId = "TC2436";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2437_")) {
 			Object[][] tc2437 = ReportListDataProvider.dataProviderReportList_TC2437();
 			userDataRowID = (Integer)tc2437[0][1];
 			reportDataRowID1 = (Integer)tc2437[0][2];
 			tcId = "TC2437";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2438_")) {
 			Object[][] tc2438 = ReportListDataProvider.dataProviderReportList_TC2438();
 			userDataRowID = (Integer)tc2438[0][1];
 			reportDataRowID1 = (Integer)tc2438[0][2];
 			tcId = "TC2438";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2439_")) {
 			Object[][] tc2439 = ReportListDataProvider.dataProviderReportList_TC2439();
 			userDataRowID = (Integer)tc2439[0][1];
 			reportDataRowID1 = (Integer)tc2439[0][2];
 			tcId = "TC2439";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}
 	}

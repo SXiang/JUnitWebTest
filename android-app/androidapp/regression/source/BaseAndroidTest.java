@@ -41,6 +41,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String TRUE = "true";
 
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override
@@ -65,6 +66,17 @@ public class BaseAndroidTest extends BaseTest {
 		public static final String MAIN_ACTIVITY = "MainActivity";
 	}
 
+	protected static boolean isRunningInDataGenMode() {
+		Log.method("isRunningInDataGenMode");
+		String dataGenMode = System.getProperty("isRunningInDataGenMode");
+		if (!BaseHelper.isNullOrEmpty(dataGenMode)) {
+			Log.info("dataGenMode=" + dataGenMode);
+			return dataGenMode.toLowerCase().equals(TRUE);
+		}
+
+		return false;
+	}
+
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
 		// Initialize TestSetup to instantiate the TestContext.
@@ -76,21 +88,26 @@ public class BaseAndroidTest extends BaseTest {
 		} catch (IOException e) {
 			Log.error(e.getMessage());
 		}
+
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
-		// Start backpack simulator and android automation tools (emulator, appium server).
-		cleanupProcesses();
+		if (!isRunningInDataGenMode()) {
+			// Start backpack simulator and android automation tools (emulator, appium server).
+			cleanupProcesses();
 
-		AdbInterface.init(testSetup.getAdbLocation());
-	    AndroidAutomationTools.start();
-	    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			AdbInterface.init(testSetup.getAdbLocation());
+		    AndroidAutomationTools.start();
+		    AndroidAutomationTools.disableAnimations();  // perf optimization.
+		}
 	}
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
-		AdbInterface.stop();
-		cleanupProcesses();
+		if (!isRunningInDataGenMode()) {
+			AdbInterface.stop();
+			cleanupProcesses();
+		}
 	}
 
 	@Before

@@ -122,6 +122,6 @@ public class BackPackAnalyzer {
 
 	private static void waitForSimulatorProcessesToCatchUp() {
 		Log.method("waitForSimulatorProcessesToCatchUp");
-		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
+		TestContext.INSTANCE.stayIdle(2 * CATCH_UP_TIME_IN_SECS);
 	}
 }

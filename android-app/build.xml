@@ -110,9 +110,10 @@
       </batchtest>
     </junit>
   </target>
-  <target name="androiduitests" depends="compile_androidapp" description="Run android app ui tests">
+  <target name="androiduitests_datagen" depends="compile_androidapp" description="Run datagen for android app ui tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="true" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
@@ -123,9 +124,31 @@
       <batchtest fork="yes" todir="${reports}/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportListScreenTest.class" />
-          <include name="**/SettingsScreenTest.class" />
-          <include name="**/LeakScreenTest.class" />
+          <include name="**/AndroidReportListScreenTest.class" />
+          <include name="**/AndroidSettingsScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest2.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="androiduitests" depends="compile_androidapp" description="Run android app ui tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="false" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/androiduitests/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/AndroidReportListScreenTest.class" />
+          <include name="**/AndroidSettingsScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -143,7 +166,7 @@
       <batchtest fork="yes" todir="${reports}/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/SanityTest.class" />
+          <include name="**/AndroidSanityTest.class" />
         </fileset>
       </batchtest>
     </junit>

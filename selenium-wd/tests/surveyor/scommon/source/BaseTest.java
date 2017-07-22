@@ -30,6 +30,8 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
+import common.source.BaseHelper;
+import common.source.CrashLogger;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
@@ -40,6 +42,7 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
 import common.source.WebDriverFactory;
+import io.appium.java_client.AppiumDriver;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
@@ -211,7 +214,30 @@ public class BaseTest {
 		captureAdditionalDriverScreenshots(className);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
-		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
+		String additionalLogs = captureAdditionalLogs(className);
+		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
+		if (!BaseHelper.isNullOrEmpty(additionalLogs)) {
+			failureMsg += "; ADDITIONAL LOGS: " + additionalLogs;
+		}
+
+		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
+	}
+
+	protected static String captureAdditionalLogs(String className) {
+		if (className.contains("Android")) {
+			CrashLogger crashLogger = new CrashLogger();
+			StringBuilder logs = new StringBuilder();
+			int driverCount = WebDriverFactory.getDriversCount();
+			if (driverCount > 1) {
+				for (int i = 1; i < driverCount; i++) {
+					logs.append(crashLogger.grabLogs((AppiumDriver<?>)WebDriverFactory.getDriver(i)));
+				}
+			}
+
+			return logs.toString();
+		}
+
+		return "";
 	}
 
 	protected static void captureAdditionalDriverScreenshots(String className) {
@@ -304,9 +330,11 @@ public class BaseTest {
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor){
 		return createTestAccount(testCase, lfsToExclude, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
+
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		return createTestAccount(testCase, lfsToExclude, CapabilityType.IsotopicMethane, addTestSurveyor, true /*fetchAnalyzerFromPool*/);
 	}
+
 	public Map<String, String> createTestAccount(String testCase, LicensedFeatures[] lfsToExclude, CapabilityType analyzerType, boolean addTestSurveyor, boolean fetchAnalyzerFromPool){
 		String uniqueNumber = getTestSetup().getNewFixedSizeRandomNumber(6);
 		String customerName = CUSTOMERNAMEPREFIX + uniqueNumber + testCase;
@@ -394,6 +422,7 @@ public class BaseTest {
 		if(!manageAnalyzersPage.addNewAnalyzer(analyzerName, analyzerSharedKey, surveyorName, customerName, locationName)){
 			fail(String.format("Failed to add a new analyzer %s, %s, %s, %s, %s",analyzerName, analyzerSharedKey, surveyorName, customerName, locationName));
 		}
+
 		Analyzer analyzer = new Analyzer().getBySerialNumber(analyzerName);
 		analyzer.updateCapabilityType(analyzerType);
 
@@ -429,7 +458,7 @@ public class BaseTest {
 
 	public Map<String, String> addTestReport(String userName, String Password, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		return addTestReport(userName, Password, null/*customer*/, surveyTag, testRowID, surveyModeFilter);
-		}
+	}
 
 	public Map<String, String> addTestReport(String userName, String Password, String customer, String surveyTag, int testRowID, SurveyModeFilter... surveyModeFilter)throws Exception{
 		ReportModeFilter[] reportMode = {ReportModeFilter.Standard, ReportModeFilter.Standard, ReportModeFilter.RapidResponse, ReportModeFilter.Manual, ReportModeFilter.Analytics};
@@ -506,9 +535,11 @@ public class BaseTest {
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
 	}
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, String userName, String password, SurveyType... surveyTypes) throws Exception{
 		return addTestSurvey(analyzerName, analyzerSharedKey, CapabilityType.IsotopicMethane, userName, password, surveyTypes);
 	}
+
 	public Map<String, String> addTestSurvey(String analyzerName, String analyzerSharedKey, CapabilityType analyzerType, String userName, String password, SurveyType... surveyTypes) throws Exception{
 		int surveyRuntimeInSeconds = 2;
 		return addTestSurvey(analyzerName, analyzerSharedKey, analyzerType, userName, password, surveyRuntimeInSeconds, surveyTypes);
@@ -612,14 +643,14 @@ public class BaseTest {
 			analyzerName, analyzerSharedKey);
 	}
 
-	    protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
-			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
-	    	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
-	    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
-	    }
+    protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DriverViewPageActions driverViewPageAction,
+		String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+    	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
+    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
+    }
 
-		protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
-				String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
+	protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
+			String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
 		TestSetup.restartAnalyzer();
 		driverViewPageAction.open("", -1);
 		driverViewPageAction.waitForConnectionToComplete("", -1);
@@ -660,11 +691,11 @@ public class BaseTest {
 
 	protected static boolean cleanUpGisData(String customerId){
 		try {
-				DbSeedExecutor.cleanUpGisSeed(customerId);
-			} catch (Exception e) {
-				Log.error(String.format("Error in cleanUpGisSeed. Exception - %s", ExceptionUtility.getStackTraceString(e)));
-				return false;
-			}
+			DbSeedExecutor.cleanUpGisSeed(customerId);
+		} catch (Exception e) {
+			Log.error(String.format("Error in cleanUpGisSeed. Exception - %s", ExceptionUtility.getStackTraceString(e)));
+			return false;
+		}
 		return true;
 	}
 

@@ -7,12 +7,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
+import common.source.BaseHelper;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.PollManager;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
+import androidapp.entities.source.InvestigationEntity;
 import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
@@ -24,7 +29,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
-	private WebElement firstRowReportId;
+	private WebElement firstRowLisaNumber;
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -48,8 +53,23 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigationMarker() {
 		Log.method("clickOnFirstInvestigationMarker");
-		if (this.firstRowReportId != null) {
-			firstRowReportId.click();
+		if (this.firstRowLisaNumber != null) {
+			firstRowLisaNumber.click();
+		}
+	}
+
+	public void clickFirstMarkerMatchingStatus(List<String> markerStatuses) {
+		List<InvestigationMarkerEntity> investigationMarkers = getInvestigationMarkers();
+		int len = investigationMarkers.size();
+		if (investigationMarkers != null && len > 0) {
+			for (int i = 1; i <= len; i++) {
+				WebElement elemMarkerStatus = getAndroidDriver().findElementByXPath(String.format("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[2]", i));
+				String status = elemMarkerStatus.getText();
+				if (markerStatuses.contains(status)) {
+					Log.info(String.format("Found matching marker for status='%s'.. Tap marker.", status));
+					elemMarkerStatus.click();
+				}
+			}
 		}
 	}
 
@@ -61,8 +81,8 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	public InvestigationMarkerEntity getFirstInvestigationMarker() {
 		Log.method("getFirstInvestigationMarker");
 		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
-		invEntity.setReportTitle(firstRowReportId.getText());
-		invEntity.setReportName(firstRowInvestigationStatus.getText());
+		invEntity.setLisaNumber(firstRowLisaNumber.getText());
+		invEntity.setInvestigationStatus(firstRowInvestigationStatus.getText());
 		return invEntity;
 	}
 
@@ -78,8 +98,8 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
 			if (findElements != null && findElements.size() > 1) {
 				InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
-				invEntity.setReportTitle(findElements.get(0).getText());
-				invEntity.setReportName(findElements.get(1).getText());
+				invEntity.setLisaNumber(findElements.get(0).getText());
+				invEntity.setInvestigationStatus(findElements.get(1).getText());
 				invReportList.add(invEntity);
 			}
 		}
@@ -95,6 +115,27 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	public boolean verifyNoInvestigationMarkersFoundInReport() {
 		Log.method("verifyNoInvestigationMarkersFoundInReport");
 		return noInvestigationMarkersFoundTextView.isDisplayed();
+	}
+
+	public boolean verifyLisasForReportAreShown(String reportTitle) {
+		Log.method("verifyLisasForReportAreShown", reportTitle);
+		Report reportObj = Report.getReport(reportTitle);
+		String reportId = reportObj.getId();
+		Log.info(String.format("Getting assigned LISAs for report id='%s'", reportId));
+		List<InvestigationMarkerEntity> invMarkers = getInvestigationMarkers();
+		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+		boolean match = lisaInvestigationfromSP.stream()
+			.allMatch(sp -> {
+				return invMarkers.stream().anyMatch(s -> {
+					String[] split = s.getLisaNumber().split("-");
+					String lisaNum = split[split.length-1].trim();
+					Log.info(String.format("Matching boxNumber from storedproc-[%d] with on screen lisa marker-'%s'; lisa number='%s'",
+							sp.getBoxNumber(), s.getLisaNumber(), lisaNum));
+					return lisaNum.equals(String.valueOf(sp.getBoxNumber()));
+				});
+			});
+
+		return match;
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 
-public class ReportListScreenTest extends BaseReportTest {
+public class AndroidReportListScreenTest extends BaseReportTest {
 
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
@@ -46,20 +46,24 @@ public class ReportListScreenTest extends BaseReportTest {
 	@Before
 	public void beforeTest() throws Exception {
 		createTestCaseData(testName);
-		initializeTestDriver();
-		initializeTestScreenObjects();
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.restartSimulator();
-		}
+		if (!isRunningInDataGenMode()) {
+			initializeTestDriver();
+			initializeTestScreenObjects();
+			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				BackPackAnalyzer.restartSimulator();
+			}
 
-		startTestRecording(testName.getMethodName());
+			startTestRecording(testName.getMethodName());
+		}
 	}
 
 	@After
 	public void afterTest() throws Exception {
-		stopTestRecording(testName.getMethodName());
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			BackPackAnalyzer.stopSimulator();
+		if (!isRunningInDataGenMode()) {
+			stopTestRecording(testName.getMethodName());
+			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				BackPackAnalyzer.stopSimulator();
+			}
 		}
 	}
 
@@ -87,6 +91,11 @@ public class ReportListScreenTest extends BaseReportTest {
 	public void TC2429_EnergyBackpackReportListScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2429_EnergyBackpackReportListScreen ...");
+
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
 
 		final Integer EXPECTED_LISA_MARKERS = 9;
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
@@ -126,6 +135,11 @@ public class ReportListScreenTest extends BaseReportTest {
 	public void TC2430_EnergyBackpackInvestigationItemScreenNoLISAsForInvestigation(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2430_EnergyBackpackInvestigationItemScreenNoLISAsForInvestigation ...");
+
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
 
 		final Integer EXPECTED_GAP_MARKERS = 11;
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
@@ -171,6 +185,11 @@ public class ReportListScreenTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2431_EnergyBackpackInvestigationItemScreenNoGapsForInvestigation ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		final Integer EXPECTED_LISA_MARKERS = 9;
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -198,26 +217,28 @@ public class ReportListScreenTest extends BaseReportTest {
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
+		boolean reuseReports = !isRunningInDataGenMode();
+
 		if (methodName.startsWith("TC2429_")) {
 			Object[][] tc2429 = ReportListDataProvider.dataProviderReportList_TC2429();
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignGapsToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
 			Object[][] tc2431 = ReportListDataProvider.dataProviderReportList_TC2431();
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}

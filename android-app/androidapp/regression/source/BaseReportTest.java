@@ -13,6 +13,7 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 
 public class BaseReportTest extends BaseAndroidTest {
+
 	protected void clickOnFirstInvestigationReport(AndroidInvestigationScreen investigationScreen) throws Exception {
 		investigationScreen.clickOnFirstInvestigation();
 	}

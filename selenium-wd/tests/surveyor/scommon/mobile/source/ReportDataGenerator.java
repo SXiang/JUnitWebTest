@@ -101,7 +101,8 @@ public class ReportDataGenerator {
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
-	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] lisaNumbers) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
@@ -117,7 +118,11 @@ public class ReportDataGenerator {
 		String lisaNumberPrefix = reportName+"-LISA-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String[] lisasToSelect = new String[] {lisaNumberPrefix+1, lisaNumberPrefix+2, lisaNumberPrefix+3};
+		String[] lisasToSelect = new String[lisaNumbers.length];
+		for (int i = 0; i < lisaNumbers.length; i++) {
+			lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
+		}
+
 		reportInvestigationsPage.selectMultipleLisas(lisasToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -129,7 +134,18 @@ public class ReportDataGenerator {
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		String[] lisasToSelect = new String[] {"1", "2", "3"};
+		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisasToSelect);
+	}
+
 	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		String[] gapsToSelect = new String[] {"1", "2", "3"};
+		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, gapsToSelect);
+	}
+
+	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] gapNumbers) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
@@ -145,7 +161,11 @@ public class ReportDataGenerator {
 		String gapNumberPrefix = reportName+"-Gap-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String[] gapsToSelect = new String[] {gapNumberPrefix+1, gapNumberPrefix+2, gapNumberPrefix+3};
+		String[] gapsToSelect = new String[gapNumbers.length];
+		for (int i = 0; i < gapNumbers.length; i++) {
+			gapsToSelect[i]  = gapNumberPrefix+gapNumbers[i];
+		}
+
 		reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
@@ -155,17 +175,6 @@ public class ReportDataGenerator {
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
-	}
-
-	protected void setSingleUse(Boolean singleUse) {
-		this.isSingleUse = singleUse;
-	}
-
-	private void cleanUp() {
-		if (this.driver != null) {
-			driver.quit();
-			driver = null;
-		}
 	}
 
 	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
@@ -192,6 +201,13 @@ public class ReportDataGenerator {
 		return null;
 	}
 
+	private void cleanUp() {
+		if (this.driver != null) {
+			driver.quit();
+			driver = null;
+		}
+	}
+
 	private void initialize() throws Exception {
 		initializePageActions();
 		initializePageObjects();
@@ -211,6 +227,10 @@ public class ReportDataGenerator {
 		TestSetup testSetup = TestContext.INSTANCE.getTestSetup();
 		loginPageAction = new LoginPageActions(testSetup.getDriver(), testSetup.getBaseUrl(), testSetup);
 		complianceReportsPageAction = new ComplianceReportsPageActions(testSetup.getDriver(), testSetup.getBaseUrl(), testSetup);
+	}
+
+	protected void setSingleUse(Boolean singleUse) {
+		this.isSingleUse = singleUse;
 	}
 
 	public Boolean getIsReusable() {
