@@ -192,7 +192,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		mobileLoginPage.logout();	
 	}
 
-	/**
+	/** Description needs to  be updated per Richard 
 	 * Test Case ID: TC1723_MakeColorsOfInvestigationConsistentForDisposition
 	 * Test Description: Mobile: Make colors of investigation boxes and gaps consistent for their disposition
 	 * Script:
