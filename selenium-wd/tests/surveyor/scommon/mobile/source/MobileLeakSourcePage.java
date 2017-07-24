@@ -1,6 +1,5 @@
 package surveyor.scommon.mobile.source;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,7 +14,6 @@ import surveyor.scommon.entities.InvestigationEntity;
 import surveyor.scommon.entities.LeakDetailEntity;
 import surveyor.scommon.entities.OtherSourceEntity;
 import surveyor.scommon.entities.OtherSourceEntity.OtherLeakSourceType;
-import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 /**
  * @author sxiang
@@ -28,7 +26,6 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = "#leak_details input[ng-model='leak.AddressStreetNumber']")
 	protected WebElement inputStreetNumber;
-	private String streetNumber = "3105";
 	
 	@FindBy(how = How.CSS, using = "#leak_details input[ng-model='leak.AddressApartmentNumber']")
 	protected WebElement inputApartmentNumber;
@@ -231,7 +228,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 
-//	/* Getter */
+	/* Getter */
 	public String getStreetNumber() {
 		return getElementInputValue(inputStreetNumber);
 	}
@@ -322,7 +319,6 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	/* Setter */
 	public void setStreetNumber(String streetNumber) {
-		this.streetNumber = streetNumber;
 		inputTextValue(inputStreetNumber, streetNumber);
 	}
 

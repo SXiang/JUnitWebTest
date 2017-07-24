@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
@@ -57,7 +56,6 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected static final String APP_PACKAGE_NAME = "com.picarroapp";
 	protected static final String APPIUM_SERVER_HUB_HOST = "http://127.0.0.1:4723/wd/hub";
-
 
 	public static class AndroidActivities {
 		public static final String APP_DRAW_OVERLAY_SETTINGS_ACTIVITY = "AppDrawOverlaySettingsActivity";
@@ -198,7 +196,6 @@ public class BaseAndroidTest extends BaseTest {
 
 		// Create object of  AndroidDriver class and pass the url and capability that we created
 		appiumDriver =  new AndroidDriver<WebElement>(url, capabilities);
-
 	}
 
 	protected void initializeAppiumWebDriver() throws MalformedURLException {
@@ -217,7 +214,6 @@ public class BaseAndroidTest extends BaseTest {
 
 		// Create object of  AndroidDriver class and pass the url and capability that we created
 		appiumWebDriver =  new AndroidDriver<WebElement>(url, capabilities);
-
 	}
 
 	protected void installLaunchApp(String waitActivityName) throws IOException {
