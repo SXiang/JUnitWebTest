@@ -250,7 +250,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+2,lisaNumberPrefix+7);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3,lisaNumberPrefix+9);
+		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -322,7 +322,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		// Mobile not investigated - color verification: light grey
 		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+7, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-7"));	
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-7", new Rectangle(0,500,0,0)));
 		
 		// Mobile - login and investigate lisas - Supervisor
 		mobileLoginPage.open();
@@ -388,21 +388,13 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		mobileInvestigatePage.clickOnFollow();
 		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-8"));	
 
-		// Mobile - not investigated
-		mobileReportsPage.open();
-		mobileReportsPage.clickOnReportName(reportName);
-		// Mobile not investigated - color verification: light grey
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+9, IndicationStatus.NOTINVESTIGATED);
-		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotInvestigated-9"));	
-
 		// Mobile - not assigned
 		mobileReportsPage.open();
 		mobileReportsPage.clickOnReportName(reportName);
 		// Mobile not assigned - color verification: orange
-		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+6, IndicationStatus.NOTINVESTIGATED);
+		mobileInvestigatePage = mobileInvestigationPage.clickOnLisa(lisaNumberPrefix+9, IndicationStatus.NOTINVESTIGATED);
 		mobileInvestigatePage.clickOnFollow();
-		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-6", new Rectangle(350,678,90,180)));	
+		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileNotAssigned-9", new Rectangle(0,500,0,0)));
 		mobileLoginPage.logout();
 	}
 
