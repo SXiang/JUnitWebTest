@@ -7,6 +7,7 @@ import org.openqa.selenium.support.How;
 
 import common.source.Log;
 import surveyor.scommon.entities.InvestigationEntity;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 /**
  * @author sxiang
@@ -39,29 +40,53 @@ public class MobileInvestigationPage extends MobileBasePage {
 	}
 	
 	public MobileInvestigatePage clickOnLisa(String lisaNumber){
-		return clickOnLisa(lisaNumber, null);
+		return clickOnLisa(lisaNumber, null, null);
 	}
 	
+	public MobileInvestigatePage clickOnLisa(String lisaNumber, IndicationStatus status){
+		return clickOnLisa(lisaNumber, status, null);
+	}	
+	
 	public MobileInvestigatePage clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
+		return clickOnLisa(lisaNumber, null, investigationEntity);
+	}
+	
+	public MobileInvestigatePage clickOnLisa(String lisaNumber, IndicationStatus status, InvestigationEntity investigationEntity){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
+		String lisaItem = lisaNumber;
+		if(status!=null){
+			lisaItem = lisaNumber +" ("+status+")";
+		}
 		if(investigationEntity!=null){
 			investigationEntity.setBoxType(boxType);
 		}
-		return clickOnMarker(lisaNumber);
+		return clickOnMarker(lisaItem);
 	}
 
 	public MobileInvestigatePage clickOnGap(String gapNumber){
-		return clickOnGap(gapNumber, null);
+		return clickOnGap(gapNumber, null, null);
+	}
+	
+	public MobileInvestigatePage clickOnGap(String gapNumber, IndicationStatus status){
+		return clickOnGap(gapNumber, status, null);
 	}
 	
 	public MobileInvestigatePage clickOnGap(String gapNumber, InvestigationEntity investigationEntity){
+		return clickOnGap(gapNumber, null, investigationEntity);
+	}
+	
+	public MobileInvestigatePage clickOnGap(String gapNumber, IndicationStatus status, InvestigationEntity investigationEntity){
 		String boxType = "Gap";
 		selectDropdownItem(boxTypeDropdown, boxType);
+		String gapItem = gapNumber;
+		if(status!=null){
+			gapItem = gapNumber +" ("+status+")";
+		}
 		if(investigationEntity!=null){
 			investigationEntity.setBoxType(boxType);
 		}
-		return clickOnMarker(gapNumber);
+		return clickOnMarker(gapItem);
 	}
 	
 	public boolean isBoxTypeSelected(String boxType){
@@ -75,17 +100,27 @@ public class MobileInvestigationPage extends MobileBasePage {
 		investigatePage.waitUntilPageLoad();
 		return investigatePage;
 	}
+
+	public boolean isLisaShowing(String lisaNumber, IndicationStatus status){
+		String lisaItem = lisaNumber +" ("+status+")";
+		return isLisaShowing(lisaItem);
+	}
 	
-	public boolean isLisaShowing(String lisaNumber){
+	public boolean isLisaShowing(String lisaItem){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
-		return isMarkerShowing(lisaNumber);
+		return isMarkerShowing(lisaItem);
 	}
 
-	public boolean isGapShowing(String gapNumber){
+	public boolean isGapShowing(String gapNumber, IndicationStatus status){
+		String gapItem = gapNumber +" ("+status+")";
+		return isLisaShowing(gapItem);
+	}
+	
+	public boolean isGapShowing(String gapItem){
 		String boxType = "Gap";
 		selectDropdownItem(boxTypeDropdown, boxType);
-		return isMarkerShowing(gapNumber);
+		return isMarkerShowing(gapItem);
 	}
 	
 	public boolean isMarkerShowing(String boxNumber){

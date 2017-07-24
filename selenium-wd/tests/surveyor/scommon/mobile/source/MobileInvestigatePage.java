@@ -129,7 +129,23 @@ public class MobileInvestigatePage extends MobileBasePage {
 		}
 		return waitForLeakSourcePage();
 	}	
-	
+
+    public MobileLeakSourcePage openLeakDetail(){
+    	return clickToOpenLeakDetail(linkToFirstLeak);
+    }
+
+    public boolean isLeakShowing(){
+    	return WebElementExtender.isElementPresentAndDisplayed(linkToFirstLeak);
+    }
+
+    public boolean isOtherSourceShowing(){
+    	return WebElementExtender.isElementPresentAndDisplayed(linkToFirstOtherSource);
+    }
+    
+    public MobileLeakSourcePage openOtherSourceDetail(){
+    	return clickToOpenLeakDetail(linkToFirstOtherSource);
+    }
+    
 	public MobileLeakSourcePage clickToOpenLeakDetail(WebElement leak){
 		leak.click();
 		return waitForLeakSourcePage();

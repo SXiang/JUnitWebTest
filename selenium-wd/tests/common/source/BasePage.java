@@ -34,6 +34,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.avh4.util.imagecomparison.ImageComparisonResult;
@@ -501,6 +502,11 @@ public class BasePage {
     	driver.navigate().refresh();
     	waitForPageToLoad();
 	}
+
+    public void inputTextValue(WebElement inputElement, String value){
+    	inputElement.clear();
+    	inputElement.sendKeys(value);
+    }
     
     public void SelectElement(WebElement checkbox) {
     	Log.method("SelectElement", checkbox);
@@ -550,13 +556,18 @@ public class BasePage {
 
 	private boolean isItemSelected(WebElement buttonDropdown, String item){
 		try{
-			buttonDropdown.findElement(By.xpath("span[text()='"+item+"']"));
+			buttonDropdown.findElement(By.xpath("../button/span[text()='"+item+"']"));
 		}catch(Exception e){
 			return false;
 		}
 		return true;
 	}
 
+    public String getDropdownSelectedItem(WebElement buttonDropdown) {
+		WebElement listItem = buttonDropdown.findElement(By.cssSelector(".btn-default > .button-label"));
+    	return getElementText(listItem);
+    }
+    
     public String getElementText(WebElement element) {
     	String text = "";
     	try{
@@ -566,7 +577,21 @@ public class BasePage {
     	}
     	return text;
     }
-
+    
+    public String getElementInnerText(WebElement element) {
+    	String text = "";
+    	try{
+    		text = element.getAttribute("innerHTML");
+    	}catch(Exception e){
+    		Log.error("Failed to get text of element '"+element+"'");
+    	}
+    	return text;
+    }
+    
+    public String getElementInputValue(WebElement element) {
+    	return getElementAttribute(element, "value");
+    }
+    
     public String getElementAttribute(WebElement element, String attr) {
     	String text = "";
     	try{
@@ -576,7 +601,12 @@ public class BasePage {
     	}
     	return text;
     }
-
+    
+    public String getDropdownSelectedOption(WebElement dropDown) {
+    	WebElement option = new Select(dropDown).getFirstSelectedOption();
+    	return getElementText(option);
+    }
+    
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;

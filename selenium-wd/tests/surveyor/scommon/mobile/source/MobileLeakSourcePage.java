@@ -1,7 +1,9 @@
 package surveyor.scommon.mobile.source;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,6 +14,8 @@ import common.source.Log;
 import surveyor.scommon.entities.InvestigationEntity;
 import surveyor.scommon.entities.LeakDetailEntity;
 import surveyor.scommon.entities.OtherSourceEntity;
+import surveyor.scommon.entities.OtherSourceEntity.OtherLeakSourceType;
+import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 /**
  * @author sxiang
@@ -142,6 +146,53 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		}
 	}
 
+	public boolean verifyLeakDetails(LeakDetailEntity leakDetails){
+		boolean isCorrect = true;
+		isCorrect &= getInputStreetNumber().equalsIgnoreCase(leakDetails.getStreetNumber());
+		isCorrect &= getInputApartmentNumber().equalsIgnoreCase(leakDetails.getApartmentNumber());
+		isCorrect &= getInputStreetName().equalsIgnoreCase(leakDetails.getStreetName());
+		isCorrect &= getInputCity().equalsIgnoreCase(leakDetails.getCity());
+		isCorrect &= getInputState().equalsIgnoreCase(leakDetails.getState());
+		isCorrect &= getInputMapNumber().equalsIgnoreCase(leakDetails.getMapNumber());
+		isCorrect &= getInputSurfaceReading().equalsIgnoreCase(leakDetails.getSurfaceReading());
+		isCorrect &= getSurfaceReadingUnitDropdown().equalsIgnoreCase(leakDetails.getSurfaceReadingUnit());
+		isCorrect &= getInputBarholeReading().equalsIgnoreCase(leakDetails.getBarholeReading());
+		isCorrect &= getBarholeReadingUnitDropdown().equalsIgnoreCase(leakDetails.getBarholeReadingUnit());
+		isCorrect &= getLeakTypeDropdown().equalsIgnoreCase(leakDetails.getLeakType());
+		isCorrect &= getInputLeakGrade().equalsIgnoreCase(leakDetails.getLeakGrade());
+		isCorrect &= getLeakLocationTypeDropdown().equalsIgnoreCase(leakDetails.getLeakLocationType());
+		isCorrect &= getInputPipeMaterialType().equalsIgnoreCase(leakDetails.getPipeMaterialType());
+		isCorrect &= isCheckboxPaved() == leakDetails.isPavedWallToWall();
+		isCorrect &= getSurfaceOverLeakDropdown().equalsIgnoreCase(leakDetails.getSurfaceOverLeak());
+		isCorrect &= getInputMeterNumber().equalsIgnoreCase(leakDetails.getMeterNumber());
+		isCorrect &= getTextareaLeakLocationRemarks().equalsIgnoreCase(leakDetails.getLeakLocationRemarks());
+		isCorrect &= getTextareaAdditionalNotes().equalsIgnoreCase(leakDetails.getAdditionalNotes());
+
+		clickCancelButton();
+		return isCorrect;
+	}
+	
+	public boolean verifyOtherSource(OtherSourceEntity otherSoruce){
+		boolean isCorrect = true;
+		isCorrect &= getLeakSourceTypeDropdown().equalsIgnoreCase(otherSoruce.getLeakSourceType());
+		isCorrect &= getTextareaAdditionalNotes().equalsIgnoreCase(otherSoruce.getAdditionalNotes());
+		clickCancelButton();
+		return isCorrect;
+	}
+
+	public boolean verifyOtherSourceTypeOptions(){
+		boolean isCorrect = true;
+		List<WebElement> listItems = leakSourceTypeDropdown.findElements(By.xpath("../ul[@class='dropdown-menu']/li/a"));
+		List<String> options = listItems.stream().map((WebElement e) -> getElementInnerText(e)).filter((String s) -> !s.trim().isEmpty()).collect(Collectors.toList());
+		for(OtherLeakSourceType lst:OtherLeakSourceType.values()){
+			if(!(isCorrect &= options.contains(lst.toString()))){
+				Log.warn("Options in leakSourceType include: "+options);
+				Log.warn(lst + " is not an option in the dropdown");
+			}
+		}	
+		return isCorrect;
+	}
+	
 	public void addOtherSource(OtherSourceEntity sourceDetails){
 		setLeakSourceType(sourceDetails.getLeakSourceType());
 		setAdditionalNotes(sourceDetails.getAdditionalNotes());
@@ -180,39 +231,123 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 
-	/* Getter and Setter */
+//	/* Getter */
 	public String getStreetNumber() {
-		return streetNumber;
+		return getElementInputValue(inputStreetNumber);
 	}
 
+	public String getInputStreetNumber() {
+		return getElementInputValue(inputStreetNumber);
+	}
 
+	public String getInputApartmentNumber() {
+		return getElementInputValue(inputApartmentNumber);
+	}
+
+	public String getInputStreetName() {
+		return getElementInputValue(inputStreetName);
+	}
+
+	public String getInputCity() {
+		return getElementInputValue(inputCity);
+	}
+
+	public String getInputState() {
+		return getElementInputValue(inputState);
+	}
+
+	public String getInputMapNumber() {
+		return getElementInputValue(inputMapNumber);
+	}
+
+	public String getInputSurfaceReading() {
+		return getElementInputValue(inputSurfaceReading);
+	}
+
+	public String getSurfaceReadingUnitDropdown() {
+		return getDropdownSelectedItem(surfaceReadingUnitDropdown);
+	}
+
+	public String getInputBarholeReading() {
+		return getElementInputValue(inputBarholeReading);
+	}
+
+	public String getBarholeReadingUnitDropdown() {
+		return getDropdownSelectedItem(barholeReadingUnitDropdown);
+	}
+
+	public String getLeakTypeDropdown() {
+		return getDropdownSelectedItem(leakTypeDropdown);
+	}
+
+	public String getInputLeakGrade() {
+		return getElementInputValue(inputLeakGrade);
+	}
+
+	public String getLeakLocationTypeDropdown() {
+		return getDropdownSelectedItem(leakLocationTypeDropdown);
+	}
+
+	public String getInputPipeMaterialType() {
+		return getElementInputValue(inputPipeMaterialType);
+	}
+
+	public boolean isCheckboxPaved() {
+		return checkboxPaved.isSelected();
+	}
+
+	public String getSurfaceOverLeakDropdown() {
+		return getDropdownSelectedItem(surfaceOverLeakDropdown);
+	}
+
+	public String getInputMeterNumber() {
+		return getElementInputValue(inputMeterNumber);
+	}
+
+	public String getTextareaLeakLocationRemarks() {
+		return getElementInputValue(textareaLeakLocationRemarks);
+	}
+
+	public String getTextareaAdditionalNotes() {
+		return getElementInputValue(textareaAdditionalNotes);
+	}
+
+	public String getLeakSourceTypeDropdown() {
+		return getDropdownSelectedItem(leakSourceTypeDropdown);
+	}
+
+	public String getInvestigateTime() {
+		return getElementInputValue(investigateTime);
+	}
+
+	/* Setter */
 	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
-		inputStreetNumber.sendKeys(streetNumber);
+		inputTextValue(inputStreetNumber, streetNumber);
 	}
 
 	public void setApartmentNumber(String apartmentNumber) {
-		inputApartmentNumber.sendKeys(apartmentNumber);
+		inputTextValue(inputApartmentNumber, apartmentNumber);
 	}
 
 	public void setStreetName(String streetName) {
-		inputStreetName.sendKeys(streetName);
+		inputTextValue(inputStreetName, streetName);
 	}
 
 	public void setCity(String city) {
-		inputCity.sendKeys(city);
+		inputTextValue(inputCity, city);
 	}
 
 	public void setState(String state) {
-		inputState.sendKeys(state);
+		inputTextValue(inputState, state);
 	}
 
 	public void setMapNumber(String mapNumber) {
-		inputMapNumber.sendKeys(mapNumber);
+		inputTextValue(inputMapNumber, mapNumber);
 	}
 
 	public void setSurfaceReading(String surfaceReading) {
-		inputSurfaceReading.sendKeys(surfaceReading);
+		inputTextValue(inputSurfaceReading, surfaceReading);
 	}
 
 	public void setSurfaceReadingUnit(String surfaceReadingUnit) {
@@ -220,7 +355,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public void setBarholeReading(String barholeReading) {
-		inputBarholeReading.sendKeys(barholeReading);
+		inputTextValue(inputBarholeReading, barholeReading);
 	}
 
 	public void setBarholeReadingUnit(String barholeReadingUnit) {
@@ -232,7 +367,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public void setLeakGrade(String leakGrade) {
-		inputLeakGrade.sendKeys(leakGrade);
+		inputTextValue(inputLeakGrade, leakGrade);
 	}
 
 	public void setLeakLocationType(String leakLocationType) {
@@ -240,7 +375,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public void setPipeMaterialType(String pipeMaterialType) {
-		inputPipeMaterialType.sendKeys(pipeMaterialType);
+		inputTextValue(inputPipeMaterialType, pipeMaterialType);
 	}
 
 	public void setPavedWallToWall(boolean pavedWallToWall) {
@@ -254,15 +389,15 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public void setMeterNumber(String meterNumber) {
-		inputMeterNumber.sendKeys(meterNumber);
+		inputTextValue(inputMeterNumber, meterNumber);
 	}
 
 	public void setLeakLocationRemarks(String leakLocationRemarks) {
-		textareaLeakLocationRemarks.sendKeys(leakLocationRemarks);
+		inputTextValue(textareaLeakLocationRemarks, leakLocationRemarks);
 	}
 
 	public void setAdditionalNotes(String additionalNotes) {
-		textareaAdditionalNotes.sendKeys(additionalNotes);
+		inputTextValue(textareaAdditionalNotes, additionalNotes);
 	}
 
 
