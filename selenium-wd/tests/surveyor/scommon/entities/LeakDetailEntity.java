@@ -6,7 +6,6 @@ package surveyor.scommon.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import surveyor.scommon.mobile.source.LeakDataTypes.LeakPipeMaterialType;
 import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 public class LeakDetailEntity extends InvestigationEntity{
@@ -93,6 +92,25 @@ public class LeakDetailEntity extends InvestigationEntity{
 				return type;
 			}
 		};
+
+		public enum LeakPipeMaterialType {
+			CastIron ("Cast Iron"),
+			Copper ("Copper"),
+			OtherPlastic ("Other Plastic"),
+			PEPlastic ("PE Plastic"),
+			ProtectedSteel ("Protected Steel"),
+			UnprotectedSteel ("Un-protected Steel");
+
+			private final String name;
+
+			LeakPipeMaterialType(String nm) {
+				name = nm;
+			}
+
+			public String toString() {
+				return this.name;
+			}
+		}
 		
 		public LeakDetailEntity(String userName, int indicationNumber){
 			setUserName(userName);
