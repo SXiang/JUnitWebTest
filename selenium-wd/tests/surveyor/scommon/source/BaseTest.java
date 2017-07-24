@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -38,10 +39,10 @@ import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
+import common.source.WebDriverFactory;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
-import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.SurveyorUnit;
 import surveyor.dataprovider.DataAnnotations;
 import surveyor.dbseed.source.DbSeedExecutor;
@@ -207,9 +208,20 @@ public class BaseTest {
 		Log.method("reportTestFailed", e, className);
 		BaseTest.reportTestLogMessage(className);
 		getScreenCapture().takeScreenshots(getDriver(), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+		captureAdditionalDriverScreenshots(className);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
 		getExtentTest(className).log(LogStatus.FAIL, "FAILURE: " + ExceptionUtility.getStackTraceString(e));
+	}
+
+	protected static void captureAdditionalDriverScreenshots(String className) {
+		Log.method("captureAdditionalDriverScreenshots", className);
+		int driverCount = WebDriverFactory.getDriversCount();
+		if (driverCount > 1) {
+			for (int i = 1; i < driverCount; i++) {
+				getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+			}
+		}
 	}
 
 	public static void reportTestSucceeded(String className) {
@@ -605,7 +617,7 @@ public class BaseTest {
 	    	startAnalyzerSurvey(testEnvironmentAction, DrivingSurveyType.Default, driverViewPageAction,
 	    			db3DefnFile, db3file, surveyRowID, surveyRuntimeInSeconds);
 	    }
-	    
+
 		protected void startAnalyzerSurvey(TestEnvironmentActions testEnvironmentAction, DrivingSurveyType surveyType, DriverViewPageActions driverViewPageAction,
 				String db3DefnFile, String db3file, int surveyRowID, int surveyRuntimeInSeconds) throws Exception{
 		TestSetup.restartAnalyzer();
@@ -635,6 +647,7 @@ public class BaseTest {
 		testEnvironmentAction.idleForSeconds(String.valueOf(10), -1);
 		TestContext.INSTANCE.getTestSetup().checkPostSurveySessionFromDB3(analyzerName, analyzerSharedKey, surveyorName);
 	}
+
 	protected static boolean pushGisData(String customerId) {
 		try {
 			// Add GIS seed for customer.
@@ -738,5 +751,5 @@ public class BaseTest {
 
 	public static void setHomePage(HomePage homePage) {
 		BaseTest.homePage = homePage;
-}
+	}
 }

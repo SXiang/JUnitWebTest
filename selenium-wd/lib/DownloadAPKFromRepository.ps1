@@ -5,8 +5,9 @@
 #       -ArtifactoryAPIKey "AKCp2VoGPeRruh1fKTMx8K99yceZRay15wBQHHuoFoDuAgib16cSrM8VuKaTtjznPeEC9QXGL" `   # NOTE: Not valid key. Replace with a valid API key.
 #       -ArtifactoryRepository "picarro-generic-private" `
 #       -ArtifactoryFolder "AndroidApp" `
-#       -APKFlavor "debug"   `     # If NOT specified debug version will be used. 
-#       -APKVersion "1.0.0"        # If NOT specified 1.0.0 will be assumed.
+#       -APKFlavor "debug"   `     # [optional] If NOT specified debug version will be used. 
+#       -APKVersion "1.0.0"  `     # [optional] If NOT specified 1.0.0 will be assumed.
+#       -APKBuildNumber "95"       # [optional] If not specified APK with largest build number for specified flavor will be downloaded.
 
 param
 (
@@ -29,7 +30,10 @@ param
   [String] $APKFlavor,
 
   [Parameter(Mandatory=$false)]
-  [String] $APKVersion                             # If NOT specified latest debug version will be searched and used.
+  [String] $APKVersion,                             # If NOT specified latest debug version will be searched and used.
+
+  [Parameter(Mandatory=$false)]
+  [String] $APKBuildNumber                          # If not specified APK with largest build number for specified flavor will be downloaded.
 )
 
 # 1.
@@ -56,13 +60,22 @@ $Headers = @{
 }
 
 $APKPrefix = "app-${flavor}-${version}"
+$matchStr = "$APKPrefix*.apk"
+$requiredVersionAPK = ""
+if ($PSBoundParameters.ContainsKey("APKBuildNumber")) {
+    $apkBuildNumberSpecified = $true
+    $APKPrefix = "app-${flavor}-${version}-SNAPSHOT-${APKBuildNumber}"
+    $requiredVersionAPK = "$APKPrefix.apk"
+    $matchStr = $requiredVersionAPK
+}
+
 Write-Host "Searching for APKs matching prefix - $APKPrefix "
 
 $aql = "items.find     " + 
         "(                " + 
         "    {" + 
         "        ""repo"": {""`$eq"":""$ArtifactoryRepository""}," + 
-        "        ""name"": {""`$match"":""$APKPrefix*.apk""}," +
+        "        ""name"": {""`$match"":""$matchStr""}," +
         "        ""modified"" : {""`$last"" : ""4w""}" + 
         "    }" + 
         ")" + 
@@ -73,26 +86,30 @@ $uri = "$ArtifactoryBaseUrl/api/search/aql"
 Write-Host "INVOKE Uri -> $uri"
 $response = Invoke-RestMethod -Uri $uri -Headers $Headers -Method POST -Body $aql -ContentType "text/plain" -SessionVariable wSession
 
-# Use the highest build number APK.
-$largestVersionAPK = ""
-[int] $largestBuildNum = -1
-$response.results.name | % {
-    [string]$name = $_
-    if ($name.StartsWith($APKPrefix)) {
-        $nameWithoutExt = $name.Replace(".apk", "")
-        $partsList = $nameWithoutExt.Split("-")
-        [int] $currBuildNum = [int]$name[$partsList.Length - 1]
-        if ($currBuildNum -gt $largestBUildNum) {
-            $largestBuildNum = $currBuildNum
-            $largestVersionAPK = $name
+# Use highest build number APK if exact build number APK not specified.
+if ($requiredVersionAPK -eq "") {    
+    $largestVersionAPK = ""
+    [int] $largestBuildNum = -1
+    $response.results.name | % {
+        [string]$name = $_
+        if ($name.StartsWith($APKPrefix)) {
+            $nameWithoutExt = $name.Replace(".apk", "")
+            $partsList = $nameWithoutExt.Split("-")
+            [int] $currBuildNum = [int]$name[$partsList.Length - 1]
+            if ($currBuildNum -gt $largestBUildNum) {
+                $largestBuildNum = $currBuildNum
+                $largestVersionAPK = $name
+            }
         }
     }
+
+    $requiredVersionAPK = $largestVersionAPK
 }
 
-if ($largestVersionAPK -eq "") {
-    Write-Error "Did NOT find any APK matching search query - $aql"
+if ($requiredVersionAPK -eq "") {
+    Write-Error "Did NOT find any APK - '$requiredVersionAPK' matching search query - $aql"
 } else {
-    $apkFile = $largestVersionAPK
+    $apkFile = $requiredVersionAPK
     $apkDownloadPath = "$apkDestFolder\$apkFile"
 
     if (Test-path $apkDownloadPath) {

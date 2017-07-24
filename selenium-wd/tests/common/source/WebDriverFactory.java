@@ -1,5 +1,6 @@
 package common.source;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,18 @@ public class WebDriverFactory {
 	protected static WebDriverWrapper createDefaultWebDriver() {
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
 		webDriverWrapper.driverSetup();
+		return webDriverWrapper;
+	}
+
+	protected static WebDriverWrapper createAndroidAppNativeDriver() throws MalformedURLException {
+		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
+		webDriverWrapper.createAndroidAppNativeDriver();
+		return webDriverWrapper;
+	}
+
+	protected static WebDriverWrapper createAndroidAppWebDriver() throws MalformedURLException {
+		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
+		webDriverWrapper.createAndroidAppWebDriver();
 		return webDriverWrapper;
 	}
 
@@ -36,11 +49,46 @@ public class WebDriverFactory {
 		return getDriver(index, true /*reuse*/);
 	}
 
+	public static WebDriver getAndroidAppNativeDriver() {
+		return getAndroidAppDriver(true /*isNative*/);
+	}
+
+	public static WebDriver getAndroidAppWebDriver() {
+		return getAndroidAppDriver(false /*isNative*/);
+	}
+
+	private static WebDriver getAndroidAppDriver(boolean isNative) {
+		ThreadLocal<WebDriverWrapper> threadLocalDriver = new ThreadLocal<WebDriverWrapper>() {
+		    @Override
+		    protected WebDriverWrapper initialValue() {
+		    	WebDriverWrapper webDriver = null;
+				try {
+					if (isNative) {
+						webDriver = createAndroidAppNativeDriver();
+					} else {
+						webDriver = createAndroidAppWebDriver();
+					}
+				} catch (MalformedURLException ex) {
+					Log.error(ExceptionUtility.getStackTraceString(ex));
+				}
+		        return webDriver;
+		    }
+		};
+
+		threadLocalDriverList.add(threadLocalDriver);
+
+		if (isNative) {
+			return threadLocalDriver.get().getAndroidAppNativeDriver();
+		}
+
+		return threadLocalDriver.get().getAndroidAppWebDriver();
+	}
+
 	public static WebDriver getDriver(Integer index, Boolean reuse) {
 		if (reuse) {
 			// If driver threadLocal object exists return it.
 			if (threadLocalDriverList.size() > index) {
-				return threadLocalDriverList.get(index).get().getDriver();
+				return threadLocalDriverList.get(index).get().checkGetDriver();
 			}
 		}
 
@@ -61,7 +109,16 @@ public class WebDriverFactory {
 		}
 
 		threadLocalDriverList.add(threadLocalDriver);
-		return threadLocalDriver.get().getDriver();
+		return threadLocalDriver.get().checkGetDriver();
+	}
+
+	public static int getDriversCount() {
+		int count = 0;
+		if (threadLocalDriverList != null) {
+			count = threadLocalDriverList.size();
+		}
+
+		return count;
 	}
 
 	public static void quitDrivers() {
@@ -77,7 +134,7 @@ public class WebDriverFactory {
 
 			int lenMinusOne = threadLocalDriverList.size()-1;
 			for (int index = lenMinusOne; index >= startIndex; index--) {
-				threadLocalDriverList.get(index).get().getDriver().quit();
+				threadLocalDriverList.get(index).get().checkGetDriver().quit();
 				threadLocalDriverList.remove(index);
 			}
 		}

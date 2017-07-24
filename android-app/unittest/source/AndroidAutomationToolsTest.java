@@ -11,6 +11,7 @@ import org.junit.Test;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.Log;
+import common.source.ScreenRecorder;
 import common.source.TestContext;
 import common.source.TestSetup;
 
@@ -75,6 +76,14 @@ public class AndroidAutomationToolsTest {
 		boolean installed = AndroidAutomationTools.isPackageInstalled(EXPECTED_PACKAGE_NAME);
 		Log.info(String.format("Package installed=[%b]", installed));
 		assertTrue("APK should be installed.", installed);
+	}
+
+	@Test
+	public void testScreenRecording() throws Exception {
+		ScreenRecorder screenRecorder = new ScreenRecorder();
+		screenRecorder.startRecording("/sdcard/videofiletemp.mp4");
+		Thread.sleep(15000);
+		screenRecorder.stopRecording();
 	}
 
 	@Test

@@ -214,6 +214,11 @@ public class MobileActions {
 		return escInput;
 	}
 
+	public void removeSdcardFile(String sdcardFileName) throws Exception {
+		Log.method("removeSdcardFile", sdcardFileName);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("rm -f /sdcard/%s", sdcardFileName));
+	}
+
 	public void takeScreenshot(String screenshotFileNameWithoutExt) throws Exception {
 		Log.method("takeScreenshot", screenshotFileNameWithoutExt);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("screencap /sdcard/%s.png", screenshotFileNameWithoutExt));

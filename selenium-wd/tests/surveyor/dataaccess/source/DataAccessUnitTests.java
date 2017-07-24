@@ -354,7 +354,7 @@ public class DataAccessUnitTests {
 	}
 
 	private static void testStoredProcLisaInvestigationShowIndication_Valid() {
-		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("166328b0-b266-a7c2-3e41-39d7a866a18c");
+		ArrayList<StoredProcLisaInvestigationShowIndication> list = StoredProcLisaInvestigationShowIndication.getLisaInvestigation("b97fff63-e5c7-66fe-fa5c-39e04a495506");
 		Iterator<StoredProcLisaInvestigationShowIndication> iterator = list.iterator();
 		Assert.assertTrue(iterator.hasNext());
 		while (iterator.hasNext()) {

@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
+import common.source.PollManager;
+import common.source.TestContext;
+import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import androidapp.entities.source.InvestigationMarkerEntity;
@@ -31,7 +34,11 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement noInvestigationMarkersFoundTextView;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.widget.Spinner")
+	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView[1]")
+	@CacheLookup
+	private WebElement investigationMarkersContainerView;
+
+	@AndroidFindBy(xpath = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement markerTypeSelector;
 
@@ -61,7 +68,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public Integer getInvestigationMarkersCount() {
 		Log.method("getInvestigationReportsCount");
-		return (this.listViewElements == null) ? 0 : this.listViewElements.size() - 1 /*exclude header*/;
+		return (this.listViewElements == null) ? 0 : this.listViewElements.size();
 	}
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
@@ -91,7 +98,15 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	}
 
 	@Override
+	protected Integer getScreenLoadTimeout() {
+		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT * 2;
+	}
+
+	@Override
 	public Boolean screenLoadCondition() {
-		return mainFrameLayout!=null && mainFrameLayout.isDisplayed();
+		Log.method("screenLoadCondition");
+		// This intentional wait is to prevent appium from polling for elements while 'loading investigations..' screen is shown.
+		TestContext.INSTANCE.stayIdle(3);
+		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed();
 	}
 }

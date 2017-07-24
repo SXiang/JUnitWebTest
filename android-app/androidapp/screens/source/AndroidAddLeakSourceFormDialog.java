@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.PageFactory;
 
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
