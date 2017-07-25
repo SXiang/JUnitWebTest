@@ -40,8 +40,8 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	protected static final String TRUE = "true";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
-	private static final String TRUE = "true";
 
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override

@@ -58,19 +58,25 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		}
 	}
 
-	public void clickFirstMarkerMatchingStatus(List<String> markerStatuses) {
+	public int clickFirstMarkerMatchingStatus(List<String> markerStatuses) {
+		Log.method("clickFirstMarkerMatchingStatus", LogHelper.collectionToString(markerStatuses, "markerStatuses"));
 		List<InvestigationMarkerEntity> investigationMarkers = getInvestigationMarkers();
 		int len = investigationMarkers.size();
+		int idx = -1;
 		if (investigationMarkers != null && len > 0) {
 			for (int i = 1; i <= len; i++) {
 				WebElement elemMarkerStatus = getAndroidDriver().findElementByXPath(String.format("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[2]", i));
 				String status = elemMarkerStatus.getText();
 				if (markerStatuses.contains(status)) {
-					Log.info(String.format("Found matching marker for status='%s'.. Tap marker.", status));
+					idx = i;
+					Log.info(String.format("Found matching marker for status='%s' at index=[%d].. Tap marker.", status, idx));
 					elemMarkerStatus.click();
+					break;
 				}
 			}
 		}
+
+		return idx;
 	}
 
 	public void clickOnInvestigationMarkerType() {

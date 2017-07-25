@@ -50,6 +50,10 @@ public class AndroidBaseScreen {
 		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
 	}
 
+	public void pressKey(KeyCode keyCode) throws Exception {
+		MobileActions.newAction((MobileDriver<?>)driver).pressKey(keyCode);
+	}
+
 	public void sendKeys(WebElement element, String text) throws Exception {
 		MobileActions.newAction().sendKeys(element, text);
 	}

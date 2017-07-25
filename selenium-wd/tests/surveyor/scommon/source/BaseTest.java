@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -30,8 +29,6 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
-import common.source.BaseHelper;
-import common.source.CrashLogger;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
@@ -42,7 +39,6 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.ThreadLocalStore;
 import common.source.WebDriverFactory;
-import io.appium.java_client.AppiumDriver;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.Analyzer.CapabilityType;
 import surveyor.dataaccess.source.Customer;
@@ -214,30 +210,8 @@ public class BaseTest {
 		captureAdditionalDriverScreenshots(className);
 		Log.error("_FAIL_ Exception: " + ExceptionUtility.getStackTraceString(e));
 		TestContext.INSTANCE.setTestStatus("FAIL");
-		String additionalLogs = captureAdditionalLogs(className);
 		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
-		if (!BaseHelper.isNullOrEmpty(additionalLogs)) {
-			failureMsg += "; ADDITIONAL LOGS: " + additionalLogs;
-		}
-
 		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
-	}
-
-	protected static String captureAdditionalLogs(String className) {
-		if (className.contains("Android")) {
-			CrashLogger crashLogger = new CrashLogger();
-			StringBuilder logs = new StringBuilder();
-			int driverCount = WebDriverFactory.getDriversCount();
-			if (driverCount > 1) {
-				for (int i = 1; i < driverCount; i++) {
-					logs.append(crashLogger.grabLogs((AppiumDriver<?>)WebDriverFactory.getDriver(i)));
-				}
-			}
-
-			return logs.toString();
-		}
-
-		return "";
 	}
 
 	protected static void captureAdditionalDriverScreenshots(String className) {

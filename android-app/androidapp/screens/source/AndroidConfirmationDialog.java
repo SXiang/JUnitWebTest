@@ -7,7 +7,7 @@ import org.openqa.selenium.support.CacheLookup;
 import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
-public class AndroidDeleteConfirmationDialog extends AndroidBaseScreen {
+public class AndroidConfirmationDialog extends AndroidBaseScreen {
 
 	/****** Label elements ******/
 
@@ -27,7 +27,7 @@ public class AndroidDeleteConfirmationDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement cancel;
 
-	public AndroidDeleteConfirmationDialog(WebDriver driver) {
+	public AndroidConfirmationDialog(WebDriver driver) {
 		super(driver);
 	}
 

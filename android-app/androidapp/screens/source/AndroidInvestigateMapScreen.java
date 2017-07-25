@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
+import common.source.TestContext;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
@@ -157,6 +158,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
+		TestContext.INSTANCE.stayIdle(2);
 		return getAddSourceButton()!=null && getAddSourceButton().isDisplayed();
 	}
 }

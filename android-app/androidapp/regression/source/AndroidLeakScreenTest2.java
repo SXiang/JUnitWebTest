@@ -16,7 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.LeakScreenDataProvider;
-import androidapp.dataprovider.ReportListDataProvider;
+import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
@@ -28,13 +28,15 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
-import androidapp.screens.source.AndroidDeleteConfirmationDialog;
+import androidapp.screens.source.AndroidConfirmationDialog;
 import common.source.BackPackAnalyzer;
 import common.source.CollectionsUtil;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
@@ -59,7 +61,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	protected AndroidAddedSourceListDialog addedSourcesListDialog;
 
 	protected AndroidAddOtherSourceFormDialog addOtherSourceFormDialog;
-	protected AndroidDeleteConfirmationDialog deleteConfirmationDialog;
+	protected AndroidConfirmationDialog confirmationDialog;
 	protected AndroidAddCgiFormDialog addCgiFormDialog;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
@@ -236,6 +238,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2543_EnergyBackpack_OtherSourceCanEdited ...");
 
+		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
@@ -252,58 +257,65 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
+		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
+			boolean match = investigationMarkers.stream()
+				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+			Log.info(String.format("Found=[%b]", match));
+			markerVerifier.append(String.valueOf(match));
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		// If no existing marker of desired status, create new.
+		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
+			investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete();
+		}
 
-		// Add new other source. Mark as Complete.
-		executeWithBackPackDataProcessesPaused(obj -> {
-			investigateMapScreen.waitForScreenLoad();
-			investigateMapScreen.clickOnInvestigate();
-			investigateMapScreen.clickOnAddSource();
-			addSourceDialog.waitForScreenLoad();
-			addSourceDialog.clickOnAddOtherSources();
-			addOtherSourceFormDialog.waitForScreenLoad();
-			addOtherSourceFormDialog.clickOnUseCurrentLocation();
-			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
-			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
-			addedSourcesListDialog.waitForScreenLoad();
-			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
-			assertTrue(otherSourcesList!=null && otherSourcesList.size()>0);
-			addedSourcesListDialog.clickOnCancel();
-			investigateMapScreen.clickOnMarkAsComplete();
-			investigateReportScreen.waitForScreenLoad();
-			return true;
-		});
-
-		// Markers screen. Find LISA (marked as either Complete or In Progress)
-		String[] markerStatuses = {"Complete", "In Progress"};
+		// Markers screen. Click on LISA marked as either Complete or In Progress
+		String[] markerStatuses = {complete, inProgress};
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
-			addSourceDialog.waitForScreenLoad();
-			addSourceDialog.clickOnAddOtherSources();
+
+			// verify if there is an 'other source' entry. if not create a new one.
+			boolean listShown = addedSourcesListDialog.isListDisplayed();
+			int totalOtherSources = 0;
+			boolean oSrcMatch = false;
+			if (listShown) {
+				List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
+				totalOtherSources = (otherSourcesList != null) ? otherSourcesList.size() : 0;
+				oSrcMatch = otherSourcesList.stream()
+					.anyMatch(o -> o.getSource().trim().equals("Other Source"));
+			}
+
+			if (!oSrcMatch) {
+				addNewOtherSource();
+				totalOtherSources++;
+			}
+
+			// edit existing 'Other Source' and verify.
+			addedSourcesListDialog.clickOnFirstMatchingListItemOfType(SourceType.OtherSource);
 			addOtherSourceFormDialog.waitForScreenLoad();
-			addOtherSourceFormDialog.clickOnUseCurrentLocation();
-			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
+			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Enclosure);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
 			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
-			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
-			assertTrue(otherSourcesList!=null && otherSourcesList.size()>0);
-			otherSourcesList.stream()
+			List<OtherSourceListInfoEntity> otherSourcesList2 = addedSourcesListDialog.getOtherSourcesList();
+			assertTrue("Sources list length post edit should be same as list length prior to edit", totalOtherSources == otherSourcesList2.size());
+			assertTrue("Sources list length should be greater than 0", otherSourcesList2!=null && otherSourcesList2.size()>0);
+			otherSourcesList2.stream()
 				.forEach(el -> {
 					assertTrue(el.getSource().trim().equals("Other Source"));
 					assertTrue(el.getTime().length()>10);
 				});
+
 			return true;
 		});
 	}
@@ -334,6 +346,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2545_EnergyBackpack_OtherSourceCanDeleted ...");
 
+		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
@@ -350,12 +365,27 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
+		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
+			boolean match = investigationMarkers.stream()
+				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+			Log.info(String.format("Found=[%b]", match));
+			markerVerifier.append(String.valueOf(match));
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		// If no existing marker of desired status, create new.
+		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
+			investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete();
+		}
+
+		// Markers screen. Click on LISA marked as either Complete or In Progress
+		String[] markerStatuses = {complete, inProgress};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		// Add new other source. Mark as Complete.
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -379,8 +409,8 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 		});
 
 		// Markers screen. Find LISA (marked as either Complete or In Progress)
-		String[] markerStatuses = {"Complete", "In Progress"};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		String[] markerStatuses2 = {"Complete", "In Progress"};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses2));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -391,11 +421,11 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			addedSourcesListDialog.clickOnFirstMatchingListItemOfType(SourceType.OtherSource);
 			addOtherSourceFormDialog.waitForScreenLoad();
 			addOtherSourceFormDialog.clickOnDelete();
-			deleteConfirmationDialog.waitForScreenLoad();
-			deleteConfirmationDialog.clickOnOK();
-			List<OtherSourceListInfoEntity> sourcesListAfterDelete = addedSourcesListDialog.getOtherSourcesList();
-
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			addedSourcesListDialog.waitForScreenLoad();
 			Integer initialSize = CollectionsUtil.getListSize(sourcesList);
+			List<OtherSourceListInfoEntity> sourcesListAfterDelete = addedSourcesListDialog.getOtherSourcesList();
 			Integer sizeAfterDelete = CollectionsUtil.getListSize(sourcesListAfterDelete);
 			assertTrue(String.format("Expected condition NOT met. Initial list size=[%d], list size after delete=[%d].", initialSize, sizeAfterDelete),
 					sizeAfterDelete==initialSize-1);
@@ -429,9 +459,13 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2546, location = LeakScreenDataProvider.class)
+	// NOTES: Failing in APK 110 due to product defect DE3154.
 	public void TC2546_EnergyBackpack_LoggingCGI_GasFound(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2546_EnergyBackpack_LoggingCGI_GasFound ...");
+
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		final String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
 
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
@@ -451,10 +485,13 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		// Markers screen. Click on LISA marked as Not Investigated
+		String[] markerStatuses = {notInvestigated};
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -464,7 +501,13 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			addCgiFormDialog.enterCgiText(DataGenerator.getAddressString());
 			addCgiFormDialog.clickOnOK();
 			investigateMapScreen.clickOnMarkAsComplete();
-			assertTrue(investigateReportScreen.waitForScreenLoad());
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
+			assertTrue(actualMarkerStatus.equals(foundOtherSource));
+
 			return true;
 		});
 	}
@@ -495,6 +538,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2547, location = LeakScreenDataProvider.class)
+	// NOTES: Failing in APK 110 due to product defect DE3150.
 	public void TC2547_EnergyBackpack_LoggingCGI_GasNotFound(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2547_EnergyBackpack_LoggingCGI_GasNotFound ...");
@@ -520,7 +564,10 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -530,7 +577,12 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			addCgiFormDialog.enterCgiText(DataGenerator.getAddressString());
 			addCgiFormDialog.clickOnOK();
 			investigateMapScreen.clickOnMarkAsComplete();
-			assertTrue(investigateReportScreen.waitForScreenLoad());
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnCancel();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", noGasFound, actualMarkerStatus));
+			assertTrue(actualMarkerStatus.equals(noGasFound));
 			return true;
 		});
 	}
@@ -641,6 +693,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2440[0][1];
 			reportDataRowID1 = (Integer)tc2440[0][2];
 			tcId = "TC2440";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2441")) {
@@ -648,6 +703,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2441[0][1];
 			reportDataRowID1 = (Integer)tc2441[0][2];
 			tcId = "TC2441";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2543")) {
@@ -655,6 +713,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2543[0][1];
 			reportDataRowID1 = (Integer)tc2543[0][2];
 			tcId = "TC2543";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2545")) {
@@ -662,6 +723,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2545[0][1];
 			reportDataRowID1 = (Integer)tc2545[0][2];
 			tcId = "TC2545";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2546")) {
@@ -669,6 +733,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2546[0][1];
 			reportDataRowID1 = (Integer)tc2546[0][2];
 			tcId = "TC2546";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2547")) {
@@ -676,6 +743,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2547[0][1];
 			reportDataRowID1 = (Integer)tc2547[0][2];
 			tcId = "TC2547";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2555")) {
@@ -683,6 +753,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2555[0][1];
 			reportDataRowID1 = (Integer)tc2555[0][2];
 			tcId = "TC2555";
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		}
@@ -747,13 +820,62 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	}
 
 	private void initializeDeleteConfirmationDialog() {
-		deleteConfirmationDialog = new AndroidDeleteConfirmationDialog(appiumDriver);
-		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), deleteConfirmationDialog);
+		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), confirmationDialog);
 	}
 
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {
 		initializeAppiumDriver();
 		installLaunchApp(AndroidActivities.MAIN_ACTIVITY);
+	}
+
+	private void addNewOtherSource() throws Exception {
+		Log.method("addNewOtherSource");
+		addSourceDialog.waitForScreenLoad();
+		addSourceDialog.clickOnAddOtherSources();
+		addOtherSourceFormDialog.waitForScreenLoad();
+		addOtherSourceFormDialog.clickOnUseCurrentLocation();
+		addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
+		addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
+		addOtherSourceFormDialog.clickOnOK();
+		addedSourcesListDialog.waitForScreenLoad();
+		List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
+		assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);
+		otherSourcesList.stream()
+			.forEach(el -> {
+				assertTrue("Source type should match 'Other Source'", el.getSource().trim().equals("Other Source"));
+				assertTrue("Source time should be valid", el.getTime().length()>10);
+			});
+	}
+
+	private void investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete() throws Exception {
+		Log.method("investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete");
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		String[] markerStatusNotInv = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatusNotInv));
+
+		// Add new other source. Mark as Complete.
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			addSourceDialog.clickOnAddOtherSources();
+			addOtherSourceFormDialog.waitForScreenLoad();
+			addOtherSourceFormDialog.clickOnUseCurrentLocation();
+			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
+			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
+			addOtherSourceFormDialog.clickOnOK();
+			addedSourcesListDialog.waitForScreenLoad();
+			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
+			assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
 	}
 
 	private void initializeTestDriver() throws MalformedURLException, IOException, Exception {

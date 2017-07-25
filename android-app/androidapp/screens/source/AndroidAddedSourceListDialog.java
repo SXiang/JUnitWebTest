@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
 import common.source.Log;
+import common.source.PollManager;
 import common.source.RegexUtility;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
@@ -181,9 +184,27 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 		return retList;
 	}
 
+	public boolean isListDisplayed() {
+		Log.method("isListDisplayed");
+		StringBuilder listShown = new StringBuilder();
+		PollManager.poll(() -> {
+				try {
+					List<Object> allSourcesList = getAllSourcesList();
+					boolean ret = allSourcesList!=null && allSourcesList.size()>0;
+					if (ret) {
+						listShown.append("true");
+					}
+				} catch (Exception ex) { /* Ignore errors. */ }
+				return !listShown.toString().equalsIgnoreCase("true");
+			}, 2 /*waitInMSecsBetweenPoll*/, 3 /*maxRetries*/);
+
+		return listShown.toString().equalsIgnoreCase("true");
+	}
+
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		return getAddOtherSourcesButton()!=null && getAddOtherSourcesButton().isDisplayed();
+		List<Object> allSourcesList = getAllSourcesList();
+		return getAddOtherSourcesButton()!=null && getAddOtherSourcesButton().isDisplayed() && allSourcesList!=null && allSourcesList.size()>0;
 	}
 }
