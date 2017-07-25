@@ -534,7 +534,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	-
 	 */
 	// Need specific survey
-	@Ignore
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2019, location = AssessmentReportDataProvider.class)
 	public void TC2019_VerifyAssessmentReportViewPDFShapefileExportHighlightedGapAssetsSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -554,7 +554,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.waitForShapeZIPDownloadToComplete(EMPTY, getReportRowID(reportDataRowID1));
 		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 		assertTrue(assessmentReportsPageAction.verifyViewsImagesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
-		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
+//		assertTrue(assessmentReportsPageAction.verifyShapeFilesWithBaselines(EMPTY, getReportRowID(reportDataRowID1)));
 	}
 
 	// Executes specific to testcaseID verifications.
