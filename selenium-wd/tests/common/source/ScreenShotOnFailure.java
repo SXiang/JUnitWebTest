@@ -136,6 +136,7 @@ public class ScreenShotOnFailure{
 		if(rect.height<=0){
 			rect.height = img.getHeight() - rect.y + rect.height;
 		}
+
 		BufferedImage dest = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
 		ImageIO.write(dest, "png", scrFile);
 		return scrFile;

@@ -174,6 +174,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 
 	public void clickOnFollow(){
 		buttonFollow.click();
+		waitForAJAXCallsToComplete();
 		waitUntilPageLoad(mapKey);
 	}
 	

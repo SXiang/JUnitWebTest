@@ -51,7 +51,8 @@ public class BasePage {
 	protected String strPageURL;
 	protected WebDriver driver;
 	protected TestSetup testSetup;
-
+	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1200, 700);
+	
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
 	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
@@ -499,13 +500,19 @@ public class BasePage {
     	driver.navigate().back();
     	waitForPageToLoad();
 	}
-    
+
     public void refreshPage(){
     	Log.info("Refresh current page");
     	driver.navigate().refresh();
     	waitForPageToLoad();
-	}
-
+	} 
+    
+    public void resizeBrowserWindow(){
+    	Log.info("Resize browser window for testing :"+TEST_WINDOW_SIZE);
+    	driver.manage().window().setSize(TEST_WINDOW_SIZE);
+    	waitForPageToLoad();
+	}   
+    
     public void inputTextValue(WebElement inputElement, String value){
     	inputElement.clear();
     	inputElement.sendKeys(value);
@@ -670,10 +677,23 @@ public class BasePage {
 		}
 	}
 
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name , boolean resizeWindow) throws IOException{
+		return verifyScreenshotWithBaseline(testCaseID, name, null, resizeWindow);
+	}
+	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
-		return verifyScreenshotWithBaseline(testCaseID, name, null);
+		return verifyScreenshotWithBaseline(testCaseID, name, null, false);
 	}
 
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect, boolean resizeBrowserWindow) throws IOException{
+		if(resizeBrowserWindow)
+			resizeBrowserWindow();
+		boolean valid = verifyScreenshotWithBaseline(testCaseID, name, rect);
+		if(resizeBrowserWindow)
+		    maxmizeBrowserWindow();
+		return valid;
+	}
+	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")

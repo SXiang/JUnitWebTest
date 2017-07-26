@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 
 import org.junit.Assert;
+import org.openqa.selenium.Dimension;
 
 import net.avh4.util.imagecomparison.ImageComparisonResult;
 public class ImageSimilarityUtility {
@@ -32,7 +33,7 @@ public class ImageSimilarityUtility {
 		private static BufferedImage imgc;
 		
 		public static final String diffImageSuffix = "_diff.png";
-
+		
 		public static boolean isSimilaryImage(String file1, String file2,boolean small){
 			factorA = 0;
 			factorD = 5;
