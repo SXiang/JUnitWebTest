@@ -14,12 +14,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
+import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
@@ -35,13 +37,18 @@ import common.source.WebDriverWrapper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
-	protected static final String TRUE = "true";
+	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+
+	protected static final String TRUE = "true";
+	protected static final String EMPTY = BaseActions.EMPTY;
+	protected static final Integer NOTSET = BaseActions.NOTSET;
 
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override
@@ -226,11 +233,15 @@ public class BaseAndroidTest extends BaseTest {
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
 		Log.method("initializeAppiumTest");
 		ensureApkExistsInConnectedDevice();
+		installApkFileVersionMarkerOnDevice();
 		initializeAppiumDriver();
+		setDefaultLocation();
 		if (!TestContext.INSTANCE.getTestSetup().isAndroidTestReleaseEnabled()) {
 			startReactNativePackager();
 		}
 
+		AdbInterface.clearAppCache(AppConstants.APP_PACKAGE_NAME);
+		AdbInterface.grantPermissions(AppConstants.APP_PACKAGE_NAME, AppConstants.APP_NEEDED_PERMISSIONS);
 		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 		if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
 			handlePermissionsPrompt();
@@ -238,6 +249,14 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		waitForAppLoad();
+	}
+
+	private void installApkFileVersionMarkerOnDevice() throws IOException {
+		Log.method("installApkFileVersionMarkerOnDevice");
+		String apkFilename = getApkFile().getName();
+		String installMarkerFile = APK_VERSION_MARKER_FILE_PATH;
+		FileUtility.createOrWriteToExistingTextFile(Paths.get(installMarkerFile), apkFilename);
+		AdbInterface.pushFile(installMarkerFile, "/sdcard/installed-apk.md");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -278,6 +297,10 @@ public class BaseAndroidTest extends BaseTest {
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
 		return apkFile;
+	}
+
+	private void setDefaultLocation() {
+		appiumDriver.setLocation(new Location(37.3965775, -121.9863994, 0.0));
 	}
 
 	private void startReactNativePackager() throws IOException {

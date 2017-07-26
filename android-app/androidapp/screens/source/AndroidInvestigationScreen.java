@@ -65,8 +65,12 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void performSearch(String searchKeyword) throws Exception {
 		Log.method("performSearch", searchKeyword);
+		// Search using only first 9 characters. This workaround is for preventing queued responses in app from taking long time. Perf issue being resolved in product.
+		if (searchKeyword.length()>9) {
+			searchKeyword = searchKeyword.substring(0, 9);
+		}
+
 		sendKeys(getSearchEditView(), searchKeyword);
-		//TestContext.INSTANCE.stayIdle(60);              // This workaround is for issue described in product issue: DE3106
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 

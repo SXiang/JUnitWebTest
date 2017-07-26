@@ -1,11 +1,15 @@
 package androidapp.screens.source;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
 import common.source.TestContext;
+import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
@@ -20,7 +24,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement addSource;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Mark as Complete\")")
 	@CacheLookup
 	private WebElement markAsComplete;
 
@@ -138,6 +142,9 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public String getMarkerInvestigationStatusText() {
 		Log.method("getMarkerInvestigationStatusText");
+		String xPathString = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
+		waitForElementToBeClickable(By.xpath(xPathString));
+		markerInvestigationStatus = getAndroidDriver().findElementByXPath(xPathString);
 		return markerInvestigationStatus.getText();
 	}
 
@@ -154,6 +161,17 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public String getVelocityText() {
 		Log.method("getVelocityText");
 		return velocity.getText();
+	}
+
+	public Boolean waitForMarkAsCompleteButtonToBeDisplayed() {
+		Log.method("waitForMarkAsCompleteToBeDisplayed");
+		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_ELEMENT_CHANGE_TIMEOUT)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return getMarkAsCompleteButton().isDisplayed();
+			}
+		});
+
+		return true;
 	}
 
 	@Override

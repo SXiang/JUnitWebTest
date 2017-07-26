@@ -14,7 +14,7 @@ public class BackPackAnalyzer {
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer PING_TIMEOUT = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
-	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
+	private static final Integer CATCH_UP_TIME_IN_SECS = 1;
 
 	public static void startSimulator() throws IOException {
 		Log.method("startSimulator");
@@ -122,6 +122,6 @@ public class BackPackAnalyzer {
 
 	private static void waitForSimulatorProcessesToCatchUp() {
 		Log.method("waitForSimulatorProcessesToCatchUp");
-		TestContext.INSTANCE.stayIdle(2 * CATCH_UP_TIME_IN_SECS);
+		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
 	}
 }

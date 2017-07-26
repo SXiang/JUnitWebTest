@@ -99,18 +99,19 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
 		Log.method("getInvestigationReports");
-		List<InvestigationMarkerEntity> invReportList = new ArrayList<InvestigationMarkerEntity>();
+		List<InvestigationMarkerEntity> invMarkersList = new ArrayList<InvestigationMarkerEntity>();
 		for (WebElement el : this.listViewElements) {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
 			if (findElements != null && findElements.size() > 1) {
 				InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
 				invEntity.setLisaNumber(findElements.get(0).getText());
 				invEntity.setInvestigationStatus(findElements.get(1).getText());
-				invReportList.add(invEntity);
+				invMarkersList.add(invEntity);
 			}
 		}
 
-		return invReportList;
+		Log.info(LogHelper.collectionToString(invMarkersList, "Investigation markers from screen"));
+		return invMarkersList;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -130,9 +131,9 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		Log.info(String.format("Getting assigned LISAs for report id='%s'", reportId));
 		List<InvestigationMarkerEntity> invMarkers = getInvestigationMarkers();
 		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
-		boolean match = lisaInvestigationfromSP.stream()
-			.allMatch(sp -> {
-				return invMarkers.stream().anyMatch(s -> {
+		boolean match = invMarkers.stream()
+			.allMatch(s -> {
+				return lisaInvestigationfromSP.stream().anyMatch(sp -> {
 					String[] split = s.getLisaNumber().split("-");
 					String lisaNum = split[split.length-1].trim();
 					Log.info(String.format("Matching boxNumber from storedproc-[%d] with on screen lisa marker-'%s'; lisa number='%s'",

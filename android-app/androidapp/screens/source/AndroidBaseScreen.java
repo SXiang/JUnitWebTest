@@ -2,9 +2,11 @@ package androidapp.screens.source;
 
 import java.util.function.Predicate;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
@@ -60,6 +62,10 @@ public class AndroidBaseScreen {
 
 	public void slideBy(WebElement element, WebElement elementContainer, Float value) {
 		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
+	}
+
+	public void waitForElementToBeClickable(By byXPath) {
+		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_ELEMENT_CHANGE_TIMEOUT)).until(ExpectedConditions.elementToBeClickable(byXPath));
 	}
 
 	public boolean waitForScreenLoad() {

@@ -346,5 +346,6 @@ public class ResourceKeys {
 	public static final String InvestigationStatusTypes_In_Progress = "InvestigationStatusTypes_In_Progress";
 	public static final String InvestigationStatusTypes_No_Gas_Found = "InvestigationStatusTypes_No_Gas_Found";
 	public static final String InvestigationStatusTypes_Found_Other_Source = "InvestigationStatusTypes_Found_Other_Source";
+	public static final String Investigation_WasSourceFound = "Investigation_WasSourceFound";
 	public static final String Constant_Complete = "Constant_Complete";
 }

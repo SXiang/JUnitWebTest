@@ -3,8 +3,10 @@ package androidapp.regression.source;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
@@ -27,17 +29,19 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
-import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import androidapp.screens.source.AndroidConfirmationDialog;
 import common.source.BackPackAnalyzer;
 import common.source.CollectionsUtil;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.ComplianceReportsPageActions;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
@@ -64,6 +68,9 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	protected AndroidConfirmationDialog confirmationDialog;
 	protected AndroidAddCgiFormDialog addCgiFormDialog;
 
+	private static ComplianceReportsPageActions complianceReportsPageAction;
+	private static LoginPageActions loginPageAction;
+
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
 	@Rule
@@ -73,14 +80,26 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 	public void beforeTest() throws Exception {
 		createTestCaseData(testName);
 		if (!isRunningInDataGenMode()) {
-			initializeTestDriver();
-			initializeTestScreenObjects();
 			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 				BackPackAnalyzer.restartSimulator();
 			}
 
+			initializeTestDriver();
+			initializeTestScreenObjects();
+			initializePageActions();
+
 			startTestRecording(testName.getMethodName());
 		}
+	}
+
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	@After
@@ -124,6 +143,11 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2440_EnergyBackpack_LoggingOtherSourceLeaksBackpackApp_BypassingAddSourceButton ...");
 
+		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
+		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
+
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
@@ -132,25 +156,102 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
-		executeWithBackPackDataProcessesPaused(obj -> {
-			markerTypeDialog.selectMarkerType(MarkerType.LISA);
-			investigateMapScreen.waitForScreenLoad();
-			//investigateMapScreen.clickOnInvestigateButton();
-			//investigateMapScreen.clickOnMarkAsCompleteButton();
-			//gasSourceConfirmDialog.clickOnYesButton();
+		TestContext.INSTANCE.stayIdle(5);   // CHECK if app proceeds to next screeen in allocated time.
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
-		assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
-		//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-		//assertTrue(addSourceDialog.verifyInvestigationStatus("In-Progress"));
+		// Markers screen. Click on LISA marked as Not Investigated
+		String[] markerStatuses = {notInvestigated};
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+
+		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			// click on 'Investigate' and verify Investigation status.
+			investigateMapScreen.clickOnInvestigate();
+
+			// TBD: Disabled due to product defect DE3162
+			/*
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+			*/
+
+			// click on 'Mark as Complete' and verify confirmation dialog text.
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			String actualDialogText = confirmationDialog.getDialogMessageText();
+			assertTrue(String.format("Confirmation dialog text NOT correct. Expected=[%s]; Actual=[%s]", wasGasSourceFound, actualDialogText),
+					actualDialogText.equals(wasGasSourceFound));
+
+			// 'Yes' on confirmation dialog and verify status in ListView.
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
+
+			// TBD: Disabled due to product defect DE3163
+			/*
+			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
+					actualMarkerStatus.equals(foundOtherSource));
+			*/
+
+			return true;
+		});
+
+		// In web view download investigation PDF and CSV and verify data.
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.updateWorkingDataRowReportTitle(reportDataRowID1, generatedInvReportTitle);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID1));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID1);
+
+		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
+		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
+
+		// TBD: Disabled due to product defect DE3163
+		/*
+		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", wasGasSourceFound, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(wasGasSourceFound));
+		*/
+		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
+
+		Map<String, String> lisaInvestigationMetaData = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
+		Log.info(String.format("Investigation CSV data -> %s", LogHelper.mapToString(lisaInvestigationMetaData)));
+		assertTrue(String.format("CSV -> Expected FoundDateTime NOT correct. Length<=4. Actual Full Text=[%s]", lisaInvestigationMetaData.get("FoundDateTime")),
+				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
+		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
+				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
+
+		// TBD: Disabled due to product defect DE3163
+		/*
+		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", wasGasSourceFound, lisaInvestigationMetaData.get("InvestigationStatus")),
+				lisaInvestigationMetaData.get("InvestigationStatus").equals(wasGasSourceFound));
+		*/
 	}
 
 	/**
@@ -184,6 +285,11 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2441_EnergyBackpack_LoggingNoLeaksBackpackApp_BypassingAddSourceButton ...");
 
+		String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
+
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
@@ -192,25 +298,99 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
 		});
 
 		clickOnFirstInvestigationReport(investigationScreen);
-		executeWithBackPackDataProcessesPaused(obj -> {
-			markerTypeDialog.selectMarkerType(MarkerType.LISA);
-			investigateMapScreen.waitForScreenLoad();
-			//investigateMapScreen.clickOnInvestigateButton();
-			//investigateMapScreen.clickOnMarkAsCompleteButton();
-			//gasSourceConfirmDialog.clickOnNoButton();
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
-		assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
-		//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-		//assertTrue(addSourceDialog.verifyInvestigationStatus("In-Progress"));
+		// Markers screen. Click on LISA marked as Not Investigated
+		String[] markerStatuses = {notInvestigated};
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		investigateMapScreen.waitForScreenLoad();
+
+		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			// click on 'Investigate' and verify Investigation status.
+			investigateMapScreen.clickOnInvestigate();
+
+			// TBD: Disabled due to product defect DE3162
+			/*
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+			*/
+
+			// click on 'Mark as Complete' and verify confirmation dialog text.
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			String actualDialogText = confirmationDialog.getDialogMessageText();
+			assertTrue(String.format("Confirmation dialog text NOT correct. Expected=[%s]; Actual=[%s]", wasGasSourceFound, actualDialogText),
+					actualDialogText.equals(wasGasSourceFound));
+
+			// 'No' on confirmation dialog and verify status in ListView.
+			confirmationDialog.clickOnCancel();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
+
+			// TBD: Disabled due to product defect DE3163
+			/*
+			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
+					actualMarkerStatus.equals(noGasFound));
+			*/
+			return true;
+		});
+
+		// In web view download investigation PDF and CSV and verify data.
+		loginPageAction.open(EMPTY, NOTSET);
+		loginPageAction.login(EMPTY, userDataRowID);
+		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.updateWorkingDataRowReportTitle(reportDataRowID1, generatedInvReportTitle);
+		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, reportDataRowID1));
+		complianceReportsPageAction.clickOnComplianceViewerInvestigationData(EMPTY, reportDataRowID1);
+		assertTrue(complianceReportsPageAction.waitForInvestigationCSVFileDownloadToComplete(EMPTY, reportDataRowID1));
+		complianceReportsPageAction.clickOnCloseReportViewer(EMPTY, reportDataRowID1);
+
+		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
+		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
+
+		// TBD: Disabled due to product defect DE3163
+		/*
+		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", noGasFound, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(noGasFound));
+		*/
+		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
+
+		Map<String, String> lisaInvestigationMetaData = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
+		Log.info(String.format("Investigation CSV data -> %s", LogHelper.mapToString(lisaInvestigationMetaData)));
+		assertTrue(String.format("CSV -> Expected FoundDateTime NOT correct. Length<=4. Actual Full Text=[%s]", lisaInvestigationMetaData.get("FoundDateTime")),
+				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
+		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
+				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
+
+		// TBD: Disabled due to product defect DE3163
+		/*
+		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, lisaInvestigationMetaData.get("InvestigationStatus")),
+				lisaInvestigationMetaData.get("InvestigationStatus").equals(noGasFound));
+		*/
 	}
 
 	/**
@@ -693,7 +873,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2440[0][1];
 			reportDataRowID1 = (Integer)tc2440[0][2];
 			tcId = "TC2440";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -703,7 +883,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2441[0][1];
 			reportDataRowID1 = (Integer)tc2441[0][2];
 			tcId = "TC2441";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -713,7 +893,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2543[0][1];
 			reportDataRowID1 = (Integer)tc2543[0][2];
 			tcId = "TC2543";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -723,7 +903,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2545[0][1];
 			reportDataRowID1 = (Integer)tc2545[0][2];
 			tcId = "TC2545";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -733,7 +913,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2546[0][1];
 			reportDataRowID1 = (Integer)tc2546[0][2];
 			tcId = "TC2546";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -743,7 +923,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2547[0][1];
 			reportDataRowID1 = (Integer)tc2547[0][2];
 			tcId = "TC2547";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
@@ -753,7 +933,7 @@ public class AndroidLeakScreenTest2 extends BaseReportTest {
 			userDataRowID = (Integer)tc2555[0][1];
 			reportDataRowID1 = (Integer)tc2555[0][2];
 			tcId = "TC2555";
-			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId)) {
+			if (!invReportDataVerifier.hasNotInvestigatedMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
