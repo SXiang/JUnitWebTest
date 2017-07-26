@@ -119,9 +119,7 @@ public class ScreenShotOnFailure{
 			if(rect!=null){
 				scrFile = getSubImage(scrFile, rect);
 			}
-			File destFile = new File(fileName);
-			FileUtils.deleteQuietly(destFile);
-			FileUtils.copyFile(scrFile, destFile);
+			FileUtils.copyFile(scrFile, new File(fileName));
 			Log.info("A browser screenshot saved! - '"+fileName+"'");
 		}catch(Exception e){
 			Log.warn("Type of Driver - " + driver.getClass().getName());

@@ -303,6 +303,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public void clickOnFollow(){
+		resizeBrowserWindow();
 		buttonFollow.click();
 		waitForAJAXCallsToComplete();
 		waitForElementReady(mapKey);

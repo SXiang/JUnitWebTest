@@ -245,7 +245,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();		
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(500, 100, 700, 400), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webFoundLeak-8", new Rectangle(500, 100, 500, 350), true));
 
 		/* 5. Verify color/status of lisa indications - In progress (Violet)*/
 		/* 5.1 Web view - investigate */
@@ -261,7 +261,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+1);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(500, 100, 700, 400), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webInprogress-1", new Rectangle(500, 100, 500, 350), true));
 		
 		/* 5.2 Mobile view - investigate */
 		mobileReportsPage.open();
@@ -311,7 +311,8 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.clickOnInvestigate();
 		reportInvestigationsPage.clickOnLisa(lisaNumberPrefix+8);
 		reportInvestigationsPage.clickOnFollow();
-		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(500, 100, 700, 400), true));
+		assertTrue(reportInvestigationsPage.verifyScreenshotWithBaseline(testCaseID, "webNoLeak-8", new Rectangle(500, 100, 500, 350), true));
+		
 		/*** Test for user role - supervisor ***/
 		mobileLoginPage.open();
 		mobileReportsPage = mobileLoginPage.loginNormalAs(mobileUserDataRow2.username, mobileUserDataRow2.password);
@@ -415,9 +416,6 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		/* 8. Verify deleted leaks are not showing */
 		assertFalse(mobileLeakSourcePage.verifyPDFLeakDetails(leakDetails2.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(2,reportDataRowID)));
 		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
-
-		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 	
 		mobileLoginPage.logout();
 	}
