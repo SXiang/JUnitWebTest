@@ -51,7 +51,8 @@ public class BasePage {
 	protected String strPageURL;
 	protected WebDriver driver;
 	protected TestSetup testSetup;
-	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1200, 700);
+	protected static Dimension testBrowserSize;
+	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1200, 600);
 	
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
@@ -141,6 +142,18 @@ public class BasePage {
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
+
+		
+	public Dimension getTestBrowserSize() {
+		if(testBrowserSize==null){
+			setTestBrowserSize(TEST_WINDOW_SIZE);
+		}
+		return testBrowserSize;
+	}
+
+	public void setTestBrowserSize(Dimension testWindowSize) {
+		testBrowserSize = BrowserWindowUtility.getBrowserSize(driver, testWindowSize);
+	}
 
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
@@ -508,8 +521,8 @@ public class BasePage {
 	} 
     
     public void resizeBrowserWindow(){
-    	Log.info("Resize browser window for testing :"+TEST_WINDOW_SIZE);
-    	driver.manage().window().setSize(TEST_WINDOW_SIZE);
+    	Log.info("Resize browser window for testing :"+getTestBrowserSize());
+    	driver.manage().window().setSize(getTestBrowserSize());
     	waitForPageToLoad();
 	}   
     
