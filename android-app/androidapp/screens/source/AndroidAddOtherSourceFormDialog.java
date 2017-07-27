@@ -62,6 +62,10 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement source;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement sourceText;
+
 	private Boolean isExistingItem = false;
 
 	private AndroidLeakSourceTypeListControl leakSourceTypeListControl;
@@ -82,6 +86,11 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	}
 
 	/****** ListControl Methods ******/
+
+	public LeakSourceType getSelectedLeakSource() {
+		Log.method("getSelectedLeakSource");
+		return LeakSourceType.valueOf(this.sourceText.getText().trim());
+	}
 
 	public void selectLeakSource(LeakSourceType leakSourceType) {
 		Log.method("selectLeakSource", leakSourceType);

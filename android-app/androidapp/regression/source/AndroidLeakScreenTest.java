@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +20,8 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.ReportListDataProvider;
+import androidapp.entities.source.InvestigationMarkerEntity;
+import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
@@ -27,6 +32,7 @@ import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -37,6 +43,7 @@ import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
+import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
 
@@ -259,7 +266,6 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 	 *	- User is navigated to previous page and details of newly-added leak appear
 	 *	- All leaks entered should appear with correct data
 	**/
-	// TBD: Click on Add Other Sources button is currently NOT present in latest APK published in Artifactory. To be implemented seperately post implementation in product.
 	@Test
 	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2436, location = ReportListDataProvider.class)
 	public void TC2436_EnergyBackpackLoggingMultipleOtherSourceLeaksWithinClassicLISAs(
@@ -271,6 +277,8 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -281,21 +289,72 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
         clickOnFirstInvestigationReport(investigationScreen);
 
-        executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
-                investigateReportScreen.waitForScreenLoad();
-                return true;
-        });
+        List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
+			return true;
+		});
 
 		String[] markerStatuses = {notInvestigated};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
 
         executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
+
+			// TBD: Disabled due to product defect DE3162
+			/*
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+			*/
+
 			investigateMapScreen.clickOnAddSource();
+
 			addSourceDialog.waitForScreenLoad();
-			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
-			// TBD: Click on add other sources and fill out form. See comment above.
+			assertTrue("Add Leak button is NOT shown.", addSourceDialog.getAddLeakButton().isDisplayed());
+			assertTrue("Add Other Sources button in NOT shown.", addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+
+			// get count of current 'other source' entries.
+			boolean listShown = addedSourcesListDialog.isListDisplayed();
+			int otherSourcesCountBeforeAdd = 0;
+			if (listShown) {
+				List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
+				otherSourcesCountBeforeAdd = (otherSourcesList != null) ? otherSourcesList.size() : 0;
+			}
+
+			final LeakSourceType otherSourceLeakSourceType = LeakSourceType.Other_Natural_Source;
+			final String otherSourceAdditionalNotes = DataGenerator.getRandomText(20, 100);
+			IntStream.of(0,1).forEach(i -> {
+				FunctionUtil.warnOnError(() -> addNewOtherSource(addSourceDialog, addOtherSourceFormDialog, addedSourcesListDialog, otherSourceLeakSourceType, otherSourceAdditionalNotes));
+			});
+
+			// verify other source got added correctly.
+			int otherSourcesCountAfterAdd = otherSourcesCountBeforeAdd + 2;
+			List<OtherSourceListInfoEntity> otherSourcesList2 = addedSourcesListDialog.getOtherSourcesList();
+			assertTrue(String.format("Other sources list length post adding 2 new items is NOT correct. Size before add=[%d]; Size after add=[%d]",
+					otherSourcesCountBeforeAdd, otherSourcesList2.size()), otherSourcesList2.size()==otherSourcesCountAfterAdd);
+
+			// verify details of last 2 added other sources is correct.
+			IntStream.of(1,2).forEach(i -> {
+				addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.OtherSource, otherSourcesCountAfterAdd-i);
+				addOtherSourceFormDialog.waitForScreenLoad();
+				String actualAdditionalNotes = addOtherSourceFormDialog.getAdditionalNotesText();
+				assertTrue(String.format("Additional notes string does NOT match. Expected=[%s]; Actual=[%s]", otherSourceAdditionalNotes, actualAdditionalNotes),
+						actualAdditionalNotes.equals(otherSourceAdditionalNotes));
+				LeakSourceType actualSourceLeakSourceType = addOtherSourceFormDialog.getSelectedLeakSource();
+				assertTrue(String.format("LeakSourceType does NOT match. Expected=[%s]; Actual=[%s]", otherSourceLeakSourceType, actualSourceLeakSourceType),
+						actualSourceLeakSourceType.equals(otherSourceLeakSourceType));
+				addOtherSourceFormDialog.clickOnCancelForExistingItem();
+				addedSourcesListDialog.waitForScreenLoad();
+			});
+
 			return true;
 		});
 	}
@@ -530,7 +589,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
-		String[] lisaNumbers = {"2", "4", "6"};
+		String[] lisaNumbers = {"2", "4", "6", "7", "8"};
 		String[] gapNumbers = {"1", "2", "3"};
 		boolean reuseReports = !isRunningInDataGenMode();
 
@@ -608,42 +667,50 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		initializeAddOtherSourceFormDialog();
 	}
 
-	private void initializeInvestigateReportScreen() {
+	@Override
+	protected void initializeInvestigateReportScreen() {
 		investigateReportScreen = new AndroidInvestigateReportScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigateReportScreen);
 	}
 
-	private void initializeInvestigationScreen() {
+	@Override
+	protected void initializeInvestigationScreen() {
 		investigationScreen = new AndroidInvestigationScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigationScreen);
 	}
 
-	private void initializeInvestigateMapScreen() {
+	@Override
+	protected void initializeInvestigateMapScreen() {
 		investigateMapScreen = new AndroidInvestigateMapScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigateMapScreen);
 	}
 
-	private void initializeAddSourceDialog() {
+	@Override
+	protected void initializeAddSourceDialog() {
 		addSourceDialog = new AndroidAddSourceDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addSourceDialog);
 	}
 
-	private void initializeMarkerTypeDialog() {
+	@Override
+	protected void initializeMarkerTypeDialog() {
 		markerTypeDialog = new AndroidMarkerTypeListControl(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), markerTypeDialog);
 	}
 
-	private void initializeAddLeakSourceFormDialog() {
+	@Override
+	protected void initializeAddLeakSourceFormDialog() {
 		addLeakSourceFormDialog = new AndroidAddLeakSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addLeakSourceFormDialog);
 	}
 
-	private void initializeAndroidAddedLeakListDialog() {
+	@Override
+	protected void initializeAndroidAddedLeakListDialog() {
 		addedSourcesListDialog = new AndroidAddedSourceListDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addedSourcesListDialog);
 	}
 
-	private void initializeAddOtherSourceFormDialog() {
+	@Override
+	protected void initializeAddOtherSourceFormDialog() {
 		addOtherSourceFormDialog = new AndroidAddOtherSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addOtherSourceFormDialog);
 	}
