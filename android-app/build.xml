@@ -149,6 +149,7 @@
           <include name="**/AndroidReportListScreenTest.class" />
           <include name="**/AndroidSettingsScreenTest.class" />
           <include name="**/AndroidLeakScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest2.class" />
         </fileset>
       </batchtest>
     </junit>
