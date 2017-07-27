@@ -1,11 +1,14 @@
 ﻿<#
  SAMPLE USAGE:
-  ./Setup-SimulatorExtras.ps1 -ScriptRootFolder "C:\Repositories\surveyor-qa"
+  ./Setup-SimulatorExtras.ps1 -ScriptRootFolder "C:\Repositories\surveyor-qa" -BroadcastConstantValuesInSimLinearFitter "true"
 #>
 
 param(
    [Parameter(Mandatory=$true)]
-   [string] $ScriptRootFolder
+   [string] $ScriptRootFolder,
+
+   [Parameter(Mandatory=$true)]
+   [string] $BroadcastConstantValuesInSimLinearFitter
 )
 
 # deduce if running in CI or dev environment. set hostRootFolder accordingly.
@@ -37,5 +40,26 @@ Get-ChildItem $artifactsFolder | %{
         Copy-Item $fileFullPath $backpackServerFolder
     } else {
         Write-Host "File $destFile is already present"
+    }
+}
+
+if ($BroadcastConstantValuesInSimLinearFitter.ToLower() -eq "true") {
+    $linearFitterFile = "$HostRootFolder\src\main\python\Host\Utilities\BackpackServer\TestUtilities\simLinearFitterBroadcaster.py"
+    $findString = "uniform(0.0, 10.0)"
+    $replaceString = "uniform(2.0, 2.0)"
+    $fileContent = Get-Content $linearFitterFile
+    $findStringFound = $false
+    $fileContent | % {
+        [string]$line = [string]$_
+        if ($line.Contains($findString)) {
+            $findStringFound = $true
+        }
+    }
+    
+    if ($findStringFound) {
+        Write-host "Updating -> $linearFitterFile"
+        $fileContent.Replace($findString, $replaceString) |  Set-Content $linearFitterFile -Encoding Ascii
+    } else {
+        Write-host "String -> '$findString' NOT found in $linearFitterFile.. NOT updating"
     }
 }

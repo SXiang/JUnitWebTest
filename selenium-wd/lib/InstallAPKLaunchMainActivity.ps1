@@ -30,7 +30,7 @@ function WaitFor-ActivityToGainFocus($activityName) {
     $found
 }
 
-$INSTALL_NEW_OVERRIDE = $false
+$INSTALL_NEW_OVERRIDE = $true
 
 $VERSION_MARKER_FILE = "C:\QATestLogs\installed-apk.md"
 if (Test-Path $VERSION_MARKER_FILE) {

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -17,8 +17,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.ReportListDataProvider;
-import androidapp.entities.source.LeakListInfoEntity;
-import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
@@ -33,6 +31,8 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
@@ -40,13 +40,13 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
 
-public class AndroidLeakScreenTest extends BaseReportTest {
-
-	private static final String OTHER_SOURCE = "Other Source";
+public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
+
 	private static String generatedInvReportTitle;
+	private static String notInvestigated;
 
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
@@ -67,6 +67,7 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		createTestCaseData(testName);
 		if (!isRunningInDataGenMode()) {
 			initializeTestDriver();
@@ -139,7 +140,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -152,14 +154,7 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
-			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
-			assertTrue(leaksList!=null && leaksList.size()>0);
-			leaksList.stream()
-				.forEach(el -> {
-					assertTrue(el.getId().length()>0);
-					assertTrue(el.getTime().length()>10);
-					assertTrue(el.getAddress().equals(String.format("Address: %s %s", leakDataBuilder.getStreetNumber(), leakDataBuilder.getStreetName())));
-				});
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 			return true;
 		});
 	}
@@ -221,7 +216,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -234,14 +230,7 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
-			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
-			assertTrue(leaksList!=null && leaksList.size()>0);
-			leaksList.stream()
-				.forEach(el -> {
-					assertTrue(el.getId().length()>0);
-					assertTrue(el.getTime().length()>10);
-					assertTrue(el.getAddress().equals(String.format("Address: %s %s", leakDataBuilder.getStreetNumber(), leakDataBuilder.getStreetName())));
-				});
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 			return true;
 		});
 	}
@@ -297,7 +286,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
                 return true;
         });
 
-        investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
         executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -367,7 +357,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -380,15 +371,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnOKForNewItem();
 			addedSourcesListDialog.waitForScreenLoad();
-			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
-			assertTrue(otherSourcesList!=null && otherSourcesList.size()>0);
-			otherSourcesList.stream()
-				.forEach(el -> {
-					assertTrue(el.getSource().trim().equals(OTHER_SOURCE));
-					assertTrue(el.getTime().length()>10);
-				});
+			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
 		});
 	}
@@ -445,7 +430,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -459,14 +445,7 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
-			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
-			assertTrue(leaksList!=null && leaksList.size()>0);
-			leaksList.stream()
-				.forEach(el -> {
-					assertTrue(el.getId().length()>0);
-					assertTrue(el.getTime().length()>10);
-					assertTrue(el.getAddress().equals(String.format("Address: %s %s", leakDataBuilder.getStreetNumber(), leakDataBuilder.getStreetName())));
-				});
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 			return true;
 		});
 
@@ -524,7 +503,8 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			return true;
 		});
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+		String[] markerStatuses = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -538,14 +518,7 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
-			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
-			assertTrue(leaksList!=null && leaksList.size()>0);
-			leaksList.stream()
-				.forEach(el -> {
-					assertTrue(el.getId().length()>0);
-					assertTrue(el.getTime().length()>10);
-					assertTrue(el.getAddress().equals(String.format("Address: %s %s", leakDataBuilder.getStreetNumber(), leakDataBuilder.getStreetName())));
-				});
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 			return true;
 		});
 
@@ -566,6 +539,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2434[0][1];
 			reportDataRowID1 = (Integer)tc2434[0][2];
 			tcId = "TC2434";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2435_")) {
@@ -573,6 +549,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2435[0][1];
 			reportDataRowID1 = (Integer)tc2435[0][2];
 			tcId = "TC2435";
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2436_")) {
@@ -580,6 +559,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2436[0][1];
 			reportDataRowID1 = (Integer)tc2436[0][2];
 			tcId = "TC2436";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2437_")) {
@@ -587,6 +569,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2437[0][1];
 			reportDataRowID1 = (Integer)tc2437[0][2];
 			tcId = "TC2437";
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2438_")) {
@@ -594,6 +579,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2438[0][1];
 			reportDataRowID1 = (Integer)tc2438[0][2];
 			tcId = "TC2438";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2439_")) {
@@ -601,6 +589,9 @@ public class AndroidLeakScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2439[0][1];
 			reportDataRowID1 = (Integer)tc2439[0][2];
 			tcId = "TC2439";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}

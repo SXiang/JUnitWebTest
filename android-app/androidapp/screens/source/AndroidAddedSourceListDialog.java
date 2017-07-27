@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.PollManager;
 import common.source.RegexUtility;
@@ -152,6 +153,10 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	}
 
 	private List<OtherSourceListInfoEntity> toOtherSourceList(List<Object> sources) {
+		if (sources == null) {
+			return null;
+		}
+
 		return sources.stream()
 			.map(e -> (OtherSourceListInfoEntity)e)
 			.collect(Collectors.toList());
@@ -162,21 +167,23 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 		List<Object> retList = new ArrayList<Object>();
 		for (WebElement srcEl : sourcesList) {
 			String text = srcEl.getText();
-			List<String> textParts = RegexUtility.split(text, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
-			if (textParts.size()==3) {
-				if (fetchLeaks) {
-					String id = textParts.get(0).trim();
-					String time = textParts.get(1).trim();
-					String address = textParts.get(2).trim();
-					Log.info(String.format("Creating new ListLeakInfoEntity -> [id=%s; time=%s; address=%s]", id, time, address));
-					retList.add(new LeakListInfoEntity(id, time, address));
-				}
-			} else {
-				if (fetchOtherSources) {
-					String source = textParts.get(0).trim();
-					String time = textParts.get(1).trim();
-					Log.info(String.format("Creating new OtherSourceListInfoEntity -> [source=%s; time=%s]", source, time));
-					retList.add(new OtherSourceListInfoEntity(source, time));
+				if (text.contains("|")) {
+				List<String> textParts = RegexUtility.split(text, RegexUtility.VERTICAL_BAR_SPLIT_REGEX_PATTERN);
+				if (textParts.size()==3) {
+					if (fetchLeaks) {
+						String id = textParts.get(0).trim();
+						String time = textParts.get(1).trim();
+						String address = textParts.get(2).trim();
+						Log.info(String.format("Creating new ListLeakInfoEntity -> [id=%s; time=%s; address=%s]", id, time, address));
+						retList.add(new LeakListInfoEntity(id, time, address));
+					}
+				} else {
+					if (fetchOtherSources) {
+						String source = textParts.get(0).trim();
+						String time = textParts.get(1).trim();
+						Log.info(String.format("Creating new OtherSourceListInfoEntity -> [source=%s; time=%s]", source, time));
+						retList.add(new OtherSourceListInfoEntity(source, time));
+					}
 				}
 			}
 		}
@@ -205,6 +212,18 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
 		List<Object> allSourcesList = getAllSourcesList();
-		return getAddOtherSourcesButton()!=null && getAddOtherSourcesButton().isDisplayed() && allSourcesList!=null && allSourcesList.size()>0;
+		if (sourcesList == null || sourcesList.size()==0 || getAllSourcesList().size()==0) {
+			return getAddOtherSourcesButton()!=null && getAddOtherSourcesButton().isDisplayed();
+		}
+
+		boolean addOtherSourcesButtonNotNull = getAddOtherSourcesButton()!=null;
+		boolean addOtherSourcesButtonIsDisplayed = getAddOtherSourcesButton().isDisplayed();
+		boolean addOtherSourcesButtonCheck = addOtherSourcesButtonNotNull && addOtherSourcesButtonIsDisplayed;
+		boolean allSourcesListNotNull = allSourcesList!=null;
+		boolean allSourcesListSizeGreaterThanZero = allSourcesList.size()>0;
+		boolean allSourcesListCheck = allSourcesListNotNull && allSourcesListSizeGreaterThanZero;
+		Log.info(String.format("addOtherSourcesButtonNotNull=[%b]; addOtherSourcesButtonIsDisplayed=[%b]; allSourcesListNotNull=[%b]; allSourcesListSizeGreaterThanZero=[%b]; allSourcesList.size()=[%d]",
+				addOtherSourcesButtonNotNull, addOtherSourcesButtonIsDisplayed, allSourcesListNotNull, allSourcesListSizeGreaterThanZero, allSourcesList.size()));
+		return addOtherSourcesButtonCheck && allSourcesListCheck;
 	}
 }

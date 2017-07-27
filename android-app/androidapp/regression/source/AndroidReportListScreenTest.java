@@ -26,6 +26,7 @@ import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidReportListScreenTest extends BaseReportTest {
 
@@ -224,6 +225,10 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
@@ -231,6 +236,10 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
@@ -238,6 +247,10 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}

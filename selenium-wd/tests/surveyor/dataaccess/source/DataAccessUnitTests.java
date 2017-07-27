@@ -26,6 +26,11 @@ public class DataAccessUnitTests {
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
+		Log.info("Executing testBox_GetBoxById_Valid() ...");
+		testBox_GetBoxById_Valid();
+		Log.info("Executing testBox_GetBoxById_Invalid() ...");
+		testBox_GetBoxById_Invalid();
+
 		Log.info("Executing testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Valid() ...");
 		testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Valid();
 		Log.info("Executing testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Invalid() ...");
@@ -107,6 +112,18 @@ public class DataAccessUnitTests {
 		testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid();
 
 		Log.info("DONE!");
+	}
+
+	private static void testBox_GetBoxById_Valid() {
+		String validId = "D5635EC4-181F-4486-A70E-002886244326";
+		Box objBox = Box.getBox(validId);
+		Assert.assertTrue(objBox != null, "Value cannot be NULL.");
+	}
+
+	private static void testBox_GetBoxById_Invalid() {
+		String invalidId = "F4288CDB-96C3-7570-A46D-39E053025A93";
+		Box objBox = Box.getBox(invalidId);
+		Assert.assertTrue(objBox == null, "Value should be NULL.");
 	}
 
 	private static void testCustomerMaterialType_ByName() {

@@ -18,17 +18,25 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
+	@CacheLookup
+	private WebElement oKNewItem;
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
 	@CacheLookup
-	private WebElement oK;
+	private WebElement cancelNewItem;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
+	@CacheLookup
+	private WebElement oKExistingItem;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[7]")
 	@CacheLookup
-	private WebElement cancel;
+	private WebElement cancelExistingItem;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
 	@CacheLookup
-	private WebElement delete;
+	private WebElement deleteExistingItem;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -54,11 +62,18 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement source;
 
+	private Boolean isExistingItem = false;
+
 	private AndroidLeakSourceTypeListControl leakSourceTypeListControl;
 
 	public AndroidAddOtherSourceFormDialog(WebDriver driver) {
+		this(driver, false);
+	}
+
+	public AndroidAddOtherSourceFormDialog(WebDriver driver, Boolean existingItem) {
 		super(driver);
 		initializeListControls();
+		isExistingItem = existingItem;
 	}
 
 	private void initializeListControls() {
@@ -76,36 +91,58 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** Button Methods ******/
 
-	public WebElement getOKButton() {
-		Log.method("getOKButton");
-		return oK;
+	public WebElement getOKButtonForNewItem() {
+		Log.method("getOKButtonForNewItem");
+		return oKNewItem;
 	}
 
-	public void clickOnOK() throws Exception {
-		Log.method("clickOnOK");
-		tap(getOKButton());
-		press(getOKButton());
-		clickAndPressKey(getOKButton(), KeyCode.KEYCODE_ENTER);
+	public void clickOnOKForNewItem() throws Exception {
+		Log.method("clickOnOKForNewItem");
+		tap(getOKButtonForNewItem());
+		press(getOKButtonForNewItem());
+		clickAndPressKey(getOKButtonForNewItem(), KeyCode.KEYCODE_ENTER);
 	}
 
-	public WebElement getCancelButton() {
-		Log.method("getCancelButton");
-		return cancel;
+	public WebElement getCancelButtonForNewItem() {
+		Log.method("getCancelButtonForNewItem");
+		return cancelNewItem;
 	}
 
-	public void clickOnCancel() {
-		Log.method("clickOnCancel");
-		tap(getCancelButton());
+	public void clickOnCancelForNewItem() {
+		Log.method("clickOnCancelForNewItem");
+		tap(getCancelButtonForNewItem());
 	}
 
-	public WebElement getDeleteButton() {
-		Log.method("getDeleteButton");
-		return delete;
+	public WebElement getOKButtonForExistingItem() {
+		Log.method("getOKButtonForExistingItem");
+		return oKExistingItem;
 	}
 
-	public void clickOnDelete() {
-		Log.method("clickOnDelete");
-		tap(getDeleteButton());
+	public void clickOnOKForExistingItem() throws Exception {
+		Log.method("clickOnOKForExistingItem");
+		tap(getOKButtonForExistingItem());
+		press(getOKButtonForExistingItem());
+		clickAndPressKey(getOKButtonForExistingItem(), KeyCode.KEYCODE_ENTER);
+	}
+
+	public WebElement getCancelButtonForExistingItem() {
+		Log.method("getCancelButtonForExistingItem");
+		return cancelExistingItem;
+	}
+
+	public void clickOnCancelForExistingItem() {
+		Log.method("clickOnCancelForExistingItem");
+		tap(getCancelButtonForExistingItem());
+	}
+
+	public WebElement getDeleteButtonForExistingItem() {
+		Log.method("getDeleteButtonForExistingItem");
+		return deleteExistingItem;
+	}
+
+	public void clickOnDeleteForExistingItem() {
+		Log.method("clickOnDeleteForExistingItem");
+		tap(getDeleteButtonForExistingItem());
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -145,6 +182,10 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		return getOKButton()!=null && getOKButton().isDisplayed();
+		if (isExistingItem) {
+			return getOKButtonForExistingItem()!=null && getOKButtonForExistingItem().isDisplayed();
+		}
+
+		return getOKButtonForNewItem()!=null && getOKButtonForNewItem().isDisplayed();
 	}
 }
