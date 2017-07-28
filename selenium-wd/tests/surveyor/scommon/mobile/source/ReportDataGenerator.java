@@ -81,7 +81,7 @@ public class ReportDataGenerator {
 		for (int i = 0; i < lisaNumbers.length; i++) {
 			lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
 		}
-		reportInvestigationsPage.selectMultipleLisas(lisasToSelect);
+		reportInvestigationsPage.selectLisas(lisasToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Assign gaps to specified user.
@@ -118,12 +118,13 @@ public class ReportDataGenerator {
 		String lisaNumberPrefix = reportName+"-LISA-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+
 		String[] lisasToSelect = new String[lisaNumbers.length];
 		for (int i = 0; i < lisaNumbers.length; i++) {
 			lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
 		}
 
-		reportInvestigationsPage.selectMultipleLisas(lisasToSelect);
+		reportInvestigationsPage.selectLisas(lisasToSelect);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		if (isSingleUse) {

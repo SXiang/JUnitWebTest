@@ -128,9 +128,9 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID));
 
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+2);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -271,7 +271,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		int workingLisa = 4;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		String dateValue = reportInvestigationsPage.getLisaDate(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(userName);
 
 		// Mobile - login and investigate lisas
@@ -350,7 +350,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 5;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -420,8 +420,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		int workingLisa = 6;
 		int workingLisa1 = 7;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -474,8 +474,8 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		int workingLisa = 6;
 		int workingLisa1 = 7;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -534,7 +534,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas
@@ -599,7 +599,7 @@ public class ComplianceReportsInvestigationPageTest extends BaseReportsPageActio
 		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas

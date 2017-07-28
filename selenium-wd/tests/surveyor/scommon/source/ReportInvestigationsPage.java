@@ -40,7 +40,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "investigate-button")
 	protected WebElement button_Investigate;
-	
+
 	@FindBy(how = How.ID, using = "buttonAssignPeaks")
 	protected WebElement buttonAssignPeaks;
 
@@ -61,7 +61,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "pause-button")
 	protected WebElement buttonPause;
-	
+
 	@FindBy(how = How.ID, using = "complete-button")
 	protected WebElement buttonMarkAsComplete;
 
@@ -70,13 +70,13 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	@FindBy(how = How.ID, using = "addsource-button")
 	protected WebElement button_AddSource;
-	
+
 	@FindBy(how = How.ID, using = "addcgi-button")
 	protected WebElement button_AddCgi;
 
 	@FindBy(how = How.ID, using = "geolocate")
 	protected WebElement buttonFollow;
-	
+
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
@@ -87,7 +87,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
 	protected By mapKey = By.cssSelector(".map[id='map']>.ol-viewport > canvas");
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.LisaInvestigations_PageTitle);
-	
+
 	public static enum IndicationStatus {
 		FOUNDGASLEAK ("Found Gas Leak"),
 		INPROGRESS ("In Progress"),
@@ -125,11 +125,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		this.waitForPageToLoad();
 	}
 
-	public boolean selectLisa(String lisaNumber){
-		return selectMultipleLisas(new String[] { lisaNumber });
-	}
-
-	public boolean selectMultipleLisas(String[] lisaNumbers){
+	public boolean selectLisas(String... lisaNumbers){
 		boolean retVal = true;
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
@@ -176,7 +172,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	public void investigateItem(String item){
 		investigateItem(item, "LISA");
 	}
-	
+
 	public void investigateItem(String item, String boxType){
 		clickOnInvestigate();
 		selectDropdownItem(boxTypeDropdown, boxType);
@@ -198,7 +194,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		jsClick(buttonMarkAsComplete);
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
 	}
-	
+
 	public String getLisaStatus(String lisaNumber){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
@@ -287,11 +283,11 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		}
 		return true;
 	}
-	
+
 	public void clickOnLisa(String lisaNumber){
 		clickOnLisa(lisaNumber, null);
 	}
-	
+
 	public void clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
