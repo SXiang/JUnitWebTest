@@ -26,6 +26,16 @@ public class DataAccessUnitTests {
 		testSetup.initializeDBProperties();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
+		Log.info("Executing testBox_GetBoxById_Valid() ...");
+		testBox_GetBoxById_Valid();
+		Log.info("Executing testBox_GetBoxById_Invalid() ...");
+		testBox_GetBoxById_Invalid();
+
+		Log.info("Executing testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Valid() ...");
+		testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Valid();
+		Log.info("Executing testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Invalid() ...");
+		testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Invalid();
+
 		Log.info("Executing testCustomerMaterialType_ByName() ...");
 		testCustomerMaterialType_ByName();
 		Log.info("Executing testCustomerBoundaryType_ByName() ...");
@@ -102,6 +112,18 @@ public class DataAccessUnitTests {
 		testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid();
 
 		Log.info("DONE!");
+	}
+
+	private static void testBox_GetBoxById_Valid() {
+		String validId = "D5635EC4-181F-4486-A70E-002886244326";
+		Box objBox = Box.getBox(validId);
+		Assert.assertTrue(objBox != null, "Value cannot be NULL.");
+	}
+
+	private static void testBox_GetBoxById_Invalid() {
+		String invalidId = "F4288CDB-96C3-7570-A46D-39E053025A93";
+		Box objBox = Box.getBox(invalidId);
+		Assert.assertTrue(objBox == null, "Value should be NULL.");
 	}
 
 	private static void testCustomerMaterialType_ByName() {
@@ -392,5 +414,19 @@ public class DataAccessUnitTests {
 		String invalidReportId = "43745C4D-5796-9F2C-F831-39DF00AC7885";
 		List<AnalyticsPeak> objAnalyticsPeaks = AnalyticsPeak.getAnalyticsPeaks(invalidReportId);
 		Assert.assertTrue(objAnalyticsPeaks == null || objAnalyticsPeaks.size()==0, "Value should be NULL.");
+	}
+
+	private static void testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Valid() {
+		String validReportId = "0EDE9890-0E63-B00A-E1B1-39E0889E7E0B";
+		String validBoxId = "95030CE5-2E14-0BCF-76E5-39E0889E866E";
+		List<StoredProcLisaInvestigationLeaksByPeakId> objStoredProcLisaInvestigationLeaksByPeakId = StoredProcLisaInvestigationLeaksByPeakId.getLisaInvestigationLeaksByPeakId(validReportId, validBoxId);
+		Assert.assertTrue(objStoredProcLisaInvestigationLeaksByPeakId != null && objStoredProcLisaInvestigationLeaksByPeakId.size()>0, "Value cannot be NULL.");
+	}
+
+	private static void testStoredProcLisaInvestigationLeaksByPeakId_GetStoredProcLisaInvestigationLeaksByPeakIdByReportId_Invalid() {
+		String invalidReportId = "05030CE5-2E14-0BCF-76E5-39E0889E866B";
+		String invvalidBoxId = "15030CE5-2E14-0BCF-76E5-39E0889E866F";
+		List<StoredProcLisaInvestigationLeaksByPeakId> objStoredProcLisaInvestigationLeaksByPeakId = StoredProcLisaInvestigationLeaksByPeakId.getLisaInvestigationLeaksByPeakId(invalidReportId, invvalidBoxId);
+		Assert.assertTrue(objStoredProcLisaInvestigationLeaksByPeakId == null || objStoredProcLisaInvestigationLeaksByPeakId.size()==0, "Value should be EMPTY.");
 	}
 }

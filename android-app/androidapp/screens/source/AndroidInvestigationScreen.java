@@ -41,9 +41,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	public void clickOnFirstInvestigation() throws Exception {
 		Log.method("clickOnFirstInvestigation");
 		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
-		tap(firstRowViewGroup);
-		press(firstRowViewGroup);
-		clickAndPressKey(firstRowViewGroup, KeyCode.KEYCODE_ENTER);
+		selectRowGroup(firstRowViewGroup);
 	}
 
 	public List<InvestigationEntity> getInvestigations() {
@@ -67,8 +65,12 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void performSearch(String searchKeyword) throws Exception {
 		Log.method("performSearch", searchKeyword);
+		// Search using only first 9 characters. This workaround is for preventing queued responses in app from taking long time. Perf issue being resolved in product.
+		if (searchKeyword.length()>9) {
+			searchKeyword = searchKeyword.substring(0, 9);
+		}
+
 		sendKeys(getSearchEditView(), searchKeyword);
-		//TestContext.INSTANCE.stayIdle(60);              // This workaround is for issue described in product issue: DE3106
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
@@ -87,6 +89,12 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	public void waitForResultsToLoad() {
 		Log.method("waitForResultsToLoad");
 		waitForScreenLoad(Timeout.ANDROID_APP_RESULTS_TIMEOUT * 2, d -> isFirstRowPresent());
+	}
+
+	private void selectRowGroup(WebElement rowGroup) throws Exception {
+		tap(rowGroup);
+		press(rowGroup);
+		clickAndPressKey(rowGroup, KeyCode.KEYCODE_ENTER);
 	}
 
 	@SuppressWarnings("unchecked")

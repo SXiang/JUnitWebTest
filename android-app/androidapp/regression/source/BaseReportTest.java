@@ -2,6 +2,7 @@ package androidapp.regression.source;
 
 import java.util.List;
 
+import androidapp.data.source.InvestigationReportDataVerifier;
 import androidapp.entities.source.InvestigationEntity;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
@@ -13,6 +14,13 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 
 public class BaseReportTest extends BaseAndroidTest {
+
+	protected InvestigationReportDataVerifier invReportDataVerifier;
+
+	public BaseReportTest() {
+		invReportDataVerifier = InvestigationReportDataVerifier.newVerifier();
+	}
+
 	protected void clickOnFirstInvestigationReport(AndroidInvestigationScreen investigationScreen) throws Exception {
 		investigationScreen.clickOnFirstInvestigation();
 	}
@@ -50,8 +58,8 @@ public class BaseReportTest extends BaseAndroidTest {
 		return (count == expectedInvestigationMarkers);
 	}
 
-	protected boolean verifyReportsShownHaveLisasAssignedToUser(AndroidInvestigationScreen invScreen, String username) {
-		Log.method("verifyReportsShownHaveLisasAssignedToUser", invScreen, username);
+	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) {
+		Log.method("verifyReportsAssignedToUserAreShown", invScreen, username);
 		List<InvestigationEntity> investigations = invScreen.getInvestigations();
 		boolean match = investigations.stream()
 			.allMatch(r -> {

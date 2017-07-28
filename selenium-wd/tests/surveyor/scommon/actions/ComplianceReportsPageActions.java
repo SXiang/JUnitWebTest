@@ -680,6 +680,12 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 		return reportModeMatches && lisaOpacityMatches;
 	}
 
+	public void updateWorkingDataRowReportTitle(Integer dataRowID, String reportTitle) throws Exception {
+		ComplianceReportsDataRow compRptDataRow = (ComplianceReportsDataRow)getReportsDataRow(dataRowID);
+		compRptDataRow.title = reportTitle;
+		ComplianceReportsPageActions.workingDataRow.set(compRptDataRow);
+	}
+
 	private boolean verifyComplianceReportMetadataFiles(ReportsCommonPage reportsPage, String downloadPath, String reportTitle) {
 		return FunctionUtil.wrapException(reportsPage, r -> reportsPage.verifyIsotopicMetaDataFile(downloadPath, reportTitle));
 	}

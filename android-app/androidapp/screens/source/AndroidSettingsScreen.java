@@ -9,6 +9,22 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidSettingsScreen extends AndroidBaseScreen {
 
+	private static final String ALARM_SETTINGS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]";
+	private WebElement alarmSettings;
+	private boolean alarmSettingsDisplayed;
+
+	private static final String APP_SETTINGS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]";
+	private WebElement appSettings;
+	private boolean appSettingsDisplayed;
+
+	private static final String CLEAR_HEATMAP_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]";
+	private WebElement clearHeatmap;
+	private boolean clearHeatmapDisplayed;
+
+	private static final String SHUTDOWN_INSTRUMENT_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]";
+	private WebElement shutdownInstrument;
+	private boolean shutdownInstrumentDisplayed;
+
 	/****** Button elements ******/
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
@@ -26,15 +42,6 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement toggleMode;
-
-	private WebElement clearHeatmap;
-	private boolean clearHeatmapDisplayed;
-	private WebElement alarmSettings;
-	private boolean alarmSettingsDisplayed;
-	private WebElement appSettings;
-	private boolean appSettingsDisplayed;
-	private WebElement shutdownInstrument;
-	private boolean shutdownInstrumentDisplayed;
 
 	public AndroidSettingsScreen(WebDriver driver) {
 		super(driver);
@@ -87,7 +94,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public WebElement getAlarmSettings() {
 		Log.method("getAlarmSettings");
 		if (!alarmSettingsDisplayed) {
-			alarmSettings = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]");
+			alarmSettings = getAndroidDriver().findElementByXPath(ALARM_SETTINGS_XPATH);
 			alarmSettingsDisplayed = true;
 		}
 
@@ -102,7 +109,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public WebElement getAppSettings() {
 		Log.method("getAppSettings");
 		if (!appSettingsDisplayed) {
-			appSettings = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]");
+			appSettings = getAndroidDriver().findElementByXPath(APP_SETTINGS_XPATH);
 			appSettingsDisplayed = true;
 		}
 
@@ -117,7 +124,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public WebElement getClearHeatmap() {
 		Log.method("getClearHeatmap");
 		if (!clearHeatmapDisplayed) {
-			clearHeatmap = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]");
+			clearHeatmap = getAndroidDriver().findElementByXPath(CLEAR_HEATMAP_XPATH);
 			clearHeatmapDisplayed = true;
 		}
 
@@ -132,7 +139,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public WebElement getShutdownInstrument() {
 		Log.method("getShutdownInstrument");
 		if (!shutdownInstrumentDisplayed) {
-			shutdownInstrument = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]");
+			shutdownInstrument = getAndroidDriver().findElementByXPath(SHUTDOWN_INSTRUMENT_XPATH);
 			shutdownInstrumentDisplayed = true;
 		}
 

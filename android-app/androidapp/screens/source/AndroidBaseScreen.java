@@ -2,9 +2,11 @@ package androidapp.screens.source;
 
 import java.util.function.Predicate;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.Log;
@@ -23,6 +25,7 @@ public class AndroidBaseScreen {
 	protected WebElement mainFrameLayout;
 
 	protected Predicate<WebDriver> screenLoadPredicate = d -> screenLoadCondition();
+	protected Predicate<WebDriver> screenAndDataLoadPredicate = d -> screenAndDataLoadCondition();
 
 	public AndroidBaseScreen(WebDriver driver) {
 		this.driver = driver;
@@ -50,6 +53,10 @@ public class AndroidBaseScreen {
 		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
 	}
 
+	public void pressKey(KeyCode keyCode) throws Exception {
+		MobileActions.newAction((MobileDriver<?>)driver).pressKey(keyCode);
+	}
+
 	public void sendKeys(WebElement element, String text) throws Exception {
 		MobileActions.newAction().sendKeys(element, text);
 	}
@@ -58,9 +65,18 @@ public class AndroidBaseScreen {
 		MobileActions.newAction((MobileDriver<?>)driver).slideBy(element, elementContainer, value);
 	}
 
+	public void waitForElementToBeClickable(By byXPath) {
+		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_ELEMENT_CHANGE_TIMEOUT)).until(ExpectedConditions.elementToBeClickable(byXPath));
+	}
+
 	public boolean waitForScreenLoad() {
 		Log.method("waitForScreenLoad");
 		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenLoadPredicate);
+	}
+
+	public boolean waitForScreenAndDataLoad() {
+		Log.method("waitForScreenAndDataLoad");
+		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenAndDataLoadPredicate);
 	}
 
 	protected boolean waitForScreenLoad(Integer timeout, Predicate<WebDriver> waitPredicate) {
@@ -90,6 +106,10 @@ public class AndroidBaseScreen {
 
 	/* Methods to be implemented by derived class. */
 	protected Boolean screenLoadCondition() {
+		return false;
+	}
+
+	protected Boolean screenAndDataLoadCondition() {
 		return false;
 	}
 }

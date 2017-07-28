@@ -124,14 +124,14 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+4);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+2);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+4);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+2);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+5);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+5);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -247,10 +247,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+2,lisaNumberPrefix+7);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1,lisaNumberPrefix+4,lisaNumberPrefix+2,lisaNumberPrefix+7);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8,lisaNumberPrefix+5,lisaNumberPrefix+3);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -444,10 +444,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -618,10 +618,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -790,10 +790,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver
@@ -952,10 +952,10 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		UserDataRow mobileUserDataRow2 = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID)); // Supervisor
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(getReportRowID(mobileUserDataRowID2)); // Driver
 		
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+1);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+1);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 		reportInvestigationsPage.waitForPageLoad();
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+8);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+8);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow2.username);
 		
 		// Mobile - login and investigate lisas - driver

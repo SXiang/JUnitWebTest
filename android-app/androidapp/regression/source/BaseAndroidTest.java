@@ -14,18 +14,22 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
+import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.ProcessUtility;
 import common.source.ScreenRecorder;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -35,12 +39,22 @@ import common.source.WebDriverWrapper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
 import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final double DEFAULT_ALTITUDE = 0.0;
+	private static final double DEFAULT_LONGITUDE = -121.9863994;
+	private static final double DEFAULT_LATITUDE = 37.3965775;
+	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String ADB_EXE = "adb.exe";
+
+	protected static final String TRUE = "true";
+	protected static final String EMPTY = BaseActions.EMPTY;
+	protected static final Integer NOTSET = BaseActions.NOTSET;
 
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override
@@ -65,6 +79,17 @@ public class BaseAndroidTest extends BaseTest {
 		public static final String MAIN_ACTIVITY = "MainActivity";
 	}
 
+	protected static boolean isRunningInDataGenMode() {
+		Log.method("isRunningInDataGenMode");
+		String dataGenMode = System.getProperty("isRunningInDataGenMode");
+		if (!BaseHelper.isNullOrEmpty(dataGenMode)) {
+			Log.info("dataGenMode=" + dataGenMode);
+			return dataGenMode.toLowerCase().equals(TRUE);
+		}
+
+		return false;
+	}
+
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
 		// Initialize TestSetup to instantiate the TestContext.
@@ -76,21 +101,26 @@ public class BaseAndroidTest extends BaseTest {
 		} catch (IOException e) {
 			Log.error(e.getMessage());
 		}
+
 		testSetup.initialize();
 		TestContext.INSTANCE.setTestSetup(testSetup);
 
-		// Start backpack simulator and android automation tools (emulator, appium server).
-		cleanupProcesses();
+		if (!isRunningInDataGenMode()) {
+			// Start backpack simulator and android automation tools (emulator, appium server).
+			cleanupProcesses();
 
-		AdbInterface.init(testSetup.getAdbLocation());
-	    AndroidAutomationTools.start();
-	    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			AdbInterface.init(testSetup.getAdbLocation());
+		    AndroidAutomationTools.start();
+		    AndroidAutomationTools.disableAnimations();  // perf optimization.
+		}
 	}
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
-		AdbInterface.stop();
-		cleanupProcesses();
+		if (!isRunningInDataGenMode()) {
+			AdbInterface.stop();
+			cleanupProcesses();
+		}
 	}
 
 	@Before
@@ -99,6 +129,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+		cleanUp();
 	}
 
 	private void initScreenRecorder() {
@@ -164,21 +195,19 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		AndroidAutomationTools.stop();
-		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
-	}
 
-	@Override
-	public void postTestMethodProcessing() {
-		cleanUp();
+		ProcessUtility.killProcess(ADB_EXE, false /*killChildProcesses*/);
+
+		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
 	}
 
 	protected void cleanUp() {
 		if (appiumDriver != null) {
-			appiumDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumDriver.quit());
 		}
 
 		if (appiumWebDriver != null) {
-			appiumWebDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumWebDriver.quit());
 		}
 	}
 
@@ -209,11 +238,15 @@ public class BaseAndroidTest extends BaseTest {
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
 		Log.method("initializeAppiumTest");
 		ensureApkExistsInConnectedDevice();
+		installApkFileVersionMarkerOnDevice();
 		initializeAppiumDriver();
+		setDefaultLocation();
 		if (!TestContext.INSTANCE.getTestSetup().isAndroidTestReleaseEnabled()) {
 			startReactNativePackager();
 		}
 
+		AdbInterface.clearAppCache(AppConstants.APP_PACKAGE_NAME);
+		AdbInterface.grantPermissions(AppConstants.APP_PACKAGE_NAME, AppConstants.APP_NEEDED_PERMISSIONS);
 		installLaunchApp(AndroidActivities.APP_DRAW_OVERLAY_SETTINGS_ACTIVITY);
 		if (AndroidAutomationTools.isAppDrawOverlayDisplayed()) {
 			handlePermissionsPrompt();
@@ -221,6 +254,14 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		waitForAppLoad();
+	}
+
+	private void installApkFileVersionMarkerOnDevice() throws IOException {
+		Log.method("installApkFileVersionMarkerOnDevice");
+		String apkFilename = getApkFile().getName();
+		String installMarkerFile = APK_VERSION_MARKER_FILE_PATH;
+		FileUtility.createOrWriteToExistingTextFile(Paths.get(installMarkerFile), apkFilename);
+		AdbInterface.pushFile(installMarkerFile, "/sdcard/installed-apk.md");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -261,6 +302,10 @@ public class BaseAndroidTest extends BaseTest {
 		String apkFilePath = apkFiles.get(0);
 		File apkFile = new File(apkFilePath);
 		return apkFile;
+	}
+
+	private void setDefaultLocation() {
+		appiumDriver.setLocation(new Location(DEFAULT_LATITUDE, DEFAULT_LONGITUDE, DEFAULT_ALTITUDE));
 	}
 
 	private void startReactNativePackager() throws IOException {

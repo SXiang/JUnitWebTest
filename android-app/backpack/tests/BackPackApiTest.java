@@ -36,7 +36,7 @@ public class BackPackApiTest extends BaseTest {
 		Data data = invokeGetV1DataApi();
 		Log.info(String.format("Heatmap image data is: %s", data));
 		assertTrue("Heatmap image invalid.", data.getData().getHeatmap().length() > 0);
-		assertTrue("Heatmap image timestamp invalid.", data.getData().getHeatmapImageTime() > 0.0);
+		assertTrue("Heatmap image timestamp invalid.", data.getData().getHeatmapImageTime() >= 0.0);
 	}
 
 	private Data invokeGetV1DataApi() throws IOException {

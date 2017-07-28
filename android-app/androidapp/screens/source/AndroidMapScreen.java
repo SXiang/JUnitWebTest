@@ -13,8 +13,9 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
 
-	private static final String MODE_HR = "HR";
-	private static final String MODE_HP = "HP";
+	private static final String PPM = "ppm";
+	private static final String ETHANE_MODE = "Ethane Mode";
+	private static final String METHANE_MODE = "Methane Mode";
 
 	private static final String MAX_LABEL = "Max:";
 
@@ -32,11 +33,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement amplitude;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[4]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[5]")
 	@CacheLookup
 	private WebElement c2h6;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[5]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[4]")
 	@CacheLookup
 	private WebElement cH4ppm;
 
@@ -154,7 +155,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (modeTextDisplayed) {
 			String modeTextValue = getModeText();
 			Log.info(String.format("modeTextValue=%s", modeTextValue));
-			modeTextValid = modeTextValue.contains(MODE_HP);
+			modeTextValid = modeTextValue.contains(METHANE_MODE);
 		}
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
@@ -178,6 +179,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		return resetMax;
 	}
 
+	public void clickOnResetButton() {
+		Log.method("clickOnResetButton");
+		tap(resetMax);
+	}
+
 	public WebElement getResetButtonByAccId() {
 		return getAndroidDriver().findElementByAccessibilityId(AccessibilityLabel.MapScreen.RESET_MAX_BTN);
 	}
@@ -192,7 +198,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getServerEditView() {
 		if (!serverEditViewLocated) {
-			serverEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]");
+			serverEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]");
 			serverEditViewLocated = true;
 		}
 
@@ -205,7 +211,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getUsernameEditView() {
 		if (!usernameEditViewLocated) {
-			usernameEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]");
+			usernameEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]");
 			usernameEditViewLocated = true;
 		}
 
@@ -283,7 +289,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		Float maxFloat = Float.MIN_VALUE;
 		try {
 			if (maxText.getText()!=null) {
-				maxFloat = Float.valueOf(maxText.getText().replace(MAX_LABEL, ""));
+				maxFloat = Float.valueOf(maxText.getText().replace(MAX_LABEL, "").replace(" ", "").replace(PPM, ""));
 			}
 		} catch (Exception e) {/*ignore error*/}
 
