@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -48,6 +49,7 @@ import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
+import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
@@ -223,6 +225,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		loginPageAction.login(EMPTY, userDataRowID);
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.updateWorkingDataRowReportTitle(reportDataRowID1, generatedInvReportTitle);
+		complianceReportsPageAction.findReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, reportDataRowID1));
@@ -362,6 +365,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		loginPageAction.login(EMPTY, userDataRowID);
 		complianceReportsPageAction.open(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.updateWorkingDataRowReportTitle(reportDataRowID1, generatedInvReportTitle);
+		complianceReportsPageAction.findReport(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.openComplianceViewerDialog(EMPTY, reportDataRowID1);
 		complianceReportsPageAction.clickOnComplianceViewerInvestigationPDF(EMPTY, reportDataRowID1);
 		assertTrue(complianceReportsPageAction.waitForInvestigationPDFDownloadToComplete(EMPTY, reportDataRowID1));
@@ -576,7 +580,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
 			addOtherSourceFormDialog.clickOnOKForNewItem();
-			addedSourcesListDialog.waitForScreenLoad();
+			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
 		});
@@ -809,6 +813,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -817,44 +823,62 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			return true;
 		});
 
+		// 1.
 		clickOnFirstInvestigationReport(investigationScreen);
-		investigateReportScreen.clickOnFirstInvestigationMarker();
+
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
+
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
-			//investigateMapScreen.clickOnInvestigateButton();
-			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			// Add leak.
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			addSourceDialog.clickOnAddLeak();
-			addLeakSourceFormDialog.fillForm(LeakDataGenerator.newBuilder().generateDefaultValues().toMap());
-			addSourceDialog.waitForScreenLoad();
-			//addSourceDialog.clickOnAddOtherSourcesButton();
-			addLeakSourceFormDialog.fillForm(LeakDataGenerator.newBuilder().generateDefaultValues().toMap());
-			//investigateMapScreen.clickOnMarkAsCompleteButton();
-			return true;
-		});
+			addLeakSourceFormDialog.waitForScreenLoad();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			addLeakSourceFormDialog.fillForm(leakMap);
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap));
+			addLeakSourceFormDialog.clickOnCancel();
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
-		executeWithBackPackDataProcessesPaused(obj -> {
-			//investigateMapScreen.clickOnMarkAsCompleteButton();
-			return true;
-		});
+			// Add other source.
+			addedSourcesListDialog.clickOnAddOtherSources();
+			addOtherSourceFormDialog.waitForScreenLoad();
+			addOtherSourceFormDialog.clickOnUseCurrentLocation();
+			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
+			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
+			addOtherSourceFormDialog.clickOnOKForNewItem();
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 
-		investigateReportScreen.clickOnFirstInvestigationMarker();
-		executeWithBackPackDataProcessesPaused(obj -> {
-			//investigateMapScreen.clickOnInvestigateButton();
+			// Mark as complete.
+			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
-			investigateMapScreen.clickOnAddSource();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+
+			// TBD: Possible product issue. Screen navigating to login screen in latest APK used in CI - 7/27. Need investigation.
+			//investigateReportScreen.waitForScreenLoad();
+
 			return true;
 		});
-
-		assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
-		//assertTrue(investigateReportScreen.verifyLisasForReportAreShown(reportId));
-		investigateMapScreen.getAddSourceButton().isDisplayed();
-		investigateMapScreen.getAddCGIButton().isDisplayed();
-		//assertTrue(investigateReportScreen.verifyLisasForReportAreShown(reportId));
-		investigateMapScreen.getAddSourceButton().isDisplayed();
-		investigateMapScreen.getAddCGIButton().isDisplayed();
 	}
 
 	private void createTestCaseData(TestName testName) throws Exception {
@@ -872,6 +896,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
+
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2441")) {
@@ -882,6 +907,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
 				reuseReports = false;
 			}
+
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2543")) {

@@ -25,6 +25,7 @@ public class AndroidBaseScreen {
 	protected WebElement mainFrameLayout;
 
 	protected Predicate<WebDriver> screenLoadPredicate = d -> screenLoadCondition();
+	protected Predicate<WebDriver> screenAndDataLoadPredicate = d -> screenAndDataLoadCondition();
 
 	public AndroidBaseScreen(WebDriver driver) {
 		this.driver = driver;
@@ -73,6 +74,11 @@ public class AndroidBaseScreen {
 		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenLoadPredicate);
 	}
 
+	public boolean waitForScreenAndDataLoad() {
+		Log.method("waitForScreenAndDataLoad");
+		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenAndDataLoadPredicate);
+	}
+
 	protected boolean waitForScreenLoad(Integer timeout, Predicate<WebDriver> waitPredicate) {
 		return waitForScreenLoad(this.driver, timeout, waitPredicate);
 	}
@@ -100,6 +106,10 @@ public class AndroidBaseScreen {
 
 	/* Methods to be implemented by derived class. */
 	protected Boolean screenLoadCondition() {
+		return false;
+	}
+
+	protected Boolean screenAndDataLoadCondition() {
 		return false;
 	}
 }

@@ -26,8 +26,10 @@ import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.ProcessUtility;
 import common.source.ScreenRecorder;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -43,6 +45,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String ADB_EXE = "adb.exe";
 	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
 
@@ -123,6 +126,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+		cleanUp();
 	}
 
 	private void initScreenRecorder() {
@@ -188,21 +192,19 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		AndroidAutomationTools.stop();
-		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
-	}
 
-	@Override
-	public void postTestMethodProcessing() {
-		cleanUp();
+		ProcessUtility.killProcess(ADB_EXE, false /*killChildProcesses*/);
+
+		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
 	}
 
 	protected void cleanUp() {
 		if (appiumDriver != null) {
-			appiumDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumDriver.quit());
 		}
 
 		if (appiumWebDriver != null) {
-			appiumWebDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumWebDriver.quit());
 		}
 	}
 

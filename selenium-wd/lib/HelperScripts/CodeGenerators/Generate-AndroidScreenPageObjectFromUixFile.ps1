@@ -10,14 +10,14 @@ EXAMPLE USAGE:
 ------------------------------------------------------------------------------------------------#>
 
 param(
-   [Parameter(Mandatory=$true)]
-   [string]$OutputFilePath,                  # eg. "C:\temp\ScreenPageObjectClass.txt"
+   [Parameter(Mandatory=$false)]
+   [string]$OutputFilePath="C:\temp\ScreenPageObjectClass.txt",                  # eg. "C:\temp\ScreenPageObjectClass.txt"
 
-   [Parameter(Mandatory=$true)]
-   [string]$UixFilePath,                     # eg. "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\dump_7186364136122891369.uix"
+   [Parameter(Mandatory=$false)]
+   [string]$UixFilePath="C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\alarm-settings-screen.uix",                     # eg. "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\dump_7186364136122891369.uix"
 
-   [Parameter(Mandatory=$true)]
-   [string]$ScreenClassName,                  # eg. "AndroidSettingsScreen"
+   [Parameter(Mandatory=$false)]
+   [string]$ScreenClassName="AndroidAlarmSettingsScreen",                  # eg. "AndroidSettingsScreen"
 
    [Parameter(Mandatory=$false)]
    [switch]$DetectLabels=$false
