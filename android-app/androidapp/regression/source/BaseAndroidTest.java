@@ -45,9 +45,12 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
-	private static final String ADB_EXE = "adb.exe";
+	private static final double DEFAULT_ALTITUDE = 0.0;
+	private static final double DEFAULT_LONGITUDE = -121.9863994;
+	private static final double DEFAULT_LATITUDE = 37.3965775;
 	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String ADB_EXE = "adb.exe";
 
 	protected static final String TRUE = "true";
 	protected static final String EMPTY = BaseActions.EMPTY;
@@ -302,7 +305,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	private void setDefaultLocation() {
-		appiumDriver.setLocation(new Location(37.3965775, -121.9863994, 0.0));
+		appiumDriver.setLocation(new Location(DEFAULT_LATITUDE, DEFAULT_LONGITUDE, DEFAULT_ALTITUDE));
 	}
 
 	private void startReactNativePackager() throws IOException {

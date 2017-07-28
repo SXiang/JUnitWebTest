@@ -279,9 +279,6 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		clickAndPressKey(getUseCurrentLocationButton(), KeyCode.KEYCODE_ENTER);
 	}
 
-	/****** TextField Methods
-	 * @throws Exception ******/
-
 	public void selectPavedWall2Wall() throws Exception {
 		Log.method("selectPavedWall2Wall");
 		tap(this.pavedWallToWall);
