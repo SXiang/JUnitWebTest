@@ -272,13 +272,19 @@ public class WebElementExtender {
 	}
 	
 	public static Boolean waitForElementToBeDisplayed(final Integer timeout, WebDriver webDriver, By elementBy) {
-		return (new WebDriverWait(webDriver, timeout)).until (new ExpectedCondition<Boolean>(){
-			WebElement we = null;
-		    public Boolean apply(WebDriver d) {
-		        we = d.findElement(elementBy);
-		        return we.isDisplayed();
-		    }
-		});
+		Boolean isDisplayed = Boolean.valueOf(false);
+		try{
+			isDisplayed = (new WebDriverWait(webDriver, timeout)).until (new ExpectedCondition<Boolean>(){
+				WebElement we = null;
+				public Boolean apply(WebDriver d) {
+					we = d.findElement(elementBy);
+					return we.isDisplayed();
+				}
+			});
+		}catch(Exception e){
+			Log.warn(e.toString());
+		}
+		return isDisplayed;
 	}
 
 	public static void waitForPageLoad(final String pageText, final Integer timeout, WebDriver webDriver) {
