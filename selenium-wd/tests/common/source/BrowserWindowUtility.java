@@ -17,12 +17,12 @@ public class BrowserWindowUtility {
 			WebDriver driver = new ChromeDriver();
 			driver.get("https://p3sqaauto.picarro.com/");
 			for(int i=0; i<50;i++){
-            Dimension browserSize = getBrowserSize(driver, new Dimension(1199,600));
-			driver.manage().window().setSize(browserSize);
-			WebElement page = driver.findElement(By.tagName("body"));
-			new Actions(driver).sendKeys(page, Keys.CONTROL, "0", Keys.NULL).perform();
-			Dimension actualViewportSize = getViewportSize(driver);
-			System.out.println("Set view port to: "+actualViewportSize);
+				Dimension browserSize = getBrowserSize(driver, new Dimension(1199,600));
+				driver.manage().window().setSize(browserSize);
+				WebElement page = driver.findElement(By.tagName("body"));
+				new Actions(driver).sendKeys(page, Keys.CONTROL, "0", Keys.NULL).perform();
+				Dimension actualViewportSize = getViewportSize(driver);
+				System.out.println("Set view port to: "+actualViewportSize);
 			}
 			driver.close();
 		}
