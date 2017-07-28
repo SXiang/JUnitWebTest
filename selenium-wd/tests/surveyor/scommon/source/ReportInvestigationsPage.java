@@ -125,11 +125,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		this.waitForPageToLoad();
 	}
 
-	public boolean selectLisa(String lisaNumber){
-		return selectMultipleLisas(new String[] { lisaNumber });
-	}
-
-	public boolean selectMultipleLisas(String[] lisaNumbers){
+	public boolean selectLisa(String... lisaNumbers){
 		boolean retVal = true;
 		String boxType = "LISA";
 		selectDropdownItem(boxTypeDropdown, boxType);
