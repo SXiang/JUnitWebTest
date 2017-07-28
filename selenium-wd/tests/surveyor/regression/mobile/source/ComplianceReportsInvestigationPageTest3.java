@@ -114,7 +114,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -238,7 +238,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 
 		// Assign Lisas to user
 		String reportName = "CR-"+reportId.substring(0,6).toUpperCase();
@@ -434,7 +434,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -608,7 +608,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -780,7 +780,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -942,7 +942,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
+		reportInvestigationsPage.open(reportId);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
