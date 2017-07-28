@@ -51,8 +51,8 @@ public class BasePage {
 	protected String strPageURL;
 	protected WebDriver driver;
 	protected TestSetup testSetup;
-	protected static Dimension testBrowserSize;
-	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1200, 600);
+	protected static Dimension testBrowserSize = null;
+	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1199, 600);
 	
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
@@ -152,7 +152,12 @@ public class BasePage {
 	}
 
 	public void setTestBrowserSize(Dimension testWindowSize) {
-		testBrowserSize = BrowserWindowUtility.getBrowserSize(driver, testWindowSize);
+		try {
+			testBrowserSize = BrowserWindowUtility.getBrowserSize(driver, testWindowSize);
+		} catch (Exception e) {
+			testBrowserSize = testWindowSize;
+			Log.warn("Faile to get actual browser size on clien window: "+testWindowSize);
+		}
 	}
 
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
@@ -520,7 +525,6 @@ public class BasePage {
     public void resizeBrowserWindow(){
     	Log.info("Resize browser window for testing :"+getTestBrowserSize());
     	driver.manage().window().setSize(getTestBrowserSize());
-    	waitForPageToLoad();
 	}   
     
     public void inputTextValue(WebElement inputElement, String value){

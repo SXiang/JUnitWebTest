@@ -1,41 +1,52 @@
 package common.source;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 
 public class BrowserWindowUtility {
 
-		public static void main (String args[]) {
+		public static void main (String args[]) throws Exception {
 			System.setProperty("webdriver.chrome.driver", "C:\\Repositories\\surveyor-qa\\selenium-wd\\lib\\chromedriver.exe");
 			WebDriver driver = new ChromeDriver();
-			driver.get("https://p3sqaauto.picarro.com/");			
-            Dimension browserSize = getBrowserSize(driver, new Dimension(1200,600));
+			driver.get("https://p3sqaauto.picarro.com/");
+			for(int i=0; i<50;i++){
+            Dimension browserSize = getBrowserSize(driver, new Dimension(1199,600));
 			driver.manage().window().setSize(browserSize);
+			WebElement page = driver.findElement(By.tagName("body"));
+			new Actions(driver).sendKeys(page, Keys.CONTROL, "0", Keys.NULL).perform();
+			Dimension actualViewportSize = getViewportSize(driver);
+			System.out.println("Set view port to: "+actualViewportSize);
+			}
 			driver.close();
 		}
 
-		public static Dimension getBrowserSize(WebDriver driver, Dimension viewPortSize){
+		public static Dimension getBrowserSize(WebDriver driver, Dimension viewPortSize) throws Exception{
+			WebElement page = driver.findElement(By.tagName("body"));
+			new Actions(driver).sendKeys(page, Keys.CONTROL, "0", Keys.NULL).perform();
 			driver.manage().window().setPosition(new Point(0,0));
 			driver.manage().window().setSize(viewPortSize);
-			Dimension browserSize = driver.manage().window().getSize();
 			Dimension actualViewportSize = getViewportSize(driver);
-			Dimension newBrowserSize = new Dimension(2 * browserSize.width - actualViewportSize
-					.width, 2 * browserSize.height - actualViewportSize.height);
-			driver.manage().window().setPosition(new Point(0,0));
-			driver.manage().window().setSize(newBrowserSize);
-			browserSize = driver.manage().window().getSize();
-			
-			actualViewportSize = getViewportSize(driver);
-			browserSize = new Dimension(newBrowserSize.width - actualViewportSize.width + viewPortSize.width,
-					newBrowserSize.height - actualViewportSize.height + viewPortSize.height);
+			Dimension browserSize = driver.manage().window().getSize();
+			int widthDiff = browserSize.width - actualViewportSize.width;
+			int heightDiff = browserSize.height - actualViewportSize.height;
+			Dimension newBrowserSize = new Dimension(viewPortSize.width + widthDiff, viewPortSize.height + heightDiff);
 			driver.manage().window().maximize();
-			return browserSize;
+			return newBrowserSize;
 		}
-		
+
 		protected static Dimension getViewportSize(WebDriver driver) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			int width = extractViewportWidth(driver);
 			int height = extractViewportHeight(driver);
 			return new Dimension(width, height);
