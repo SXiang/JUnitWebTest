@@ -501,7 +501,6 @@ public class BasePage {
     public void refreshPage(){
     	Log.info("Refresh current page");
     	driver.navigate().refresh();
-    	waitForPageToLoad();
 	}
 
     public void inputTextValue(WebElement inputElement, String value){
