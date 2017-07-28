@@ -470,13 +470,13 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2438_EnergyBackpackLeakCanBeEdited ...");
 
-		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
-
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
 		}
+
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -493,10 +493,10 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			Log.info("Checking for presence of existing marker with status -> 'Found Gas Leak' or 'In Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+				.anyMatch(i -> i.getInvestigationStatus().equals(foundGasLeak) || i.getInvestigationStatus().equals(inProgress));
 			Log.info(String.format("Found=[%b]", match));
 			markerVerifier.append(String.valueOf(match));
 			return true;
@@ -504,15 +504,19 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		// If no existing marker of desired status, create new.
 		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
+			Log.info("No existing marker found with status - 'Found Gas Leak' or 'In Progress'. Investigating and marking as Complete.");
 			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
 		}
 
 		initializeAddLeakSourceFormDialog();
 
-		// Markers screen. Click on LISA marked as either Complete or In Progress
-		String[] markerStatuses = {complete, inProgress};
-		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		// Markers screen. Click on LISA marked as Found Gas Leak
+		String[] markerStatuses = {foundGasLeak, inProgress};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
+		// Store last added leak index and leak info for verifications later.
+		final List<Integer> lastAddedLeakIndex = new ArrayList<Integer>();
+		final List<Map<String, Object>> lastAddedLeakInfo = new ArrayList<>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -533,19 +537,40 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.waitForScreenLoad();
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			lastAddedLeakInfo.add(leakMap);
 			addLeakSourceFormDialog.fillForm(leakMap);
 			addedSourcesListDialog.waitForScreenLoad();
-			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 
-			// verify leak got added correctly.
-			int leakCountAfterAdd = ++leakCountBeforeAdd;
 			List<LeakListInfoEntity> leaksList2 = addedSourcesListDialog.getLeaksList();
-			assertTrue(String.format("Other sources list length post adding 1 new item is NOT correct. Size before add=[%d]; Size after add=[%d]",
-					leakCountBeforeAdd, leaksList2.size()), leaksList2.size()==leakCountAfterAdd);
+			int leakCountAfterAdd = leaksList2.size();
+			lastAddedLeakIndex.add(leakCountAfterAdd-1);
+			// verify leak got added correctly.
+			assertTrue(String.format("Leak list length post adding 1 new item is NOT correct. Size before add=[%d]; Size after add=[%d]",
+					leakCountBeforeAdd, leakCountAfterAdd), leaksList2.size()==leakCountAfterAdd);
+			assertLeakListInfoIsCorrect(leakDataBuilder, leaksList2, leakCountAfterAdd-1);
 
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leakCountAfterAdd-1);
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap));
+			addLeakSourceFormDialog.clickOnCancel();
+			addedSourcesListDialog.waitForScreenLoad();
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			return true;
+		});
+
+		Log.info("Navigating to previously added leak from reports screen and verifying leak info.");
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnAddSource();
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+			Integer lastAddedLeakIdx = lastAddedLeakIndex.get(0);
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastAddedLeakIdx);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(lastAddedLeakInfo.get(0)));
 			addLeakSourceFormDialog.clickOnCancel();
 			return true;
 		});
@@ -585,6 +610,9 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
@@ -597,13 +625,29 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
+		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
+			boolean match = investigationMarkers.stream()
+				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+			Log.info(String.format("Found=[%b]", match));
+			markerVerifier.append(String.valueOf(match));
 			return true;
 		});
 
-		String[] markerStatuses = {notInvestigated};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		// If no existing marker of desired status, create new.
+		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
+			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
+		}
+
+		initializeAddLeakSourceFormDialog();
+
+		// Markers screen. Click on LISA marked as either Complete or In Progress
+		String[] markerStatuses = {complete, inProgress};
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
