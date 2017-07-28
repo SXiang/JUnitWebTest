@@ -54,6 +54,8 @@ public class MobileInvestigatePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.ok()']")
 	protected WebElement confirmYes;
+	protected By confirmYesBy = By.cssSelector(".modal-dialog button.btn[ng-click='modalOptions.ok()']");
+	
 	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.cancel()']")
 	protected WebElement confirmNo;
 
@@ -156,7 +158,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 	
 	public void clickOnMarkAsComplete(InvestigationEntity investigationEntity, boolean gasSourceFound){
 		buttonComplete.click();
-		if(WebElementExtender.isElementPresentAndDisplayed(confirmYes)){
+		if(WebElementExtender.waitForElementToBeDisplayed(timeout, driver, confirmYesBy)){
 			if(gasSourceFound){
 				confirmYes.click();
 			}else{
