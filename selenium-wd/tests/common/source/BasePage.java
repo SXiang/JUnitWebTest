@@ -156,7 +156,7 @@ public class BasePage {
 			testBrowserSize = BrowserWindowUtility.getBrowserSize(driver, testWindowSize);
 		} catch (Exception e) {
 			testBrowserSize = testWindowSize;
-			Log.warn("Faile to get actual browser size on clien window: "+testWindowSize);
+			Log.warn("Faile to get actual browser size on client window: "+testWindowSize);
 		}
 	}
 
