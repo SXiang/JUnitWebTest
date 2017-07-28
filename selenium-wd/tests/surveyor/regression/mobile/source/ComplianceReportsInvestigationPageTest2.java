@@ -151,7 +151,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -229,7 +229,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(8,reportDataRowID)));
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+8));
 		
@@ -237,7 +237,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		reportInvestigationsPage.investigateItem(lisaNumberPrefix+4);
 		reportInvestigationsPage.clickOnPauseInvestigation();
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 		
 		//Mobile view - investigate
@@ -248,7 +248,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		mobileInvestigatePage.clickOnPauseInvestigation();
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+8));
 
         //Delete leaks
@@ -337,7 +337,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(5,reportDataRowID)));
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(),reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
 
@@ -349,11 +349,11 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		
 		//Web view - investigate
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		reportInvestigationsPage.investigateItem(lisaNumberPrefix+2);
 		reportInvestigationsPage.clickOnPauseInvestigation();
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 
 		
@@ -370,7 +370,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 //		assertTrue(mobileInvestigatePage.verifyScreenshotWithBaseline(testCaseID, "mobileInprogress-5"));
 		
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.INPROGRESS.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+5));
 
 		// TODO: Web Inprogress - color verification: Violet
@@ -407,7 +407,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertFalse(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails2.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 
 		// TODO: Web NoLeak - color verification: Blue
 		reportInvestigationsPage.clickOnInvestigate();
@@ -479,7 +479,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -543,7 +543,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(4,reportDataRowID)));
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 
 		// Mobile - login and investigate lisas - UtilityAdmin
@@ -594,7 +594,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		assertTrue(mobileLeakSourcePage.verifyMetaLeakDetails(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(2,reportDataRowID)));
 
 		complianceReportsPageAction.open(EMPTY, reportDataRowID);
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 		
 		mobileLoginPage.logout();
@@ -642,7 +642,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -691,7 +691,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		//Reports(Mobile) are displayed in descending order by Date
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
         //FoundOtherSource status is showing
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 
 		// Mobile - login and investigate lisas - UtilityAdmin
@@ -728,7 +728,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		//Reports(Mobile) are displayed in descending order by Date
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
         //FoundOtherSource status is showing
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDOTHERSOURCE.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+2));
 		
 		mobileLoginPage.logout();
@@ -774,7 +774,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
 		// Verify Lisas are numbered based on their amplitude
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertTrue(reportInvestigationsPage.verifyLisasOrderByAmplitude());
 		
 		// Assign Lisas to user
@@ -819,7 +819,7 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		//Reports(Mobile) are displayed in descending order by Date
 		assertTrue(complianceReportsPageAction.getComplianceReportsPage().verifyReportsAreOrderedByDate(reportIDs));
         //FoundOtherSource status is showing
-		reportInvestigationsPage.open(reportId);
+		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
 		assertEquals(IndicationStatus.FOUNDGASLEAK.toString(), reportInvestigationsPage.getLisaStatus(lisaNumberPrefix+4));
 		mobileLoginPage.logout();
 	}
