@@ -9,8 +9,6 @@ import org.openqa.selenium.support.CacheLookup;
 
 import common.source.Log;
 import common.source.LogHelper;
-import common.source.MobileActions;
-import common.source.TestContext;
 import common.source.MobileActions.KeyCode;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;

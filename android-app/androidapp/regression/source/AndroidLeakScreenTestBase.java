@@ -3,22 +3,35 @@ package androidapp.regression.source;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 
 import com.amazonaws.services.kinesisfirehose.model.InvalidArgumentException;
 
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
+import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
 import androidapp.screens.source.AndroidAddedSourceListDialog;
 import common.source.Log;
 import common.source.LogHelper;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 public class AndroidLeakScreenTestBase extends BaseReportTest {
 	private static final String OTHER_SOURCE = "Other Source";
+
+	protected LeakDataBuilder addNewLeak(AndroidAddSourceDialog addSourceDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog) throws Exception {
+		addSourceDialog.clickOnAddLeak();
+		addLeakSourceFormDialog.waitForScreenLoad();
+		LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+		Map<String, Object> leakMap = leakDataBuilder.toMap();
+		addLeakSourceFormDialog.fillForm(leakMap);
+		addedSourcesListDialog.waitForScreenLoad();
+		return leakDataBuilder;
+	}
 
 	protected void addNewOtherSource(AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog,
 			AndroidAddedSourceListDialog addedSourcesListDialog) throws Exception {

@@ -40,8 +40,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement follow;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Investigate\")")
 	private WebElement investigate;
 
 	/****** Label elements ******/

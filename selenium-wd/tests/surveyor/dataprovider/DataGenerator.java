@@ -4,11 +4,13 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.fluttercode.datafactory.impl.DataFactory;
 import org.testng.Assert;
 
 import common.source.DateUtility;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.RegexUtility;
 
@@ -16,6 +18,24 @@ public class DataGenerator {
 
 	private static String[] usStates = {"AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH",
 			"NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"};
+
+	private static DataFactory df = new DataFactory();
+
+	public static class Invoker {
+		public static String randomSupply(Supplier<String> method) {
+			String retVal = "";
+			try {
+				int nextInt = new Random().nextInt(19);
+				for (int i = 0; i < nextInt+1; i++) {
+					retVal = method.get();
+				}
+			} catch (Exception e) {
+				Log.warn(String.format("Error in randomSupply. Exception -> %s", ExceptionUtility.getStackTraceString(e)));
+			}
+
+			return retVal;
+		}
+	}
 
 	public static class Address {
 		private String streetNumber;
@@ -64,23 +84,20 @@ public class DataGenerator {
 	}
 
 	public static Date getDateBetween(Date startDate, Date endDate) {
-		DataFactory df = new DataFactory();
 		return df.getDateBetween(startDate, endDate);
 	}
 
 	public static Address getAddress() {
-		DataFactory df = new DataFactory();
 		int arrIdx = new Random().nextInt(usStates.length);
-		return new Address(df.getStreetSuffix(), df.getStreetName(), df.getCity(), usStates[arrIdx]);
+		return new Address(Invoker.randomSupply(() -> df.getStreetSuffix()), Invoker.randomSupply(() -> df.getStreetName()),
+				Invoker.randomSupply(() -> df.getCity()), usStates[arrIdx]);
 	}
 
 	public static String getAddressString() {
-		DataFactory df = new DataFactory();
-		return df.getAddress();
+		return Invoker.randomSupply(() -> df.getAddress());
 	}
 
 	public static Integer getNumberBetween(int min, int max) {
-		DataFactory df = new DataFactory();
 		return df.getNumberBetween(min, max);
 	}
 
@@ -88,7 +105,7 @@ public class DataGenerator {
 		if (minLength < 0 || maxLength < 0) {
 			return "";
 		}
-		DataFactory df = new DataFactory();
+
 		return df.getRandomText(minLength, maxLength);
 	}
 
@@ -96,13 +113,12 @@ public class DataGenerator {
 		if (length < 0) {
 			return "";
 		}
-		DataFactory df = new DataFactory();
+
 		return df.getRandomChars(length);
 	}
 
 	public static String getRandomWord() {
-		DataFactory df = new DataFactory();
-		return df.getRandomWord();
+		return Invoker.randomSupply(() -> df.getRandomWord());
 	}
 
 	public static String getRandomWords(int length) {

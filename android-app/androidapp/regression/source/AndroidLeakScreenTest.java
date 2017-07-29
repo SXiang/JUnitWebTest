@@ -35,6 +35,7 @@ import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
+import common.source.CollectionsUtil;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
@@ -514,16 +515,19 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		String[] markerStatuses = {foundGasLeak, inProgress};
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
-		// Store last added leak index and leak info for verifications later.
-		final List<Integer> lastAddedLeakIndex = new ArrayList<Integer>();
-		final List<Map<String, Object>> lastAddedLeakInfo = new ArrayList<>();
+		// Store last edited leak index and leak info for verifications later.
+		final List<Integer> lastEditedLeakIndex = new ArrayList<Integer>();
+		final List<Map<String, Object>> lastEditedLeakInfo = new ArrayList<>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			assertTrue(investigateMapScreen.getFollowButton().isDisplayed());
+			assertTrue(investigateMapScreen.getInvestigateButton().isDisplayed());
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue(investigateMapScreen.getAddCGIButton().isDisplayed());
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+			assertTrue(addSourceDialog.getAddLeakButton().isDisplayed());
 
 			// get count of current 'leak' entries.
 			boolean listShown = addedSourcesListDialog.isListDisplayed();
@@ -533,45 +537,65 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 				leakCountBeforeAdd = (leaksList != null) ? leaksList.size() : 0;
 			}
 
-			addSourceDialog.clickOnAddLeak();
-			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
-			Map<String, Object> leakMap = leakDataBuilder.toMap();
-			lastAddedLeakInfo.add(leakMap);
-			addLeakSourceFormDialog.fillForm(leakMap);
-			addedSourcesListDialog.waitForScreenLoad();
+			// add new leak if none present.
+			LeakDataBuilder leakDataBuilder = new LeakDataBuilder().generateDefaultValues();
+			int leakCountAfterAdd = leakCountBeforeAdd;
+			if (leakCountBeforeAdd == 0) {
+				leakDataBuilder = addNewLeak(addSourceDialog, addLeakSourceFormDialog, addedSourcesListDialog);
+				// verify leak got added correctly.
+				List<LeakListInfoEntity> leaksList2 = addedSourcesListDialog.getLeaksList();
+				leakCountAfterAdd = leaksList2.size();
+				assertTrue(String.format("Leak list length post adding 1 new item is NOT correct. Size before add=[%d]; Size after add=[%d]",
+						leakCountBeforeAdd, leakCountAfterAdd), leaksList2.size()==leakCountAfterAdd);
+				assertLeakListInfoIsCorrect(leakDataBuilder, leaksList2, leakCountAfterAdd-1);
+			}
 
-			List<LeakListInfoEntity> leaksList2 = addedSourcesListDialog.getLeaksList();
-			int leakCountAfterAdd = leaksList2.size();
-			lastAddedLeakIndex.add(leakCountAfterAdd-1);
-			// verify leak got added correctly.
-			assertTrue(String.format("Leak list length post adding 1 new item is NOT correct. Size before add=[%d]; Size after add=[%d]",
-					leakCountBeforeAdd, leakCountAfterAdd), leaksList2.size()==leakCountAfterAdd);
-			assertLeakListInfoIsCorrect(leakDataBuilder, leaksList2, leakCountAfterAdd-1);
-
-			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leakCountAfterAdd-1);
+			// edit item. close, reopen and verify form was filled correctly.
+			lastEditedLeakIndex.add(leakCountAfterAdd-1);
+			leakDataBuilder = leakDataBuilder.generateDefaultValues();
+			lastEditedLeakInfo.add(leakDataBuilder.toMap());
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastEditedLeakIndex.get(0));
 			addLeakSourceFormDialog.waitForScreenLoad();
-			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap));
-			addLeakSourceFormDialog.clickOnCancel();
+			addLeakSourceFormDialog.clearAndFillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastEditedLeakIndex.get(0));
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakDataBuilder.toMap(), true /*isEditMode*/));
+
+			// cancel leak form. cancel list dialog.
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
-			investigateMapScreen.clickOnInvestigate();
+
 			return true;
 		});
 
+		// click on investigate and search for the report again.
 		Log.info("Navigating to previously added leak from reports screen and verifying leak info.");
+		initializeInvestigateMapScreen();
+		investigateMapScreen.clickOnInvestigate();
+		initializeInvestigationScreen();
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			return true;
+		});
+
+		// click first matching report from search. click first matching marker of type.
+		clickOnFirstInvestigationReport(investigationScreen);
+		initializeAddLeakSourceFormDialog();
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+
+		// open last edited leak info and verify data is correct.
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnAddSource();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
-			Integer lastAddedLeakIdx = lastAddedLeakIndex.get(0);
+			Integer lastAddedLeakIdx = lastEditedLeakIndex.get(0);
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastAddedLeakIdx);
 			addLeakSourceFormDialog.waitForScreenLoad();
-			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(lastAddedLeakInfo.get(0)));
-			addLeakSourceFormDialog.clickOnCancel();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(lastEditedLeakInfo.get(0), true /*isEditMode*/));
 			return true;
 		});
 	}
@@ -598,7 +622,6 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 	 *	7. A confirmation will appear
 	 *	8. The deleted leak will no longer appear in the list
 	**/
-	// TBD: More verifications to be implemented in this test after 'Mark Investigation' implementation Completed in product.
 	@Test
 	@UseDataProvider(value = ReportListDataProvider.REPORT_LIST_DATA_PROVIDER_TC2439, location = ReportListDataProvider.class)
 	public void TC2439_BackpackAppUserShouldBeAbleToDeleteLeakInformationAssociatedWithAGivenLISA(
@@ -610,7 +633,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
@@ -629,10 +652,10 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			Log.info("Checking for presence of existing marker with status -> 'Found Gas Leak' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+				.anyMatch(i -> i.getInvestigationStatus().equals(foundGasLeak) || i.getInvestigationStatus().equals(inProgress));
 			Log.info(String.format("Found=[%b]", match));
 			markerVerifier.append(String.valueOf(match));
 			return true;
@@ -645,27 +668,60 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		initializeAddLeakSourceFormDialog();
 
-		// Markers screen. Click on LISA marked as either Complete or In Progress
-		String[] markerStatuses = {complete, inProgress};
-		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		// Markers screen. Click on LISA marked as either 'Found Gas Leak' or In-Progress
+		String[] markerStatuses = {foundGasLeak, inProgress};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue(investigateMapScreen.getAddCGIButton().isDisplayed());
 			investigateMapScreen.clickOnAddSource();
-			addSourceDialog.waitForScreenLoad();
-			assertTrue(addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+			addedSourcesListDialog.waitForScreenLoad();
+			assertTrue(addedSourcesListDialog.getAddOtherSourcesButton().isDisplayed());
+
+			// get count of current 'leak' entries.
+			boolean listShown = addedSourcesListDialog.isListDisplayed();
+			int leakCountBeforeAdd = 0;
+			if (listShown) {
+				List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
+				leakCountBeforeAdd = (leaksList != null) ? leaksList.size() : 0;
+			}
+
+			// add a new leak.
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
-			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
+			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			addLeakSourceFormDialog.fillForm(leakMap);
 			addedSourcesListDialog.waitForScreenLoad();
-			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
+
+			// verify leak got added correctly.
+			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
+			int leakCountAfterAdd = leaksList.size();
+			assertTrue(String.format("Leak list length post adding 1 new item is NOT correct. Size before add=[%d]; Size after add=[%d]",
+					leakCountBeforeAdd, leakCountAfterAdd), leaksList.size()==leakCountAfterAdd);
+			assertLeakListInfoIsCorrect(leakDataBuilder, leaksList, leakCountAfterAdd-1);
+
+			// click on newly added leak and delete
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leakCountAfterAdd-1);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			addLeakSourceFormDialog.scrollToNextPage();
+			addLeakSourceFormDialog.clickOnDelete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+
+			// verfiy leak got deleted correctly.
+			initializeAndroidAddedLeakListDialog();
+			addedSourcesListDialog.waitForScreenLoad();
+			Integer initialSize = CollectionsUtil.getListSize(leaksList);
+			List<LeakListInfoEntity> sourcesListAfterDelete = addedSourcesListDialog.getLeaksList();
+			Integer sizeAfterDelete = CollectionsUtil.getListSize(sourcesListAfterDelete);
+			assertTrue(String.format("Expected condition NOT met. Initial list size=[%d], list size after delete=[%d].", initialSize, sizeAfterDelete),
+					sizeAfterDelete==initialSize-1);
+
 			return true;
 		});
-
-		// TBD: More verifications to be implemented in this test after 'Mark Investigation' implementation Completed in product.
 	}
 
 	private void createTestCaseData(TestName testName) throws Exception {
