@@ -156,7 +156,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 		clickOnMarkAsComplete(investigationEntity, true);
 	}
 	
-	public void clickOnMarkAsComplete(InvestigationEntity investigationEntity, boolean gasSourceFound){
+	public MobileInvestigationPage clickOnMarkAsComplete(InvestigationEntity investigationEntity, boolean gasSourceFound){
 		buttonComplete.click();
 		if(WebElementExtender.waitForElementToBeDisplayed(timeout, driver, confirmYesBy)){
 			if(gasSourceFound){
@@ -167,11 +167,17 @@ public class MobileInvestigatePage extends MobileBasePage {
 			investigationEntity.setSourceConfirmed(gasSourceFound);
 		}
 		investigationEntity.setInvestigationStatus(true);
+		MobileInvestigationPage investigationPage = new MobileInvestigationPage();
+		investigationPage.waitUntilPageLoad();
+		return investigationPage; 
 	}
 	
-	public void clickOnPauseInvestigation(){
+	public MobileInvestigationPage clickOnPauseInvestigation(){
 		buttonPause.click();
 		WebElementExtender.waitForElementToBeClickable(timeout, driver, investigationMarkers);
+		MobileInvestigationPage investigationPage = new MobileInvestigationPage();
+		investigationPage.waitUntilPageLoad();
+		return investigationPage; 
 	}
 
 	public void clickOnFollow(){

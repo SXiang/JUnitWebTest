@@ -1663,7 +1663,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					try {
 						if (rowSize == 1) {
 							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr[td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForReportViewImagetoAppear();
@@ -1684,7 +1684,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								break;
 							}
 
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
@@ -1699,7 +1699,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" 
+																	+ getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
@@ -1723,7 +1724,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if(rowNum == skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
 								Log.info("[Check 3]: rowNum has NOT changed. Looking for error label");
-								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
+								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
 								foundErrorLabel = true;
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
