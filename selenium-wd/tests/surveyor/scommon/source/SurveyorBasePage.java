@@ -78,14 +78,18 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']")
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
-
+	protected By linkPicarroAdminCollapsedBy = By.cssSelector("ul#picarro-administration-menu.dropdown-menu.collapse[aria-expanded='false']");
+	protected By linkPicarroAdminOpenedBy = By.cssSelector("ul#picarro-administration-menu.dropdown-menu.collapse.in");
+	
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']/a")
 	protected WebElement linkPicarroAdminXPath;
 
 	@FindBy(how = How.XPATH, using = "//*[@data-target='#customer-administration-menu']")
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
-
+	protected By linkCusAdminCollapsedBy = By.cssSelector("ul#customer-administration-menu.dropdown-menu.collapse[aria-expanded='false']");
+	protected By linkCusAdminOpenedBy = By.cssSelector("ul#customer-administration-menu.dropdown-menu.collapse.in");
+	
 	@FindBy(css = "[name^='datatable'][name$='_length']")
 	protected WebElement paginationInput;
 	By paginationInputBy = By.cssSelector("[name^='datatable'][name$='_length']");
@@ -129,6 +133,9 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
 	protected WebElement liDuplicateMsg;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-surveyors']/a")
+	protected WebElement linkCusManageSurveyors;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-users']/a")
 	protected WebElement linkAdminManageUsers;
 
@@ -138,9 +145,42 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='customer-administration-manage-ref-gas-bottles']/a")
 	protected WebElement linkCusManageRefGasBottles;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-sftp-configuration']/a")
+	protected WebElement linkCusSFTPConfiguration;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-calibration']/a")
+	protected WebElement linkPicAdminCalibration;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-users']/a")
 	protected WebElement linkPicAdminManageUsers;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-locations']/a")
+	protected WebElement linkPicAdminManageLocations;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyors']/a")
+	protected WebElement linkPicAdminManageSurveyors;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-analyzers']/a")
+	protected WebElement linkPicAdminManageAnalyzers;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
+	protected WebElement linkPicAdminManageRefGasBottles;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyor-history']/a")
+	protected WebElement linkPicAdminManageSurveyorHistory;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-sftp-configuration']/a")
+	protected WebElement linkPicAdminSFTPConfiguration;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-analyzer-logs']/a")
+	protected WebElement linkPicAdminAnalyzerLogs;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-server-log']/a")
+	protected WebElement linkPicAdminServerLog;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-report-status")
+	protected WebElement linkPicAdminReportStatus;
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalLabel']")
 	protected WebElement popupConfirmationBox;
 	protected String popupConfirmationBoxXPath = "//*[@id='myModalLabel']";
@@ -366,6 +406,9 @@ public class SurveyorBasePage extends BasePage {
 		return this.linkCusAdmin;
 	}
 
+	public WebElement getLinkCusManageSurveyors() {
+		return this.linkCusManageSurveyors;
+	}
 	public WebElement getLinkAdminManageUsers() {
 		return this.linkAdminManageUsers;
 	}
@@ -377,7 +420,11 @@ public class SurveyorBasePage extends BasePage {
 	public WebElement getLinkCusManageRefGasBottles() {
 		return this.linkCusManageRefGasBottles;
 	}
-
+	
+	public WebElement getLinkCusSFTPConfiguration() {
+		return this.linkCusSFTPConfiguration;
+	}
+	
 	public WebElement getLabelPageTableInfo() {
 		return this.labelPageTableInfo;
 	}
@@ -713,6 +760,38 @@ public class SurveyorBasePage extends BasePage {
 		return true;
 	}
 
+	public boolean verifyPicarroAdministrationLinks(){
+		WebElement[] adminLinks = {linkPicAdminCalibration,linkPicAdminManageUsers,linkPicAdminManageLocations,linkPicAdminManageSurveyors,linkPicAdminManageAnalyzers
+		                          ,linkPicAdminManageRefGasBottles,linkPicAdminManageSurveyorHistory,linkPicAdminSFTPConfiguration};
+		boolean linkFound = true;
+
+		for(WebElement link:adminLinks){
+			linkFound &= WebElementExtender.isElementPresentAndDisplayed(link);
+		}
+		return linkFound;
+	}
+
+	public boolean verifyPicarroAdministrationLogs(){
+		WebElement[] adminLogs = {linkPicAdminAnalyzerLogs,linkPicAdminServerLog,linkPicAdminReportStatus};
+		boolean linkFound = true;
+
+		for(WebElement log:adminLogs){
+			linkFound &= WebElementExtender.isElementPresentAndDisplayed(log);
+		}
+		return linkFound;
+	}
+	
+	public boolean verifyCustomerAdministrationLinks(){
+		WebElement[] adminLinks = {linkCusManageSurveyors, linkAdminManageUsers, 
+				linkCusManageLocations, linkCusManageRefGasBottles, linkCusSFTPConfiguration};
+		boolean linkFound = true;
+
+		for(WebElement link:adminLinks){
+			linkFound &= WebElementExtender.isElementPresentAndDisplayed(link);
+		}
+		return linkFound;
+	}
+	
 	public boolean waitForNumberOfRecords(String actualMessage){
 		return waitForNumberOfRecords(DATATABLE_RECORDS_ELEMENT_BY, actualMessage);
 	}

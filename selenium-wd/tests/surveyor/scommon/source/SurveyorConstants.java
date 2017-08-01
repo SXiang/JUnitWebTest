@@ -325,6 +325,7 @@ public final class SurveyorConstants {
 	public static final String CUSDRVSTDTAG2 = "stnd-sqacudr";
 	public static final String CUSDRVRRTAG2 = "rr-sqacudr";
 	public static final String CUSDRVOPTAG2 = "op-sqacudr";
+	public static final String CUSDRVSTDLEAK = "Standard With Leak";
 
 	/*
 	 * Long driving surveys.

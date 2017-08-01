@@ -18,19 +18,29 @@ import surveyor.scommon.actions.PageActionsStore;
 import surveyor.scommon.entities.ComplianceReportEntity;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.EQReportsPage;
+import surveyor.scommon.source.FacilityEQReportsPage;
 import surveyor.scommon.source.FleetMapPage;
 import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageUsersPage;
+import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
+import surveyor.scommon.source.ReferenceGasReportsPage;
+import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.scommon.source.SystemHistoryReportsPage;
+import surveyor.scommon.source.AssessmentReportsPage;
+import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
+import surveyor.scommon.source.MeasurementSessionsPage.UserRoleType;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,15 +55,24 @@ import common.source.WebElementExtender;
 @RunWith(SurveyorTestRunner.class)
 public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static final Integer REPORT_MENU_DISPLAY_TIMEOUT = 60;
-	private static ManageCustomersPage manageCustomersPage;
-	private static ManageUsersPage manageUsersPage;
-	private static ComplianceReportsPage complianceReportsPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
+	private static SurveyorSystemsPage surveyorPage;
+	private static MeasurementSessionsPage measurementSessionsPage;
+	private static SurveyViewPage surveyViewPage;
 	private static PreferencesPage preferencesPage;
 	private static FleetMapPage fleetMapPage;
-	private static SurveyorSystemsPage surveyorPage;
-
+	private static ManageCustomersPage manageCustomersPage;
+	private static ManageUsersPage manageUsersPage;
+	private static EQReportsPage eqReportsPage;
+	private static FacilityEQReportsPage facilityEQReportsPage;
+	private static AssessmentReportsPage assessmentReportsPage;
+	private static ReferenceGasReportsPage referenceGasReportsPage;
+	private static SystemHistoryReportsPage systemHistoryReportsPage;
+	private static ComplianceReportsPage complianceReportsPage;
+	private static List<String> strListTagCus = null;
+	private static List<String> strListTagPic = null;
+	private static List<String> strListTagCusDr = null;
 	/**
 	 * This method is called by the 'main' thread
 	 */
@@ -73,26 +92,249 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageActionsStore.INSTANCE.clearStore();
 
 		initializeTestObjects();
-
 		PageObjectFactory pageObjectFactory = new PageObjectFactory();
-		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
-		PageFactory.initElements(getDriver(), manageCustomersPage);
-		manageUsersPage = pageObjectFactory.getManageUsersPage();
-		PageFactory.initElements(getDriver(), manageUsersPage);
 		homePage = pageObjectFactory.getHomePage();
 		PageFactory.initElements(getDriver(), homePage);
 		loginPage = pageObjectFactory.getLoginPage();
 		PageFactory.initElements(getDriver(), loginPage);
+		surveyorPage = pageObjectFactory.getSurveyorSystemsPage();
+		PageFactory.initElements(getDriver(), surveyorPage);
+		measurementSessionsPage = pageObjectFactory.getMeasurementSessionsPage();
+		PageFactory.initElements(getDriver(), measurementSessionsPage);
+		surveyViewPage = pageObjectFactory.getSurveyViewPage();
+		PageFactory.initElements(getDriver(), surveyViewPage);
+		
 		preferencesPage = pageObjectFactory.getPreferencesPage();
 		PageFactory.initElements(getDriver(), preferencesPage);
 		fleetMapPage = pageObjectFactory.getFleetMapPage();
 		PageFactory.initElements(getDriver(), fleetMapPage);
-		surveyorPage = pageObjectFactory.getSurveyorSystemsPage();
-		PageFactory.initElements(getDriver(), surveyorPage);
+		manageCustomersPage = pageObjectFactory.getManageCustomersPage();
+		PageFactory.initElements(getDriver(), manageCustomersPage);
+		manageUsersPage = pageObjectFactory.getManageUsersPage();
+		PageFactory.initElements(getDriver(), manageUsersPage);
+
+		eqReportsPage = pageObjectFactory.getEqReportsPage();
+		PageFactory.initElements(getDriver(), eqReportsPage);
+		facilityEQReportsPage = pageObjectFactory.getFacilityEQReportsPage();
+		PageFactory.initElements(getDriver(), facilityEQReportsPage);
+		assessmentReportsPage = pageObjectFactory.getAssessmentReportsPage();
+		PageFactory.initElements(getDriver(), assessmentReportsPage);
+		systemHistoryReportsPage = pageObjectFactory.getSystemHistoryReportsPage();
+		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
+		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
+		PageFactory.initElements(getDriver(), referenceGasReportsPage);
 		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complianceReportsPage);
+
+		strListTagCus = new ArrayList<String>();
+		strListTagPic = new ArrayList<String>();
+		strListTagCusDr = new ArrayList<String>();
+
+		strListTagCusDr.add(SQACUSDRTAG2);
+		strListTagCus.add(CUSDRVSTDTAG2);
+		strListTagCus.add(CUSDRVRRTAG2);
+		strListTagCus.add(CUSDRVOPTAG2);
+		strListTagPic.add(PICADMNSTDTAG2);
+		strListTagPic.add(PICADMNRRTAG2);
+		strListTagPic.add(PICADMNOPTAG2);
+		strListTagPic.add(PICADMNMANTAG2);
 	}
 
+	/**
+	 * Test Case ID: TC29_VerifyLoginProfile_UtilityAdmin():
+	 * Verify Login Profile for Utility Admin
+	 * Script:
+	 * - Login with user credentials on customer utility admin user [E1]
+	 * - Click on Administration link [E3]
+	 * - Click on Surveyor [E6]
+	 * - Click on Driving Survey link [E7]
+	 * - Click on View link of any one of the survey and turn on ALL GIS data [E8]
+	 * - Click on Reports [E9]
+	 * Results:
+	 * - E1. Login successful and user navigated to expected customer's home page
+	 * - E3. Administration menu is displayed
+	 * - E6. User is able to see surveyor units and analyzers associated with that particular Customer and not other analyzers information not associated to that Customer
+	 * - E7. User is able to see surveys associated only to his surveyor units and not other user's surveys
+	 * - E8. User is able to see GIS Assets data associated with that particular Customer and not other GIS Assets not associated to that Customer (must zoom in to one of the 3 highest levels)
+	 * - E9 User is able to see reports associated only to that customer and not other customer's user's reports
+	 */
+
+	@Test
+	public void TC29_VerifyLoginProfile_UtilityAdmin() throws Exception {
+		String userName = SQACUSUA;
+		String password = USERPASSWORD;
+		String customerName = SQACUS;
+
+		Log.info(
+				"\nRunning TC29_VerifyLoginProfile_UtilityAdmin - Test Description: Verify Login Profile for Utility Admin");
+
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
+		
+		/* Verify Customer Administration Link */
+		homePage.waitForPageLoad();
+		homePage.openCusAdminMenu();
+		assertTrue(homePage.verifyCustomerAdministrationLinks());
+		
+		/* Verify Customer Surveyors */ 
+		homePage.getLinkSurveyors().click();
+		surveyorPage.waitForPageLoad();
+		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(customerName));
+
+		/* Verify Customer Driving Survey Link */ 
+		homePage.getLinkDrivingSurveys().click();
+		measurementSessionsPage.waitForPageLoad();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(userName, UserRoleType.UtilityAdmin, strListTagCus, strListTagPic));
+
+		/* Verify  Survey View */
+		measurementSessionsPage.performSearch(CUSDRVSTDLEAK);
+		measurementSessionsPage.clickOnFirstViewSurvey();
+		surveyViewPage.waitForPageLoad();
+		surveyViewPage.clickGisButton();
+		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
+		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
+		surveyViewPage.clickGisButton();
+		surveyViewPage.setZoomLevelForAssets();
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries"));
+		
+		/* Verify  Reports */
+		homePage.open();
+		homePage.openReportsMenu();
+		homePage.getLinkCompliance().click();
+		complianceReportsPage.waitForPageLoad();
+		assertTrue(complianceReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkAssessment().click();
+		assessmentReportsPage.waitForPageLoad();
+		assertTrue(assessmentReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkEQ().click();
+		eqReportsPage.waitForPageLoad();
+		assertTrue(eqReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkFacilityEQ().click();
+		facilityEQReportsPage.waitForPageLoad();
+		assertTrue(facilityEQReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkReferenceGas().click();
+		referenceGasReportsPage.waitForPageLoad();
+		assertTrue(referenceGasReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkSystemHistory().click();
+		systemHistoryReportsPage.waitForPageLoad();
+		assertTrue(systemHistoryReportsPage.verifyReportsAreCreatedBy(customerName));		
+	}
+	
+
+	/**
+	 * Test Case ID: TC29_VerifyLoginProfile_Supervisor():
+	 * Verify Login Profile for Supervisor
+	 * Script:
+	 * - Login with user credentials on customer utility supervisor user [E1]
+	 * - Click on Surveyor [E6]
+	 * - Click on Driving Survey link [E7]
+	 * - Click on View link of any one of the survey and turn on ALL GIS data [E8]
+	 * - Click on Reports [E9]
+	 * Results:
+	 * - E1. Login successful and user navigated to expected customer's home page
+	 * - E6. User is able to see surveyor units and analyzers associated with that particular Customer and not other analyzers information not associated to that Customer
+	 * - E7. User is able to see surveys associated only to his surveyor units and not other user's surveys
+	 * - E8. User is able to see GIS Assets data associated with that particular Customer and not other GIS Assets not associated to that Customer (must zoom in to one of the 3 highest levels)
+	 * - E9 User is able to see reports associated only to that customer and not other customer's user's reports
+	 * @throws Exception 
+	 */
+	
+	@Test
+	public void TC29_VerifyLoginProfile_Supervisor() throws Exception {
+		String userName = SQACUSSU;
+		String password = USERPASSWORD;
+		String customerName = SQACUS;
+
+		Log.info(
+				"\nRunning TC29_VerifyLoginProfile_Supervisor - Test Description: Verify Login Profile for Supervisor");
+
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
+
+		/* Verify Customer Surveyors */ 
+		homePage.getLinkSurveyors().click();
+		surveyorPage.waitForPageLoad();
+		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(customerName));
+
+		/* Verify Customer Driving Survey Link */ 
+		homePage.getLinkDrivingSurveys().click();
+		measurementSessionsPage.waitForPageLoad();
+		assertTrue(measurementSessionsPage.checkVisibilityForDrivingSurveys(userName, UserRoleType.Supervisor, strListTagCus, strListTagPic));
+
+		/* Verify  Survey View */
+		measurementSessionsPage.performSearch(CUSDRVSTDLEAK);
+		measurementSessionsPage.clickOnFirstViewSurvey();
+		surveyViewPage.waitForPageLoad();
+		surveyViewPage.clickGisButton();
+		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
+		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
+		surveyViewPage.clickGisButton();
+		surveyViewPage.setZoomLevelForAssets();
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries"));
+		
+		/* Verify  Reports */
+		homePage.open();
+		homePage.openReportsMenu();
+		homePage.getLinkCompliance().click();
+		complianceReportsPage.waitForPageLoad();
+		assertTrue(complianceReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkAssessment().click();
+		assessmentReportsPage.waitForPageLoad();
+		assertTrue(assessmentReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkEQ().click();
+		eqReportsPage.waitForPageLoad();
+		assertTrue(eqReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkFacilityEQ().click();
+		facilityEQReportsPage.waitForPageLoad();
+		assertTrue(facilityEQReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkReferenceGas().click();
+		referenceGasReportsPage.waitForPageLoad();
+		assertTrue(referenceGasReportsPage.verifyReportsAreCreatedBy(customerName));
+		
+		homePage.getLinkSystemHistory().click();
+		systemHistoryReportsPage.waitForPageLoad();
+		assertTrue(systemHistoryReportsPage.verifyReportsAreCreatedBy(customerName));		
+	}
+	
+	/**
+	 * Test Case ID: TC29_VerifyLoginProfile_PicarroAdmin():
+	 * Verify Login Profile for Picarro Admin
+	 * Script:
+	 * - Login with user credentials on customer picarro admin user [E1]
+	 * - Click on Administration link [E3]
+	 * Results:
+	 * - E1. Login successful and user navigated to expected customer's home page
+	 * - E4. Picarro Administrator Menu is displayed
+	 * - E5. Customer Alarm and Raw Data logs are displayed
+	 */
+	@Test
+	public void TC29_VerifyLoginProfile_PicarroAdmin() {
+		String userName = PICDFADMIN;
+		String password = PICADMINPSWD;
+		
+
+		Log.info(
+				"\nRunning TC29_VerifyLoginProfile_PicarroAdmin - Test Description: Verify Login Profile for Picarro Admin");
+
+		loginPage.open();
+		loginPage.loginNormalAs(userName, password);
+		
+		/* Verify Picarro Administration Links/Logs */
+		homePage.waitForPageLoad();
+		homePage.openCusAdminMenu();
+		assertTrue(homePage.verifyPicarroAdministrationLinks());
+		assertTrue(homePage.verifyPicarroAdministrationLogs());
+	}
+	
 	/**
 	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole Test Description:
 	 * Check ACLV for customer user with Driver role
@@ -122,26 +364,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.open();
 		assertTrue(homePage.checkIfAtHomePage());
 		assertTrue(homePage.checkVisibilityForCusDR(userName));
+
 		homePage.logout();
-	}
-
-	/**
-	 * Test Case ID: TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes Test
-	 * Description: Release Notes link is working and can download Release Notes
-	 *
-	 */
-	@Ignore
-	public void TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes() {
-		Log.info(
-				"\nRunning TC35_CheckACLVCustomerUser_DriverRole_ReleaseNotes - Test Description: Release Notes link is working and can download Release Notes");
-		loginPage.open();
-		loginPage.loginNormalAs(SQACUSDR, USERPASSWORD);
-		homePage.open();
-		homePage.waitForPageLoad();
-		homePage.getDropDownLoginUser().click();
-		homePage.waitForReleaseNotesLinktoLoad();
-		assertTrue(homePage.getReleaseNotesLink());
-
 	}
 
 	/**
