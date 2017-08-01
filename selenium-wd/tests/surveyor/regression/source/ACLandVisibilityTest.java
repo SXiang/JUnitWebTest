@@ -330,7 +330,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		
 		/* Verify Picarro Administration Links/Logs */
 		homePage.waitForPageLoad();
-		homePage.openCusAdminMenu();
+		homePage.openPicarroAdminMenu();
 		assertTrue(homePage.verifyPicarroAdministrationLinks());
 		assertTrue(homePage.verifyPicarroAdministrationLogs());
 	}
