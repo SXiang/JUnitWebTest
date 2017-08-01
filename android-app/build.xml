@@ -1,4 +1,4 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="android-app" default="androiduitests" basedir=".">
+<project name="android-app" default="androiduitests" basedir=".">
   <property name="proj_name" value="android-app" />
   <property name="version" value="1.0" />
   <property name="git_hash" value="50d57b8" />
@@ -191,6 +191,7 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
+          <include name="**/AndroidLeakScreenTest.class" />
           <include name="**/AndroidSettingsScreenTest2.class" />
         </fileset>
       </batchtest>
