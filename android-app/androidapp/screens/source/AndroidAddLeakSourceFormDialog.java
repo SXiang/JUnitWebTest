@@ -14,7 +14,6 @@ import common.source.LogHelper;
 import common.source.MobileActions;
 import common.source.MobileActions.KeyCode;
 import common.source.MobileActions.SwipeDirection;
-import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -27,19 +26,19 @@ import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 
 public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"OK\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
 	private WebElement oK;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Cancel\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Delete\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
 	private WebElement delete;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
@@ -257,6 +256,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getOKButton() {
 		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
 		return oK;
 	}
 
@@ -269,6 +269,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 
@@ -279,6 +280,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getDeleteButton() {
 		Log.method("getDeleteButton");
+		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
 		return delete;
 	}
 
@@ -558,7 +560,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void scrollToNextPage() {
 		Log.method("scrollToNextPage");
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, 2000);
+		final int secsToScroll = 2;
+		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, secsToScroll * 1000);
 	}
 
 	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) {

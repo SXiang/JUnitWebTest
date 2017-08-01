@@ -17,22 +17,23 @@ import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 
 public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String ADD_OTHER_SOURCES_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Add Other Sources\")";
+	private static final String ADD_LEAK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Add Leak\")";
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement headerElement;
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Add Leak\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = ADD_LEAK_BUTTON_UI_SELECTOR)
 	private WebElement addLeak;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Add Other Sources\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = ADD_OTHER_SOURCES_BUTTON_UI_SELECTOR)
 	private WebElement addOtherSources;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
-	@CacheLookup
+	@AndroidFindBy(xpath = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
 
 	/****** ListView elements ******/
@@ -77,6 +78,7 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
 	public WebElement getAddLeakButton() {
 		Log.method("getAddLeakButton");
+		addLeak = getAndroidDriver().findElementByAndroidUIAutomator(ADD_LEAK_BUTTON_UI_SELECTOR);
 		return addLeak;
 	}
 
@@ -87,6 +89,7 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
 	public WebElement getAddOtherSourcesButton() {
 		Log.method("getAddOtherSourcesButton");
+		addOtherSources = getAndroidDriver().findElementByAndroidUIAutomator(ADD_OTHER_SOURCES_BUTTON_UI_SELECTOR);
 		return addOtherSources;
 	}
 
@@ -97,6 +100,7 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 

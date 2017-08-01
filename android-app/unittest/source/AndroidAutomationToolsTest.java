@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
+import common.source.BaseHelper;
 import common.source.Log;
 import common.source.ScreenRecorder;
 import common.source.TestContext;
@@ -51,6 +52,28 @@ public class AndroidAutomationToolsTest {
 	public void testDisableAnimations() throws Exception {
 		AndroidAutomationTools.start();
 		AndroidAutomationTools.disableAnimations();
+	}
+
+	@Test
+	public void testGetGraphicsInfo() throws Exception {
+		String gfxInfo = AndroidAutomationTools.getGraphicsInfo();
+		String[] lines = gfxInfo.split(BaseHelper.getLineSeperator());
+		Log.info("gfxInfo -> ");
+		for (String line : lines) {
+			Log.info(line);
+		}
+		assertTrue("GfxInfo was NOT fetched.", lines != null && lines.length > 0);
+	}
+
+	@Test
+	public void testGetCpuInfo() throws Exception {
+		String cpuInfo = AndroidAutomationTools.getCpuInfo();
+		String[] lines = cpuInfo.split(BaseHelper.getLineSeperator());
+		Log.info("cpuInfo -> ");
+		for (String line : lines) {
+			Log.info(line);
+		}
+		assertTrue("CPUInfo was NOT fetched.", lines != null && lines.length > 0);
 	}
 
 	@Test

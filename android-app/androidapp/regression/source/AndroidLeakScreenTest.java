@@ -561,6 +561,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastEditedLeakIndex.get(0));
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakDataBuilder.toMap(), true /*isEditMode*/));
+			addLeakSourceFormDialog.clickOnCancel();
 
 			// cancel leak form. cancel list dialog.
 			addedSourcesListDialog.clickOnCancel();
