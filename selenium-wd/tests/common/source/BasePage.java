@@ -53,7 +53,7 @@ public class BasePage {
 	protected TestSetup testSetup;
 	protected static Dimension testBrowserSize = null;
 	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1199, 600);
-	
+
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
 	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
@@ -143,7 +143,7 @@ public class BasePage {
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
 
-		
+
 	public Dimension getTestBrowserSize() {
 		if(testBrowserSize==null){
 			setTestBrowserSize(TEST_WINDOW_SIZE);
@@ -395,7 +395,7 @@ public class BasePage {
 	protected Boolean waitForElementToBeDisplayed(By elementBy){
 		return WebElementExtender.waitForElementToBeDisplayed(timeout, driver, elementBy);
 	}
-	
+
 	protected void waitAndClickElement(WebElement element) {
 		Log.method("waitAndClickElement", element);
 		waitForElementToBeClickable(element);
@@ -482,7 +482,7 @@ public class BasePage {
 			Log.warn("Failed to move to element: "+e);
 		}
 	}
-	
+
 	public void focusOnPage(By locator){
 		WebElement element = waitUntilPresenceOfElementLocated(locator);
 		focusOnPage(element);
@@ -520,18 +520,18 @@ public class BasePage {
     public void refreshPage(){
     	Log.info("Refresh current page");
     	driver.navigate().refresh();
-	} 
-    
+	}
+
     public void resizeBrowserWindow(){
     	Log.info("Resize browser window for testing :"+getTestBrowserSize());
     	driver.manage().window().setSize(getTestBrowserSize());
-	}   
-    
+	}
+
     public void inputTextValue(WebElement inputElement, String value){
     	inputElement.clear();
     	inputElement.sendKeys(value);
     }
-    
+
     public void SelectElement(WebElement checkbox) {
     	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){
@@ -591,7 +591,7 @@ public class BasePage {
 		WebElement listItem = buttonDropdown.findElement(By.cssSelector(".btn-default > .button-label"));
     	return getElementText(listItem);
     }
-    
+
     public String getElementText(WebElement element) {
     	String text = "";
     	try{
@@ -601,7 +601,7 @@ public class BasePage {
     	}
     	return text;
     }
-    
+
     public String getElementInnerText(WebElement element) {
     	String text = "";
     	try{
@@ -611,11 +611,11 @@ public class BasePage {
     	}
     	return text;
     }
-    
+
     public String getElementInputValue(WebElement element) {
     	return getElementAttribute(element, "value");
     }
-    
+
     public String getElementAttribute(WebElement element, String attr) {
     	String text = "";
     	try{
@@ -625,12 +625,12 @@ public class BasePage {
     	}
     	return text;
     }
-    
+
     public String getDropdownSelectedOption(WebElement dropDown) {
     	WebElement option = new Select(dropDown).getFirstSelectedOption();
     	return getElementText(option);
     }
-    
+
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;
@@ -694,7 +694,7 @@ public class BasePage {
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name , boolean resizeWindow) throws IOException{
 		return verifyScreenshotWithBaseline(testCaseID, name, null, resizeWindow);
 	}
-	
+
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
 		return verifyScreenshotWithBaseline(testCaseID, name, null, false);
 	}
@@ -707,14 +707,14 @@ public class BasePage {
 		    maxmizeBrowserWindow();
 		return valid;
 	}
-	
+
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
 				.toString() + File.separator + testCaseID + File.separator + name + ".png";
 		String actualFile = Paths
 				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
-		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
+		ScreenShotOnFailure.captureWebDriverScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
 		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;

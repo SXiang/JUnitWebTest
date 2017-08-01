@@ -8,9 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,6 +40,7 @@ import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
@@ -137,6 +135,11 @@ public class BaseAndroidTest extends BaseTest {
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
 		cleanUp();
+	}
+
+	@SuppressWarnings("rawtypes")
+	protected AndroidDriver getAndroidDriver() {
+		return (AndroidDriver)appiumDriver;
 	}
 
 	private void initPerfmonDataCollector() {

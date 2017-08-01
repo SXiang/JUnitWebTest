@@ -162,6 +162,12 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return velocity.getText();
 	}
 
+	public Boolean verifyMapIsShown() {
+		Log.method("verifyMapIsShown");
+		// TBD: To be implemented post image recognition sikuli prototype integrated in master.
+		return false;
+	}
+
 	public Boolean waitForMarkAsCompleteButtonToBeDisplayed() {
 		Log.method("waitForMarkAsCompleteToBeDisplayed");
 		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_ELEMENT_CHANGE_TIMEOUT)).until(new ExpectedCondition<Boolean>() {
