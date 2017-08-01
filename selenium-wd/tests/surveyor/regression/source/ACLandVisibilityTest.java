@@ -40,7 +40,7 @@ import surveyor.scommon.source.MeasurementSessionsPage.UserRoleType;
 
 import static surveyor.scommon.source.SurveyorConstants.*;
 
-import java.io.IOException;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -195,7 +195,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.clickGisButton();
 		surveyViewPage.setZoomLevelForAssets();
-		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries"));
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 		
 		/* Verify  Reports */
 		homePage.open();
@@ -275,7 +275,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
 		surveyViewPage.clickGisButton();
 		surveyViewPage.setZoomLevelForAssets();
-		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries"));
+		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 		
 		/* Verify  Reports */
 		homePage.open();
