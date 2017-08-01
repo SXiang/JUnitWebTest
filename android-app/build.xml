@@ -154,6 +154,25 @@
       </batchtest>
     </junit>
   </target>
+  <target name="local_androiduitests" depends="compile_androidapp" description="Run android app ui for local testing">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="false" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${reports}/androiduitests/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/AndroidLeakScreenTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
   <target name="androiduisanitytests" depends="compile_androidapp" description="Run android app ui sanity tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="AndroidUITests" />

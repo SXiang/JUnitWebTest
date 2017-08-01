@@ -3,6 +3,7 @@
  */
 package surveyor.scommon.entities;
 
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 public abstract class InvestigationEntity {
 	protected String leakSourceType;
@@ -24,7 +25,7 @@ public abstract class InvestigationEntity {
 	}
 	
 	public void setDefaultTestData(){
-		investigationStatus = "Not investigated";
+		investigationStatus = IndicationStatus.NOTINVESTIGATED.toString();
 		additionalNotes = "SQAAuto test notes";
 	}
 

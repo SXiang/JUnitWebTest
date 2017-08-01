@@ -29,10 +29,12 @@ import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
 import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogCollector;
 import common.source.MobileActions;
 import common.source.PerfmonDataCollector;
+import common.source.ProcessUtility;
 import common.source.ScreenRecorder;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -48,8 +50,12 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final double DEFAULT_ALTITUDE = 0.0;
+	private static final double DEFAULT_LONGITUDE = -121.9863994;
+	private static final double DEFAULT_LATITUDE = 37.3965775;
 	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String ADB_EXE = "adb.exe";
 
 	protected static final String TRUE = "true";
 	protected static final String EMPTY = BaseActions.EMPTY;
@@ -130,6 +136,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+		cleanUp();
 	}
 
 	private void initPerfmonDataCollector() {
@@ -284,21 +291,19 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		AndroidAutomationTools.stop();
-		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
-	}
 
-	@Override
-	public void postTestMethodProcessing() {
-		cleanUp();
+		ProcessUtility.killProcess(ADB_EXE, false /*killChildProcesses*/);
+
+		TestContext.INSTANCE.stayIdle(3);    // restarting processes immediately after cleanup could give errors.
 	}
 
 	protected void cleanUp() {
 		if (appiumDriver != null) {
-			appiumDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumDriver.quit());
 		}
 
 		if (appiumWebDriver != null) {
-			appiumWebDriver.quit();
+			FunctionUtil.warnOnError(() -> appiumWebDriver.quit());
 		}
 	}
 
@@ -396,7 +401,7 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	private void setDefaultLocation() {
-		appiumDriver.setLocation(new Location(37.3965775, -121.9863994, 0.0));
+		appiumDriver.setLocation(new Location(DEFAULT_LATITUDE, DEFAULT_LONGITUDE, DEFAULT_ALTITUDE));
 	}
 
 	private void startReactNativePackager() throws IOException {

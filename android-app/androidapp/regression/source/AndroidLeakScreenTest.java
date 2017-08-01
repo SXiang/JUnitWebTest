@@ -297,6 +297,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
         List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()

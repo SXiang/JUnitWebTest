@@ -54,6 +54,8 @@ public class MobileInvestigatePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.ok()']")
 	protected WebElement confirmYes;
+	protected By confirmYesBy = By.cssSelector(".modal-dialog button.btn[ng-click='modalOptions.ok()']");
+	
 	@FindBy(how = How.CSS, using = ".modal-dialog button.btn[ng-click='modalOptions.cancel()']")
 	protected WebElement confirmNo;
 
@@ -71,6 +73,9 @@ public class MobileInvestigatePage extends MobileBasePage {
 	
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Investigation Markers')]")
 	protected WebElement investigationMarkers;
+
+	@FindBy(how = How.ID, using = "geolocation_marker")
+	protected WebElement geoLocationMarker;
 	
 	protected String boxItemXPattern = "//*[@id='boxType']/ul[@class='dropdown-menu']/li/a[text()='%s ']";
 	protected String boxMarkerXPattern = "//div[@class='list-group']/a[starts-with(text(), '%s')]";
@@ -126,7 +131,23 @@ public class MobileInvestigatePage extends MobileBasePage {
 		}
 		return waitForLeakSourcePage();
 	}	
-	
+
+    public MobileLeakSourcePage openLeakDetail(){
+    	return clickToOpenLeakDetail(linkToFirstLeak);
+    }
+
+    public boolean isLeakShowing(){
+    	return WebElementExtender.isElementPresentAndDisplayed(linkToFirstLeak);
+    }
+
+    public boolean isOtherSourceShowing(){
+    	return WebElementExtender.isElementPresentAndDisplayed(linkToFirstOtherSource);
+    }
+    
+    public MobileLeakSourcePage openOtherSourceDetail(){
+    	return clickToOpenLeakDetail(linkToFirstOtherSource);
+    }
+    
 	public MobileLeakSourcePage clickToOpenLeakDetail(WebElement leak){
 		leak.click();
 		return waitForLeakSourcePage();
@@ -137,7 +158,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 	
 	public void clickOnMarkAsComplete(InvestigationEntity investigationEntity, boolean gasSourceFound){
 		buttonComplete.click();
-		if(WebElementExtender.isElementPresentAndDisplayed(confirmYes)){
+		if(WebElementExtender.waitForElementToBeDisplayed(timeout, driver, confirmYesBy)){
 			if(gasSourceFound){
 				confirmYes.click();
 			}else{
@@ -155,6 +176,7 @@ public class MobileInvestigatePage extends MobileBasePage {
 
 	public void clickOnFollow(){
 		buttonFollow.click();
+		waitForAJAXCallsToComplete();
 		waitUntilPageLoad(mapKey);
 	}
 	
@@ -179,6 +201,10 @@ public class MobileInvestigatePage extends MobileBasePage {
 		MobileLeakSourcePage otherSourcePage = new MobileLeakSourcePage();
 		otherSourcePage.waitUntilPageLoad();
 		return otherSourcePage;
+	}
+	
+	public boolean isGeoLocationMarkerShowing(){
+		return WebElementExtender.isElementPresentAndDisplayed(geoLocationMarker);
 	}
 	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{

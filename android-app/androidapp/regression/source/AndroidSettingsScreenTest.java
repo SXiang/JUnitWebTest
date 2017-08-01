@@ -96,7 +96,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 	 *	- Log into Backpack tablet
 	 *	- Click on the menu icon at bottom right of the screen
 	 *	- Click on Alarm Settings
-	 *	- Set Volume to 5, Amplitude to 15, Threshold to 20 and Background duration to 4 and click Apply
+	 *	- Set Volume to 5, Threshold to 20 and click Apply
 	 *	- Wave wand over controlled leak set just above these levels
 	 *	- Take a few steps back from controlled leak and wave wand again
 	 *	- Reset Alarm settings to levels lower than last measured levels
@@ -125,9 +125,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 			settingsScreen.clickOnAlarmSettings();
 			alarmSettingsScreen.waitForScreenLoad();
 			alarmSettingsScreen.slideToVolume(5.0f);
-			alarmSettingsScreen.slideToAmplitudeppm(15.0f);
 			alarmSettingsScreen.slideToThresholdppm(20.0f);
-			alarmSettingsScreen.slideToBackgroundDuration(4.0f);
 			alarmSettingsScreen.clickOnApply();
 			return true;
 		});

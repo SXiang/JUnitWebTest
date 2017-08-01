@@ -34,6 +34,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.avh4.util.imagecomparison.ImageComparisonResult;
@@ -50,7 +51,9 @@ public class BasePage {
 	protected String strPageURL;
 	protected WebDriver driver;
 	protected TestSetup testSetup;
-
+	protected static Dimension testBrowserSize = null;
+	protected static final Dimension TEST_WINDOW_SIZE = new Dimension(1199, 600);
+	
 	protected int timeout = 60;   // For parallel execution increasing timeout to 60 seconds.
 
 	@FindBy(how = How.CSS, using = ".navbar-header > .navbar-brand > .logo")
@@ -139,6 +142,23 @@ public class BasePage {
 
 	public static enum ElementType{BUTTON,LABEL,CHECKBOX,RADIOBUTTON,INPUT
 		,DIVISION, LINK, OPTION, ICON, DROPDOWN};
+
+		
+	public Dimension getTestBrowserSize() {
+		if(testBrowserSize==null){
+			setTestBrowserSize(TEST_WINDOW_SIZE);
+		}
+		return testBrowserSize;
+	}
+
+	public void setTestBrowserSize(Dimension testWindowSize) {
+		try {
+			testBrowserSize = BrowserWindowUtility.getBrowserSize(driver, testWindowSize);
+		} catch (Exception e) {
+			testBrowserSize = testWindowSize;
+			Log.warn("Faile to get actual browser size on client window: "+testWindowSize);
+		}
+	}
 
 	public BasePage(WebDriver driver, TestSetup testSetup, String strBaseURL, String strPageURL) {
 		this.driver = driver;
@@ -496,6 +516,22 @@ public class BasePage {
     	Log.info("Navigate back to previous page");
     	driver.navigate().back();
 	}
+
+    public void refreshPage(){
+    	Log.info("Refresh current page");
+    	driver.navigate().refresh();
+	} 
+    
+    public void resizeBrowserWindow(){
+    	Log.info("Resize browser window for testing :"+getTestBrowserSize());
+    	driver.manage().window().setSize(getTestBrowserSize());
+	}   
+    
+    public void inputTextValue(WebElement inputElement, String value){
+    	inputElement.clear();
+    	inputElement.sendKeys(value);
+    }
+    
     public void SelectElement(WebElement checkbox) {
     	Log.method("SelectElement", checkbox);
     	if (!checkbox.isSelected()){
@@ -544,13 +580,18 @@ public class BasePage {
 
 	private boolean isItemSelected(WebElement buttonDropdown, String item){
 		try{
-			buttonDropdown.findElement(By.xpath("span[text()='"+item+"']"));
+			buttonDropdown.findElement(By.xpath("../button/span[text()='"+item+"']"));
 		}catch(Exception e){
 			return false;
 		}
 		return true;
 	}
 
+    public String getDropdownSelectedItem(WebElement buttonDropdown) {
+		WebElement listItem = buttonDropdown.findElement(By.cssSelector(".btn-default > .button-label"));
+    	return getElementText(listItem);
+    }
+    
     public String getElementText(WebElement element) {
     	String text = "";
     	try{
@@ -560,7 +601,21 @@ public class BasePage {
     	}
     	return text;
     }
-
+    
+    public String getElementInnerText(WebElement element) {
+    	String text = "";
+    	try{
+    		text = element.getAttribute("innerHTML");
+    	}catch(Exception e){
+    		Log.error("Failed to get text of element '"+element+"'");
+    	}
+    	return text;
+    }
+    
+    public String getElementInputValue(WebElement element) {
+    	return getElementAttribute(element, "value");
+    }
+    
     public String getElementAttribute(WebElement element, String attr) {
     	String text = "";
     	try{
@@ -570,7 +625,12 @@ public class BasePage {
     	}
     	return text;
     }
-
+    
+    public String getDropdownSelectedOption(WebElement dropDown) {
+    	WebElement option = new Select(dropDown).getFirstSelectedOption();
+    	return getElementText(option);
+    }
+    
     public boolean isPageTitleMatch(String title, String keywords){
     	if(title.contains(keywords)){
     		return true;
@@ -631,10 +691,23 @@ public class BasePage {
 		}
 	}
 
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name , boolean resizeWindow) throws IOException{
+		return verifyScreenshotWithBaseline(testCaseID, name, null, resizeWindow);
+	}
+	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name) throws IOException{
-		return verifyScreenshotWithBaseline(testCaseID, name, null);
+		return verifyScreenshotWithBaseline(testCaseID, name, null, false);
 	}
 
+	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect, boolean resizeBrowserWindow) throws IOException{
+		if(resizeBrowserWindow)
+			resizeBrowserWindow();
+		boolean valid = verifyScreenshotWithBaseline(testCaseID, name, rect);
+		if(resizeBrowserWindow)
+		    maxmizeBrowserWindow();
+		return valid;
+	}
+	
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect) throws IOException{
 		String baseFile = Paths
 				.get(TestSetup.getRootPath(), "\\selenium-wd\\data\\test-expected-data\\screenshots")
@@ -643,7 +716,6 @@ public class BasePage {
 				.get(testSetup.getDownloadPath(), File.separator + testCaseID + File.separator + name + ".png").toString();
 		ScreenShotOnFailure.captureBrowserScreenShot(driver, actualFile, rect);
 		boolean generateBaseline = TestContext.INSTANCE.getTestSetup().isGenerateBaselineScreenshots();
-
 		if (!verifyScreenshotWithBase(actualFile, baseFile, generateBaseline)) {
 			return false;
 		}
