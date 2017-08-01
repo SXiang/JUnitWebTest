@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
-import com.amazonaws.services.kinesisfirehose.model.InvalidArgumentException;
-
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
@@ -80,7 +78,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			assertTrue(String.format("Address is incorrect. Expected=[%s], Actual=[%s]", expectedAddress, el.getAddress()),
 					el.getAddress().equals(expectedAddress));
 		} else {
-			throw new InvalidArgumentException(String.format("Invalid itemIndex specified. itemIndex=[%d]. List size=%d", itemIndex, leaksList.size()));
+			throw new IllegalArgumentException(String.format("Invalid itemIndex specified. itemIndex=[%d]. List size=%d", itemIndex, leaksList.size()));
 		}
 	}
 
