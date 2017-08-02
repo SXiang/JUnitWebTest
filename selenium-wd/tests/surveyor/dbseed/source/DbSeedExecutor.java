@@ -64,7 +64,7 @@ public class DbSeedExecutor {
 
 	/* Method to push all the seed data required for automation. */
 
-	public static void _executeAllDataSeed() throws Exception {
+	public static void executeAllDataSeed() throws Exception {
 		DbSeedExecutor.executeGenericDataSeed();
 		DbSeedExecutor.executeGisSeed();
 		DbSeedExecutor.executeGisRefreshDataSeed();
