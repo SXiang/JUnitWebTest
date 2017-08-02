@@ -92,7 +92,6 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
 	private WebElement linkReports;
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
-	private By linkReportsCollapsedBy = By.cssSelector("ul#report-menu.dropdown-menu.collapse[aria-expanded='false']");
 	private By linkReportsOpenedBy = By.cssSelector("ul#report-menu.dropdown-menu.collapse.in");
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")

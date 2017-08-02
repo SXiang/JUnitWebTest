@@ -72,7 +72,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static ComplianceReportsPage complianceReportsPage;
 	private static List<String> strListTagCus = null;
 	private static List<String> strListTagPic = null;
-	private static List<String> strListTagCusDr = null;
 	/**
 	 * This method is called by the 'main' thread
 	 */
@@ -128,9 +127,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 
 		strListTagCus = new ArrayList<String>();
 		strListTagPic = new ArrayList<String>();
-		strListTagCusDr = new ArrayList<String>();
-
-		strListTagCusDr.add(SQACUSDRTAG2);
 		strListTagCus.add(CUSDRVSTDTAG2);
 		strListTagCus.add(CUSDRVRRTAG2);
 		strListTagCus.add(CUSDRVOPTAG2);

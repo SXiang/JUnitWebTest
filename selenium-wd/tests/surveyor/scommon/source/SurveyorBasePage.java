@@ -78,7 +78,6 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']")
 	protected WebElement linkPicarroAdmin;
 	protected String strLinkPicarroAdminXPath = "//*[@id='picarro-administration-menu']/a";
-	protected By linkPicarroAdminCollapsedBy = By.cssSelector("ul#picarro-administration-menu.dropdown-menu.collapse[aria-expanded='false']");
 	protected By linkPicarroAdminOpenedBy = By.cssSelector("ul#picarro-administration-menu.dropdown-menu.collapse.in");
 	
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#picarro-administration-menu']/a")
@@ -87,7 +86,6 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@data-target='#customer-administration-menu']")
 	protected WebElement linkCusAdmin;
 	protected String strLinkCusAdminXPath = "//*[@id='customer-administration-menu']/a";
-	protected By linkCusAdminCollapsedBy = By.cssSelector("ul#customer-administration-menu.dropdown-menu.collapse[aria-expanded='false']");
 	protected By linkCusAdminOpenedBy = By.cssSelector("ul#customer-administration-menu.dropdown-menu.collapse.in");
 	
 	@FindBy(css = "[name^='datatable'][name$='_length']")
