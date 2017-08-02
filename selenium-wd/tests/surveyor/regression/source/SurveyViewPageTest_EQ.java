@@ -124,7 +124,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifySurveyModeWarningCorrect(Resources.getResource(ResourceKeys.Dialog_EQModeActive), NOTSET));
-	    assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_EQ_TAG, NOTSET));
+        assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_EQ_TAG, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_EQ_TYPE, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_EQ_USERNAME_SQACUS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));
