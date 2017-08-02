@@ -288,8 +288,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 	protected WebElement nextBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
-	protected WebElement btnDeleteReport;
-	protected String btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
+	protected WebElement _btnDeleteReport;
+	protected String _btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
 	protected WebElement dropdownCustomer;
@@ -2486,7 +2486,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.method("waitForDeletePopupLoad");
 		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-					return btnDeleteSurvey.isDisplayed();
+					return btnDeleteReport.isDisplayed();
 			}
 		});
 	}
