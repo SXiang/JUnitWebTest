@@ -170,6 +170,8 @@
           <include name="**/AndroidSettingsScreenTest.class" />
           <include name="**/AndroidLeakScreenTest.class" />
           <include name="**/AndroidLeakScreenTest2.class" />
+          <include name="**/AndroidSettingsScreenTest2.class" />
+          <include name="**/AndroidSettingsAuthScreenTest.class" />
         </fileset>
       </batchtest>
     </junit>
