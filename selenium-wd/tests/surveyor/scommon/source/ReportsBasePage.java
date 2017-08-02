@@ -287,9 +287,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
-	protected WebElement _btnDeleteReport;
-	protected String _btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
+	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModal']//a[text()='Delete Report']")
+	protected WebElement btnDeleteReport;
+	protected String btnDeleteReportXPath = "//*[@id='deleteReportModal']//a[text()='Delete Report']";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
 	protected WebElement dropdownCustomer;
