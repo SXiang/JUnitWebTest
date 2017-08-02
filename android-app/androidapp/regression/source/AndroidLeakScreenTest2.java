@@ -171,6 +171,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
@@ -313,6 +314,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
@@ -483,7 +485,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			}
 
 			if (!oSrcMatch) {
-				addNewOtherSource();
+				addNewOtherSource(addSourceDialog, addOtherSourceFormDialog, addedSourcesListDialog);
 				totalOtherSources++;
 			}
 
@@ -977,37 +979,44 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		initializeAddCgiFormDialog();
 	}
 
-	private void initializeInvestigateReportScreen() {
+	@Override
+	protected void initializeInvestigateReportScreen() {
 		investigateReportScreen = new AndroidInvestigateReportScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigateReportScreen);
 	}
 
-	private void initializeInvestigationScreen() {
+	@Override
+	protected void initializeInvestigationScreen() {
 		investigationScreen = new AndroidInvestigationScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigationScreen);
 	}
 
-	private void initializeInvestigateMapScreen() {
+	@Override
+	protected void initializeInvestigateMapScreen() {
 		investigateMapScreen = new AndroidInvestigateMapScreen(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), investigateMapScreen);
 	}
 
-	private void initializeAddSourceDialog() {
+	@Override
+	protected void initializeAddSourceDialog() {
 		addSourceDialog = new AndroidAddSourceDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addSourceDialog);
 	}
 
-	private void initializeMarkerTypeDialog() {
+	@Override
+	protected void initializeMarkerTypeDialog() {
 		markerTypeDialog = new AndroidMarkerTypeListControl(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), markerTypeDialog);
 	}
 
-	private void initializeAddLeakSourceFormDialog() {
+	@Override
+	protected void initializeAddLeakSourceFormDialog() {
 		addLeakSourceFormDialog = new AndroidAddLeakSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addLeakSourceFormDialog);
 	}
 
-	private void initializeAndroidAddedLeakListDialog() {
+	@Override
+	protected void initializeAndroidAddedLeakListDialog() {
 		addedSourcesListDialog = new AndroidAddedSourceListDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addedSourcesListDialog);
 	}
@@ -1030,21 +1039,6 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {
 		initializeAppiumDriver();
 		installLaunchApp(AndroidActivities.MAIN_ACTIVITY);
-	}
-
-	private void addNewOtherSource() throws Exception {
-		Log.method("addNewOtherSource");
-		addSourceDialog.waitForScreenLoad();
-		addSourceDialog.clickOnAddOtherSources();
-		addOtherSourceFormDialog.waitForScreenLoad();
-		addOtherSourceFormDialog.clickOnUseCurrentLocation();
-		addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
-		addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-		addOtherSourceFormDialog.clickOnOKForNewItem();
-		addedSourcesListDialog.waitForScreenLoad();
-		List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
-		assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);
-		assertOtherSourceListInfoIsCorrect(otherSourcesList);
 	}
 
 	private void investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete() throws Exception {

@@ -188,6 +188,7 @@ public class TestSetup {
 
 	private boolean isRunningOnBackPackAnalyzer;
 	private boolean isAndroidTestReleaseEnabled;
+	private boolean isAndroidTestPerfMetricsEnabled;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
@@ -651,6 +652,7 @@ public class TestSetup {
 			this.setAndroidDeviceName(this.testProp.getProperty("androidDeviceName"));
 			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
 			this.setAndroidTestReleaseEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.Release.Enabled")));
+			this.setAndroidTestPerfMetricsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfMetrics.Enabled")));
 
 			setBackPackServerProperties(this.testProp);
 
@@ -1707,5 +1709,13 @@ public class TestSetup {
 
 	public void setAndroidTestReleaseEnabled(boolean isAndroidTestReleaseEnabled) {
 		this.isAndroidTestReleaseEnabled = isAndroidTestReleaseEnabled;
+	}
+
+	public boolean isAndroidTestPerfMetricsEnabled() {
+		return isAndroidTestPerfMetricsEnabled;
+	}
+
+	public void setAndroidTestPerfMetricsEnabled(boolean isAndroidTestPerfMetricsEnabled) {
+		this.isAndroidTestPerfMetricsEnabled = isAndroidTestPerfMetricsEnabled;
 	}
 }

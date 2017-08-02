@@ -26,16 +26,20 @@ import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 
 public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"OK\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
 	private WebElement oK;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Cancel\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
+
+	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
+	private WebElement delete;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -83,6 +87,11 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[12]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotes;
+
+	// Fetch at Runtime post swipe when editing form.
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[13]/android.widget.EditText[1]")
+	@CacheLookup
+	private WebElement additionalNotesInEdit;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[10]/android.view.ViewGroup[1]/android.widget.EditText[1]")
 	@CacheLookup
@@ -247,6 +256,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getOKButton() {
 		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
 		return oK;
 	}
 
@@ -259,12 +269,24 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
 		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+	}
+
+	public WebElement getDeleteButton() {
+		Log.method("getDeleteButton");
+		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
+		return delete;
+	}
+
+	public void clickOnDelete() throws Exception {
+		Log.method("clickOnDelete");
+		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -435,11 +457,33 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
+		additionalNotes.clear();
 		sendKeys(additionalNotes, value);
 	}
 
-	public void fillForm(Map<String, Object> formValues) throws Exception {
+	public String getAdditionalNotesTextInEditMode() {
+		Log.method("getAdditionalNotesTextInEditMode");
+		return additionalNotesInEdit.getText();
+	}
+
+	public void enterAdditionalNotesInEditMode(String value) throws Exception {
+		Log.method("enterAdditionalNotesInEditMode");
+		additionalNotesInEdit.clear();
+		sendKeys(additionalNotesInEdit, value);
+	}
+
+	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
 		Log.method("fillForm", LogHelper.mapToString(formValues));
+		clearTextFields();
+		fillForm(formValues, true /*editing*/);
+	}
+
+	public void fillForm(Map<String, Object> formValues) throws Exception {
+		fillForm(formValues, false /*editing*/);
+	}
+
+	public void fillForm(Map<String, Object> formValues, Boolean editing) throws Exception {
+		Log.method("fillForm", LogHelper.mapToString(formValues), editing);
 		LeakSourceType leakSourceType = (LeakSourceType)formValues.get(DataKey.LEAK_SOURCE_TYPE);
 		LeakLocationType locationType = (LeakLocationType)formValues.get(DataKey.LEAK_LOCATION_TYPE);
 		LeakType leakType = (LeakType)formValues.get(DataKey.LEAK_TYPE);
@@ -494,9 +538,14 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		this.enterMeterNumber(meterNum);
 		this.enterLeakLocationRemarks(locationRemarks);
 
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, 2000);
+		scrollToNextPage();
 
-		this.enterAdditionalNotes(additionalNotes);
+		if (editing) {
+			this.enterAdditionalNotesInEditMode(additionalNotes);
+		} else {
+			this.enterAdditionalNotes(additionalNotes);
+		}
+
 		this.clickOnOK();
 	}
 
@@ -506,8 +555,19 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
 	}
 
+	public void scrollToNextPage() {
+		Log.method("scrollToNextPage");
+		final int secsToScroll = 2;
+		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, secsToScroll * 1000);
+	}
+
 	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) {
 		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues));
+		return verifyCorrectDataIsShown(formValues, false /*isEditMode*/);
+	}
+
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) {
+		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues), isEditMode);
 
 		// expected
 		LeakLocationType expectedLocationType = (LeakLocationType)formValues.get(DataKey.LEAK_LOCATION_TYPE);
@@ -573,9 +633,14 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		String actualLocationRemarks = this.getLeakLocationRemarksText();
 		Boolean actualIsPavedWallToWall = this.pavedWallToWall.isSelected();
 
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, 2000);
+		scrollToNextPage();
 
-		String actualAdditionalNotes = this.getAdditionalNotesText();
+		String actualAdditionalNotes = null;
+		if (isEditMode) {
+			actualAdditionalNotes = this.getAdditionalNotesTextInEditMode();
+		} else {
+			actualAdditionalNotes = this.getAdditionalNotesText();
+		}
 
 		LeakInfoEntity actualLeakInfo = new LeakInfoEntity();
 		actualLeakInfo.setStreetNum(actualStreetNum);
@@ -598,9 +663,17 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		actualLeakInfo.setIsPavedWallToWall(actualIsPavedWallToWall);
 		actualLeakInfo.setAdditionalNotes(actualAdditionalNotes);
 
-		// TBD: Checkbox in React Native is rendered as ViewGroup+TextView. Need to workaround in appium to handle this control. Turn off isPavedWall2Wall check for now.
+		// TBD: These are workaround added for issues we are facing with last published APK in CI runs.
+		//  1. Only first 71 characters are getting typed in CI runs in Location Remarks textfield. Comparing only first 71 chars.
+		//  2. Checkbox in React Native is rendered as ViewGroup+TextView. Need to workaround in appium to handle this control. Turn off isPavedWall2Wall check for now.
 		actualLeakInfo.setIsPavedWallToWall(false);
 		expectedLeakInfo.setIsPavedWallToWall(false);
+		if (actualLocationRemarks.length()>70) {
+			actualLeakInfo.setLocationRemarks(actualLocationRemarks.substring(0, 70));
+		}
+		if (expectedLocationRemarks.length()>70) {
+			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
+		}
 
 		// verify
 		Boolean match = actualLatitude.length()>5;
@@ -623,5 +696,21 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 		Log.info(String.format("Returning match=[%b]", match));
 		return match;
+	}
+
+	private void clearTextFields() {
+		Log.method("clearTextFields");
+		apartmentNumber.clear();
+		barholeReading.clear();
+		city.clear();
+		leakGrade.clear();
+		mapNumber.clear();
+		meterNumber.clear();
+		leakLocationRemarks.clear();
+		pipeMaterialType.clear();
+		state.clear();
+		streetName.clear();
+		streetNumber.clear();
+		surfaceReading.clear();
 	}
 }

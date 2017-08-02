@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import backpack.api.entities.Data;
+import backpack.api.entities.SocketControlData;
 import common.source.ApiCaller;
 import common.source.BackPackApiInterface;
 import common.source.BackPackAnalyzer;
@@ -39,11 +40,42 @@ public class BackPackApiTest extends BaseTest {
 		assertTrue("Heatmap image timestamp invalid.", data.getData().getHeatmapImageTime() >= 0.0);
 	}
 
+	@Test
+	public void testPauseResumeSocketAPI() throws IOException {
+		Log.info("Executing testResumeSocketAPI() test...");
+		SocketControlData controlData = pauseResumeSockets(false /*isResume*/);
+		Log.info(String.format("Socket control data onPause is: %s", controlData));
+		assertTrue("Socket control data onPause is invalid.", controlData.getWebSocketEnabled() == 0.0);
+		controlData = pauseResumeSockets(true /*isResume*/);
+		Log.info(String.format("Socket control data onResume is: %s", controlData));
+		assertTrue("Socket control data onResume is invalid.", controlData.getWebSocketEnabled() == 1.0);
+	}
+
 	private Data invokeGetV1DataApi() throws IOException {
 		Log.method("invokeGetDataApi");
 		BackPackApiInterface apiInterface = ApiCaller.BackPackApiCall.createInterface();
 		Call<Data> callData = apiInterface.getV1Data();
 		Response<Data> response = callData.execute();
+		if (!response.isSuccessful()) {
+			Log.error(String.format("FAILED: %s", response.toString()));
+			fail("Invalid response from API call.");
+		}
+
+		Log.info(String.format("API Response -> %s", response.body().toString()));
+		return response.body();
+	}
+
+	private SocketControlData pauseResumeSockets(boolean isResume) throws IOException {
+		Log.method("pauseResumeSockets", isResume);
+		BackPackApiInterface apiInterface = ApiCaller.BackPackApiCall.createInterface();
+		Call<SocketControlData> controlData = null;
+		if (!isResume) {
+			controlData = apiInterface.pauseSocket();
+		} else {
+			controlData = apiInterface.resumeSocket();
+		}
+
+		Response<SocketControlData> response = controlData.execute();
 		if (!response.isSuccessful()) {
 			Log.error(String.format("FAILED: %s", response.toString()));
 			fail("Invalid response from API call.");

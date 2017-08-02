@@ -40,8 +40,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement follow;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Investigate\")")
 	private WebElement investigate;
 
 	/****** Label elements ******/
@@ -161,6 +160,12 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	public String getVelocityText() {
 		Log.method("getVelocityText");
 		return velocity.getText();
+	}
+
+	public Boolean verifyMapIsShown() {
+		Log.method("verifyMapIsShown");
+		// TBD: To be implemented post image recognition sikuli prototype integrated in master.
+		return false;
 	}
 
 	public Boolean waitForMarkAsCompleteButtonToBeDisplayed() {

@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,7 +28,9 @@ import common.source.CheckedPredicate;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.LogCollector;
 import common.source.MobileActions;
+import common.source.PerfmonDataCollector;
 import common.source.ProcessUtility;
 import common.source.ScreenRecorder;
 import common.source.TestContext;
@@ -38,6 +40,7 @@ import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import surveyor.scommon.actions.BaseActions;
 import surveyor.scommon.source.BaseTest;
@@ -70,7 +73,9 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidMainLoginScreen settingsScreen;
 	protected AndroidMapScreen mapScreen;
 
+	private PerfmonDataCollector perfmonCollector;
 	private ScreenRecorder screenRecorder;
+	private LogCollector logCollector;
 
 	private boolean devMachineOverride = false;         // set to TRUE to disable wait for map screen load when executing on dev machine while authoring tests.
 
@@ -132,9 +137,26 @@ public class BaseAndroidTest extends BaseTest {
 		cleanUp();
 	}
 
+	@SuppressWarnings("rawtypes")
+	protected AndroidDriver getAndroidDriver() {
+		return (AndroidDriver)appiumDriver;
+	}
+
+	private void initPerfmonDataCollector() {
+		if (perfmonCollector == null) {
+			perfmonCollector = new PerfmonDataCollector();
+		}
+	}
+
 	private void initScreenRecorder() {
 		if (screenRecorder == null) {
 			screenRecorder = new ScreenRecorder();
+		}
+	}
+
+	private void initLogCollector() {
+		if (logCollector == null) {
+			logCollector = new LogCollector();
 		}
 	}
 
@@ -143,11 +165,88 @@ public class BaseAndroidTest extends BaseTest {
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
 		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
+
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
+			initPerfmonDataCollector();
+			perfmonCollector.startCollectors();
+		}
+
+		initLogCollector();
+		logCollector.startLogging(appiumDriver);
 	}
 
 	public void stopTestRecording(String testName) throws Exception {
 		Log.method("stopTestRecording", testName);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
+			collectPerfmonMetrics(testName);
+		}
+
+		createRecording(testName);
+		collectAdbLogs(testName);
+	}
+
+	private void collectPerfmonMetrics(String testName) throws Exception {
+		Log.method("collectPerfmonMetrics", testName);
+		String gfxDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.gfx.dat", testName));
+		String cpuDataFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.perf.cpu.dat", testName));
+
+		if(FileUtility.fileExists(gfxDataFile)) {
+			FileUtility.deleteFile(Paths.get(gfxDataFile));
+		}
+
+		if(FileUtility.fileExists(cpuDataFile)) {
+			FileUtility.deleteFile(Paths.get(cpuDataFile));
+		}
+
+		List<String> gfxMetrics = this.perfmonCollector.getGfxMetrics();
+		List<String> cpuMetrics = this.perfmonCollector.getCpuMetrics();
+
+		List<String> allGfxMetrics = new ArrayList<String>();
+		gfxMetrics.stream()
+			.map(e -> e.split(BaseHelper.getLineSeperator()))
+			.forEach(arr -> {
+				for (String str : arr) {
+					allGfxMetrics.add(str);
+				}
+			});
+
+		List<String> allCpuMetrics = new ArrayList<String>();
+		cpuMetrics.stream()
+			.map(e -> e.split(BaseHelper.getLineSeperator()))
+			.forEach(arr -> {
+				for (String str : arr) {
+					allCpuMetrics.add(str);
+				}
+			});
+
+		Log.info("Stop perfmon data collectors");
+		perfmonCollector.stopCollectors();
+
+		Log.info(String.format("Writing gfx metrics data to - '%s'", gfxDataFile));
+		FileUtility.writeToFile(gfxDataFile, allGfxMetrics.toArray(new String[allGfxMetrics.size()]));
+
+		Log.info(String.format("Writing cpu metrics data to - '%s'", cpuDataFile));
+		FileUtility.writeToFile(cpuDataFile, allCpuMetrics.toArray(new String[allCpuMetrics.size()]));
+	}
+
+	private void collectAdbLogs(String testName) throws IOException {
+		Log.method("collectAdbLogs", testName);
+		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.log", testName));
+		if(FileUtility.fileExists(logcatLog)) {
+			FileUtility.deleteFile(Paths.get(logcatLog));
+		}
+
+		Log.info(String.format("Writing adb logs to - '%s'", logcatLog));
+		String log = logCollector.grabLogs();
+
+		Log.info("Stop logging");
+		logCollector.stopLogging();
+		FileUtility.createTextFile(Paths.get(logcatLog), log);
+	}
+
+	private void createRecording(String testName) throws Exception {
+		Log.method("createRecording", testName);
 		MobileActions action = MobileActions.newAction();
 		String videoFileName = String.format("%s.mp4", testName);
 		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", videoFileName);

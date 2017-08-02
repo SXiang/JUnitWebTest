@@ -26,12 +26,16 @@ public class ApiCaller {
 	}
 
 	public static class BackPackApiCall extends BaseApiCall {
-		private final String BASE_URL = "http://localhost:3000";
+		private final String DEFAULT_BASE_URL = "http://localhost:3000";
 		private BackPackApiInterface apiInterface;
 
 		private BackPackApiInterface getInterface() {
+			return getInterface(DEFAULT_BASE_URL);
+		}
+
+		private BackPackApiInterface getInterface(String baseUrl) {
 			if (apiInterface == null) {
-				Retrofit builder = createBuilder(BASE_URL);
+				Retrofit builder = createBuilder(baseUrl);
 				apiInterface = builder.create(BackPackApiInterface.class);
 			}
 
@@ -40,6 +44,10 @@ public class ApiCaller {
 
 		public static BackPackApiInterface createInterface() {
 			return new BackPackApiCall().getInterface();
+		}
+
+		public static BackPackApiInterface createInterface(String baseUrl) {
+			return new BackPackApiCall().getInterface(baseUrl);
 		}
 	}
 }

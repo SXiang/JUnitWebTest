@@ -11,11 +11,11 @@ public class AndroidAddSourceDialog extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Add Leak\")")
 	@CacheLookup
 	private WebElement addLeak;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Add Other Sources\")")
 	@CacheLookup
 	private WebElement addOtherSources;
 

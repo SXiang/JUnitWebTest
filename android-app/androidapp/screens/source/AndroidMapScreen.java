@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
 import common.source.AccessibilityLabel;
+import common.source.BaselineImages;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -12,12 +13,15 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
-
-	private static final String PPM = "ppm";
-	private static final String ETHANE_MODE = "Ethane Mode";
+	private static final String SERVER_URL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
+	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
+	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]";
+	private static final String CANCEL_BTN_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]";
+	private static final String SUBMIT_BTN_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[5]";
 	private static final String METHANE_MODE = "Methane Mode";
-
+	private static final String ETHANE_MODE = "Ethane Mode";
 	private static final String MAX_LABEL = "Max:";
+	private static final String PPM = "ppm";
 
 	/******* Label elements *******/
 
@@ -59,12 +63,12 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement menuButton;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = PASSWORD_XPATH)
 	@CacheLookup
 	private WebElement passwordEditView;
 	private Boolean passwordEditViewLocated = true;    // element fetched at page load time. Set to false to detect element post page load.
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[5]")
+	@AndroidFindBy(xpath = SUBMIT_BTN_XPATH)
 	@CacheLookup
 	private WebElement submit;
 	private Boolean submitButtonLocated = true;        // element fetched at page load time. Set to false to detect element post page load.
@@ -163,6 +167,22 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		return toggleModeButtonDisplayed && modeTextDisplayed && modeTextValid;
 	}
 
+	public void assertConcentrationChartIsShown() {
+		Log.method("assertConcentrationChartIsShown");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart);
+	}
+
+	public void assertEnterPasswordHintTextIsShown(String folderName, String imageFileName) {
+		Log.method("assertEnterPasswordHintTextIsShown", folderName, imageFileName);
+		screenVerifier.assertImageFoundOnScreen(this, folderName, imageFileName);
+	}
+
+	public void assertMapIsLoaded() {
+		Log.method("assertMapIsLoaded");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenTopLeft);
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
+	}
+
 	public WebElement getMenuButton() {
 		return menuButton;
 	}
@@ -198,7 +218,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getServerEditView() {
 		if (!serverEditViewLocated) {
-			serverEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]");
+			serverEditView = getAndroidDriver().findElementByXPath(SERVER_URL_XPATH);
 			serverEditViewLocated = true;
 		}
 
@@ -211,7 +231,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getUsernameEditView() {
 		if (!usernameEditViewLocated) {
-			usernameEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]");
+			usernameEditView = getAndroidDriver().findElementByXPath(USERNAME_XPATH);
 			usernameEditViewLocated = true;
 		}
 
@@ -224,7 +244,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getPasswordEditView() {
 		if (!passwordEditViewLocated) {
-			passwordEditView = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]");
+			passwordEditView = getAndroidDriver().findElementByXPath(PASSWORD_XPATH);
 			passwordEditViewLocated = true;
 		}
 
@@ -238,7 +258,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public WebElement getSubmitButton() {
 		Log.method("getSubmitButton");
 		if (!submitButtonLocated) {
-			submit = getAndroidDriver().findElement(MobileBy.xpath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[5]"));
+			submit = getAndroidDriver().findElement(MobileBy.xpath(SUBMIT_BTN_XPATH));
 			submitButtonLocated = true;
 		}
 
@@ -251,7 +271,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		if (!cancelButtonLocated) {
-			cancelButton = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]");
+			cancelButton = getAndroidDriver().findElementByXPath(CANCEL_BTN_XPATH);
 			cancelButtonLocated = true;
 		}
 
