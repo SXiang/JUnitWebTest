@@ -3276,7 +3276,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		return matchSuccess;
 	}
 	
-	public boolean verifyReportsAreCreatedBy(String customerName){
+	public boolean verifyReportsCreatedBelongTo(String customerName){
 		setPagination(PAGINATIONSETTING_100);
 		int createdByIndex = getColumnIndexMap().get(COL_HEADER_CREATED_BY);
 		String reportCreatedXPath = "//*[@id='datatable']/tbody/tr/td["+createdByIndex+"]";

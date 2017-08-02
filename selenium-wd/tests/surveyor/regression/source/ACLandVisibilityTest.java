@@ -198,27 +198,27 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.openReportsMenu();
 		homePage.getLinkCompliance().click();
 		complianceReportsPage.waitForPageLoad();
-		assertTrue(complianceReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(complianceReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkAssessment().click();
 		assessmentReportsPage.waitForPageLoad();
-		assertTrue(assessmentReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(assessmentReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkEQ().click();
 		eqReportsPage.waitForPageLoad();
-		assertTrue(eqReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(eqReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
-		assertTrue(facilityEQReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkReferenceGas().click();
 		referenceGasReportsPage.waitForPageLoad();
-		assertTrue(referenceGasReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(referenceGasReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkSystemHistory().click();
 		systemHistoryReportsPage.waitForPageLoad();
-		assertTrue(systemHistoryReportsPage.verifyReportsAreCreatedBy(customerName));		
+		assertTrue(systemHistoryReportsPage.verifyReportsCreatedBelongTo(customerName));		
 	}
 	
 
@@ -278,27 +278,27 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.openReportsMenu();
 		homePage.getLinkCompliance().click();
 		complianceReportsPage.waitForPageLoad();
-		assertTrue(complianceReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(complianceReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkAssessment().click();
 		assessmentReportsPage.waitForPageLoad();
-		assertTrue(assessmentReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(assessmentReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkEQ().click();
 		eqReportsPage.waitForPageLoad();
-		assertTrue(eqReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(eqReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
-		assertTrue(facilityEQReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkReferenceGas().click();
 		referenceGasReportsPage.waitForPageLoad();
-		assertTrue(referenceGasReportsPage.verifyReportsAreCreatedBy(customerName));
+		assertTrue(referenceGasReportsPage.verifyReportsCreatedBelongTo(customerName));
 		
 		homePage.getLinkSystemHistory().click();
 		systemHistoryReportsPage.waitForPageLoad();
-		assertTrue(systemHistoryReportsPage.verifyReportsAreCreatedBy(customerName));		
+		assertTrue(systemHistoryReportsPage.verifyReportsCreatedBelongTo(customerName));		
 	}
 	
 	/**
