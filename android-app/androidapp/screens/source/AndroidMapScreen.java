@@ -13,6 +13,7 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
+	private static final String LOGIN_VALIDATION_LABEL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[2]";
 	private static final String SERVER_URL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
 	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
 	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]";
@@ -62,6 +63,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]")
 	@CacheLookup
 	private WebElement menuButton;
+
+	@AndroidFindBy(xpath = LOGIN_VALIDATION_LABEL_XPATH)
+	@CacheLookup
+	private WebElement loginValidationLabel;
+	private Boolean loginValidationLabelLocated = true;    // element fetched at page load time. Set to false to detect element post page load.
 
 	@AndroidFindBy(xpath = PASSWORD_XPATH)
 	@CacheLookup
@@ -183,6 +189,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
 	}
 
+	public void assertMapIsCenteredForPicarroUser() {
+		Log.method("assertMapIsCenteredForPicarroUser");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+	}
+
 	public WebElement getMenuButton() {
 		return menuButton;
 	}
@@ -276,6 +287,21 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		}
 
 		return cancelButton;
+	}
+
+	public WebElement getLoginValidationLabel() {
+		Log.method("getLoginValidationLabel");
+		if (!loginValidationLabelLocated) {
+			loginValidationLabel = getAndroidDriver().findElement(MobileBy.xpath(LOGIN_VALIDATION_LABEL_XPATH));
+			loginValidationLabelLocated = true;
+		}
+
+		return loginValidationLabel;
+	}
+
+	public String getLoginValidationLabelText() {
+		Log.method("getLoginValidationLabelText");
+		return getLoginValidationLabel().getText();
 	}
 
 	public WebElement getCancelButtonByAccId() {
