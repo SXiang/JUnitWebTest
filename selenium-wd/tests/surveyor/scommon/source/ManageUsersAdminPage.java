@@ -59,8 +59,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
-		if (isElementPresent(this.panelDuplicationErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)){
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
@@ -104,8 +104,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
-		if (isElementPresent(this.panelDuplicationErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)){
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
@@ -164,8 +164,8 @@ public class ManageUsersAdminPage extends ManageUsersPage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 		
-		if (isElementPresent(this.panelDuplicationErrorXPath)){
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)){
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();

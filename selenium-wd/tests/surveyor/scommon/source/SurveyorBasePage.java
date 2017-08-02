@@ -122,10 +122,6 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(css = ".validation-summary-errors > .panel-body li")
 	protected List<WebElement> panelErrors;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
-	public WebElement panelDuplicationError;
-	public String panelDuplicationErrorXPath = "//*[@id='name-error']";
-
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
 	protected WebElement liDuplicateMsg;
 

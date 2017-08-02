@@ -1,5 +1,6 @@
 package surveyor.regression.source;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import common.source.Log;
 import surveyor.dataaccess.source.ResourceKeys;
@@ -99,7 +100,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 	 *	- User should not see LISA or Indications on the survey view.
 	 *	- All pipes and boundaries data are displayed
 	 */
-	@Test
+	@Ignore /* DE3189 seed data missing */
 	public void TC1077_SurveyViewInMapView_CustomerDriver() throws Exception {
 		Log.info("\nRunning TC1077_SurveyViewInMapView_CustomerDriver ...");
 		getLoginPageAction().open(EMPTY, NOTSET);
@@ -123,7 +124,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifySurveyModeWarningCorrect(Resources.getResource(ResourceKeys.Dialog_EQModeActive), NOTSET));
-		assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_EQ_TAG, NOTSET));
+	    assertTrue(getSurveyViewPageAction().verifySurveyInfoTagLabelEquals(TEST_SURVEY_EQ_TAG, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoModeLabelEquals(SURVEY_INFO_MODE_PREFIX + TEST_SURVEY_EQ_TYPE, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoDriverLabelEquals(SURVEY_INFO_DRIVER_PREFIX + TEST_SURVEY_EQ_USERNAME_SQACUS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStartTimeLabelHasCorrectTimeFormat(EMPTY, NOTSET));

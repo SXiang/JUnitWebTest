@@ -217,9 +217,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
@@ -298,9 +297,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
@@ -376,9 +374,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
@@ -443,9 +440,8 @@ public class ManageUsersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(summaryErrorsBy);
 			if (panelError.getText().equalsIgnoreCase(
 					Resources.getResource(ResourceKeys.Validation_SummaryTitle))){
 				Log.clickElementInfo("Cancel");
@@ -547,7 +543,7 @@ public class ManageUsersPage extends SurveyorBasePage {
 
 		waitForPageToLoad();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath, validatationTimeout)) {
+		if (isElementPresent(this.summaryErrorsBy, validatationTimeout)) {
 			// Get error message using javascript. This is to avoid CI failures when using validation webelement.
 			String userErrMsg = getUsernameErrorMessage();
 			if (userErrMsg.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
