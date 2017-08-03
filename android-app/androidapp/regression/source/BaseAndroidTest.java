@@ -59,6 +59,8 @@ public class BaseAndroidTest extends BaseTest {
 	protected static final String EMPTY = BaseActions.EMPTY;
 	protected static final Integer NOTSET = BaseActions.NOTSET;
 
+	private boolean isLoggingEnabled = false;
+
 	private static ThreadLocal<Boolean> reactNativeInitStatus = new ThreadLocal<Boolean>() {
 	    @Override
 	    protected Boolean initialValue() {
@@ -162,6 +164,11 @@ public class BaseAndroidTest extends BaseTest {
 
 	public void startTestRecording(String testName) throws Exception {
 		Log.method("startTestRecording", testName);
+		startTestRecording(testName, true /*enableLogging*/);
+	}
+
+	public void startTestRecording(String testName, Boolean enableLogging) throws Exception {
+		Log.method("startTestRecording", testName, enableLogging);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
 		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
@@ -171,8 +178,11 @@ public class BaseAndroidTest extends BaseTest {
 			perfmonCollector.startCollectors();
 		}
 
-		initLogCollector();
-		logCollector.startLogging(appiumDriver);
+		if (enableLogging) {
+			initLogCollector();
+			logCollector.startLogging(appiumDriver);
+			isLoggingEnabled = true;
+		}
 	}
 
 	public void stopTestRecording(String testName) throws Exception {
@@ -183,7 +193,10 @@ public class BaseAndroidTest extends BaseTest {
 		}
 
 		createRecording(testName);
-		collectAdbLogs(testName);
+
+		if (isLoggingEnabled) {
+			collectAdbLogs(testName);
+		}
 	}
 
 	private void collectPerfmonMetrics(String testName) throws Exception {
