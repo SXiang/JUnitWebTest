@@ -193,7 +193,7 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/AndroidSettingsAuthScreenTest.class" />
+          <include name="**/AndroidFormCancelVerificationTest.class" />
         </fileset>
       </batchtest>
     </junit>
