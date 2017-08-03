@@ -1335,6 +1335,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			for(int i=0;i<numClicks;i++){
 				  clickZoomInButton();
 			}
+			waitForSignalRCallsToComplete();
 			newZoomlevel = mapUtility.getMapZoomLevel();
 		} catch (Exception ex) {
 			Log.warn("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
@@ -1344,10 +1345,19 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			Object executeScript = ((JavascriptExecutor)driver).executeScript("return surveyormap;");
 			Log.info("Returned [surveyormap] object = " + (executeScript != null ? executeScript.toString() : "<null>"));
 		}
-
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
 	}
 
+	public boolean veriftBoundariesShownOnMap() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		return mapUtility.isBoundariesShownOnMap();
+	}
+
+	public boolean verifyAssetShownOnMap() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		return mapUtility.isAssetShownOnMap();
+	}
+	
 	private CustomerBoundaryType getBoundaryTypeForLoggedInCustomer(String boundaryTypeDescription) throws Exception, IOException {
 		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
 		if (loggedInUserCustomer != null) {

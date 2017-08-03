@@ -91,9 +91,9 @@ public class HomePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//a[@data-target='#report-menu']")
 	private WebElement linkReports;
-
 	private String strLinkReportsXPath = "//*[@id='report-menu']/a";
-
+	private By linkReportsOpenedBy = By.cssSelector("ul#report-menu.dropdown-menu.collapse.in");
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[1]/div/h1/strong")
 	private WebElement labelSurveyorDashboard;
 
@@ -119,7 +119,7 @@ public class HomePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='report-facility-EQ']")
 	private WebElement linkFacilityEQ;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-asssessment']")
+	@FindBy(how = How.XPATH, using = "//*[@id='report-assessment']")
 	private WebElement linkAssessment;
 
 	// Link may NOT be present for all users. Conditionally detect this link.
@@ -774,6 +774,18 @@ public class HomePage extends SurveyorBasePage {
 		return this.linkCompliance;
 	}
 
+	public WebElement getLinkEQ() {
+		return this.linkEQ;
+	}
+
+	public WebElement getLinkFacilityEQ() {
+		return this.linkFacilityEQ;
+	}
+
+	public WebElement getLinkAssessment() {
+		return this.linkAssessment;
+	}
+
 	public WebElement getLinkInvestigation() {
 		try {
 			this.linkInvestigation = driver.findElement(By.xpath(EQ_REPORT_LINK_XPATH));
@@ -993,6 +1005,27 @@ public class HomePage extends SurveyorBasePage {
 		return false;
 	}
 
+	public void openCusAdminMenu(){
+		WebElement element = getLinkCusAdmin();
+		if(!isElementPresent(linkCusAdminOpenedBy))
+			element.click();	
+		waitUntilPresenceOfElementLocated(linkCusAdminOpenedBy);
+	}
+
+	public void openPicarroAdminMenu(){
+		WebElement element = getLinkPicarroAdmin();
+		if(!isElementPresent(linkPicarroAdminOpenedBy))
+			element.click();
+		waitUntilPresenceOfElementLocated(linkPicarroAdminOpenedBy);
+	}
+
+	public void openReportsMenu(){
+		WebElement element = getLinkReports();
+		if(!isElementPresent(linkReportsOpenedBy))
+			element.click();
+		waitUntilPresenceOfElementLocated(linkReportsOpenedBy);
+	}
+	
 	public void waitForReleaseNotesToLoad(WebDriver driver,String winHandle) {
 		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
