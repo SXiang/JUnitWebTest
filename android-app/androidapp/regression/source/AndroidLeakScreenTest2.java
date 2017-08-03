@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -462,7 +461,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete();
 		}
 
-		initializeAddOtherSourceFormDialog(true /*isShowingExistingItem*/);
+		initializeAddOtherSourceFormDialog();
 
 		// Markers screen. Click on LISA marked as either Complete or In Progress
 		String[] markerStatuses = {complete, inProgress};
@@ -494,7 +493,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.waitForScreenLoad();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Enclosure);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOKForExistingItem();
+			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList2 = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue("Sources list length post edit should be same as list length prior to edit", totalOtherSources == otherSourcesList2.size());
@@ -581,19 +580,19 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOKForNewItem();
+			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
 		});
 
-		initializeAddOtherSourceFormDialog(true /*isShowingExistingItem*/);
+		initializeAddOtherSourceFormDialog();
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			List<OtherSourceListInfoEntity> sourcesList = addedSourcesListDialog.getOtherSourcesList();
 			addedSourcesListDialog.clickOnFirstMatchingListItemOfType(SourceType.OtherSource);
 			addOtherSourceFormDialog.waitForScreenLoad();
-			addOtherSourceFormDialog.clickOnDeleteForExistingItem();
+			addOtherSourceFormDialog.clickOnDelete();
 			confirmationDialog.waitForScreenLoad();
 			confirmationDialog.clickOnOK();
 
@@ -863,7 +862,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOKForNewItem();
+			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 
@@ -974,8 +973,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		initializeAddLeakSourceFormDialog();
 		initializeAndroidAddedLeakListDialog();
 		initializeMarkerTypeDialog();
-		initializeAddOtherSourceFormDialog(false /*isShowingExistingItem*/);
-		initializeDeleteConfirmationDialog();
+		initializeAddOtherSourceFormDialog();
+		initializeConfirmationDialog();
 		initializeAddCgiFormDialog();
 	}
 
@@ -1021,8 +1020,9 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addedSourcesListDialog);
 	}
 
-	private void initializeAddOtherSourceFormDialog(Boolean isShowingExistingItem) {
-		addOtherSourceFormDialog = new AndroidAddOtherSourceFormDialog(appiumDriver, isShowingExistingItem);
+	@Override
+	protected void initializeAddOtherSourceFormDialog() {
+		addOtherSourceFormDialog = new AndroidAddOtherSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addOtherSourceFormDialog);
 	}
 
@@ -1031,7 +1031,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addCgiFormDialog);
 	}
 
-	private void initializeDeleteConfirmationDialog() {
+	private void initializeConfirmationDialog() {
 		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), confirmationDialog);
 	}
@@ -1058,7 +1058,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOKForNewItem();
+			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);

@@ -46,7 +46,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 		addOtherSourceFormDialog.clickOnUseCurrentLocation();
 		addOtherSourceFormDialog.selectLeakSource(leakSourceType);
 		addOtherSourceFormDialog.enterAdditionalNotes(additionalNotes);
-		addOtherSourceFormDialog.clickOnOKForNewItem();
+		addOtherSourceFormDialog.clickOnOK();
 		initializeAndroidAddedLeakListDialog();
 		addedSourcesListDialog.waitForScreenAndDataLoad();
 		List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
