@@ -245,7 +245,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map")
 	protected WebElement mapElement;
 
-	@FindBy(css = "[id$='_mode_warning']:not([ng-hide])")
+	@FindBy(css = "[id$='_mode_warning']:not(.ng-hide)")
 	protected WebElement surveyModeDialog;
 
 	// Feature info popup values are updated on each featureInfo click. Seek these elements newly when get*() method is called.
