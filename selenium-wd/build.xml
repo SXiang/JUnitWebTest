@@ -789,7 +789,6 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
-          <include name="**/RegressionTestSuite6.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
@@ -883,10 +882,6 @@
   	          <include name="**/RegressionTestSuite3.class" />
   	          <include name="**/RegressionTestSuite4.class" />
   	          <include name="**/RegressionTestSuite5.class" />
-  	          <include name="**/RegressionTestSuite6.class" />
-  	    	  <!-- Single thread execution test classes -->
-  	          <include name="**/SurveyViewPageTest6.class" />
-  	          <include name="**/LicensedFeatureAndVisibilityTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
