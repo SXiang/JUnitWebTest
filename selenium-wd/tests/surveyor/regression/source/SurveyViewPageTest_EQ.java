@@ -100,7 +100,7 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 	 *	- User should not see LISA or Indications on the survey view.
 	 *	- All pipes and boundaries data are displayed
 	 */
-	@Ignore /* DE3189 seed data missing */
+	@Test
 	public void TC1077_SurveyViewInMapView_CustomerDriver() throws Exception {
 		Log.info("\nRunning TC1077_SurveyViewInMapView_CustomerDriver ...");
 		getLoginPageAction().open(EMPTY, NOTSET);
