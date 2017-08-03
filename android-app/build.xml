@@ -172,6 +172,7 @@
           <include name="**/AndroidLeakScreenTest2.class" />
           <include name="**/AndroidSettingsScreenTest2.class" />
           <include name="**/AndroidSettingsAuthScreenTest.class" />
+          <include name="**/AndroidFormCancelVerificationTest.class" />
         </fileset>
       </batchtest>
     </junit>
