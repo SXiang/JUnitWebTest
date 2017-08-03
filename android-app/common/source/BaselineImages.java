@@ -11,5 +11,8 @@ public class BaselineImages {
 		public static final String DefaultMapScreenTopLeft = "default-map-screen-top-left.png";
 		public static final String DefaultMapScreenBottomRight = "default-map-screen-bottom-right.png";
 		public static final String DefaultConcChart = "default-conc-chart.png";
+		public static final String DefaultMapScreenPicarroLoc = "default-map-screen-picarro-icon.png";
+		public static final String ConnectingToBackPackServer = "connecting-to-backpack-server.png";
+		public static final String EditSettingsButton = "edit-settings-button.png";
 	}
 }
