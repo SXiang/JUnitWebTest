@@ -865,7 +865,7 @@
   </target>
   <target name="tc_localrun" depends="compiletestsuite,compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
   	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
-  	      <sysproperty key="testReportCategory" value="Regression" />
+  	      <sysproperty key="testReportCategory" value="JUnitParallel" />
   	      <sysproperty key="maxParallelTestThreads" value="5" />
   	      <sysproperty key="test_run_id" value="${local_date}" />
   	      <classpath>
