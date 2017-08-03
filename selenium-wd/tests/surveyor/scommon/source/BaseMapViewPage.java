@@ -3,8 +3,6 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -34,7 +32,6 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.PageActionsFactory;
 import surveyor.scommon.entities.FeatureInfoEntity;
-import surveyor.scommon.source.BaseMapViewPage.FeatureInfo;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
@@ -245,7 +242,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map")
 	protected WebElement mapElement;
 
-	@FindBy(css = "[id$='_mode_warning']:not(.ng-hide)")
+	@FindBy(css = "[id$='_mode_warning']")
 	protected WebElement surveyModeDialog;
 
 	// Feature info popup values are updated on each featureInfo click. Seek these elements newly when get*() method is called.
@@ -1279,8 +1276,8 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 *
 	 * @return the span WebElement.
 	 */
-	public WebElement getSurveyModeDialog() {
-		return surveyModeDialog;
+	public WebElement getActiveSurveyModeDialog() {
+		return activeModeWarning;
 	}
 
 	public WebElement getMapElement() {

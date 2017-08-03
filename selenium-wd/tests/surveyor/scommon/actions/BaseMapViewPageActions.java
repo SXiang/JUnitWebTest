@@ -600,7 +600,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyCorrectSurveyActiveMessageIsShownOnMap", data, dataRowID);
 		getBaseMapViewPageObject().waitForSurveyDialogToBeDisplayed();
 		boolean dialogShown = getBaseMapViewPageObject().isSurveyModeDialogShown();
-		WebElement analyticsModeDialog = getBaseMapViewPageObject().getSurveyModeDialog();
+		WebElement analyticsModeDialog = getBaseMapViewPageObject().getActiveSurveyModeDialog();
 		WebElement mapElement = getBaseMapViewPageObject().getMapElement();
 		String spanText = analyticsModeDialog.getText();
 		String expectedSpanText = Resources.getResource(ResourceKeys.Dialog_AnalyticsModeActive);
