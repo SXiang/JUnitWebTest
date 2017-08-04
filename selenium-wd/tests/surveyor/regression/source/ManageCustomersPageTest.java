@@ -101,7 +101,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		// *** Add a new user/customer for this test ***
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());
+		loginPage.loginNormalAs(PICDFADMIN, USERPASSWORD);
 		manageCustomersPage.open();
 		manageCustomersPage.addNewCustomer(customerName, eula);
 
@@ -116,7 +116,7 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 		// *** Start test ***
 
 		loginPage.open();
-		loginPage.loginNormalAs(getTestSetup().getLoginUser(), getTestSetup().getLoginPwd());		
+		loginPage.loginNormalAs(PICDFADMIN, USERPASSWORD);
 
 		manageCustomersPage.open();
 		manageCustomersPage.performSearch(customerName);
