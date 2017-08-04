@@ -16,6 +16,21 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
+
+	/****** Button elements ******/
+
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
+	private WebElement oK;
+
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
+	private WebElement cancel;
+
+	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
+	private WebElement delete;
+
 	/****** Button elements ******/
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
@@ -66,18 +81,11 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement sourceText;
 
-	private Boolean isExistingItem = false;
-
 	private AndroidLeakSourceTypeListControl leakSourceTypeListControl;
 
 	public AndroidAddOtherSourceFormDialog(WebDriver driver) {
-		this(driver, false);
-	}
-
-	public AndroidAddOtherSourceFormDialog(WebDriver driver, Boolean existingItem) {
 		super(driver);
 		initializeListControls();
-		isExistingItem = existingItem;
 	}
 
 	private void initializeListControls() {
@@ -100,58 +108,43 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** Button Methods ******/
 
-	public WebElement getOKButtonForNewItem() {
-		Log.method("getOKButtonForNewItem");
-		return oKNewItem;
+	public WebElement getOKButton() {
+		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
+		return oK;
 	}
 
-	public void clickOnOKForNewItem() throws Exception {
-		Log.method("clickOnOKForNewItem");
-		tap(getOKButtonForNewItem());
-		press(getOKButtonForNewItem());
-		clickAndPressKey(getOKButtonForNewItem(), KeyCode.KEYCODE_ENTER);
+	public void clickOnOK() throws Exception {
+		Log.method("clickOnOK");
+		tap(getOKButton());
+		press(getOKButton());
+		clickAndPressKey(getOKButton(), KeyCode.KEYCODE_ENTER);
 	}
 
-	public WebElement getCancelButtonForNewItem() {
-		Log.method("getCancelButtonForNewItem");
-		return cancelNewItem;
+	public WebElement getCancelButton() {
+		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
+		return cancel;
 	}
 
-	public void clickOnCancelForNewItem() {
-		Log.method("clickOnCancelForNewItem");
-		tap(getCancelButtonForNewItem());
+	public void clickOnCancel() throws Exception {
+		Log.method("clickOnCancel");
+		tap(getCancelButton());
+		press(getCancelButton());
+		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
 	}
 
-	public WebElement getOKButtonForExistingItem() {
-		Log.method("getOKButtonForExistingItem");
-		return oKExistingItem;
+	public WebElement getDeleteButton() {
+		Log.method("getDeleteButton");
+		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
+		return delete;
 	}
 
-	public void clickOnOKForExistingItem() throws Exception {
-		Log.method("clickOnOKForExistingItem");
-		tap(getOKButtonForExistingItem());
-		press(getOKButtonForExistingItem());
-		clickAndPressKey(getOKButtonForExistingItem(), KeyCode.KEYCODE_ENTER);
-	}
-
-	public WebElement getCancelButtonForExistingItem() {
-		Log.method("getCancelButtonForExistingItem");
-		return cancelExistingItem;
-	}
-
-	public void clickOnCancelForExistingItem() {
-		Log.method("clickOnCancelForExistingItem");
-		tap(getCancelButtonForExistingItem());
-	}
-
-	public WebElement getDeleteButtonForExistingItem() {
-		Log.method("getDeleteButtonForExistingItem");
-		return deleteExistingItem;
-	}
-
-	public void clickOnDeleteForExistingItem() {
-		Log.method("clickOnDeleteForExistingItem");
-		tap(getDeleteButtonForExistingItem());
+	public void clickOnDelete() throws Exception {
+		Log.method("clickOnDelete");
+		tap(getDeleteButton());
+		press(getDeleteButton());
+		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -191,10 +184,6 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		if (isExistingItem) {
-			return getOKButtonForExistingItem()!=null && getOKButtonForExistingItem().isDisplayed();
-		}
-
-		return getOKButtonForNewItem()!=null && getOKButtonForNewItem().isDisplayed();
+		return getOKButton()!=null && getOKButton().isDisplayed();
 	}
 }

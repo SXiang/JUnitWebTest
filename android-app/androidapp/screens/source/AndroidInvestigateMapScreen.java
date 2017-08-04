@@ -184,4 +184,9 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		TestContext.INSTANCE.stayIdle(2);
 		return getAddSourceButton()!=null && getAddSourceButton().isDisplayed();
 	}
+
+	@Override
+	protected Integer getScreenLoadTimeout() {
+		return 2 * Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
+	}
 }
