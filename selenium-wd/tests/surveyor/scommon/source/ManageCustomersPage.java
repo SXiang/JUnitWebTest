@@ -173,7 +173,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 
-		this.inputCustomerName = driver.findElement(By.id("name"));
+		this.waitForElementToBeDisplayed(By.id("name"));
 		if (this.inputCustomerName == null) {
 			Log.info("Did NOT find this.inputCustomerName element");
 		}

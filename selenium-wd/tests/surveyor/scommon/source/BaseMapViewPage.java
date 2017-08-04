@@ -386,7 +386,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage clickGisButton() {
-		Log.clickElementInfo("GIS");
+		Log.clickElementInfo("GIS");		
 		this.gisButton.click();
 		return this;
 	}
@@ -397,7 +397,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return this;
 	}
-
+	public BaseMapViewPage openGisMenu() {
+		if (isGisMenuClosed()) {
+			clickGisButton();
+		}
+		return this;
+	}
 	public boolean isGisMenuOpen() {
 		return !this.gisMenu.getAttribute("class").toLowerCase().contains("ng-hide");
 	}

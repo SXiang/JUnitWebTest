@@ -789,6 +789,7 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
+          <include name="**/ReportsTestSuite1.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />

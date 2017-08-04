@@ -18,7 +18,6 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 	ManageUsersPageTest.class
 	,ManageUsersAdminPageTest.class
 	,SurveyViewPageTest4.class
-	,ReferenceGasReportsPageTest.class
 	,SurveyViewPageTest_EQ.class
 })
 public class RegressionTestSuite5 {
