@@ -252,7 +252,7 @@ public class BaseTest {
 		setDriver(null);
 	}
 
-//	@After
+	@After
 	public static void logout() {
 		if (getHomePage() != null) {
 			if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
