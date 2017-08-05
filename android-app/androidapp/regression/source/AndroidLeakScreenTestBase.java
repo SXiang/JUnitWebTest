@@ -2,17 +2,23 @@ package androidapp.regression.source;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
 import androidapp.screens.source.AndroidAddedSourceListDialog;
+import androidapp.screens.source.AndroidConfirmationDialog;
+import androidapp.screens.source.AndroidInvestigateMapScreen;
+import androidapp.screens.source.AndroidInvestigateReportScreen;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.TestContext;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
@@ -91,6 +97,35 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 				assertTrue(String.format("Source value is NOT correct. Expected=[%s], Actual=[%s]", OTHER_SOURCE, el.getSource().trim()), el.getSource().trim().equals(OTHER_SOURCE));
 				assertTrue(String.format("Time length NOT > 10. OtherSource=[%s], Time=[%s], Time len=[%d]", el, el.getTime(), el.getTime().length()), el.getTime().length()>10);
 			});
+	}
+
+	protected boolean hasMarkerOfStatus(List<InvestigationMarkerEntity> investigationMarkers, final String markerStatus) {
+		return investigationMarkers.stream()
+			.filter(m -> m.getInvestigationStatus().equals(markerStatus))
+			.count() > 0;
+	}
+
+	protected void investigateNotInvestigatedMarkerToNoGasFound(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidConfirmationDialog confirmationDialog, final String noGasFound, final String notInvestigated) throws Exception {
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			// TBD: This is workaround added for DE3195 to prevent app crash.
+			TestContext.INSTANCE.stayIdle(3);
+
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnCancel();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", noGasFound, actualMarkerStatus));
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
+					actualMarkerStatus.equals(noGasFound));
+			return true;
+		});
 	}
 
 	/* Implementation to be provided by derived class */

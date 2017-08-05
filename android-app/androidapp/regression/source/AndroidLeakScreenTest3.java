@@ -16,10 +16,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.LeakScreenDataProvider;
-import androidapp.dataprovider.ReportListDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
-import androidapp.entities.source.LeakListInfoEntity;
-import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
@@ -29,8 +26,6 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
-import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
-import common.source.ArrayUtility;
 import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
@@ -40,8 +35,6 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
-import surveyor.scommon.mobile.source.LeakDataGenerator;
-import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
@@ -158,6 +151,10 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+
+			// TBD: This is workaround added for DE3195 to prevent app crash.
+			TestContext.INSTANCE.stayIdle(3);
+
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 
@@ -216,7 +213,11 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 *	- - Click No
 	 * Results: -
 	 *	- - User is navigated to the map
-	 *	- - User will be prompted for PCubed password- User will see a list of Compliance Reports- User will see a list of LISAs for investigation- User will see a map centered on the backpack's location. Status is shown at top left of the map as Not Investigated. Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
+	 *	- - User will be prompted for PCubed password
+	 *  - - User will see a list of Compliance Reports
+	 *  - - User will see a list of LISAs for investigation
+	 *  - - User will see a map centered on the backpack's location. Status is shown at top left of the map as Not Investigated.
+	 *  - - Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
 	 *	- - Status at top left changes to In Progress. Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons.
 	 *	- - Dialog appears asking if leak was found
 	 *	- - User is navigated back to list of LISAs and LISA investigated above has status of No Gas Found
@@ -227,7 +228,77 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2677_ActiveInvestigationScreenShowsStatusOfInvestigation_NoGasFound ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
+		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsLoaded();
+			mapScreen.assertMapIsCenteredForPicarroUser();
+			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
+			return true;
+		});
+
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			// TBD: This is workaround added for DE3195 to prevent app crash.
+			TestContext.INSTANCE.stayIdle(3);
+
+			investigateMapScreen.clickOnInvestigate();
+
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
+			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
+			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
+
+			//assertTrue("Investigate button should NOT be displayed but is however displayed", !investigateMapScreen.getInvestigateButton().isDisplayed());
+
+			assertTrue("MarkAsComplete button NOT displayed", investigateMapScreen.getMarkAsCompleteButton().isDisplayed());
+			assertTrue("Pause button NOT displayed", investigateMapScreen.getPauseButton().isDisplayed());
+
+			// TBD: Enable post product defect DE3162
+			/*
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+			*/
+
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnCancel();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", noGasFound, actualMarkerStatus));
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
+					actualMarkerStatus.equals(noGasFound));
+
+			return true;
+		});
 	}
 
 	/**
@@ -243,8 +314,11 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 *	- - Click on the Pause button
 	 * Results: -
 	 *	- - User is navigated to the map
-	 *	- - User will be prompted for PCubed password- User will see a list of Compliance Reports- User will see a list of LISAs for investigation- User will see a map centered on the backpack's location. Status is shown at top left of the map as No Gas Found. Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Status at top left changes to In Progress. Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons.
+	 *	- - User will be prompted for PCubed password- User will see a list of Compliance Reports
+	 *  - - User will see a list of LISAs for investigation- User will see a map centered on the backpack's location.
+	 *  - - Status is shown at top left of the map as No Gas Found. Pipe data is displayed on the map Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
+	 *	- - Status at top left changes to In Progress. Add Source and Add CGI buttons are added on the right.
+	 *  - - Investigate button disappears and is replaced by Mark As Complete and Pause buttons.
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - App returns to Investigation Home screen with list of LISAs. LISA investigated above will have status of In Progress
 	 */
@@ -254,7 +328,81 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2681_ClickingPauseInvestigationMapReturnsAppInvestigationHomeScreen ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
+		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsLoaded();
+			mapScreen.assertMapIsCenteredForPicarroUser();
+			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
+			return true;
+		});
+
+		if (!hasMarkerOfStatus(investigationMarkers, noGasFound)) {
+			Log.info("Did NOT find a marker of status 'No Gas Found'... Investigating a 'Not Investigated' marker and changing status to 'No Gas Found'");
+			investigateNotInvestigatedMarkerToNoGasFound(investigateReportScreen, investigateMapScreen, confirmationDialog, noGasFound, notInvestigated);
+		}
+
+		List<String> markerStatuses = Arrays.asList(noGasFound);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			// TBD: This is workaround added for DE3195 to prevent app crash.
+			TestContext.INSTANCE.stayIdle(3);
+
+			investigateMapScreen.clickOnInvestigate();
+
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
+			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
+			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
+
+			//assertTrue("Investigate button should NOT be displayed but is however displayed", !investigateMapScreen.getInvestigateButton().isDisplayed());
+
+			assertTrue("MarkAsComplete button NOT displayed", investigateMapScreen.getMarkAsCompleteButton().isDisplayed());
+			assertTrue("Pause button NOT displayed", investigateMapScreen.getPauseButton().isDisplayed());
+
+			// TBD: Enable post product defect DE3162
+			/*
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+			*/
+
+			investigateMapScreen.clickOnPause();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", inProgress, actualMarkerStatus));
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", inProgress, actualMarkerStatus),
+					actualMarkerStatus.equals(inProgress));
+
+			return true;
+		});
+
 	}
 
 	/**

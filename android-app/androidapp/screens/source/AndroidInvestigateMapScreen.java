@@ -7,6 +7,7 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.BaselineImages;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -192,6 +193,11 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		});
 
 		return true;
+	}
+
+	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
+		Log.method("assertMarkAsCompleteAndPauseButtonsAreShown");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.MarkAsCompleteAndPauseButtons);
 	}
 
 	@Override

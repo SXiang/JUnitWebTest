@@ -50,6 +50,10 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
 	@CacheLookup
+	private WebElement clearHeatmap;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]")
+	@CacheLookup
 	private WebElement investigate;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
@@ -90,6 +94,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public AndroidMapScreen(WebDriver driver) {
 		super(driver);
+	}
+
+	public void clickOnClearHeatmap() {
+		Log.method("clickOnClearHeatmap");
+		tap(getClearHeatmapButton());
 	}
 
 	public void clickOnSubmit() {
@@ -192,6 +201,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void assertMapIsCenteredForPicarroUser() {
 		Log.method("assertMapIsCenteredForPicarroUser");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+	}
+
+	public WebElement getClearHeatmapButton() {
+		Log.method("getClearHeatmapButton");
+		return clearHeatmap;
 	}
 
 	public WebElement getMenuButton() {
