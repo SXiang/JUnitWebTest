@@ -878,11 +878,17 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	          <include name="**/RegressionTestSuite1.class" />
-  	          <include name="**/RegressionTestSuite2.class" />
-  	          <include name="**/RegressionTestSuite3.class" />
-  	          <include name="**/RegressionTestSuite4.class" />
-  	          <include name="**/RegressionTestSuite5.class" />
+  	          <include name="**/ACLandVisibilityTest.class" />
+  	          <include name="**/HomePageTest.class" />
+  	          <include name="**/LoginPageTest.class" />
+  	          <include name="**/ManageAnalyzersPageTest.class" />
+  	          <include name="**/ManageCustomersPageTest.class" />
+  	          <include name="**/ManageSurveyorPageTest.class" />
+  	          <include name="**/ManageSurveyorAdminPageTest.class" />
+  	          <include name="**/ManageSurveyorHistoriesPageTest.class" />
+  	          <include name="**/ManageUsersPageTest.class" />
+  	          <include name="**/ManageUsersAdminPageTest.class" />
+  	          <include name="**/SurveyViewPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
