@@ -623,14 +623,14 @@ public class BaseMapViewPageActions extends BasePageActions {
 
 		if (leftCssValue.contains("%")) {
 			leftPerc = Float.parseFloat(leftCssValue.replace("%", "").trim());
-		} else {
+		} else if(!leftCssValue.equalsIgnoreCase("auto")){
 			Float fLeft = Float.parseFloat(leftCssValue);
 			leftPerc = (fLeft * 100.0f) / fMapWidth;
 		}
 
 		if (topCssValue.contains("%")) {
 			topPerc = Float.parseFloat(topCssValue.replace("%", "").trim());
-		} else {
+		} else  if(!topCssValue.equalsIgnoreCase("auto")){
 			Float fTop = Float.parseFloat(topCssValue);
 			topPerc = (fTop * 100.0f) / fMapHeight;
 		}
