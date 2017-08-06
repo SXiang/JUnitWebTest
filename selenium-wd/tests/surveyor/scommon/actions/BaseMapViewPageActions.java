@@ -591,7 +591,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 
 	/**
-	 * Verifies Analytics Survey active dialog is shown on the map with correct message and CSS formatting.
+	 * Verifies Survey active dialog is shown on the map with correct message and CSS formatting.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
@@ -600,18 +600,18 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyCorrectSurveyActiveMessageIsShownOnMap", data, dataRowID);
 		getBaseMapViewPageObject().waitForSurveyDialogToBeDisplayed();
 		boolean dialogShown = getBaseMapViewPageObject().isSurveyModeDialogShown();
-		WebElement analyticsModeDialog = getBaseMapViewPageObject().getActiveSurveyModeDialog();
+		WebElement surveyModeDialog = getBaseMapViewPageObject().getActiveSurveyModeDialog();
 		WebElement mapElement = getBaseMapViewPageObject().getMapElement();
-		String spanText = analyticsModeDialog.getText();
+		String spanText = surveyModeDialog.getText();
 		String expectedSpanText = Resources.getResource(ResourceKeys.Dialog_AnalyticsModeActive);
 		if(data!=null&&data.equalsIgnoreCase("EQ")){
 			expectedSpanText = Resources.getResource(ResourceKeys.Dialog_EQModeActive);
 		}
-		String leftCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "left").replace("px", "");
-		String topCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "top").replace("px", "");
+		String leftCssValue = WebElementExtender.getCssPropertyValue(getDriver(), surveyModeDialog, "left").replace("px", "");
+		String topCssValue = WebElementExtender.getCssPropertyValue(getDriver(), surveyModeDialog, "top").replace("px", "");
 		String mapCssWidthValue = WebElementExtender.getCssPropertyValue(getDriver(), mapElement, "width").replace("px", "");
 		String mapCssHeightValue = WebElementExtender.getCssPropertyValue(getDriver(), mapElement, "height").replace("px", "");
-		String colorCssValue = WebElementExtender.getCssPropertyValue(getDriver(), analyticsModeDialog, "color");
+		String colorCssValue = WebElementExtender.getCssPropertyValue(getDriver(), surveyModeDialog, "color");
 
 		Log.info(String.format("mapCssWidthValue=[%s], mapCssHeightValue=[%s], leftCssValue=[%s], topCssValue=[%s]",
 				mapCssWidthValue, mapCssHeightValue, leftCssValue, topCssValue));
