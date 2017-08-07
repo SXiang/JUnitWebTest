@@ -203,6 +203,31 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
 	}
 
+	public void assertMethaneModeIsShownInTopPanel() {
+		Log.method("assertMethaneModeIsShownInTopPanel");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMethaneModeLabel);
+	}
+
+	public void assertDefaultMethaneValueShownInTopPanelIsCorrect() {
+		Log.method("assertDefaultMethaneValueShownInTopPanelIsCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMethaneValue2ppm);
+	}
+
+	public void assertDefaultMaxValueShownInTopPanelIsCorrect() {
+		Log.method("assertDefaultMaxValueShownInTopPanelIsCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMaxValue2ppm);
+	}
+
+	public void assertBottomPaneButtonsAreCorrect() {
+		Log.method("assertBottomPaneButtonsAreCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.BottomPaneButtons);
+	}
+
+	public void assertGpsLabelIsGreen() {
+		Log.method("assertGpsLabelIsGreen");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.GpsLabelGreen);
+	}
+
 	public WebElement getClearHeatmapButton() {
 		Log.method("getClearHeatmapButton");
 		return clearHeatmap;

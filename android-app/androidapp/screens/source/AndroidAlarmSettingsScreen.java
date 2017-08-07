@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
+import common.source.BaselineImages;
 import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -214,6 +215,11 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public Integer getVolumeLeftDeltaWidth() {
 		Log.method("getVolumeLeftDeltaWidth");
 		return volumeLeftDelta.getSize().getWidth();
+	}
+
+	public void assertSlidersShownAreCorrect() {
+		Log.method("assertSlidersShownAreCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.VolumeAmplitudeThresholdSliders);
 	}
 
 	@Override

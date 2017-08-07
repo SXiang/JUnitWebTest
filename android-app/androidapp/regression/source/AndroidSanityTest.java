@@ -31,7 +31,7 @@ public class AndroidSanityTest extends BaseAndroidTest {
 		String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 		String username = TestContext.INSTANCE.getTestSetup().getLoginUser();
 
-		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
+		mainLoginScreen.saveSettings(backpackAddress, picServerAddress, username);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			assertTrue("Map screen loaded successfully!", mapScreen.waitForScreenLoad());

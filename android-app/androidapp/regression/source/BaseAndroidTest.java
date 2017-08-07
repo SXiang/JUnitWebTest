@@ -72,7 +72,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
-	protected AndroidMainLoginScreen settingsScreen;
+	protected AndroidMainLoginScreen mainLoginScreen;
 	protected AndroidMapScreen mapScreen;
 
 	private PerfmonDataCollector perfmonCollector;
@@ -136,6 +136,10 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+	}
+
+	@Override
+	public void postTestMethodProcessing() {
 		cleanUp();
 	}
 
@@ -338,8 +342,8 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void initializeMainLoginScreen() {
-		settingsScreen = new AndroidMainLoginScreen(appiumDriver);
-		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+		mainLoginScreen = new AndroidMainLoginScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mainLoginScreen);
 	}
 
 	protected void initializeMapScreen() {
@@ -436,7 +440,7 @@ public class BaseAndroidTest extends BaseTest {
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 
-		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
+		mainLoginScreen.saveSettings(backpackAddress, picServerAddress, username);
 
 		if (waitForMapScreenLoad) {
 			if (devMachineOverride) {
@@ -449,6 +453,6 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	public void waitForAppLoad() {
-		settingsScreen.waitForFirstAppLoad();
+		mainLoginScreen.waitForFirstAppLoad();
 	}
 }

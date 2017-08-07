@@ -21,11 +21,14 @@ import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
 import androidapp.screens.source.AndroidAddedSourceListDialog;
+import androidapp.screens.source.AndroidAlarmSettingsScreen;
 import androidapp.screens.source.AndroidConfirmationDialog;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
+import androidapp.screens.source.AndroidSettingsScreen;
+import common.source.AndroidDeviceInterface;
 import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
@@ -55,6 +58,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	protected AndroidAddLeakSourceFormDialog addLeakSourceFormDialog;
 	protected AndroidAddedSourceListDialog addedSourcesListDialog;
 	protected AndroidConfirmationDialog confirmationDialog;
+	protected AndroidSettingsScreen settingsScreen;
+	protected AndroidAlarmSettingsScreen alarmSettingsScreen;
 
 	protected AndroidAddOtherSourceFormDialog addOtherSourceFormDialog;
 
@@ -413,18 +418,46 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	 *	- - Click on the Menu at bottom right
 	 *	- - Click Alarm Settings
 	 * Results: -
-	 *	- - Concentration Chart appears at top left with black background. Methane value appears at top right with black background and disposition.The Toggle Mode, Reset Max and Investigate buttons at the bottom of the page all appear with black buttons and white font
+	 *	- - Concentration Chart appears at top left with black background. Methane value appears at top right with black background and disposition.
+	 *  - - The Toggle Mode, Reset Max and Investigate buttons at the bottom of the page all appear with black buttons and white font
 	 *	- The GPS indicator at bottom left is green when GPS signal is good, red with a line through it when no GPS signal is received
 	 *	- - Menu items Clear Heatmap, Alarm Settings, App Settings and Shutdown Instrument appear. Menu background is black, buttons are grey and font is white
 	 *	- - Alarm Settings include only Volume and Threshold
 	 */
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2687, location = LeakScreenDataProvider.class)
-	public void TC2687_EnergyBackpack_AppAppearane(
+	public void TC2687_EnergyBackpack_AppAppearance(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2687_EnergyBackpack_AppAppearane ...");
+		Log.info("\nRunning TC2687_EnergyBackpack_AppAppearance ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			Log.info("Map screen loaded successfully!");
+
+			mapScreen.assertConcentrationChartIsShown();
+			mapScreen.assertBottomPaneButtonsAreCorrect();
+			mapScreen.assertMethaneModeIsShownInTopPanel();
+			mapScreen.assertDefaultMaxValueShownInTopPanelIsCorrect();
+			mapScreen.assertDefaultMethaneValueShownInTopPanelIsCorrect();
+			mapScreen.assertGpsLabelIsGreen();
+
+			// TBD: As discussed with Praki, Gps is RED check skipped. To be verified with actual Backpack Analyzer.
+
+			mapScreen.clickOnMenuButton();
+			settingsScreen.waitForScreenLoad();
+			assertTrue("Clear HeatMap button should be displayed", settingsScreen.getClearHeatmap().isDisplayed());
+			assertTrue("Alarm Settings button should be displayed", settingsScreen.getAlarmSettings().isDisplayed());
+			assertTrue("App Settings button should be displayed", settingsScreen.getAppSettings().isDisplayed());
+			assertTrue("Shutdown Instrument button should be displayed", settingsScreen.getShutdownInstrument().isDisplayed());
+
+			settingsScreen.clickOnAlarmSettings();
+			alarmSettingsScreen.waitForScreenLoad();
+			alarmSettingsScreen.assertSlidersShownAreCorrect();
+			alarmSettingsScreen.slideToVolume(4.0f);
+			alarmSettingsScreen.slideToThresholdppm(24.0f);
+			alarmSettingsScreen.clickOnApply();
+			return true;
+		});
 	}
 
 	private void createTestCaseData(TestName testName) throws Exception {
@@ -470,6 +503,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		initializeMarkerTypeDialog();
 		initializeAddOtherSourceFormDialog();
 		initializeConfirmationDialog();
+		initializeSettingsScreen();
+		initializeAlarmSettingsScreen();
 	}
 
 	@Override
@@ -523,6 +558,16 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 	private void initializeConfirmationDialog() {
 		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), confirmationDialog);
+	}
+
+	protected void initializeSettingsScreen() {
+		settingsScreen = new AndroidSettingsScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+	}
+
+	protected void initializeAlarmSettingsScreen() {
+		alarmSettingsScreen = new AndroidAlarmSettingsScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), alarmSettingsScreen);
 	}
 
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {
