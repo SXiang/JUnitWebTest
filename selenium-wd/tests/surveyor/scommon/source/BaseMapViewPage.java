@@ -383,7 +383,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public BaseMapViewPage clickGisButton() {
-		Log.clickElementInfo("GIS");		
+		Log.clickElementInfo("GIS");
 		this.gisButton.click();
 		return this;
 	}

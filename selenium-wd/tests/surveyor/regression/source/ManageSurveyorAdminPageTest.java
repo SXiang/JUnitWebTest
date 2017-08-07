@@ -261,7 +261,7 @@ public class ManageSurveyorAdminPageTest extends SurveyorBaseTest {
 
 		assertFalse(manageSurveyorAdminPage.editExistingSurveyor(SQACUS, locationName, surveyorName1, locationName, surveyorName2, false));
 		assertTrue(manageSurveyorAdminPage.isDuplicateSurMsgPresent(locationName));
-		}
+	}
 
 	/**
 	 * Test Case ID: TC450_ManageSurveyorAdminPagination Test Description: Pagination (Manage Surveyor Customer Admin) Test Script: 10,25,50 and 100 records selection on all customer admin screens
