@@ -217,8 +217,8 @@ public class ManageSurveyorAdminPage extends ManageSurveyorPage {
 				Log.clickElementInfo("Ok");
 				this.btnOK.click();
 
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+				if (isElementPresent(this.summaryErrorsBy)) {
+					WebElement panelError = driver.findElement(summaryErrorsBy);
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						return false;
 					}
