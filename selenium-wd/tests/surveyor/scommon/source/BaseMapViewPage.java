@@ -425,17 +425,17 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return WebElementExtender.isElementPresentAndDisplayed(addUpdateNoteButton);
 	}
 
-//	/**
-//	 * Verifies whether the Analytics Mode dialog is shown.
-//	 */
+	/**
+	 * Verifies whether the Survey Mode dialog is shown.
+	 */
 	public boolean isSurveyModeDialogShown() {
 		Log.method("isSurveyModeDialogShown");
 		return WebElementExtender.isElementPresentAndDisplayed(this.activeSurveyModeDialog);
 	}
-//
-//	/**
-//	 * Verifies the Analytics Mode dialog is NOT shown.
-//	 */
+
+	/**
+	 * Verifies the Survey Mode dialog is NOT shown.
+	 */
 	public boolean isSurveyModeDialogHidden() {
 		Log.method("isSurveyModeDialogHiddeb");
 		return !WebElementExtender.isElementPresentAndDisplayed(this.activeSurveyModeDialog);
