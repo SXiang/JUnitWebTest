@@ -696,7 +696,6 @@ public class BaseTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		logout();
 	}
 
 	protected static WebDriver getDriver() {
