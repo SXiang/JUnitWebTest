@@ -33,6 +33,7 @@ import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
+import common.source.WebElementExtender;
 import surveyor.dataaccess.source.Analyzer;
 import surveyor.dataaccess.source.CaptureEvent;
 import surveyor.dataaccess.source.Measurement;
@@ -114,20 +115,21 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 	}
 
 	public enum DrivingSurveyButtonType {
-		ViewSurvey, ExportSurvey, ExportCustomerSurvey, ExportPeaks, ExportAnalysis, Resubmit, DeleteSurvey;
-
-	}
-
-	public boolean isButtonPresent(String user, DrivingSurveyButtonType button) throws Exception{
-
-		if (this.getButtonXpath(user, button).toString().equals(button)){
-			return true;
-
+		ViewSurvey("View Survey"), ExportSurvey("Export Survey"), ExportCustomerSurvey("Export Customer Survey"), 
+		ExportPeaks("Export Peaks"), ExportAnalysis("Export Analysis"), Resubmit("Resubmit"), DeleteSurvey("Delete Survey");
+		String title;
+		DrivingSurveyButtonType(String title){
+			this.title = title;
 		}
-
-		return false;
-
+		public String toString(){
+			return title;
+		}
 	}
+
+	public boolean isButtonPresent(DrivingSurveyButtonType button) throws Exception{
+		return isElementPresent("//"+getButtonXpath(button));
+	}
+	
 	public enum UserRoleType {
 		Driver("Driver"), Supervisor("Supervisor"), UtilityAdmin("Utility Administrator"), Admin("Administrator");
 		private final String name;
@@ -215,7 +217,7 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		DataTablePage dataTable = DataTablePage.getDataTablePage(driver, tableContext, this.testSetup, this.strBaseURL, this.strPageURL);
 		try {
 			WebElement row = dataTable.getMatchingRow(userIndexMap);		
-			WebElement btn = row.findElement(By.xpath(getButtonXpath(user, buttonType)));
+			WebElement btn = row.findElement(By.xpath(getButtonXpath(buttonType)));
 			if (buttonType == DrivingSurveyButtonType.DeleteSurvey) {
 				Log.clickElementInfo(buttonType.toString());
 				btn.click();
@@ -259,54 +261,9 @@ public class MeasurementSessionsPage extends SurveyorBasePage {
 		return result;
 	}
 
-	private String getButtonXpath(String user, DrivingSurveyButtonType buttonType) throws Exception {
+	private String getButtonXpath(DrivingSurveyButtonType buttonType) throws Exception {
 		Log.method("getButtonXpath", buttonType);
-		String buttonXPath;
-		if (user.contains("sqacus"))
-		{
-			switch (buttonType) {
-			case ViewSurvey:
-				buttonXPath = "td[10]/a[1]/img";
-				break;
-			case ExportCustomerSurvey:
-				buttonXPath = "td[10]/a[2]/img";
-				break;
-			case DeleteSurvey:
-				buttonXPath = "td[10]/a[3]/img";
-				break;
-			default:
-				throw new Exception("ButtonType NOT supported.");
-			}
-		}
-		else{
-			switch (buttonType) {
-			case ViewSurvey:
-				buttonXPath = "td[11]/a[1]/img";
-				break;
-			case ExportSurvey:
-				buttonXPath = "td[11]/a[2]/img";
-				break;
-			case ExportCustomerSurvey:
-				buttonXPath = "td[11]/a[3]/img";
-				break;
-			case ExportPeaks:
-				buttonXPath = "td[11]/a[4]/img";
-				break;
-			case ExportAnalysis:
-				buttonXPath = "td[11]/a[5]/img";
-				break;
-			case Resubmit:
-				buttonXPath = "td[11]/a[6]/img";
-				break;
-			case DeleteSurvey:
-				buttonXPath = "td[11]/a[7]/img";
-				break;
-			default:
-				throw new Exception("ButtonType NOT supported.");
-			}
-
-		}
-
+		String buttonXPath = "td/a[@title='"+buttonType.toString()+"']/img";
 		return buttonXPath;
 
 	}
