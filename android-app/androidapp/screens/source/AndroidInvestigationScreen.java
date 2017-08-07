@@ -84,6 +84,11 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		return searchEditViewShown;
 	}
 
+	@Override
+	protected Integer getScreenLoadTimeout() {
+		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT * 2;
+	}
+
 	public void waitForResultsToLoad() {
 		Log.method("waitForResultsToLoad");
 		waitForScreenLoad(Timeout.ANDROID_APP_RESULTS_TIMEOUT * 2, d -> isFirstRowPresent());
