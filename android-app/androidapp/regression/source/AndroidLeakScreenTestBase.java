@@ -111,10 +111,6 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
-
-			// TBD: This is workaround added for DE3195 to prevent app crash.
-			TestContext.INSTANCE.stayIdle(3);
-
 			investigateMapScreen.clickOnInvestigate();
 			investigateMapScreen.clickOnMarkAsComplete();
 			confirmationDialog.waitForScreenLoad();

@@ -156,10 +156,6 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
-
-			// TBD: This is workaround added for DE3195 to prevent app crash.
-			TestContext.INSTANCE.stayIdle(3);
-
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 
@@ -268,10 +264,6 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
-
-			// TBD: This is workaround added for DE3195 to prevent app crash.
-			TestContext.INSTANCE.stayIdle(3);
-
 			investigateMapScreen.clickOnInvestigate();
 
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -373,10 +365,6 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
-
-			// TBD: This is workaround added for DE3195 to prevent app crash.
-			TestContext.INSTANCE.stayIdle(3);
-
 			investigateMapScreen.clickOnInvestigate();
 
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());

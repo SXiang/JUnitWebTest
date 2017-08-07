@@ -150,6 +150,10 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
+
+		// TBD: This is workaround added for DE3195 to prevent app crash.
+		TestContext.INSTANCE.stayIdle(3);
+
 		tap(getInvestigateButton());
 	}
 
