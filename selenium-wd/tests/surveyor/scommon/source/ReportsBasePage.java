@@ -475,7 +475,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.CSS, using = ".surveyGroup > [id^=surveyContent-]:not(#surveyContent-x)")
 	private List<WebElement> selectedSurveys;
 
-	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 1400;
+	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 1700;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
