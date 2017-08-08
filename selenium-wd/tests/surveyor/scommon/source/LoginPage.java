@@ -75,7 +75,6 @@ public class LoginPage extends BasePage {
 
 	public HomePage loginNormalAs(String userName, String password) {
 		login(userName, password);
-
 		waitForPageToLoad();
 		handleEULA();
 

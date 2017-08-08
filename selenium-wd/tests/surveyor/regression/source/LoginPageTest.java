@@ -25,8 +25,6 @@ import static surveyor.scommon.source.SurveyorConstants.SURVEYOR_SQACUSUNIT1;
 import static surveyor.scommon.source.SurveyorConstants.CUSDRVSTDTAG3200;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +34,6 @@ import org.openqa.selenium.support.PageFactory;
 import common.source.Log;
 import common.source.WebElementExtender;
 import surveyor.scommon.actions.PageActionsStore;
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.ComplianceReportsPage;
 import surveyor.scommon.source.EULAPage;
 import surveyor.scommon.source.FleetMapPage;
@@ -50,7 +47,6 @@ import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.MeasurementSessionsPage.DrivingSurveyButtonType;
 import surveyor.scommon.source.MeasurementSessionsPage.UserRoleType;
 
@@ -67,7 +63,6 @@ public class LoginPageTest extends SurveyorBaseTest {
 	private static SurveyorSystemsPage surveyorPage;
 	private static MeasurementSessionsPage measurementSessionsPage;
 	private static SurveyViewPage surveyViewPage;
-	private static Map<String, String> testReport;
 
 	@BeforeClass
 	public static void setupACLandVisibilityTest() {
@@ -205,19 +200,12 @@ public class LoginPageTest extends SurveyorBaseTest {
 
 		List<String> strListTagCus = new ArrayList<String> ();
 		List<String> strListTagPic = new ArrayList<String> ();
-
-		testReport = addTestReport(SQACUSSU, USERPASSWORD,
-				SurveyModeFilter.Standard);
-		String rptTitle = testReport.get(SurveyType.Standard + "Title");
-		String strCreatedBy = testReport.get("userName");
-
+		
+		// Report deletion test is done in ReportTest_TC37_VerifyCustomerUtilityAdminLoginProfile
+		
 		getLoginPage().open();
 		getLoginPage().loginNormalAs(SQACUSUA, USERPASSWORD);
 		assertFalse(WebElementExtender.isElementPresentAndDisplayed(homePage.getLinkPicarroAdmin()));
-
-		complinaceReportsPage.open();
-		complinaceReportsPage.waitForPageLoad();
-		complinaceReportsPage.searchAndDeleteReport(rptTitle, strCreatedBy);
 
 		homePage.open();
 		homePage.waitForPageLoad();
