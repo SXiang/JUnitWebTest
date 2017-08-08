@@ -474,7 +474,6 @@ public class ManageCustomersPageTest extends SurveyorBaseTest {
 
 		// Add customer with 256 characters in Customer name.
 		manageCustomersPage.addNewCustomer(customerName256, eula, true);
-		assertTrue(manageCustomersPage.findExistingCustomer(customerName256.substring(0, MAX_CHARS), true));
 		assertFalse(manageCustomersPage.findExistingCustomer(customerName256, true));
 
 	}
