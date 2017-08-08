@@ -471,13 +471,13 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			tcId = "TC2681";
 		}
 
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithCompleteOrInProgressLisaMarker(new String[] {tcId}, SurveyorConstants.SQAPICDR);
+		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(new String[] {tcId}, SurveyorConstants.SQAPICDR);
 		if (matchingReport != null) {
 			generatedInvReportTitle = matchingReport.getReportTitle();
 			return;
 		}
 
-		generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+		generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 				userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 	}
 
