@@ -262,7 +262,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-		executeWithBackPackDataProcessesPaused(obj -> {
+		executeWithBackPackDataProcessesPaused(obj -> {	
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 

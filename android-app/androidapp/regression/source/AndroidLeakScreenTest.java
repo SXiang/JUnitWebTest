@@ -352,12 +352,9 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			IntStream.of(1,2).forEach(i -> {
 				addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.OtherSource, leakCountAfterAdd-i);
 				addOtherSourceFormDialog.waitForScreenLoad();
-				String actualAdditionalNotes = addOtherSourceFormDialog.getAdditionalNotesText();
-				assertTrue(String.format("Additional notes string does NOT match. Expected=[%s]; Actual=[%s]", otherSourceAdditionalNotes, actualAdditionalNotes),
-						actualAdditionalNotes.equals(otherSourceAdditionalNotes));
-				LeakSourceType actualSourceLeakSourceType = addOtherSourceFormDialog.getSelectedLeakSource();
-				assertTrue(String.format("LeakSourceType does NOT match. Expected=[%s]; Actual=[%s]", otherSourceLeakSourceType, actualSourceLeakSourceType),
-						actualSourceLeakSourceType.equals(otherSourceLeakSourceType));
+				assertTrue("Data shown in Other Source form dialog was NOT correct.",
+						addOtherSourceFormDialog.verifyCorrectDataIsShown(otherSourceLeakSourceType, otherSourceAdditionalNotes));
+
 				try {
 					addOtherSourceFormDialog.clickOnCancel();
 				} catch (Exception e) {

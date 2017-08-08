@@ -122,6 +122,6 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	private void waitForSearchResultsToLoad(String searchKeyword) {
 		Log.method("waitForSearchResultsToLoad", searchKeyword);
-		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 2, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
+		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 3, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
 	}
 }

@@ -9,7 +9,7 @@ param
 
 function WaitFor-ActivityToGainFocus($activityName) {
     Write-Host "Waiting for $activityName to gain focus." -NoNewLine
-    $cnt = 0;$MAX_ITER = 5;
+    $cnt = 0;$MAX_ITER = 15;
     $found = $false
     while((-not $found) -and ($cnt -lt $MAX_ITER)) {
         $cnt++

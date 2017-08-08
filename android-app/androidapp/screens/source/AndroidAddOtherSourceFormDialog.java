@@ -116,9 +116,10 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnOK() throws Exception {
 		Log.method("clickOnOK");
-		tap(getOKButton());
-		press(getOKButton());
-		clickAndPressKey(getOKButton(), KeyCode.KEYCODE_ENTER);
+		WebElement okButton = getOKButton();
+		tap(okButton);
+		press(okButton);
+		clickAndPressKey(okButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getCancelButton() {
@@ -129,9 +130,9 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
-		tap(getCancelButton());
-		press(getCancelButton());
-		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+		WebElement cancelButton = getCancelButton();
+		tap(cancelButton);
+		clickAndPressKey(cancelButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getDeleteButton() {
@@ -142,9 +143,8 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnDelete() throws Exception {
 		Log.method("clickOnDelete");
-		tap(getDeleteButton());
-		press(getDeleteButton());
-		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
+		WebElement deleteButton = getDeleteButton();
+		clickAndPressKey(deleteButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -154,9 +154,10 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnUseCurrentLocation() throws Exception {
 		Log.method("clickOnUseCurrentLocation");
-		tap(getUseCurrentLocationButton());
-		press(getUseCurrentLocationButton());
-		clickAndPressKey(getUseCurrentLocationButton(), KeyCode.KEYCODE_ENTER);
+		WebElement useCurrentLocationButton = getUseCurrentLocationButton();
+		tap(useCurrentLocationButton);
+		press(useCurrentLocationButton);
+		clickAndPressKey(useCurrentLocationButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	/****** TextField Methods ******/
@@ -185,5 +186,21 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
 		return getOKButton()!=null && getOKButton().isDisplayed();
+	}
+
+	public Boolean verifyCorrectDataIsShown(final LeakSourceType otherSourceLeakSourceType, final String otherSourceAdditionalNotes) {
+		String actualAdditionalNotes = this.getAdditionalNotesText();
+		if (!actualAdditionalNotes.equals(otherSourceAdditionalNotes)) {
+			Log.info(String.format("Additional notes string does NOT match. Expected=[%s]; Actual=[%s]", otherSourceAdditionalNotes, actualAdditionalNotes));
+			return false;
+		}
+
+		LeakSourceType actualSourceLeakSourceType = this.getSelectedLeakSource();
+		if (!actualSourceLeakSourceType.equals(otherSourceLeakSourceType)) {
+			Log.info(String.format("LeakSourceType does NOT match. Expected=[%s]; Actual=[%s]", otherSourceLeakSourceType, actualSourceLeakSourceType));
+			return false;
+		}
+
+		return true;
 	}
 }

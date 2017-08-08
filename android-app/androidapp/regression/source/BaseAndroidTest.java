@@ -38,6 +38,7 @@ import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
+import common.source.AndroidAutomationTools.ShellCommands;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
@@ -139,6 +140,17 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	@Override
+	public void onTestFailureProcessing() {
+		Log.method("onTestFailureProcessing");
+		dumpSysActivity();
+		Log.info(getAndroidDriver().getPageSource());
+	}
+
+	@Override
+	public void onTestSuccessProcessing() {
+	}
+
+	@Override
 	public void postTestMethodProcessing() {
 		cleanUp();
 	}
@@ -146,6 +158,15 @@ public class BaseAndroidTest extends BaseTest {
 	@SuppressWarnings("rawtypes")
 	protected AndroidDriver getAndroidDriver() {
 		return (AndroidDriver)appiumDriver;
+	}
+
+	protected void dumpSysActivity() {
+		try {
+			String dumpSysActivity = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.DUMPSYS_ACTIVITY);
+			Log.info(String.format("DumpSys activity -> %s", dumpSysActivity));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initPerfmonDataCollector() {

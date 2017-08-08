@@ -98,13 +98,15 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			Log.method("BaseTest.failed");
+			onTestFailureProcessing();
 			BaseTest.reportTestFailed(e, description.getClassName());
 			postTestMethodProcessing();
 		}
 
-		 @Override
+		@Override
 		 protected void succeeded(Description description) {
 			Log.method("BaseTest.succeeded");
+			onTestSuccessProcessing();
 			BaseTest.reportTestSucceeded(description.getClassName());
 			postTestMethodProcessing();
 		}
@@ -267,6 +269,12 @@ public class BaseTest {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(getExtentReportFilePath().toString());
 			}
 		}
+	}
+
+	public void onTestFailureProcessing() {
+	}
+
+	public void onTestSuccessProcessing() {
 	}
 
 	public void postTestMethodProcessing() {
