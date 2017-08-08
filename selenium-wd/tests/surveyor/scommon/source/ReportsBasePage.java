@@ -475,7 +475,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.CSS, using = ".surveyGroup > [id^=surveyContent-]:not(#surveyContent-x)")
 	private List<WebElement> selectedSurveys;
 
-	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 1700;
+	private Integer reportGenerationTimeoutInSeconds = SurveyorConstants.ACTIONTIMEOUT + 900;
 
 	private static String surveyTableHeaderColumnBaseXPath = "//*[@id='datatableSurveys']/thead/tr/th[%d]";
 
@@ -1034,6 +1034,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void enterSurveyInfoUsername(String username) {
 		if (username != null && (!username.isEmpty())) {
 			Log.info(String.format("Set username - '%s'", username));
+			this.userName.clear();
 			this.userName.sendKeys(username);
 		}
 	}
