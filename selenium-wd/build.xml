@@ -706,10 +706,9 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-		        <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
-				<include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
-				<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
-				<include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+			  <include name="**/DriverViewPageTest_Analytics.class" />
+			  <include name="**/ObserverViewPageTest_Analytics.class" />
+			  <include name="**/ObserverViewPageTest_Analytics2.class" />
 			</fileset>
       </batchtest>
     </junit>
