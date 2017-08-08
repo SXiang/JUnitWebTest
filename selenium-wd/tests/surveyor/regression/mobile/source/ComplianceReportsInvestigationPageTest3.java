@@ -430,6 +430,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS), reportDataRowID);
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
@@ -938,6 +939,7 @@ public class ComplianceReportsInvestigationPageTest3 extends BaseReportsPageActi
 		loginPageAction.login(EMPTY, getUserRowID(userDataRowID)); //Utility Admin
 		complianceReportsPageAction.open(testCaseID, getReportRowID(reportDataRowID));
 		createNewReport(complianceReportsPageAction, getReportRowID(reportDataRowID));
+		complianceReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS), reportDataRowID);
 		String reportId = complianceReportsPageAction.getComplianceReportsPage().waitForReportGenerationtoCompleteAndGetReportName(
 				ComplianceReportsPageActions.workingDataRow.get().title, TestContext.INSTANCE.getLoggedInUser());
 
