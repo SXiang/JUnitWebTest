@@ -186,10 +186,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		measurementSessionsPage.performSearch(CUSDRVSTDLEAK);
 		measurementSessionsPage.clickOnFirstViewSurvey();
 		surveyViewPage.waitForPageLoad();
-		surveyViewPage.clickGisButton();
+		surveyViewPage.openGisMenu();
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
-		surveyViewPage.clickGisButton();
+		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
 		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSUA-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 		
@@ -266,10 +266,10 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		measurementSessionsPage.performSearch(CUSDRVSTDLEAK);
 		measurementSessionsPage.clickOnFirstViewSurvey();
 		surveyViewPage.waitForPageLoad();
-		surveyViewPage.clickGisButton();
+		surveyViewPage.openGisMenu();
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllBoundaries, true);
 		surveyViewPage.toggleGisSwitch(GisSwitchType.UseAllPipes, true);
-		surveyViewPage.clickGisButton();
+		surveyViewPage.hideGisMenu();
 		surveyViewPage.setZoomLevelForAssets();
 		assertTrue(surveyViewPage.verifyScreenshotWithBaseline("TC29", "SQACUSSU-AssetAndBoundaries", new Rectangle(500, 100, 500, 350), true));
 		

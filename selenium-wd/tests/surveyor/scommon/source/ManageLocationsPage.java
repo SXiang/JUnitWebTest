@@ -1247,7 +1247,7 @@ public class ManageLocationsPage extends SurveyorBasePage {
 				Log.info("ok button clicked");
 				if(!checkForError){
 					Log.info("Not checking for errors");
-					if (isElementPresent(this.panelDuplicationErrorXPath)) {
+					if (isElementPresent(this.summaryErrorsBy)) {
 						// We are still on the new locations page. Return.
 						Log.info("Error on page. Returning to caller.");
 						return true;
@@ -1266,8 +1266,8 @@ public class ManageLocationsPage extends SurveyorBasePage {
 						return false;
 				}
 
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+				if (isElementPresent(this.summaryErrorsBy)) {
+					WebElement panelError = driver.findElement(summaryErrorsBy);
 					if (panelError.getText()
 							.equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						return false;
