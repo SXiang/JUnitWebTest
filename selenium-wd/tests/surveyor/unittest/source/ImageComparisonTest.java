@@ -155,7 +155,7 @@ public class ImageComparisonTest extends BaseReportsPageActionTest {
 		String lisaNumberPrefix = reportName+"-LISA-";
 		int workingLisa = 9;
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		reportInvestigationsPage.selectLisa(lisaNumberPrefix+workingLisa);
+		reportInvestigationsPage.selectLisas(lisaNumberPrefix+workingLisa);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Mobile - login and investigate lisas

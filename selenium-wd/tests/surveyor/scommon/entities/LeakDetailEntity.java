@@ -28,6 +28,90 @@ public class LeakDetailEntity extends InvestigationEntity{
 		private String meterNumber;
 		private String leakLocationRemarks;
 
+		public static enum LeakLocation {
+			OTHER ("Other"),
+			MAIN ("Main"),
+			SERVICE ("Service"),
+			SERVICET ("Service T"),
+			SERVICEBRANCH("Service Branch"),
+			RISER ("Riser"),
+			METERSET ("Meter Set"),
+			CUSTOMEREQUIPMENT ("Customer Equipment"),
+			SEWERMANHOLE ("Sewer Manhole"),
+			CATCHBASIN ("Catch Basin"),
+			SUBSTRUCTURE ("Substructure");
+			
+			private String location;
+			LeakLocation(String location){
+				this.location = location;
+			}
+			public String toString(){
+				return location;
+			}
+		};
+
+		public static enum ReadingUnit {
+			PPM ("PPM"),
+			LEL ("LEL"),
+			PERCENTGAS ("% Gas");
+			private String unit;
+			ReadingUnit(String unit){
+				this.unit = unit;
+			}
+			public String toString(){
+				return unit;
+			}
+		};
+		
+		public static enum SurfaceOverLeak {
+			ABOVEGROUND ("Above Ground"),
+		    CONCRETE ("Concrete"),
+			UNSURFACE ("Un surfaced"),
+			TARCOMPONENT ("Tar Component"),
+			INSUBSTRUCTURE ("In Substructure"),
+			OTHER ("Other");
+			
+			private String surface;
+			SurfaceOverLeak(String surface){
+				this.surface = surface;
+			}
+			public String toString(){
+				return surface;
+			}
+		};
+		
+		public static enum LeakType {
+			ABOVEGROUND ("Above Ground"),
+		    BELOWGROUND ("Below Ground");
+			
+			private String type;
+			LeakType(String type){
+				this.type = type;
+			}
+			public String toString(){
+				return type;
+			}
+		};
+
+		public enum LeakPipeMaterialType {
+			CastIron ("Cast Iron"),
+			Copper ("Copper"),
+			OtherPlastic ("Other Plastic"),
+			PEPlastic ("PE Plastic"),
+			ProtectedSteel ("Protected Steel"),
+			UnprotectedSteel ("Un-protected Steel");
+
+			private final String name;
+
+			LeakPipeMaterialType(String nm) {
+				name = nm;
+			}
+
+			public String toString() {
+				return this.name;
+			}
+		}
+		
 		public LeakDetailEntity(String userName, int indicationNumber){
 			setUserName(userName);
 			setIndicationNumber(indicationNumber);
@@ -43,19 +127,39 @@ public class LeakDetailEntity extends InvestigationEntity{
 			state = "CA";
 			mapNumber = "1";
 			surfaceReading = "1";
-			surfaceReadingUnit = "PPM";
+			surfaceReadingUnit = ReadingUnit.PPM.toString();
 			barholeReading = "2";
-			barholeReadingUnit = "PPM";
-			leakType = "Above Ground";
+			barholeReadingUnit = ReadingUnit.PPM.toString();;
+			leakType = LeakType.ABOVEGROUND.toString();
 			leakGrade = "2";
-			leakLocationType = "Service";
-			pipeMaterialType = "Any";
+			leakLocationType = LeakLocation.SERVICE.toString();;
+			pipeMaterialType = LeakPipeMaterialType.CastIron.toString();
 			pavedWallToWall =  true;
-			surfaceOverLeak = "Concrete";
+			surfaceOverLeak = SurfaceOverLeak.CONCRETE.toString();;
 			meterNumber = "9";
 			leakLocationRemarks = "SQAAuto test remarks";
 		}
-		
+
+		public void modifyTestData(){
+			streetNumber = "3105_1";
+			apartmentNumber = "1_1";
+			streetName = "Patrick Henry Dr_1";
+			city = "Santa Clara_1";
+			state = "CA";
+			mapNumber = "2";
+			surfaceReading = "1";
+			surfaceReadingUnit = ReadingUnit.PERCENTGAS.toString();;
+			barholeReading = "2";
+			barholeReadingUnit = ReadingUnit.LEL.toString();;
+			leakType = LeakType.BELOWGROUND.toString();;
+			leakGrade = "3";
+			leakLocationType = LeakLocation.METERSET.toString();
+			pipeMaterialType = LeakPipeMaterialType.PEPlastic.toString();;
+			pavedWallToWall =  false;
+			surfaceOverLeak = SurfaceOverLeak.TARCOMPONENT.toString();
+			meterNumber = "10";
+			leakLocationRemarks = "SQAAuto test remarks - modified";
+		}
 		public String getStreetNumber() {
 			return streetNumber;
 		}

@@ -3,6 +3,8 @@ package surveyor.scommon.mobile.source;
 import java.util.HashMap;
 import java.util.Map;
 
+import surveyor.dataprovider.DataGenerator;
+import surveyor.dataprovider.DataGenerator.Address;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakLocationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakPipeMaterialType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
@@ -63,29 +65,34 @@ public class LeakDataGenerator {
 		private Boolean isPavedWallToWall;
 		private Boolean useCurrentLocation;
 
-		public LeakDataBuilder setDefaultValues() {
+		public LeakDataBuilder generateDefaultValues() {
+			Address address = DataGenerator.getAddress();
 			this.setSourceType(LeakSourceType.Gas)
 				.setUseCurrentLocation(true)
-			 	.setStreetNumber("3105")
-			 	.setAptNumber("1")
-			 	.setStreetName("Patrick Henry Dr")
-			 	.setCity("Santa Clara")
-			 	.setState("CA")
-			 	.setMapNumber("1")
-			 	.setSurfaceReading("1")
+			 	.setStreetNumber(address.getStreetNumber())
+			 	.setAptNumber(DataGenerator.getNumberBetween(1, 999).toString())
+			 	.setStreetName(address.getStreetName())
+			 	.setCity(address.getCity())
+			 	.setState(address.getState())
+			 	.setMapNumber(DataGenerator.getNumberBetween(1, 999).toString())
+			 	.setSurfaceReading(DataGenerator.getNumberBetween(1, 999).toString())
 			 	.setSurfaceReadingUnit(ReadingUnitType.PPM)
-			 	.setBarholeReading("1")
+			 	.setBarholeReading(DataGenerator.getNumberBetween(1, 999).toString())
 			 	.setBarholeReadingUnit(ReadingUnitType.PPM)
 			 	.setLeakType(LeakType.Above_Ground)
-			 	.setLeakGrade("2")
+			 	.setLeakGrade(DataGenerator.getNumberBetween(1, 999).toString())
 			 	.setLocationType(LeakLocationType.Service)
 			 	.setPipeMaterialType(LeakPipeMaterialType.CastIron)
 			 	.setIsPavedWallToWall(true)
 			 	.setSurfaceOverLeakType(SurfaceOverLeakType.Concrete)
-			 	.setMeterNumber("9")
-			 	.setLocationRemarks("Leak test remarks")
-			 	.setAdditionalNotes("Leak additional test notes");
+			 	.setMeterNumber(DataGenerator.getNumberBetween(1, 999).toString())
+			 	.setLocationRemarks(DataGenerator.getRandomText(20, 100))
+			 	.setAdditionalNotes(DataGenerator.getRandomText(20, 100));
 			return this;
+		}
+
+		public LeakDataBuilder setGeneratedValues() {
+			return null;
 		}
 
 		public LeakSourceType getSourceType() {

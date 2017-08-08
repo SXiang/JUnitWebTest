@@ -4,23 +4,23 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class InvestigationMarkerEntity {
-	private String reportTitle;
-	private String reportName;
+	private String lisaNumber;
+	private String investigationStatus;
 
-	public String getReportTitle() {
-		return reportTitle;
+	public String getLisaNumber() {
+		return lisaNumber;
 	}
 
-	public void setReportTitle(String reportTitle) {
-		this.reportTitle = reportTitle;
+	public void setLisaNumber(String lisaNumber) {
+		this.lisaNumber = lisaNumber;
 	}
 
-	public String getReportName() {
-		return reportName;
+	public String getInvestigationStatus() {
+		return investigationStatus;
 	}
 
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
+	public void setInvestigationStatus(String status) {
+		this.investigationStatus = status;
 	}
 
 	@Override

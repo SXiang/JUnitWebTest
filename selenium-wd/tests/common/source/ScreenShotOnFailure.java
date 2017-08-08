@@ -48,6 +48,56 @@ public class ScreenShotOnFailure{
 		this.isBrowserScreenshot = isBrowserScreenshot;
 	}
 
+	public void captureBrowserScreenShot(String fileName) {
+		captureWebDriverScreenShot(driver, fileName, null);
+	}
+
+	public static void captureWebDriverScreenShot(WebDriver driver, String fileName, Rectangle rect) {
+		try{
+			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			if(rect!=null){
+				scrFile = getSubImage(scrFile, rect);
+			}
+			FileUtils.copyFile(scrFile, new File(fileName));
+			Log.info("Web driver screenshot saved! - '"+fileName+"'");
+		}catch(Exception e){
+			Log.warn("Type of Driver - " + driver.getClass().getName());
+			Log.warn(e.toString());
+		}
+	}
+
+	public void captureDesktopScreenShot(String fileName) {
+		try{
+			Robot robot = new Robot();
+            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
+            ImageIO.write(screenFullImage, format, new File(fileName));
+            Log.info("A full desktop screenshot saved! - '"+fileName+"'");
+
+		}catch(Exception e){
+			Log.warn(e.toString());
+		}
+	}
+
+	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile, LogStatus logStatus) {
+		String image = reportLogger.addScreenCapture(imgFile);
+			reportLogger.log(logStatus, "Screenshot", image);
+	}
+
+	public static File getSubImage(File scrFile, Rectangle rect) throws IOException{
+		BufferedImage img = ImageIO.read(scrFile);
+		/* if(width/height is <=0, they represent the deviations on width/height */
+		if(rect.width<=0){
+			rect.width = img.getWidth() - rect.x + rect.width;
+		}
+		if(rect.height<=0){
+			rect.height = img.getHeight() - rect.y + rect.height;
+		}
+		BufferedImage dest = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
+		ImageIO.write(dest, "png", scrFile);
+		return scrFile;
+	}
+
 	public String takeScreenshot(WebDriver driver, String className) {
 		// By default log failure. Take browser screenshot if specified.
 		return takeScreenshot(driver, className, isBrowserScreenshot, LogStatus.FAIL);
@@ -63,6 +113,7 @@ public class ScreenShotOnFailure{
 		}
 		return mainImgName + mobileImgName;
 	}
+
 	public String takeScreenshot(WebDriver driver, String className, boolean takeBrowserScreenShot, LogStatus logStatus) {
 		return takeScreenshot(driver, className, takeBrowserScreenShot, logStatus, false);
 	}
@@ -102,55 +153,5 @@ public class ScreenShotOnFailure{
 		S3File s3File = S3File.fromFileAndUri(Paths.get(fileFullPath), URI.create(TestContext.INSTANCE.getBaseUrl()));
 		String fileKey = s3Interface.uploadFile(s3File);
 		return String.format("%s/" + Constants.BASE_URL_API_DOWNLOAD_IMAGE + "%s", TestContext.INSTANCE.getTestSetup().getAutomationReportingApiEndpoint(), fileKey);
-	}
-
-	public void logReportScreenShot(ExtentTest reportLogger, String fname, String imgFile, LogStatus logStatus) {
-		String image = reportLogger.addScreenCapture(imgFile);
-			reportLogger.log(logStatus, "Screenshot", image);
-	}
-
-	public void captureBrowserScreenShot(String fileName) {
-		captureBrowserScreenShot(driver, fileName, null);
-	}
-
-	public static void captureBrowserScreenShot(WebDriver driver, String fileName, Rectangle rect) {
-		try{
-			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-			if(rect!=null){
-				scrFile = getSubImage(scrFile, rect);
-			}
-			FileUtils.copyFile(scrFile, new File(fileName));
-			Log.info("A browser screenshot saved! - '"+fileName+"'");
-		}catch(Exception e){
-			Log.warn("Type of Driver - " + driver.getClass().getName());
-			Log.warn(e.toString());
-		}
-	}
-
-	public static File getSubImage(File scrFile, Rectangle rect) throws IOException{
-		BufferedImage img = ImageIO.read(scrFile);
-		/* if(width/height is <=0, they represent the deviations on width/height */
-		if(rect.width<=0){
-			rect.width = img.getWidth() - rect.x + rect.width;
-		}
-		if(rect.height<=0){
-			rect.height = img.getHeight() - rect.y + rect.height;
-		}
-		BufferedImage dest = img.getSubimage(rect.x, rect.y, rect.width, rect.height);
-		ImageIO.write(dest, "png", scrFile);
-		return scrFile;
-	}
-
-	public void captureDesktopScreenShot(String fileName) {
-		try{
-			Robot robot = new Robot();
-            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-            BufferedImage screenFullImage = robot.createScreenCapture(screenRect);
-            ImageIO.write(screenFullImage, format, new File(fileName));
-            Log.info("A full desktop screenshot saved! - '"+fileName+"'");
-
-		}catch(Exception e){
-			Log.warn(e.toString());
-		}
 	}
 }

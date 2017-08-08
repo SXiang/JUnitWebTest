@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BackPackAnalyzer {
+	public static final Boolean BROADCAST_CONSTANT_VALUES_IN_SIMLINEAR_FITTER = true;     // when set to 'True' simLinearFitter will broadcast constant value of 2.0 in simulator.
 	private static final String SIMULATOR_HOSTNAME = "localhost";
 	private static final String STOP_SIMULATOR_CMD = "stop-simulator.cmd";
 	private static final String START_SIMULATOR_CMD = "start-simulator.cmd";
@@ -14,7 +15,7 @@ public class BackPackAnalyzer {
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer PING_TIMEOUT = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
-	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
+	private static final Integer CATCH_UP_TIME_IN_SECS = 1;
 
 	public static void startSimulator() throws IOException {
 		Log.method("startSimulator");
@@ -33,7 +34,8 @@ public class BackPackAnalyzer {
 		Log.method("ensureSimulatorExtrasPresent");
 		String setupBackPackSimExtrasCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
 		String setupBackPackSimExtrasCmdFullPath = setupBackPackSimExtrasCmdFolder + File.separator + SETUP_SIMULATOR_EXTRAS_CMD;
-		String command = "cd \"" + setupBackPackSimExtrasCmdFolder + "\" && " + setupBackPackSimExtrasCmdFullPath + " " + TestSetup.getRootPath();
+		String simLinearFitterBroadcastFlag = BROADCAST_CONSTANT_VALUES_IN_SIMLINEAR_FITTER ? "true" : "false";
+		String command = "cd \"" + setupBackPackSimExtrasCmdFolder + "\" && " + setupBackPackSimExtrasCmdFullPath + " " + TestSetup.getRootPath() + " " + simLinearFitterBroadcastFlag;
 		Log.info("Executing setup simulator extras. Command -> " + command);
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
@@ -64,47 +66,19 @@ public class BackPackAnalyzer {
 	}
 
 	public static void pauseSimulatorProcesses() throws IOException {
-		pauseResumeSimulatorProcesses(false /*isResume*/);
+		ApiCaller.BackPackApiCall.createInterface().pauseSocket();
 	}
 
 	public static void resumeSimulatorProcesses() throws IOException {
-		pauseResumeSimulatorProcesses(true /*isResume*/);
-	}
-
-	private static void pauseResumeSimulatorProcesses(boolean isResume) throws IOException {
-		Log.method("pauseResumeSimulatorProcesses");
-		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-		String repoRootFolder = TestSetup.getRootPath();
-		String arguments = "OdorCallServer|Select OdorCallServer|SimLinearFitter|SimDataBroadcaster";
-		String pauseResumeArg = isResume ? "true" : "false";
-		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_WIN_PROCESSES_CMD +
-				String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + arguments + "\"", "\"" + pauseResumeArg + "\"");
-		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
-		Log.info("Executing pause/resume backpack simulator processes. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		ApiCaller.BackPackApiCall.createInterface().resumeSocket();
 	}
 
 	public static void pauseBackPackAnalyzerDataProcesses() throws IOException {
-		pauseResumeBackPackAnalyzerDataProcesses(false /*isResume*/);
+		ApiCaller.BackPackApiCall.createInterface(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress()).pauseSocket();
 	}
 
 	public static void resumeBackPackAnalyzerDataProcesses() throws IOException {
-		pauseResumeBackPackAnalyzerDataProcesses(true /*isResume*/);
-	}
-
-	private static void pauseResumeBackPackAnalyzerDataProcesses(boolean isResume) throws IOException {
-		Log.method("pauseResumeBackPackAnalyzerProcesses");
-		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
-		String repoRootFolder = TestSetup.getRootPath();
-		String backPackServerMachineIp = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineIp();
-		String backPackServerMachineUser = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineUser();
-		String backPackServerMachinePwd = TestContext.INSTANCE.getTestSetup().getBackPackServerMachinePwd();
-		String pauseResumeArg = isResume ? "true" : "false";
-		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_REMOTE_MAC_WIN_PROCESSES_CMD +
-				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", repoRootFolder, backPackServerMachineIp, backPackServerMachineUser, backPackServerMachinePwd, pauseResumeArg);
-		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
-		Log.info("Executing pause/resume backpack analyzer processes remotely. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+		ApiCaller.BackPackApiCall.createInterface(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress()).resumeSocket();
 	}
 
 	public static void restartSimulator() throws IOException {
@@ -123,5 +97,35 @@ public class BackPackAnalyzer {
 	private static void waitForSimulatorProcessesToCatchUp() {
 		Log.method("waitForSimulatorProcessesToCatchUp");
 		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
+	}
+
+	// this is alternate mechanism to pause/resume simulator processes.
+	private static void pauseResumeSimulatorProcesses(boolean isResume) throws IOException {
+		Log.method("pauseResumeSimulatorProcesses");
+		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String arguments = "OdorCallServer|Select OdorCallServer|SimLinearFitter|SimDataBroadcaster";
+		String pauseResumeArg = isResume ? "true" : "false";
+		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_WIN_PROCESSES_CMD +
+				String.format(" %s %s %s", "\"" + repoRootFolder + "\"", "\"" + arguments + "\"", "\"" + pauseResumeArg + "\"");
+		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
+		Log.info("Executing pause/resume backpack simulator processes. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
+	}
+
+	// this is alternate mechanism to pause/resume backpack analyzer processes.
+	private static void pauseResumeBackPackAnalyzerDataProcesses(boolean isResume) throws IOException {
+		Log.method("pauseResumeBackPackAnalyzerProcesses");
+		String pauseResumeProcessesCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib" + File.separator + "BackPackSim";
+		String repoRootFolder = TestSetup.getRootPath();
+		String backPackServerMachineIp = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineIp();
+		String backPackServerMachineUser = TestContext.INSTANCE.getTestSetup().getBackPackServerMachineUser();
+		String backPackServerMachinePwd = TestContext.INSTANCE.getTestSetup().getBackPackServerMachinePwd();
+		String pauseResumeArg = isResume ? "true" : "false";
+		String pauseResumeProcessesCmdFullPath = pauseResumeProcessesCmdFolder + File.separator + PAUSE_RESUME_REMOTE_MAC_WIN_PROCESSES_CMD +
+				String.format(" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"", repoRootFolder, backPackServerMachineIp, backPackServerMachineUser, backPackServerMachinePwd, pauseResumeArg);
+		String command = "cd \"" + pauseResumeProcessesCmdFolder + "\" && " + pauseResumeProcessesCmdFullPath;
+		Log.info("Executing pause/resume backpack analyzer processes remotely. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ true);
 	}
 }

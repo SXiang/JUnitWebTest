@@ -4,63 +4,45 @@
 package surveyor.scommon.source;
 
 import static common.source.BaseHelper.matchSinglePattern;
-import common.source.DateUtility;
-import common.source.Downloader;
-import common.source.FileUtility;
-import common.source.FunctionUtil;
-import common.source.NumberUtility;
 import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
-import static surveyor.scommon.source.SurveyorConstants.REXCLUSIONRADIUS;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
 import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
-import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
+import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
 import static surveyor.scommon.source.SurveyorConstants.KEYBREADCRUMB;
 import static surveyor.scommon.source.SurveyorConstants.KEYFOV;
 import static surveyor.scommon.source.SurveyorConstants.KEYGAPS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTGAPASSETS;
+import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYINDICATIONS;
 import static surveyor.scommon.source.SurveyorConstants.KEYISOTOPICCAPTURE;
 import static surveyor.scommon.source.SurveyorConstants.KEYLISA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCA;
 import static surveyor.scommon.source.SurveyorConstants.KEYPCRA;
 import static surveyor.scommon.source.SurveyorConstants.KEYVIEWNAME;
-import static surveyor.scommon.source.SurveyorConstants.RNELAT;
-import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING;
 import static surveyor.scommon.source.SurveyorConstants.PAGINATIONSETTING_100;
 import static surveyor.scommon.source.SurveyorConstants.REPORTMODES1;
-import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
-import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
+import static surveyor.scommon.source.SurveyorConstants.REXCLUSIONRADIUS;
+import static surveyor.scommon.source.SurveyorConstants.RNELAT;
+import static surveyor.scommon.source.SurveyorConstants.RNELON;
 import static surveyor.scommon.source.SurveyorConstants.RSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.RSWLON;
+import static surveyor.scommon.source.SurveyorConstants.STARTDATE;
+import static surveyor.scommon.source.SurveyorConstants.SURVEYORUNIT;
 import static surveyor.scommon.source.SurveyorConstants.TAG;
 import static surveyor.scommon.source.SurveyorConstants.TIMEZONEPT;
 
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPEPLASTIC;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETPROTECTEDSTEEL;
-import static surveyor.scommon.source.SurveyorConstants.KEYASSETUNPROTECTEDSTEEL;
-
-import surveyor.scommon.entities.BaseReportEntity;
-import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
-import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
-import surveyor.scommon.entities.ReportCommonEntity;
-import surveyor.scommon.entities.ReportCommonEntity.CustomerBoundaryFilterType;
-import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
-import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
-import surveyor.scommon.source.DataTablePage.TableColumnType;
-import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
-import surveyor.scommon.source.ReportsCommonPage.ReportFileType;
-
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -88,16 +70,17 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import javax.imageio.ImageIO;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -114,11 +97,23 @@ import common.source.ArrayUtility;
 import common.source.BaseHelper;
 import common.source.CSVUtility;
 import common.source.Constants;
+import common.source.DateUtility;
+import common.source.Downloader;
+import common.source.FileUtility;
+import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.LogCategory;
 import common.source.LogHelper;
+import common.source.NumberUtility;
 import common.source.PDFTableUtility;
 import common.source.PDFTableUtility.PDFTable;
+import common.source.PDFUtility;
+import common.source.ProcessUtility;
+import common.source.RegexUtility;
+import common.source.RetryUtil;
+import common.source.ShapeFileUtility;
+import common.source.SortHelper;
+import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.TextUtility;
 import common.source.Timeout;
@@ -140,13 +135,15 @@ import surveyor.dataprovider.ReportDataProvider;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.parsers.source.SSRSViewNamesParser;
 import surveyor.parsers.source.SSRSViewNamesParser.ViewNamesParserAlgorithm;
-import common.source.PDFUtility;
-import common.source.ProcessUtility;
-import common.source.RegexUtility;
-import common.source.RetryUtil;
-import common.source.ShapeFileUtility;
-import common.source.SortHelper;
-import common.source.TestContext;
+import surveyor.scommon.entities.BaseReportEntity;
+import surveyor.scommon.entities.BaseReportEntity.SSRSPdfFooterColumns;
+import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
+import surveyor.scommon.entities.ReportCommonEntity;
+import surveyor.scommon.entities.ReportCommonEntity.CustomerBoundaryFilterType;
+import surveyor.scommon.entities.ReportCommonEntity.LISAIndicationTableColumns;
+import surveyor.scommon.entities.ReportsSurveyInfo.ColumnHeaders;
+import surveyor.scommon.source.DataTablePage.TableColumnType;
+import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 
 public class ReportsCommonPage extends ReportsBasePage {
 
@@ -4305,6 +4302,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public boolean verifyReportsAreOrderedByDate(List<String> reportIDs){
 		return verifyReportsAreOrderedByDate(reportIDs, true);
 	}
+	
 	public boolean verifyReportsAreOrderedByDate(List<String> reportIDs, boolean desc){
 		setPagination(PAGINATIONSETTING_100);
 		int nameIndex = getColumnIndexMap().get(COL_HEADER_REPORT_NAME);

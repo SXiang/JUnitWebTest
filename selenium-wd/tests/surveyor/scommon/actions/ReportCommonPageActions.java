@@ -3707,7 +3707,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	protected ReportsCommonDataRow getReportsCommonDataRow(Integer dataRowID) throws Exception{
 		return (ReportsCommonDataRow) getReportsDataRow(dataRowID);
 	}
-	
+
 	/**
 	 * Returns the location data row for specified location data row id.
 	 * @param dataRowID - location row id.

@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.PageFactory;
 
-import common.source.FunctionUtil;
+import androidapp.entities.source.LeakInfoEntity;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
@@ -26,16 +26,20 @@ import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 
 public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[13]/android.widget.TextView")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
 	private WebElement oK;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[14]/android.widget.TextView")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
+
+	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
+	private WebElement delete;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -84,6 +88,11 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement additionalNotes;
 
+	// Fetch at Runtime post swipe when editing form.
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[13]/android.widget.EditText[1]")
+	@CacheLookup
+	private WebElement additionalNotesInEdit;
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[10]/android.view.ViewGroup[1]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement pipeMaterialType;
@@ -110,26 +119,50 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement leakLocation;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[10]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement leakLocationText;
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[9]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement leakType;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[9]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement leakTypeText;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[7]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement surfaceReadingUnit;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[7]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement surfaceReadingUnitText;
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[8]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement barholeReadingUnit;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[8]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement barholeReadingUnitText;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[12]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement surfaceOverLeak;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[12]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement surfaceOverLeakText;
+
 	/****** CheckBox elements ********/
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement pavedWallToWall;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement pavedWallToWallText;
 
 	private AndroidLeakLocationTypeListControl leakLocationTypeListControl;
 	private AndroidLeakSourceTypeListControl leakSourceTypeListControl;
@@ -194,10 +227,36 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		this.surfaceOverLeakTypeListControl.selectSurfaceOverLeakType(surfaceOverLeakType);
 	}
 
+	public String getLocationTypeSelectedText() {
+		Log.method("getLocationTypeSelectedText");
+		return this.leakLocationText.getText();
+	}
+
+	public String getLeakTypeSelectedText() {
+		Log.method("getLeakTypeSelectedText");
+		return this.leakTypeText.getText();
+	}
+
+	public String getSurfaceReadingUnitSelectedText() {
+		Log.method("getSurfaceReadingUnitSelectedText");
+		return this.surfaceReadingUnitText.getText();
+	}
+
+	public String getBarholeReadingUnitSelectedText() {
+		Log.method("getBarholeReadingUnitSelectedText");
+		return this.barholeReadingUnitText.getText();
+	}
+
+	public String getSurfaceOverleakTypeSelectedText() {
+		Log.method("getSurfaceOverleakTypeSelectedText");
+		return this.surfaceOverLeakText.getText();
+	}
+
 	/****** Button Methods ******/
 
 	public WebElement getOKButton() {
 		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
 		return oK;
 	}
 
@@ -210,12 +269,28 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
+		tap(getCancelButton());
+		press(getCancelButton());
 		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+	}
+
+	public WebElement getDeleteButton() {
+		Log.method("getDeleteButton");
+		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
+		return delete;
+	}
+
+	public void clickOnDelete() throws Exception {
+		Log.method("clickOnDelete");
+		tap(getDeleteButton());
+		press(getDeleteButton());
+		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -230,11 +305,11 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		clickAndPressKey(getUseCurrentLocationButton(), KeyCode.KEYCODE_ENTER);
 	}
 
-	/****** TextField Methods ******/
-
-	public void selectPavedWall2Wall() {
-		Log.method("clickOnCancel");
+	public void selectPavedWall2Wall() throws Exception {
+		Log.method("selectPavedWall2Wall");
 		tap(this.pavedWallToWall);
+		press(this.pavedWallToWall);
+		clickAndPressKey(this.pavedWallToWall, KeyCode.KEYCODE_ENTER);
 	}
 
 	/****** TextField Methods ******/
@@ -386,11 +461,38 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
+		additionalNotes.clear();
 		sendKeys(additionalNotes, value);
 	}
 
+	public String getAdditionalNotesTextInEditMode() {
+		Log.method("getAdditionalNotesTextInEditMode");
+		return additionalNotesInEdit.getText();
+	}
+
+	public void enterAdditionalNotesInEditMode(String value) throws Exception {
+		Log.method("enterAdditionalNotesInEditMode");
+		additionalNotesInEdit.clear();
+		sendKeys(additionalNotesInEdit, value);
+	}
+
+	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
+		Log.method("fillForm", LogHelper.mapToString(formValues));
+		clearTextFields();
+		fillForm(formValues, true /*editing*/, true /*clickOkButton*/);
+	}
+
 	public void fillForm(Map<String, Object> formValues) throws Exception {
-		Log.method("enterAdditionalNotes", LogHelper.mapToString(formValues));
+		fillForm(formValues, false /*editing*/, true /*clickOkButton*/);
+	}
+
+	public void fillFormAndCancel(Map<String, Object> formValues) throws Exception {
+		fillForm(formValues, false /*editing*/, false /*clickOkButton*/);
+		this.clickOnCancel();
+	}
+
+	public void fillForm(Map<String, Object> formValues, Boolean editing, Boolean clickOkButton) throws Exception {
+		Log.method("fillForm", LogHelper.mapToString(formValues), editing, clickOkButton);
 		LeakSourceType leakSourceType = (LeakSourceType)formValues.get(DataKey.LEAK_SOURCE_TYPE);
 		LeakLocationType locationType = (LeakLocationType)formValues.get(DataKey.LEAK_LOCATION_TYPE);
 		LeakType leakType = (LeakType)formValues.get(DataKey.LEAK_TYPE);
@@ -445,15 +547,181 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		this.enterMeterNumber(meterNum);
 		this.enterLeakLocationRemarks(locationRemarks);
 
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, 2000);
+		scrollToNextPage();
 
-		this.enterAdditionalNotes(additionalNotes);
-		this.clickOnOK();
+		if (editing) {
+			this.enterAdditionalNotesInEditMode(additionalNotes);
+		} else {
+			this.enterAdditionalNotes(additionalNotes);
+		}
+
+		if (clickOkButton) {
+			this.clickOnOK();
+		}
 	}
 
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
+	}
+
+	public void scrollToNextPage() {
+		Log.method("scrollToNextPage");
+		final int secsToScroll = 2;
+		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, secsToScroll * 1000);
+	}
+
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) {
+		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues));
+		return verifyCorrectDataIsShown(formValues, false /*isEditMode*/);
+	}
+
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) {
+		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues), isEditMode);
+
+		// expected
+		LeakLocationType expectedLocationType = (LeakLocationType)formValues.get(DataKey.LEAK_LOCATION_TYPE);
+		LeakType expectedLeakType = (LeakType)formValues.get(DataKey.LEAK_TYPE);
+		ReadingUnitType expectedSurfaceReadingUnit = (ReadingUnitType)formValues.get(DataKey.SURFACE_READING_UNIT);
+		ReadingUnitType expectedBarholeReadingUnit = (ReadingUnitType)formValues.get(DataKey.BARHOLE_READING_UNIT);
+		SurfaceOverLeakType expectedSurfaceOverLeakType = (SurfaceOverLeakType)formValues.get(DataKey.SURFACE_OVERLEAK_TYPE);
+		LeakPipeMaterialType expectedPipeMaterialType = (LeakPipeMaterialType)formValues.get(DataKey.PIPE_MATERIAL_TYPE);
+		String expectedStreetNum = (String)formValues.get(DataKey.STREET_NUMBER);
+		String expectedStreetName = (String)formValues.get(DataKey.STREET_NAME);
+		String expectedAptNum = (String)formValues.get(DataKey.APARTMENT_NUMBER);
+		String expectedCity = (String)formValues.get(DataKey.CITY);
+		String expectedState = (String)formValues.get(DataKey.STATE);
+		String expectedMapNum = (String)formValues.get(DataKey.MAP_NUMBER);
+		String expectedSurfaceReading = (String)formValues.get(DataKey.SURFACE_READING);
+		String expectedBarholeReading = (String)formValues.get(DataKey.BARHOLE_READING);
+		String expectedLeakGrade = (String)formValues.get(DataKey.LEAK_GRADE);
+		String expectedMeterNum = (String)formValues.get(DataKey.METER_NUMBER);
+		String expectedLocationRemarks = (String)formValues.get(DataKey.LOCATION_REMARKS);
+		String expectedAdditionalNotes = (String)formValues.get(DataKey.ADDITIONAL_NOTES);
+		Boolean expectedIsPavedWallToWall = (Boolean)formValues.get(DataKey.IS_PAVED_WALL2WALL);
+
+		LeakInfoEntity expectedLeakInfo = new LeakInfoEntity();
+		expectedLeakInfo.setStreetNum(expectedStreetNum);
+		expectedLeakInfo.setAptNum(expectedAptNum);
+		expectedLeakInfo.setStreetName(expectedStreetName);
+		expectedLeakInfo.setCity(expectedCity);
+		expectedLeakInfo.setState(expectedState);
+		expectedLeakInfo.setMapNum(expectedMapNum);
+		expectedLeakInfo.setSurfaceReading(expectedSurfaceReading);
+		expectedLeakInfo.setSurfaceReadingUnit(expectedSurfaceReadingUnit.toString());
+		expectedLeakInfo.setBarHoleReading(expectedBarholeReading);
+		expectedLeakInfo.setBarholeReadingUnit(expectedBarholeReadingUnit.toString());
+		expectedLeakInfo.setLeakType(expectedLeakType.toString());
+		expectedLeakInfo.setLeakGrade(expectedLeakGrade);
+		expectedLeakInfo.setLocationType(expectedLocationType.toString());
+		expectedLeakInfo.setPipeMaterialType(expectedPipeMaterialType.toString());
+		expectedLeakInfo.setSurfaceOverleakType(expectedSurfaceOverLeakType.toString());
+		expectedLeakInfo.setMeterNum(expectedMeterNum);
+		expectedLeakInfo.setLocationRemarks(expectedLocationRemarks);
+		expectedLeakInfo.setIsPavedWallToWall(expectedIsPavedWallToWall);
+		expectedLeakInfo.setAdditionalNotes(expectedAdditionalNotes);
+
+		// actual.
+		String actualLatitude = this.getLatitudeText();
+		String actualLongitude = this.getLongitudeText();
+		String actualStreetNum = this.getStreetNumberText();
+		String actualAptNum = this.getApartmentNumberText();
+		String actualStreetName = this.getStreetNameText();
+		String actualCity = this.getCityText();
+		String actualState = this.getStateText();
+		String actualMapNum = this.getMapNumberText();
+		String actualSurfaceReading = this.getSurfaceReadingText();
+		String actualSurfaceReadingUnit = this.getSurfaceReadingUnitSelectedText();
+		String actualBarHoleReading = this.getBarholeReadingText();
+		String actualBarholeReadingUnit = this.getBarholeReadingUnitSelectedText();
+		String actualLeakType = this.getLeakTypeSelectedText();
+		String actualLeakGrade = this.getLeakGradeText();
+		String actualLocationType = this.getLocationTypeSelectedText();
+		String actualPipeMaterialType = this.getPipeMaterialTypeText();
+		String actualSurfaceOverleakType = this.getSurfaceOverleakTypeSelectedText();
+		String actualMeterNum = this.getMeterNumberText();
+		String actualLocationRemarks = this.getLeakLocationRemarksText();
+		Boolean actualIsPavedWallToWall = this.pavedWallToWall.isSelected();
+
+		scrollToNextPage();
+
+		String actualAdditionalNotes = null;
+		if (isEditMode) {
+			actualAdditionalNotes = this.getAdditionalNotesTextInEditMode();
+		} else {
+			actualAdditionalNotes = this.getAdditionalNotesText();
+		}
+
+		LeakInfoEntity actualLeakInfo = new LeakInfoEntity();
+		actualLeakInfo.setStreetNum(actualStreetNum);
+		actualLeakInfo.setAptNum(actualAptNum);
+		actualLeakInfo.setStreetName(actualStreetName);
+		actualLeakInfo.setCity(actualCity);
+		actualLeakInfo.setState(actualState);
+		actualLeakInfo.setMapNum(actualMapNum);
+		actualLeakInfo.setSurfaceReading(actualSurfaceReading);
+		actualLeakInfo.setSurfaceReadingUnit(actualSurfaceReadingUnit);
+		actualLeakInfo.setBarHoleReading(actualBarHoleReading);
+		actualLeakInfo.setBarholeReadingUnit(actualBarholeReadingUnit);
+		actualLeakInfo.setLeakType(actualLeakType);
+		actualLeakInfo.setLeakGrade(actualLeakGrade);
+		actualLeakInfo.setLocationType(actualLocationType);
+		actualLeakInfo.setPipeMaterialType(actualPipeMaterialType);
+		actualLeakInfo.setSurfaceOverleakType(actualSurfaceOverleakType);
+		actualLeakInfo.setMeterNum(actualMeterNum);
+		actualLeakInfo.setLocationRemarks(actualLocationRemarks);
+		actualLeakInfo.setIsPavedWallToWall(actualIsPavedWallToWall);
+		actualLeakInfo.setAdditionalNotes(actualAdditionalNotes);
+
+		// TBD: These are workaround added for issues we are facing with last published APK in CI runs.
+		//  1. Only first 71 characters are getting typed in CI runs in Location Remarks textfield. Comparing only first 71 chars.
+		//  2. Checkbox in React Native is rendered as ViewGroup+TextView. Need to workaround in appium to handle this control. Turn off isPavedWall2Wall check for now.
+		actualLeakInfo.setIsPavedWallToWall(false);
+		expectedLeakInfo.setIsPavedWallToWall(false);
+		if (actualLocationRemarks.length()>70) {
+			actualLeakInfo.setLocationRemarks(actualLocationRemarks.substring(0, 70));
+		}
+		if (expectedLocationRemarks.length()>70) {
+			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
+		}
+
+		// verify
+		Boolean match = actualLatitude.length()>5;
+		if (!match) {
+			Log.error(String.format("Latitude value NOT corrected. Expected length>5; Actual length=[%d]", actualLatitude.length()));
+			return match;
+		}
+
+		match = match && actualLongitude.length()>5;
+		if (!match) {
+			Log.error(String.format("Longitude value NOT correct. Expected length>5; Actual length=[%d]", actualLongitude.length()));
+			return match;
+		}
+
+		match = match && (actualLeakInfo.compareTo(expectedLeakInfo) == 0);
+
+		if (!match) {
+			Log.error(String.format("LeakInfo did NOT match. Expected=[%s]; Actual=[%s]", expectedLeakInfo, actualLeakInfo));
+		}
+
+		Log.info(String.format("Returning match=[%b]", match));
+		return match;
+	}
+
+	private void clearTextFields() {
+		Log.method("clearTextFields");
+		apartmentNumber.clear();
+		barholeReading.clear();
+		city.clear();
+		leakGrade.clear();
+		mapNumber.clear();
+		meterNumber.clear();
+		leakLocationRemarks.clear();
+		pipeMaterialType.clear();
+		state.clear();
+		streetName.clear();
+		streetNumber.clear();
+		surfaceReading.clear();
 	}
 }

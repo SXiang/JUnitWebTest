@@ -10,9 +10,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public enum SliderType {
 		Volume ("Volume"),
-		Amplitude ("Amplitude"),
-		Threshold ("Threshold"),
-		Background ("Background");
+		Threshold ("Threshold");
 
 		private final String name;
 
@@ -29,12 +27,8 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public static class SliderTransform {
 		public static final Float VOLUME_MIN = 0.0f;
 		public static final Float VOLUME_MAX = 31.0f;
-		public static final Float AMPLITUDE_MIN = 0.0f;
-		public static final Float AMPLITUDE_MAX = 1000.0f;
 		public static final Float THRESHOLD_MIN = 0.05f;
 		public static final Float THRESHOLD_MAX = 100.0f;
-		public static final Float BACKGROUND_MIN = 1.0f;
-		public static final Float BACKGROUND_MAX = 10.0f;
 
 		public static Float getPercentValue(SliderType sliderType, Float absoluteValue) {
 			Log.method("getPercentValue", sliderType.toString(), absoluteValue);
@@ -44,15 +38,9 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 			if (sliderType.equals(SliderType.Volume)) {
 				range = VOLUME_MAX - VOLUME_MIN;
 				adjustedAbsValue -= VOLUME_MIN;
-			} else if (sliderType.equals(SliderType.Amplitude)) {
-				range = AMPLITUDE_MAX - AMPLITUDE_MIN;
-				adjustedAbsValue -= AMPLITUDE_MIN;
 			} else if (sliderType.equals(SliderType.Threshold)) {
 				range = THRESHOLD_MAX - THRESHOLD_MIN;
 				adjustedAbsValue -= THRESHOLD_MIN;
-			} else if (sliderType.equals(SliderType.Background)) {
-				range = BACKGROUND_MAX - BACKGROUND_MIN;
-				adjustedAbsValue -= BACKGROUND_MIN;
 			}
 
 			percent = (adjustedAbsValue * 100.0f)/range;
@@ -64,21 +52,17 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
 	@CacheLookup
 	private WebElement apply;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement close;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
 	@CacheLookup
 	private WebElement investigate;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
-	@CacheLookup
-	private WebElement mode_HR;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
 	@CacheLookup
@@ -96,15 +80,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
 	@CacheLookup
-	private WebElement amplitudeppm;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]")
-	@CacheLookup
 	private WebElement thresholdppm;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[4]")
-	@CacheLookup
-	private WebElement backgroundDuration;
 
 	/****** Slider container elements ******/
 
@@ -114,33 +90,17 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]")
 	@CacheLookup
-	private WebElement amplitudeppmContainer;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]")
-	@CacheLookup
 	private WebElement thresholdppmContainer;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]")
-	@CacheLookup
-	private WebElement backgroundDurationContainer;
-
 	/****** Slider left delta elements ******/
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
-	@CacheLookup
-	private WebElement amplitudePpmLeftDelta;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
-	@CacheLookup
-	private WebElement backgroundDurationLeftDelta;
-
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
-	@CacheLookup
-	private WebElement thresholdPpmLeftDelta;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]")
 	@CacheLookup
 	private WebElement volumeLeftDelta;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
+	@CacheLookup
+	private WebElement thresholdPpmLeftDelta;
 
 	public AndroidAlarmSettingsScreen(WebDriver driver) {
 		super(driver);
@@ -178,16 +138,6 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 		tap(investigate);
 	}
 
-	public WebElement getMode_HR() {
-		Log.method("getMode_HR");
-		return mode_HR;
-	}
-
-	public void clickOnMode_HR() {
-		Log.method("clickOnMode_HR");
-		tap(mode_HR);
-	}
-
 	public WebElement getResetMax() {
 		Log.method("getResetMax");
 		return resetMax;
@@ -209,21 +159,6 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	}
 
 	/****** Slider Methods ******/
-
-	public void slideToAmplitudeppm(Float value) {
-		Log.method("slideToAmplitudeppm");
-		slideBy(amplitudeppm, amplitudeppmContainer, SliderTransform.getPercentValue(SliderType.Amplitude, value));
-	}
-
-	public Integer getAmplitudeppmSliderLocationX() {
-		Log.method("getAmplitudeppmSliderLocationX");
-		return amplitudeppm.getLocation().getX();
-	}
-
-	public Integer getAmplitudeppmSliderLocationY() {
-		Log.method("getAmplitudeppmSliderLocationY");
-		return amplitudeppm.getLocation().getY();
-	}
 
 	public void slideToThresholdppm(Float value) {
 		Log.method("slideToThresholdppm");
@@ -257,27 +192,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 		return volume.getLocation().getY();
 	}
 
-	public void slideToBackgroundDuration(Float value) {
-		Log.method("slideToBackgroundDuration");
-		slideBy(backgroundDuration, backgroundDurationContainer, SliderTransform.getPercentValue(SliderType.Background, value));
-	}
-
-	public Integer getBackgroundDurationSliderLocationX() {
-		Log.method("getBackgroundDurationSliderLocationX");
-		return backgroundDuration.getLocation().getX();
-	}
-
-	public Integer getBackgroundDurationSliderLocationY() {
-		Log.method("getBackgroundDurationSliderLocationY");
-		return backgroundDuration.getLocation().getY();
-	}
-
 	/****** Slider Container Methods ******/
-
-	public Integer getAmplitudeppmContainerSliderWidth() {
-		Log.method("getAmplitudeppmContainerSliderWidth");
-		return amplitudeppmContainer.getSize().getWidth();
-	}
 
 	public Integer getThresholdppmContainerSliderWidth() {
 		Log.method("getThresholdppmContainerSliderWidth");
@@ -289,22 +204,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 		return volumeContainer.getSize().getWidth();
 	}
 
-	public Integer getBackgroundduration5sContainerSliderWidth() {
-		Log.method("getBackgroundduration5sContainerSliderWidth");
-		return backgroundDurationContainer.getSize().getWidth();
-	}
-
 	/****** Slider Left Delta Methods ******/
-
-	public Integer getamplitudePpmLeftDeltaWidth() {
-		Log.method("getamplitudePpmLeftDeltaWidth");
-		return amplitudePpmLeftDelta.getSize().getWidth();
-	}
-
-	public Integer getBackgrounddurationLeftDeltaWidth() {
-		Log.method("getBackgrounddurationLeftDeltaWidth");
-		return backgroundDurationLeftDelta.getSize().getWidth();
-	}
 
 	public Integer getThresholdPpmLeftDeltaWidth() {
 		Log.method("getThresholdPpmLeftDeltaWidth");
@@ -319,6 +219,6 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		return amplitudeppm!=null && amplitudeppm.isDisplayed();
+		return thresholdppm!=null && thresholdppm.isDisplayed();
 	}
 }

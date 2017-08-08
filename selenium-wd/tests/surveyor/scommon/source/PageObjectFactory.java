@@ -62,6 +62,13 @@ public class PageObjectFactory {
 	    }
 	};
 
+	private ThreadLocal<FacilityEQReportsPage> threadLocalFacilityEqReportsPage = new ThreadLocal<FacilityEQReportsPage>() {
+	    @Override
+	    protected FacilityEQReportsPage initialValue() {
+	    	return createNewFacilityEqReportsPage();
+	    }
+	};
+	
 	private ThreadLocal<EULAPage> threadLocalEULAPage = new ThreadLocal<EULAPage>() {
 	    @Override
 	    protected EULAPage initialValue() {
@@ -230,6 +237,13 @@ public class PageObjectFactory {
 	    }
 	};
 
+	private ThreadLocal<AssessmentReportsPage> threadLocalAssessmentReportsPage = new ThreadLocal<AssessmentReportsPage>() {
+	    @Override
+	    protected AssessmentReportsPage initialValue() {
+	    	return createNewAssessmentReportsPage();
+	    }
+	};
+	
 	private ThreadLocal<ServerLogPage> threadLocalServerLogPage = new ThreadLocal<ServerLogPage>() {
 	    @Override
 	    protected ServerLogPage initialValue() {
@@ -265,6 +279,13 @@ public class PageObjectFactory {
 		return eqReportsPage;
 	}
 
+	protected FacilityEQReportsPage createNewFacilityEqReportsPage() {
+		WebDriver driver = TestContext.INSTANCE.getDriver();
+		FacilityEQReportsPage facilityEqReportsPage = new FacilityEQReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, facilityEqReportsPage);
+		return facilityEqReportsPage;
+	}
+	
 	protected EULAPage createNewEULAPage() {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
 		EULAPage eULAPage = new EULAPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
@@ -433,6 +454,13 @@ public class PageObjectFactory {
 		return systemHistoryReportsPage;
 	}
 
+	protected AssessmentReportsPage createNewAssessmentReportsPage() {
+		WebDriver driver = TestContext.INSTANCE.getDriver();
+		AssessmentReportsPage assessmentReportsPage = new AssessmentReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
+		PageFactory.initElements(driver, assessmentReportsPage);
+		return assessmentReportsPage;
+	}
+	
 	protected ServerLogPage createNewServerLogPage() {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
 		ServerLogPage serverLogPage = new ServerLogPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
@@ -455,7 +483,11 @@ public class PageObjectFactory {
 	public EQReportsPage getEqReportsPage() {
 		return threadLocalEqReportsPage.get();
 	}
-
+	
+	public FacilityEQReportsPage getFacilityEQReportsPage() {
+		return threadLocalFacilityEqReportsPage.get();
+	}
+	
 	public EULAPage getEULAPage() {
 		return threadLocalEULAPage.get();
 	}
@@ -552,6 +584,10 @@ public class PageObjectFactory {
 		return threadLocalSystemHistoryReportsPage.get();
 	}
 
+	public AssessmentReportsPage getAssessmentReportsPage() {
+		return threadLocalAssessmentReportsPage.get();
+	}
+	
 	public ServerLogPage getServerLogPage() {
 		return threadLocalServerLogPage.get();
 	}

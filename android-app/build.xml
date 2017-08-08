@@ -1,4 +1,4 @@
-<project name="android-app" default="androidtests" basedir=".">
+<project name="android-app" default="androiduitests" basedir=".">
   <property name="proj_name" value="android-app" />
   <property name="version" value="1.0" />
   <property name="git_hash" value="50d57b8" />
@@ -13,17 +13,13 @@
   <property name="androidtests_jar" value="androidtests" />
   <property name="androiduitests_jar" value="androiduitests" />
   <property environment="env" />
+  <property name="lib.dir" value="lib" />
   <tstamp>
     <format property="local_date" pattern="yyyy.MM.dd.HH.mm.ss.sss" locale="en,US" />
   </tstamp>
-  <target name="init" depends="clean" description="Initialize build environment">
-    <mkdir dir="${build}" />
-    <mkdir dir="${dist}" />
-    <mkdir dir="${reports}/androidtests/xml" />
-    <mkdir dir="${reports}/androiduitests/xml" />
-  </target>
+
   <target name="clean" description="Clean up">
-    <move file="${reports}" tofile="${reports}.old" failonerror="false" />
+    <move file="${basedir}/../selenium-wd/reports" tofile="${basedir}/../selenium-wd/reports.old" failonerror="false" />
     <delete dir="${build}" />
     <delete dir="${dist}" />
     <defaultexcludes remove="**/*~" />
@@ -35,11 +31,20 @@
     </delete>
     <defaultexcludes default="true" />
   </target>
+  <target name="init" depends="clean" description="Initialize build environment">
+    <mkdir dir="${build}" />
+    <mkdir dir="${dist}" />
+    <mkdir dir="${basedir}/../selenium-wd/reports/androidtests/xml" />
+    <mkdir dir="${basedir}/../selenium-wd/reports/androiduitests/xml" />
+  </target>
   <target name="compile_common" depends="init" description="Compile common source code">
-    <buildnumber file="build.number" />
+  	<buildnumber file="build.number" />
   	<javac srcdir="${basedir}/../selenium-wd/tests/common/source:${basedir}/../selenium-wd/tests/surveyor/dbseed/source:${basedir}/../selenium-wd/tests/surveyor/scommon/source:${basedir}/../selenium-wd/tests/surveyor/scommon/actions:${basedir}/../selenium-wd/tests/surveyor/scommon/actions/data:${basedir}/../selenium-wd/tests/surveyor/scommon/entities:${basedir}/../selenium-wd/tests/surveyor/scommon/generators:${basedir}/../selenium-wd/tests/surveyor/dataaccess/source:${basedir}/../selenium-wd/tests/surveyor/dataprovider:${basedir}/../selenium-wd/tests/surveyor/api:${basedir}/../selenium-wd/tests/surveyor/parsers/source:${basedir}/../selenium-wd/tests/surveyor/parsers/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
       <classpath>
       	<fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      	<fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
         </fileset>
       </classpath>
@@ -61,6 +66,9 @@
       	<fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
         </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
       </classpath>
     </javac>
     <jar jarfile="${basedir}/../selenium-wd/lib/${scommon_jar}-${version}.${build.number}.${git_hash}.jar" basedir="${basedir}/build">
@@ -75,9 +83,12 @@
   </target>
   <target name="compile_androidapp" depends="compile_scommon" description="Compiles android app source">
     <buildnumber file="build.number" />
-  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/screens/source:${basedir}/androidapp/dataprovider:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
+  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/screens/source:${basedir}/androidapp/data/source:${basedir}/androidapp/dataprovider:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
       <classpath>
       	<fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      	<fileset dir="${basedir}/lib">
           <include name="**/*.jar" />
         </fileset>
       </classpath>
@@ -101,8 +112,11 @@
         <fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
         </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
       </classpath>
-      <batchtest fork="yes" todir="${reports}/androidtests/xml">
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androidtests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
           <include name="**/BackPackApiTest.class" />
@@ -110,22 +124,77 @@
       </batchtest>
     </junit>
   </target>
-  <target name="androiduitests" depends="compile_androidapp" description="Run android app ui tests">
+  <target name="androiduitests_datagen" depends="compile_androidapp" description="Run datagen for android app ui tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="true" />
       <sysproperty key="test_run_id" value="${local_date}" />
       <classpath>
         <pathelement path="${build}" />
         <fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
         </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
       </classpath>
-      <batchtest fork="yes" todir="${reports}/androiduitests/xml">
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/ReportListScreenTest.class" />
-          <include name="**/SettingsScreenTest.class" />
-          <include name="**/LeakScreenTest.class" />
+          <include name="**/AndroidReportListScreenTest.class" />
+          <include name="**/AndroidSettingsScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest2.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="androiduitests" depends="compile_androidapp" description="Run android app ui tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="false" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/AndroidReportListScreenTest.class" />
+          <include name="**/AndroidSettingsScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest.class" />
+          <include name="**/AndroidLeakScreenTest2.class" />
+          <include name="**/AndroidSettingsScreenTest2.class" />
+          <include name="**/AndroidSettingsAuthScreenTest.class" />
+          <include name="**/AndroidFormCancelVerificationTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="local_androiduitests" depends="compile_androidapp" description="Run android app ui for local testing">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="AndroidUITests" />
+	  <sysproperty key="isRunningInDataGenMode" value="false" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/AndroidFormCancelVerificationTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -139,11 +208,14 @@
         <fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
         </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
       </classpath>
-      <batchtest fork="yes" todir="${reports}/androiduitests/xml">
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/SanityTest.class" />
+          <include name="**/AndroidSanityTest.class" />
         </fileset>
       </batchtest>
     </junit>

@@ -30,7 +30,7 @@ public class ResourceKeys {
 	public static final String FacilityEQReport_PageTitle = "FacilityEQReport_PageTitle";
 	public static final String FacilityEQReports_AddNew = "FacilityEQReports_AddNew";
 	public static final String FacilityEQReports_PageTitle = "FacilityEQReports_PageTitle";
-	
+
 	// Compliance report resource keys.
 	public static final String ComplianceReport_AlreadyAdded = "ComplianceReport_AlreadyAdded";
 	public static final String ComplianceReport_BoundaryMinSizeMessage = "ComplianceReport_BoundaryMinSizeMessage";
@@ -339,4 +339,14 @@ public class ResourceKeys {
 	// iGPS modal messages.
 	public static final String Dialog_IGPSWarning = "Dialog_IGPSWarning";
 	public static final String Dialog_IGPSError = "Dialog_IGPSError";
+
+	// Mobile page constants.
+	public static final String LisaInvestigationAssignment_NotInvestigated = "LisaInvestigationAssignment_NotInvestigated";
+	public static final String InvestigationStatusTypes_Not_Investigated = "InvestigationStatusTypes_Not_Investigated";
+	public static final String InvestigationStatusTypes_In_Progress = "InvestigationStatusTypes_In_Progress";
+	public static final String InvestigationStatusTypes_No_Gas_Found = "InvestigationStatusTypes_No_Gas_Found";
+	public static final String InvestigationStatusTypes_Found_Other_Source = "InvestigationStatusTypes_Found_Other_Source";
+	public static final String InvestigationStatusTypes_Found_Gas_Leak = "InvestigationStatusTypes_Found_Gas_Leak";
+	public static final String Investigation_WasSourceFound = "Investigation_WasSourceFound";
+	public static final String Constant_Complete = "Constant_Complete";
 }

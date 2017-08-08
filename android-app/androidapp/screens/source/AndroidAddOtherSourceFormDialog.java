@@ -16,15 +16,42 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 
 public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String DELETE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Delete\")";
+
+	/****** Button elements ******/
+
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
+	private WebElement oK;
+
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
+	private WebElement cancel;
+
+	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
+	private WebElement delete;
+
 	/****** Button elements ******/
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
 	@CacheLookup
-	private WebElement oK;
+	private WebElement oKNewItem;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
 	@CacheLookup
-	private WebElement cancel;
+	private WebElement cancelNewItem;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]")
+	@CacheLookup
+	private WebElement oKExistingItem;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[7]")
+	@CacheLookup
+	private WebElement cancelExistingItem;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]")
+	@CacheLookup
+	private WebElement deleteExistingItem;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -50,6 +77,10 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement source;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.Spinner[1]/android.widget.TextView[1]")
+	@CacheLookup
+	private WebElement sourceText;
+
 	private AndroidLeakSourceTypeListControl leakSourceTypeListControl;
 
 	public AndroidAddOtherSourceFormDialog(WebDriver driver) {
@@ -64,6 +95,11 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	/****** ListControl Methods ******/
 
+	public LeakSourceType getSelectedLeakSource() {
+		Log.method("getSelectedLeakSource");
+		return LeakSourceType.valueOf(this.sourceText.getText().trim());
+	}
+
 	public void selectLeakSource(LeakSourceType leakSourceType) {
 		Log.method("selectLeakSource", leakSourceType);
 		tap(this.source);
@@ -74,6 +110,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getOKButton() {
 		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
 		return oK;
 	}
 
@@ -86,12 +123,28 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 
-	public void clickOnCancel() {
+	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
 		tap(getCancelButton());
+		press(getCancelButton());
+		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+	}
+
+	public WebElement getDeleteButton() {
+		Log.method("getDeleteButton");
+		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
+		return delete;
+	}
+
+	public void clickOnDelete() throws Exception {
+		Log.method("clickOnDelete");
+		tap(getDeleteButton());
+		press(getDeleteButton());
+		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {

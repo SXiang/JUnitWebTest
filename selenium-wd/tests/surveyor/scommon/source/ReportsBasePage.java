@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -55,8 +56,10 @@ import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.WebElementExtender;
 import surveyor.api.source.ReportJobsStat;
+import surveyor.dataaccess.source.Customer;
 import surveyor.dataaccess.source.DBCache;
 import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.User;
 import surveyor.scommon.entities.ReportJobPerfDBStat;
 import surveyor.scommon.actions.data.CustomerDataReader;
 import surveyor.scommon.actions.data.CustomerDataReader.CustomerDataRow;
@@ -284,9 +287,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_next']")
 	protected WebElement nextBtn;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='myModal']/div/div/div[3]/a[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='deleteReportModal']//a[text()='Delete Report']")
 	protected WebElement btnDeleteReport;
-	protected String btnDeleteReportXPath = "//*[@id='myModal']/div/div/div[3]/a[1]";
+	protected String btnDeleteReportXPath = "//*[@id='deleteReportModal']//a[text()='Delete Report']";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='report-customer']")
 	protected WebElement dropdownCustomer;
@@ -1663,7 +1666,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 					try {
 						if (rowSize == 1) {
 							Log.info("RowSize == 1. Getting ReportViewer button element...");
-							reportViewer = getTable().findElement(By.xpath("tr/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
+							reportViewer = getTable().findElement(By.xpath("tr[td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[3]"));
 							Log.clickElementInfo("Report Viewer");
 							reportViewer.click();
 							this.waitForReportViewImagetoAppear();
@@ -1684,7 +1687,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 								break;
 							}
 
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							// At this point it is possible that more reports got newly added, in which case our rowNum is incorrect.
 							// Double check if we have the rowNum of interest.
@@ -1699,7 +1702,8 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" 
+																	+ getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							Log.clickElementInfo("Report Viewer");
 							jsClick(reportViewer);
@@ -1723,7 +1727,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							if(rowNum == skipNewlyAddedRows(lastSeenTitleCellText, lastSeenReportNameCellText,
 									lastSeenCreatedByCellText, lastSeenDateCellText, rowNum, maxRows)) {
 								Log.info("[Check 3]: rowNum has NOT changed. Looking for error label");
-								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "]/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
+								reportError = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" + getColumnIndex(COL_HEADER_ACTION) + "]/*[@class='error-processing']"));
 								foundErrorLabel = true;
 							}
 						} catch (org.openqa.selenium.NoSuchElementException e1) {
@@ -2483,7 +2487,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		Log.method("waitForDeletePopupLoad");
 		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-					return btnDeleteSurvey.isDisplayed();
+					return btnDeleteReport.isDisplayed();
 			}
 		});
 	}
@@ -3270,5 +3274,22 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 
 		return matchSuccess;
+	}
+	
+	public boolean verifyReportsCreatedBelongTo(String customerName){
+		setPagination(PAGINATIONSETTING_100);
+		int createdByIndex = getColumnIndexMap().get(COL_HEADER_CREATED_BY);
+		String reportCreatedXPath = "//*[@id='datatable']/tbody/tr/td["+createdByIndex+"]";
+		String id = Customer.getCustomer(customerName).getId();
+		boolean isCorrect = true;
+		List<WebElement> listItems = driver.findElements(By.xpath(reportCreatedXPath));
+		Set<String> users = listItems.stream().map((WebElement e) -> getElementInnerText(e)).filter((String s) 
+				-> !s.trim().isEmpty()).collect(Collectors.toSet());
+		
+		for(String user:users){
+			String customerId = User.getUser(user).getCustomerId();
+			isCorrect &= customerId.equalsIgnoreCase(id);
+		}
+		return isCorrect;
 	}
 }

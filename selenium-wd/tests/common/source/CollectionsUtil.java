@@ -9,6 +9,14 @@ import java.util.Map;
 
 public class CollectionsUtil {
 
+	public static <V> Integer getListSize(List<V> list) {
+		if (list != null) {
+			return list.size();
+		}
+
+		return 0;
+	}
+
 	public static <K, V> Map<K, V> toMap(List<K> keyList, List<V> valueList) {
 		Map<K, V> retMap = null;
 		if (keyList != null && keyList.size() > 0 && valueList != null && valueList.size() > 0) {

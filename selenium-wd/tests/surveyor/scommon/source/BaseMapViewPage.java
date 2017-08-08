@@ -3,8 +3,6 @@ package surveyor.scommon.source;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -34,7 +32,6 @@ import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.actions.PageActionsFactory;
 import surveyor.scommon.entities.FeatureInfoEntity;
-import surveyor.scommon.source.BaseMapViewPage.FeatureInfo;
 
 public class BaseMapViewPage extends SurveyorBasePage {
 	private static final String VIRTUALEARTH_NET_BRANDING_LOGO = "https://dev.virtualearth.net/Branding/logo_powered_by.png";
@@ -75,7 +72,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	private WebElement displaySwitchFovsDivElement;
 
 	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
-	private WebElement activeModeWarning;
+	private WebElement activeSurveyModeDialog;
 	
 	@FindBy(id = "display_switch_8hour_history")
 	protected WebElement displaySwitch8HourHistory;
@@ -245,9 +242,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "map")
 	protected WebElement mapElement;
 
-	@FindBy(css = "[id$='_mode_warning']")
-	protected WebElement surveyModeDialog;
-
 	// Feature info popup values are updated on each featureInfo click. Seek these elements newly when get*() method is called.
 	private WebElement featureInfoEpoch;
 	private WebElement featureInfoLatitude;
@@ -400,7 +394,12 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		}
 		return this;
 	}
-
+	public BaseMapViewPage openGisMenu() {
+		if (isGisMenuClosed()) {
+			clickGisButton();
+		}
+		return this;
+	}
 	public boolean isGisMenuOpen() {
 		return !this.gisMenu.getAttribute("class").toLowerCase().contains("ng-hide");
 	}
@@ -427,19 +426,19 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	/**
-	 * Verifies whether the Analytics Mode dialog is shown.
+	 * Verifies whether the Survey Mode dialog is shown.
 	 */
 	public boolean isSurveyModeDialogShown() {
 		Log.method("isSurveyModeDialogShown");
-		Log.info(String.format("Expected=[%s], Actual=[%s]", "cssFade", surveyModeDialog.getAttribute("class")));
-		return this.surveyModeDialog.getAttribute("class").equals("cssFade");
+		return WebElementExtender.isElementPresentAndDisplayed(this.activeSurveyModeDialog);
 	}
 
 	/**
-	 * Verifies the Analytics Mode dialog is NOT shown.
+	 * Verifies the Survey Mode dialog is NOT shown.
 	 */
 	public boolean isSurveyModeDialogHidden() {
-		return this.surveyModeDialog.getAttribute("class").equals("cssFade ng-hide");
+		Log.method("isSurveyModeDialogHiddeb");
+		return !WebElementExtender.isElementPresentAndDisplayed(this.activeSurveyModeDialog);
 	}
 
 
@@ -691,13 +690,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public boolean isSurveyModeWarningContentCorrect(String expectedText){
 		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
-		String text = getElementText(activeModeWarning);
+		String text = getElementText(activeSurveyModeDialog);
 		if(!text.equals(expectedText)){
 			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
 			return false;
 		}
 		for(String[] css:cssValues){
-			String value = activeModeWarning.getCssValue(css[0]);
+			String value = activeSurveyModeDialog.getCssValue(css[0]);
 			if(!value.equals(css[1])){
 				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
 				return false;
@@ -1279,8 +1278,8 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	 *
 	 * @return the span WebElement.
 	 */
-	public WebElement getSurveyModeDialog() {
-		return surveyModeDialog;
+	public WebElement getActiveSurveyModeDialog() {
+		return activeSurveyModeDialog;
 	}
 
 	public WebElement getMapElement() {
@@ -1331,23 +1330,29 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				return true;
 			}
 			int numClicks = Math.abs(currentZoomlevel-ASSETS_ZOOM_LEVEL_LOWER_BOUND);
-
 			for(int i=0;i<numClicks;i++){
 				  clickZoomInButton();
 			}
+			waitForSignalRCallsToComplete();
 			newZoomlevel = mapUtility.getMapZoomLevel();
 		} catch (Exception ex) {
 			Log.warn("[DEBUG LOG]: Exception on setZoomLevelForAssets. PAGESOURCE:-> " + driver.getPageSource());
 			TestContext.INSTANCE.getTestSetup().getScreenCapture().takeScreenshot(driver,
 					TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
-			Log.warn("[DEBUG LOG]: Returning [surveyormap] js object...");
-			Object executeScript = ((JavascriptExecutor)driver).executeScript("return surveyormap;");
-			Log.info("Returned [surveyormap] object = " + (executeScript != null ? executeScript.toString() : "<null>"));
 		}
-
 		return newZoomlevel==ASSETS_ZOOM_LEVEL_LOWER_BOUND;
 	}
 
+	public boolean veriftBoundariesShownOnMap() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		return mapUtility.isBoundariesShownOnMap();
+	}
+
+	public boolean verifyAssetShownOnMap() {
+		OLMapUtility mapUtility = new OLMapUtility(driver);
+		return mapUtility.isAssetShownOnMap();
+	}
+	
 	private CustomerBoundaryType getBoundaryTypeForLoggedInCustomer(String boundaryTypeDescription) throws Exception, IOException {
 		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
 		if (loggedInUserCustomer != null) {

@@ -16,6 +16,9 @@ public class ReportListDataProvider extends AndroidDataProvider {
 	public static final String REPORT_LIST_DATA_PROVIDER_TC2438 = "dataProviderReportList_TC2438";
 	public static final String REPORT_LIST_DATA_PROVIDER_TC2439 = "dataProviderReportList_TC2439";
 
+	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2555 = "dataProviderPageAndroidApp_TC2555";
+
+
 	public ReportListDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
@@ -64,4 +67,10 @@ public class ReportListDataProvider extends AndroidDataProvider {
 	public static Object[][] dataProviderReportList_TC2439() {
 		return new Object[][] { { "TC2439" /* TestCaseID */, 6 /* userDataRowID */, 248 /* reportDataRowID1 */, -1/* reportDataRowID2 */ } };
 	}
+
+	@DataProvider
+	public static Object[][] dataProviderAndroidApp_TC2555() {
+		return new Object[][] { { "TC2555" /*TestCaseID*/, 6 /*userDataRowID*/,  255 /*reportDataRowID1*/, -1/*reportDataRowID2*/} };
+	}
+
 }

@@ -56,6 +56,18 @@ public class AdbInterface {
 		AdbInterface.adbLocation = adbLocation;
 	}
 
+	public static void clearAppCache(String appPackageName) throws Exception {
+		Log.method("clearAppCache");
+		executeShellCmd(AdbInterface.getAdbLocation(), String.format("pm clear %s", appPackageName));
+	}
+
+	public static void grantPermissions(String appPackageName, String[] permissionsList) throws Exception {
+		Log.method("grantPermissions", appPackageName, permissionsList);
+		for (String permission : permissionsList) {
+			executeShellCmd(AdbInterface.getAdbLocation(), String.format("pm grant %s %s", appPackageName, permission));
+		}
+	}
+
 	public static String executeShellCmd(final String command) throws Exception {
 		return executeShellCmdInternal(getAdbLocation(), command);
 	}
@@ -114,6 +126,20 @@ public class AdbInterface {
 			}
 		} else {
 			Log.error("pullFile -> No connected devices found.");
+		}
+	}
+
+	public static void pushFile(String localFileLocation, String deviceFileLocation) {
+		Log.method("pushFile", localFileLocation, deviceFileLocation);
+		IDevice device = getConnectedDevice();
+		if (device != null) {
+			try {
+				device.pushFile(localFileLocation, deviceFileLocation);
+			} catch (SyncException | IOException  | AdbCommandRejectedException | TimeoutException ex) {
+				Log.error(ExceptionUtility.getStackTraceString(ex));
+			}
+		} else {
+			Log.error("pushFile -> No connected devices found.");
 		}
 	}
 

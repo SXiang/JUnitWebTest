@@ -30,7 +30,32 @@ function WaitFor-ActivityToGainFocus($activityName) {
     $found
 }
 
-adb install -r -d -g "$APKFilePath"
+$INSTALL_NEW_OVERRIDE = $true
+
+$VERSION_MARKER_FILE = "C:\QATestLogs\installed-apk.md"
+if (Test-Path $VERSION_MARKER_FILE) {
+    Remove-Item $VERSION_MARKER_FILE
+}
+
+$null = adb pull /sdcard/installed-apk.md $VERSION_MARKER_FILE 2>&1
+
+$sameVersionFound = $false
+$fName = Split-Path -Path $APKFilePath -Leaf 
+
+if (Test-Path $VERSION_MARKER_FILE) {
+    Get-Content $VERSION_MARKER_FILE | %{
+        $apkOnDevice = $_
+        if ($fName.tolower() -eq $apkOnDevice) {
+            Write-Host "Found same version-[$apkOnDevice] APK on device.. Skipping installation."
+            $sameVersionFound = $true
+        }
+    }
+}
+
+if ($INSTALL_NEW_OVERRIDE -or (-not $sameVersionFound)) {
+    Write-Host "Installing APK - $fName on device..."
+    adb install -r -d -g "$APKFilePath"
+}
 
 adb shell am start -n com.picarroapp/com.picarroapp.MainActivity
 sleep -Seconds 2
