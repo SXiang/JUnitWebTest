@@ -25,6 +25,7 @@ import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
@@ -165,7 +166,7 @@ public class BaseAndroidTest extends BaseTest {
 			String dumpSysActivity = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.DUMPSYS_ACTIVITY);
 			Log.info(String.format("DumpSys activity -> %s", dumpSysActivity));
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.error(String.format("Error in dumpSysActivity() -> %s", ExceptionUtility.getStackTraceString(e)));
 		}
 	}
 
