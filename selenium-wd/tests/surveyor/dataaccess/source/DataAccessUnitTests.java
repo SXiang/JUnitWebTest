@@ -111,6 +111,11 @@ public class DataAccessUnitTests {
 		Log.info("Executing testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid() ...");
 		testAnalyticsPeak_GetAnalyticsPeaksByReportId_Invalid();
 
+		Log.info("Executing testReportStatusType_GetReportStatusTypeByDesc_Valid() ...");
+		testReportStatusType_GetReportStatusTypeByDesc_Valid();
+		Log.info("Executing testReportStatusType_GetReportStatusTypeByDesc_Invalid() ...");
+		testReportStatusType_GetReportStatusTypeByDesc_Invalid();
+
 		Log.info("DONE!");
 	}
 
@@ -428,5 +433,18 @@ public class DataAccessUnitTests {
 		String invvalidBoxId = "15030CE5-2E14-0BCF-76E5-39E0889E866F";
 		List<StoredProcLisaInvestigationLeaksByPeakId> objStoredProcLisaInvestigationLeaksByPeakId = StoredProcLisaInvestigationLeaksByPeakId.getLisaInvestigationLeaksByPeakId(invalidReportId, invvalidBoxId);
 		Assert.assertTrue(objStoredProcLisaInvestigationLeaksByPeakId == null || objStoredProcLisaInvestigationLeaksByPeakId.size()==0, "Value should be EMPTY.");
+	}
+
+	private static void testReportStatusType_GetReportStatusTypeByDesc_Valid() {
+		String validDesc = "Complete";
+		ReportStatusType objReportStatusType = ReportStatusType.getReportStatusType(validDesc);
+		Assert.assertTrue(objReportStatusType != null, "Value cannot be NULL.");
+		Log.info("Returned value is -> " + objReportStatusType.toString());
+	}
+
+	private static void testReportStatusType_GetReportStatusTypeByDesc_Invalid() {
+		String invalidDesc = "InvalidDescription";
+		ReportStatusType objReportStatusType = ReportStatusType.getReportStatusType(invalidDesc);
+		Assert.assertTrue(objReportStatusType == null, "Value should be NULL.");
 	}
 }

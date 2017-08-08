@@ -1,10 +1,12 @@
 package common.source;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class ArrayUtility {
 
@@ -130,5 +132,30 @@ public class ArrayUtility {
 		}
 		value = list.get(index) + value;
 		list.set(index, value);
+	}
+
+	/**
+	 * Return another string array which is a deep copy of the specified string array.
+	 * @param inputArr - input string array.
+	 * @return - deep copy cloned string  array.
+	 */
+	public static String[] createDeepCopyClone(String[] inputArr) {
+		if (inputArr != null && inputArr.length != 0) {
+			List<String> list = Arrays.asList(inputArr);
+			return list.toArray(new String[inputArr.length]);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Shuffle array items.
+	 * @param array - array to be shuffled.
+	 */
+	public static <T> void shuffle(T[] array) {
+		if (array != null && array.length > 1) {
+			List<T> list = Arrays.asList(array);
+			Collections.shuffle(list, new Random(System.currentTimeMillis()));
+		}
 	}
 }

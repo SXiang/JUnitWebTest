@@ -275,6 +275,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
+		tap(getCancelButton());
+		press(getCancelButton());
 		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
 	}
 
@@ -286,6 +288,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnDelete() throws Exception {
 		Log.method("clickOnDelete");
+		tap(getDeleteButton());
+		press(getDeleteButton());
 		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
 	}
 
@@ -475,15 +479,20 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
 		Log.method("fillForm", LogHelper.mapToString(formValues));
 		clearTextFields();
-		fillForm(formValues, true /*editing*/);
+		fillForm(formValues, true /*editing*/, true /*clickOkButton*/);
 	}
 
 	public void fillForm(Map<String, Object> formValues) throws Exception {
-		fillForm(formValues, false /*editing*/);
+		fillForm(formValues, false /*editing*/, true /*clickOkButton*/);
 	}
 
-	public void fillForm(Map<String, Object> formValues, Boolean editing) throws Exception {
-		Log.method("fillForm", LogHelper.mapToString(formValues), editing);
+	public void fillFormAndCancel(Map<String, Object> formValues) throws Exception {
+		fillForm(formValues, false /*editing*/, false /*clickOkButton*/);
+		this.clickOnCancel();
+	}
+
+	public void fillForm(Map<String, Object> formValues, Boolean editing, Boolean clickOkButton) throws Exception {
+		Log.method("fillForm", LogHelper.mapToString(formValues), editing, clickOkButton);
 		LeakSourceType leakSourceType = (LeakSourceType)formValues.get(DataKey.LEAK_SOURCE_TYPE);
 		LeakLocationType locationType = (LeakLocationType)formValues.get(DataKey.LEAK_LOCATION_TYPE);
 		LeakType leakType = (LeakType)formValues.get(DataKey.LEAK_TYPE);
@@ -546,7 +555,9 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 			this.enterAdditionalNotes(additionalNotes);
 		}
 
-		this.clickOnOK();
+		if (clickOkButton) {
+			this.clickOnOK();
+		}
 	}
 
 	@Override

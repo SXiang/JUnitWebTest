@@ -36,6 +36,7 @@ import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
 import common.source.CollectionsUtil;
+import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
 import common.source.TestContext;
@@ -357,7 +358,12 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 				LeakSourceType actualSourceLeakSourceType = addOtherSourceFormDialog.getSelectedLeakSource();
 				assertTrue(String.format("LeakSourceType does NOT match. Expected=[%s]; Actual=[%s]", otherSourceLeakSourceType, actualSourceLeakSourceType),
 						actualSourceLeakSourceType.equals(otherSourceLeakSourceType));
-				addOtherSourceFormDialog.clickOnCancelForExistingItem();
+				try {
+					addOtherSourceFormDialog.clickOnCancel();
+				} catch (Exception e) {
+					Log.error(String.format("Error when clicking on Cancel on Add Other Source form. Error -> %s",
+							ExceptionUtility.getStackTraceString(e)));
+				}
 				addedSourcesListDialog.waitForScreenLoad();
 			});
 
@@ -436,7 +442,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOKForNewItem();
+			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
