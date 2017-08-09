@@ -78,7 +78,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
-
+			mapScreen.assertGpsLabelIsGreen();
 			mapScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
 			assertTrue("Clear HeatMap button should be displayed", settingsScreen.getClearHeatmap().isDisplayed());
@@ -114,7 +114,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 		navigateToMapScreenUsingDefaultCreds(true /*waitForMapScreenLoad*/);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
-
+			mapScreen.assertGpsLabelIsGreen();
 			mapScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
 			assertTrue("Clear HeatMap button should be displayed", settingsScreen.getClearHeatmap().isDisplayed());

@@ -84,6 +84,14 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		markerTypeSelector.click();
 	}
 
+	public void clickOnMarkerAtIndex(int index) {
+		Log.method("clickOnMarkerAtIndex", index);
+		WebElement element = getAndroidDriver().findElementByXPath(String.format("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[1]", index));
+		String markerName = element.getText();
+		Log.info(String.format("Found matching marker='%s' at index=[%d].. Tap marker.", markerName, index));
+		element.click();
+	}
+
 	public InvestigationMarkerEntity getFirstInvestigationMarker() {
 		Log.method("getFirstInvestigationMarker");
 		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();

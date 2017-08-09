@@ -4,6 +4,7 @@ public class BaselineImages {
 	public static class Folder {
 		public static final String TC2551 = "TC2551";
 		public static final String LOADERS = "loaders";
+		public static final String COMMON = "common";
 	}
 
 	public static class ImageFile {
@@ -14,5 +15,12 @@ public class BaselineImages {
 		public static final String DefaultMapScreenPicarroLoc = "default-map-screen-picarro-icon.png";
 		public static final String ConnectingToBackPackServer = "connecting-to-backpack-server.png";
 		public static final String EditSettingsButton = "edit-settings-button.png";
+		public static final String MarkAsCompleteAndPauseButtons = "markcomplete-n-pause-buttons.png";
+		public static final String TopPanelMethaneModeLabel = "top-bar-methane-mode.png";
+		public static final String BottomPaneButtons = "bottom-pane-buttons.png";
+		public static final String GpsLabelGreen = "gps-green.png";
+		public static final String VolumeAmplitudeThresholdSliders = "volume-amplitude-threshold.png";
+		public static final String TopPanelMaxValue2ppm = "max-value-2-0-ppm.png";
+		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
 	}
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import common.source.BaselineImages;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -14,33 +15,41 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
+	private static final String ADD_CGI_BTN_UISELECTOR = "new UiSelector().text(\"Add CGI\")";
+
+	private static final String ADD_SOURCE_BTN_UISELECTOR = "new UiSelector().text(\"Add Source\")";
+
+	private static final String MARK_AS_COMPLETE_BTN_UISELECTOR = "new UiSelector().text(\"Mark as Complete\")";
+
+	private static final String PAUSE_BTN_UISELECTOR = "new UiSelector().text(\"Pause\")";
+
+	private static final String DIRECTIONS_BTN_UISELECTOR = "new UiSelector().text(\"Directions\")";
+
+	private static final String FOLLOW_BTN_UISELECTOR = "new UiSelector().text(\"Follow\")";
+
+	private static final String INVESTIGATE_BTN_UISELECTOR = "new UiSelector().text(\"Investigate\")";
+
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = ADD_CGI_BTN_UISELECTOR)
 	private WebElement addCGI;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = ADD_SOURCE_BTN_UISELECTOR)
 	private WebElement addSource;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Mark as Complete\")")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = MARK_AS_COMPLETE_BTN_UISELECTOR)
 	private WebElement markAsComplete;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[5]/android.view.ViewGroup[2]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = PAUSE_BTN_UISELECTOR)
 	private WebElement pause;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = DIRECTIONS_BTN_UISELECTOR)
 	private WebElement directions;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = FOLLOW_BTN_UISELECTOR)
 	private WebElement follow;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Investigate\")")
+	@AndroidFindBy(uiAutomator = INVESTIGATE_BTN_UISELECTOR)
 	private WebElement investigate;
 
 	/****** Label elements ******/
@@ -55,7 +64,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
-	private WebElement precison;
+	private WebElement precision;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[4]")
 	@CacheLookup
@@ -69,6 +78,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getAddCGIButton() {
 		Log.method("getAddCGIButton");
+		addCGI = getAndroidDriver().findElementByAndroidUIAutomator(ADD_CGI_BTN_UISELECTOR);
 		return addCGI;
 	}
 
@@ -79,6 +89,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getAddSourceButton() {
 		Log.method("getAddSourceButton");
+		addSource = getAndroidDriver().findElementByAndroidUIAutomator(ADD_SOURCE_BTN_UISELECTOR);
 		return addSource;
 	}
 
@@ -89,6 +100,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getMarkAsCompleteButton() {
 		Log.method("getMarkAsCompleteButton");
+		markAsComplete = getAndroidDriver().findElementByAndroidUIAutomator(MARK_AS_COMPLETE_BTN_UISELECTOR);
 		return markAsComplete;
 	}
 
@@ -99,6 +111,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getPauseButton() {
 		Log.method("getPauseButton");
+		pause = getAndroidDriver().findElementByAndroidUIAutomator(PAUSE_BTN_UISELECTOR);
 		return pause;
 	}
 
@@ -109,6 +122,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getDirectionsButton() {
 		Log.method("getDirectionsButton");
+		directions = getAndroidDriver().findElementByAndroidUIAutomator(DIRECTIONS_BTN_UISELECTOR);
 		return directions;
 	}
 
@@ -119,6 +133,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getFollowButton() {
 		Log.method("getFollowButton");
+		follow = getAndroidDriver().findElementByAndroidUIAutomator(FOLLOW_BTN_UISELECTOR);
 		return follow;
 	}
 
@@ -129,11 +144,16 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public WebElement getInvestigateButton() {
 		Log.method("getInvestigateButton");
+		investigate = getAndroidDriver().findElementByAndroidUIAutomator(INVESTIGATE_BTN_UISELECTOR);
 		return investigate;
 	}
 
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
+
+		// TBD: This is workaround added for DE3195 to prevent app crash.
+		TestContext.INSTANCE.stayIdle(3);
+
 		tap(getInvestigateButton());
 	}
 
@@ -154,7 +174,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public String getPrecisonText() {
 		Log.method("getPrecisonText");
-		return precison.getText();
+		return precision.getText();
 	}
 
 	public String getVelocityText() {
@@ -179,10 +199,15 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return true;
 	}
 
+	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
+		Log.method("assertMarkAsCompleteAndPauseButtonsAreShown");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.MarkAsCompleteAndPauseButtons);
+	}
+
 	@Override
 	public Boolean screenLoadCondition() {
 		TestContext.INSTANCE.stayIdle(2);
-		return getAddSourceButton()!=null && getAddSourceButton().isDisplayed();
+		return getDirectionsButton()!=null && getDirectionsButton().isDisplayed();
 	}
 
 	@Override

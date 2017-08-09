@@ -26,6 +26,13 @@ public class AndroidAutomationTools {
 		public static final String SET_ANIMATOR_DURATION_SCALE = "content update --uri content://settings/system --bind value:s:0.0 --where 'name=\"animator_duration_scale\"'";
 		public static final String DUMPSYS_GFXINFO = "dumpsys gfxinfo %s";     // provide app package name
 		public static final String DUMPSYS_CPUINFO = "dumpsys cpuinfo";
+		public static final String TURN_ON_GPS = "settings put secure location_providers_allowed +gps";
+		public static final String TURN_OFF_GPS = "settings put secure location_providers_allowed -gps";
+		public static final String TURN_ON_NETWORK = "settings put secure location_providers_allowed +network";
+		public static final String TURN_OFF_NETWORK = "settings put secure location_providers_allowed -network";
+		public static final String TURN_ON_WIFI = "settings put secure location_providers_allowed +wifi";
+		public static final String TURN_OFF_WIFI = "settings put secure location_providers_allowed -wifi";
+		public static final String GPS_WIFI_NETWORK_STATUS = "settings get secure location_providers_allowed";
 	}
 
 	public static class AndroidPaths {

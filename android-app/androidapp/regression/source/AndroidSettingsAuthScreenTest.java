@@ -74,7 +74,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 		final String validPort = "3000";
 		final String invalidPort = "3001";
-		settingsScreen.saveSettings(backpackAddress.replace(validPort, invalidPort), picServerAddress, SurveyorConstants.SQAPICDR);
+		mainLoginScreen.saveSettings(backpackAddress.replace(validPort, invalidPort), picServerAddress, SurveyorConstants.SQAPICDR);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);

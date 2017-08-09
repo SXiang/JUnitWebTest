@@ -5,8 +5,10 @@ import common.source.MobileActions.KeyCode;
 import common.source.SikuliDecoratedDriver;
 import common.source.MobileActions;
 import common.source.Timeout;
+import common.source.AndroidAutomationTools.ShellCommands;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -24,9 +26,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.sikuli.api.Screen;
 
+import common.source.AdbInterface;
 import common.source.ExceptionUtility;
 
 public class AndroidBaseScreen implements Screen {
+	private static final String EMPTY = "";
 	private Dimension size;
 	protected WebDriver driver;
 
@@ -117,6 +121,27 @@ public class AndroidBaseScreen implements Screen {
 		return true;
 	}
 
+	protected boolean waitForActivity() {
+		Log.method("waitForActivity");
+		return waitForActivity(this.driver, getScreenLoadTimeout(), getActivityName());
+	}
+
+	protected boolean waitForActivity(String activityName) {
+		Log.method("waitForActivity", activityName);
+		return waitForActivity(this.driver, getScreenLoadTimeout(), activityName);
+	}
+
+	protected boolean waitForActivity(WebDriver drv, Integer timeout, String activityName) {
+		Log.method("waitForActivity", drv, timeout, activityName);
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return ((AndroidDriver<MobileElement>) d).currentActivity().equals(activityName);
+			}
+		});
+
+		return true;
+	}
+
 	protected Integer getScreenLoadTimeout() {
 		return Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT;
 	}
@@ -128,6 +153,10 @@ public class AndroidBaseScreen implements Screen {
 
 	protected Boolean screenAndDataLoadCondition() {
 		return false;
+	}
+
+	protected String getActivityName() {
+		return EMPTY;
 	}
 
 	/* Sikuli screen overrides */

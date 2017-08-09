@@ -21,6 +21,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.LeakScreenDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
+import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
 import androidapp.screens.source.AndroidAddCgiFormDialog;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
@@ -824,17 +825,23 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			return true;
 		});
 
-		// 1.
 		clickOnFirstInvestigationReport(investigationScreen);
 
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
-		investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-
+		final LeakSourceType otherSourceLeakSourceType = LeakSourceType.Catch_Basin;
+		final String otherSourceAdditionalNotes = DataGenerator.getRandomText(20, 100);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -844,13 +851,25 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// Add leak.
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
+
+			// get count of current 'leak' entries.
+			boolean listShown = addedSourcesListDialog.isListDisplayed();
+			int leakCountBeforeAdd = 0;
+			if (listShown) {
+				List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
+				leakCountBeforeAdd = (leaksList != null) ? leaksList.size() : 0;
+			}
+
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			listStoreMap.add(leakMap);
 			addLeakSourceFormDialog.fillForm(leakMap);
 			addedSourcesListDialog.waitForScreenAndDataLoad();
-			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
+
+			int leakCountAfterAdd = leakCountBeforeAdd + 1;
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), leakCountAfterAdd-1);
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap));
@@ -860,8 +879,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnAddOtherSources();
 			addOtherSourceFormDialog.waitForScreenLoad();
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
-			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
-			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
+			addOtherSourceFormDialog.selectLeakSource(otherSourceLeakSourceType);
+			addOtherSourceFormDialog.enterAdditionalNotes(otherSourceAdditionalNotes);
 			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
@@ -872,12 +891,36 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
 			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
 
-			// TBD: Possible product issue. Screen navigating to login screen in latest APK used in CI - 7/27. Need investigation.
-			//investigateReportScreen.waitForScreenLoad();
+		// re-select same marker and verify inputed data.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
 
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			investigateMapScreen.clickOnAddSource();
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+
+			// Click on previously inputed leak and verify data.
+			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leaksList.size()-1);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(listStoreMap.get(0)));
+			addLeakSourceFormDialog.clickOnCancel();
+
+			// Click on previously inputed other source and verify data.
+			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.OtherSource, otherSourcesList.size()-1);
+			addOtherSourceFormDialog.waitForScreenLoad();
+			assertTrue("Data shown in Other Source form dialog was NOT correct.",
+					addOtherSourceFormDialog.verifyCorrectDataIsShown(otherSourceLeakSourceType, otherSourceAdditionalNotes));
+			addOtherSourceFormDialog.clickOnCancel();
 			return true;
 		});
 	}

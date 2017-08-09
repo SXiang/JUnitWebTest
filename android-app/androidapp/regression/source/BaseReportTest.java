@@ -2,6 +2,10 @@ package androidapp.regression.source;
 
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import androidapp.data.source.InvestigationReportDataVerifier;
 import androidapp.entities.source.InvestigationEntity;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
@@ -10,6 +14,7 @@ import common.source.BaseHelper;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
+import common.source.Timeout;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 
@@ -48,6 +53,7 @@ public class BaseReportTest extends BaseAndroidTest {
 	}
 
 	protected boolean verifyExpectedMarkersShownOnInvestigationScreen(AndroidInvestigateReportScreen investigateReportScreen, final Boolean refetchItems, final Integer expectedInvestigationMarkers) {
+		Log.method("verifyExpectedMarkersShownOnInvestigationScreen", investigateReportScreen, refetchItems, expectedInvestigationMarkers);
 		if (refetchItems) {
 			Log.info("Re-initializing the list view items on the screen");
 			investigateReportScreen.reInitializeListItems();
@@ -56,6 +62,20 @@ public class BaseReportTest extends BaseAndroidTest {
 		Integer count = investigateReportScreen.getInvestigationMarkersCount();
 		Log.info(String.format("Found %d investigation markers", count));
 		return (count == expectedInvestigationMarkers);
+	}
+
+	protected boolean waitForExpectedMarkersToShowInList(AndroidInvestigateReportScreen investigateReportScreen, Integer expectedInvestigationMarkers) {
+		Log.method("waitForExpectedMarkersToShowInList");
+		(new WebDriverWait(getAndroidDriver(), Timeout.ANDROID_APP_SCREEN_LOAD_TIMEOUT)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				investigateReportScreen.reInitializeListItems();
+				Integer count = investigateReportScreen.getInvestigationMarkersCount();
+				Log.info(String.format("Found %d investigation markers", count));
+				return (count == expectedInvestigationMarkers);
+			}
+		});
+
+		return true;
 	}
 
 	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) {
