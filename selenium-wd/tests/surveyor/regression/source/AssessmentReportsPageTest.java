@@ -544,6 +544,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 
 		assessmentReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
 		createNewReport(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
+		assessmentReportsPageAction.setReportGenerationTimeout(String.valueOf(REPORT_GENERATION_TIMEOUT_90MIN_IN_SECONDS), reportDataRowID1);
 		waitForReportGenerationToComplete(assessmentReportsPageAction, getReportRowID(reportDataRowID1));
 
 		assessmentReportsPageAction.openComplianceViewerDialog(EMPTY, getReportRowID(reportDataRowID1));
