@@ -250,13 +250,19 @@ public class BaseTest {
 
 		logout();
 
-		getDriver().quit();
+		quitDriver();
 		setDriver(null);
+	}
+
+	private static void quitDriver() {
+		if (!WebDriverFactory.hasDriverQuit(getDriver())) {
+			getDriver().quit();
+		}
 	}
 
 	public static void logout() {
 		if (getHomePage() != null) {
-			if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
+			if (!WebDriverFactory.hasDriverQuit(getDriver()) && !getDriver().getTitle().equalsIgnoreCase("Login")) {
 				getHomePage().open();
 				getHomePage().logout();
 			}

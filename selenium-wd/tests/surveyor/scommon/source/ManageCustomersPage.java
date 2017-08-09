@@ -6,8 +6,6 @@ package surveyor.scommon.source;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -52,7 +50,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
 	public WebElement lblNameError;
-	
+
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
@@ -83,11 +81,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public WebElement getLblNameError(){
 		return this.lblNameError;
 	}
-	
+
 	public WebElement getInputCustomerName(){
 		return this.inputCustomerName;
 	}
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -238,7 +236,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public WebElement getCancelAddBtn(){
 		return this.cancelAddBtn;
 	}
-	
+
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
