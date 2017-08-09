@@ -30,7 +30,9 @@ import surveyor.scommon.source.DriverViewPage.SurveyType;
 import surveyor.scommon.source.LatLongSelectionControl.ControlMode;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LatLongSelectionControl;
+import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.dataprovider.ComplianceReportDataProvider;
@@ -65,6 +67,15 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 	}
 
 	private void initializeTestPageObjects() {
+		PageObjectFactory pageObjectFactory = new PageObjectFactory();
+		LoginPage loginPage = pageObjectFactory.getLoginPage();
+		setLoginPage(loginPage);
+		PageFactory.initElements(getDriver(), loginPage);
+
+		HomePage homePage = pageObjectFactory.getHomePage();
+		setHomePage(homePage);
+		PageFactory.initElements(getDriver(), homePage);
+		
 		latLongSelectionControl = new LatLongSelectionControl(getDriver());
 		PageFactory.initElements(getDriver(), latLongSelectionControl);
 	}
