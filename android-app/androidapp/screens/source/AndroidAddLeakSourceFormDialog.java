@@ -262,9 +262,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnOK() throws Exception {
 		Log.method("clickOnOK");
-		tap(getOKButton());
-		press(getOKButton());
-		clickAndPressKey(getOKButton(), KeyCode.KEYCODE_ENTER);
+		WebElement okButton = getOKButton();
+		tap(okButton);
+		press(okButton);
+		clickAndPressKey(okButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getCancelButton() {
@@ -275,9 +276,9 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
-		tap(getCancelButton());
-		press(getCancelButton());
-		clickAndPressKey(getCancelButton(), KeyCode.KEYCODE_ENTER);
+		WebElement cancelButton = getCancelButton();
+		tap(cancelButton);
+		press(cancelButton);
 	}
 
 	public WebElement getDeleteButton() {
@@ -288,9 +289,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnDelete() throws Exception {
 		Log.method("clickOnDelete");
-		tap(getDeleteButton());
-		press(getDeleteButton());
-		clickAndPressKey(getDeleteButton(), KeyCode.KEYCODE_ENTER);
+		WebElement deleteButton = getDeleteButton();
+		clickAndPressKey(deleteButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public WebElement getUseCurrentLocationButton() {
@@ -300,9 +300,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnUseCurrentLocation() throws Exception {
 		Log.method("clickOnUseCurrentLocation");
-		tap(getUseCurrentLocationButton());
-		press(getUseCurrentLocationButton());
-		clickAndPressKey(getUseCurrentLocationButton(), KeyCode.KEYCODE_ENTER);
+		WebElement useCurrentLocationButton = getUseCurrentLocationButton();
+		tap(useCurrentLocationButton);
+		press(useCurrentLocationButton);
+		clickAndPressKey(useCurrentLocationButton, KeyCode.KEYCODE_ENTER);
 	}
 
 	public void selectPavedWall2Wall() throws Exception {

@@ -9,7 +9,10 @@
 #           -BuildScriptsBaseDir "C:\Repositories\surveyor-qa" `
 #           -BuildFlavor "debug" `
 #           -KeyStoreFileName "my-release-key.keystore" `
-#           -CIBuildNumber "1"
+#           -CIBuildNumber "1" `
+#           -Major "1" `
+#           -Minor "2" `
+#           -Patch "3" `
 # ---------------------------------------------------------------
 
 param
@@ -39,7 +42,16 @@ param
   [string] $KeyStoreFileName,               # keystore filename used for signing. eg. my-release-key.keystore
 
   [Parameter(Mandatory=$true)]
-  [string] $CIBuildNumber                   # CI build number
+  [string] $CIBuildNumber,                  # CI build number
+
+  [Parameter(Mandatory=$true)]
+  [string] $Major,                          # Major
+
+  [Parameter(Mandatory=$true)]
+  [string] $Minor,                          # Minor
+
+  [Parameter(Mandatory=$true)]
+  [string] $Patch                           # Patch
 )
 
 . "$BuildScriptsBaseDir\selenium-wd\lib\ApplicationInstaller.ps1"
@@ -90,16 +102,16 @@ cd "$BuildWorkingDir\android"
 if ($BuildFlavor.ToLower() -eq "release") {
   "Starting Release build ..."
   Ensure-KeyStoreFilePresent
-  .\gradlew assembleRelease
+  .\gradlew assembleRelease -Dmajor="$Major" -Dminor="$Minor" -Dpatch="$Patch"
 } elseif ($BuildFlavor.ToLower() -eq "debug") {
   "Starting Debug build ..."
-  .\gradlew assembleDebug
+  .\gradlew assembleDebug -Dmajor="$Major" -Dminor="$Minor" -Dpatch="$Patch"
 } elseif ($BuildFlavor.ToLower() -eq "both") {
   Ensure-KeyStoreFilePresent
   "Starting Release build ..."
-  .\gradlew assembleRelease
+  .\gradlew assembleRelease -Dmajor="$Major" -Dminor="$Minor" -Dpatch="$Patch"
   "Starting Debug build ..."
-  .\gradlew assembleDebug
+  .\gradlew assembleDebug -Dmajor="$Major" -Dminor="$Minor" -Dpatch="$Patch"
 } else {
   "ERROR: build flavor-'$BuildFlavor' specified is NOT supported."
 }

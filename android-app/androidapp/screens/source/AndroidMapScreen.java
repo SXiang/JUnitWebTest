@@ -13,11 +13,16 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
+	private static final String TOGGLE_MODE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]";
+	private static final String RESET_MAX_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]";
+	private static final String CLEAR_HEATMAP_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]";
+	private static final String INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]";
+	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]";
 	private static final String LOGIN_VALIDATION_LABEL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[2]";
 	private static final String SERVER_URL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
 	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
 	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]";
-	private static final String CANCEL_BTN_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]";
+	private static final String CANCEL_BTN_XPATH = INVESTIGATE_BUTTON_XPATH;
 	private static final String SUBMIT_BTN_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[5]";
 	private static final String METHANE_MODE = "Methane Mode";
 	private static final String ETHANE_MODE = "Ethane Mode";
@@ -48,19 +53,23 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	/******* Button elements *******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
+	@AndroidFindBy(xpath = CLEAR_HEATMAP_BUTTON_XPATH)
+	@CacheLookup
+	private WebElement clearHeatmap;
+
+	@AndroidFindBy(xpath = INVESTIGATE_BUTTON_XPATH)
 	@CacheLookup
 	private WebElement investigate;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = RESET_MAX_BUTTON_XPATH)
 	@CacheLookup
 	private WebElement resetMax;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = TOGGLE_MODE_BUTTON_XPATH)
 	@CacheLookup
 	private WebElement toggleMode;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]")
+	@AndroidFindBy(xpath = MENU_BUTTON_XPATH)
 	@CacheLookup
 	private WebElement menuButton;
 
@@ -90,6 +99,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public AndroidMapScreen(WebDriver driver) {
 		super(driver);
+	}
+
+	public void clickOnClearHeatmap() {
+		Log.method("clickOnClearHeatmap");
+		tap(getClearHeatmapButton());
 	}
 
 	public void clickOnSubmit() {
@@ -194,7 +208,38 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
 	}
 
+	public void assertMethaneModeIsShownInTopPanel() {
+		Log.method("assertMethaneModeIsShownInTopPanel");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMethaneModeLabel);
+	}
+
+	public void assertDefaultMethaneValueShownInTopPanelIsCorrect() {
+		Log.method("assertDefaultMethaneValueShownInTopPanelIsCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMethaneValue2ppm);
+	}
+
+	public void assertDefaultMaxValueShownInTopPanelIsCorrect() {
+		Log.method("assertDefaultMaxValueShownInTopPanelIsCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMaxValue2ppm);
+	}
+
+	public void assertBottomPaneButtonsAreCorrect() {
+		Log.method("assertBottomPaneButtonsAreCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.BottomPaneButtons);
+	}
+
+	public void assertGpsLabelIsGreen() {
+		Log.method("assertGpsLabelIsGreen");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.GpsLabelGreen);
+	}
+
+	public WebElement getClearHeatmapButton() {
+		Log.method("getClearHeatmapButton");
+		return clearHeatmap;
+	}
+
 	public WebElement getMenuButton() {
+		menuButton = getAndroidDriver().findElementByXPath(MENU_BUTTON_XPATH);
 		return menuButton;
 	}
 

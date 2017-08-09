@@ -98,13 +98,15 @@ public class BaseTest {
 		@Override
 		protected void failed(Throwable e, Description description) {
 			Log.method("BaseTest.failed");
+			onTestFailureProcessing();
 			BaseTest.reportTestFailed(e, description.getClassName());
 			postTestMethodProcessing();
 		}
 
-		 @Override
+		@Override
 		 protected void succeeded(Description description) {
 			Log.method("BaseTest.succeeded");
+			onTestSuccessProcessing();
 			BaseTest.reportTestSucceeded(description.getClassName());
 			postTestMethodProcessing();
 		}
@@ -248,13 +250,19 @@ public class BaseTest {
 
 		logout();
 
-		getDriver().quit();
+		quitDriver();
 		setDriver(null);
+	}
+
+	private static void quitDriver() {
+		if (!WebDriverFactory.hasDriverQuit(getDriver())) {
+			getDriver().quit();
+		}
 	}
 
 	public static void logout() {
 		if (getHomePage() != null) {
-			if (!getDriver().getTitle().equalsIgnoreCase("Login")) {
+			if (!WebDriverFactory.hasDriverQuit(getDriver()) && !getDriver().getTitle().equalsIgnoreCase("Login")) {
 				getHomePage().open();
 				getHomePage().logout();
 			}
@@ -267,6 +275,12 @@ public class BaseTest {
 				TestContext.INSTANCE.getTestSetup().postAutomationRunResult(getExtentReportFilePath().toString());
 			}
 		}
+	}
+
+	public void onTestFailureProcessing() {
+	}
+
+	public void onTestSuccessProcessing() {
 	}
 
 	public void postTestMethodProcessing() {

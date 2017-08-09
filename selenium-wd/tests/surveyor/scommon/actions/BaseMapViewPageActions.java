@@ -1477,7 +1477,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
 	 * @return - returns whether the action was successful or not.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifySurveyModeWarningCorrect(String data, Integer dataRowID) throws Exception {
 		logAction(getRuntimeType() + ".verifySurveyModeWarningContent", data, dataRowID);

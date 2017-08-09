@@ -25,6 +25,7 @@ import common.source.AppConstants;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
+import common.source.ExceptionUtility;
 import common.source.FileUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
@@ -38,6 +39,7 @@ import common.source.TestSetup;
 import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
+import common.source.AndroidAutomationTools.ShellCommands;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
@@ -72,7 +74,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected AppiumDriver<WebElement> appiumDriver;
 	protected AppiumDriver<WebElement> appiumWebDriver;
-	protected AndroidMainLoginScreen settingsScreen;
+	protected AndroidMainLoginScreen mainLoginScreen;
 	protected AndroidMapScreen mapScreen;
 
 	private PerfmonDataCollector perfmonCollector;
@@ -136,12 +138,36 @@ public class BaseAndroidTest extends BaseTest {
 
 	@After
 	public void tearDownAfterTest() throws MalformedURLException, IOException {
+	}
+
+	@Override
+	public void onTestFailureProcessing() {
+		Log.method("onTestFailureProcessing");
+		dumpSysActivity();
+		Log.info(getAndroidDriver().getPageSource());
+	}
+
+	@Override
+	public void onTestSuccessProcessing() {
+	}
+
+	@Override
+	public void postTestMethodProcessing() {
 		cleanUp();
 	}
 
 	@SuppressWarnings("rawtypes")
 	protected AndroidDriver getAndroidDriver() {
 		return (AndroidDriver)appiumDriver;
+	}
+
+	protected void dumpSysActivity() {
+		try {
+			String dumpSysActivity = AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.DUMPSYS_ACTIVITY);
+			Log.info(String.format("DumpSys activity -> %s", dumpSysActivity));
+		} catch (Exception e) {
+			Log.error(String.format("Error in dumpSysActivity() -> %s", ExceptionUtility.getStackTraceString(e)));
+		}
 	}
 
 	private void initPerfmonDataCollector() {
@@ -338,8 +364,8 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	protected void initializeMainLoginScreen() {
-		settingsScreen = new AndroidMainLoginScreen(appiumDriver);
-		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), settingsScreen);
+		mainLoginScreen = new AndroidMainLoginScreen(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), mainLoginScreen);
 	}
 
 	protected void initializeMapScreen() {
@@ -436,7 +462,7 @@ public class BaseAndroidTest extends BaseTest {
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 
-		settingsScreen.saveSettings(backpackAddress, picServerAddress, username);
+		mainLoginScreen.saveSettings(backpackAddress, picServerAddress, username);
 
 		if (waitForMapScreenLoad) {
 			if (devMachineOverride) {
@@ -449,6 +475,6 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	public void waitForAppLoad() {
-		settingsScreen.waitForFirstAppLoad();
+		mainLoginScreen.waitForFirstAppLoad();
 	}
 }

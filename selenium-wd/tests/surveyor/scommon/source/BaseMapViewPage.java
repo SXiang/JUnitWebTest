@@ -73,7 +73,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
 	private WebElement activeSurveyModeDialog;
-	
+
 	@FindBy(id = "display_switch_8hour_history")
 	protected WebElement displaySwitch8HourHistory;
 
@@ -1352,7 +1352,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		OLMapUtility mapUtility = new OLMapUtility(driver);
 		return mapUtility.isAssetShownOnMap();
 	}
-	
+
 	private CustomerBoundaryType getBoundaryTypeForLoggedInCustomer(String boundaryTypeDescription) throws Exception, IOException {
 		Customer loggedInUserCustomer = ((LoginPageActions)PageActionsFactory.getAction("LoginPage")).getLoggedInUserCustomer();
 		if (loggedInUserCustomer != null) {
