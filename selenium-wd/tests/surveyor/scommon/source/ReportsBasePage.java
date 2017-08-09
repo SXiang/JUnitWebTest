@@ -1034,6 +1034,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 	public void enterSurveyInfoUsername(String username) {
 		if (username != null && (!username.isEmpty())) {
 			Log.info(String.format("Set username - '%s'", username));
+			this.userName.clear();
 			this.userName.sendKeys(username);
 		}
 	}

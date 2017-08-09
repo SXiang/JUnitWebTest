@@ -108,7 +108,7 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.CSS, using = ".paginate_button.previous")
 	protected WebElement previousBtn;
 
-	@FindBy(how = How.CSS, using = ".paginate_button.first")
+	@FindBy(how = How.CSS, using = ".paginate_button.first:not(.disabled)")
 	protected WebElement firstBtn;
 
 	@FindBy(how = How.CSS, using = ".paginate_button.last")
@@ -368,10 +368,12 @@ public class SurveyorBasePage extends BasePage {
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
 		if(firstPage){
-			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			if (WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
 				FunctionUtil.warnOnError(() -> jsClick(firstBtn));
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			}
+			if (!WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
+				paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			}
 		}
 		setPaginationCheckMessage(str, paginationMsg);

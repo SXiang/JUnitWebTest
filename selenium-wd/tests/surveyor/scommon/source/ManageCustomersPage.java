@@ -242,7 +242,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPaginationAny(PAGINATIONSETTING_100);
+		setPagination(PAGINATIONSETTING_100, true);
 
 		String customerNameXPath;
 		String enabledStatusXPath;
