@@ -151,7 +151,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.verifyNewPageLoaded(EMPTY, reportDataRowID1);
 		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
 
-		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID1));
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 		assessmentReportsPageAction.selectCustomer(EMPTY, reportDataRowID1);
 		assessmentReportsPageAction.clickOnSurveySelectorSearchButton(EMPTY, reportDataRowID1);
 
-		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, getReportRowID(reportDataRowID1)));
+		assertTrue(assessmentReportsPageAction.verifySearchedSurveysAreForSpecifiedCustomer(EMPTY, reportDataRowID1));
 	}
 
 	/**
