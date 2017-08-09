@@ -1049,13 +1049,9 @@ public class ReportsCommonPage extends ReportsBasePage {
 		List<String> filesInDirectory = FileUtility.getFilesInDirectory(unzipDirectory, "*.shp,*.dbf,*.prj,*.shx");
 		for (String filePath : filesInDirectory) {
 			String newFilename = replaceReportIdWith(filePath, testCaseID);
-			if(!filePath.equals(newFilename)){
-				File newFile = new File(newFilename);
-				FileUtils.deleteQuietly(newFile);
-				new File(filePath).renameTo(newFile);			    
-				if (isGenerateBaselineShapeFiles) {
-					generateBaselineShapeFile(testCaseID, newFilename);
-				}
+			new File(filePath).renameTo(new File(newFilename));
+			if (isGenerateBaselineShapeFiles) {
+				generateBaselineShapeFile(testCaseID, newFilename);
 			}
 		}
 		return isGenerateBaselineShapeFiles;
