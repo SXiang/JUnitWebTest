@@ -575,14 +575,12 @@ public class ComplianceReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		ReportsCommonDataRow compRptDataRow = null;
-		if (ComplianceReportsPageActions.workingDataRow.get() != null) {
-			compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
-			if(compRptDataRow.rowID.equals(dataRowID.toString())){
-				return compRptDataRow;
-			}
+		ReportsCommonDataRow compRptDataRow = ComplianceReportsPageActions.workingDataRow.get();
+		if (compRptDataRow != null && compRptDataRow.rowID.equals(dataRowID.toString())){
+			return compRptDataRow;
 		}
-		return getDataReader().getDataRow(dataRowID);
+		compRptDataRow = getDataReader().getDataRow(dataRowID);
+		return compRptDataRow;
 	}
 
 	@Override

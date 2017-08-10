@@ -97,13 +97,12 @@ public class AssessmentReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	public ReportsCommonDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		ReportsCommonDataRow compRptDataRow = null;
-		if (AssessmentReportsPageActions.workingDataRow.get() != null) {
-			compRptDataRow = AssessmentReportsPageActions.workingDataRow.get();
-		} else {
-			compRptDataRow = getDataReader().getDataRow(dataRowID);
+		ReportsCommonDataRow assessmentRptDataRow = AssessmentReportsPageActions.workingDataRow.get();
+		if (assessmentRptDataRow != null && assessmentRptDataRow.rowID.equals(dataRowID.toString())){
+			return assessmentRptDataRow;
 		}
-		return compRptDataRow;
+		assessmentRptDataRow = getDataReader().getDataRow(dataRowID);
+		return assessmentRptDataRow;
 	}
 
 	@Override

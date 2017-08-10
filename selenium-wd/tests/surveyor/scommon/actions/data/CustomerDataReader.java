@@ -66,7 +66,7 @@ public class CustomerDataReader extends BaseDataReader {
 		String eULA = excelUtility.getCellData(dataRowID, Excel_TestData__Col_EULA, TESTDATA_SHEET_NAME);
 		String licensedFeaturesRowIDs = excelUtility.getCellData(dataRowID, Excel_TestData__Col_LicensedFeaturesRowIDs, TESTDATA_SHEET_NAME);
 		
-		Log.info(String.format("Found data row: rowID=[%s], name=[%s], enabled=[%s], eULA=[%s], licensedFeaturesRowIDs=[%s]", 
+		Log.info(String.format("Found data row["+dataRowID+"]: rowID=[%s], name=[%s], enabled=[%s], eULA=[%s], licensedFeaturesRowIDs=[%s]", 
 				rowID, name, enabled, eULA, licensedFeaturesRowIDs));
 		
 		return new CustomerDataRow(rowID, name, enabled, eULA, licensedFeaturesRowIDs);

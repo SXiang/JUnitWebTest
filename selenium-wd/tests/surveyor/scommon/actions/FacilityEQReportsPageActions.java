@@ -171,13 +171,12 @@ public class FacilityEQReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	public FacilityEQReportsDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		FacilityEQReportsDataRow eqRptDataRow = null;
-		if (FacilityEQReportsPageActions.workingDataRow.get() != null) {
-			eqRptDataRow = FacilityEQReportsPageActions.workingDataRow.get();
-		} else {
-			eqRptDataRow = getDataReader().getDataRow(dataRowID);
+		FacilityEQReportsDataRow feqRptDataRow = FacilityEQReportsPageActions.workingDataRow.get();
+		if (feqRptDataRow != null && feqRptDataRow.rowID.equals(dataRowID.toString())){
+				return feqRptDataRow;
 		}
-		return eqRptDataRow;
+		feqRptDataRow = getDataReader().getDataRow(dataRowID);
+		return feqRptDataRow;
 	}
 
 	@Override
