@@ -185,8 +185,6 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
@@ -262,7 +260,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-		executeWithBackPackDataProcessesPaused(obj -> {	
+		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 

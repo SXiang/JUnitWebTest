@@ -872,7 +872,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), leakCountAfterAdd-1);
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
 			addLeakSourceFormDialog.waitForScreenLoad();
-			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap));
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap, true /*isInEditMode*/));
 			addLeakSourceFormDialog.clickOnCancel();
 
 			// Add other source.
@@ -911,7 +911,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			List<LeakListInfoEntity> leaksList = addedSourcesListDialog.getLeaksList();
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leaksList.size()-1);
 			addLeakSourceFormDialog.waitForScreenLoad();
-			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(listStoreMap.get(0)));
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(listStoreMap.get(0), true /*isInEditMode*/));
 			addLeakSourceFormDialog.clickOnCancel();
 
 			// Click on previously inputed other source and verify data.

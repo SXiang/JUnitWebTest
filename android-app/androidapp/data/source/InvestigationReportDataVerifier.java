@@ -1,14 +1,21 @@
 package androidapp.data.source;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
+
 import common.source.Log;
+import common.source.TestContext;
+import common.source.TestSetup;
 import surveyor.dataaccess.source.BoxTypes;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ReportStatusType;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
+import surveyor.dataaccess.source.StoredProcLisaInvestigationLeaksByPeakId;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 
 public class InvestigationReportDataVerifier {
@@ -34,6 +41,30 @@ public class InvestigationReportDataVerifier {
 
 	public static InvestigationReportDataVerifier newVerifier() {
 		return new InvestigationReportDataVerifier();
+	}
+
+	public boolean doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(String reportId, String assignedUsername, List<String> markerStatuses, BoxType boxType, Integer boxNumber, Integer sourceItemsInOnePage) {
+		Log.method("doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages", reportId, assignedUsername, markerStatuses, boxType, boxNumber, sourceItemsInOnePage);
+		final Integer boxTypeId = BoxTypes.getBoxTypeByName(boxType.toString()).getId();
+		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+		if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
+			StoredProcLisaInvestigationShowIndication showIndication = lisaInvestigationfromSP.stream()
+				.filter(r -> markerStatuses.contains(r.getInvestigationStatus()) && r.getAssignedUserName().equals(assignedUsername) && r.getBoxTypeId() == boxTypeId && r.getBoxNumber() == boxNumber)
+				.findFirst().orElse(null);
+			if (showIndication != null) {
+				Log.info(String.format("Found matching ShowIndication item. Item -> [%s]", showIndication.toString()));
+				List<StoredProcLisaInvestigationLeaksByPeakId> leaksByPeakId = StoredProcLisaInvestigationLeaksByPeakId.getLisaInvestigationLeaksByPeakId(reportId, showIndication.getBoxId());
+				int itemsFound = 0;
+				if (leaksByPeakId != null) {
+					itemsFound = leaksByPeakId.size();
+				}
+
+				Log.info(String.format("Found %d source items", itemsFound));
+				return (itemsFound>sourceItemsInOnePage);
+			}
+		}
+
+		return false;
 	}
 
 	public Report findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(String[] prefixes, String assignedUsername) {
@@ -145,5 +176,40 @@ public class InvestigationReportDataVerifier {
 
 		Log.info("Found NO match. Returning NULL.");
 		return null;
+	}
+
+	public static void main(String[] args) {
+		// Initialize TestSetup to instantiate the TestContext and DB connection parameters.
+		TestSetup testSetup = new TestSetup(false /* skip initialization */);
+		String rootPath;
+		try {
+			rootPath = TestSetup.getRootPath();
+			testSetup.loadTestProperties(rootPath);
+		} catch (IOException e) {
+			Log.error(e.getMessage());
+		}
+		testSetup.initializeDBProperties();
+		TestContext.INSTANCE.setTestSetup(testSetup);
+
+		// Report with source items NOT spanning multiple pages.
+		InvestigationReportDataVerifier reportDataVerifier = new InvestigationReportDataVerifier();
+		String reportId = "4c2debf6-7faa-3e02-d04e-39e0daba77ba";
+		List<String> markerStatuses = new ArrayList<String>();
+		markerStatuses.add("In Progress");
+		Integer boxNumber = 1;
+		boolean itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
+				"AutomationAdmin", markerStatuses, BoxType.Indication, boxNumber, 8);
+		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
+		Assert.assertTrue(itemsSpanMultiplePages == false);
+
+		// Report with source items spanning multiple pages.
+		reportDataVerifier = new InvestigationReportDataVerifier();
+		reportId = "4994B6AD-4339-BA77-3218-39E0B1E3BE6E";
+		boxNumber = 2;
+		itemsSpanMultiplePages = reportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(reportId ,
+				"sqapicdr@picarro.com", markerStatuses, BoxType.Indication, boxNumber, 8);
+		Log.info(String.format("itemsSpanMultiplePages = %b", itemsSpanMultiplePages));
+		Assert.assertTrue(itemsSpanMultiplePages == true);
+
 	}
 }

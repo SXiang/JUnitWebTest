@@ -179,6 +179,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
+		additionalNotes.clear();
 		sendKeys(additionalNotes, value);
 	}
 

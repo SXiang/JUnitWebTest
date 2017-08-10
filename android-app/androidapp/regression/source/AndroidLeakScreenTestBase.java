@@ -74,7 +74,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 	}
 
 	protected void assertLeakListInfoIsCorrect(LeakDataBuilder leakDataBuilder, List<LeakListInfoEntity> leaksList, Integer itemIndex) {
-		Log.method("assertLeakListInfoIsCorrect", leakDataBuilder, LogHelper.collectionToString(leaksList, "leaksList"));
+		Log.method("assertLeakListInfoIsCorrect", leakDataBuilder, LogHelper.collectionToString(leaksList, "leaksList"), itemIndex);
 		assertTrue(String.format("LeaksList is EMPTY. Leak list=[%s]", LogHelper.collectionToString(leaksList, "leaksList")), leaksList!=null && leaksList.size()>0);
 		if (leaksList.size() > itemIndex) {
 			LeakListInfoEntity el = leaksList.get(itemIndex);
