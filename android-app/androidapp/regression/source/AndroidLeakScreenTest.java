@@ -562,8 +562,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.clickOnCancel();
 
 			// cancel leak form. cancel list dialog.
-			// previous cancel call involves multiple tap, press, clickAndPress actions and could dismiss this dialog in addition to form dialog. wrap error as warning.
-			FunctionUtil.warnOnError(() -> addedSourcesListDialog.clickOnCancel());
+			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
 
 			return true;

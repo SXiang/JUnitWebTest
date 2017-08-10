@@ -189,7 +189,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertConcentrationChartIsShown() {
 		Log.method("assertConcentrationChartIsShown");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart);
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart, 3 /*attempts*/);
 	}
 
 	public void assertEnterPasswordHintTextIsShown(String folderName, String imageFileName) {

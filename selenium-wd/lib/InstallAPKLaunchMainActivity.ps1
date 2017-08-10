@@ -9,7 +9,11 @@ param
 
 function WaitFor-ActivityToGainFocus($activityName) {
     Write-Host "Waiting for $activityName to gain focus." -NoNewLine
-    $cnt = 0;$MAX_ITER = 15;
+    $cnt = 0;$MAX_ITER = 5;
+    if ($activityName -eq "MainActivity") {
+        $MAX_ITER = 15;
+    }
+
     $found = $false
     while((-not $found) -and ($cnt -lt $MAX_ITER)) {
         $cnt++
@@ -56,6 +60,10 @@ if ($INSTALL_NEW_OVERRIDE -or (-not $sameVersionFound)) {
     Write-Host "Installing APK - $fName on device..."
     adb install -r -d -g "$APKFilePath"
 }
+
+adb shell settings put secure location_providers_allowed +gps
+adb shell settings put secure location_providers_allowed +network
+adb shell settings put secure location_providers_allowed +wifi
 
 adb shell am start -n com.picarroapp/com.picarroapp.MainActivity
 sleep -Seconds 2

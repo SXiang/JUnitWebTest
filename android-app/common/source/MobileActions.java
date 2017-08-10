@@ -1,5 +1,9 @@
 package common.source;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.openqa.selenium.Dimension;
@@ -10,6 +14,8 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
 public class MobileActions {
+	private static final String INPUT_KEYEVENT_CURSOR_AT_END = "input keyevent 123";
+
 	private MobileDriver<?> mobileDriver;
 
 	private final static String[] ESCAPE_CHARS = {"\"", "'", "(", ")", "&", "<", ">", ";", "*", "|", "~", "$"};
@@ -206,13 +212,12 @@ public class MobileActions {
 		new TouchAction(this.mobileDriver).press(x, y).moveTo(moveToX, 0).release().perform();
 	}
 
-	private String escapeText(String input) {
-		String escInput = input;
-		for (String ch : ESCAPE_CHARS) {
-			escInput = escInput.replace(ch, "\\" + ch);
+	public void undoText(String text) throws Exception {
+		Log.method("undoText", text);
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), INPUT_KEYEVENT_CURSOR_AT_END);
+		for (int i = 0; i < text.length(); i++) {
+			pressKey(KeyCode.KEYCODE_DEL);
 		}
-
-		return escInput;
 	}
 
 	public void removeSdcardFile(String sdcardFileName) throws Exception {
@@ -257,6 +262,15 @@ public class MobileActions {
 	public void pressKey(KeyCode keyCode) throws Exception {
 		Log.method("pressKey", keyCode);
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input keyevent %d", keyCode.getCode()));
+	}
+
+	private String escapeText(String input) {
+		String escInput = input;
+		for (String ch : ESCAPE_CHARS) {
+			escInput = escInput.replace(ch, "\\" + ch);
+		}
+
+		return escInput;
 	}
 
 	private CoordinatesPair getSwipeFromCenterCoordinatesForDirection(SwipeDirection direction, int delta) {

@@ -130,9 +130,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() throws Exception {
 		Log.method("clickOnCancel");
-		WebElement cancelButton = getCancelButton();
-		tap(cancelButton);
-		clickAndPressKey(cancelButton, KeyCode.KEYCODE_ENTER);
+		getCancelButton().click();
 	}
 
 	public WebElement getDeleteButton() {
