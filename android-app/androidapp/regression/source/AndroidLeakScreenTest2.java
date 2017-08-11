@@ -873,7 +873,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap, true /*isInEditMode*/));
-			addLeakSourceFormDialog.clickOnCancel();
+			addLeakSourceFormDialog.tapOnCancel();
 
 			// Add other source.
 			addedSourcesListDialog.clickOnAddOtherSources();
@@ -912,7 +912,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, leaksList.size()-1);
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(listStoreMap.get(0), true /*isInEditMode*/));
-			addLeakSourceFormDialog.clickOnCancel();
+			addLeakSourceFormDialog.tapOnCancel();
 
 			// Click on previously inputed other source and verify data.
 			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
@@ -920,7 +920,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.waitForScreenLoad();
 			assertTrue("Data shown in Other Source form dialog was NOT correct.",
 					addOtherSourceFormDialog.verifyCorrectDataIsShown(otherSourceLeakSourceType, otherSourceAdditionalNotes));
-			addOtherSourceFormDialog.clickOnCancel();
+			addOtherSourceFormDialog.tapOnCancel();
 			return true;
 		});
 	}
