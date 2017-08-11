@@ -61,7 +61,6 @@ if ($INSTALL_NEW_OVERRIDE -or (-not $sameVersionFound)) {
     adb install -r -d -g "$APKFilePath"
 }
 
-adb shell settings put secure location_providers_allowed +gps
 adb shell settings put secure location_providers_allowed +network
 adb shell settings put secure location_providers_allowed +wifi
 

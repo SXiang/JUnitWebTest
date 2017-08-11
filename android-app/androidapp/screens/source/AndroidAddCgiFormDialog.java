@@ -45,7 +45,7 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() {
 		Log.method("clickOnCancel");
-		getCancelButton().click();
+		tap(getCancelButton());      // single action click.
 	}
 
 	public WebElement getOKButton() {
