@@ -1,1 +1,1 @@
-This is automation branch for patch-2.4.1.0-MultiTier.
+This is automation branch for release-3.0.0.0
