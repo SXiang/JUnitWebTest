@@ -22,8 +22,20 @@ public class ScreenVerifier {
 
 	public void assertImageFoundOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName) {
 		Log.method("assertImageFoundOnScreen", screen, imageFolderName, imageFileName);
+		assertImageFoundOnScreen(screen, imageFolderName, imageFileName, 1 /*attempts*/);
+	}
+
+	public void assertImageFoundOnScreen(AndroidBaseScreen screen, String imageFolderName, String imageFileName, Integer attempts) {
+		Log.method("assertImageFoundOnScreen", screen, imageFolderName, imageFileName, attempts);
 		try {
-			boolean found = verifyImageFoundOnScreen(screen, imageFolderName, imageFileName);
+			boolean found = false;
+			for (int i = 0; i < attempts; i++) {
+				found = verifyImageFoundOnScreen(screen, imageFolderName, imageFileName);
+				if (found) {
+					break;
+				}
+			}
+
 			if (!found) {
 				logScreenShot(screen, imageFolderName, imageFileName);
 			}

@@ -8,15 +8,15 @@ import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
+	private static final String OK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"OK\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = OK_BUTTON_UI_SELECTOR)
 	private WebElement oK;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
-	@CacheLookup
+	@AndroidFindBy(uiAutomator = CANCEL_BUTTON_UI_SELECTOR)
 	private WebElement cancel;
 
 	/****** Label elements ******/
@@ -39,16 +39,18 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		Log.method("getCancelButton");
+		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 		return cancel;
 	}
 
 	public void clickOnCancel() {
 		Log.method("clickOnCancel");
-		tap(getCancelButton());
+		tap(getCancelButton());      // single action click.
 	}
 
 	public WebElement getOKButton() {
 		Log.method("getOKButton");
+		oK = getAndroidDriver().findElementByAndroidUIAutomator(OK_BUTTON_UI_SELECTOR);
 		return oK;
 	}
 

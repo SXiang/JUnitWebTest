@@ -196,13 +196,27 @@ public class AdbInterface {
 		if (device != null) {
 			ShellOutputReceiver receiver = new ShellOutputReceiver();
 			Log.info(String.format("Executing -> adb shell %s", command));
-			try {
-				device.executeShellCommand(command, receiver);
-			} catch (TimeoutException | AdbCommandRejectedException | ShellCommandUnresponsiveException
-					| IOException ex) {
-				Log.warn(ExceptionUtility.getStackTraceString(ex));
-				return "";
-			}
+			RetryUtil.retryOnException(
+					() -> {
+						try {
+							device.executeShellCommand(command, receiver);
+							return true;
+						} catch (TimeoutException | AdbCommandRejectedException | ShellCommandUnresponsiveException
+								| IOException ex) {
+							Log.warn(ExceptionUtility.getStackTraceString(ex));
+							return false;
+						}
+					},
+					() -> {
+						if (isTypeCommand(command)) {
+							Log.method("Type text command failed. Reverting typed text ...");
+							FunctionUtil.warnOnError(() -> revertTypeTextCommand(command));
+						}
+						return true;
+					},
+					Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES * 2,
+					Constants.DEFAULT_MAX_RETRIES, false /*takeScreenshotOnFailure*/);
+
 			String output = receiver.getOutput();
 			Log.info(String.format("Command output -> %s", output));
 			return output;
@@ -211,6 +225,16 @@ public class AdbInterface {
 		}
 
 		return "";
+	}
+
+	private static boolean isTypeCommand(final String command) {
+		return command.contains("input text");
+	}
+
+	private static void revertTypeTextCommand(String command) throws Exception {
+		Log.method("revertTypeTextCommand", command);
+		String text = command.replace("input text ", "").replace("\"", "");
+		MobileActions.newAction().undoText(text);
 	}
 
 	private static IDevice getConnectedDevice() {

@@ -15,6 +15,7 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 	private String investigationDateTime;
 	private String peakAssignedUserName;
 	private String totalDuration;
+	private String boxId;
 
 	public StoredProcLisaInvestigationShowIndication() {
 		super();
@@ -68,12 +69,20 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 		this.boxTypeId = boxTypeId;
 	}
 
-	public int getBoxNumber() {
+	public Integer getBoxNumber() {
 		return boxNumber;
 	}
 
 	public void setBoxNumber(int boxNumber) {
 		this.boxNumber = boxNumber;
+	}
+
+	public String getBoxId() {
+		return boxId;
+	}
+
+	public void setBoxId(String boxId) {
+		this.boxId = boxId;
 	}
 
 	public String toString() {
@@ -144,6 +153,7 @@ public class StoredProcLisaInvestigationShowIndication extends BaseEntity {
 			if (resultSet.wasNull()) {
 				objReport.setTotalDuration(" ");
 			}
+			objReport.setBoxId(resultSet.getString("BoxId"));
 
 		} catch (SQLException e) {
 			Log.error("Class Report | " + e.toString());

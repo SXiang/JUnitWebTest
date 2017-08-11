@@ -132,7 +132,12 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 		Log.method("clickOnCancel");
 		WebElement cancelButton = getCancelButton();
 		tap(cancelButton);
-		clickAndPressKey(cancelButton, KeyCode.KEYCODE_ENTER);
+		cancelButton.click();
+	}
+
+	public void tapOnCancel() throws Exception {
+		Log.method("tapOnCancel");
+		tap(getCancelButton());
 	}
 
 	public WebElement getDeleteButton() {
@@ -179,6 +184,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
+		additionalNotes.clear();
 		sendKeys(additionalNotes, value);
 	}
 

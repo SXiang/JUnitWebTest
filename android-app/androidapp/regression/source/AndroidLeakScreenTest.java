@@ -20,6 +20,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import androidapp.data.source.InvestigationReportDataVerifier.BoxType;
 import androidapp.dataprovider.ReportListDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.LeakListInfoEntity;
@@ -39,9 +40,11 @@ import common.source.CollectionsUtil;
 import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
@@ -53,6 +56,7 @@ import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
+	private static final int SOURCE_ITEMS_SHOWN_IN_ONE_PAGE = 8;
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
@@ -356,9 +360,9 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 						addOtherSourceFormDialog.verifyCorrectDataIsShown(otherSourceLeakSourceType, otherSourceAdditionalNotes));
 
 				try {
-					addOtherSourceFormDialog.clickOnCancel();
+					addOtherSourceFormDialog.tapOnCancel();
 				} catch (Exception e) {
-					Log.error(String.format("Error when clicking on Cancel on Add Other Source form. Error -> %s",
+					Log.error(String.format("Error when tapping on Cancel on Add Other Source form. Error -> %s",
 							ExceptionUtility.getStackTraceString(e)));
 				}
 				addedSourcesListDialog.waitForScreenLoad();
@@ -494,30 +498,20 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		StringBuilder markerVerifier = new StringBuilder();
+		List<List<InvestigationMarkerEntity>> listOfListMarkers = new ArrayList<List<InvestigationMarkerEntity>>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Found Gas Leak' or 'In Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
-			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(foundGasLeak) || i.getInvestigationStatus().equals(inProgress));
-			Log.info(String.format("Found=[%b]", match));
-			markerVerifier.append(String.valueOf(match));
+			listOfListMarkers.add(investigationMarkers);
 			return true;
 		});
 
-		// If no existing marker of desired status, create new.
-		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
-			Log.info("No existing marker found with status - 'Found Gas Leak' or 'In Progress'. Investigating and marking as Complete.");
-			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
-		}
-
-		initializeAddLeakSourceFormDialog();
+		String[] markerStatuses = {foundGasLeak, inProgress};
+		Integer idx = checkInvestigateNewMarkerAsComplete(Arrays.asList(markerStatuses), listOfListMarkers);
 
 		// Markers screen. Click on LISA marked as Found Gas Leak
-		String[] markerStatuses = {foundGasLeak, inProgress};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		investigateReportScreen.clickMarkerMatchingStatusAtIndex(Arrays.asList(markerStatuses), idx);
 
 		// Store last edited leak index and leak info for verifications later.
 		final List<Integer> lastEditedLeakIndex = new ArrayList<Integer>();
@@ -565,7 +559,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastEditedLeakIndex.get(0));
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakDataBuilder.toMap(), true /*isEditMode*/));
-			addLeakSourceFormDialog.clickOnCancel();
+			addLeakSourceFormDialog.tapOnCancel();
 
 			// cancel leak form. cancel list dialog.
 			addedSourcesListDialog.clickOnCancel();
@@ -799,6 +793,38 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}
+	}
+
+	private Integer checkInvestigateNewMarkerAsComplete(final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers)
+			throws Exception {
+		Log.info(String.format("Checking for presence of existing marker with status -> [%s] ...", LogHelper.collectionToString(markerStatuses, "markerStatuses")));
+		List<InvestigationMarkerEntity> investigationMarkers = listOfListMarkers.get(0);
+		Integer idx = -1;
+		boolean foundMarker = false;
+		for (int i = 0; i < investigationMarkers.size(); i++) {
+			InvestigationMarkerEntity markerEntity = investigationMarkers.get(i);
+			String[] split = markerEntity.getLisaNumber().split("-");
+			String lisaNum = split[split.length-1].trim();
+			if (markerStatuses.contains(markerEntity.getInvestigationStatus())) {
+				idx++;
+				if (!invReportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(Report.getReport(generatedInvReportTitle).getId(),
+						SurveyorConstants.SQAPICDR, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
+					Log.info(String.format("Found matching marker -> [%s]", markerEntity.toString()));
+					foundMarker = true;
+					break;
+				}
+			}
+		}
+
+		// If no existing marker of desired status, create new.
+		if (!foundMarker) {
+			Log.info(String.format("No existing marker found with status - [%s]. Investigating and marking as Complete.",
+					LogHelper.collectionToString(markerStatuses, "markerStatuses")));
+			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
+			idx++;
+		}
+
+		return idx;
 	}
 
 	private void investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete() throws Exception {

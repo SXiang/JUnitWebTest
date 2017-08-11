@@ -102,8 +102,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			mapScreen.assertMapIsLoaded();
 			Log.info("Map screen loaded successfully!");
 
-			mapScreen.clickOnToggleMode();
-			// TBD: Mode change verification NOT functional with simulator. To be enabled to run with BackPack Analyzer post Backpack Analyzer automation unit is fixed.
+			//TBD: Mode change verification NOT functional with backpack simulator. To be enabled post US4680 complete to trigger automation run pointing to Backpack Analyzer device.
+			//mapScreen.clickOnToggleMode();
 
 			final String actualAmplitudeText = mapScreen.getAmplitudeText();
 			final String expectedAmplitudeText = "2.0";
