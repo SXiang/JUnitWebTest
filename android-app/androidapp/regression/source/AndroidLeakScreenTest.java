@@ -360,9 +360,9 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 						addOtherSourceFormDialog.verifyCorrectDataIsShown(otherSourceLeakSourceType, otherSourceAdditionalNotes));
 
 				try {
-					addOtherSourceFormDialog.clickOnCancel();
+					addOtherSourceFormDialog.tapOnCancel();
 				} catch (Exception e) {
-					Log.error(String.format("Error when clicking on Cancel on Add Other Source form. Error -> %s",
+					Log.error(String.format("Error when tapping on Cancel on Add Other Source form. Error -> %s",
 							ExceptionUtility.getStackTraceString(e)));
 				}
 				addedSourcesListDialog.waitForScreenLoad();
@@ -559,7 +559,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, lastEditedLeakIndex.get(0));
 			addLeakSourceFormDialog.waitForScreenLoad();
 			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakDataBuilder.toMap(), true /*isEditMode*/));
-			addLeakSourceFormDialog.clickOnCancel();
+			addLeakSourceFormDialog.tapOnCancel();
 
 			// cancel leak form. cancel list dialog.
 			addedSourcesListDialog.clickOnCancel();

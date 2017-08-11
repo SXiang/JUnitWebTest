@@ -281,6 +281,11 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		cancelButton.click();
 	}
 
+	public void tapOnCancel() throws Exception {
+		Log.method("tapOnCancel");
+		tap(getCancelButton());
+	}
+
 	public WebElement getDeleteButton() {
 		Log.method("getDeleteButton");
 		delete = getAndroidDriver().findElementByAndroidUIAutomator(DELETE_BUTTON_UI_SELECTOR);
