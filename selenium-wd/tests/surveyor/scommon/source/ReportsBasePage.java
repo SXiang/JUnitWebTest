@@ -214,7 +214,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableSurveys']/tbody/tr/td")
 	protected WebElement firstSurveyInTable;
-	
+
 	@FindBy(how = How.ID, using = "report-geo-filter")
 	protected WebElement checkGeoFilter;
 
@@ -411,7 +411,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(css = "#datatableSurveys > thead > tr > th[aria-controls=datatableSurveys]")
 	protected WebElement surveysTableHeader;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable_filter']/label/input")
 	protected WebElement textBoxReportSearch;
 
@@ -447,7 +447,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	@FindBy(how = How.ID, using = "buttonInvestigate")
 	protected WebElement buttonInvestigate;
-	
+
 	public WebElement getDialoadModelOK() {
 		return this.dialoadModelOK;
 	}
@@ -1124,7 +1124,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		}
 		return true;
 	}
-	
+
 	public void inputSurveyStartDateTime(String dateTime) {
 		Log.info(String.format("Input survey Start Date/Time - '%s'", dateTime));
 		jsSendKeys(inputStartDate, dateTime);
@@ -1136,7 +1136,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 		jsSendKeys(inputEndDate, dateTime);
 		inputEndDate.click();
 	}
-	
+
 	public void selectStartDateForSurvey(String startDate) {
 		try {
 			DatetimePickerSetting dateSetting = new DatetimePickerSetting(driver, testSetup, strBaseURL,
@@ -1703,7 +1703,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 							Log.info(String.format("Adjusted RowNum after skipNewlyAddedRows -> Second Call : RowNum=%d", rowNum));
 
 							// rowNum matches. Try to click on ReportViewer button.
-							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td[" 
+							reportViewer = getTable().findElement(By.xpath("tr[" + rowNum + "][td["+getColumnIndex(COL_HEADER_REPORT_NAME)+"]='"+rptNameCellText+"']/td["
 																	+ getColumnIndex(COL_HEADER_ACTION) + "]/a[@title='Report Viewer']"));
 
 							Log.clickElementInfo("Report Viewer");
@@ -2246,8 +2246,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 	}
 
 	public void clickOnCopyReport(String rptTitle, String strCreatedBy) {
-		setPagination(PAGINATIONSETTING);
+		Log.method("clickOnCopyReport", rptTitle, strCreatedBy);
 
+		setPagination(PAGINATIONSETTING);
 		String reportTitleXPath;
 		String createdByXPath;
 		String copyImgXPath;
@@ -2477,13 +2478,13 @@ public class ReportsBasePage extends SurveyorBasePage {
 		super.waitForPageToLoad();
 		waitForAJAXCallsToComplete();
 		(new WebDriverWait(driver, timeout + 30)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {			
+			public Boolean apply(WebDriver d) {
 				return buttonInvestigate.isDisplayed();
 
 			}
 		});
 	}
-	
+
 	public boolean waitForDeletePopupLoad() {
 		Log.method("waitForDeletePopupLoad");
 		return (new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
@@ -3276,7 +3277,7 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 		return matchSuccess;
 	}
-	
+
 	public boolean verifyReportsCreatedBelongTo(String customerName){
 		setPagination(PAGINATIONSETTING_100);
 		int createdByIndex = getColumnIndexMap().get(COL_HEADER_CREATED_BY);
@@ -3284,9 +3285,9 @@ public class ReportsBasePage extends SurveyorBasePage {
 		String id = Customer.getCustomer(customerName).getId();
 		boolean isCorrect = true;
 		List<WebElement> listItems = driver.findElements(By.xpath(reportCreatedXPath));
-		Set<String> users = listItems.stream().map((WebElement e) -> getElementInnerText(e)).filter((String s) 
+		Set<String> users = listItems.stream().map((WebElement e) -> getElementInnerText(e)).filter((String s)
 				-> !s.trim().isEmpty()).collect(Collectors.toSet());
-		
+
 		for(String user:users){
 			String customerId = User.getUser(user).getCustomerId();
 			isCorrect &= customerId.equalsIgnoreCase(id);

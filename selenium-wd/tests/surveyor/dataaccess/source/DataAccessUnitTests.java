@@ -8,8 +8,10 @@ import java.util.List;
 import org.testng.Assert;
 
 import common.source.Log;
+import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.TestSetup;
+import surveyor.dataaccess.source.CustomerLicenses.License;
 
 public class DataAccessUnitTests {
 
@@ -115,6 +117,20 @@ public class DataAccessUnitTests {
 		testReportStatusType_GetReportStatusTypeByDesc_Valid();
 		Log.info("Executing testReportStatusType_GetReportStatusTypeByDesc_Invalid() ...");
 		testReportStatusType_GetReportStatusTypeByDesc_Invalid();
+
+		Log.info("Executing testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Valid() ...");
+		testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Valid();
+		Log.info("Executing testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Invalid() ...");
+		testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Invalid();
+		Log.info("Executing testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Valid() ...");
+		testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Valid();
+		Log.info("Executing testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Invalid() ...");
+		testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Invalid();
+
+		Log.info("Executing testCustomerLicenses_GetCustomerLicensesByCustomerName_Valid() ...");
+		testCustomerLicenses_GetCustomerLicensesByCustomerName_Valid();
+		Log.info("Executing testCustomerLicenses_GetCustomerLicensesByCustomerName_Invalid() ...");
+		testCustomerLicenses_GetCustomerLicensesByCustomerName_Invalid();
 
 		Log.info("DONE!");
 	}
@@ -446,5 +462,42 @@ public class DataAccessUnitTests {
 		String invalidDesc = "InvalidDescription";
 		ReportStatusType objReportStatusType = ReportStatusType.getReportStatusType(invalidDesc);
 		Assert.assertTrue(objReportStatusType == null, "Value should be NULL.");
+	}
+
+	private static void testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Valid() {
+		String validId = "117AEB6D-5A15-4170-AB85-9978EC68A017";
+		LicensedFeatureOptions objLicensedFeatureOptions = LicensedFeatureOptions.getLicensedFeatureOption(validId);
+		Assert.assertTrue(objLicensedFeatureOptions != null, "Value cannot be NULL.");
+	}
+
+	private static void testLicensedFeatureOptions_GetLicensedFeatureOptionsById_Invalid() {
+		String invalidId = "217AEB6D-5A15-4170-AB85-9978EC68A018";
+		LicensedFeatureOptions objLicensedFeatureOptions = LicensedFeatureOptions.getLicensedFeatureOption(invalidId);
+		Assert.assertTrue(objLicensedFeatureOptions == null, "Value should be NULL.");
+	}
+
+	private static void testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Valid() {
+		String validCustomerId = "00000000-0000-0000-0000-000000000002";
+		List<CustomerLicensedFeatureOptions> licensedFeatureOptions = CustomerLicensedFeatureOptions.getCustomerLicensedFeatureOptions(validCustomerId);
+		Assert.assertTrue(licensedFeatureOptions != null && licensedFeatureOptions.size() > 0, "Valid customer. Licenses should be found.");
+	}
+
+	private static void testCustomerLicensedFeatureOptions_GetCustomerLicensedFeatureOptionsByCustomerId_Invalid() {
+		String invalidCustomerId = "00000000-0000-0000-0000-000000000012";
+		List<CustomerLicensedFeatureOptions> licensedFeatureOptions = CustomerLicensedFeatureOptions.getCustomerLicensedFeatureOptions(invalidCustomerId);
+		Assert.assertTrue(licensedFeatureOptions == null || licensedFeatureOptions.size()==0, "Invalid customer. No licenses should be found.");
+	}
+
+	private static void testCustomerLicenses_GetCustomerLicensesByCustomerName_Valid() {
+		String validCustomerName = "sqacus";
+		List<License> customerLicenses = new CustomerLicenses().getLicenses(validCustomerName);
+		Log.info(LogHelper.collectionToString(customerLicenses, "Customer Licenses"));
+		Assert.assertTrue(customerLicenses != null && customerLicenses.size()>0, "Valid customer. Licenses should be found.");
+	}
+
+	private static void testCustomerLicenses_GetCustomerLicensesByCustomerName_Invalid() {
+		String invalidCustomerName = "custInvalid";
+		List<License> customerLicenses = new CustomerLicenses().getLicenses(invalidCustomerName);
+		Assert.assertTrue(customerLicenses == null, "Invalid customer. No licenses should be found.");
 	}
 }
