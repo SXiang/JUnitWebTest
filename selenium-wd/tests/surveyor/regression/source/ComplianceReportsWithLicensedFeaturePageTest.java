@@ -7,8 +7,11 @@ import java.util.Map;
 
 import org.junit.Before;
 
+import common.source.Constants;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.RetryUtil;
+import common.source.Screenshotter;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -27,6 +30,8 @@ import surveyor.scommon.source.HomePage;
 import surveyor.scommon.source.LoginPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
+import surveyor.dataaccess.source.CustomerLicenses;
+import surveyor.dataaccess.source.CustomerLicenses.License;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import static surveyor.scommon.source.SurveyorConstants.PICDFADMIN;
 import static surveyor.scommon.source.SurveyorConstants.PICADMINPSWD;
@@ -315,17 +320,41 @@ public class ComplianceReportsWithLicensedFeaturePageTest extends BaseReportsPag
 			getLoginPage().open();
 			getLoginPage().loginNormalAs(PICDFADMIN, PICADMINPSWD);
 
-			manageCustomerPageAction.open(EMPTY, NOTSET);
-			manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, lfs[i]);
-			getHomePage().logout();
+			// unselecting licenses failing intermittently in CI runs. adding retries.
+			final Integer idx = i;
+			boolean actionSuccess = RetryUtil.retryOnException(
+					() -> {
+						manageCustomerPageAction.open(EMPTY, NOTSET);
+						LicensedFeatures license = lfs[idx];
+						Log.info(String.format("Unselecting license - '%s'", license.toString()));
+						manageCustomerPageAction.getManageCustomersPage().editAndUnSelectLicensedFeatures(customerName, license);
+						List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
+						Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
+						return !customerLicenses.contains(license.toString());
+					},
+					() -> { return true; },
+					Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+					Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 
+			if (!actionSuccess) {
+				LicensedFeatures license = lfs[i];
+				Log.info(String.format("License-'%s' was NOT removed correctly.", license.toString()));
+			}
+
+			getHomePage().logout();
 			getLoginPage().open();
 			getLoginPage().loginNormalAs(userName, userPassword);
 
 			String rptTitle = testReport.get(surveyModeFilter[i].toString()+"Title");
 			String errorMsg = errorPattern.replace("{0}", surveyModeFilter[i].toString());
 			complianceReportsPageAction.open(EMPTY, NOTSET);
+
+			List<License> customerLicenses = new CustomerLicenses().getLicenses(customerName);
+			Log.info(String.format("Licenses assigned to customer-[%s] -> %s", customerName, LogHelper.collectionToString(customerLicenses, "Customer Licenses")));
+
+			Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_BeforeCopyReportClick");
 			complianceReportsPageAction.getComplianceReportsPage().clickOnCopyReport(rptTitle, strCreatedBy);
+			Screenshotter.captureWebDriverScreenshot(getDriver(), "TC2112_AfterCopyReportClick");
 
 			List<String> licenseMissingText = getHomePage().getLicenseMissingText();
 			Log.info(String.format("[ACTUAL] License missing text found on page -> %s", LogHelper.listToString(licenseMissingText)));
