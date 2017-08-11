@@ -6,8 +6,6 @@ package surveyor.scommon.source;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -52,7 +50,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
 	public WebElement lblNameError;
-	
+
 	private static final String EULAXPath = "eula";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='eula']")
@@ -83,11 +81,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public WebElement getLblNameError(){
 		return this.lblNameError;
 	}
-	
+
 	public WebElement getInputCustomerName(){
 		return this.inputCustomerName;
 	}
-	
+
 	/**
 	 * @param driver
 	 * @param testSetup
@@ -173,7 +171,7 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		this.btnAddNewCustomer.click();
 		this.waitForNewPageLoad();
 
-		this.inputCustomerName = driver.findElement(By.id("name"));
+		this.waitForElementToBeDisplayed(By.id("name"));
 		if (this.inputCustomerName == null) {
 			Log.info("Did NOT find this.inputCustomerName element");
 		}
@@ -190,8 +188,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 		Log.clickElementInfo("Ok");
 		this.btnOk.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = panelErrors.get(0);
 			if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.ManageCustomer_ErrorMsg))) {
 				Log.clickElementInfo("Cancel");
 				this.cancelAddBtn.click();
@@ -238,11 +236,11 @@ public class ManageCustomersPage extends SurveyorBasePage {
 	public WebElement getCancelAddBtn(){
 		return this.cancelAddBtn;
 	}
-	
+
 	public boolean findExistingCustomer(String customerName, boolean enabledStatus) {
 		Log.method("findExistingCustomer", customerName, enabledStatus);
 		Log.info(String.format("Find customer '%s'",customerName));
-		setPaginationAny(PAGINATIONSETTING_100);
+		setPagination(PAGINATIONSETTING_100, true);
 
 		String customerNameXPath;
 		String enabledStatusXPath;
@@ -395,8 +393,8 @@ public class ManageCustomersPage extends SurveyorBasePage {
 				if (getTable().isDisplayed())
 					return true;
 
-				if (isElementPresent(this.panelDuplicationErrorXPath)) {
-					WebElement panelError = driver.findElement(By.xpath(this.panelDuplicationErrorXPath));
+				if (isElementPresent(this.summaryErrorsBy)) {
+					WebElement panelError = driver.findElement(summaryErrorsBy);
 					if (panelError.getText().equalsIgnoreCase(Resources.getResource(ResourceKeys.Validation_SummaryTitle))) {
 						Log.clickElementInfo("Cancel");
 						this.cancelEditBtn.click();

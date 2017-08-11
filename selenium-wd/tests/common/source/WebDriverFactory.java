@@ -134,10 +134,22 @@ public class WebDriverFactory {
 
 			int lenMinusOne = threadLocalDriverList.size()-1;
 			for (int index = lenMinusOne; index >= startIndex; index--) {
-				threadLocalDriverList.get(index).get().checkGetDriver().quit();
+				WebDriver driverInternal = threadLocalDriverList.get(index).get().checkGetDriver();
+				if (!hasDriverQuit(driverInternal)) {
+					driverInternal.quit();
+				}
+
 				threadLocalDriverList.remove(index);
 			}
 		}
+	}
+
+	public static boolean hasDriverQuit(WebDriver driver) {
+		if (driver != null && driver.toString().contains("(null)")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static void setChromeBrowserCapabilities() {

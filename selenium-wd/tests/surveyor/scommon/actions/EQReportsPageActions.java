@@ -170,12 +170,12 @@ public class EQReportsPageActions extends ReportCommonPageActions {
 
 	@Override
 	public EQReportsDataRow getReportsDataRow(Integer dataRowID) throws Exception {
-		EQReportsDataRow eqRptDataRow = null;
-		if (EQReportsPageActions.workingDataRow.get() != null) {
-			eqRptDataRow = EQReportsPageActions.workingDataRow.get();
-		} else {
-			eqRptDataRow = getDataReader().getDataRow(dataRowID);
+		EQReportsDataRow eqRptDataRow = EQReportsPageActions.workingDataRow.get();
+		EQReportsPageActions.workingDataRow.get();
+		if (eqRptDataRow != null && eqRptDataRow.rowID.equals(dataRowID.toString())){
+			return eqRptDataRow;
 		}
+		eqRptDataRow = getDataReader().getDataRow(dataRowID);
 		return eqRptDataRow;
 	}
 

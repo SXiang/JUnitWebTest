@@ -43,9 +43,8 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 		Log.clickElementInfo("Ok");
 		this.btnOK.click();
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(this.summaryErrorsBy);
 			if (panelError
 					.getText()
 					.equalsIgnoreCase(
@@ -71,9 +70,8 @@ public class ManageLocationsAdminPage extends ManageLocationsPage {
 				return false;
 		}
 
-		if (isElementPresent(this.panelDuplicationErrorXPath)) {
-			WebElement panelError = driver.findElement(By
-					.xpath(this.panelDuplicationErrorXPath));
+		if (isElementPresent(this.summaryErrorsBy)) {
+			WebElement panelError = driver.findElement(this.summaryErrorsBy);
 			if (panelError
 					.getText()
 					.equalsIgnoreCase(

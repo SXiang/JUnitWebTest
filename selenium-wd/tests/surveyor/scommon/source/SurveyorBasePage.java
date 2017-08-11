@@ -108,7 +108,7 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.CSS, using = ".paginate_button.previous")
 	protected WebElement previousBtn;
 
-	@FindBy(how = How.CSS, using = ".paginate_button.first")
+	@FindBy(how = How.CSS, using = ".paginate_button.first:not(.disabled)")
 	protected WebElement firstBtn;
 
 	@FindBy(how = How.CSS, using = ".paginate_button.last")
@@ -123,10 +123,6 @@ public class SurveyorBasePage extends BasePage {
 
 	@FindBy(css = ".validation-summary-errors > .panel-body li")
 	protected List<WebElement> panelErrors;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='name-error']")
-	public WebElement panelDuplicationError;
-	public String panelDuplicationErrorXPath = "//*[@id='name-error']";
 
 	@FindBy(how = How.XPATH, using = "//*[@id='page-wrapper']/div/div[2]/div[2]/ul/li")
 	protected WebElement liDuplicateMsg;
@@ -372,10 +368,12 @@ public class SurveyorBasePage extends BasePage {
 		String paginationMsg = STRPaginationMsgPattern_anyPage;
 
 		if(firstPage){
-			paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			if (WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
 				FunctionUtil.warnOnError(() -> jsClick(firstBtn));
 				this.testSetup.slowdownInSeconds(this.testSetup.getSlowdownInSeconds());
+			}
+			if (!WebElementExtender.isElementPresentAndDisplayed(firstBtn)) {
+				paginationMsg = String.format(STRPaginationMsgPattern_firstPage,str);
 			}
 		}
 		setPaginationCheckMessage(str, paginationMsg);
@@ -834,9 +832,9 @@ public class SurveyorBasePage extends BasePage {
 	 */
 	public void waitForSearchResultsToLoad() {
 		Log.method("waitForSearchResultsToLoad");
+		waitForAJAXCallsToComplete();
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(ExpectedConditions.presenceOfElementLocated(By.id(DATATABLE_RECORDS_ELEMENT_ID)));
 		WebElement tableInfoElement = TestContext.INSTANCE.getDriver().findElement(By.id(DATATABLE_RECORDS_ELEMENT_ID));
-		waitForAJAXCallsToComplete();
 		(new WebDriverWait(TestContext.INSTANCE.getDriver(), timeout)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				List<String> splitArgs = RegexUtility.split(tableInfoElement.getText(), RegexUtility.SPACE_SPLIT_REGEX_PATTERN);

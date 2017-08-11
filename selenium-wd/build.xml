@@ -272,7 +272,7 @@
         <fileset dir="${build}">
            <include name="**/AuthenticationApiTest.class" />
            <include name="**/ReportsApiTest.class" />
-           <include name="**/InvestigationReportsApiTest.class" />       	
+           <include name="**/InvestigationReportsApiTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -706,10 +706,9 @@
       <batchtest fork="yes" todir="${reports}/regression/xml">
         <formatter type="xml" />
 			<fileset dir="${build}">
-		        <include name="**/AnalyticsLicenseFeature_ComplianceReportTests.class" />
-				<include name="**/AnalyticsLicenseFeature_DriverViewTests.class" />
-				<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
-				<include name="**/AnalyticsReportsWithNewSurveyPageTest2.class" />
+			  <include name="**/DriverViewPageTest_Analytics.class" />
+			  <include name="**/ObserverViewPageTest_Analytics.class" />
+			  <include name="**/ObserverViewPageTest_Analytics2.class" />
 			</fileset>
       </batchtest>
     </junit>
@@ -789,7 +788,7 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
-          <include name="**/RegressionTestSuite6.class" />
+          <include name="**/ReportsTestSuite1.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
@@ -867,7 +866,7 @@
   <target name="tc_localrun" depends="compiletestsuite,compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
   	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
   	      <sysproperty key="testReportCategory" value="JUnitParallel" />
-  	      <sysproperty key="maxParallelTestThreads" value="3" />
+  	      <sysproperty key="maxParallelTestThreads" value="5" />
   	      <sysproperty key="test_run_id" value="${local_date}" />
   	      <classpath>
   	        <pathelement path="${build}" />
@@ -878,7 +877,10 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ACLandVisibilityTest.class" />
+  	        	<include name="**/AssessmentReportsPageTest.class" />
+  	        	<include name="**/FEQReportsPageTest.class" />
+  	        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
+  	        	<include name="**/ComplianceReportsPageTest12.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

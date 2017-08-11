@@ -88,11 +88,9 @@ public class ComplianceReportsPageTest11 extends BaseReportsPageTest {
 			List<Map<String, String>> viewList, List<Map<String, String>> viewLayersList, SearchAreaPreference srchAreaPref) throws Exception {
 		String rptTitle = null;
 		String testCaseName = getTestCaseName(index);
-
-		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
-
 		rptTitle = testCaseName + " " + "Report" + getTestSetup().getRandomNumber();
-
+		Log.info("\nRunning " + testCaseName + " - " + rptTitle);
+		
 		complianceReportsPage.login(strCreatedBy, new CryptoUtility().decrypt(password));
 		complianceReportsPage.open();
 

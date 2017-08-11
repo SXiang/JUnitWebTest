@@ -137,7 +137,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - Click on Reports -> Compliance on the menu at left
 	 * - Click on New Compliance Report button
 	 * Results:
-	 * - User will see a list of customers	
+	 * - User will see a list of customers
 	 * - User will see configuration page for that customer with list of licensable features
 	 * - Analytics checkbox is now checked
 	 * - User is taken back to list of customers
@@ -146,7 +146,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is present
 	 */
 
-	@Test 
+	@Test
 	public void TC2358_AnalyticsReportModeForLicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2358_AnalyticsReportModeForLicensedCustomers\n");
 
@@ -210,10 +210,9 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - User is shown the Compliance Reports page (no reports exist yet)
 	 * - In the Report Mode section at the top of the New Compliance Report page, "Analytics" is present
 	 */
-	@Test 
+	@Test
 	public void TC2361_CreateNewCustomerWithAnalyticsReportLicense() throws Exception{
 		Log.info("\nTestcase - TC2361_CreateNewCustomerWithAnalyticsReportLicense\n");
-
 
 		String userName = ManageUsersPageActions.workingDataRow.get().username;
 		String userPassword = ManageUsersPageActions.workingDataRow.get().password;
@@ -262,7 +261,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Test 
+	@Test
 	public void TC2360_AnalyticsReportModeLicenseRevokedFromCustomer() throws Exception{
 		Log.info("\nTestcase - TC2360_AnalyticsReportModeLicenseRevokedFromCustomer\n");
 
@@ -301,7 +300,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In the Report Mode section near the top, "Analytics" radio button is not present
 	 */
 
-	@Test 
+	@Test
 	public void TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers() throws Exception{
 		Log.info("\nTestcase - TC2359_AnalyticsReportModeNotAvailableForUnlicensedCustomers\n");
 
@@ -341,7 +340,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - The original report was created with the following survey mode licenses: Analytics. Your account currently does not have access to these modes.
 	 */
 
-	@Test 
+	@Test
 	public void TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled() throws Exception{
 		Log.info("\nTestcase - TC2374_VerifyUserNotAllowedCopyExistingAnalyticsReportIfAnalyticsLicenseDisabled\n");
 
@@ -392,7 +391,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - Analytics surveys are no more included in surveys section
 	 */
 
-	@Test 
+	@Test
 	public void TC2375_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveys() throws Exception{
 		Log.info("\nTestcase - TC2375_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveys\n");
 
@@ -412,7 +411,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertTrue (warningMsg.equals(ComplianceReport_ChangeModeWarning));
 		String proceedMsg = (complianceReportsPageAction.getComplianceReportsPage().getProceedMsg().getText());
 		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
-		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
+		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
 		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Standard, SurveyModeFilter.Analytics));
@@ -434,7 +433,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - Do you wish to proceed?
 	 * - Analytics surveys are no more included in surveys section
 	 */
-	@Test 
+	@Test
 	public void TC2376_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveysForExistingAnalyticsReport() throws Exception{
 		Log.info("\nTestcase - TC2376_VerifyUserCannotGenerateSurveyorReportsFromAnalyticsSurveysForExistingAnalyticsReport\n");
 
@@ -452,10 +451,10 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 		assertTrue (warningMsg.equals(ComplianceReport_ChangeModeWarning));
 		String proceedMsg = (complianceReportsPageAction.getComplianceReportsPage().getProceedMsg().getText());
 		assertTrue(proceedMsg.equals(Dialog_ProceedMessage));
-		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();	
+		complianceReportsPageAction.getComplianceReportsPage().confirmChangeRptMode();
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsSurveyModeShown());
 		complianceReportsPageAction.getComplianceReportsPage().clickOnSearchSurveyButton();
-		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Standard, SurveyModeFilter.Analytics));		
+		assertFalse(complianceReportsPageAction.getComplianceReportsPage().verifySurveysTableViaSurveyMode(false, ReportModeFilter.Standard, SurveyModeFilter.Analytics));
 		getHomePage().logout();
 	}
 
@@ -475,7 +474,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In Views section, analysis, field notes options are not present
 	 * - In Optional tabular PDF content, Analysis checkbox  is not present
 	 */
-	@Test 
+	@Test
 	public void TC2380_VerifyUIChangesForAnalyticsModeOnComplianceReportPage() throws Exception{
 		Log.info("\nTestcase - TC2380_VerifyUIChangesForAnalyticsModeOnComplianceReportPage\n");
 
@@ -487,7 +486,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 
 		complianceReportsPageAction.open(EMPTY, NOTSET);
 		complianceReportsPageAction.getComplianceReportsPage().openNewReportsPage();
-		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsReportModeShown());	
+		assertTrue(complianceReportsPageAction.getComplianceReportsPage().isAnalyticsReportModeShown());
 		complianceReportsPageAction.getComplianceReportsPage().selectReportMode(ReportModeFilter.Analytics);
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().isExclusionRadiusParameterShown());
 		assertFalse(complianceReportsPageAction.getComplianceReportsPage().getCheckBoxVehicleExhaust().isDisplayed());
@@ -516,7 +515,7 @@ public class AnalyticsLicenseFeature_ComplianceReportTests extends BaseReportsPa
 	 * - In Optional tabular PDF content, Analysis checkbox  is not present
 	 * - All data present on copy screen is same as options selected while generating the new report
 	 */
-	@Test 
+	@Test
 	public void TC2381_VerifyUIChangesForAnalyticsModeOnCopyComplianceReportPage() throws Exception{
 		Log.info("\nTestcase - TC2381_VerifyUIChangesForAnalyticsModeOnCopyComplianceReportPage\n");
 
