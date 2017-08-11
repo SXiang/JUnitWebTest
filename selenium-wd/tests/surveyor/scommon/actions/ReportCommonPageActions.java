@@ -3335,6 +3335,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		for (String username : distinctUsernames) {
 			User user = User.getUser(username);
 			if (!customerID.equalsIgnoreCase(user.getCustomerId())) {
+				Log.error("Expected customer '"+customer+"'("+customerID+"), actual user '"+username+"'("+user.getCustomerId()+")");
 				return false;
 			}
 		}
