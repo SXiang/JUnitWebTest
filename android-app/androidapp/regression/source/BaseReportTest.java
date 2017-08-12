@@ -45,8 +45,6 @@ public class BaseReportTest extends BaseAndroidTest {
 		mapScreen.enterPassword(password);
 		mapScreen.clickOnSubmit();
 		investigationScreen.waitForScreenLoad();
-		investigationScreen.getSearchEditView().click();
-		TestContext.INSTANCE.stayIdle(2);    // even after screen has loaded, listview takes time to load all results.
 	}
 
 	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String reportTitle) throws Exception {

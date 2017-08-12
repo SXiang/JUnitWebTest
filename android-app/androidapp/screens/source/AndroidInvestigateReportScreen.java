@@ -170,8 +170,6 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("screenLoadCondition");
-		// This intentional wait is to prevent appium from polling for elements while 'loading investigations..' screen is shown.
-		TestContext.INSTANCE.stayIdle(3);
-		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed();
+		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed() && waitForProgressComplete();
 	}
 }

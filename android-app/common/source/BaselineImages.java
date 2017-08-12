@@ -2,6 +2,7 @@ package common.source;
 
 public class BaselineImages {
 	public static class Folder {
+		public static final String TC2432 = "TC2432";
 		public static final String TC2551 = "TC2551";
 		public static final String LOADERS = "loaders";
 		public static final String COMMON = "common";
@@ -22,5 +23,6 @@ public class BaselineImages {
 		public static final String VolumeAmplitudeThresholdSliders = "volume-amplitude-threshold.png";
 		public static final String TopPanelMaxValue2ppm = "max-value-2-0-ppm.png";
 		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
+		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
 	}
 }

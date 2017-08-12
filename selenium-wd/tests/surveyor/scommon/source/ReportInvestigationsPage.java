@@ -26,6 +26,9 @@ import surveyor.scommon.entities.InvestigationEntity;
  */
 public class ReportInvestigationsPage extends ReportsBasePage {
 
+	private static final String BOXTYPE_LISA = "LISA";
+	private static final String BOXTYPE_GAP = "Gap";
+
 	public static final String STRURLPath = "/Reports/Investigations?reportId=%s";
 	protected String pagination = "100";
 
@@ -77,6 +80,9 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	@FindBy(how = How.ID, using = "geolocate")
 	protected WebElement buttonFollow;
 
+	@FindBy(how = How.ID, using = "chkSelectAll")
+	protected WebElement selectAll;
+
 	protected String checkBoxXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td/input[@type='checkbox']";
 	protected String itemStatusXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[3]";
 	protected String itemValueXPattern = "//*[@id='datatableBoxes']//td[text()='%s']/../td[2]";
@@ -127,8 +133,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	public boolean selectLisas(String... lisaNumbers){
 		boolean retVal = true;
-		String boxType = "LISA";
-		selectDropdownItem(boxTypeDropdown, boxType);
+		selectDropdownItem(boxTypeDropdown, BOXTYPE_LISA);
 		for (String lisaNumber : lisaNumbers) {
 			retVal = retVal && selectBox(lisaNumber);
 		}
@@ -136,14 +141,23 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		return retVal;
 	}
 
+	public void selectAllLisas(){
+		selectDropdownItem(boxTypeDropdown, BOXTYPE_LISA);
+		selectAllCheckboxes();
+	}
+
 	public boolean selectGap(String gapNumber){
 		return selectMultipleGaps(new String[] { gapNumber });
 	}
 
+	public void selectAllGaps(){
+		selectDropdownItem(boxTypeDropdown, BOXTYPE_GAP);
+		selectAllCheckboxes();
+	}
+
 	public boolean selectMultipleGaps(String[] gapNumbers){
 		boolean retVal = true;
-		String boxType = "Gap";
-		selectDropdownItem(boxTypeDropdown, boxType);
+		selectDropdownItem(boxTypeDropdown, BOXTYPE_GAP);
 		for (String gapNumber : gapNumbers) {
 			retVal = retVal && selectBox(gapNumber);
 		}
@@ -170,7 +184,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public void investigateItem(String item){
-		investigateItem(item, "LISA");
+		investigateItem(item, BOXTYPE_LISA);
 	}
 
 	public void investigateItem(String item, String boxType){
@@ -196,13 +210,13 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public String getLisaStatus(String lisaNumber){
-		String boxType = "LISA";
+		String boxType = BOXTYPE_LISA;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		return getItemStatus(lisaNumber);
 	}
 
 	public String getGapStatus(String gapNumber){
-		String boxType = "Gap";
+		String boxType = BOXTYPE_GAP;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		return getItemStatus(gapNumber);
 	}
@@ -214,13 +228,13 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public String getLisaDate(String lisaNumber){
-		String boxType = "LISA";
+		String boxType = BOXTYPE_LISA;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		return getItemStatus(lisaNumber);
 	}
 
 	public String getGapDate(String gapNumber){
-		String boxType = "Gap";
+		String boxType = BOXTYPE_GAP;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		return getItemDate(gapNumber);
 	}
@@ -231,7 +245,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		return dateValue;
 	}
 	public String getLisaValue(String lisaNumber){
-		String boxType = "LISA";
+		String boxType = BOXTYPE_LISA;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		WebElement itemValue = driver.findElement(By.xpath(String.format(itemValueXPattern, lisaNumber)));
 		String value = getElementText(itemValue);
@@ -239,7 +253,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public boolean isLisaValueSearchable(String lisaValue){
-		String boxType = "LISA";
+		String boxType = BOXTYPE_LISA;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		performSearch(lisaValue);
 		List<WebElement> itemValues = driver.findElements(By.xpath("//*[@id='datatableBoxes']//td[2]"));
@@ -255,7 +269,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 
 	public boolean verifyLisasOrderByAmplitude(){
 		By xpathToItem = By.xpath("//*[@id='datatableBoxes']//td[1]");
-		selectDropdownItem(boxTypeDropdown, "LISA");
+		selectDropdownItem(boxTypeDropdown, BOXTYPE_LISA);
 		waitForAJAXCallsToComplete();
 		waitForElementToBeDisplayed(xpathToItem);
 		List<WebElement> itemIDs = driver.findElements(xpathToItem);
@@ -289,7 +303,7 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 	}
 
 	public void clickOnLisa(String lisaNumber, InvestigationEntity investigationEntity){
-		String boxType = "LISA";
+		String boxType = BOXTYPE_LISA;
 		selectDropdownItem(boxTypeDropdown, boxType);
 		if(investigationEntity!=null){
 			investigationEntity.setBoxType(boxType);
@@ -307,6 +321,12 @@ public class ReportInvestigationsPage extends ReportsBasePage {
 		buttonFollow.click();
 		waitForAJAXCallsToComplete();
 		waitForElementReady(mapKey);
+	}
+
+	private void selectAllCheckboxes() {
+		if(!selectAll.isSelected()){
+			selectAll.click();
+		}
 	}
 
 	private static ResourceProvider getCommonResourceProvider() {

@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
-import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -150,10 +149,6 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public void clickOnInvestigate() {
 		Log.method("clickOnInvestigate");
-
-		// TBD: This is workaround added for DE3195 to prevent app crash.
-		TestContext.INSTANCE.stayIdle(3);
-
 		tap(getInvestigateButton());
 	}
 
@@ -204,10 +199,14 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.MarkAsCompleteAndPauseButtons);
 	}
 
+	public void assertPipesAndLisaShownAreCorrect(String baseFolder, String imageName) {
+		Log.method("assertPipesAndLisaShownAreCorrect");
+		screenVerifier.assertImageFoundOnScreen(this, baseFolder, imageName);
+	}
+
 	@Override
 	public Boolean screenLoadCondition() {
-		TestContext.INSTANCE.stayIdle(2);
-		return getDirectionsButton()!=null && getDirectionsButton().isDisplayed();
+		return getDirectionsButton()!=null && getDirectionsButton().isDisplayed() && waitForProgressComplete();
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class ReportDataGenerator {
 	}
 
 	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] lisaNumbers, String[] gapNumbers) throws Exception {
+			String[] lisaNumbers, String[] gapNumbers, Boolean selectAllLisas, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasAndGapsToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
@@ -77,20 +77,12 @@ public class ReportDataGenerator {
 		String lisaNumberPrefix = reportName+"-LISA-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String[] lisasToSelect = new String[lisaNumbers.length];
-		for (int i = 0; i < lisaNumbers.length; i++) {
-			lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
-		}
-		reportInvestigationsPage.selectLisas(lisasToSelect);
+		selectSpecifiedLisas(lisaNumbers, selectAllLisas, lisaNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		// Assign gaps to specified user.
 		String gapNumberPrefix = reportName+"-Gap-";
-		String[] gapsToSelect = new String[gapNumbers.length];
-		for (int i = 0; i < gapNumbers.length; i++) {
-			gapsToSelect[i]  = gapNumberPrefix+gapNumbers[i];
-		}
-		reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
+		selectSpecifiedGaps(gapNumbers, selectAllGaps, gapNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		if (isSingleUse) {
@@ -101,8 +93,19 @@ public class ReportDataGenerator {
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
+	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] lisaNumbers, String[] gapNumbers) throws Exception {
+		return createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, gapNumbers,
+				false /*selectAllLisas*/, false /*selectAllGaps*/);
+	}
+
+	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		return createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisaNumbers*/,
+				null /*gapNumbers*/, true /*selectAllLisas*/, true /*selectAllGaps*/);
+	}
+
 	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] lisaNumbers) throws Exception {
+			String[] lisaNumbers, Boolean selectAllLisas) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
@@ -118,13 +121,7 @@ public class ReportDataGenerator {
 		String lisaNumberPrefix = reportName+"-LISA-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-
-		String[] lisasToSelect = new String[lisaNumbers.length];
-		for (int i = 0; i < lisaNumbers.length; i++) {
-			lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
-		}
-
-		reportInvestigationsPage.selectLisas(lisasToSelect);
+		selectSpecifiedLisas(lisaNumbers, selectAllLisas, lisaNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		if (isSingleUse) {
@@ -135,18 +132,21 @@ public class ReportDataGenerator {
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] lisaNumbers) throws Exception {
+		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, false /*selectAllLisas*/);
+	}
+
 	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		String[] lisasToSelect = new String[] {"1", "2", "3"};
-		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisasToSelect);
+		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisasToSelect*/, true /*selectAllLisas*/);
 	}
 
 	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		String[] gapsToSelect = new String[] {"1", "2", "3"};
-		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, gapsToSelect);
+		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapsToSelect*/, true /*selectAllGaps*/);
 	}
 
 	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] gapNumbers) throws Exception {
+			String[] gapNumbers, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
@@ -162,12 +162,7 @@ public class ReportDataGenerator {
 		String gapNumberPrefix = reportName+"-Gap-";
 		UserDataRow mobileUserDataRow = loginPageAction.getDataRow(mobileUserDataRowID);
 		complianceReportsPageAction.clickOnInvestigateButton(EMPTY, reportDataRowID);
-		String[] gapsToSelect = new String[gapNumbers.length];
-		for (int i = 0; i < gapNumbers.length; i++) {
-			gapsToSelect[i]  = gapNumberPrefix+gapNumbers[i];
-		}
-
-		reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
+		selectSpecifiedGaps(gapNumbers, selectAllGaps, gapNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		if (isSingleUse) {
@@ -176,6 +171,11 @@ public class ReportDataGenerator {
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
+	}
+
+	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] gapNumbers) throws Exception {
+		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapNumbers*/, false /*selectAllGaps*/);
 	}
 
 	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
@@ -200,6 +200,31 @@ public class ReportDataGenerator {
 		}
 
 		return null;
+	}
+
+	private void selectSpecifiedGaps(String[] gapNumbers, Boolean selectAllGaps, String gapNumberPrefix) {
+		if (selectAllGaps) {
+			reportInvestigationsPage.selectAllGaps();
+		} else {
+			String[] gapsToSelect = new String[gapNumbers.length];
+			for (int i = 0; i < gapNumbers.length; i++) {
+				gapsToSelect[i]  = gapNumberPrefix+gapNumbers[i];
+			}
+
+			reportInvestigationsPage.selectMultipleGaps(gapsToSelect);
+		}
+	}
+
+	private void selectSpecifiedLisas(String[] lisaNumbers, Boolean selectAllLisas, String lisaNumberPrefix) {
+		if (selectAllLisas) {
+			reportInvestigationsPage.selectAllLisas();
+		} else {
+			String[] lisasToSelect = new String[lisaNumbers.length];
+			for (int i = 0; i < lisaNumbers.length; i++) {
+				lisasToSelect[i]  = lisaNumberPrefix+lisaNumbers[i];
+			}
+			reportInvestigationsPage.selectLisas(lisasToSelect);
+		}
 	}
 
 	private void cleanUp() {

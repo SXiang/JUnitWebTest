@@ -143,7 +143,6 @@ public class BaseAndroidTest extends BaseTest {
 	@Override
 	public void onTestFailureProcessing() {
 		Log.method("onTestFailureProcessing");
-		dumpSysActivity();
 		Log.info(getAndroidDriver().getPageSource());
 	}
 
