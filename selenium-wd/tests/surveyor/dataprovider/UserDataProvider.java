@@ -27,8 +27,8 @@ public class UserDataProvider extends SurveyorTestRunner {
 	public UserDataProvider(Class<?> klass) throws InitializationError {
 		super(klass);
 	}
-	
-    @Override 
+
+    @Override
     public void run(RunNotifier notifier){
         super.run(notifier);
     }
@@ -36,9 +36,9 @@ public class UserDataProvider extends SurveyorTestRunner {
 	/**********************************************************************
 	 * #NOTE#: Password provided in the data provider will get printed
 	 * in teamcity UI (run result) and therefore needs to be an encrypted string
-	 * Use the new CryptoUtility().encrypt() method to encrypt the password 
+	 * Use the new CryptoUtility().encrypt() method to encrypt the password
 	 **********************************************************************/
-	
+
     @DataProvider
     public static Object[][] dataProviderUserRoleInfo() {
         // @formatter:off"
@@ -83,14 +83,14 @@ public class UserDataProvider extends SurveyorTestRunner {
             };
         // @formatter:on
     }
-    
+
     @DataProvider
     public static Object[][] dataProviderPicarroAdminSupportRoleInfo() {
         // @formatter:off"
-        return new String[][] {		
+        return new String[][] {
         		{ SQAPICSUP,USERPASSWORDHASH },
                 { SQAPICAD,USERPASSWORDHASH }
-        	
+
             };
         // @formatter:on
     }

@@ -8,7 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import common.source.Log;
 import surveyor.regression.source.ManageRefGasBottlesPageTests_Ethane;
 import surveyor.regression.source.ManageSurveyorAdminPageTest;
-import surveyor.regression.source.ManageSurveyorHistoriesPageTest;
 import surveyor.regression.source.ManageSurveyorPageTest;
 import surveyor.regression.source.SurveyViewPageTest3;
 import surveyor.scommon.source.SurveyorParallelSuite;
@@ -17,7 +16,6 @@ import surveyor.scommon.source.SurveyorParallelSuite;
 @SuiteClasses({
 	ManageRefGasBottlesPageTests_Ethane.class
 	,ManageSurveyorAdminPageTest.class
-	,ManageSurveyorHistoriesPageTest.class
 	,ManageSurveyorPageTest.class
 	,SurveyViewPageTest3.class
 })

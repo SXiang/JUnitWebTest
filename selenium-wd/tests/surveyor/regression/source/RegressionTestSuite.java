@@ -22,7 +22,6 @@ import common.source.Log;
 	ManageRefGasBottlesPageTest.class,
 	ManageSurveyorPageTest.class,
 	ManageSurveyorAdminPageTest.class,
-	ManageSurveyorHistoriesPageTest.class,
 	ManageUsersPageTest.class,
 	ManageUsersAdminPageTest.class,
 	MeasurementSessionsPageTest.class,
