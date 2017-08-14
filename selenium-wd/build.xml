@@ -880,10 +880,6 @@
   	        	<include name="**/HomePageTest.class" />
   	        	<include name="**/SanityIntegrationTest.class" />
   	        	<include name="**/ComplianceReportsPageTest10.class" />
-  	        	<include name="**/SurveyViewPageTest1.class" />
-  	        	<include name="**/DriverViewPageTest.class" />
-  	        	<include name="**/ObserverViewPageTest_Analytics.class" />
-  	        	<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
