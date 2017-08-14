@@ -20,18 +20,14 @@ import surveyor.scommon.source.ManageRefGasBottlesAdminPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.ManageReleaseNotesPage;
 import surveyor.scommon.source.ManageSurveyorAdminPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesAdminPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersAdminPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.ObserverViewPage;
 import surveyor.scommon.source.PreferencesPage;
-import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyViewPage;
-import surveyor.scommon.source.SystemHistoryReportsPage;
 
 public class PageObjectFactory {
 	private ThreadLocal<AdministrationPage> threadLocalAdministrationPage = new ThreadLocal<AdministrationPage>() {
@@ -153,20 +149,6 @@ public class PageObjectFactory {
 	    }
 	};
 
-	private ThreadLocal<ManageSurveyorHistoriesAdminPage> threadLocalManageSurveyorHistoriesAdminPage = new ThreadLocal<ManageSurveyorHistoriesAdminPage>() {
-	    @Override
-	    protected ManageSurveyorHistoriesAdminPage initialValue() {
-	    	return createNewManageSurveyorHistoriesAdminPage();
-	    }
-	};
-
-	private ThreadLocal<ManageSurveyorHistoriesPage> threadLocalManageSurveyorHistoriesPage = new ThreadLocal<ManageSurveyorHistoriesPage>() {
-	    @Override
-	    protected ManageSurveyorHistoriesPage initialValue() {
-	    	return createNewManageSurveyorHistoriesPage();
-	    }
-	};
-
 	private ThreadLocal<ManageSurveyorPage> threadLocalManageSurveyorPage = new ThreadLocal<ManageSurveyorPage>() {
 	    @Override
 	    protected ManageSurveyorPage initialValue() {
@@ -209,13 +191,6 @@ public class PageObjectFactory {
 	    }
 	};
 
-	private ThreadLocal<ReferenceGasReportsPage> threadLocalReferenceGasReportsPage = new ThreadLocal<ReferenceGasReportsPage>() {
-	    @Override
-	    protected ReferenceGasReportsPage initialValue() {
-	    	return createNewReferenceGasReportsPage();
-	    }
-	};
-
 	private ThreadLocal<SurveyorSystemsPage> threadLocalSurveyorSystemsPage = new ThreadLocal<SurveyorSystemsPage>() {
 	    @Override
 	    protected SurveyorSystemsPage initialValue() {
@@ -227,13 +202,6 @@ public class PageObjectFactory {
 	    @Override
 	    protected SurveyViewPage initialValue() {
 	    	return createNewSurveyViewPage();
-	    }
-	};
-
-	private ThreadLocal<SystemHistoryReportsPage> threadLocalSystemHistoryReportsPage = new ThreadLocal<SystemHistoryReportsPage>() {
-	    @Override
-	    protected SystemHistoryReportsPage initialValue() {
-	    	return createNewSystemHistoryReportsPage();
 	    }
 	};
 
@@ -370,20 +338,6 @@ public class PageObjectFactory {
 		return manageSurveyorAdminPage;
 	}
 
-	protected ManageSurveyorHistoriesAdminPage createNewManageSurveyorHistoriesAdminPage() {
-		WebDriver driver = TestContext.INSTANCE.getDriver();
-		ManageSurveyorHistoriesAdminPage manageSurveyorHistoriesAdminPage = new ManageSurveyorHistoriesAdminPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorHistoriesAdminPage);
-		return manageSurveyorHistoriesAdminPage;
-	}
-
-	protected ManageSurveyorHistoriesPage createNewManageSurveyorHistoriesPage() {
-		WebDriver driver = TestContext.INSTANCE.getDriver();
-		ManageSurveyorHistoriesPage manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		PageFactory.initElements(driver, manageSurveyorHistoriesPage);
-		return manageSurveyorHistoriesPage;
-	}
-
 	protected ManageSurveyorPage createNewManageSurveyorPage() {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
 		ManageSurveyorPage manageSurveyorPage = new ManageSurveyorPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
@@ -426,13 +380,6 @@ public class PageObjectFactory {
 		return preferencesPage;
 	}
 
-	protected ReferenceGasReportsPage createNewReferenceGasReportsPage() {
-		WebDriver driver = TestContext.INSTANCE.getDriver();
-		ReferenceGasReportsPage referenceGasReportsPage = new ReferenceGasReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		PageFactory.initElements(driver, referenceGasReportsPage);
-		return referenceGasReportsPage;
-	}
-
 	protected SurveyorSystemsPage createNewSurveyorSystemsPage() {
 		WebDriver driver = TestContext.INSTANCE.getDriver();
 		SurveyorSystemsPage surveyorSystemsPage = new SurveyorSystemsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
@@ -445,13 +392,6 @@ public class PageObjectFactory {
 		SurveyViewPage surveyViewPage = new SurveyViewPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
 		PageFactory.initElements(driver, surveyViewPage);
 		return surveyViewPage;
-	}
-
-	protected SystemHistoryReportsPage createNewSystemHistoryReportsPage() {
-		WebDriver driver = TestContext.INSTANCE.getDriver();
-		SystemHistoryReportsPage systemHistoryReportsPage = new SystemHistoryReportsPage(driver, TestContext.INSTANCE.getBaseUrl(), TestContext.INSTANCE.getTestSetup());
-		PageFactory.initElements(driver, systemHistoryReportsPage);
-		return systemHistoryReportsPage;
 	}
 
 	protected AssessmentReportsPage createNewAssessmentReportsPage() {
@@ -536,14 +476,6 @@ public class PageObjectFactory {
 		return threadLocalManageSurveyorAdminPage.get();
 	}
 
-	public ManageSurveyorHistoriesAdminPage getManageSurveyorHistoriesAdminPage() {
-		return threadLocalManageSurveyorHistoriesAdminPage.get();
-	}
-
-	public ManageSurveyorHistoriesPage getManageSurveyorHistoriesPage() {
-		return threadLocalManageSurveyorHistoriesPage.get();
-	}
-
 	public ManageSurveyorPage getManageSurveyorPage() {
 		return threadLocalManageSurveyorPage.get();
 	}
@@ -568,20 +500,12 @@ public class PageObjectFactory {
 		return threadLocalPreferencesPage.get();
 	}
 
-	public ReferenceGasReportsPage getReferenceGasReportsPage() {
-		return threadLocalReferenceGasReportsPage.get();
-	}
-
 	public SurveyorSystemsPage getSurveyorSystemsPage() {
 		return threadLocalSurveyorSystemsPage.get();
 	}
 
 	public SurveyViewPage getSurveyViewPage() {
 		return threadLocalSurveyViewPage.get();
-	}
-
-	public SystemHistoryReportsPage getSystemHistoryReportsPage() {
-		return threadLocalSystemHistoryReportsPage.get();
 	}
 
 	public AssessmentReportsPage getAssessmentReportsPage() {

@@ -28,12 +28,10 @@ import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.MeasurementSessionsPage;
 import surveyor.scommon.source.PageObjectFactory;
 import surveyor.scommon.source.PreferencesPage;
-import surveyor.scommon.source.ReferenceGasReportsPage;
 import surveyor.scommon.source.SurveyViewPage;
 import surveyor.scommon.source.SurveyorBaseTest;
 import surveyor.scommon.source.SurveyorSystemsPage;
 import surveyor.scommon.source.SurveyorTestRunner;
-import surveyor.scommon.source.SystemHistoryReportsPage;
 import surveyor.scommon.source.AssessmentReportsPage;
 import surveyor.scommon.source.BaseMapViewPage.GisSwitchType;
 import surveyor.scommon.source.MeasurementSessionsPage.UserRoleType;
@@ -67,8 +65,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 	private static EQReportsPage eqReportsPage;
 	private static FacilityEQReportsPage facilityEQReportsPage;
 	private static AssessmentReportsPage assessmentReportsPage;
-	private static ReferenceGasReportsPage referenceGasReportsPage;
-	private static SystemHistoryReportsPage systemHistoryReportsPage;
 	private static ComplianceReportsPage complianceReportsPage;
 	private static List<String> strListTagCus = null;
 	private static List<String> strListTagPic = null;
@@ -118,10 +114,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		PageFactory.initElements(getDriver(), facilityEQReportsPage);
 		assessmentReportsPage = pageObjectFactory.getAssessmentReportsPage();
 		PageFactory.initElements(getDriver(), assessmentReportsPage);
-		systemHistoryReportsPage = pageObjectFactory.getSystemHistoryReportsPage();
-		PageFactory.initElements(getDriver(), systemHistoryReportsPage);
-		referenceGasReportsPage = pageObjectFactory.getReferenceGasReportsPage();
-		PageFactory.initElements(getDriver(), referenceGasReportsPage);
 		complianceReportsPage = pageObjectFactory.getComplianceReportsPage();
 		PageFactory.initElements(getDriver(), complianceReportsPage);
 
@@ -211,14 +203,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
 		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
-		homePage.getLinkReferenceGas().click();
-		referenceGasReportsPage.waitForPageLoad();
-		assertTrue(referenceGasReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
-		homePage.getLinkSystemHistory().click();
-		systemHistoryReportsPage.waitForPageLoad();
-		assertTrue(systemHistoryReportsPage.verifyReportsCreatedBelongTo(customerName));		
 	}
 	
 
@@ -290,15 +274,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		
 		homePage.getLinkFacilityEQ().click();
 		facilityEQReportsPage.waitForPageLoad();
-		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
-		homePage.getLinkReferenceGas().click();
-		referenceGasReportsPage.waitForPageLoad();
-		assertTrue(referenceGasReportsPage.verifyReportsCreatedBelongTo(customerName));
-		
-		homePage.getLinkSystemHistory().click();
-		systemHistoryReportsPage.waitForPageLoad();
-		assertTrue(systemHistoryReportsPage.verifyReportsCreatedBelongTo(customerName));		
+		assertTrue(facilityEQReportsPage.verifyReportsCreatedBelongTo(customerName));	
 	}
 	
 	/**

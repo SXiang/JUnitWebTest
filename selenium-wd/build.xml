@@ -788,7 +788,6 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
-          <include name="**/ReportsTestSuite1.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
@@ -877,10 +876,10 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/AssessmentReportsPageTest.class" />
-  	        	<include name="**/FEQReportsPageTest.class" />
-  	        	<include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
-  	        	<include name="**/ComplianceReportsPageTest12.class" />
+  	        	<include name="**/ACLandVisibilityTest.class" />
+  	        	<include name="**/HomePageTest.class" />
+  	        	<include name="**/SanityIntegrationTest.class" />
+  	        	<include name="**/ComplianceReportsPageTest10.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

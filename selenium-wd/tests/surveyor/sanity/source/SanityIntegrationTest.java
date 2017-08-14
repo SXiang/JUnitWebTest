@@ -65,7 +65,6 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.ManageReleaseNotesPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.PageObjectFactory;
@@ -81,7 +80,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 	private static ManageSurveyorPage manageSurveyorsPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
 	private static HomePage homePage;
 	private static LoginPage loginPage;
@@ -126,9 +124,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		manageRefGasBottlesPage = pageObjectFactory.getManageRefGasBottlesPage();
 		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
-
-		manageSurveyorHistoriesPage = pageObjectFactory.getManageSurveyorHistoriesPage();
-		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 
 		manageReleaseNotesPage = pageObjectFactory.getManageReleaseNotesPage();
 		PageFactory.initElements(getDriver(), manageReleaseNotesPage);
@@ -314,13 +309,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 
 		// homePage.clickOnEQReportLink();
 		// assertTrue(homePage.isLinkBroken());
-
-		homePage.clickOnReferenceGasReportLink();
-		assertTrue(homePage.isLinkBroken());
-
-		homePage.clickOnSystemHistoryReportLink();
-		assertTrue(homePage.isLinkBroken());
-
 		homePage.clickOnPicarroAdminLink();
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 		homePage.clickOnCalibrationLink();
@@ -411,15 +399,6 @@ public class SanityIntegrationTest extends SurveyorBaseTest {
 		manageRefGasBottlesPage.clickOnCancelBtn();
 
 		manageRefGasBottlesPage.waitForPageToLoad();
-
-		homePage.clickOnManageSurveyorHistoriesLink();
-		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
-		manageSurveyorHistoriesPage.clickOnAddNewHistoryEntryBtn();
-		manageSurveyorHistoriesPage.waitForNewPageLoad();
-		assertTrue(manageSurveyorHistoriesPage.isLinkBroken());
-		manageSurveyorHistoriesPage.clickOnCancelBtn();
-
-		manageSurveyorHistoriesPage.waitForPageToLoad();
 
 		/* Commenting, while change is being deployed to P3SQA.
 		homePage.clickOnManageReleaseNotesLink();

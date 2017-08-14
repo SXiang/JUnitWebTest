@@ -163,9 +163,6 @@ public class SurveyorBasePage extends BasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
 	protected WebElement linkPicAdminManageRefGasBottles;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyor-history']/a")
-	protected WebElement linkPicAdminManageSurveyorHistory;
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-sftp-configuration']/a")
 	protected WebElement linkPicAdminSFTPConfiguration;
 	
@@ -762,7 +759,7 @@ public class SurveyorBasePage extends BasePage {
 	public boolean verifyPicarroAdministrationLinks(){
 		WebElement[] adminLinks = {linkPicAdminCalibration,linkPicAdminManageCustomers, linkPicAdminManageUsers,
 				linkPicAdminManageLocations,linkPicAdminManageSurveyors,linkPicAdminManageAnalyzers,linkPicAdminManageRefGasBottles,
-								   linkPicAdminManageSurveyorHistory,linkPicAdminSFTPConfiguration};
+								   linkPicAdminSFTPConfiguration};
 		boolean linkFound = true;
 
 		for(WebElement link:adminLinks){

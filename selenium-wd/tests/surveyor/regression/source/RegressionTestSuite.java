@@ -24,9 +24,7 @@ import common.source.Log;
 	ManageSurveyorAdminPageTest.class,
 	ManageUsersPageTest.class,
 	ManageUsersAdminPageTest.class,
-	MeasurementSessionsPageTest.class,
-	SystemHistoryReportsPageTest.class,
-	ReferenceGasReportsPageTest.class })
+	MeasurementSessionsPageTest.class })
 public class RegressionTestSuite {
 	@BeforeClass
     public static void setUpClass() {

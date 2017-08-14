@@ -156,7 +156,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		assertTrue(homePage.getLinkPicAdminManageSur().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageAnl().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminManageRefGasBottles().isDisplayed());
-		assertTrue(homePage.getLinkPicAdminManageSurHistories().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminViewAnlLogs().isDisplayed());
 		assertTrue(homePage.getLinkPicAdminViewSurLogs().isDisplayed());
 	}
@@ -178,8 +177,6 @@ public class HomePageTest extends SurveyorBaseTest {
 		getTestSetup().slowdownInSeconds(getTestSetup().getSlowdownInSeconds());
 
 		assertTrue(homePage.getLinkCompliance().isDisplayed());
-		assertTrue(homePage.getLinkReferenceGas().isDisplayed());
-		assertTrue(homePage.getLinkSystemHistory().isDisplayed());
 	}
 
 	/**

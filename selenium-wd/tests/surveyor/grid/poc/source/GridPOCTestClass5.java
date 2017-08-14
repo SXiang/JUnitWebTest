@@ -23,7 +23,6 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.ManageReleaseNotesPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -37,7 +36,6 @@ public class GridPOCTestClass5 extends GridPOCBaseTest {
 	private static ManageSurveyorPage manageSurveyorsPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
 
 	@BeforeClass
@@ -67,10 +65,6 @@ public class GridPOCTestClass5 extends GridPOCBaseTest {
 		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(),
 				getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
-
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(),
-				getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 
 		manageReleaseNotesPage = new ManageReleaseNotesPage(getDriver(), getBaseURL(),
 				getTestSetup());

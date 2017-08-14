@@ -8,7 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import common.source.Log;
 import surveyor.regression.source.ManageUsersAdminPageTest;
 import surveyor.regression.source.ManageUsersPageTest;
-import surveyor.regression.source.ReferenceGasReportsPageTest;
 import surveyor.regression.source.SurveyViewPageTest4;
 import surveyor.regression.source.SurveyViewPageTest_EQ;
 import surveyor.scommon.source.SurveyorParallelSuite;
