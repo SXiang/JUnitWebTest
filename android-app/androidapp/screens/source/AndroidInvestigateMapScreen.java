@@ -9,8 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
-import common.source.MobileActions;
-import common.source.MobileActions.ZoomDirection;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -190,12 +188,6 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return googleMapView;
 	}
 
-	public Boolean verifyMapIsShown() {
-		Log.method("verifyMapIsShown");
-		// TBD: To be implemented post image recognition sikuli prototype integrated in master.
-		return false;
-	}
-
 	public Boolean waitForMarkAsCompleteButtonToBeDisplayed() {
 		Log.method("waitForMarkAsCompleteToBeDisplayed");
 		(new WebDriverWait(driver, Timeout.ANDROID_APP_SCREEN_ELEMENT_CHANGE_TIMEOUT)).until(new ExpectedCondition<Boolean>() {
@@ -207,15 +199,17 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return true;
 	}
 
-	public void applyMapZoomIn(int delta) {
+	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomIn method.
+	private void applyMapZoomIn(int delta) {
 		Log.method("applyMapZoomIn", delta);
-		MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		//MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
-	public void applyMapZoomOut(int delta) {
+	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomOut method.
+	private void applyMapZoomOut(int delta) {
 		Log.method("applyMapZoomOut", delta);
-		getGoogleMapView().click();
-		MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		//getGoogleMapView().click();
+		//MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
