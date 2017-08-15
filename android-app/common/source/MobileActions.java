@@ -291,7 +291,10 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input keyevent %d", keyCode.getCode()));
 	}
 
-	public void zoomIn(WebElement element, ZoomDirection direction, int delta) {
+	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
+	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
+	// currently keeping this method as 'private' until appium issue is fixed.
+	private void zoomIn(WebElement element, ZoomDirection direction, int delta) {
 		Log.method("zoomIn", direction, delta);
 		Coordinates center = getElementCenterCoordinate(element);
 		int negDelta = -1 * delta;
@@ -302,7 +305,10 @@ public class MobileActions {
 		performMultiTouchAction(fingerAction1, fingerAction2);
 	}
 
-	public void zoomOut(WebElement element, ZoomDirection direction, int delta) {
+	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
+	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
+	// currently keeping this method as 'private' until appium issue is fixed.
+	private void zoomOut(WebElement element, ZoomDirection direction, int delta) {
 		Log.method("zoomOut", direction, delta);
 		Coordinates center = getElementCenterCoordinate(element);
 		int negDelta = -1 * delta;
