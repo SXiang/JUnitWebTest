@@ -144,7 +144,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -153,7 +153,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -252,7 +252,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -348,7 +348,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;

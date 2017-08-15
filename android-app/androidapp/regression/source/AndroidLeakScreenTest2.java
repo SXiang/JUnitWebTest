@@ -173,7 +173,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -183,7 +183,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		String[] markerStatuses = {notInvestigated};
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
 
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -316,7 +316,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -327,7 +327,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 		investigateMapScreen.waitForScreenLoad();
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
 
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -447,7 +447,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
@@ -551,7 +551,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
@@ -659,7 +659,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			return true;
 		});
 
@@ -830,7 +830,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -840,7 +840,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		final LeakSourceType otherSourceLeakSourceType = LeakSourceType.Catch_Basin;
 		final String otherSourceAdditionalNotes = DataGenerator.getRandomText(20, 100);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();

@@ -133,7 +133,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -144,7 +144,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<String> markerStatuses = Arrays.asList(inProgress);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -210,7 +210,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -221,7 +221,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<String> markerStatuses = Arrays.asList(inProgress);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -309,7 +309,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -320,7 +320,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<String> markerStatuses = Arrays.asList(inProgress);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();

@@ -1,15 +1,12 @@
 package common.source;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MultiTouchAction;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -21,6 +18,21 @@ public class MobileActions {
 	private final static String[] ESCAPE_CHARS = {"\"", "'", "(", ")", "&", "<", ">", ";", "*", "|", "~", "$"};
 
 	private MobileActions() {
+	}
+
+	public static class Coordinates {
+		public int x;
+		public int y;
+
+		public Coordinates(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
 	}
 
 	public static class CoordinatesPair {
@@ -48,6 +60,21 @@ public class MobileActions {
 		private final String name;
 
 		SwipeDirection(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum ZoomDirection {
+		VERTICAL ("VERTICAL"),
+		HORIZONTAL ("HORIZONTAL");
+
+		private final String name;
+
+		ZoomDirection(String nm) {
 			name = nm;
 		}
 
@@ -264,6 +291,51 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input keyevent %d", keyCode.getCode()));
 	}
 
+	public void zoomIn(WebElement element, ZoomDirection direction, int delta) {
+		Log.method("zoomIn", direction, delta);
+		Coordinates center = getElementCenterCoordinate(element);
+		int negDelta = -1 * delta;
+		Log.method("Getting finger1 action ...");
+		TouchAction fingerAction1 = getFingerAction(element, center, direction, -20/*pad*/, 0 /*startPos*/, negDelta /*moveBy*/);
+		Log.method("Getting finger2 action ...");
+		TouchAction fingerAction2 = getFingerAction(element, center, direction, 20/*pad*/, 0 /*startPos*/, delta /*moveBy*/);
+		performMultiTouchAction(fingerAction1, fingerAction2);
+	}
+
+	public void zoomOut(WebElement element, ZoomDirection direction, int delta) {
+		Log.method("zoomOut", direction, delta);
+		Coordinates center = getElementCenterCoordinate(element);
+		int negDelta = -1 * delta;
+		Log.method("Getting finger1 action ...");
+		TouchAction fingerAction1 = getFingerAction(element, center, direction, -20/*pad*/, negDelta /*startPos*/, delta /*moveBy*/);
+		Log.method("Getting finger2 action ...");
+		TouchAction fingerAction2 = getFingerAction(element, center, direction, 20/*pad*/, delta /*startPos*/, negDelta /*moveBy*/);
+		performMultiTouchAction(fingerAction1, fingerAction2);
+	}
+
+	private void performMultiTouchAction(TouchAction fingerAction1, TouchAction fingerAction2) {
+		Log.method("performMultiTouchAction", fingerAction1, fingerAction2);
+		MultiTouchAction mTouchAction = new MultiTouchAction(getAndroidDriver());
+		mTouchAction.add(fingerAction1).add(fingerAction2).perform();
+	}
+
+	private TouchAction getFingerAction(WebElement element, Coordinates center, ZoomDirection direction, int pad, int startPos, int moveBy) {
+		Log.method("getFingerAction", element, center, direction, pad, startPos, moveBy);
+		// appium will offset the coordinates using topLeft coordinates of the element. apply offset to each coordinate.
+		int offsetX = element.getLocation().getX();
+		int offsetY = element.getLocation().getY();
+		TouchAction fingerAction = new TouchAction(getAndroidDriver());
+		if (direction.equals(ZoomDirection.VERTICAL)) {
+			Log.info(String.format("Press -> [%d, %d].. Move to -> [%d, %d]", center.x - offsetX, center.y+pad+moveBy - offsetY, 0 - offsetX, moveBy - offsetY));
+			fingerAction.press(element, center.x - offsetX, center.y+pad+moveBy - offsetY).waitAction(2000).moveTo(element, 0 - offsetX, moveBy - offsetY).release();
+		} else {
+			Log.info(String.format("Press -> [%d, %d].. Move to -> [%d, %d]", center.x+pad+startPos - offsetX, center.y - offsetY, moveBy, 0 - offsetY));
+			fingerAction.press(element, center.x+pad+startPos - offsetX, center.y - offsetY).waitAction(2000).moveTo(element, moveBy - offsetX, 0 - offsetY).release();
+		}
+
+		return fingerAction;
+	}
+
 	private String escapeText(String input) {
 		String escInput = input;
 		for (String ch : ESCAPE_CHARS) {
@@ -293,10 +365,9 @@ public class MobileActions {
 	private CoordinatesPair getSwipeFromCenterCoordinates(int upY, int downY, int leftX, int rightX) {
 		Log.method("getSwipeFromCenterCoordinates", upY, downY, leftX, rightX);
 		CoordinatesPair pair = new CoordinatesPair();
-		AndroidDriver<?> androidDriver = getAndroidDriver();
-		Dimension size = androidDriver.manage().window().getSize();
-		int centerX = (int)(size.getWidth()/2);
-		int centerY = (int)(size.getHeight()/2);
+		Coordinates center = getCenterCoordinate();
+		int centerX = center.x;
+		int centerY = center.y;
 		pair.x1 = centerX;
 		pair.y1 = centerY;
 		pair.x2 = centerX-leftX+rightX;
@@ -304,5 +375,22 @@ public class MobileActions {
 
 		Log.info("Returning coordinate pair -> " + pair.toString());
 		return pair;
+	}
+
+	private Coordinates getCenterCoordinate() {
+		Dimension size = getAndroidDriver().manage().window().getSize();
+		int centerX = (int)(size.getWidth()/2);
+		int centerY = (int)(size.getHeight()/2);
+		return new Coordinates(centerX, centerY);
+	}
+
+	private Coordinates getElementCenterCoordinate(WebElement element) {
+		int width = element.getSize().getWidth();
+		int height = element.getSize().getHeight();
+		int x = element.getLocation().getX();
+		int y = element.getLocation().getY();
+		int centerX = x + (int)(width/2);
+		int centerY = y + (int)(height/2);
+		return new Coordinates(centerX, centerY);
 	}
 }

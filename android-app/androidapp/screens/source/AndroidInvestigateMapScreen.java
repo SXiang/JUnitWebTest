@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
+import common.source.MobileActions;
+import common.source.MobileActions.ZoomDirection;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -27,6 +29,8 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	private static final String FOLLOW_BTN_UISELECTOR = "new UiSelector().text(\"Follow\")";
 
 	private static final String INVESTIGATE_BTN_UISELECTOR = "new UiSelector().text(\"Investigate\")";
+
+	private static final String GOOGLE_MAPS_UI_SELECTOR = "new UiSelector().description(\"Google Map\")";
 
 	/****** Button elements ******/
 
@@ -50,6 +54,11 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@AndroidFindBy(uiAutomator = INVESTIGATE_BTN_UISELECTOR)
 	private WebElement investigate;
+
+	/****** Map view ******/
+
+	@AndroidFindBy(uiAutomator = GOOGLE_MAPS_UI_SELECTOR)
+	private WebElement googleMapView;
 
 	/****** Label elements ******/
 
@@ -177,6 +186,10 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return velocity.getText();
 	}
 
+	public WebElement getGoogleMapView() {
+		return googleMapView;
+	}
+
 	public Boolean verifyMapIsShown() {
 		Log.method("verifyMapIsShown");
 		// TBD: To be implemented post image recognition sikuli prototype integrated in master.
@@ -194,13 +207,24 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		return true;
 	}
 
+	public void applyMapZoomIn(int delta) {
+		Log.method("applyMapZoomIn", delta);
+		MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+	}
+
+	public void applyMapZoomOut(int delta) {
+		Log.method("applyMapZoomOut", delta);
+		getGoogleMapView().click();
+		MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+	}
+
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {
 		Log.method("assertMarkAsCompleteAndPauseButtonsAreShown");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.MarkAsCompleteAndPauseButtons);
 	}
 
-	public void assertPipesAndLisaShownAreCorrect(String baseFolder, String imageName) {
-		Log.method("assertPipesAndLisaShownAreCorrect");
+	public void assertPipesAndMarkerShownAreCorrect(String baseFolder, String imageName) {
+		Log.method("assertPipesAndMarkerShownAreCorrect");
 		screenVerifier.assertImageFoundOnScreen(this, baseFolder, imageName);
 	}
 

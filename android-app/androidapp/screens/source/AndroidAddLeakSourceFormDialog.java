@@ -691,6 +691,12 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		if (expectedLocationRemarks.length()>70) {
 			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
 		}
+		if (actualAdditionalNotes.length()>88) {
+			actualLeakInfo.setAdditionalNotes(actualAdditionalNotes.substring(0, 88));
+		}
+		if (expectedAdditionalNotes.length()>88) {
+			expectedLeakInfo.setAdditionalNotes(expectedAdditionalNotes.substring(0, 88));
+		}
 
 		// verify
 		Boolean match = actualLatitude.length()>5;

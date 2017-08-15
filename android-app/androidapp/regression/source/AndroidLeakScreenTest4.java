@@ -148,7 +148,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -156,11 +156,12 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnFollow();
-			investigateMapScreen.assertPipesAndLisaShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, idx));
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
@@ -208,44 +209,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	}
 
 	/**
-	 * Test Case ID: TC2433_EnergyBackpack_InvestigateGap
-	 * Test Description: Energy Backpack - Investigate Gap
-	 * Script: -
-	 *	- - Log into the tablet
-	 *	- - Click on the Investigate button at the bottom of the screen
-	 *	- - Log in with PCubed credentials
-	 *	- - Click on a report
-	 *	- - Click on the Indications button near the top right. Select Gaps from the pop up menu
-	 *	- - Click on one of the Gaps
-	 *	- - Click on the Follow button
-	 *	- - Click the Investigate button at bottom left
-	 *	- - Click the Add Source button
-	 *	- - Click the Add Leak button
-	 *	- - Fill out each of the fields and click OK
-	 *	- - Click Mark As Complete
-	 * Results: -
-	 *	- - User is navigated to the map
-	 *	- - User will see a list of Compliance Reports
-	 *	- - User will see a list of LISAs for investigation
-	 *	- - User will see a list of Gaps for investigation
-	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected LISA
-	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
-	 *	- - Dialog appears with Add Leak and Add Other Source buttons
-	 *	- - A form appears where user can log details of the leak
-	 *	- - The previous dialog appears with a summary of the leak details that were just entered
-	 *	- - User is navigated back to the list of Gaps
-	 */
-	@Ignore
-	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2433, location = LeakScreenDataProvider.class)
-	public void TC2433_EnergyBackpack_InvestigateGap(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC2433_EnergyBackpack_InvestigateGap ...");
-
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
-	}
-
-	/**
 	 * Test Case ID: TC2639_EnergyBackpack_InvestigateLISAAssetBox
 	 * Test Description: Energy Backpack - Investigate LISA Asset Box
 	 * Script: -
@@ -271,13 +234,92 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of LISAs
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2639, location = LeakScreenDataProvider.class)
 	public void TC2639_EnergyBackpack_InvestigateLISAAssetBox(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2639_EnergyBackpack_InvestigateLISAAssetBox ...");
 
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
+
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
+			return true;
+		});
+
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
+		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
+			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
+			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
+
+			// Verify buttons are displayed.
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			assertTrue("Add Leak button is NOT shown.", addSourceDialog.getAddLeakButton().isDisplayed());
+			assertTrue("Add Other Source button is NOT shown.", addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+
+			// Add new leak.
+			addSourceDialog.clickOnAddLeak();
+			addLeakSourceFormDialog.waitForScreenLoad();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			listStoreMap.add(leakMap);
+			addLeakSourceFormDialog.fillForm(leakMap);
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+
+			// Open added leak, verify data is correct.
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), 0);
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap, true /*isInEditMode*/));
+			addLeakSourceFormDialog.tapOnCancel();
+
+			// Mark as complete.
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.waitForScreenLoad();
+
+			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
+			//investigateMapScreen.clickOnMarkAsComplete();
+			//investigateReportScreen.waitForScreenLoad();
+			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
+
+			/* Commented due to product defect DE3150
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
+					actualMarkerStatus.equals(foundGasLeak));
+			*/
+
+			return true;
+		});
 	}
 
 	/**
@@ -308,13 +350,88 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of Gaps
 	 */
-	@Ignore
+	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2640, location = LeakScreenDataProvider.class)
 	public void TC2640_EnergyBackpack_InvestigateGapBox(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2640_EnergyBackpack_InvestigateGapBox ...");
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+
+		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.getInvestigationMarkers().stream()
+				.forEach(m -> investigationMarkers.add(m));
+			return true;
+		});
+
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
+		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
+
+		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapScreenshotWithIndexPlaceholder, idx));
+
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			// Verify buttons are displayed.
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			assertTrue("Add Leak button is NOT shown.", addSourceDialog.getAddLeakButton().isDisplayed());
+			assertTrue("Add Other Source button is NOT shown.", addSourceDialog.getAddOtherSourcesButton().isDisplayed());
+
+			// Add new leak.
+			addSourceDialog.clickOnAddLeak();
+			addLeakSourceFormDialog.waitForScreenLoad();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+			Map<String, Object> leakMap = leakDataBuilder.toMap();
+			listStoreMap.add(leakMap);
+			addLeakSourceFormDialog.fillForm(leakMap);
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+
+			// Open added leak, verify data is correct.
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), 0);
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			assertTrue("Leak Info shown in form is NOT correct.", addLeakSourceFormDialog.verifyCorrectDataIsShown(leakMap, true /*isInEditMode*/));
+			addLeakSourceFormDialog.tapOnCancel();
+
+			// Mark as complete.
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.waitForScreenLoad();
+
+			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
+			//investigateMapScreen.clickOnMarkAsComplete();
+			//investigateReportScreen.waitForScreenLoad();
+			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
+
+			/* Commented due to product defect DE3150
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
+					actualMarkerStatus.equals(foundGasLeak));
+			*/
+
+			return true;
+		});
 	}
 
 	private void createTestCaseData(TestName testName) throws Exception {
@@ -322,44 +439,42 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = methodName.substring(0, 6);
-		String[] tcsWithReportsThatHaveLisas = {tcId};
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, SurveyorConstants.SQAPICDR);
-
-		if (matchingReport != null) {
-			generatedInvReportTitle = matchingReport.getReportTitle();
-			return;
-		}
+		boolean reuseReports = !isRunningInDataGenMode();
 
 		if (methodName.startsWith("TC2432")) {
 			Object[][] tc2432 = LeakScreenDataProvider.dataProviderAndroidApp_TC2432();
 			userDataRowID = (Integer)tc2432[0][1];
 			reportDataRowID1 = (Integer)tc2432[0][2];
-			tcId = "TC2432";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
-		} else if (methodName.startsWith("TC2433")) {
-			Object[][] tc2433 = LeakScreenDataProvider.dataProviderAndroidApp_TC2433();
-			userDataRowID = (Integer)tc2433[0][1];
-			reportDataRowID1 = (Integer)tc2433[0][2];
-			tcId = "TC2433";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
+			String[] lisaNumbers = {"1", "2", "6", "7", "8"};
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2639")) {
 			Object[][] tc2639 = LeakScreenDataProvider.dataProviderAndroidApp_TC2639();
 			userDataRowID = (Integer)tc2639[0][1];
 			reportDataRowID1 = (Integer)tc2639[0][2];
-			tcId = "TC2639";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2640")) {
 			Object[][] tc2640 = LeakScreenDataProvider.dataProviderAndroidApp_TC2640();
 			userDataRowID = (Integer)tc2640[0][1];
 			reportDataRowID1 = (Integer)tc2640[0][2];
-			tcId = "TC2640";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(false /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}
+
 	private void initializeTestScreenObjects() {
 		initializeInvestigationScreen();
 		initializeInvestigateReportScreen();

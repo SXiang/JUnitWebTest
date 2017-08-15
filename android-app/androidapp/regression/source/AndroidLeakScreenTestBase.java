@@ -99,6 +99,13 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			});
 	}
 
+	protected Integer getMarkerNumber(List<InvestigationMarkerEntity> investigationMarkers, int idx) {
+		InvestigationMarkerEntity markerEntity = investigationMarkers.get(idx);
+		String[] split = markerEntity.getMarkerNumber().split("-");
+		String markerNum = split[split.length-1].trim();
+		return Integer.valueOf(markerNum);
+	}
+
 	protected boolean hasMarkerOfStatus(List<InvestigationMarkerEntity> investigationMarkers, final String markerStatus) {
 		return investigationMarkers.stream()
 			.filter(m -> m.getInvestigationStatus().equals(markerStatus))
