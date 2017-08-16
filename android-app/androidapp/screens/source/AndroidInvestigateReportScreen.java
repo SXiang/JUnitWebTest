@@ -169,7 +169,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidInvestigateReportScreen.screenLoadCondition");
 		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed() && waitForProgressComplete();
 	}
 }

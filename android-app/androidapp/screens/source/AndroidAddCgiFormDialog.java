@@ -80,7 +80,7 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddCgiFormDialog.screenLoadCondition");
 		return getOKButton()!=null && getOKButton().isDisplayed();
 	}
 }

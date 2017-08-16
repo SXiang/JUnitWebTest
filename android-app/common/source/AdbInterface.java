@@ -197,25 +197,23 @@ public class AdbInterface {
 			ShellOutputReceiver receiver = new ShellOutputReceiver();
 			Log.info(String.format("Executing -> adb shell %s", command));
 			RetryUtil.retryOnException(
-					() -> {
-						try {
-							device.executeShellCommand(command, receiver);
-							return true;
-						} catch (TimeoutException | AdbCommandRejectedException | ShellCommandUnresponsiveException
-								| IOException ex) {
-							Log.warn(ExceptionUtility.getStackTraceString(ex));
-							return false;
-						}
-					},
-					() -> {
+				() -> {
+					try {
+						device.executeShellCommand(command, receiver);
+						return true;
+					} catch (TimeoutException | AdbCommandRejectedException | ShellCommandUnresponsiveException
+							| IOException ex) {
+						Log.warn(ExceptionUtility.getStackTraceString(ex));
 						if (isTypeCommand(command)) {
 							Log.method("Type text command failed. Reverting typed text ...");
 							FunctionUtil.warnOnError(() -> revertTypeTextCommand(command));
 						}
-						return true;
-					},
-					Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES * 2,
-					Constants.DEFAULT_MAX_RETRIES, false /*takeScreenshotOnFailure*/);
+						return false;
+					}
+				},
+				() -> {return true; },
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES * 2,
+				Constants.DEFAULT_MAX_RETRIES, false /*takeScreenshotOnFailure*/);
 
 			String output = receiver.getOutput();
 			Log.info(String.format("Command output -> %s", output));

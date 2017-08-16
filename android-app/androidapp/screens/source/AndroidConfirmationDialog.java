@@ -67,7 +67,7 @@ public class AndroidConfirmationDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidConfirmationDialog.screenLoadCondition");
 		return dialogMessage!=null && dialogMessage.isDisplayed();
 	}
 }

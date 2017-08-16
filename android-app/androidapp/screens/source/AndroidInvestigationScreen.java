@@ -80,7 +80,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidInvestigationScreen.screenLoadCondition");
 		boolean searchEditViewShown = searchEditView!=null && searchEditView.isDisplayed();
 		Log.info(String.format("searchEditViewShown=[%b]", searchEditViewShown));
 		return searchEditViewShown && waitForProgressComplete();

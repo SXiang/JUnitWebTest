@@ -198,7 +198,7 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddedSourceListDialog.screenLoadCondition");
 		List<Object> allSourcesList = getAllSourcesList();
 		if (sourcesList == null || sourcesList.size()==0 || getAllSourcesList().size()==0) {
 			return getAddOtherSourcesButton()!=null && getAddOtherSourcesButton().isDisplayed();

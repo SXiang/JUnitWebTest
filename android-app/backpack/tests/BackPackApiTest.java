@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,6 +27,7 @@ public class BackPackApiTest extends BaseTest {
 
 	@Before
 	public void setUp() throws Exception {
+		BaseTest.initializeTestObjects();
 		BackPackAnalyzer.restartSimulator();
 	}
 
@@ -51,6 +53,18 @@ public class BackPackApiTest extends BaseTest {
 		assertTrue("Socket control data onResume is invalid.", controlData.getWebSocketEnabled() == 1.0);
 	}
 
+	@Ignore
+	// Use this test to verify pause/resume socket on backpack analyzer.
+	public void testPauseResumeBackPackAnalyzerAPI() throws IOException {
+		Log.info("Executing testPauseResumeBackPackAnalyzerAPI() test...");
+		SocketControlData controlData = pauseResumeSockets(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress(), false /*isResume*/);
+		Log.info(String.format("Socket control data onPause is: %s", controlData));
+		assertTrue("Socket control data onPause is invalid.", controlData.getWebSocketEnabled() == 0.0);
+		controlData = pauseResumeSockets(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress(), true /*isResume*/);
+		Log.info(String.format("Socket control data onResume is: %s", controlData));
+		assertTrue("Socket control data onResume is invalid.", controlData.getWebSocketEnabled() == 1.0);
+	}
+
 	private Data invokeGetV1DataApi() throws IOException {
 		Log.method("invokeGetDataApi");
 		BackPackApiInterface apiInterface = ApiCaller.BackPackApiCall.createInterface();
@@ -67,7 +81,18 @@ public class BackPackApiTest extends BaseTest {
 
 	private SocketControlData pauseResumeSockets(boolean isResume) throws IOException {
 		Log.method("pauseResumeSockets", isResume);
-		BackPackApiInterface apiInterface = ApiCaller.BackPackApiCall.createInterface();
+		return pauseResumeSockets(null /*analyzerUrl*/, isResume);
+	}
+
+	private SocketControlData pauseResumeSockets(String analyzerUrl, boolean isResume) throws IOException {
+		Log.method("pauseResumeSockets", analyzerUrl, isResume);
+		BackPackApiInterface apiInterface = null;
+		if (analyzerUrl == null) {
+			apiInterface = ApiCaller.BackPackApiCall.createInterface();
+		} else {
+			apiInterface = ApiCaller.BackPackApiCall.createInterface(analyzerUrl);
+		}
+
 		Call<SocketControlData> controlData = null;
 		if (!isResume) {
 			controlData = apiInterface.pauseSocket();

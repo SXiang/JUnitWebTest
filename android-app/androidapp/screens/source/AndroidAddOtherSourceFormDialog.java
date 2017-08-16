@@ -190,7 +190,7 @@ public class AndroidAddOtherSourceFormDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddOtherSourceFormDialog.screenLoadCondition");
 		return getOKButton()!=null && getOKButton().isDisplayed();
 	}
 

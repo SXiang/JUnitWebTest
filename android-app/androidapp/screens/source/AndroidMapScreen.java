@@ -1,21 +1,30 @@
 package androidapp.screens.source;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.AccessibilityLabel;
+import common.source.BaseHelper;
 import common.source.BaselineImages;
+import common.source.ExceptionUtility;
 import common.source.Log;
+import common.source.LogHelper;
+import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMapScreen extends AndroidBaseScreen {
-	private static final String TOGGLE_MODE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]";
-	private static final String RESET_MAX_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]";
-	private static final String CLEAR_HEATMAP_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]";
+	private static final String TOGGLE_MODE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Toggle Mode\")";
+	private static final String RESET_MAX_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Reset Max\")";
+	private static final String CLEAR_HEATMAP_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Clear Heatmap\")";
+
 	private static final String INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]";
 	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]";
 	private static final String LOGIN_VALIDATION_LABEL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[2]";
@@ -53,19 +62,19 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	/******* Button elements *******/
 
-	@AndroidFindBy(xpath = CLEAR_HEATMAP_BUTTON_XPATH)
-	@CacheLookup
-	private WebElement clearHeatmap;
-
 	@AndroidFindBy(xpath = INVESTIGATE_BUTTON_XPATH)
 	@CacheLookup
 	private WebElement investigate;
 
-	@AndroidFindBy(xpath = RESET_MAX_BUTTON_XPATH)
+	@AndroidFindBy(uiAutomator = CLEAR_HEATMAP_BUTTON_UI_SELECTOR)
+	@CacheLookup
+	private WebElement clearHeatmap;
+
+	@AndroidFindBy(uiAutomator = RESET_MAX_BUTTON_UI_SELECTOR)
 	@CacheLookup
 	private WebElement resetMax;
 
-	@AndroidFindBy(xpath = TOGGLE_MODE_BUTTON_XPATH)
+	@AndroidFindBy(uiAutomator = TOGGLE_MODE_BUTTON_UI_SELECTOR)
 	@CacheLookup
 	private WebElement toggleMode;
 
@@ -189,7 +198,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertConcentrationChartIsShown() {
 		Log.method("assertConcentrationChartIsShown");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart, 3 /*attempts*/);
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart, 3 /*attempts*/);
+		} else {
+			Log.info("Skipping ConcentrationChart verification. Run test targetting backpack simulator to enable this verification");
+		}
 	}
 
 	public void assertEnterPasswordHintTextIsShown(String folderName, String imageFileName) {
@@ -199,8 +212,12 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertMapIsLoaded() {
 		Log.method("assertMapIsLoaded");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenTopLeft);
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
+		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.BackPackMapScreen);
+		} else {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenTopLeft);
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
+		}
 	}
 
 	public void assertMapIsCenteredForPicarroUser() {
@@ -211,6 +228,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void assertMethaneModeIsShownInTopPanel() {
 		Log.method("assertMethaneModeIsShownInTopPanel");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelMethaneModeLabel);
+	}
+
+	public void assertEthaneModeIsShownInTopPanel() {
+		Log.method("assertEthaneModeIsShownInTopPanel");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.TopPanelEthaneModeLabel);
 	}
 
 	public void assertDefaultMethaneValueShownInTopPanelIsCorrect() {
@@ -377,14 +399,19 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public Float getMaxTextFloatValue() {
 		Log.method("getMaxTextFloatValue");
-		Float maxFloat = Float.MIN_VALUE;
-		try {
-			if (maxText.getText()!=null) {
-				maxFloat = Float.valueOf(maxText.getText().replace(MAX_LABEL, "").replace(" ", "").replace(PPM, ""));
+		Float fMax = Float.MIN_VALUE;
+		String strMax = maxText.getText();
+		if (!BaseHelper.isNullOrEmpty(strMax)) {
+			try {
+				List<String> matchingGroups = RegexUtility.getMatchingGroups(strMax, RegexUtility.PICARRO_APP_MAX_AMPLITUDE_REGEX);
+				String maxTextValue = matchingGroups.get(1);
+				fMax = Float.valueOf(maxTextValue);
+			} catch (Exception e) {
+				Log.warn(String.format("Error getting max text value. Exception is -> %s", ExceptionUtility.getStackTraceString(e)));
 			}
-		} catch (Exception e) {/*ignore error*/}
+		}
 
-		return maxFloat;
+		return fMax;
 	}
 
 	public String getCh4PpmText() {

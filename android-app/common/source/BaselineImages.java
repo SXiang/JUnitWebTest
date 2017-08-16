@@ -15,12 +15,14 @@ public class BaselineImages {
 		public static final String EnterPassword = "EnterPassword.png";
 		public static final String DefaultMapScreenTopLeft = "default-map-screen-top-left.png";
 		public static final String DefaultMapScreenBottomRight = "default-map-screen-bottom-right.png";
+		public static final String BackPackMapScreen = "backpack-map-screen.png";
 		public static final String DefaultConcChart = "default-conc-chart.png";
 		public static final String DefaultMapScreenPicarroLoc = "default-map-screen-picarro-icon.png";
 		public static final String ConnectingToBackPackServer = "connecting-to-backpack-server.png";
 		public static final String EditSettingsButton = "edit-settings-button.png";
 		public static final String MarkAsCompleteAndPauseButtons = "markcomplete-n-pause-buttons.png";
 		public static final String TopPanelMethaneModeLabel = "top-bar-methane-mode.png";
+		public static final String TopPanelEthaneModeLabel = "top-bar-ethane-mode.png";
 		public static final String BottomPaneButtons = "bottom-pane-buttons.png";
 		public static final String GpsLabelGreen = "gps-green.png";
 		public static final String VolumeAmplitudeThresholdSliders = "volume-amplitude-threshold.png";

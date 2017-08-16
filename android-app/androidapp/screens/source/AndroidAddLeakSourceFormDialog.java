@@ -407,7 +407,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLeakLocationRemarks(String value) throws Exception {
 		Log.method("enterLeakLocationRemarks");
-		sendKeys(leakLocationRemarks, value);
+		leakLocationRemarks.sendKeys(value);
+		//sendKeys(leakLocationRemarks, value);
 	}
 
 	public String getPipeMaterialTypeText() {
@@ -468,7 +469,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
 		additionalNotes.clear();
-		sendKeys(additionalNotes, value);
+		additionalNotes.sendKeys(value);
 	}
 
 	public String getAdditionalNotesTextInEditMode() {
@@ -479,7 +480,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotesInEditMode(String value) throws Exception {
 		Log.method("enterAdditionalNotesInEditMode");
 		additionalNotesInEdit.clear();
-		sendKeys(additionalNotesInEdit, value);
+		additionalNotesInEdit.sendKeys(value);
 	}
 
 	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
@@ -568,7 +569,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddedLeakSourceFormDialog.screenLoadCondition");
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
 	}
 

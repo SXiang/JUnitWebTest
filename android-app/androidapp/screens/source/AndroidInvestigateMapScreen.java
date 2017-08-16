@@ -224,6 +224,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
+		Log.method("AndroidInvestigateMapScreen.screenLoadCondition");
 		return getDirectionsButton()!=null && getDirectionsButton().isDisplayed() && waitForProgressComplete();
 	}
 

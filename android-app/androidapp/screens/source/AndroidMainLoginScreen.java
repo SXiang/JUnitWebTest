@@ -59,6 +59,7 @@ public class AndroidMainLoginScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
+		Log.method("AndroidMainLoginScreen.screenLoadCondition");
 		saveButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]"));
 		Log.info(String.format("Found saveButton - %s", (saveButton==null)?"NULL":saveButton.toString()));
 		return saveButton!=null && saveButton.isDisplayed();

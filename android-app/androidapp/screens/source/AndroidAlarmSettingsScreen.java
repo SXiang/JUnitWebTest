@@ -224,7 +224,7 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAlarmSettingsDialog.screenLoadCondition");
 		return thresholdppm!=null && thresholdppm.isDisplayed();
 	}
 }
