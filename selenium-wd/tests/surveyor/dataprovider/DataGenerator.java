@@ -1,6 +1,7 @@
 package surveyor.dataprovider;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +14,7 @@ import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.RegexUtility;
+import common.source.UiSelectorKeywords;
 
 public class DataGenerator {
 
@@ -22,13 +24,27 @@ public class DataGenerator {
 	private static DataFactory df = new DataFactory();
 
 	public static class Invoker {
+		private static final Integer MAX_RECURSIVE_ATTEMPTS = 5;
+
 		public static String randomSupply(Supplier<String> method) {
+			return randomSupplyInternal(MAX_RECURSIVE_ATTEMPTS, method);
+		}
+
+		private static String randomSupplyInternal(Integer attempt, Supplier<String> method) {
 			String retVal = "";
 			try {
 				int nextInt = new Random().nextInt(19);
 				for (int i = 0; i < nextInt+1; i++) {
 					retVal = method.get();
 				}
+
+				// exclude reserved words used for UiSelector text.
+				if (Arrays.asList(UiSelectorKeywords.RESERVED_WORDS).contains(retVal)) {
+					if (attempt > 0) {
+						return randomSupplyInternal(--attempt, method);
+					}
+				}
+
 			} catch (Exception e) {
 				Log.warn(String.format("Error in randomSupply. Exception -> %s", ExceptionUtility.getStackTraceString(e)));
 			}
