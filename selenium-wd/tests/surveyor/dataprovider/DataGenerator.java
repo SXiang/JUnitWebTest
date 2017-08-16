@@ -14,7 +14,6 @@ import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.RegexUtility;
-import common.source.UiSelectorKeywords;
 
 public class DataGenerator {
 
@@ -39,7 +38,7 @@ public class DataGenerator {
 				}
 
 				// exclude reserved words used for UiSelector text.
-				if (Arrays.asList(UiSelectorKeywords.RESERVED_WORDS).contains(retVal)) {
+				if (Arrays.asList(SelectorKeywords.RESERVED_WORDS).contains(retVal)) {
 					if (attempt > 0) {
 						return randomSupplyInternal(--attempt, method);
 					}

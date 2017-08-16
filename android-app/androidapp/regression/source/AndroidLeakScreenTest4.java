@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -20,7 +20,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import androidapp.dataprovider.LeakScreenDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
-import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
@@ -30,22 +29,17 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
-import common.source.ArrayUtility;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
-import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
-import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
-import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 import surveyor.scommon.source.SurveyorConstants;
 
@@ -75,11 +69,18 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	@Rule
 	public TestName testName = new TestName();
 
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
+
 	@Before
 	public void beforeTest() throws Exception {
 		notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
+
 		createTestCaseData(testName);
+
 		initializeTestDriver();
 		initializeTestScreenObjects();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
@@ -355,6 +356,11 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	public void TC2640_EnergyBackpack_InvestigateGapBox(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2640_EnergyBackpack_InvestigateGapBox ...");
+
+		if (isRunningInDataGenMode()) {
+			Log.info("Running in data generation mode. Skipping test execution...");
+			return;
+		}
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {

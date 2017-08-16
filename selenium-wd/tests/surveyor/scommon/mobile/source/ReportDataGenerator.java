@@ -2,7 +2,9 @@ package surveyor.scommon.mobile.source;
 
 import org.openqa.selenium.WebDriver;
 
+import common.source.CheckedSupplier;
 import common.source.Constants;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.TestSetup;
@@ -26,10 +28,18 @@ public class ReportDataGenerator {
 	private static MobileLoginPage mobileLoginPage;
 	private Boolean isSingleUse = false;					// when set to TRUE, object will be disposed after single use.
 	private Boolean isReusable = false;          			// when set to TRUE, if there is data already present in DB then existing data will be used.
+	private Boolean mobileEmulationDriverEnabled = false;   // turning this ON will spawn a web driver that emulates a mobile device.
 	private WebDriver driver;
 
 	private ReportDataGenerator() {
-		this.driver = WebDriverFactory.getEmulationDriver(Constants.MobileEmulationDevice.GoogleNexus5);
+	}
+
+	private ReportDataGenerator(Boolean emulationDriverEnabled) {
+		if (emulationDriverEnabled) {
+			this.driver = WebDriverFactory.getEmulationDriver(Constants.MobileEmulationDevice.GoogleNexus5);
+		}
+
+		this.mobileEmulationDriverEnabled = emulationDriverEnabled;
 	}
 
 	/**
@@ -60,8 +70,38 @@ public class ReportDataGenerator {
 	}
 
 	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] lisaNumbers, String[] gapNumbers) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, gapNumbers,
+				false /*selectAllLisas*/, false /*selectAllGaps*/));
+	}
+
+	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisaNumbers*/,
+				null /*gapNumbers*/, true /*selectAllLisas*/, true /*selectAllGaps*/));
+	}
+
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] lisaNumbers) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, false /*selectAllLisas*/));
+	}
+
+	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisasToSelect*/, true /*selectAllLisas*/));
+	}
+
+	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapsToSelect*/, true /*selectAllGaps*/));
+	}
+
+	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+			String[] gapNumbers) throws Exception {
+		return withCleanupExecute(() -> createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapNumbers*/, false /*selectAllGaps*/));
+	}
+
+	private ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] lisaNumbers, String[] gapNumbers, Boolean selectAllLisas, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasAndGapsToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
+
 		if (isReusable) {
 			ReportInfoEntity rptEntity = getMatchingReportEntityFromDB(testCaseID);
 			if (rptEntity != null) {
@@ -83,28 +123,13 @@ public class ReportDataGenerator {
 		// Assign gaps to specified user.
 		String gapNumberPrefix = reportName+"-Gap-";
 		selectSpecifiedGaps(gapNumbers, selectAllGaps, gapNumberPrefix);
-		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
-
-		if (isSingleUse) {
-			this.cleanUp();
-		}
+			reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
 		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
-	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] lisaNumbers, String[] gapNumbers) throws Exception {
-		return createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, gapNumbers,
-				false /*selectAllLisas*/, false /*selectAllGaps*/);
-	}
-
-	public ReportInfoEntity createReportAndAssignLisasAndGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		return createReportAndAssignLisasAndGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisaNumbers*/,
-				null /*gapNumbers*/, true /*selectAllLisas*/, true /*selectAllGaps*/);
-	}
-
-	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+	private ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] lisaNumbers, Boolean selectAllLisas) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
@@ -124,28 +149,11 @@ public class ReportDataGenerator {
 		selectSpecifiedLisas(lisaNumbers, selectAllLisas, lisaNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
-		if (isSingleUse) {
-			this.cleanUp();
-		}
-
 		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
 	}
 
-	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] lisaNumbers) throws Exception {
-		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, lisaNumbers, false /*selectAllLisas*/);
-	}
-
-	public ReportInfoEntity createReportAndAssignLisasToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		return createReportAndAssignLisasToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*lisasToSelect*/, true /*selectAllLisas*/);
-	}
-
-	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID) throws Exception {
-		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapsToSelect*/, true /*selectAllGaps*/);
-	}
-
-	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
+	private ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
 			String[] gapNumbers, Boolean selectAllGaps) throws Exception {
 		Log.method("createReportAndAssignLisasToUser", testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID);
 		if (isReusable) {
@@ -165,17 +173,8 @@ public class ReportDataGenerator {
 		selectSpecifiedGaps(gapNumbers, selectAllGaps, gapNumberPrefix);
 		reportInvestigationsPage.assignPeaks(mobileUserDataRow.username);
 
-		if (isSingleUse) {
-			this.cleanUp();
-		}
-
 		Log.info(String.format("Returning reportId=[%s]", reportId));
 		return new ReportInfoEntity(ComplianceReportsPageActions.workingDataRow.get().title, reportName);
-	}
-
-	public ReportInfoEntity createReportAndAssignGapsToUser(String testCaseID, Integer userDataRowID, Integer mobileUserDataRowID, Integer reportDataRowID,
-			String[] gapNumbers) throws Exception {
-		return createReportAndAssignGapsToUser(testCaseID, userDataRowID, mobileUserDataRowID, reportDataRowID, null /*gapNumbers*/, false /*selectAllGaps*/);
 	}
 
 	private String createComplianceReportForInvestigation(String testCaseID, Integer userDataRowID, Integer reportDataRowID) throws Exception {
@@ -225,6 +224,21 @@ public class ReportDataGenerator {
 			}
 			reportInvestigationsPage.selectLisas(lisasToSelect);
 		}
+	}
+
+	private ReportInfoEntity withCleanupExecute(CheckedSupplier<ReportInfoEntity> invokeMethod) {
+		ReportInfoEntity rptInfoEntity = null;
+		try {
+			rptInfoEntity = invokeMethod.get();
+		} catch (Exception ex) {
+			Log.error(String.format("Error executing method. Exception -> %s", ExceptionUtility.getStackTraceString(ex)));
+		} finally {
+			if (isSingleUse) {
+				this.cleanUp();
+			}
+		}
+
+		return rptInfoEntity;
 	}
 
 	private void cleanUp() {

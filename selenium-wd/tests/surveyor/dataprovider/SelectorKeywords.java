@@ -1,6 +1,6 @@
-package common.source;
+package surveyor.dataprovider;
 
-public class UiSelectorKeywords {
+public class SelectorKeywords {
 	public final static String[] RESERVED_WORDS = {
 		"Add CGI",
 		"Add Leak",

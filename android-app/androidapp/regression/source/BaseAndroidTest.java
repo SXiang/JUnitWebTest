@@ -129,10 +129,8 @@ public class BaseAndroidTest extends BaseTest {
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
 		Log.method("tearDownAfterTestClass");
-		if (!isRunningInDataGenMode()) {
-			AdbInterface.stop();
-			cleanupProcesses();
-		}
+		AdbInterface.stop();
+		cleanupProcesses();
 	}
 
 	@Before
