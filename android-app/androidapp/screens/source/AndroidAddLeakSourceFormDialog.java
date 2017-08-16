@@ -408,7 +408,6 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterLeakLocationRemarks(String value) throws Exception {
 		Log.method("enterLeakLocationRemarks");
 		leakLocationRemarks.sendKeys(value);
-		//sendKeys(leakLocationRemarks, value);
 	}
 
 	public String getPipeMaterialTypeText() {
