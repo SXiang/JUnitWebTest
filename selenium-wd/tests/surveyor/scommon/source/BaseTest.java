@@ -32,7 +32,9 @@ import com.relevantcodes.extentreports.LogStatus;
 import common.source.DateUtility;
 import common.source.ExceptionUtility;
 import common.source.ExtentReportGenerator;
+import common.source.FunctionUtil;
 import common.source.Log;
+import common.source.ProcessUtility;
 import common.source.RegexUtility;
 import common.source.ScreenShotOnFailure;
 import common.source.TestContext;
@@ -221,7 +223,9 @@ public class BaseTest {
 		int driverCount = WebDriverFactory.getDriversCount();
 		if (driverCount > 1) {
 			for (int i = 1; i < driverCount; i++) {
-				getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+				if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
+					getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+				}
 			}
 		}
 	}

@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +27,13 @@ import surveyor.scommon.source.SurveyorTestRunner;
 @RunWith(SurveyorTestRunner.class)
 public class BackPackApiTest extends BaseTest {
 
+	@BeforeClass
+	public static void setupBeforeClass() {
+		BaseTest.initializeTestObjects();
+	}
+
 	@Before
 	public void setUp() throws Exception {
-		BaseTest.initializeTestObjects();
 		BackPackAnalyzer.restartSimulator();
 	}
 
@@ -113,5 +119,10 @@ public class BackPackApiTest extends BaseTest {
 	@After
 	public void tearDown() throws Exception {
 		BackPackAnalyzer.stopSimulator();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() {
+		BaseTest.logoutQuitDriver();
 	}
 }
