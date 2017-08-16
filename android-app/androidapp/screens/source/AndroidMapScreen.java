@@ -1,5 +1,6 @@
 package androidapp.screens.source;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -213,7 +214,9 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void assertMapIsLoaded() {
 		Log.method("assertMapIsLoaded");
 		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.BackPackMapScreen);
+			List<String> imageFolderNames = Arrays.asList(BaselineImages.Folder.LOADERS, BaselineImages.Folder.LOADERS, BaselineImages.Folder.LOADERS);
+			List<String> imageFileNames = Arrays.asList(BaselineImages.ImageFile.BackPackMapScreen01, BaselineImages.ImageFile.BackPackMapScreen02, BaselineImages.ImageFile.BackPackMapScreen03);
+			screenVerifier.assertAtleastOneImageFoundOnScreen(this, imageFolderNames, imageFileNames);
 		} else {
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenTopLeft);
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
@@ -222,7 +225,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertMapIsCenteredForPicarroUser() {
 		Log.method("assertMapIsCenteredForPicarroUser");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+		} else {
+			Log.info("Skipping map is centered verification. Run test targetting backpack simulator to enable this verification");
+		}
 	}
 
 	public void assertMethaneModeIsShownInTopPanel() {

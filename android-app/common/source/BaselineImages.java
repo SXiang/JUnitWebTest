@@ -15,7 +15,9 @@ public class BaselineImages {
 		public static final String EnterPassword = "EnterPassword.png";
 		public static final String DefaultMapScreenTopLeft = "default-map-screen-top-left.png";
 		public static final String DefaultMapScreenBottomRight = "default-map-screen-bottom-right.png";
-		public static final String BackPackMapScreen = "backpack-map-screen.png";
+		public static final String BackPackMapScreen01 = "backpack-map-screen-01.png";
+		public static final String BackPackMapScreen02 = "backpack-map-screen-02.png";
+		public static final String BackPackMapScreen03 = "backpack-map-screen-03.png";
 		public static final String DefaultConcChart = "default-conc-chart.png";
 		public static final String DefaultMapScreenPicarroLoc = "default-map-screen-picarro-icon.png";
 		public static final String ConnectingToBackPackServer = "connecting-to-backpack-server.png";

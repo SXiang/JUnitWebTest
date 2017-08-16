@@ -699,11 +699,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
-
-			/* Commented due to product defect DE3154
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
 					actualMarkerStatus.equals(foundOtherSource));
-			*/
 
 			return true;
 		});
@@ -778,12 +775,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", noGasFound, actualMarkerStatus));
-
-			/* Commented due to product defect DE3150
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
 					actualMarkerStatus.equals(noGasFound));
-			*/
-
 			return true;
 		});
 	}

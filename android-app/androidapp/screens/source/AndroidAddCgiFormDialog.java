@@ -21,13 +21,13 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	/****** Label elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement markerStatusLabel;
 
 	/****** TextField elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement cgiTextField;
 
@@ -45,6 +45,13 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	public void clickOnCancel() {
 		Log.method("clickOnCancel");
+		WebElement cancelButton = getCancelButton();
+		tap(cancelButton);
+		cancelButton.click();
+	}
+
+	public void tapOnCancel() {
+		Log.method("clickOnCancel");
 		tap(getCancelButton());      // single action click.
 	}
 
@@ -56,6 +63,13 @@ public class AndroidAddCgiFormDialog extends AndroidBaseScreen {
 
 	public void clickOnOK() {
 		Log.method("clickOnOK");
+		WebElement okButton = getOKButton();
+		tap(okButton);
+		okButton.click();
+	}
+
+	public void tapOnOK() {
+		Log.method("tapOnOK");
 		tap(getOKButton());
 	}
 
