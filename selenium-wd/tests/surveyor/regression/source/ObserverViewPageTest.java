@@ -134,7 +134,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		stopSurveyAndAnalyzer();
 	}
 
-	/**
+	/** MandatoryRegression
 	 * Test Case ID: TC345_ObserverShouldAbleSeeStatusUpdateWhenVehicleWarmingUp Script: - - - On Home Page, click on Picarro Surveyors -& Online -& Status - - Click on Display button - - Click on Map
 	 * button - - Click on GIS button - - Click on Status button Results: - - Analyzer Warming Up message and analyzer info is displayed - Position button is by default selected and car icon is
 	 * displayed - All the Display options like Indications, LISA, FoV, Concentration Chart, WindRose, Field Notes and Isotopic Analysis are ON - Satellite View is by default ON and Map view is OFF -
@@ -390,7 +390,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		stopSurveyAndAnalyzer();
 	}
 
-	/**
+	/** MandatoryRegression
 	 * Test Case ID: TC350_ViewStandardSurveySatelliteViewWhenAllMapBoundariesPipeTypeAreLoaded Script: - - - On Home Page, click on Picarro Surveyors -& Online - Display: All on, Position
 	 * auto-center: On, Map View: Satellite, GIS: All ON - User can see car position, wind rose, concentration chart, breadcrumb, FOV, Indications, LISA, Isotopic Analysis results (if any) and Field
 	 * Notes (if any) in satellite view Results: - - All pipes data and boundaries are displayed
@@ -432,7 +432,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		stopSurveyAndAnalyzer();
 	}
 
-	/**
+	/** MandatoryRegression
 	 * Test Case ID: TC351_ViewStandardSurveyWhenAllDisplayOptionsGISAreTurnedOFF Script: - - - On Home Page, click on Picarro Surveyors -& Online - Display: All OFF, Position auto-center: OFF, Map
 	 * View: Map, GIS: All OFF Status: No alarms - Survey Information is displayed in map view to observer Tag, Mode, Time, Survey Active, Driver Info, Elapsed time, Remaining Time, Zoom level,
 	 * Surveyor and analyzer info - Car position, breadcrumb is displayed to the user - Map is not centered on car's position Results: - - User is not able to see FOV, Indications, LISA, assets,
@@ -651,7 +651,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		stopSurveyAndAnalyzer();
 	}
 
-	/**
+	/** MandatoryRegression
 	 * Test Case ID: TC1037_ObserverView_OnceUserStartsNewSurveyOldSurveyShouldNotDisplayedObserverView Script: - - - On Home Page, click on Picarro Surveyors -& Online - Ask driver user to stop the
 	 * survey - - Now ask driver user to start the survey again with different survey tag value (eg. tag - Survey 2) Results: - - Observer user should only see recent survey data (eg. Survey 2) - User
 	 * should not see first survey (eg. Survey 1)
