@@ -154,7 +154,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2440_EnergyBackpack_LoggingOtherSourceLeaksBackpackApp_BypassingAddSourceButton ...");
 
 		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
-		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
 
@@ -198,13 +198,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// click on 'Investigate' and verify Investigation status.
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// click on 'Mark as Complete' and verify confirmation dialog text.
 			investigateMapScreen.clickOnMarkAsComplete();
@@ -216,14 +213,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// 'Yes' on confirmation dialog and verify status in ListView.
 			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
-			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
-
-			// TBD: Disabled due to product defect DE3163
-			/*
+			List<InvestigationMarkerEntity> investigationMarkers2 = investigateReportScreen.getInvestigationMarkers();
+			String actualMarkerStatus = investigationMarkers2.get(idx-1).getInvestigationStatus();
 			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
 					actualMarkerStatus.equals(foundOtherSource));
-			*/
-
 			return true;
 		});
 
@@ -243,11 +236,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
 		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
 
-		// TBD: Disabled due to product defect DE3163
-		/*
-		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", wasGasSourceFound, lisaInvestigationPDFData.get(0)),
-				lisaInvestigationPDFData.get(0).contains(wasGasSourceFound));
-		*/
+		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", foundOtherSource, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(foundOtherSource));
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
@@ -257,12 +247,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
 		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
 				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
-
-		// TBD: Disabled due to product defect DE3163
-		/*
-		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", wasGasSourceFound, lisaInvestigationMetaData.get("InvestigationStatus")),
-				lisaInvestigationMetaData.get("InvestigationStatus").equals(wasGasSourceFound));
-		*/
+		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundOtherSource, lisaInvestigationMetaData.get("InvestigationStatus")),
+				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundOtherSource));
 	}
 
 	/**
@@ -297,7 +283,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2441_EnergyBackpack_LoggingNoLeaksBackpackApp_BypassingAddSourceButton ...");
 
 		String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
-		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
 
@@ -308,6 +294,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsCenteredForPicarroUser();
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -320,8 +307,6 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			// TBD: To be enabled post image recognition sikuli library integrated to master.
-			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
@@ -340,13 +325,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// click on 'Investigate' and verify Investigation status.
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// click on 'Mark as Complete' and verify confirmation dialog text.
 			investigateMapScreen.clickOnMarkAsComplete();
@@ -358,13 +340,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// 'No' on confirmation dialog and verify status in ListView.
 			confirmationDialog.clickOnCancel();
 			investigateReportScreen.waitForScreenLoad();
-			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
-
-			// TBD: Disabled due to product defect DE3163
-			/*
+			List<InvestigationMarkerEntity> investigationMarkers2 = investigateReportScreen.getInvestigationMarkers();
+			String actualMarkerStatus = investigationMarkers2.get(idx-1).getInvestigationStatus();
 			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
 					actualMarkerStatus.equals(noGasFound));
-			*/
 			return true;
 		});
 
@@ -384,11 +363,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
 		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
 
-		// TBD: Disabled due to product defect DE3163
-		/*
 		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", noGasFound, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(noGasFound));
-		*/
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
@@ -398,12 +374,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
 		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
 				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
-
-		// TBD: Disabled due to product defect DE3163
-		/*
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(noGasFound));
-		*/
 	}
 
 	/**

@@ -29,7 +29,6 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidSettingsScreen;
-import common.source.AndroidDeviceInterface;
 import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;

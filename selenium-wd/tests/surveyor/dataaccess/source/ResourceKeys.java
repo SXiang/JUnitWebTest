@@ -342,6 +342,7 @@ public class ResourceKeys {
 
 	// Mobile page constants.
 	public static final String LisaInvestigationAssignment_NotInvestigated = "LisaInvestigationAssignment_NotInvestigated";
+	public static final String LisaInvestigationAssignment_InProgress = "LisaInvestigationAssignment_InProgress";
 	public static final String InvestigationStatusTypes_Not_Investigated = "InvestigationStatusTypes_Not_Investigated";
 	public static final String InvestigationStatusTypes_In_Progress = "InvestigationStatusTypes_In_Progress";
 	public static final String InvestigationStatusTypes_No_Gas_Found = "InvestigationStatusTypes_No_Gas_Found";
