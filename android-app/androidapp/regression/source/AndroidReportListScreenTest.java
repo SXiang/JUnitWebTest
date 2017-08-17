@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -43,6 +44,11 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
 
 	@Before
 	public void beforeTest() throws Exception {

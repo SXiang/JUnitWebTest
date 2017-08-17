@@ -1,7 +1,13 @@
 package common.source;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
+
+import backpack.api.entities.SocketControlData;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class BackPackAnalyzer {
 	public static final Boolean BROADCAST_CONSTANT_VALUES_IN_SIMLINEAR_FITTER = true;     // when set to 'True' simLinearFitter will broadcast constant value of 2.0 in simulator.
@@ -66,19 +72,19 @@ public class BackPackAnalyzer {
 	}
 
 	public static void pauseSimulatorProcesses() throws IOException {
-		ApiCaller.BackPackApiCall.createInterface().pauseSocket();
+		pauseResumeBackPackAnalyzer(null /*backPackUrl*/, false /*isResume*/);
 	}
 
 	public static void resumeSimulatorProcesses() throws IOException {
-		ApiCaller.BackPackApiCall.createInterface().resumeSocket();
+		pauseResumeBackPackAnalyzer(null /*backPackUrl*/, true /*isResume*/);
 	}
 
 	public static void pauseBackPackAnalyzerDataProcesses() throws IOException {
-		ApiCaller.BackPackApiCall.createInterface(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress()).pauseSocket();
+		pauseResumeBackPackAnalyzer(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress(), false /*isResume*/);
 	}
 
 	public static void resumeBackPackAnalyzerDataProcesses() throws IOException {
-		ApiCaller.BackPackApiCall.createInterface(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress()).resumeSocket();
+		pauseResumeBackPackAnalyzer(TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress(), true /*isResume*/);
 	}
 
 	public static void restartSimulator() throws IOException {
@@ -97,6 +103,30 @@ public class BackPackAnalyzer {
 	private static void waitForSimulatorProcessesToCatchUp() {
 		Log.method("waitForSimulatorProcessesToCatchUp");
 		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
+	}
+
+	private static void pauseResumeBackPackAnalyzer(String backPackUrl, Boolean isResume) throws IOException {
+		Log.method("pauseResumeBackPackAnalyzer", backPackUrl, isResume);
+		BackPackApiInterface apiInterface = null;
+		if (backPackUrl == null) {
+			apiInterface = ApiCaller.BackPackApiCall.createInterface();
+		} else {
+			apiInterface = ApiCaller.BackPackApiCall.createInterface(backPackUrl);
+		}
+
+		Call<SocketControlData> controlData = null;
+		if (!isResume) {
+			controlData = apiInterface.pauseSocket();
+		} else {
+			controlData = apiInterface.resumeSocket();
+		}
+
+		Response<SocketControlData> response = controlData.execute();
+		if (!response.isSuccessful()) {
+			Log.error(String.format("FAILED. Invalid response from API call. Response: %s", response.toString()));
+		} else {
+			Log.info(String.format("API Response -> %s", response.body().toString()));
+		}
 	}
 
 	// this is alternate mechanism to pause/resume simulator processes.

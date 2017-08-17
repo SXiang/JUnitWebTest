@@ -9,6 +9,9 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 
 public class WebDriverFactory {
+	private static final String CHROME_EXE = "chromedriver.exe";
+	private static final String CHROMEDRIVER_EXE = "chromedriver.exe";
+
 	private static List<ThreadLocal<WebDriverWrapper>> threadLocalDriverList = Collections.synchronizedList(new ArrayList<ThreadLocal<WebDriverWrapper>>());
 
 	protected static WebDriverWrapper createDefaultWebDriver() {
@@ -145,11 +148,16 @@ public class WebDriverFactory {
 	}
 
 	public static boolean hasDriverQuit(WebDriver driver) {
-		if (driver != null && driver.toString().contains("(null)")) {
+		if (driver == null || driver.toString().contains("(null)")) {
 			return true;
 		}
 
 		return false;
+	}
+
+	public static void cleanupStaleWebDrivers() {
+		ProcessUtility.killProcess(CHROMEDRIVER_EXE, false /*killChildProcesses*/);
+		ProcessUtility.killProcess(CHROME_EXE, false /*killChildProcesses*/);
 	}
 
 	public static void setChromeBrowserCapabilities() {

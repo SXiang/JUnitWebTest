@@ -101,6 +101,8 @@ public class BaseAndroidTest extends BaseTest {
 
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
+		Log.method("setUpBeforeTestClass");
+
 		// Initialize TestSetup to instantiate the TestContext.
 		TestSetup testSetup = new TestSetup(false /* skip initialization */);
 		String rootPath;
@@ -126,10 +128,9 @@ public class BaseAndroidTest extends BaseTest {
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
-		if (!isRunningInDataGenMode()) {
-			AdbInterface.stop();
-			cleanupProcesses();
-		}
+		Log.method("tearDownAfterTestClass");
+		AdbInterface.stop();
+		cleanupProcesses();
 	}
 
 	@Before
@@ -143,7 +144,6 @@ public class BaseAndroidTest extends BaseTest {
 	@Override
 	public void onTestFailureProcessing() {
 		Log.method("onTestFailureProcessing");
-		dumpSysActivity();
 		Log.info(getAndroidDriver().getPageSource());
 	}
 
@@ -319,9 +319,16 @@ public class BaseAndroidTest extends BaseTest {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
 		}
 
-		BackPackAnalyzer.pauseDataProcesses();
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestWebSocketPauseResumeEnabled()) {
+			BackPackAnalyzer.pauseDataProcesses();
+		}
+
 		retVal = predicate.test(null);
-		BackPackAnalyzer.resumeDataProcesses();
+
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestWebSocketPauseResumeEnabled()) {
+			BackPackAnalyzer.resumeDataProcesses();
+		}
+
 		return retVal;
 	}
 

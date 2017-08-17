@@ -18,7 +18,6 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import common.source.Log;
 import common.source.LogHelper;
-import common.source.TestContext;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
@@ -97,6 +96,13 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 				assertTrue(String.format("Source value is NOT correct. Expected=[%s], Actual=[%s]", OTHER_SOURCE, el.getSource().trim()), el.getSource().trim().equals(OTHER_SOURCE));
 				assertTrue(String.format("Time length NOT > 10. OtherSource=[%s], Time=[%s], Time len=[%d]", el, el.getTime(), el.getTime().length()), el.getTime().length()>10);
 			});
+	}
+
+	protected Integer getMarkerNumber(List<InvestigationMarkerEntity> investigationMarkers, int idx) {
+		InvestigationMarkerEntity markerEntity = investigationMarkers.get(idx);
+		String[] split = markerEntity.getMarkerNumber().split("-");
+		String markerNum = split[split.length-1].trim();
+		return Integer.valueOf(markerNum);
 	}
 
 	protected boolean hasMarkerOfStatus(List<InvestigationMarkerEntity> investigationMarkers, final String markerStatus) {

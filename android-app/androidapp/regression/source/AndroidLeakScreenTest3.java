@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -28,7 +29,6 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidSettingsScreen;
-import common.source.AndroidDeviceInterface;
 import common.source.BackPackAnalyzer;
 import common.source.Log;
 import common.source.TestContext;
@@ -67,6 +67,11 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -144,7 +149,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -153,7 +158,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -252,7 +257,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -348,7 +353,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;

@@ -18,7 +18,6 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2547 = "dataProviderAndroidApp_TC2547";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2555 = "dataProviderAndroidApp_TC2555";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2432 = "dataProviderAndroidApp_TC2432";
-	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2433 = "dataProviderAndroidApp_TC2433";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2639 = "dataProviderAndroidApp_TC2639";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2640 = "dataProviderAndroidApp_TC2640";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2676 = "dataProviderAndroidApp_TC2676";
@@ -99,35 +98,28 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2687() {
 		return new Object[][] {
-			{ "TC2687" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC2687" /*TestCaseID*/, 0 /*userDataRowID,  0 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2432() {
 		return new Object[][] {
-			{ "TC2432" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
-		};
-	}
-
-	@DataProvider
-	public static Object[][] dataProviderAndroidApp_TC2433() {
-		return new Object[][] {
-			{ "TC2433" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC2432" /*TestCaseID*/, 6 /*userDataRowID*/,  262 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2639() {
 		return new Object[][] {
-			{ "TC2639" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC2639" /*TestCaseID*/, 6 /*userDataRowID*/,  263 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2640() {
 		return new Object[][] {
-			{ "TC2640" /*TestCaseID*/, 0 /*userDataRowID - [TODO:CHANGE THIS]*/,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+			{ "TC2640" /*TestCaseID*/, 6 /*userDataRowID*/,  264 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 }

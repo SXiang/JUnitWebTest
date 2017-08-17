@@ -3,9 +3,9 @@ package androidapp.screens.source;
 import common.source.Log;
 import common.source.MobileActions.KeyCode;
 import common.source.SikuliDecoratedDriver;
+import common.source.TestContext;
 import common.source.MobileActions;
 import common.source.Timeout;
-import common.source.AndroidAutomationTools.ShellCommands;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
@@ -26,8 +26,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.sikuli.api.Screen;
 
-import common.source.AdbInterface;
 import common.source.ExceptionUtility;
+import common.source.FunctionUtil;
 
 public class AndroidBaseScreen implements Screen {
 	private static final String EMPTY = "";
@@ -38,6 +38,9 @@ public class AndroidBaseScreen implements Screen {
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"android:id/content\")")
 	protected WebElement mainFrameLayout;
+
+	@AndroidFindBy(xpath = "//android.widget.ProgressBar")
+	private WebElement progressBar;
 
 	protected Predicate<WebDriver> screenLoadPredicate = d -> screenLoadCondition();
 	protected Predicate<WebDriver> screenAndDataLoadPredicate = d -> screenAndDataLoadCondition();
@@ -57,7 +60,12 @@ public class AndroidBaseScreen implements Screen {
 		return SikuliDecoratedDriver.getInstance(getAndroidDriver(), this);
 	}
 
-	protected void printPageSource() {
+	public WebElement getProgressBar() {
+		progressBar = getAndroidDriver().findElementByXPath("//android.widget.ProgressBar");
+		return progressBar;
+	}
+
+	public void printPageSource() {
 		Log.method("printPageSource");
 		Log.info(driver.getPageSource());
 	}
@@ -98,6 +106,41 @@ public class AndroidBaseScreen implements Screen {
 	public boolean waitForScreenAndDataLoad() {
 		Log.method("waitForScreenAndDataLoad");
 		return waitForScreenLoad(driver, getScreenLoadTimeout(), screenAndDataLoadPredicate);
+	}
+
+	private WebElement getProgressBarIfPresent() {
+		int attempts = 3;
+		do {
+			WebElement progBar = null;
+			try {
+				progBar = getProgressBar();
+				if (progBar != null) {
+					return progBar;
+				}
+			} catch (Exception e) {}
+
+			attempts--;
+		} while (attempts > 0);
+
+		return null;
+	}
+
+	public boolean waitForProgressComplete() {
+		Log.method("waitForProgressComplete");
+		WebElement progBar = getProgressBarIfPresent();
+		if (progBar == null) {
+			Log.info("Did NOT find progress bar on screen. Return TRUE");
+			return true;
+		}
+		(new WebDriverWait(this.driver, getScreenLoadTimeout())).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				boolean displayed = progBar.isDisplayed();
+				Log.info(String.format("ProgressBar displayed = [%b]", displayed));
+				return !displayed;
+			}
+		});
+
+		return true;
 	}
 
 	protected boolean waitForScreenLoad(Integer timeout, Predicate<WebDriver> waitPredicate) {

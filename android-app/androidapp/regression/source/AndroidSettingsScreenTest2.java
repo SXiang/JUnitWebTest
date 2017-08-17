@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -16,6 +17,7 @@ import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -31,6 +33,11 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -76,9 +83,16 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			final String actualAmplitudeText = mapScreen.getAmplitudeText();
 			final String expectedAmplitudeText = "2.0";
 
-			assertTrue(String.format("Max text is NOT correct. Expected=[%s]; Actual=[%s]", expectedMaxText, actualMaxText), actualMaxText.equals(expectedMaxText));
 			assertTrue(String.format("Mode text is NOT correct. Expected=[%s]; Actual=[%s]", expectedModeText, actualModeText), actualModeText.equals(expectedModeText));
-			assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+			if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				assertTrue(String.format("Max text is NOT correct. Expected=[%s]; Actual=[%s]", expectedMaxText, actualMaxText), actualMaxText.equals(expectedMaxText));
+				assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+			} else {
+				Float maxTextFloatValue = mapScreen.getMaxTextFloatValue();
+				assertTrue(String.format("Max text should be > 0.9; Actual=[%f]", maxTextFloatValue), maxTextFloatValue > 0.9f);
+				assertTrue(String.format("Amplitude should be > 0.9; Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
+			}
+
 			return true;
 		});
 	}
@@ -102,13 +116,30 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			mapScreen.assertMapIsLoaded();
 			Log.info("Map screen loaded successfully!");
 
-			//TBD: Mode change verification NOT functional with backpack simulator. To be enabled post US4680 complete to trigger automation run pointing to Backpack Analyzer device.
-			//mapScreen.clickOnToggleMode();
+			try {
+				final String actualAmplitudeText = mapScreen.getAmplitudeText();
+				final String expectedAmplitudeText = "2.0";
 
-			final String actualAmplitudeText = mapScreen.getAmplitudeText();
-			final String expectedAmplitudeText = "2.0";
+				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.clickOnToggleMode();
+					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
+				} else {
+					assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+				}
 
-			assertTrue(String.format("Amplitude text is NOT correct. Expected=[%s]; Actual=[%s]", expectedAmplitudeText, actualAmplitudeText), actualAmplitudeText.equals(expectedAmplitudeText));
+				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.assertEthaneModeIsShownInTopPanel();
+				}
+			} catch (Exception ex) {
+				fail(String.format("Test failed on exception -> %s", ExceptionUtility.getStackTraceString(ex)));
+			} finally {
+				// revert back to Methane mode
+				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.clickOnToggleMode();
+					mapScreen.assertMethaneModeIsShownInTopPanel();
+				}
+			}
+
 			return true;
 		});
 	}

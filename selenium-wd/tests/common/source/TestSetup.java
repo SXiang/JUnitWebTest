@@ -189,6 +189,7 @@ public class TestSetup {
 	private boolean isRunningOnBackPackAnalyzer;
 	private boolean isAndroidTestReleaseEnabled;
 	private boolean isAndroidTestPerfMetricsEnabled;
+	private boolean isAndroidTestWebSocketPauseResumeEnabled;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
@@ -653,6 +654,7 @@ public class TestSetup {
 			this.setAdbLocation(this.testProp.getProperty("adbLocation"));
 			this.setAndroidTestReleaseEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.Release.Enabled")));
 			this.setAndroidTestPerfMetricsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfMetrics.Enabled")));
+			this.setAndroidTestWebSocketPauseResumeEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.WebSocketPauseResume.Enabled")));
 
 			setBackPackServerProperties(this.testProp);
 
@@ -1717,5 +1719,13 @@ public class TestSetup {
 
 	public void setAndroidTestPerfMetricsEnabled(boolean isAndroidTestPerfMetricsEnabled) {
 		this.isAndroidTestPerfMetricsEnabled = isAndroidTestPerfMetricsEnabled;
+	}
+
+	public boolean isAndroidTestWebSocketPauseResumeEnabled() {
+		return isAndroidTestWebSocketPauseResumeEnabled;
+	}
+
+	public void setAndroidTestWebSocketPauseResumeEnabled(boolean isAndroidTestWebSocketPauseResumeEnabled) {
+		this.isAndroidTestWebSocketPauseResumeEnabled = isAndroidTestWebSocketPauseResumeEnabled;
 	}
 }

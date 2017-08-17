@@ -84,12 +84,12 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	private WebElement leakLocationRemarks;
 
 	// Fetch at Runtime post swipe.
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[12]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotes;
 
-	// Fetch at Runtime post swipe when editing form.
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[13]/android.widget.EditText[1]")
+	// Fetch at Runtime post swipe when editing form. Keeping seperate as this at times differs.
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotesInEdit;
 
@@ -407,7 +407,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLeakLocationRemarks(String value) throws Exception {
 		Log.method("enterLeakLocationRemarks");
-		sendKeys(leakLocationRemarks, value);
+		leakLocationRemarks.sendKeys(value);
 	}
 
 	public String getPipeMaterialTypeText() {
@@ -468,7 +468,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
 		additionalNotes.clear();
-		sendKeys(additionalNotes, value);
+		additionalNotes.sendKeys(value);
 	}
 
 	public String getAdditionalNotesTextInEditMode() {
@@ -479,7 +479,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotesInEditMode(String value) throws Exception {
 		Log.method("enterAdditionalNotesInEditMode");
 		additionalNotesInEdit.clear();
-		sendKeys(additionalNotesInEdit, value);
+		additionalNotesInEdit.sendKeys(value);
 	}
 
 	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
@@ -568,7 +568,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddedLeakSourceFormDialog.screenLoadCondition");
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
 	}
 
@@ -690,6 +690,12 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		}
 		if (expectedLocationRemarks.length()>70) {
 			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
+		}
+		if (actualAdditionalNotes.length()>88) {
+			actualLeakInfo.setAdditionalNotes(actualAdditionalNotes.substring(0, 88));
+		}
+		if (expectedAdditionalNotes.length()>88) {
+			expectedLeakInfo.setAdditionalNotes(expectedAdditionalNotes.substring(0, 88));
 		}
 
 		// verify

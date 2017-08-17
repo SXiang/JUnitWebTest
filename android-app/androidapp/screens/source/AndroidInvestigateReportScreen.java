@@ -104,7 +104,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 	public InvestigationMarkerEntity getFirstInvestigationMarker() {
 		Log.method("getFirstInvestigationMarker");
 		InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
-		invEntity.setLisaNumber(firstRowLisaNumber.getText());
+		invEntity.setMarkerNumber(firstRowLisaNumber.getText());
 		invEntity.setInvestigationStatus(firstRowInvestigationStatus.getText());
 		return invEntity;
 	}
@@ -121,7 +121,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
 			if (findElements != null && findElements.size() > 1) {
 				InvestigationMarkerEntity invEntity = new InvestigationMarkerEntity();
-				invEntity.setLisaNumber(findElements.get(0).getText());
+				invEntity.setMarkerNumber(findElements.get(0).getText());
 				invEntity.setInvestigationStatus(findElements.get(1).getText());
 				invMarkersList.add(invEntity);
 			}
@@ -141,20 +141,20 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		return noInvestigationMarkersFoundTextView.isDisplayed();
 	}
 
-	public boolean verifyLisasForReportAreShown(String reportTitle) {
-		Log.method("verifyLisasForReportAreShown", reportTitle);
+	public boolean verifyMarkersForReportAreShown(String reportTitle) {
+		Log.method("verifyMarkersForReportAreShown", reportTitle);
 		Report reportObj = Report.getReport(reportTitle);
 		String reportId = reportObj.getId();
 		Log.info(String.format("Getting assigned LISAs for report id='%s'", reportId));
 		List<InvestigationMarkerEntity> invMarkers = getInvestigationMarkers();
-		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+		List<StoredProcLisaInvestigationShowIndication> investigationMarkersFromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
 		boolean match = invMarkers.stream()
 			.allMatch(s -> {
-				return lisaInvestigationfromSP.stream().anyMatch(sp -> {
-					String[] split = s.getLisaNumber().split("-");
+				return investigationMarkersFromSP.stream().anyMatch(sp -> {
+					String[] split = s.getMarkerNumber().split("-");
 					String lisaNum = split[split.length-1].trim();
-					Log.info(String.format("Matching boxNumber from storedproc-[%d] with on screen lisa marker-'%s'; lisa number='%s'",
-							sp.getBoxNumber(), s.getLisaNumber(), lisaNum));
+					Log.info(String.format("Matching boxNumber from storedproc-[%d] with on screen marker-'%s'; marker number='%s'",
+							sp.getBoxNumber(), s.getMarkerNumber(), lisaNum));
 					return lisaNum.equals(String.valueOf(sp.getBoxNumber()));
 				});
 			});
@@ -169,9 +169,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
-		// This intentional wait is to prevent appium from polling for elements while 'loading investigations..' screen is shown.
-		TestContext.INSTANCE.stayIdle(3);
-		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed();
+		Log.method("AndroidInvestigateReportScreen.screenLoadCondition");
+		return investigationMarkersContainerView.isDisplayed() && markerTypeSelector.isDisplayed() && waitForProgressComplete();
 	}
 }

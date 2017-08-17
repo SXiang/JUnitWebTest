@@ -4,15 +4,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class InvestigationMarkerEntity {
-	private String lisaNumber;
+	private String markerNumber;
 	private String investigationStatus;
 
-	public String getLisaNumber() {
-		return lisaNumber;
+	public String getMarkerNumber() {
+		return markerNumber;
 	}
 
-	public void setLisaNumber(String lisaNumber) {
-		this.lisaNumber = lisaNumber;
+	public void setMarkerNumber(String lisaNumber) {
+		this.markerNumber = lisaNumber;
 	}
 
 	public String getInvestigationStatus() {

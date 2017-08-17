@@ -153,7 +153,7 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidSettingsScreen.screenLoadCondition");
 		WebElement element = getShutdownInstrument();
 		return (element != null) && (element.isDisplayed());
 	}

@@ -68,7 +68,9 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 			searchKeyword = searchKeyword.substring(0, 9);
 		}
 
-		sendKeys(getSearchEditView(), searchKeyword);
+		WebElement srchEditView = getSearchEditView();
+		srchEditView.click();
+		sendKeys(srchEditView, searchKeyword);
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
@@ -78,10 +80,10 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidInvestigationScreen.screenLoadCondition");
 		boolean searchEditViewShown = searchEditView!=null && searchEditView.isDisplayed();
 		Log.info(String.format("searchEditViewShown=[%b]", searchEditViewShown));
-		return searchEditViewShown;
+		return searchEditViewShown && waitForProgressComplete();
 	}
 
 	@Override
@@ -122,6 +124,6 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	private void waitForSearchResultsToLoad(String searchKeyword) {
 		Log.method("waitForSearchResultsToLoad", searchKeyword);
-		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 3, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
+		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 3, d -> waitForProgressComplete() && isFirstEntryMatchingSearchKeyword(searchKeyword));
 	}
 }

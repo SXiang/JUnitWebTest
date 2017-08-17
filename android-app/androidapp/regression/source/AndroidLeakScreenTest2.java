@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -79,6 +80,11 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -148,7 +154,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2440_EnergyBackpack_LoggingOtherSourceLeaksBackpackApp_BypassingAddSourceButton ...");
 
 		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
-		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
 
@@ -173,7 +179,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			// TBD: To be enabled post image recognition sikuli library integrated to master.
 			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -183,7 +189,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		String[] markerStatuses = {notInvestigated};
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
 
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -192,13 +198,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// click on 'Investigate' and verify Investigation status.
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// click on 'Mark as Complete' and verify confirmation dialog text.
 			investigateMapScreen.clickOnMarkAsComplete();
@@ -210,14 +213,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// 'Yes' on confirmation dialog and verify status in ListView.
 			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
-			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
-
-			// TBD: Disabled due to product defect DE3163
-			/*
+			List<InvestigationMarkerEntity> investigationMarkers2 = investigateReportScreen.getInvestigationMarkers();
+			String actualMarkerStatus = investigationMarkers2.get(idx-1).getInvestigationStatus();
 			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
 					actualMarkerStatus.equals(foundOtherSource));
-			*/
-
 			return true;
 		});
 
@@ -237,11 +236,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
 		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
 
-		// TBD: Disabled due to product defect DE3163
-		/*
-		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", wasGasSourceFound, lisaInvestigationPDFData.get(0)),
-				lisaInvestigationPDFData.get(0).contains(wasGasSourceFound));
-		*/
+		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", foundOtherSource, lisaInvestigationPDFData.get(0)),
+				lisaInvestigationPDFData.get(0).contains(foundOtherSource));
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
@@ -251,12 +247,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
 		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
 				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
-
-		// TBD: Disabled due to product defect DE3163
-		/*
-		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", wasGasSourceFound, lisaInvestigationMetaData.get("InvestigationStatus")),
-				lisaInvestigationMetaData.get("InvestigationStatus").equals(wasGasSourceFound));
-		*/
+		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundOtherSource, lisaInvestigationMetaData.get("InvestigationStatus")),
+				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundOtherSource));
 	}
 
 	/**
@@ -291,7 +283,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2441_EnergyBackpack_LoggingNoLeaksBackpackApp_BypassingAddSourceButton ...");
 
 		String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
-		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
 		String wasGasSourceFound = Resources.getResource(ResourceKeys.Investigation_WasSourceFound);
 
@@ -302,6 +294,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsCenteredForPicarroUser();
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -314,9 +307,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			// TBD: To be enabled post image recognition sikuli library integrated to master.
-			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -327,20 +318,17 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 		investigateMapScreen.waitForScreenLoad();
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			// click on 'Investigate' and verify Investigation status.
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, assignmentInProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// click on 'Mark as Complete' and verify confirmation dialog text.
 			investigateMapScreen.clickOnMarkAsComplete();
@@ -352,13 +340,10 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			// 'No' on confirmation dialog and verify status in ListView.
 			confirmationDialog.clickOnCancel();
 			investigateReportScreen.waitForScreenLoad();
-			String actualMarkerStatus = investigationMarkers.get(idx-1).getInvestigationStatus();
-
-			// TBD: Disabled due to product defect DE3163
-			/*
+			List<InvestigationMarkerEntity> investigationMarkers2 = investigateReportScreen.getInvestigationMarkers();
+			String actualMarkerStatus = investigationMarkers2.get(idx-1).getInvestigationStatus();
 			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
 					actualMarkerStatus.equals(noGasFound));
-			*/
 			return true;
 		});
 
@@ -378,11 +363,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<String> lisaInvestigationPDFData = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
 		Log.info(LogHelper.collectionToString(lisaInvestigationPDFData, "Investigation PDF table data"));
 
-		// TBD: Disabled due to product defect DE3163
-		/*
 		assertTrue(String.format("PDF -> Expected marker status NOT correct. Expected=[%s]. Actual Full Text=[%s]", noGasFound, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(noGasFound));
-		*/
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
@@ -392,12 +374,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 				lisaInvestigationMetaData.get("FoundDateTime").length()>4);
 		assertTrue(String.format("CSV -> Expected Investigator NOT correct. Expected=[%s]. Actual=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationMetaData.get("Investigator")),
 				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
-
-		// TBD: Disabled due to product defect DE3163
-		/*
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", noGasFound, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(noGasFound));
-		*/
 	}
 
 	/**
@@ -425,7 +403,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2543_EnergyBackpack_OtherSourceCanEdited ...");
 
-		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 
 		if (isRunningInDataGenMode()) {
@@ -447,11 +425,11 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			Log.info("Checking for presence of existing marker with status -> 'Found Other Source' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+				.anyMatch(i -> i.getInvestigationStatus().equals(foundOtherSource) || i.getInvestigationStatus().equals(inProgress));
 			Log.info(String.format("Found=[%b]", match));
 			markerVerifier.append(String.valueOf(match));
 			return true;
@@ -465,7 +443,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		initializeAddOtherSourceFormDialog();
 
 		// Markers screen. Click on LISA marked as either Complete or In Progress
-		String[] markerStatuses = {complete, inProgress};
+		String[] markerStatuses = {foundOtherSource, inProgress};
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -490,15 +468,28 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			}
 
 			// edit existing 'Other Source' and verify.
+			LeakSourceType leakSourceType = LeakSourceType.Other_Enclosure;
+			String additionalNotesText = DataGenerator.getRandomText(20, 100);
 			addedSourcesListDialog.clickOnFirstMatchingListItemOfType(SourceType.OtherSource);
 			addOtherSourceFormDialog.waitForScreenLoad();
-			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Enclosure);
-			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
+			addOtherSourceFormDialog.selectLeakSource(leakSourceType);
+			addOtherSourceFormDialog.enterAdditionalNotes(additionalNotesText);
 			addOtherSourceFormDialog.clickOnOK();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList2 = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue("Sources list length post edit should be same as list length prior to edit", totalOtherSources == otherSourcesList2.size());
 			assertOtherSourceListInfoIsCorrect(otherSourcesList2);
+
+			// verify edit form content.
+			addedSourcesListDialog.clickOnFirstMatchingListItemOfType(SourceType.OtherSource);
+			addOtherSourceFormDialog.waitForScreenLoad();
+			LeakSourceType actualLeakSourceType = addOtherSourceFormDialog.getSelectedLeakSource();
+			assertTrue(String.format("LeakSourceType did NOT match. Expected=[%s]; Actual=[%s]", leakSourceType, actualLeakSourceType),
+					actualLeakSourceType.equals(leakSourceType));
+			String actualAdditionalNotesText = addOtherSourceFormDialog.getAdditionalNotesText();
+			assertTrue(String.format("AdditionalNotes text did NOT match. Expected=[%s]; Actual=[%s]", additionalNotesText, actualAdditionalNotesText),
+					actualAdditionalNotesText.equals(additionalNotesText));
+
 			return true;
 		});
 	}
@@ -529,7 +520,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2545_EnergyBackpack_OtherSourceCanDeleted ...");
 
-		final String complete = Resources.getResource(ResourceKeys.Constant_Complete);
+		final String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 
 		if (isRunningInDataGenMode()) {
@@ -551,11 +542,11 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		StringBuilder markerVerifier = new StringBuilder();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Complete' or 'In-Progress' ...");
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			Log.info("Checking for presence of existing marker with status -> 'Found Other Source' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
 			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(complete) || i.getInvestigationStatus().equals(inProgress));
+				.anyMatch(i -> i.getInvestigationStatus().equals(foundOtherSource) || i.getInvestigationStatus().equals(inProgress));
 			Log.info(String.format("Found=[%b]", match));
 			markerVerifier.append(String.valueOf(match));
 			return true;
@@ -567,7 +558,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		}
 
 		// Markers screen. Click on LISA marked as either Complete or In Progress
-		String[] markerStatuses = {complete, inProgress};
+		String[] markerStatuses = {foundOtherSource, inProgress};
 		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 
 		// Add new other source. Mark as Complete.
@@ -659,7 +650,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			return true;
 		});
 
@@ -680,11 +671,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
-
-			/* Commented due to product defect DE3154
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
 					actualMarkerStatus.equals(foundOtherSource));
-			*/
 
 			return true;
 		});
@@ -759,12 +747,8 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateReportScreen.waitForScreenLoad();
 			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
 			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", noGasFound, actualMarkerStatus));
-
-			/* Commented due to product defect DE3150
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", noGasFound, actualMarkerStatus),
 					actualMarkerStatus.equals(noGasFound));
-			*/
-
 			return true;
 		});
 	}
@@ -830,7 +814,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
@@ -840,7 +824,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		final LeakSourceType otherSourceLeakSourceType = LeakSourceType.Catch_Basin;
 		final String otherSourceAdditionalNotes = DataGenerator.getRandomText(20, 100);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -974,7 +958,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2546")) {
 			Object[][] tc2546 = LeakScreenDataProvider.dataProviderAndroidApp_TC2546();
 			userDataRowID = (Integer)tc2546[0][1];
@@ -1107,8 +1091,6 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
