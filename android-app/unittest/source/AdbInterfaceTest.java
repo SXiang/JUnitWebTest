@@ -27,30 +27,41 @@ public class AdbInterfaceTest {
 	public static void setUpBeforeClass() throws Exception {
 		BaseTest.initializeTestObjects();
 		AdbInterface.init(TestContext.INSTANCE.getTestSetup().getAdbLocation());
+		AndroidAutomationTools.start();
+		BackPackAnalyzer.startSimulator();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		BackPackAnalyzer.stopSimulator();
+		AndroidAutomationTools.stop();
 		AdbInterface.stop();
+		BaseTest.logoutQuitDriver();
 	}
 
 	@Before
 	public void setUp() throws Exception {
 		BaseTest.initializeTestObjects();
-		AndroidAutomationTools.start();
-		BackPackAnalyzer.startSimulator();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		BaseTest.logoutQuitDriver();
-		BackPackAnalyzer.stopSimulator();
-		AndroidAutomationTools.stop();
 	}
 
 	@Test
 	public void executeCommandTest() throws Exception {
 		Log.info("Excecuting test -> executeCommandTest() ...");
+		File apkFile = getApkFile();
+		AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath(), "MainActivity");
+		String commandText = "input text \"http://10.100.3.68:3000\"";
+		AdbInterface.executeShellCmd(commandText);
+	}
+
+	@Test
+	public void resetTest() throws Exception {
+		Log.info("Excecuting test -> resetTest() ...");
+		AdbInterface.reset();
+		Log.info("DONE with reset. Verifying adb commands continue to work...");
 		File apkFile = getApkFile();
 		AndroidAutomationTools.installLaunchAPK(apkFile.getAbsolutePath(), "MainActivity");
 		String commandText = "input text \"http://10.100.3.68:3000\"";
@@ -68,5 +79,4 @@ public class AdbInterfaceTest {
 		File apkFile = new File(apkFilePath);
 		return apkFile;
 	}
-
 }

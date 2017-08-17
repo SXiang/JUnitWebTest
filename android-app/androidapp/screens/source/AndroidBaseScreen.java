@@ -3,7 +3,6 @@ package androidapp.screens.source;
 import common.source.Log;
 import common.source.MobileActions.KeyCode;
 import common.source.SikuliDecoratedDriver;
-import common.source.TestContext;
 import common.source.MobileActions;
 import common.source.Timeout;
 import io.appium.java_client.android.AndroidDriver;
@@ -27,7 +26,6 @@ import org.openqa.selenium.WebElement;
 import org.sikuli.api.Screen;
 
 import common.source.ExceptionUtility;
-import common.source.FunctionUtil;
 
 public class AndroidBaseScreen implements Screen {
 	private static final String EMPTY = "";

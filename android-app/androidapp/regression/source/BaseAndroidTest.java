@@ -135,6 +135,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	@Before
 	public void setupBeforeTest() throws Exception {
+		AdbInterface.reset();      // reset to minimize adb hangs leading to appium server hangs.
 	}
 
 	@After

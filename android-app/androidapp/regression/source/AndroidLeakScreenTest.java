@@ -293,10 +293,11 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
+		String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsCenteredForPicarroUser();
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
@@ -308,8 +309,6 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
         List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			// TBD: To be enabled post image recognition sikuli library integrated to master.
-			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
@@ -324,13 +323,10 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
 			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			investigateMapScreen.clickOnAddSource();
 
