@@ -201,27 +201,6 @@ public class ComplianceReportsPageTest10 extends BaseReportsPageActionTest {
 	}
 
 	/**
-	 * Test Case ID: TC165_SortReportListBasedCompletionDateOtherAttributes
-	 * Test Description: Sort report list based on completion date and other attributes
-	 * Script: -
-	 *	- Sort report list by report title or created by or date attributes present on all reports screen
-	 * Results: -
-	 *	- - User is able to sort the list of reports based on specified attribute
-	 *	- - Sorting by Report Name not allowed
-	 */
-	@Ignore
-	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC165, location = ComplianceReportDataProvider.class)
-	public void TC165_SortReportListBasedCompletionDateOtherAttributes(
-			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
-		Log.info("\nRunning TC165_SortReportListBasedCompletionDateOtherAttributes ...");
-
-		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
-		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
-		complianceReportsPageAction.open(EMPTY, getReportRowID(reportDataRowID1));
-		assertTrue(complianceReportsPageAction.verifyPaginationAndSortingOnAllColumns(EMPTY, getReportRowID(reportDataRowID1)));
-	}
-
-	/**
 	 * Test Case ID: TC194_VerifyMaxSurveyDurationReachedMessageDisplayedUserIfUserTriesAddSurveysHavingTotalDurationAbove100Hours
 	 * Test Description: Verify "Max Survey Duration Reached" message is displayed to user if user tries to add surveys having total duration above 100 hours
 	 * Script: -
