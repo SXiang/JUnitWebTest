@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
+import common.source.MobileActions;
+import common.source.MobileActions.ZoomDirection;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
@@ -200,16 +202,16 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	}
 
 	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomIn method.
-	private void applyMapZoomIn(int delta) {
+	public void applyMapZoomIn(int delta) {
 		Log.method("applyMapZoomIn", delta);
-		//MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
 	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomOut method.
-	private void applyMapZoomOut(int delta) {
+	public void applyMapZoomOut(int delta) {
 		Log.method("applyMapZoomOut", delta);
-		//getGoogleMapView().click();
-		//MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		getGoogleMapView().click();
+		MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {

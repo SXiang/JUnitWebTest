@@ -38,8 +38,14 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigation() throws Exception {
 		Log.method("clickOnFirstInvestigation");
-		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
+		getFirstRowViewGroup();
 		selectRowGroup(firstRowViewGroup);
+	}
+
+	public void tapOnFirstInvestigation() throws Exception {
+		Log.method("tapOnFirstInvestigation");
+		getFirstRowViewGroup();
+		tap(firstRowViewGroup);
 	}
 
 	public List<InvestigationEntity> getInvestigations() {
@@ -94,6 +100,10 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	public void waitForResultsToLoad() {
 		Log.method("waitForResultsToLoad");
 		waitForScreenLoad(Timeout.ANDROID_APP_RESULTS_TIMEOUT * 2, d -> isFirstRowPresent());
+	}
+
+	private void getFirstRowViewGroup() {
+		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
 	}
 
 	private void selectRowGroup(WebElement rowGroup) throws Exception {

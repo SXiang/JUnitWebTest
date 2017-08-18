@@ -144,7 +144,8 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2434_EnergyBackpackLoggingMultipleLeaksWithinClassicLISAs ...");
 
 		if (isRunningInDataGenMode()) {
-			Log.info("Running in data generation mode. Skipping test execution...");
+			Log.info("Running "
+					+ "in data generation mode. Skipping test execution...");
 			return;
 		}
 

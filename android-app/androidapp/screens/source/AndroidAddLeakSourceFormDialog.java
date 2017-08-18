@@ -42,6 +42,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
 	private WebElement delete;
 
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]")
+	@CacheLookup
+	private WebElement formScrollView;
+
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement useCurrentLocation;
@@ -573,18 +577,17 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
 	}
 
-	public void scrollToNextPage() {
+	public void scrollToNextPage() throws Exception {
 		Log.method("scrollToNextPage");
-		final int secsToScroll = 2;
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, secsToScroll * 1000);
+		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(formScrollView, SwipeDirection.UP, 600);
 	}
 
-	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) {
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) throws Exception {
 		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues));
 		return verifyCorrectDataIsShown(formValues, false /*isEditMode*/);
 	}
 
-	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) {
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) throws Exception {
 		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues), isEditMode);
 
 		// expected
