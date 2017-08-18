@@ -143,7 +143,15 @@ public class AdbInterface {
 		}
 	}
 
+	public static void reset() {
+		Log.method("reset");
+		AdbInterface.stop();
+		AdbInterface.init(getAdbLocation());
+		adb = AndroidDebugBridge.createBridge(adbLocation, true);
+	}
+
 	public static void stop() {
+		Log.method("stop");
 		AndroidDebugBridge.disconnectBridge();
 		AndroidDebugBridge.terminate();
 	}

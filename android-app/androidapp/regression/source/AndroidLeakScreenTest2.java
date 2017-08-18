@@ -165,6 +165,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
 		executeWithBackPackDataProcessesPaused(obj -> {
+			mapScreen.assertMapIsCenteredForPicarroUser();
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
 			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
@@ -177,8 +178,6 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			// TBD: To be enabled post image recognition sikuli library integrated to master.
-			//assertTrue(verifyMapShowsUserLocation(investigationScreen));
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));

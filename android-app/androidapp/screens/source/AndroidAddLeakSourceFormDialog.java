@@ -12,6 +12,7 @@ import androidapp.entities.source.LeakInfoEntity;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
+import common.source.TestContext;
 import common.source.MobileActions.KeyCode;
 import common.source.MobileActions.SwipeDirection;
 import common.source.Timeout;
@@ -327,7 +328,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterApartmentNumber(String value) throws Exception {
 		Log.method("enterApartmentNumber");
-		sendKeys(apartmentNumber, value);
+		sendKeysInternal(apartmentNumber, value);
 	}
 
 	public String getBarholeReadingText() {
@@ -337,7 +338,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterBarholeReading(String value) throws Exception {
 		Log.method("enterBarholeReading");
-		sendKeys(barholeReading, value);
+		sendKeysInternal(barholeReading, value);
 	}
 
 	public String getCityText() {
@@ -347,7 +348,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterCity(String value) throws Exception {
 		Log.method("enterCity");
-		sendKeys(city, value);
+		sendKeysInternal(city, value);
 	}
 
 	public String getLatitudeText() {
@@ -357,7 +358,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLatitude(String value) throws Exception {
 		Log.method("enterLatitude");
-		sendKeys(latitude, value);
+		sendKeysInternal(latitude, value);
 	}
 
 	public String getLeakGradeText() {
@@ -367,7 +368,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLeakGrade(String value) throws Exception {
 		Log.method("enterLeakGrade");
-		sendKeys(leakGrade, value);
+		sendKeysInternal(leakGrade, value);
 	}
 
 	public String getLongitudeText() {
@@ -377,7 +378,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLongitude(String value) throws Exception {
 		Log.method("enterLongitude");
-		sendKeys(longitude, value);
+		sendKeysInternal(longitude, value);
 	}
 
 	public String getMapNumberText() {
@@ -387,7 +388,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterMapNumber(String value) throws Exception {
 		Log.method("enterMapNumber");
-		sendKeys(mapNumber, value);
+		sendKeysInternal(mapNumber, value);
 	}
 
 	public String getMeterNumberText() {
@@ -397,7 +398,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterMeterNumber(String value) throws Exception {
 		Log.method("enterMeterNumber");
-		sendKeys(meterNumber, value);
+		sendKeysInternal(meterNumber, value);
 	}
 
 	public String getLeakLocationRemarksText() {
@@ -417,7 +418,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterPipeMaterialType(String value) throws Exception {
 		Log.method("enterPipeMaterialType");
-		sendKeys(pipeMaterialType, value);
+		sendKeysInternal(pipeMaterialType, value);
 	}
 
 	public String getStateText() {
@@ -427,7 +428,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterState(String value) throws Exception {
 		Log.method("enterState");
-		sendKeys(state, value);
+		sendKeysInternal(state, value);
 	}
 
 	public String getStreetNameText() {
@@ -437,7 +438,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterStreetName(String value) throws Exception {
 		Log.method("enterStreetName");
-		sendKeys(streetName, value);
+		sendKeysInternal(streetName, value);
 	}
 
 	public String getStreetNumberText() {
@@ -447,7 +448,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterStreetNumber(String value) throws Exception {
 		Log.method("enterStreetNumber");
-		sendKeys(streetNumber, value);
+		sendKeysInternal(streetNumber, value);
 	}
 
 	public String getSurfaceReadingText() {
@@ -457,7 +458,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterSurfaceReading(String value) throws Exception {
 		Log.method("enterSurfaceReading");
-		sendKeys(surfaceReading, value);
+		sendKeysInternal(surfaceReading, value);
 	}
 
 	public String getAdditionalNotesText() {
@@ -735,5 +736,13 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		streetName.clear();
 		streetNumber.clear();
 		surfaceReading.clear();
+	}
+
+	private void sendKeysInternal(WebElement element, String value) throws Exception {
+		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			element.sendKeys(value);
+		} else {
+			sendKeys(element, value);
+		}
 	}
 }
