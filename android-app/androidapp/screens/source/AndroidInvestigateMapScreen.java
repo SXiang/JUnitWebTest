@@ -202,16 +202,16 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 	}
 
 	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomIn method.
-	public void applyMapZoomIn(int delta) {
+	private void applyMapZoomIn(int delta) {
 		Log.method("applyMapZoomIn", delta);
-		MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		//MobileActions.newAction(getAndroidDriver()).zoomIn(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
 	// To be enabled post appium java client issue resolved. refer comments in MobileActions zoomOut method.
-	public void applyMapZoomOut(int delta) {
+	private void applyMapZoomOut(int delta) {
 		Log.method("applyMapZoomOut", delta);
-		getGoogleMapView().click();
-		MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+		//getGoogleMapView().click();
+		//MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {

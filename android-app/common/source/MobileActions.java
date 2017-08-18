@@ -284,30 +284,27 @@ public class MobileActions {
 
 	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
 	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
-	// currently keeping this method as 'private' until appium issue is fixed.
-	public void zoomIn(WebElement element, ZoomDirection direction, int delta) {
+	// currently keeping this method as 'private' until appium java client issue is fixed.
+	private void zoomIn(WebElement element, ZoomDirection direction, int delta) {
 		Log.method("zoomIn", direction, delta);
-		Coordinates center = getElementCenterCoordinate(element);
-		Log.info(String.format("Element center coordinates (x, y) are -> [%d, %d]", center.x, center.y));
 		int negDelta = -1 * delta;
 		Log.method("Getting finger1 action ...");
-		TouchAction fingerAction1 = getFingerAction(element, center, direction, -20/*pad*/, 0 /*startPos*/, negDelta /*moveBy*/);
+		TouchAction fingerAction1 = getFingerAction(element, direction, -20, negDelta, true /*isPinch*/);
 		Log.method("Getting finger2 action ...");
-		TouchAction fingerAction2 = getFingerAction(element, center, direction, 20/*pad*/, 0 /*startPos*/, delta /*moveBy*/);
+		TouchAction fingerAction2 = getFingerAction(element, direction, 20, delta, true /*isPinch*/);
 		performMultiTouchAction(fingerAction1, fingerAction2);
 	}
 
 	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
 	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
-	// currently keeping this method as 'private' until appium issue is fixed.
-	public void zoomOut(WebElement element, ZoomDirection direction, int delta) {
+	// currently keeping this method as 'private' until appium java client issue is fixed.
+	private void zoomOut(WebElement element, ZoomDirection direction, int delta) {
 		Log.method("zoomOut", direction, delta);
-		Coordinates center = getElementCenterCoordinate(element);
 		int negDelta = -1 * delta;
 		Log.method("Getting finger1 action ...");
-		TouchAction fingerAction1 = getFingerAction(element, center, direction, -20/*pad*/, negDelta /*startPos*/, delta /*moveBy*/);
+		TouchAction fingerAction1 = getFingerAction(element, direction, -20, delta, false /*isPinch*/);
 		Log.method("Getting finger2 action ...");
-		TouchAction fingerAction2 = getFingerAction(element, center, direction, 20/*pad*/, delta /*startPos*/, negDelta /*moveBy*/);
+		TouchAction fingerAction2 = getFingerAction(element, direction, 20, negDelta, false /*isPinch*/);
 		performMultiTouchAction(fingerAction1, fingerAction2);
 	}
 
@@ -317,18 +314,34 @@ public class MobileActions {
 		mTouchAction.add(fingerAction1).add(fingerAction2).perform();
 	}
 
-	private TouchAction getFingerAction(WebElement element, Coordinates center, ZoomDirection direction, int pad, int startPos, int moveBy) {
-		Log.method("getFingerAction", element, center, direction, pad, startPos, moveBy);
-		// appium will offset the coordinates using topLeft coordinates of the element. apply offset to each coordinate.
+	private TouchAction getFingerAction(WebElement element, ZoomDirection direction, int pad, int moveBy, boolean isPinch) {
+		Log.method("getFingerAction", element, direction, pad, moveBy, isPinch);
 		int offsetX = element.getLocation().getX();
 		int offsetY = element.getLocation().getY();
+		Coordinates center = getElementCenterCoordinate(element);
+		Log.info(String.format("Element center coordinates (x, y) are -> [%d, %d]", center.x, center.y));
 		TouchAction fingerAction = new TouchAction(getAndroidDriver());
+		int x1 = 0; int y1 = 0; int x2 = 0; int y2 = 0;
 		if (direction.equals(ZoomDirection.VERTICAL)) {
-			Log.info(String.format("Press -> [%d, %d].. Move to -> [%d, %d]", center.x - offsetX, center.y+pad+moveBy - offsetY, 0 - offsetX, moveBy - offsetY));
-			fingerAction.press(element, center.x - offsetX, center.y+pad+moveBy - offsetY).waitAction(2000).moveTo(element, 0 - offsetX, moveBy - offsetY).release();
+			x1 = center.x - offsetX;
+			y1 = center.y+pad+moveBy - offsetY;
+			x2 = center.x - offsetX;
+			y2 = center.y+pad - offsetY;
 		} else {
-			Log.info(String.format("Press -> [%d, %d].. Move to -> [%d, %d]", center.x+pad+startPos - offsetX, center.y - offsetY, moveBy, 0 - offsetY));
-			fingerAction.press(element, center.x+pad+startPos - offsetX, center.y - offsetY).waitAction(2000).moveTo(element, moveBy - offsetX, 0 - offsetY).release();
+			x1 = center.x+moveBy+pad - offsetX;
+			y1 = center.y - offsetY;
+			x2 = center.x+pad - offsetX;
+			y2 = center.y - offsetY;
+		}
+
+		if (isPinch) {
+			Log.info("Applying pinch ...");
+			Log.info(String.format("Press (x,y) -> [%d,%d].. Move to (x,y) -> [%d,%d]", x1, y1, x2, y2));
+			fingerAction.press(element, x1, y1).waitAction(2000).moveTo(element, x2, y2).release();
+		} else {
+			Log.info("Applying zoom out ...");
+			Log.info(String.format("Press (x,y) -> [%d,%d].. Move to (x,y) -> [%d,%d]", x2, y2, x1, y1));
+			fingerAction.press(element, x2, y2).waitAction(2000).moveTo(element, x1, y1).release();
 		}
 
 		return fingerAction;
