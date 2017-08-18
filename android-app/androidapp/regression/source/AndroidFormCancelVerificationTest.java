@@ -445,7 +445,6 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addCgiFormDialog);
 	}
 
-
 	private void initializeConfirmationDialog() {
 		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), confirmationDialog);

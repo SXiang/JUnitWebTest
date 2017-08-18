@@ -195,6 +195,8 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.waitForScreenLoad();
 
 			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
+			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
+			//
 			//investigateMapScreen.clickOnMarkAsComplete();
 			//investigateReportScreen.waitForScreenLoad();
 			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
@@ -309,6 +311,8 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.waitForScreenLoad();
 
 			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
+			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
+			//
 			//investigateMapScreen.clickOnMarkAsComplete();
 			//investigateReportScreen.waitForScreenLoad();
 			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
@@ -426,6 +430,8 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.waitForScreenLoad();
 
 			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
+			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
+			//
 			//investigateMapScreen.clickOnMarkAsComplete();
 			//investigateReportScreen.waitForScreenLoad();
 			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
