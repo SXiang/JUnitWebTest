@@ -43,7 +43,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String FN_VERIFY_MAP_SWITCH_OFF = "verifyMapSwitchOff";
 	private static final String FN_VERIFY_MAP_SWITCH_ON = "verifyMapSwitchOn";
 	private static final String FN_VERIFY_SURVEY_WARNING_CONTENT = "verifySurveyModeWarningContent";
-	private static final String FN_VERIFY_ANALTYZER_WARMING_MESSAGE = "verifyAnalyzerWarmingMessageIsShown";
 	private static final String FN_VERIFY_GIS_SWITCH_IS_ON = "verifyGisSwitchIsOn";
 	private static final String FN_VERIFY_DISPLAY_SWITCH_IS_ON = "verifyDisplaySwitchIsOn";
 	private static final String FN_VERIFY_CROSS_HAIR_ICON_IS_SHOWN_ON_MAP = "verifyCrossHairIconIsShownOnMap";

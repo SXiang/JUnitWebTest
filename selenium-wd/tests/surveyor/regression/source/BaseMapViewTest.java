@@ -1,7 +1,5 @@
 package surveyor.regression.source;
 
-import static surveyor.regression.source.BaseMapViewTest.testIndex;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
