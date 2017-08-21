@@ -60,7 +60,6 @@ public class BaseMapViewTest extends BaseTest{
 	protected static final String SURVEY_INFO_SURVEYOR5_ANALYZER5 = "Surveyor: SimAuto-Surveyor5 - SimAuto-Analyzer5";
 	protected static final String SURVEY_INFO_SURVEY_STATUS_ACTIVE = "Survey Active";
 	protected static final String SURVEY_INFO_SURVEY_STATUS_INACTIVE = "Survey Inactive";
-	protected static final String SURVEY_INFO_SURVEY_STATUS_WARMINGUP = "Analyzer Warming Up";
 	protected static final String SURVEY_INFO_SURVEYOR1 = "Surveyor: SimAuto-Surveyor1";
 	protected static final String SURVEY_INFO_SURVEYOR2 = "Surveyor: SimAuto-Surveyor2";
 	protected static final String SURVEY_INFO_ANALYZER1 = "Analyzer: SimAuto-Analyzer1";
