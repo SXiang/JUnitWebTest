@@ -883,7 +883,7 @@ public class SurveyorBasePage extends BasePage {
 			}
 		});
 	}
-
+	
 	public void waitForAnimationToComplete() {
 		Log.method("waitForAnimationToComplete");
 		ExpectedCondition<Boolean> jQueryAnimationComplete = new ExpectedCondition<Boolean>() {

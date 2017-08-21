@@ -76,23 +76,23 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public String getTagLabelText() {
-		return driver.findElement(By.id("tag")).getText();
+		return getElementInnerText(driver.findElement(By.id("tag")));
 	}
 
 	public String getSurveyModeLabelText() {
-		return driver.findElement(By.id("surveyMode")).getText();
+		return getElementInnerText(driver.findElement(By.id("surveyMode")));
 	}
 
 	public String getSurveyStatusLabelText() {
-		return driver.findElement(By.id("headerInfoStatus")).getText();
+		return getElementInnerText(driver.findElement(By.id("headerInfoStatus")));
 	}
 
 	public String getDriverLabelText() {
-		return driver.findElement(By.id("driver")).getText();
+		return getElementInnerText(driver.findElement(By.id("driver")));
 	}
 
 	public String getStabilityClassLabelText() {
-		return driver.findElement(By.id("stabilityClass")).getText();
+		return getElementInnerText(driver.findElement(By.id("stabilityClass")));
 	}
 
 	public WebElement getTimeElapsedLabel() {
@@ -100,7 +100,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public String getTimeElapsedLabelText() {
-		return driver.findElement(By.id("timeElapsed")).getText();
+		return getElementInnerText(driver.findElement(By.id("timeElapsed")));
 	}
 
 	public WebElement getTimeLabel() {
@@ -108,7 +108,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public String getTimeLabelText() {
-		return driver.findElement(By.id("currentTime")).getText();
+		return getElementInnerText(driver.findElement(By.id("currentTime")));
 	}
 
 	public WebElement getTimeRemainingLabel() {
@@ -116,19 +116,19 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public String getTimeRemainingLabelText() {
-		return driver.findElement(By.id("timeRemaining")).getText();
+		return getElementInnerText(driver.findElement(By.id("timeRemaining")));
 	}
 
 	public String getSurveyorLabelText() {
-		return driver.findElement(By.id("surveyorAnalyzer")).getText();
+		return getElementInnerText(driver.findElement(By.id("surveyorAnalyzer")));
 	}
 
 	public String getZoomLevelLabelText() {
-		return driver.findElement(By.id("zoomLevel")).getText();
+		return getElementInnerText(driver.findElement(By.id("zoomLevel")));
 	}
 
 	public String getAnalyzerLabelText() {
-		return driver.findElement(By.id("headerInfoStatus")).getText();
+		return getElementInnerText(driver.findElement(By.id("headerInfoStatus")));
 	}
 
 	public boolean isWindRoseShown() {
@@ -158,7 +158,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isPositionButtonSelected() {
-		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
+		return this.positionButton.getAttribute("class").contains("bottom_button standard_icon on");
 	}
 
 	public boolean isPositionButtonGreen() {

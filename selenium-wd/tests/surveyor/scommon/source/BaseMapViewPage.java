@@ -679,8 +679,13 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public boolean isGisBoundarySmallBoundaryButtonVisible() {
+		return isGisBoundarySmallBoundaryButtonVisible("");
+	}
+	
+	public boolean isGisBoundarySmallBoundaryButtonVisible(String status) {
 		return !(WebElementExtender.isAttributePresent(this.boundariesSmallBoundaryDivElement,"ng-cloak") ||
 					this.boundariesSmallBoundaryDivElement.getAttribute("class").contains("ng-hide"));
+		
 	}
 
 	public boolean isGisUseAllBoundariesButtonVisible() {
@@ -705,6 +710,37 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return true;
 	}
 
+	public boolean isAnalyzerWarmingMessageShown(String expectedText){
+		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
+		String text = getElementText(activeSurveyModeDialog);
+		if(!text.equals(expectedText)){
+			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
+			return false;
+		}
+		for(String[] css:cssValues){
+			String value = activeSurveyModeDialog.getCssValue(css[0]);
+			if(!value.equals(css[1])){
+				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isGisSwitchOn(GisSwitchType switchType, String status)  {
+		if(status==null||status.trim().isEmpty()){
+			return true;
+		}
+		boolean matched = false;
+		try{
+			matched = isGisSwitchOn(switchType);
+		}catch(Exception e){
+			Log.warn("Failed to get gis button status: "+e);
+			return matched;
+		}
+	    return status.equalsIgnoreCase("on") == matched;
+	}
+	
 	public boolean isGisSwitchOn(GisSwitchType switchType) throws Exception {
 		boolean isSelected = false;
 
@@ -968,6 +1004,20 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return true;
 	}
 
+	public boolean isMapSwitchOn(MapSwitchType switchType, String status)  {
+		if(status==null||status.trim().isEmpty()){
+			return true;
+		}
+		boolean matched = false;
+		try{
+			matched = isMapSwitchOn(switchType);
+		}catch(Exception e){
+			Log.warn("Failed to get map view button status: "+e);
+			return matched;
+		}
+	    return status.equalsIgnoreCase("on") == matched;
+	}
+	
 	public boolean isMapSwitchOn(MapSwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 
@@ -1044,6 +1094,9 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case EightHourHistory:
 			isSelected = this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch");
 			break;
+		case WindRose:
+			isSelected = this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch");
+			break;
 		case ConcentrationChart:
 			isSelected = this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch");
 			break;
@@ -1071,9 +1124,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Notes:
 			isSelected = this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch");
 			break;
-		case WindRose:
-			isSelected = this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch");
-			break;
 		default:
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
@@ -1082,6 +1132,20 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
+	public boolean isDisplaySwitchOn(DisplaySwitchType switchType, String status)  {
+		if(status==null||status.trim().isEmpty()){
+			return true;
+		}
+		boolean matched = false;
+		try{
+			matched = isDisplaySwitchOn(switchType);
+		}catch(Exception e){
+			Log.warn("Failed to get display button status: "+e);
+			return matched;
+		}
+	    return status.equalsIgnoreCase("on") == matched;
+	}
+	
 	public boolean isDisplaySwitchOn(DisplaySwitchType switchType) throws IllegalArgumentException {
 		boolean isSelected = false;
 
@@ -1133,12 +1197,29 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					waitAndClickElement(this.displaySwitch8HourHistory);
+					waitForElementToBeClickable(this.displaySwitch8HourHistory);
+					jsClick(this.displaySwitch8HourHistory);
 				}
 			} else if (this.displaySwitch8HourHistory.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					waitAndClickElement(this.displaySwitch8HourHistory);
+					waitForElementToBeClickable(this.displaySwitch8HourHistory);
+					jsClick(this.displaySwitch8HourHistory);
+				}
+			}
+			break;
+		case WindRose:
+			if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch")) {
+				if (turnOn) {
+					Log.clickElementInfo(switchType.toString(), "to switch on");
+					waitForElementToBeClickable(this.displaySwitchWindrose);
+					jsClick(this.displaySwitchWindrose);
+				}
+			} else if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on")) {
+				if (!turnOn) {
+					Log.clickElementInfo(switchType.toString(), "to switch off");
+					waitForElementToBeClickable(this.displaySwitchWindrose);
+					jsClick(this.displaySwitchWindrose);
 				}
 			}
 			break;
@@ -1146,12 +1227,14 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch")) {
 				if (turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch on");
-					waitAndClickElement(this.displaySwitchConcentrationChart);
+					waitForElementToBeClickable(this.displaySwitchConcentrationChart);
+					jsClick(this.displaySwitchConcentrationChart);
 				}
 			} else if (this.displaySwitchConcentrationChart.getAttribute("class").equalsIgnoreCase("switch on")) {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
-					waitAndClickElement(this.displaySwitchConcentrationChart);
+					waitForElementToBeClickable(this.displaySwitchConcentrationChart);
+					jsClick(this.displaySwitchConcentrationChart);
 				}
 			}
 			break;
@@ -1252,19 +1335,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
 					waitAndClickElement(this.displaySwitchNotes);
-				}
-			}
-			break;
-		case WindRose:
-			if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch")) {
-				if (turnOn) {
-					Log.clickElementInfo(switchType.toString(), "to switch on");
-					waitAndClickElement(this.displaySwitchWindrose);
-				}
-			} else if (this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on")) {
-				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString(), "to switch off");
-					waitAndClickElement(this.displaySwitchWindrose);
 				}
 			}
 			break;
