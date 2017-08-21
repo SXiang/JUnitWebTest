@@ -99,14 +99,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 	}
 	private void loginAsObserver(int userRowID, int index) throws Exception {
 		loginPageActionList.get(index).open(EMPTY, NOTSET);
-		loginPageActionList.get(index);
 		LoginPageActions.workingDataRow.set(null);
 		loginPageActionList.get(index).login(EMPTY, userRowID); /* Picarro Admin */
 	}
 
 	private void loginAsDriver(int userRowID) throws Exception {
 		getLoginPageAction().open(EMPTY, NOTSET);
-		getLoginPageAction();
 		LoginPageActions.workingDataRow.set(null);
 		getLoginPageAction().login(EMPTY, userRowID); /* Picarro Admin */
 	}
