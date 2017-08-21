@@ -9,21 +9,30 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidMainLoginScreen extends AndroidBaseScreen {
+	private static final String BACKPACK_SERVER_EDITVIEW_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.EditText[1]";
+	private static final String PCUBED_URL_EDITVIEW_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.EditText[1]";
+	private static final String USERNAME_EDITVIEW_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.widget.EditText[1]";
+	private static final String CLEAR_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]";
+	private static final String CANCEL_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[5]";
+	private static final String SAVE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[6]";
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = BACKPACK_SERVER_EDITVIEW_XPATH)
 	private MobileElement bpackServerAddressEditText;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[2]")
+	@AndroidFindBy(xpath = PCUBED_URL_EDITVIEW_XPATH)
 	private MobileElement picServerAddressEditText;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.EditText[3]")
+	@AndroidFindBy(xpath = USERNAME_EDITVIEW_XPATH)
 	private MobileElement usernameEditText;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]")
-	private MobileElement clearButton;
+	@AndroidFindBy(xpath = CANCEL_BUTTON_XPATH)
+	private MobileElement cancel;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]")
-	private MobileElement saveButton;
+	@AndroidFindBy(xpath = CLEAR_BUTTON_XPATH)
+	private MobileElement clear;
+
+	@AndroidFindBy(xpath = SAVE_BUTTON_XPATH)
+	private MobileElement save;
 
 	public AndroidMainLoginScreen(WebDriver driver) {
 		super(driver);
@@ -43,13 +52,13 @@ public class AndroidMainLoginScreen extends AndroidBaseScreen {
 		Log.info("Hiding keyboard, before clicking on Save button");
 		((AppiumDriver)this.driver).hideKeyboard();
 
-		Log.info("Clicking on saveButton ...");
-		saveButton.click();
+		Log.info("Clicking on save ...");
+		save.click();
 	}
 
 	public void clearSettings() {
 		Log.method("clearSettings");
-		clearButton.click();
+		clear.click();
 	}
 
 	public void waitForFirstAppLoad() {
@@ -60,8 +69,8 @@ public class AndroidMainLoginScreen extends AndroidBaseScreen {
 	@Override
 	public Boolean screenLoadCondition() {
 		Log.method("AndroidMainLoginScreen.screenLoadCondition");
-		saveButton = (MobileElement) this.driver.findElement(By.xpath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[3]"));
-		Log.info(String.format("Found saveButton - %s", (saveButton==null)?"NULL":saveButton.toString()));
-		return saveButton!=null && saveButton.isDisplayed();
+		save = (MobileElement) this.driver.findElement(By.xpath(SAVE_BUTTON_XPATH));
+		Log.info(String.format("Found save - %s", (save==null)?"NULL":save.toString()));
+		return save!=null && save.isDisplayed();
 	}
 }

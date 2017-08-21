@@ -21,6 +21,10 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	private WebElement clearHeatmap;
 	private boolean clearHeatmapDisplayed;
 
+	private static final String LOGOUT_UI_SELECTOR = "new UiSelector().text(\"Logout\")";
+	private WebElement logout;
+	private boolean logoutDisplayed;
+
 	private static final String SHUTDOWN_BACKPACK_UI_SELECTOR = "new UiSelector().text(\"Shutdown Backpack\")";
 	private WebElement shutdownInstrument;
 	private boolean shutdownInstrumentDisplayed;
@@ -149,6 +153,21 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public void clickOnShutdownInstrument() {
 		Log.method("clickOnShutdownInstrument");
 		tap(getShutdownInstrument());
+	}
+
+	public WebElement getLogout() {
+		Log.method("getLogout");
+		if (!logoutDisplayed) {
+			logout = getAndroidDriver().findElementByAndroidUIAutomator(LOGOUT_UI_SELECTOR);
+			logoutDisplayed = true;
+		}
+
+		return logout;
+	}
+
+	public void clickOnLogout() {
+		Log.method("clickOnLogout");
+		tap(getLogout());
 	}
 
 	@Override
