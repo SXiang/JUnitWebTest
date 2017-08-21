@@ -158,7 +158,7 @@ public class BaseDrivingViewPage extends BaseMapViewPage {
 	}
 
 	public boolean isPositionButtonSelected() {
-		return this.positionButton.getAttribute("class").contains("bottom_button standard_icon on");
+		return this.positionButton.getAttribute("class").equalsIgnoreCase("bottom_button standard_icon on");
 	}
 
 	public boolean isPositionButtonGreen() {

@@ -684,8 +684,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	
 	public boolean isGisBoundarySmallBoundaryButtonVisible(String status) {
 		return !(WebElementExtender.isAttributePresent(this.boundariesSmallBoundaryDivElement,"ng-cloak") ||
-					this.boundariesSmallBoundaryDivElement.getAttribute("class").contains("ng-hide"));
-		
+					this.boundariesSmallBoundaryDivElement.getAttribute("class").contains("ng-hide"));	
 	}
 
 	public boolean isGisUseAllBoundariesButtonVisible() {
