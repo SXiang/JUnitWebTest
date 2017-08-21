@@ -709,23 +709,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return true;
 	}
 
-	public boolean isAnalyzerWarmingMessageShown(String expectedText){
-		String[][] cssValues = {{"color", "rgba(0, 128, 0, 1)"},{"font-weight","bold"}};
-		String text = getElementText(activeSurveyModeDialog);
-		if(!text.equals(expectedText)){
-			Log.warn("Expected text: "+expectedText+", Actual text: "+text);
-			return false;
-		}
-		for(String[] css:cssValues){
-			String value = activeSurveyModeDialog.getCssValue(css[0]);
-			if(!value.equals(css[1])){
-				Log.warn("Expected css Value: "+css[1]+", Actual css Value: "+value);
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public boolean isGisSwitchOn(GisSwitchType switchType, String status)  {
 		if(status==null||status.trim().isEmpty()){
 			return true;

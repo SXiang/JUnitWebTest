@@ -1505,17 +1505,4 @@ public class BaseMapViewPageActions extends BasePageActions {
 		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_SURVEY_WARNING_CONTENT, ARG_DATA, data);
 		return getBaseMapViewPageObject().isSurveyModeWarningContentCorrect(data);
 	}
-	
-	/**
-	 * Executes verifyAnalyzerWarmingMessageIsShown action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception
-	 */
-	public boolean verifyAnalyzerWarmingMessageIsShown(String data, Integer dataRowID) throws Exception {
-		logAction(getRuntimeType() + ".verifyAnalyzerWarmingMessageIsShown", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_ANALTYZER_WARMING_MESSAGE, ARG_DATA, data);
-		return getBaseMapViewPageObject().isAnalyzerWarmingMessageShown(data);
-	}
 }
