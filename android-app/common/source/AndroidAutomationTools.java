@@ -33,6 +33,8 @@ public class AndroidAutomationTools {
 		public static final String TURN_ON_WIFI = "settings put secure location_providers_allowed +wifi";
 		public static final String TURN_OFF_WIFI = "settings put secure location_providers_allowed -wifi";
 		public static final String GPS_WIFI_NETWORK_STATUS = "settings get secure location_providers_allowed";
+		public static final String DUMPSYS_INPUT_METHOD = "dumpsys input_method";
+		public static final String DUMPSYS_POWER = "dumpsys power";
 	}
 
 	public static class AndroidPaths {
@@ -65,16 +67,7 @@ public class AndroidAutomationTools {
 		Log.method("start");
 
 		// start emulator.
-		String startAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-		String repoRootFolder = TestSetup.getRootPath();
-		String startAndroidToolsCmd = START_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"") + " \"" + DEFAULT_EMULATOR_AVD_NAME + "\"";
-		String command = "cd \"" + startAndroidToolsCmdFolder + "\" && " + startAndroidToolsCmd;
-		Log.info("Executing start android automation tools command. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
-
-		// wait for device to boot.
-		AdbInterface.waitForDeviceToBeReady(AdbInterface.getAdbLocation());
-		waitForDeviceToBoot();
+		startEmulator();
 
 		// start appium server.
 		startAppiumServer();
@@ -124,7 +117,7 @@ public class AndroidAutomationTools {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 	}
 
-	private static void startAppiumServer() throws IOException {
+	public static void startAppiumServer() throws IOException {
 		Log.method("startAppiumServer");
 		String startAppiumServerCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
 		String repoRootFolder = TestSetup.getRootPath();
@@ -134,6 +127,25 @@ public class AndroidAutomationTools {
 		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
 		waitForAppiumServerToStart();
 		waitForAppiumServerToCatchUp();
+	}
+
+	public static void stopAppiumServer() throws Exception {
+		Log.method("stopAppiumServer");
+		ProcessUtility.killProcess("node.exe", false /*killChildProcesses*/);
+	}
+
+	private static void startEmulator() throws IOException {
+		Log.method("startEmulator");
+		String startAndroidToolsCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
+		String repoRootFolder = TestSetup.getRootPath();
+		String startAndroidToolsCmd = START_ANDROID_TOOLS_CMD + String.format(" %s", "\"" + repoRootFolder + "\"") + " \"" + DEFAULT_EMULATOR_AVD_NAME + "\"";
+		String command = "cd \"" + startAndroidToolsCmdFolder + "\" && " + startAndroidToolsCmd;
+		Log.info("Executing start android automation tools command. Command -> " + command);
+		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
+
+		// wait for device to boot.
+		AdbInterface.waitForDeviceToBeReady(AdbInterface.getAdbLocation());
+		waitForDeviceToBoot();
 	}
 
 	private static void waitForDeviceToBoot() {
