@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
-import surveyor.scommon.actions.ActionBuilder;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.source.DriverViewPage;
@@ -40,7 +39,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 	private DriverViewPageActions driverViewPageAction;
 	private ArrayList<ObserverViewPageActions> observerViewPageActionList = new ArrayList<ObserverViewPageActions>();
-	private TestEnvironmentActions testEnvironmentAction = ActionBuilder.createTestEnvironmentAction();
 	private DriverViewPage driverViewPage;
 	private ArrayList<ObserverViewPage> observerViewPageList = new ArrayList<ObserverViewPage>();
 
@@ -64,7 +62,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 			driverViewPageAction = new DriverViewPageActions(getDriver(), getBaseURL(), getTestSetup());
 			driverViewPage = new DriverViewPage(getDriver(), getBaseURL(), getTestSetup());
 			PageFactory.initElements(getDriver(), driverViewPage);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -164,7 +161,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -208,7 +205,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
-		testEnvironmentAction.stopAnalyzer(EMPTY, NOTSET);
+		 getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
 	}
 
 	/**
@@ -520,7 +517,7 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 
-		String analyzer = getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
@@ -678,8 +675,8 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// Start 1st survey.
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
 		driverViewPageAction.getBaseDrivingViewPage().setZoomLevel(15);
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);
-		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
+		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
+		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
 		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
 		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
 		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
@@ -688,12 +685,12 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// Start 2st survey with a different tag.
 		TestEnvironmentActions.workingDataRow.set(null);
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
-		testEnvironmentAction.idleForSeconds(String.valueOf(15), NOTSET);
+		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
 		// Verify 1st survey field note is NOT shown.
 		// Verify 2nd survey indication is shown.
-		String analyzer = testEnvironmentAction.getWorkingAnalyzerSerialNumber();
+		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
