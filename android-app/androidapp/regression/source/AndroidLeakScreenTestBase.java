@@ -180,8 +180,6 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
@@ -212,8 +210,6 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
 			investigateReportScreen.waitForScreenLoad();
 			return true;
 		});
