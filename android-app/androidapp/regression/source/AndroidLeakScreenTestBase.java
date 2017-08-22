@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import androidapp.data.source.InvestigationReportDataVerifier.BoxType;
 import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.LeakListInfoEntity;
 import androidapp.entities.source.OtherSourceListInfoEntity;
@@ -18,12 +19,17 @@ import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import common.source.Log;
 import common.source.LogHelper;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.ResourceKeys;
+import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
+import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTestBase extends BaseReportTest {
+	private static final int SOURCE_ITEMS_SHOWN_IN_ONE_PAGE = 8;
 	private static final String OTHER_SOURCE = "Other Source";
 
 	protected LeakDataBuilder addNewLeak(AndroidAddSourceDialog addSourceDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog) throws Exception {
@@ -111,8 +117,29 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			.count() > 0;
 	}
 
+	protected Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog,AndroidAddedSourceListDialog addedSourcesListDialog,
+			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle)
+			throws Exception {
+		Log.method("checkInvestigateNewMarkerAsComplete", investigateReportScreen, investigateMapScreen, addSourceDialog, addOtherSourceFormDialog,
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+		return checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog, addOtherSourceFormDialog, null /*addLeakSourceFormDialog*/,
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+	}
+
+	protected Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidAddSourceDialog addSourceDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog,
+			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle)
+			throws Exception {
+		Log.method("checkInvestigateNewMarkerAsComplete", investigateReportScreen, investigateMapScreen, addSourceDialog, addLeakSourceFormDialog,
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+		return checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog, null /*addOtherSourceFormDialog*/, addLeakSourceFormDialog,
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+	}
+
 	protected void investigateNotInvestigatedMarkerToNoGasFound(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
 			AndroidConfirmationDialog confirmationDialog, final String noGasFound, final String notInvestigated) throws Exception {
+		Log.method("investigateNotInvestigatedMarkerToNoGasFound", investigateReportScreen, investigateMapScreen, confirmationDialog, noGasFound, notInvestigated);
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -128,6 +155,117 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 					actualMarkerStatus.equals(noGasFound));
 			return true;
 		});
+	}
+
+	protected void investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidAddSourceDialog addSourceDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog,
+			AndroidConfirmationDialog confirmationDialog) throws Exception {
+		Log.method("investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete", investigateReportScreen, investigateMapScreen,
+				addSourceDialog, addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog);
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		String[] markerStatusNotInv = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatusNotInv));
+
+		// Add new leak. Mark as Complete.
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			addSourceDialog.clickOnAddLeak();
+			addLeakSourceFormDialog.waitForScreenLoad();
+			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
+			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
+			addedSourcesListDialog.waitForScreenLoad();
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
+	}
+
+	protected void investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog,
+			AndroidConfirmationDialog confirmationDialog) throws Exception {
+		Log.method("investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete", investigateReportScreen, investigateMapScreen, addSourceDialog,
+				addOtherSourceFormDialog, addedSourcesListDialog, confirmationDialog);
+		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		String[] markerStatusNotInv = {notInvestigated};
+		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatusNotInv));
+
+		// Add new other source. Mark as Complete.
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnAddSource();
+			addSourceDialog.waitForScreenLoad();
+			addSourceDialog.clickOnAddOtherSources();
+			addOtherSourceFormDialog.waitForScreenLoad();
+			addOtherSourceFormDialog.clickOnUseCurrentLocation();
+			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
+			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 120));
+			addOtherSourceFormDialog.clickOnOK();
+			initializeAndroidAddedLeakListDialog();
+			addedSourcesListDialog.waitForScreenAndDataLoad();
+			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
+	}
+
+	private Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
+			AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog,
+			AndroidAddedSourceListDialog addedSourcesListDialog, AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses,
+			List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle) throws Exception {
+		Log.info(String.format("Checking for presence of existing marker with status -> [%s] ...", LogHelper.collectionToString(markerStatuses, "markerStatuses")));
+		List<InvestigationMarkerEntity> investigationMarkers = listOfListMarkers.get(0);
+		Integer idx = -1;
+		boolean foundMarker = false;
+		for (int i = 0; i < investigationMarkers.size(); i++) {
+			InvestigationMarkerEntity markerEntity = investigationMarkers.get(i);
+			String[] split = markerEntity.getMarkerNumber().split("-");
+			String lisaNum = split[split.length-1].trim();
+			if (markerStatuses.contains(markerEntity.getInvestigationStatus())) {
+				idx++;
+				if (!invReportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(Report.getReport(reportTitle).getId(),
+						SurveyorConstants.SQAPICDR, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
+					Log.info(String.format("Found matching marker -> [%s]", markerEntity.toString()));
+					foundMarker = true;
+					break;
+				}
+			}
+		}
+
+		// If no existing marker of desired status, create new.
+		if (!foundMarker) {
+			final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
+			final String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
+			final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
+
+			Log.info(String.format("No existing marker found with status - [%s]. Investigating and marking as Complete.",
+					LogHelper.collectionToString(markerStatuses, "markerStatuses")));
+
+			if (markerStatuses.contains(foundGasLeak)) {
+				investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
+						addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog);
+			} else if (markerStatuses.contains(foundOtherSource)) {
+				investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete(investigateReportScreen, investigateMapScreen,
+						addSourceDialog, addOtherSourceFormDialog, addedSourcesListDialog, confirmationDialog);
+			} else if (markerStatuses.contains(noGasFound)) {
+				final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+				investigateNotInvestigatedMarkerToNoGasFound(investigateReportScreen, investigateMapScreen, confirmationDialog, noGasFound, notInvestigated);
+			}
+
+			idx++;
+		}
+
+		return idx;
 	}
 
 	/* Implementation to be provided by derived class */

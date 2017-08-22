@@ -1,10 +1,13 @@
 package common.source;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.testng.Assert;
 
@@ -97,26 +100,56 @@ public class ProcessUtility {
 	}
 
 	public static boolean isProcessRunning(String processName) {
-		Log.info(String.format("Checking if process %s is running ...", processName));
+		Log.method("isProcessRunning", processName);
+		return isProcessRunning(processName, null /*commandLineText*/);
+	}
+
+	public static boolean isProcessRunning(String processName, String commandLineText) {
+		return isProcessRunning(processName, commandLineText, true /*logEnabled*/);
+	}
+
+	public static boolean isProcessRunning(String processName, String commandLineText, Boolean infoLogEnabled) {
+		if (infoLogEnabled) {
+			Log.info(String.format("Checking if process %s is running ... Command line filter = [%s]", processName, commandLineText));
+		}
+
 		try {
-			Process process = Runtime.getRuntime().exec("wmic.exe");
-			InputStreamReader streamReader = new InputStreamReader(process.getInputStream());
+			Process process = Runtime.getRuntime().exec("cmd /c WMIC");
 
 			// Query for the process.
-			OutputStreamWriter oStreamWriter = new OutputStreamWriter(process.getOutputStream());
-			oStreamWriter.write(String.format("process where name='%s'", processName));
-			oStreamWriter.flush();
-			oStreamWriter.close();
+			BufferedWriter bufWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+			if (!BaseHelper.isNullOrEmpty(commandLineText)) {
+				bufWriter.write("process where \"name='" + processName + "' and commandline like '%" + commandLineText + "%'\"");
+			} else {
+				bufWriter.write(String.format("process where name='%s'", processName));
+			}
+
+			bufWriter.newLine();
+			bufWriter.flush();
+			bufWriter.close();
 
 			// Read the input stream and check if process string was found in the input text.
-			BufferedReader bufferedReader = new BufferedReader(streamReader);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String lineText;
+			Boolean foundHeader = false;
 			try {
 				while ((lineText = bufferedReader.readLine()) != null) {
-					Log.info(lineText);
-					if (lineText.toLowerCase().contains(processName.toLowerCase())) {
-						Log.info(String.format("Found process - %s", processName));
-						return true;
+					if (infoLogEnabled) {
+						Log.info(lineText);
+					}
+
+					if (!foundHeader) {
+						foundHeader = lineText.contains("Caption") && lineText.contains("CommandLine");
+					}
+
+					if (foundHeader) {
+						if (lineText.toLowerCase().contains(processName.toLowerCase())) {
+							if (infoLogEnabled) {
+								Log.info(String.format("Found process - %s", processName));
+							}
+
+							return true;
+						}
 					}
 				}
 			} catch (IOException e) {
@@ -128,7 +161,10 @@ public class ProcessUtility {
 			Log.error(e.toString());
 		}
 
-		Log.info(String.format("Did NOT find process - %s", processName));
+		if (infoLogEnabled) {
+			Log.info(String.format("Did NOT find process - %s", processName));
+		}
+
 		return false;
 	}
 
