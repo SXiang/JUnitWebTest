@@ -243,7 +243,7 @@ public class DataTablePage extends SurveyorBasePage {
 		Log.method("actionOnMatchingRow", elementBy, LogHelper.mapToString(matchFilters));
 		WebElement row = this.getMatchingRow(matchFilters, tableContext, applyPagination);
 		if (row != null) {
-			WebElement element = row.findElement(elementBy);			
+			WebElement element = row.findElement(elementBy);
 			if (elementAction.test(element)) {
 				return true;
 			}
