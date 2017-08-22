@@ -7,24 +7,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 
-import common.source.BaseHelper;
 import common.source.Log;
 import common.source.LogHelper;
-import common.source.PollManager;
-import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
-import androidapp.entities.source.InvestigationEntity;
 import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
-
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
+	private static final String LIST_ITEMS_XPATH = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup";
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup")
+	@AndroidFindBy(xpath = LIST_ITEMS_XPATH)
 	private List<WebElement> listViewElements;
 
 	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
@@ -116,6 +112,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public List<InvestigationMarkerEntity> getInvestigationMarkers() {
 		Log.method("getInvestigationReports");
+		reInitializeListItems();
 		List<InvestigationMarkerEntity> invMarkersList = new ArrayList<InvestigationMarkerEntity>();
 		for (WebElement el : this.listViewElements) {
 			List<WebElement> findElements = el.findElements(MobileBy.className(CHILD_TEXTVIEW_CLSNAME));
@@ -133,7 +130,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	@SuppressWarnings("unchecked")
 	public void reInitializeListItems() {
-		this.listViewElements = getAndroidDriver().findElementsByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup");
+		this.listViewElements = getAndroidDriver().findElementsByXPath(LIST_ITEMS_XPATH);
 	}
 
 	public boolean verifyNoInvestigationMarkersFoundInReport() {

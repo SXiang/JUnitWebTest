@@ -54,6 +54,12 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String SIM_DATA_MANAGER_BROADCASTER_PY = "simDataManagerBroadcaster.py";
+	private static final String SIM_LINEAR_FITTER_BROADCASTER_PY = "simLinearFitterBroadcaster.py";
+	private static final String DUMMYLINEARFITTERALARM_PY = "dummylinearfitteralarm.py";
+	private static final String ODORCALL_SERVER_PY = "odorcallServer.py";
+	private static final String DUMMYINSTRMGR_PY = "dummyinstrmgr.py";
+	private static final String PYTHON_EXE = "python.exe";
 	private static final double DEFAULT_ALTITUDE = 0.0;
 	private static final double DEFAULT_LONGITUDE = -121.9863994;
 	private static final double DEFAULT_LATITUDE = 37.3965775;
@@ -174,8 +180,10 @@ public class BaseAndroidTest extends BaseTest {
 			collectPerfmonMetrics(testName);
 		}
 
-		if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
-			collectServiceInfos(testName);
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				collectServiceInfos(testName);
+			}
 		}
 
 		createRecording(testName);
@@ -234,15 +242,17 @@ public class BaseAndroidTest extends BaseTest {
 			perfmonCollector.startCollectors();
 		}
 
-		if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
-			initServiceCorrector();
-			List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
-			expectedServices.add(new ServiceInfo("python.exe", "dummyinstrmgr.py", null, getServiceInfoPredicate()));
-			expectedServices.add(new ServiceInfo("python.exe", "odorcallServer.py", null, getServiceInfoPredicate()));
-			expectedServices.add(new ServiceInfo("python.exe", "dummylinearfitteralarm.py", null, getServiceInfoPredicate()));
-			expectedServices.add(new ServiceInfo("python.exe", "simLinearFitterBroadcaster.py", null, getServiceInfoPredicate()));
-			expectedServices.add(new ServiceInfo("python.exe", "simDataManagerBroadcaster.py", null, getServiceInfoPredicate()));
-			serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				initServiceCorrector();
+				List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYINSTRMGR_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, ODORCALL_SERVER_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYLINEARFITTERALARM_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_LINEAR_FITTER_BROADCASTER_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_DATA_MANAGER_BROADCASTER_PY, null, getServiceInfoPredicate()));
+				serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
+			}
 		}
 
 		if (enableLogging) {
@@ -304,10 +314,10 @@ public class BaseAndroidTest extends BaseTest {
 			FileUtility.deleteFile(Paths.get(svcInfoFile));
 		}
 
-		List<String> svcInfos = this.serviceCorrector.getRunningServices();
-
 		Log.info("Stop service corrector");
 		this.serviceCorrector.stopCorrector();
+
+		List<String> svcInfos = this.serviceCorrector.getRunningServices();
 
 		Log.info(String.format("Writing service info to - '%s'", svcInfoFile));
 		FileUtility.writeToFile(svcInfoFile, svcInfos.toArray(new String[svcInfos.size()]));

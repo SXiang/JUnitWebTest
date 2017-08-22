@@ -57,7 +57,6 @@ import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
-	private static final int SOURCE_ITEMS_SHOWN_IN_ONE_PAGE = 8;
 	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
@@ -511,7 +510,8 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		});
 
 		String[] markerStatuses = {foundGasLeak, inProgress};
-		Integer idx = checkInvestigateNewMarkerAsComplete(Arrays.asList(markerStatuses), listOfListMarkers);
+		Integer idx = checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
+				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle);
 
 		// Markers screen. Click on LISA marked as Found Gas Leak
 		investigateReportScreen.clickMarkerMatchingStatusAtIndex(Arrays.asList(markerStatuses), idx);
@@ -665,7 +665,8 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		// If no existing marker of desired status, create new.
 		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
-			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
+			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
+					addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog);
 		}
 
 		initializeAddLeakSourceFormDialog();
@@ -797,66 +798,6 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}
 	}
-
-	private Integer checkInvestigateNewMarkerAsComplete(final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers)
-			throws Exception {
-		Log.info(String.format("Checking for presence of existing marker with status -> [%s] ...", LogHelper.collectionToString(markerStatuses, "markerStatuses")));
-		List<InvestigationMarkerEntity> investigationMarkers = listOfListMarkers.get(0);
-		Integer idx = -1;
-		boolean foundMarker = false;
-		for (int i = 0; i < investigationMarkers.size(); i++) {
-			InvestigationMarkerEntity markerEntity = investigationMarkers.get(i);
-			String[] split = markerEntity.getMarkerNumber().split("-");
-			String lisaNum = split[split.length-1].trim();
-			if (markerStatuses.contains(markerEntity.getInvestigationStatus())) {
-				idx++;
-				if (!invReportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(Report.getReport(generatedInvReportTitle).getId(),
-						SurveyorConstants.SQAPICDR, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
-					Log.info(String.format("Found matching marker -> [%s]", markerEntity.toString()));
-					foundMarker = true;
-					break;
-				}
-			}
-		}
-
-		// If no existing marker of desired status, create new.
-		if (!foundMarker) {
-			Log.info(String.format("No existing marker found with status - [%s]. Investigating and marking as Complete.",
-					LogHelper.collectionToString(markerStatuses, "markerStatuses")));
-			investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete();
-			idx++;
-		}
-
-		return idx;
-	}
-
-	private void investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete() throws Exception {
-		Log.method("investigateFirstNonInvestigatedMarkerAsLeakAndMarkAsComplete");
-		String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
-		String[] markerStatusNotInv = {notInvestigated};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatusNotInv));
-
-		// Add new other source. Mark as Complete.
-		executeWithBackPackDataProcessesPaused(obj -> {
-			investigateMapScreen.waitForScreenLoad();
-			investigateMapScreen.clickOnInvestigate();
-			investigateMapScreen.clickOnAddSource();
-			addSourceDialog.waitForScreenLoad();
-			addSourceDialog.clickOnAddLeak();
-			addLeakSourceFormDialog.waitForScreenLoad();
-			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
-			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
-			addedSourcesListDialog.waitForScreenLoad();
-			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
-			addedSourcesListDialog.clickOnCancel();
-			investigateMapScreen.clickOnMarkAsComplete();
-			confirmationDialog.waitForScreenLoad();
-			confirmationDialog.clickOnOK();
-			investigateReportScreen.waitForScreenLoad();
-			return true;
-		});
-	}
-
 
 	private void initializeTestScreenObjects() {
 		initializeInvestigationScreen();

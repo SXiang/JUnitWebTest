@@ -99,7 +99,10 @@ public class ServiceCorrector {
 	}
 
 	public List<String> getRunningServices() throws Exception {
-		this.corrector.detectAndCorrect();
+		if (!this.corrector.isCancelled()) {
+			this.corrector.detectAndCorrect();
+		}
+
 		return this.corrector.getRunningServices();
 	}
 

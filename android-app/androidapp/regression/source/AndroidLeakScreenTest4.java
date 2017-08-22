@@ -193,19 +193,12 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			// Mark as complete.
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
-
-			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
-			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
-			//
-			//investigateMapScreen.clickOnMarkAsComplete();
-			//investigateReportScreen.waitForScreenLoad();
-			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
-			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
-
-			/* Commented due to product defect DE3150
+			investigateMapScreen.clickOnMarkAsComplete();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
-			*/
 
 			return true;
 		});
@@ -309,19 +302,12 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			// Mark as complete.
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
-
-			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
-			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
-			//
-			//investigateMapScreen.clickOnMarkAsComplete();
-			//investigateReportScreen.waitForScreenLoad();
-			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
-			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
-
-			/* Commented due to product defect DE3150
+			investigateMapScreen.clickOnMarkAsComplete();
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
-			*/
 
 			return true;
 		});
@@ -428,19 +414,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			// Mark as complete.
 			addedSourcesListDialog.clickOnCancel();
 			investigateMapScreen.waitForScreenLoad();
-
-			// [Turned OFF] due to defect : Clicking on MarkAsComplete incorrectly prompty for confirmation dialog.
-			//  Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
-			//
-			//investigateMapScreen.clickOnMarkAsComplete();
-			//investigateReportScreen.waitForScreenLoad();
-			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
-			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
-
-			/* Commented due to product defect DE3150
+			investigateMapScreen.clickOnMarkAsComplete();
+			investigateReportScreen.waitForScreenLoad();
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundGasLeak, actualMarkerStatus));
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
-			*/
 
 			return true;
 		});
