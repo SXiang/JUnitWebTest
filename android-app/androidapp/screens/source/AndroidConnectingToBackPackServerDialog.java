@@ -50,6 +50,7 @@ public class AndroidConnectingToBackPackServerDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
+		Log.method("AndroidConnectingToBackPackServerDialog.screenLoadCondition");
 		return getEditSettingsButton().isDisplayed();
 	}
 }

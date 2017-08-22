@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -70,6 +71,11 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 
 	@Rule
 	public TestName testName = new TestName();
+
+	@BeforeClass
+	public static void beforeClass() {
+		initializeTestObjects(false);
+	}
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -133,29 +139,26 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
-		// TBD: Update to 'Not-Investigated' post auto environment report generation capture worker issue fixed.
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
-		List<String> markerStatuses = Arrays.asList(inProgress);
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		final String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 
-			// TBD: Disabled due to product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
 			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			investigateMapScreen.clickOnAddCGI();
 			addCgiFormDialog.waitForScreenLoad();
@@ -210,31 +213,28 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
-		// TBD: Update to 'Not-Investigated' post auto environment report generation capture worker issue fixed.
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
-		List<String> markerStatuses = Arrays.asList(inProgress);
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		final String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
 			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -253,13 +253,10 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			addedSourcesListDialog.clickOnCancel();
 			assertTrue("Investigation Map screen did NOT load after Cancel click on Add Other Source form and list dialog", investigateMapScreen.waitForScreenLoad());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
+			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
 			expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			return true;
 		});
@@ -309,18 +306,18 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		List<InvestigationMarkerEntity> investigationMarkers = new ArrayList<InvestigationMarkerEntity>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
-			assertTrue(investigateReportScreen.verifyLisasForReportAreShown(generatedInvReportTitle));
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
 			investigateReportScreen.getInvestigationMarkers().stream()
 				.forEach(m -> investigationMarkers.add(m));
 			return true;
 		});
 
-		// TBD: Update to 'Not-Investigated' post auto environment report generation capture worker issue fixed.
-		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
-		List<String> markerStatuses = Arrays.asList(inProgress);
+		final String notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		final String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
+		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 
-		final String selectedLisa = investigationMarkers.get(idx-1).getLisaNumber();
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnInvestigate();
@@ -341,13 +338,10 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			addedSourcesListDialog.clickOnCancel();
 			assertTrue("Investigation Map screen did NOT load after Cancel click on Add Leak form and list dialog", investigateMapScreen.waitForScreenLoad());
 
-			// TBD: Enable post product defect DE3162
-			/*
-			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText();
-			expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
 					actualInvStatusText.equals(expectedInvStatusText));
-			*/
 
 			return true;
 		});
@@ -363,7 +357,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		String[] lisaNumbers = {"2", "4", "6"};
 		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684"};
 		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithCompleteOrInProgressLisaMarker(tcsWithReportsThatHaveLisas, SurveyorConstants.SQAPICDR);
+		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, SurveyorConstants.SQAPICDR);
 		if (matchingReport != null) {
 			generatedInvReportTitle = matchingReport.getReportTitle();
 			return;
@@ -450,7 +444,6 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		addCgiFormDialog = new AndroidAddCgiFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addCgiFormDialog);
 	}
-
 
 	private void initializeConfirmationDialog() {
 		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);

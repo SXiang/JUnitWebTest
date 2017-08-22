@@ -60,7 +60,7 @@ public class AndroidAddSourceDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddSourceDialog.screenLoadCondition");
 		return getAddLeakButton()!=null && getAddLeakButton().isDisplayed();
 	}
 }

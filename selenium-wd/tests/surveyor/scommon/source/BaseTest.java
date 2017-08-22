@@ -221,7 +221,9 @@ public class BaseTest {
 		int driverCount = WebDriverFactory.getDriversCount();
 		if (driverCount > 1) {
 			for (int i = 1; i < driverCount; i++) {
-				getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+				if (!WebDriverFactory.hasDriverQuit(WebDriverFactory.getDriver(i))) {
+					getScreenCapture().takeScreenshots(WebDriverFactory.getDriver(i), className, true /*takeBrowserScreenShot*/, LogStatus.ERROR);
+				}
 			}
 		}
 	}

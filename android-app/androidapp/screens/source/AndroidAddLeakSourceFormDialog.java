@@ -12,6 +12,7 @@ import androidapp.entities.source.LeakInfoEntity;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
+import common.source.TestContext;
 import common.source.MobileActions.KeyCode;
 import common.source.MobileActions.SwipeDirection;
 import common.source.Timeout;
@@ -40,6 +41,10 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	@AndroidFindBy(uiAutomator = DELETE_BUTTON_UI_SELECTOR)
 	private WebElement delete;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]")
+	@CacheLookup
+	private WebElement formScrollView;
 
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
@@ -84,12 +89,12 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	private WebElement leakLocationRemarks;
 
 	// Fetch at Runtime post swipe.
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[12]/android.widget.EditText[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotes;
 
-	// Fetch at Runtime post swipe when editing form.
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[13]/android.widget.EditText[1]")
+	// Fetch at Runtime post swipe when editing form. Keeping seperate as this at times differs.
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[11]/android.widget.EditText[1]")
 	@CacheLookup
 	private WebElement additionalNotesInEdit;
 
@@ -327,7 +332,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterApartmentNumber(String value) throws Exception {
 		Log.method("enterApartmentNumber");
-		sendKeys(apartmentNumber, value);
+		sendKeysInternal(apartmentNumber, value);
 	}
 
 	public String getBarholeReadingText() {
@@ -337,7 +342,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterBarholeReading(String value) throws Exception {
 		Log.method("enterBarholeReading");
-		sendKeys(barholeReading, value);
+		sendKeysInternal(barholeReading, value);
 	}
 
 	public String getCityText() {
@@ -347,7 +352,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterCity(String value) throws Exception {
 		Log.method("enterCity");
-		sendKeys(city, value);
+		sendKeysInternal(city, value);
 	}
 
 	public String getLatitudeText() {
@@ -357,7 +362,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLatitude(String value) throws Exception {
 		Log.method("enterLatitude");
-		sendKeys(latitude, value);
+		sendKeysInternal(latitude, value);
 	}
 
 	public String getLeakGradeText() {
@@ -367,7 +372,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLeakGrade(String value) throws Exception {
 		Log.method("enterLeakGrade");
-		sendKeys(leakGrade, value);
+		sendKeysInternal(leakGrade, value);
 	}
 
 	public String getLongitudeText() {
@@ -377,7 +382,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLongitude(String value) throws Exception {
 		Log.method("enterLongitude");
-		sendKeys(longitude, value);
+		sendKeysInternal(longitude, value);
 	}
 
 	public String getMapNumberText() {
@@ -387,7 +392,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterMapNumber(String value) throws Exception {
 		Log.method("enterMapNumber");
-		sendKeys(mapNumber, value);
+		sendKeysInternal(mapNumber, value);
 	}
 
 	public String getMeterNumberText() {
@@ -397,7 +402,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterMeterNumber(String value) throws Exception {
 		Log.method("enterMeterNumber");
-		sendKeys(meterNumber, value);
+		sendKeysInternal(meterNumber, value);
 	}
 
 	public String getLeakLocationRemarksText() {
@@ -407,7 +412,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterLeakLocationRemarks(String value) throws Exception {
 		Log.method("enterLeakLocationRemarks");
-		sendKeys(leakLocationRemarks, value);
+		leakLocationRemarks.sendKeys(value);
 	}
 
 	public String getPipeMaterialTypeText() {
@@ -417,7 +422,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterPipeMaterialType(String value) throws Exception {
 		Log.method("enterPipeMaterialType");
-		sendKeys(pipeMaterialType, value);
+		sendKeysInternal(pipeMaterialType, value);
 	}
 
 	public String getStateText() {
@@ -427,7 +432,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterState(String value) throws Exception {
 		Log.method("enterState");
-		sendKeys(state, value);
+		sendKeysInternal(state, value);
 	}
 
 	public String getStreetNameText() {
@@ -437,7 +442,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterStreetName(String value) throws Exception {
 		Log.method("enterStreetName");
-		sendKeys(streetName, value);
+		sendKeysInternal(streetName, value);
 	}
 
 	public String getStreetNumberText() {
@@ -447,7 +452,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterStreetNumber(String value) throws Exception {
 		Log.method("enterStreetNumber");
-		sendKeys(streetNumber, value);
+		sendKeysInternal(streetNumber, value);
 	}
 
 	public String getSurfaceReadingText() {
@@ -457,7 +462,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void enterSurfaceReading(String value) throws Exception {
 		Log.method("enterSurfaceReading");
-		sendKeys(surfaceReading, value);
+		sendKeysInternal(surfaceReading, value);
 	}
 
 	public String getAdditionalNotesText() {
@@ -468,7 +473,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotes(String value) throws Exception {
 		Log.method("enterAdditionalNotes");
 		additionalNotes.clear();
-		sendKeys(additionalNotes, value);
+		additionalNotes.sendKeys(value);
 	}
 
 	public String getAdditionalNotesTextInEditMode() {
@@ -479,7 +484,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	public void enterAdditionalNotesInEditMode(String value) throws Exception {
 		Log.method("enterAdditionalNotesInEditMode");
 		additionalNotesInEdit.clear();
-		sendKeys(additionalNotesInEdit, value);
+		additionalNotesInEdit.sendKeys(value);
 	}
 
 	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
@@ -568,22 +573,21 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidAddedLeakSourceFormDialog.screenLoadCondition");
 		return this.mapNumber!=null && this.mapNumber.isDisplayed();
 	}
 
-	public void scrollToNextPage() {
+	public void scrollToNextPage() throws Exception {
 		Log.method("scrollToNextPage");
-		final int secsToScroll = 2;
-		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(SwipeDirection.UP, 600, secsToScroll * 1000);
+		MobileActions.newAction(getAndroidDriver()).swipeFromCenter(formScrollView, SwipeDirection.UP, 600);
 	}
 
-	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) {
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues) throws Exception {
 		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues));
 		return verifyCorrectDataIsShown(formValues, false /*isEditMode*/);
 	}
 
-	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) {
+	public Boolean verifyCorrectDataIsShown(Map<String, Object> formValues, Boolean isEditMode) throws Exception {
 		Log.method("verifyCorrectDataIsShown", LogHelper.mapToString(formValues), isEditMode);
 
 		// expected
@@ -691,6 +695,12 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		if (expectedLocationRemarks.length()>70) {
 			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
 		}
+		if (actualAdditionalNotes.length()>88) {
+			actualLeakInfo.setAdditionalNotes(actualAdditionalNotes.substring(0, 88));
+		}
+		if (expectedAdditionalNotes.length()>88) {
+			expectedLeakInfo.setAdditionalNotes(expectedAdditionalNotes.substring(0, 88));
+		}
 
 		// verify
 		Boolean match = actualLatitude.length()>5;
@@ -729,5 +739,13 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		streetName.clear();
 		streetNumber.clear();
 		surfaceReading.clear();
+	}
+
+	private void sendKeysInternal(WebElement element, String value) throws Exception {
+		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			element.sendKeys(value);
+		} else {
+			sendKeys(element, value);
+		}
 	}
 }

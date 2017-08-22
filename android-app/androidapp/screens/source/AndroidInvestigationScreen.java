@@ -38,8 +38,14 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	public void clickOnFirstInvestigation() throws Exception {
 		Log.method("clickOnFirstInvestigation");
-		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
+		getFirstRowViewGroup();
 		selectRowGroup(firstRowViewGroup);
+	}
+
+	public void tapOnFirstInvestigation() throws Exception {
+		Log.method("tapOnFirstInvestigation");
+		getFirstRowViewGroup();
+		tap(firstRowViewGroup);
 	}
 
 	public List<InvestigationEntity> getInvestigations() {
@@ -68,7 +74,9 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 			searchKeyword = searchKeyword.substring(0, 9);
 		}
 
-		sendKeys(getSearchEditView(), searchKeyword);
+		WebElement srchEditView = getSearchEditView();
+		srchEditView.click();
+		sendKeys(srchEditView, searchKeyword);
 		waitForSearchResultsToLoad(searchKeyword);
 	}
 
@@ -78,10 +86,10 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	@Override
 	public Boolean screenLoadCondition() {
-		Log.method("screenLoadCondition");
+		Log.method("AndroidInvestigationScreen.screenLoadCondition");
 		boolean searchEditViewShown = searchEditView!=null && searchEditView.isDisplayed();
 		Log.info(String.format("searchEditViewShown=[%b]", searchEditViewShown));
-		return searchEditViewShown;
+		return searchEditViewShown && waitForProgressComplete();
 	}
 
 	@Override
@@ -92,6 +100,10 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	public void waitForResultsToLoad() {
 		Log.method("waitForResultsToLoad");
 		waitForScreenLoad(Timeout.ANDROID_APP_RESULTS_TIMEOUT * 2, d -> isFirstRowPresent());
+	}
+
+	private void getFirstRowViewGroup() {
+		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
 	}
 
 	private void selectRowGroup(WebElement rowGroup) throws Exception {
@@ -122,6 +134,6 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	private void waitForSearchResultsToLoad(String searchKeyword) {
 		Log.method("waitForSearchResultsToLoad", searchKeyword);
-		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 3, d -> isFirstEntryMatchingSearchKeyword(searchKeyword));
+		waitForScreenLoad(Timeout.ANDROID_APP_SEARCH_RESULTS_TIMEOUT * 3, d -> waitForProgressComplete() && isFirstEntryMatchingSearchKeyword(searchKeyword));
 	}
 }

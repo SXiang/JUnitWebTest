@@ -44,6 +44,7 @@ public class RegexUtility {
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
+	public static final String PICARRO_APP_MAX_AMPLITUDE_REGEX = "Max:\\s+(\\d+\\.\\d+)\\s+ppm";
 
 	public static final String INV_ADD_LEAK_STATUS_HEADER_REGEX = "(.+)\\s+\\((.+)\\)";
 
@@ -283,9 +284,11 @@ public class RegexUtility {
 		return isMatch;
 	}
 
-
-
 	public static void main(String[] args) throws IOException {
+		Log.info("Running test - testMaxAmplitude_Success() ...");
+		testMaxAmplitude_Success();
+		Log.info("Running test - testMaxAmplitude_FailMatch() ...");
+		testMaxAmplitude_FailMatch();
 		Log.info("Running test - testAppVersion_Success() ...");
 		testAppVersion_Success();
 		Log.info("Running test - testAppVersion_FailMatch() ...");
@@ -321,6 +324,24 @@ public class RegexUtility {
 		Log.info("Running test - testGetStringInBetween_Success() ...");
 		test_functionGetStringInBetween_Success();
 		testgetNextLineAfterPattern_Success();
+	}
+
+	private static void testMaxAmplitude_Success() {
+		String inputString = "Max: 2.0 ppm";
+		List<String> matchingGroups = RegexUtility.getMatchingGroups(inputString, PICARRO_APP_MAX_AMPLITUDE_REGEX);
+		Log.info(String.format("InputString-[%s]: Matching groups are - '%s', ",
+				inputString, LogHelper.strListToString(matchingGroups)));
+		String group = matchingGroups.get(1);
+		Log.info(String.format("Group = [%s]", group));
+		Assert.assertTrue(group.equals("2.0"));
+	}
+
+	private static void testMaxAmplitude_FailMatch() {
+		String inputString = "Min: 2.0";
+		List<String> matchingGroups = RegexUtility.getMatchingGroups(inputString, PICARRO_APP_MAX_AMPLITUDE_REGEX);
+		Log.info(String.format("InputString-[%s]: Matching groups are - '%s', ",
+				inputString, LogHelper.strListToString(matchingGroups)));
+		Assert.assertTrue(matchingGroups.size()==0, "No match");
 	}
 
 	private static void testAppVersion_Success() {

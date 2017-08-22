@@ -1,15 +1,12 @@
 package common.source;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MultiTouchAction;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -21,6 +18,21 @@ public class MobileActions {
 	private final static String[] ESCAPE_CHARS = {"\"", "'", "(", ")", "&", "<", ">", ";", "*", "|", "~", "$"};
 
 	private MobileActions() {
+	}
+
+	public static class Coordinates {
+		public int x;
+		public int y;
+
+		public Coordinates(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+		}
 	}
 
 	public static class CoordinatesPair {
@@ -48,6 +60,21 @@ public class MobileActions {
 		private final String name;
 
 		SwipeDirection(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
+	public enum ZoomDirection {
+		VERTICAL ("VERTICAL"),
+		HORIZONTAL ("HORIZONTAL");
+
+		private final String name;
+
+		ZoomDirection(String nm) {
 			name = nm;
 		}
 
@@ -230,27 +257,18 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("screencap /sdcard/%s.png", screenshotFileNameWithoutExt));
 	}
 
-	public void swipe(Integer x1, Integer y1, Integer x2, Integer y2) throws Exception {
-		Log.method("swipe", x1, y1, x2, y2);
-		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input swipe %d %d %d %d", x1, y1, x2, y2));
-	}
-
 	/**
-	 * Executes swipe action using android driver.
+	 * Executes swipe action using TouchAction.
 	 */
-	public void swipeFromCenter(SwipeDirection direction, int delta, int duration) {
-		Log.method("swipeUpFromCenter", direction, delta, duration);
-		CoordinatesPair pair = getSwipeFromCenterCoordinatesForDirection(direction, delta);
-		getAndroidDriver().swipe(pair.x1, pair.y1, pair.x2, pair.y2, duration);
-	}
-
-	/**
-	 * Executes swipe action using adb.
-	 */
-	public void swipeFromCenter(SwipeDirection direction, int delta) throws Exception {
+	public void swipeFromCenter(WebElement element, SwipeDirection direction, int delta) throws Exception {
 		Log.method("swipeFromCenterUsingDeviceAction", direction, delta);
-		CoordinatesPair pair = getSwipeFromCenterCoordinatesForDirection(direction, delta);
-		swipe(pair.x1, pair.y1, pair.x2, pair.y2);
+		CoordinatesPair pair = getSwipeFromCenterCoordinatesForDirection(element, direction, delta);
+		Log.info(String.format("Swipe coordinates are -> [%s]", pair));
+		TouchAction action = new TouchAction(getAndroidDriver());
+		int moveX = pair.x2;
+		int moveY = pair.y2;
+		Log.info(String.format("MoveTo coordinates are (x,y) -> [%d, %d]", moveX, moveY));
+		action.longPress(element).moveTo(moveX, moveY).release().perform();
 	}
 
 	public void clickAndPressKey(WebElement element, KeyCode keyCode) throws Exception {
@@ -264,6 +282,71 @@ public class MobileActions {
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), String.format("input keyevent %d", keyCode.getCode()));
 	}
 
+	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
+	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
+	// currently keeping this method as 'private' until appium java client issue is fixed.
+	private void zoomIn(WebElement element, ZoomDirection direction, int delta) {
+		Log.method("zoomIn", direction, delta);
+		int negDelta = -1 * delta;
+		Log.method("Getting finger1 action ...");
+		TouchAction fingerAction1 = getFingerAction(element, direction, -20, negDelta, true /*isPinch*/);
+		Log.method("Getting finger2 action ...");
+		TouchAction fingerAction2 = getFingerAction(element, direction, 20, delta, true /*isPinch*/);
+		performMultiTouchAction(fingerAction1, fingerAction2);
+	}
+
+	// pinch/zoom methods in appium java-client to be deprecated. These do NOT function as expected with java-client.
+	// Tracked in appium defect - https://github.com/appium/java-client/issues/424
+	// currently keeping this method as 'private' until appium java client issue is fixed.
+	private void zoomOut(WebElement element, ZoomDirection direction, int delta) {
+		Log.method("zoomOut", direction, delta);
+		int negDelta = -1 * delta;
+		Log.method("Getting finger1 action ...");
+		TouchAction fingerAction1 = getFingerAction(element, direction, -20, delta, false /*isPinch*/);
+		Log.method("Getting finger2 action ...");
+		TouchAction fingerAction2 = getFingerAction(element, direction, 20, negDelta, false /*isPinch*/);
+		performMultiTouchAction(fingerAction1, fingerAction2);
+	}
+
+	private void performMultiTouchAction(TouchAction fingerAction1, TouchAction fingerAction2) {
+		Log.method("performMultiTouchAction", fingerAction1, fingerAction2);
+		MultiTouchAction mTouchAction = new MultiTouchAction(getAndroidDriver());
+		mTouchAction.add(fingerAction1).add(fingerAction2).perform();
+	}
+
+	private TouchAction getFingerAction(WebElement element, ZoomDirection direction, int pad, int moveBy, boolean isPinch) {
+		Log.method("getFingerAction", element, direction, pad, moveBy, isPinch);
+		int offsetX = element.getLocation().getX();
+		int offsetY = element.getLocation().getY();
+		Coordinates center = getElementCenterCoordinate(element);
+		Log.info(String.format("Element center coordinates (x, y) are -> [%d, %d]", center.x, center.y));
+		TouchAction fingerAction = new TouchAction(getAndroidDriver());
+		int x1 = 0; int y1 = 0; int x2 = 0; int y2 = 0;
+		if (direction.equals(ZoomDirection.VERTICAL)) {
+			x1 = center.x - offsetX;
+			y1 = center.y+pad+moveBy - offsetY;
+			x2 = center.x - offsetX;
+			y2 = center.y+pad - offsetY;
+		} else {
+			x1 = center.x+moveBy+pad - offsetX;
+			y1 = center.y - offsetY;
+			x2 = center.x+pad - offsetX;
+			y2 = center.y - offsetY;
+		}
+
+		if (isPinch) {
+			Log.info("Applying pinch ...");
+			Log.info(String.format("Press (x,y) -> [%d,%d].. Move to (x,y) -> [%d,%d]", x1, y1, x2, y2));
+			fingerAction.press(element, x1, y1).waitAction(2000).moveTo(element, x2, y2).release();
+		} else {
+			Log.info("Applying zoom out ...");
+			Log.info(String.format("Press (x,y) -> [%d,%d].. Move to (x,y) -> [%d,%d]", x2, y2, x1, y1));
+			fingerAction.press(element, x2, y2).waitAction(2000).moveTo(element, x1, y1).release();
+		}
+
+		return fingerAction;
+	}
+
 	private String escapeText(String input) {
 		String escInput = input;
 		for (String ch : ESCAPE_CHARS) {
@@ -273,30 +356,35 @@ public class MobileActions {
 		return escInput;
 	}
 
-	private CoordinatesPair getSwipeFromCenterCoordinatesForDirection(SwipeDirection direction, int delta) {
+	private CoordinatesPair getSwipeFromCenterCoordinatesForDirection(WebElement element, SwipeDirection direction, int delta) {
 		Log.method("getSwipeFromCenterCoordinatesForDirection", direction, delta);
 		CoordinatesPair pair = null;
 		if (direction.equals(SwipeDirection.UP)) {
-			pair = getSwipeFromCenterCoordinates(delta /*upY*/, 0 /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
+			pair = getSwipeFromCenterCoordinates(element, delta /*upY*/, 0 /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
 		} else if (direction.equals(SwipeDirection.DOWN)) {
-			pair = getSwipeFromCenterCoordinates(0 /*upY*/, delta /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
+			pair = getSwipeFromCenterCoordinates(element, 0 /*upY*/, delta /*downY*/, 0 /*leftX*/, 0 /*rightX*/);
 		} else if (direction.equals(SwipeDirection.LEFT)) {
-			pair = getSwipeFromCenterCoordinates(0 /*upY*/, 0 /*downY*/, delta /*leftX*/, 0 /*rightX*/);
+			pair = getSwipeFromCenterCoordinates(element, 0 /*upY*/, 0 /*downY*/, delta /*leftX*/, 0 /*rightX*/);
 		} else if (direction.equals(SwipeDirection.RIGHT)) {
-			pair = getSwipeFromCenterCoordinates(0 /*upY*/, 0 /*downY*/, 0 /*leftX*/, delta /*rightX*/);
+			pair = getSwipeFromCenterCoordinates(element, 0 /*upY*/, 0 /*downY*/, 0 /*leftX*/, delta /*rightX*/);
 		}
 
 		Log.info("Returning coordinate pair -> " + pair.toString());
 		return pair;
 	}
 
-	private CoordinatesPair getSwipeFromCenterCoordinates(int upY, int downY, int leftX, int rightX) {
+	private CoordinatesPair getSwipeFromCenterCoordinates(WebElement element, int upY, int downY, int leftX, int rightX) {
 		Log.method("getSwipeFromCenterCoordinates", upY, downY, leftX, rightX);
 		CoordinatesPair pair = new CoordinatesPair();
-		AndroidDriver<?> androidDriver = getAndroidDriver();
-		Dimension size = androidDriver.manage().window().getSize();
-		int centerX = (int)(size.getWidth()/2);
-		int centerY = (int)(size.getHeight()/2);
+		Coordinates center = null;
+		if (element != null) {
+			center = getElementCenterCoordinate(element);
+		} else {
+			center = getCenterCoordinate();
+		}
+
+		int centerX = center.x;
+		int centerY = center.y;
 		pair.x1 = centerX;
 		pair.y1 = centerY;
 		pair.x2 = centerX-leftX+rightX;
@@ -304,5 +392,22 @@ public class MobileActions {
 
 		Log.info("Returning coordinate pair -> " + pair.toString());
 		return pair;
+	}
+
+	private Coordinates getCenterCoordinate() {
+		Dimension size = getAndroidDriver().manage().window().getSize();
+		int centerX = (int)(size.getWidth()/2);
+		int centerY = (int)(size.getHeight()/2);
+		return new Coordinates(centerX, centerY);
+	}
+
+	private Coordinates getElementCenterCoordinate(WebElement element) {
+		int width = element.getSize().getWidth();
+		int height = element.getSize().getHeight();
+		int x = element.getLocation().getX();
+		int y = element.getLocation().getY();
+		int centerX = x + (int)(width/2);
+		int centerY = y + (int)(height/2);
+		return new Coordinates(centerX, centerY);
 	}
 }

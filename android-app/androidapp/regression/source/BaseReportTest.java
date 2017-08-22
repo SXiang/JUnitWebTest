@@ -45,8 +45,6 @@ public class BaseReportTest extends BaseAndroidTest {
 		mapScreen.enterPassword(password);
 		mapScreen.clickOnSubmit();
 		investigationScreen.waitForScreenLoad();
-		investigationScreen.getSearchEditView().click();
-		TestContext.INSTANCE.stayIdle(2);    // even after screen has loaded, listview takes time to load all results.
 	}
 
 	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String reportTitle) throws Exception {
@@ -85,6 +83,11 @@ public class BaseReportTest extends BaseAndroidTest {
 		boolean match = investigations.stream()
 			.allMatch(r -> {
 				Report reportObj = Report.getReport(r.getReportTitle());
+				if (reportObj == null) {
+					Log.error(String.format("Incorrect report found in list. Incorrect report title=[%s]", r.getReportTitle()));
+					return false;
+				}
+
 				String reportId = reportObj.getId();
 				Log.info(String.format("Searching for assigned LISAs in report id='%s'", reportId));
 				List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
@@ -102,6 +105,7 @@ public class BaseReportTest extends BaseAndroidTest {
 						return true;
 					});
 				}
+
 
 				Log.info(String.format("Found no assigned LISAs for this report id='%s'", reportId));
 				return true;

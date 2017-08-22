@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,6 +36,8 @@ import common.source.MobileActions;
 import common.source.PerfmonDataCollector;
 import common.source.ProcessUtility;
 import common.source.ScreenRecorder;
+import common.source.ServiceCorrector;
+import common.source.ServiceCorrector.ServiceInfo;
 import common.source.TestContext;
 import common.source.TestSetup;
 import common.source.Timeout;
@@ -50,6 +54,12 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String SIM_DATA_MANAGER_BROADCASTER_PY = "simDataManagerBroadcaster.py";
+	private static final String SIM_LINEAR_FITTER_BROADCASTER_PY = "simLinearFitterBroadcaster.py";
+	private static final String DUMMYLINEARFITTERALARM_PY = "dummylinearfitteralarm.py";
+	private static final String ODORCALL_SERVER_PY = "odorcallServer.py";
+	private static final String DUMMYINSTRMGR_PY = "dummyinstrmgr.py";
+	private static final String PYTHON_EXE = "python.exe";
 	private static final double DEFAULT_ALTITUDE = 0.0;
 	private static final double DEFAULT_LONGITUDE = -121.9863994;
 	private static final double DEFAULT_LATITUDE = 37.3965775;
@@ -78,6 +88,7 @@ public class BaseAndroidTest extends BaseTest {
 	protected AndroidMapScreen mapScreen;
 
 	private PerfmonDataCollector perfmonCollector;
+	private ServiceCorrector serviceCorrector;
 	private ScreenRecorder screenRecorder;
 	private LogCollector logCollector;
 
@@ -101,6 +112,8 @@ public class BaseAndroidTest extends BaseTest {
 
 	@BeforeClass
 	public static void setUpBeforeTestClass() throws Exception {
+		Log.method("setUpBeforeTestClass");
+
 		// Initialize TestSetup to instantiate the TestContext.
 		TestSetup testSetup = new TestSetup(false /* skip initialization */);
 		String rootPath;
@@ -126,14 +139,14 @@ public class BaseAndroidTest extends BaseTest {
 
 	@AfterClass
 	public static void tearDownAfterTestClass() throws Exception {
-		if (!isRunningInDataGenMode()) {
-			AdbInterface.stop();
-			cleanupProcesses();
-		}
+		Log.method("tearDownAfterTestClass");
+		AdbInterface.stop();
+		cleanupProcesses();
 	}
 
 	@Before
 	public void setupBeforeTest() throws Exception {
+		AdbInterface.reset();      // reset to minimize adb hangs leading to appium server hangs.
 	}
 
 	@After
@@ -143,7 +156,6 @@ public class BaseAndroidTest extends BaseTest {
 	@Override
 	public void onTestFailureProcessing() {
 		Log.method("onTestFailureProcessing");
-		dumpSysActivity();
 		Log.info(getAndroidDriver().getPageSource());
 	}
 
@@ -154,6 +166,31 @@ public class BaseAndroidTest extends BaseTest {
 	@Override
 	public void postTestMethodProcessing() {
 		cleanUp();
+	}
+
+	public void startTestRecording(String testName) throws Exception {
+		Log.method("startTestRecording", testName);
+		startTestRecording(testName, true /*enableLogging*/);
+	}
+
+	public void stopTestRecording(String testName) throws Exception {
+		Log.method("stopTestRecording", testName);
+		testName = BaseHelper.toAlphaNumeric(testName, '_');
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
+			collectPerfmonMetrics(testName);
+		}
+
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				collectServiceInfos(testName);
+			}
+		}
+
+		createRecording(testName);
+
+		if (isLoggingEnabled) {
+			collectAdbLogs(testName);
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -176,6 +213,12 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
+	private void initServiceCorrector() {
+		if (serviceCorrector == null) {
+			serviceCorrector = new ServiceCorrector();
+		}
+	}
+
 	private void initScreenRecorder() {
 		if (screenRecorder == null) {
 			screenRecorder = new ScreenRecorder();
@@ -188,12 +231,7 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
-	public void startTestRecording(String testName) throws Exception {
-		Log.method("startTestRecording", testName);
-		startTestRecording(testName, true /*enableLogging*/);
-	}
-
-	public void startTestRecording(String testName, Boolean enableLogging) throws Exception {
+	private void startTestRecording(String testName, Boolean enableLogging) throws Exception {
 		Log.method("startTestRecording", testName, enableLogging);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
@@ -204,24 +242,23 @@ public class BaseAndroidTest extends BaseTest {
 			perfmonCollector.startCollectors();
 		}
 
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				initServiceCorrector();
+				List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYINSTRMGR_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, ODORCALL_SERVER_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYLINEARFITTERALARM_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_LINEAR_FITTER_BROADCASTER_PY, null, getServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_DATA_MANAGER_BROADCASTER_PY, null, getServiceInfoPredicate()));
+				serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
+			}
+		}
+
 		if (enableLogging) {
 			initLogCollector();
 			logCollector.startLogging(appiumDriver);
 			isLoggingEnabled = true;
-		}
-	}
-
-	public void stopTestRecording(String testName) throws Exception {
-		Log.method("stopTestRecording", testName);
-		testName = BaseHelper.toAlphaNumeric(testName, '_');
-		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
-			collectPerfmonMetrics(testName);
-		}
-
-		createRecording(testName);
-
-		if (isLoggingEnabled) {
-			collectAdbLogs(testName);
 		}
 	}
 
@@ -267,6 +304,23 @@ public class BaseAndroidTest extends BaseTest {
 
 		Log.info(String.format("Writing cpu metrics data to - '%s'", cpuDataFile));
 		FileUtility.writeToFile(cpuDataFile, allCpuMetrics.toArray(new String[allCpuMetrics.size()]));
+	}
+
+	private void collectServiceInfos(String testName) throws Exception {
+		Log.method("collectServiceInfos", testName);
+		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.svcinfo.dat", testName));
+
+		if(FileUtility.fileExists(svcInfoFile)) {
+			FileUtility.deleteFile(Paths.get(svcInfoFile));
+		}
+
+		Log.info("Stop service corrector");
+		this.serviceCorrector.stopCorrector();
+
+		List<String> svcInfos = this.serviceCorrector.getRunningServices();
+
+		Log.info(String.format("Writing service info to - '%s'", svcInfoFile));
+		FileUtility.writeToFile(svcInfoFile, svcInfos.toArray(new String[svcInfos.size()]));
 	}
 
 	private void collectAdbLogs(String testName) throws IOException {
@@ -319,10 +373,26 @@ public class BaseAndroidTest extends BaseTest {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
 		}
 
-		BackPackAnalyzer.pauseDataProcesses();
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestWebSocketPauseResumeEnabled()) {
+			BackPackAnalyzer.pauseDataProcesses();
+		}
+
 		retVal = predicate.test(null);
-		BackPackAnalyzer.resumeDataProcesses();
+
+		if (TestContext.INSTANCE.getTestSetup().isAndroidTestWebSocketPauseResumeEnabled()) {
+			BackPackAnalyzer.resumeDataProcesses();
+		}
+
 		return retVal;
+	}
+
+	private Predicate<String> getServiceInfoPredicate() {
+		Predicate<String> predicate = el -> {
+			FunctionUtil.warnOnError(() -> BackPackAnalyzer.restartSimulator());
+			return true;
+		};
+
+		return predicate;
 	}
 
 	private static void cleanupProcesses() throws IOException {
