@@ -709,7 +709,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return true;
 	}
 
-	public boolean isGisSwitchOn(GisSwitchType switchType, String status)  {
+	public boolean verifyGisSwitchStatus(GisSwitchType switchType, String status)  {
 		if(status==null||status.trim().isEmpty()){
 			return true;
 		}
@@ -986,7 +986,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return true;
 	}
 
-	public boolean isMapSwitchOn(MapSwitchType switchType, String status)  {
+	public boolean verifyMapSwitchStatus(MapSwitchType switchType, String status)  {
 		if(status==null||status.trim().isEmpty()){
 			return true;
 		}
@@ -1114,7 +1114,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return isSelected;
 	}
 
-	public boolean isDisplaySwitchOn(DisplaySwitchType switchType, String status)  {
+	public boolean verifyDisplaySwitchStatus(DisplaySwitchType switchType, String status)  {
 		if(status==null||status.trim().isEmpty()){
 			return true;
 		}

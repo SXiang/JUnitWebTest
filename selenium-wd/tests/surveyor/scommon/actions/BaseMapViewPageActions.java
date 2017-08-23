@@ -858,7 +858,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyMapViewIsShown", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isMapViewShown()
-				&& getBaseMapViewPageObject().isMapSwitchOn(MapSwitchType.Map, data);
+				&& getBaseMapViewPageObject().verifyMapSwitchStatus(MapSwitchType.Map, data);
 	}
 
 	/**
@@ -871,7 +871,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifySatelliteViewIsShown", data, dataRowID);
 		OLMapUtility mapUtility = new OLMapUtility(this.getDriver());
 		return mapUtility.isSatelliteViewShown() 
-				&& getBaseMapViewPageObject().isMapSwitchOn(MapSwitchType.Satellite, data);
+				&& getBaseMapViewPageObject().verifyMapSwitchStatus(MapSwitchType.Satellite, data);
 	}
 
 	/**
@@ -883,7 +883,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitch8HourHistoryButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitch8HourHistoryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitch8HourHistoryButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.EightHourHistory, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.EightHourHistory, data);
 	}
 
 	/**
@@ -895,7 +895,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchWindroseButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchWindroseButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchWindroseButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.WindRose, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.WindRose, data);
 	}
 
 	/**
@@ -907,7 +907,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchConcentrationChartButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchConcentrationChartButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.ConcentrationChart, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.ConcentrationChart, data);
 	}
 
 	/**
@@ -919,7 +919,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchNotesButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchNotesButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.Notes, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.Notes, data);
 	}
 
 	/**
@@ -931,7 +931,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIsotopicAnalysisButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchIsotopicAnalysisButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.IsotopicAnalysis, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.IsotopicAnalysis, data);
 	}
 
 	/**
@@ -943,7 +943,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchIndicationsButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchIndicationsButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchIndicationsButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.Indications, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.Indications, data);
 	}
 
 	/**
@@ -955,7 +955,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchLisasButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchLisasButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchLisasButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.Lisas, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.Lisas, data);
 	}
 
 	/**
@@ -967,7 +967,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyDisplaySwitchFovsButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchFovsButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchFovsButtonVisible() 
-				&& getBaseMapViewPageObject().isDisplaySwitchOn(DisplaySwitchType.FOVs, data);
+				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.FOVs, data);
 	}
 
 	/**
@@ -979,7 +979,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypeCastIronButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCastIronButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeCastIronButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypeCastIron, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypeCastIron, data);
 	}
 
 	/**
@@ -991,7 +991,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypeCopperButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeCopperButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeCopperButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypeCopper, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypeCopper, data);
 	}
 
 	/**
@@ -1003,7 +1003,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypeOtherPlasticButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeOtherPlasticButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeOtherPlasticButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypeOtherPlastic, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypeOtherPlastic, data);
 	}
 
 	/**
@@ -1015,7 +1015,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypePEPlasticButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypePEPlasticButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypePEPlasticButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypePEPlastic, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypePEPlastic, data);
 	}
 
 	/**
@@ -1027,7 +1027,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypeProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeProtectedSteelButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeProtectedSteelButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypeProtectedSteel, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypeProtectedSteel, data);
 	}
 
 	/**
@@ -1039,7 +1039,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisMaterialTypeUnProtectedSteelButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisMaterialTypeUnProtectedSteelButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisMaterialTypeUnProtectedSteelButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.MaterialTypeUnprotectedSteel, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.MaterialTypeUnprotectedSteel, data);
 	}
 
 	/**
@@ -1051,7 +1051,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisUseAllPipesButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisUseAllPipesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisUseAllPipesButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.UseAllPipes, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.UseAllPipes, data);
 	}
 
 	/**
@@ -1063,7 +1063,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisBoundaryBigBoundaryButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisBoundaryBigBoundaryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisBoundaryBigBoundaryButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.BigBoundary, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.BigBoundary, data);
 	}
 
 	/**
@@ -1075,7 +1075,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisBoundarySmallBoundaryButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisBoundarySmallBoundaryButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisBoundarySmallBoundaryButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.SmallBoundary, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.SmallBoundary, data);
 	}
 
 	/**
@@ -1087,7 +1087,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean verifyGisUseAllBoundariesButtonIsVisible(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".verifyGisUseAllBoundariesButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isGisUseAllBoundariesButtonVisible() 
-				&& getBaseMapViewPageObject().isGisSwitchOn(GisSwitchType.UseAllBoundaries, data);
+				&& getBaseMapViewPageObject().verifyGisSwitchStatus(GisSwitchType.UseAllBoundaries, data);
 	}
 
 	/**
