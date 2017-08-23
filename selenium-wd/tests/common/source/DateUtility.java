@@ -143,7 +143,7 @@ public class DateUtility {
 		String prevTimeString = "";
 		String currTimeString = "";
 		do {
-			currTimeString = element.getText();
+			currTimeString = element.getAttribute("innerHTML");
 			currTimeString = currTimeString.replace(TIME_PREFIX, "");
 			currTimeString = currTimeString.replace(ELAPSED_TIME_PREFIX, "");
 			currTimeString = currTimeString.replace(REMAINING_TIME_PREFIX, "");
