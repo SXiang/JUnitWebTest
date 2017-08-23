@@ -24,6 +24,9 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2677 = "dataProviderAndroidApp_TC2677";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2681 = "dataProviderAndroidApp_TC2681";
 	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2687 = "dataProviderAndroidApp_TC2687";
+	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2445 = "dataProviderAndroidApp_TC2445";
+	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2448 = "dataProviderAndroidApp_TC2448";
+	public static final String LEAK_SCREEN_DATA_PROVIDER_TC2673 = "dataProviderAndroidApp_TC2673";
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2440() {
@@ -120,6 +123,27 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	public static Object[][] dataProviderAndroidApp_TC2640() {
 		return new Object[][] {
 			{ "TC2640" /*TestCaseID*/, 6 /*userDataRowID*/,  264 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderAndroidApp_TC2445() {
+		return new Object[][] {
+			{ "TC2445" /*TestCaseID*/, 6 /*userDataRowID */,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderAndroidApp_TC2448() {
+		return new Object[][] {
+			{ "TC2448" /*TestCaseID*/, 6 /*userDataRowID */,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
+		};
+	}
+
+	@DataProvider
+	public static Object[][] dataProviderAndroidApp_TC2673() {
+		return new Object[][] {
+			{ "TC2673" /*TestCaseID*/, 6 /*userDataRowID */,  0 /*reportDataRowID1 - [TODO:CHANGE THIS]*/, -1/*reportDataRowID2*/}
 		};
 	}
 }
