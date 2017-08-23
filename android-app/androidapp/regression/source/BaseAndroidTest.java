@@ -160,15 +160,6 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
-	/*
-	private static void printDeviceProperties(IDevice device) {
-		Map<String, String> propsMap = device.getProperties();
-		Log.info("Print device properties...");
-		for (String key : propsMap.keySet()) {
-			Log.info(String.format("Key=[%s]; Value=[%s]", key, propsMap.get(key)));
-		}
-	}*/
-
 	private static boolean areMultipleDevicesConnected() {
 		IDevice[] devices = AdbInterface.getConnectedDevices();
 		if (devices != null) {
