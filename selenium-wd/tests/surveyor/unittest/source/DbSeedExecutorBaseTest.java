@@ -205,7 +205,6 @@ public class DbSeedExecutorBaseTest extends BaseTest {
 
 				Assert.assertTrue(dbStateVerifier.isPeakSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minPeakCount));
 				Assert.assertTrue(dbStateVerifier.isSegmentSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minSegmentCount));
-				Assert.assertTrue(dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount));
 
 				Log.info(String.format("----- DONE Verifying survey with tag - '%s' -----", surveyTag));
 			}
