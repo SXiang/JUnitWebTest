@@ -290,13 +290,14 @@ public class DataTablePage extends SurveyorBasePage {
 		for (Entry<String, List<String>> entry : filter.entrySet()) {
 			indexedMap.put(getColumnIndex(tableContext, entry.getKey().toString()), entry.getValue());
 		}
+		List<WebElement> rows = this.tableRow;
 		do {
 			// If table context is provided, fetch rows from the table context.
 			if (tableContext != null) {
-				this.tableRow = tableContext.findElements(By.xpath("tbody/tr"));
+				rows = tableContext.findElements(By.xpath("tbody/tr"));
 			}
 
-			for (WebElement row : this.tableRow) {
+			for (WebElement row : rows) {
 				if (rowMatches(row, indexedMap)) {
 					return row;
 				}
