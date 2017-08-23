@@ -63,6 +63,8 @@ if ($INSTALL_NEW_OVERRIDE -or (-not $sameVersionFound)) {
 
 adb shell settings put secure location_providers_allowed +network
 adb shell settings put secure location_providers_allowed +wifi
+adb shell settings put secure send_action_app_error 0
+adb shell settings put secure anr_show_background 0
 
 adb shell am start -n com.picarroapp/com.picarroapp.MainActivity
 sleep -Seconds 2
