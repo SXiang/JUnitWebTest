@@ -874,24 +874,21 @@ public class HomePage extends SurveyorBasePage {
 
 		HashMap<String, String> tblHeaderMap = new HashMap<String, String>();
 		tblHeaderMap.put(Constant_Analyzer, analyzer);
-		DataTablePage dataTable = buildDataTablePage(By.id("datatable-Surveyor"));
-		By onlineLinkBy = By.xpath("//td[3]/a");
+		By onlineLinkBy = By.xpath("td[3]/a");
 		String elementName = "Online Link";
 		String elementReadyText = "Online";
 		Predicate<WebElement> waitForOnlineLinkReady = WebElementPredicates.getWaitForElementTextReadyPredicate(driver, timeout, elementName, elementReadyText);
 		Predicate<WebElement> clickOnOnlineLink = WebElementPredicates.getClickPredicate(elementName);
 		Predicate<WebElement> waitAndClickOnlineLink = waitForOnlineLinkReady.and(clickOnOnlineLink);
-
 		// When page is loaded Surveyor may not show 'Online'. In such case reload the page and retry.
 		boolean actionSuccess = RetryUtil.retryOnException(
 				() -> {
-					dataTable.actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);
-					return true;},
-					() -> {
+					return buildDataTablePage(By.id("datatable-Surveyor_wrapper")).actionOnMatchingRow(onlineLinkBy, tblHeaderMap, this.getTableActiveSurveyors(), false /*applyPagination*/, waitAndClickOnlineLink);},
+				() -> {
 						super.open();waitForPageLoad();resetTableActiveSurveyors();
 						return true;},
-						Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
-						Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
+				Constants.THOUSAND_MSEC_WAIT_BETWEEN_RETRIES,
+				Constants.DEFAULT_MAX_RETRIES, true /*takeScreenshotOnFailure*/);
 
 		if (!actionSuccess) {
 			Log.error(String.format("Clicking on '%s' FAILED!", elementName));

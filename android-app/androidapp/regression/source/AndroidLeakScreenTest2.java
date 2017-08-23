@@ -421,29 +421,21 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 
 		clickOnFirstInvestigationReport(investigationScreen);
 
-		StringBuilder markerVerifier = new StringBuilder();
+		List<List<InvestigationMarkerEntity>> listOfListMarkers = new ArrayList<List<InvestigationMarkerEntity>>();
 		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
 			investigateReportScreen.waitForScreenLoad();
 			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
-			Log.info("Checking for presence of existing marker with status -> 'Found Other Source' or 'In-Progress' ...");
 			List<InvestigationMarkerEntity> investigationMarkers = investigateReportScreen.getInvestigationMarkers();
-			boolean match = investigationMarkers.stream()
-				.anyMatch(i -> i.getInvestigationStatus().equals(foundOtherSource) || i.getInvestigationStatus().equals(inProgress));
-			Log.info(String.format("Found=[%b]", match));
-			markerVerifier.append(String.valueOf(match));
+			listOfListMarkers.add(investigationMarkers);
 			return true;
 		});
 
-		// If no existing marker of desired status, create new.
-		if (!markerVerifier.toString().equalsIgnoreCase(TRUE)) {
-			investigateFirstNonInvestigatedMarkerAsOtherSourceAndMarkAsComplete();
-		}
-
-		initializeAddOtherSourceFormDialog();
-
-		// Markers screen. Click on LISA marked as either Complete or In Progress
 		String[] markerStatuses = {foundOtherSource, inProgress};
-		investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		Integer idx = checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
+				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle);
+
+		// Markers screen. Click on LISA marked as In-Progress or Found Other source
+		investigateReportScreen.clickMarkerMatchingStatusAtIndex(Arrays.asList(markerStatuses), idx);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
