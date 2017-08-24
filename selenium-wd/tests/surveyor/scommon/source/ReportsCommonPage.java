@@ -206,7 +206,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_ShowBreadcrumb = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBreadcrumb);
 	public static final String ComplianceReportSSRS_ShowIndications = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIndications);
 	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIsotopicAnalyses);
-	public static final String ComplianceReportSSRS_FieldNotes = Resources.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
 	public static final String ComplianceReportSSRS_ShowGaps = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
 	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightLISAAssets);
 	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightGAPAssets);
@@ -2566,7 +2565,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
 			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
 			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
-			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
 
 			reportList.add(ethaneCapture);
 

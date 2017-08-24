@@ -1578,7 +1578,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
@@ -2009,7 +2008,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
 			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
 			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
-			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
 
 			reportList.add(ethaneCapture);
 
@@ -2777,7 +2775,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
 
