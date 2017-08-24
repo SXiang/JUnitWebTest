@@ -51,7 +51,7 @@ public class ScreenVerifier {
 			for (int i = 0; i < imageFolderNames.size(); i++) {
 				String imageFolderName = imageFolderNames.get(i);
 				String imageFileName = imageFileNames.get(i);
-				for (int j = 0; i < attempts; j++) {
+				for (int j = 0; j < attempts; j++) {
 					found = verifyImageFoundOnScreen(screen, imageFolderName, imageFileName);
 					if (found) {
 						break;
