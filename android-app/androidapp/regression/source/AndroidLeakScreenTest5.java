@@ -22,6 +22,7 @@ import androidapp.screens.source.AndroidAddLeakSourceFormDialog;
 import androidapp.screens.source.AndroidAddOtherSourceFormDialog;
 import androidapp.screens.source.AndroidAddSourceDialog;
 import androidapp.screens.source.AndroidAddedSourceListDialog;
+import androidapp.screens.source.AndroidConfirmationDialog;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
@@ -31,6 +32,7 @@ import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.Log;
 import common.source.LogHelper;
+import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -63,6 +65,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	protected AndroidAddedSourceListDialog addedSourcesListDialog;
 
 	protected AndroidAddOtherSourceFormDialog addOtherSourceFormDialog;
+	protected AndroidConfirmationDialog confirmationDialog;
 
 	private static ComplianceReportsPageActions complianceReportsPageAction;
 	private static LoginPageActions loginPageAction;
@@ -150,17 +153,33 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			return true;
 		});
 
+		// Follow not-investigated marker.
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
+		final int markerNum = getMarkerNumber(investigationMarkers, idx-1);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnFollow();
-			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2445, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.waitForScreenLoad();
-			// TBD: To be implemented.
-			//investigateMapScreen.assertMapShowsPicarroUserCurrentLocation();
+			investigateMapScreen.assertMapShowsPicarroUserCurrentLocation();
+
+			// mark investigation complete.
+			investigateMapScreen.clickOnInvestigate();
+			investigateMapScreen.clickOnMarkAsComplete();
+			confirmationDialog.waitForScreenLoad();
+			confirmationDialog.clickOnOK();
+			investigateReportScreen.waitForScreenLoad();
+			return true;
+		});
+
+		// Open the investigated marker and verify follow shows LISA highlighted.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2445, String.format(BaselineImages.ImageFile.LisaHighlightScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}
@@ -227,13 +246,11 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		});
 
 		// Markers screen. Click on LISA marked as Not Investigated
-		String[] markerStatuses = {notInvestigated};
-		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
-
-		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
-		final Integer selectedLisaNum = Integer.valueOf(Arrays.asList(selectedLisa.split("-")).stream().reduce((a,b) -> b).orElse("-1").trim());
-
 		final String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
+		final String[] markerStatuses = {notInvestigated};
+		final int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
+		final Integer selectedLisaNum = getMarkerNumber(investigationMarkers, idx-1);
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -258,6 +275,9 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			listStoreMap.add(leakMap);
 			addLeakSourceFormDialog.fillForm(leakMap);
 			addedSourcesListDialog.waitForScreenAndDataLoad();
+			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), 0);
+
+			addLeakSourceFormDialog.tapOnCancel();
 
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
@@ -289,6 +309,8 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
+		// TBD: Verify filled form data (including lat/long) shows up in PDF.
+
 		Map<String, String> lisaInvestigationMetaData = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
 		Log.info(String.format("Investigation CSV data -> %s", LogHelper.mapToString(lisaInvestigationMetaData)));
 		assertTrue(String.format("CSV -> Expected FoundDateTime NOT correct. Length<=4. Actual Full Text=[%s]", lisaInvestigationMetaData.get("FoundDateTime")),
@@ -297,6 +319,8 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 				lisaInvestigationMetaData.get("Investigator").equals(SurveyorConstants.SQAPICDR));
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundGasLeak, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundGasLeak));
+
+		// TBD: Verify filled form data (including lat/long) shows up in CSV.
 	}
 
 	/**
@@ -328,7 +352,8 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICSU);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICSU));
+			// TBD: Verify reports assigned to supervisor role are shown.
+			//assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICSU));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -354,28 +379,39 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		String methodName = testName.getMethodName();
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
-		String tcId = "";
+		String tcId = methodName.substring(0, 6);
+		boolean reuseReports = !isRunningInDataGenMode();
 
 		if (methodName.startsWith("TC2445")) {
 			Object[][] tc2445 = LeakScreenDataProvider.dataProviderAndroidApp_TC2445();
 			userDataRowID = (Integer)tc2445[0][1];
 			reportDataRowID1 = (Integer)tc2445[0][2];
-			tcId = "TC2445";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
+			String[] lisaNumbers = {"1", "2", "6", "7", "8"};
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports).createReportAndAssignLisasToUser(tcId,
+					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2448")) {
 			Object[][] tc2448 = LeakScreenDataProvider.dataProviderAndroidApp_TC2448();
 			userDataRowID = (Integer)tc2448[0][1];
 			reportDataRowID1 = (Integer)tc2448[0][2];
-			tcId = "TC2448";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+				reuseReports = false;
+			}
+
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports).createReportAndAssignLisasToUser(tcId,
 					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2673")) {
 			Object[][] tc2673 = LeakScreenDataProvider.dataProviderAndroidApp_TC2673();
 			userDataRowID = (Integer)tc2673[0][1];
 			reportDataRowID1 = (Integer)tc2673[0][2];
-			tcId = "TC2673";
-			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICSU)) {
+				reuseReports = false;
+			}
+
+			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports).createReportAndAssignGapsToUser(tcId,
 					userDataRowID, PICARRO_SUPERVISOR_USER_ROW_ID, reportDataRowID1).getReportTitle();
 		}
 	}
@@ -389,6 +425,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		initializeAndroidAddedLeakListDialog();
 		initializeMarkerTypeDialog();
 		initializeAddOtherSourceFormDialog();
+		initializeConfirmationDialog();
 	}
 
 	@Override
@@ -437,6 +474,11 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	protected void initializeAddOtherSourceFormDialog() {
 		addOtherSourceFormDialog = new AndroidAddOtherSourceFormDialog(appiumDriver);
 		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), addOtherSourceFormDialog);
+	}
+
+	private void initializeConfirmationDialog() {
+		confirmationDialog = new AndroidConfirmationDialog(appiumDriver);
+		PageFactory.initElements(new AppiumFieldDecorator(appiumDriver, Timeout.ANDROID_APP_IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS), confirmationDialog);
 	}
 
 	private void installApkStartAppiumDriver() throws MalformedURLException, IOException {

@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import common.source.BaselineImages;
 import common.source.Log;
 import common.source.MobileActions;
+import common.source.TestContext;
 import common.source.MobileActions.ZoomDirection;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -212,6 +213,15 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 		Log.method("applyMapZoomOut", delta);
 		//getGoogleMapView().click();
 		//MobileActions.newAction(getAndroidDriver()).zoomOut(getGoogleMapView(), ZoomDirection.HORIZONTAL, delta);
+	}
+
+	public void assertMapShowsPicarroUserCurrentLocation() {
+		Log.method("assertMapShowsPicarroUserCurrentLocation");
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
+		} else {
+			Log.info("Skipping map shows Picarro user current location verification. Run test targetting backpack simulator to enable this verification");
+		}
 	}
 
 	public void assertMarkAsCompleteAndPauseButtonsAreShown() {

@@ -4,6 +4,7 @@ public class BaselineImages {
 	public static class Folder {
 		public static final String TC2432 = "TC2432";
 		public static final String TC2433 = "TC2433";
+		public static final String TC2445 = "TC2445";
 		public static final String TC2551 = "TC2551";
 		public static final String TC2639 = "TC2639";
 		public static final String TC2640 = "TC2640";
@@ -31,6 +32,7 @@ public class BaselineImages {
 		public static final String TopPanelMaxValue2ppm = "max-value-2-0-ppm.png";
 		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
 		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
+		public static final String LisaHighlightScreenshotWithIndexPlaceholder = "LISAHighlight%d_Screenshot.png";
 		public static final String GapScreenshotWithIndexPlaceholder = "GAP%d_Screenshot.png";
 	}
 }
