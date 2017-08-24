@@ -40,4 +40,20 @@ public class CollectionsUtil {
 			}
 		}
 	}
+
+	public static boolean isEqualsArrayMap(String[][] arrayValues, Map<String, String> mapValues) {
+		Log.method("isEqualsArrayMap", LogHelper.arrayOfArrayToString(arrayValues), LogHelper.mapToString(mapValues));
+		for(int i=0;i<arrayValues[0].length; i++) {
+			String actual = mapValues.get(arrayValues[0][i]).toLowerCase().trim();
+			String expect = arrayValues[1][i].toLowerCase();
+			if(!actual.equals(expect)){
+				Log.error("NOT matching value found.");
+				Log.error("Map value: "+arrayValues[0][i]+" = "+actual);
+				Log.error("Array value: "+arrayValues[0][i]+" = "+expect);
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

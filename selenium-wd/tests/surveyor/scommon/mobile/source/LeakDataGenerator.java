@@ -5,12 +5,15 @@ import java.util.Map;
 
 import surveyor.dataprovider.DataGenerator;
 import surveyor.dataprovider.DataGenerator.Address;
+import surveyor.scommon.entities.LeakDetailEntity;
+import surveyor.scommon.mobile.source.LeakDataTypes.IndicationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakLocationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakPipeMaterialType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakType;
 import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 
 public class LeakDataGenerator {
 
@@ -282,6 +285,32 @@ public class LeakDataGenerator {
 		public LeakDataBuilder setUseCurrentLocation(Boolean useCurrentLocation) {
 			this.useCurrentLocation = useCurrentLocation;
 			return this;
+		}
+
+		public LeakDetailEntity toLeakDetailEntity(LeakSourceType leakSourceType, IndicationStatus indicationStatus, IndicationType indicationType, Integer indicationNumber) {
+			LeakDetailEntity entity = new LeakDetailEntity(getAdditionalNotes(), indicationNumber);
+			entity.setStreetNumber(this.getStreetNumber());
+			entity.setApartmentNumber(this.getAptNumber());
+			entity.setStreetName(this.getStreetName());
+			entity.setCity(this.getCity());
+			entity.setState(this.getState());
+			entity.setMapNumber(this.getMapNumber());
+			entity.setSurfaceReading(this.getSurfaceReading());
+			entity.setSurfaceReadingUnit(this.getSurfaceReadingUnit().toString());
+			entity.setBarholeReading(this.getBarholeReading());
+			entity.setBarholeReadingUnit(this.getBarholeReadingUnit().toString());
+			entity.setLeakType(this.getLeakType().toString());
+			entity.setLeakGrade(this.getLeakGrade());
+			entity.setLeakLocationType(this.getLocationType().toString());
+			entity.setPipeMaterialType(this.getPipeMaterialType().toString());
+			entity.setPavedWallToWall(this.getIsPavedWallToWall());
+			entity.setSurfaceOverLeak(this.getSurfaceOverLeakType().toString());
+			entity.setMeterNumber(this.getMeterNumber());
+			entity.setLeakLocationRemarks(this.getLocationRemarks());
+			entity.setBoxType(indicationType.toString());
+			entity.setLeakSourceType(leakSourceType.toString());
+			entity.setInvestigationStatus(indicationStatus);
+			return entity;
 		}
 
 		public Map<String, Object> toMap() {

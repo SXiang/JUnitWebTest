@@ -40,7 +40,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 			SEWERMANHOLE ("Sewer Manhole"),
 			CATCHBASIN ("Catch Basin"),
 			SUBSTRUCTURE ("Substructure");
-			
+
 			private String location;
 			LeakLocation(String location){
 				this.location = location;
@@ -62,7 +62,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 				return unit;
 			}
 		};
-		
+
 		public static enum SurfaceOverLeak {
 			ABOVEGROUND ("Above Ground"),
 		    CONCRETE ("Concrete"),
@@ -70,7 +70,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 			TARCOMPONENT ("Tar Component"),
 			INSUBSTRUCTURE ("In Substructure"),
 			OTHER ("Other");
-			
+
 			private String surface;
 			SurfaceOverLeak(String surface){
 				this.surface = surface;
@@ -79,11 +79,11 @@ public class LeakDetailEntity extends InvestigationEntity{
 				return surface;
 			}
 		};
-		
+
 		public static enum LeakType {
 			ABOVEGROUND ("Above Ground"),
 		    BELOWGROUND ("Below Ground");
-			
+
 			private String type;
 			LeakType(String type){
 				this.type = type;
@@ -111,12 +111,12 @@ public class LeakDetailEntity extends InvestigationEntity{
 				return this.name;
 			}
 		}
-		
+
 		public LeakDetailEntity(String userName, int indicationNumber){
 			setUserName(userName);
 			setIndicationNumber(indicationNumber);
 		}
-		
+
 		public void setDefaultTestData(){
 			super.setDefaultTestData();
 			setLeakSourceType("Gas");
@@ -268,6 +268,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 		public void setLeakLocationRemarks(String leakLocationRemarks) {
 			this.leakLocationRemarks = leakLocationRemarks;
 		}
+
 		@Override
 		public void setInvestigationStatus(boolean completed) {
 				if(completed){
@@ -282,7 +283,11 @@ public class LeakDetailEntity extends InvestigationEntity{
 					this.investigationStatus = IndicationStatus.INPROGRESS.toString();//"In Progress";
 				}
 		}
-		
+
+		public void setInvestigationStatus(IndicationStatus indicationStatus) {
+			this.investigationStatus = indicationStatus.toString();
+		}
+
 		public List<String> toPDFLeakDetails(){
 			List<String> leakDetails = new ArrayList<String>();
 			String header = getIndicationNumber()+" "+investigationStatus+" .* "+userName+" [0-9]+ days [0-9]{2}:[0-9]{2}:[0-9]{2}";
@@ -313,7 +318,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 
 			return leakDetails;
 		}
-		
+
 		public String[][] toCSVLeakDetails(){
 			String[][] csvRow ={
 					{boxType+"Number", "InvestigationStatus", "Investigator", "LeakCoordinates", "GpsPrecision",

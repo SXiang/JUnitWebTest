@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.collections.ListUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,6 +32,7 @@ import androidapp.screens.source.AndroidMarkerTypeListControl;
 import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
+import common.source.CollectionsUtil;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.Screenshotter;
@@ -40,9 +43,13 @@ import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.entities.LeakDetailEntity;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
+import surveyor.scommon.mobile.source.LeakDataTypes.IndicationType;
+import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
+import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
@@ -251,7 +258,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		final int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = getMarkerNumber(investigationMarkers, idx-1);
-		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
+		List<LeakDataBuilder> leakDataBuilderStore = new ArrayList<LeakDataBuilder>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 
@@ -272,7 +279,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.waitForScreenLoad();
 			LeakDataBuilder leakDataBuilder = LeakDataGenerator.newBuilder().generateDefaultValues();
 			Map<String, Object> leakMap = leakDataBuilder.toMap();
-			listStoreMap.add(leakMap);
+			leakDataBuilderStore.add(leakDataBuilder);
 			addLeakSourceFormDialog.fillForm(leakMap);
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), 0);
@@ -309,7 +316,9 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		assertTrue(String.format("PDF -> Expected assigned user NOT found. Expected=[%s]. Actual Full Text=[%s]", SurveyorConstants.SQAPICDR, lisaInvestigationPDFData.get(0)),
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
-		// TBD: Verify filled form data (including lat/long) shows up in PDF.
+		LeakDataBuilder leakDataBuilder = leakDataBuilderStore.get(0);
+		LeakDetailEntity leakDetails = leakDataBuilder.toLeakDetailEntity(LeakSourceType.Gas, IndicationStatus.FOUNDGASLEAK, IndicationType.LISA, selectedLisaNum);
+		assertTrue(ListUtils.isEqualList(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, NOTSET /*reportDataRowID*/)));
 
 		Map<String, String> lisaInvestigationMetaData = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
 		Log.info(String.format("Investigation CSV data -> %s", LogHelper.mapToString(lisaInvestigationMetaData)));
@@ -320,7 +329,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundGasLeak, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundGasLeak));
 
-		// TBD: Verify filled form data (including lat/long) shows up in CSV.
+		assertTrue(CollectionsUtil.isEqualsArrayMap(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, NOTSET /*reportDataRowID*/)));
 	}
 
 	/**
