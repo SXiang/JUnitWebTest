@@ -259,8 +259,8 @@ public class LatLongSelectionReportsPageTest extends BaseReportsPageActionTest {
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
 		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList3.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);

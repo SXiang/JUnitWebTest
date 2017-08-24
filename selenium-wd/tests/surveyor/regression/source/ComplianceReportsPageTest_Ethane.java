@@ -15,7 +15,6 @@ import static surveyor.scommon.source.SurveyorConstants.ETHRSWLAT;
 import static surveyor.scommon.source.SurveyorConstants.ETHRSWLON;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -158,7 +157,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -400,7 +398,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
@@ -476,7 +473,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
@@ -556,7 +552,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");
@@ -634,7 +629,6 @@ public class ComplianceReportsPageTest_Ethane extends BaseReportsPageTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");

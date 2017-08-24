@@ -455,7 +455,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -632,7 +631,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -815,7 +813,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");
@@ -971,7 +968,6 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		viewMap.put(KEYBREADCRUMB, "1");
 		viewMap.put(KEYINDICATIONS, "1");
 		viewMap.put(KEYISOTOPICCAPTURE, "0");
-		viewMap.put(KEYANNOTATION, "0");
 		viewMap.put(KEYGAPS, "0");
 		viewMap.put(KEYASSETS, "0");
 		viewMap.put(KEYBOUNDARIES, "0");

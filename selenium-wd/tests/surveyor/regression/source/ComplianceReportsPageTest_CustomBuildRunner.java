@@ -5,7 +5,6 @@ package surveyor.regression.source;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -151,7 +150,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		viewMap1.put(KEYBREADCRUMB, "0");
 		viewMap1.put(KEYINDICATIONS, "0");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -226,7 +224,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -238,7 +235,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		viewMap2.put(KEYBREADCRUMB, "1");
 		viewMap2.put(KEYINDICATIONS, "1");
 		viewMap2.put(KEYISOTOPICCAPTURE, "1");
-		viewMap2.put(KEYANNOTATION, "1");
 		viewMap2.put(KEYGAPS, "0");
 		viewMap2.put(KEYASSETS, "1");
 		viewMap2.put(KEYBOUNDARIES, "0");
@@ -339,7 +335,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		viewMap1.put(KEYBREADCRUMB, "0");
 		viewMap1.put(KEYINDICATIONS, "0");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -411,7 +406,6 @@ public class ComplianceReportsPageTest_CustomBuildRunner extends BaseReportsPage
 		viewMap1.put(KEYBREADCRUMB, "0");
 		viewMap1.put(KEYINDICATIONS, "0");
 		viewMap1.put(KEYISOTOPICCAPTURE, "0");
-		viewMap1.put(KEYANNOTATION, "0");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "0");
