@@ -212,7 +212,6 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		getTestEnvironmentAction().idleForSeconds("5", NOTSET);
 		if (observerViewPageActionList.get(0).clickOnFirst3300IndicationShownOnMap(null, NOTSET)) {
 			observerViewPageActionList.get(0).waitForFeatureInfoPopupToOpen(EMPTY, NOTSET);
-			assertTrue(observerViewPageActionList.get(0).verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
 		}
 
 		// stop survey.

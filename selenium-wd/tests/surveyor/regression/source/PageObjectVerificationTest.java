@@ -455,34 +455,6 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 
-		String mapCanvasXPath = "//*[@id='map']/div/canvas";
-		boolean clickFirstIndicationOnMap = mapUtility.clickFirstIndicationOnMap(mapCanvasXPath);
-		Log.info("clickFirstIndicationOnMap = " + clickFirstIndicationOnMap);
-
-		driverViewPage.waitForFieldNotesDialogToOpen();
-
-		Log.info("Entering dummy text in field notes");
-		String fieldNote = "Dummy field note";
-		driverViewPage.setFieldNotesTextField(fieldNote);
-
-		Log.info("Clicking on Field notes Save button");
-		driverViewPage.clickFieldNotesSaveButton();
-
-		Log.info("Waiting for field notes dialog to close");
-		driverViewPage.waitForFieldNotesDialogToClose();
-
-		boolean isFieldNotesShown = mapUtility.isFieldNoteShown(fieldNote);
-		Log.info("isFieldNotesShown = " + isFieldNotesShown);
-
-		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();
-		Log.info("chartDataShowingOnMap = " + chartDataShowingOnMap);
-
-		boolean indicationsShownOnMap = mapUtility.isIndicationsShownOnMap();
-		Log.info("indicationsShownOnMap = " + indicationsShownOnMap);
-
-		boolean breadcrumbShownOnMap = mapUtility.isBreadcrumbShownOnMap();
-		Log.info("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
-
 		boolean fovShownOnMap = mapUtility.isFOVShownOnMap();
 		Log.info("fovShownOnMap = " + fovShownOnMap);
 

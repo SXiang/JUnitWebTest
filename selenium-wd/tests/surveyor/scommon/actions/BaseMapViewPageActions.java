@@ -1328,28 +1328,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 
 	/**
-	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsVisible", data, dataRowID);
-		return this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
-	}
-
-	/**
-	 * Executes verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + "..verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible", data, dataRowID);
-		return !this.getBaseMapViewPageObject().isAddUpdateNoteButtonVisible();
-	}
-
-	/**
 	 * Executes verifyFieldNotesIsNotShownOnMap action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.

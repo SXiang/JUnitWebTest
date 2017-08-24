@@ -531,7 +531,6 @@ public class DriverViewPageTest_Analytics extends BaseMapViewTest {
 			testEnvironmentAction.get().stopReplay(EMPTY, NOTSET);
 			testEnvironmentAction.get().idleForSeconds("5", NOTSET);
 			driverPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-			assertTrue(driverViewPageAction.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(EMPTY, NOTSET));
 			return true;
 		});
 	}

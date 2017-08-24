@@ -132,13 +132,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		return retVal;
 	}
 
-	public boolean clickOnFeatureInfoAddUpdateNote(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.clickOnFeatureInfoAddUpdateFieldNote", data, dataRowID);
-		getDriverViewPage().clickOnAddUpdateNoteButton();
-		getDriverViewPage().waitForFieldNotesDialogToOpen();
-		return true;
-	}
-
 	public boolean clickOnModeButton(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.clickOnModeButton", data, dataRowID);
 		this.waitForSignalRCallsToComplete();
@@ -686,49 +679,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 	public boolean verifyCarIconIsNotInCenter(String data, Integer dataRowID) {
 		logAction("DriverViewPageActions.verifyCarIconIsNotInCenter", data, dataRowID);
 		return true;
-	}
-
-	/**
-	 * Executes enterFieldNotes action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 * @throws Exception
-	 */
-	public boolean enterFieldNotes(String data, Integer dataRowID) throws Exception {
-		logAction("DriverViewPageActions.enterFieldNotes", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_DRIVER_VIEW_PAGE_ACTIONS + FN_ENTER_FIELD_NOTES, ARG_DATA, data);
-		this.getDriverViewPage().setFieldNotesTextField(data);
-		this.getDriverViewPage().clickFieldNotesSaveButton();
-		return true;
-	}
-
-	/**
-	 * Executes verifyFieldNotesDialogIsShown action.
-	 * NOTES:
-	 * - Use this method - 'verifyFieldNotesDialogIsShown' to verify field notes dialog is showing.
-	 * - Use 'verifyFieldNotesIsShownOnMap' method to verify field note inputed by user is NOT showing on the map.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFieldNotesDialogIsShown(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFieldNotesDialogIsShown", data, dataRowID);
-		return this.getDriverViewPage().verifyFieldNotesDialogIsShown();
-	}
-
-	/**
-	 * Executes verifyFieldNotesDialogIsNotShown action.
-	 * NOTES:
-	 * - Use this method - 'verifyFieldNotesDialogIsNotShown' to verify field notes dialog is NOT showing.
-	 * - Use 'verifyFieldNotesIsNotShownOnMap' method to verify field note inputed by user is NOT showing on the map.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFieldNotesDialogIsNotShown(String data, Integer dataRowID) {
-		logAction("DriverViewPageActions.verifyFieldNotesDialogIsNotShown", data, dataRowID);
-		return !this.getDriverViewPage().verifyFieldNotesDialogIsShown();
 	}
 
 	/**
@@ -1332,7 +1282,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnCurtainZoomOutButton")) { return this.clickOnCurtainZoomOutButton(data, dataRowID); }
 		else if (actionName.equals("clickOnDisplayButton")) { return this.clickOnDisplayButton(data, dataRowID); }
 		else if (actionName.equals("clickOnFirstIndicationShownOnMap")) { return this.clickOnFirstIndicationShownOnMap(data, dataRowID); }
-		else if (actionName.equals("clickOnFeatureInfoAddUpdateNote")) { return this.clickOnFeatureInfoAddUpdateNote(data, dataRowID); }
 		else if (actionName.equals("clickOnGisButton")) { return this.clickOnGisButton(data, dataRowID); }
 		else if (actionName.equals("clickOnHeaderInfoBox")) { return this.clickOnHeaderInfoBox(data, dataRowID); }
 		else if (actionName.equals("clickOnMapButton")) { return this.clickOnMapButton(data, dataRowID); }
@@ -1342,7 +1291,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("clickOnStatusButton")) { return this.clickOnStatusButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomInButton")) { return this.clickOnZoomInButton(data, dataRowID); }
 		else if (actionName.equals("clickOnZoomOutButton")) { return this.clickOnZoomOutButton(data, dataRowID); }
-		else if (actionName.equals("enterFieldNotes")) { return this.enterFieldNotes(data, dataRowID); }
 		else if (actionName.equals("insertTextById")) { return this.insertTextById(data, dataRowID); }
 		else if (actionName.equals("insertTextByXPath")) { return this.insertTextByXPath(data, dataRowID); }
 		else if (actionName.equals("open")) { return this.open(data, dataRowID); }
@@ -1431,12 +1379,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("verifyEQModeDialogMessageEquals")) { return this.verifyEQModeDialogMessageEquals(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsShown")) { return this.verifyEQModeDialogIsShown(data, dataRowID); }
 		else if (actionName.equals("verifyEQModeDialogIsNotShown")) { return this.verifyEQModeDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsVisible(data, dataRowID); }
-		else if (actionName.equals("verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible")) { return this.verifyFeatureInfoPopupAddFieldNotesButtonIsNotVisible(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesDialogIsShown")) { return this.verifyFieldNotesDialogIsShown(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesDialogIsNotShown")) { return this.verifyFieldNotesDialogIsNotShown(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsNotShownOnMap")) { return this.verifyFieldNotesIsNotShownOnMap(data, dataRowID); }
-		else if (actionName.equals("verifyFieldNotesIsShownOnMap")) { return this.verifyFieldNotesIsShownOnMap(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsGreen")) { return this.verifyFlowButtonIsGreen(data, dataRowID); }
 		else if (actionName.equals("verifyFlowButtonIsRed")) { return this.verifyFlowButtonIsRed(data, dataRowID); }
 		else if (actionName.equals("verifyFOVIsNotShownOnMap")) { return this.verifyFOVIsNotShownOnMap(data, dataRowID); }

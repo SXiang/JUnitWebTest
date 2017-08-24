@@ -254,9 +254,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "feature_info")
 	protected WebElement featureInfoText;
 
-	@FindBy(id = "btn_addupdate_annotation")
-	protected WebElement addUpdateNoteButton;
-
     // Survey ID used for opening the specified survey page.
     private String surveyId;
 
@@ -419,10 +416,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			clickDisplayButton();
 		}
 		return this;
-	}
-
-	public boolean isAddUpdateNoteButtonVisible() {
-		return WebElementExtender.isElementPresentAndDisplayed(addUpdateNoteButton);
 	}
 
 	/**

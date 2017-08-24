@@ -43,7 +43,6 @@ import java.net.UnknownHostException;
 @RunWith(SurveyorTestRunner.class)
 public class GridPOCTestClass4 {
 
-	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
 	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
 	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
 	protected static final String SURVEY_INFO_ASSESSMENT_SURVEYOR = "Surveyor: Picarro Production #10";
@@ -78,7 +77,6 @@ public class GridPOCTestClass4 {
 	protected static final String TEST_SURVEY_OPERATOR1_USERNAME = "Administrator";
 	
 	// Ethane specific constants.
-	protected static final String ETHANE_SAMPLE_FIELD_NOTES = "3.6 big leak location";
 	protected static final String ETHANE_SURVEY_INFO_SURVEYOR = "Surveyor: Green-Escape";
 	protected static final String ETHANE_SURVEY_INFO_ANALYZER = "Analyzer: FEDS2059";
 	protected static final String TEST_ETHANE_SURVEY_STANDARD_ID = "183fcb51-e968-bb81-0c98-39d666857ae7";
@@ -252,7 +250,6 @@ public class GridPOCTestClass4 {
 		assertTrue(surveyViewPageAction.verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
