@@ -95,7 +95,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -142,7 +141,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -520,7 +518,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -558,7 +555,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1006,7 +1002,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1032,7 +1027,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1067,7 +1061,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1093,7 +1086,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnLisas(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1478,7 +1470,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -1516,7 +1507,6 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);

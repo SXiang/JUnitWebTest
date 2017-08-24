@@ -228,7 +228,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
@@ -266,7 +265,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);

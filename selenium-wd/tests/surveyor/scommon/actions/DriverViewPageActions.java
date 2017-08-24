@@ -350,8 +350,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			switchType = DisplaySwitchType.IsotopicAnalysis;
 		} else if (data.equalsIgnoreCase("Lisas")) {
 			switchType = DisplaySwitchType.Lisas;
-		} else if (data.equalsIgnoreCase("Notes")) {
-			switchType = DisplaySwitchType.Notes;
 		} else if (data.equalsIgnoreCase("WindRose")) {
 			switchType = DisplaySwitchType.WindRose;
 		}
@@ -1324,7 +1322,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOffMaterialTypePEPlastic")) { return this.turnOffMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeProtectedSteel")) { return this.turnOffMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeUnprotectedSteel")) { return this.turnOffMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOffNotes")) { return this.turnOffNotes(data, dataRowID); }
 		else if (actionName.equals("turnOffPosition")) { return this.turnOffPosition(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllBoundaries")) { return this.turnOffUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllPipes")) { return this.turnOffUseAllPipes(data, dataRowID); }
@@ -1351,7 +1348,6 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 		else if (actionName.equals("turnOnMaterialTypePEPlastic")) { return this.turnOnMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeProtectedSteel")) { return this.turnOnMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeUnprotectedSteel")) { return this.turnOnMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOnNotes")) { return this.turnOnNotes(data, dataRowID); }
 		else if (actionName.equals("turnOnPosition")) { return this.turnOnPosition(data, dataRowID); }
 		else if (actionName.equals("turnOnSatelliteView")) { return this.turnOnSatelliteView(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }

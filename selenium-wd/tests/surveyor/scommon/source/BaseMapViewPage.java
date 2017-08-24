@@ -282,7 +282,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public enum DisplaySwitchType {
-		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
+		EightHourHistory, WindRose, ConcentrationChart, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
 	}
 
 	public enum MapSwitchType {
@@ -1096,9 +1096,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Lisas:
 			isSelected = this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch");
 			break;
-		case Notes:
-			isSelected = this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch");
-			break;
 		default:
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
@@ -1151,9 +1148,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			break;
 		case Lisas:
 			isSelected = this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch on");
-			break;
-		case Notes:
-			isSelected = this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		case WindRose:
 			isSelected = this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on");
@@ -1297,19 +1291,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
 					waitAndClickElement(this.displaySwitchLisas);
-				}
-			}
-			break;
-		case Notes:
-			if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch")) {
-				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
-					waitAndClickElement(this.displaySwitchNotes);
-				}
-			} else if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on")) {
-				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString(), "to switch off");
-					waitAndClickElement(this.displaySwitchNotes);
 				}
 			}
 			break;

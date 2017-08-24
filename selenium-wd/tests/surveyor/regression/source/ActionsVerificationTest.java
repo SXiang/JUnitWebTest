@@ -382,7 +382,6 @@ public class ActionsVerificationTest extends SurveyorBaseTest {
 
 			driverViewPageAction.clickOnDisplayButton(EMPTY,NOTSET);
 			driverViewPageAction.turnOnLisas(EMPTY,NOTSET);
-			driverViewPageAction.turnOnNotes(EMPTY,NOTSET);
 			driverViewPageAction.turnOffEightHourHistory(EMPTY,NOTSET);
 			driverViewPageAction.turnOffConcentrationChart(EMPTY,NOTSET);
 			driverViewPageAction.turnOffFOVs(EMPTY,NOTSET);

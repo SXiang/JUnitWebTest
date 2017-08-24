@@ -431,7 +431,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOnIndications(data, dataRowID);
 		turnOnIsotopicAnalysis(data, dataRowID);
 		turnOnLisas(data, dataRowID);
-		turnOnNotes(data, dataRowID);
 		turnOnWindRose(data, dataRowID);
 		return true;
 	}
@@ -480,11 +479,7 @@ public class BaseMapViewPageActions extends BasePageActions {
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, true);
 		return true;
 	}
-	public boolean turnOnNotes(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".turnOnNotes", data, dataRowID);
-		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, true);
-		return true;
-	}
+	
 	public boolean turnOnWindRose(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOnWindRose", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.WindRose, true);
@@ -501,7 +496,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		turnOffIndications(data, dataRowID);
 		turnOffIsotopicAnalysis(data, dataRowID);
 		turnOffLisas(data, dataRowID);
-		turnOffNotes(data, dataRowID);
 		turnOffWindRose(data, dataRowID);
 		return true;
 	}
@@ -555,11 +549,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	public boolean turnOffLisas(String data, Integer dataRowID) {
 		logAction(getRuntimeType() + ".turnOffLisas", data, dataRowID);
 		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Lisas, false);
-		return true;
-	}
-	public boolean turnOffNotes(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".turnOffNotes", data, dataRowID);
-		getBaseMapViewPageObject().toggleDisplaySwitch(DisplaySwitchType.Notes, false);
 		return true;
 	}
 	public boolean turnOffWindRose(String data, Integer dataRowID) {
@@ -662,8 +651,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 			switchType = DisplaySwitchType.IsotopicAnalysis;
 		} else if (data.equalsIgnoreCase("Lisas")) {
 			switchType = DisplaySwitchType.Lisas;
-		} else if (data.equalsIgnoreCase("Notes")) {
-			switchType = DisplaySwitchType.Notes;
 		} else if (data.equalsIgnoreCase("WindRose")) {
 			switchType = DisplaySwitchType.WindRose;
 		}
@@ -908,18 +895,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		logAction(getRuntimeType() + ".verifyDisplaySwitchConcentrationChartButtonIsVisible", data, dataRowID);
 		return getBaseMapViewPageObject().isDisplaySwitchConcentrationChartButtonVisible() 
 				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.ConcentrationChart, data);
-	}
-
-	/**
-	 * Executes verifyDisplaySwitchNotesButtonIsVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyDisplaySwitchNotesButtonIsVisible(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyDisplaySwitchNotesButtonIsVisible", data, dataRowID);
-		return getBaseMapViewPageObject().isDisplaySwitchNotesButtonVisible() 
-				&& getBaseMapViewPageObject().verifyDisplaySwitchStatus(DisplaySwitchType.Notes, data);
 	}
 
 	/**

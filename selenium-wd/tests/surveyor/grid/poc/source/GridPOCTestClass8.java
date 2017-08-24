@@ -246,7 +246,6 @@ public class GridPOCTestClass8 {
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);

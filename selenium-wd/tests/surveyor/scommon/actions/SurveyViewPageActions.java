@@ -68,7 +68,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		turnOffIndications(data, dataRowID);
 		turnOffIsotopicAnalysis(data, dataRowID);
 		turnOffLisas(data, dataRowID);
-		turnOffNotes(data, dataRowID);
 		return true;
 	}
 
@@ -79,7 +78,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		turnOnIndications(data, dataRowID);
 		turnOnIsotopicAnalysis(data, dataRowID);
 		turnOnLisas(data, dataRowID);
-		turnOnNotes(data, dataRowID);
 		return true;
 	}
 
@@ -240,7 +238,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("turnOffMaterialTypePEPlastic")) { return this.turnOffMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeProtectedSteel")) { return this.turnOffMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOffMaterialTypeUnprotectedSteel")) { return this.turnOffMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOffNotes")) { return this.turnOffNotes(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllBoundaries")) { return this.turnOffUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOffUseAllPipes")) { return this.turnOffUseAllPipes(data, dataRowID); }
 		else if (actionName.equals("turnOffWindRose")) { return this.turnOffWindRose(data, dataRowID); }
@@ -263,7 +260,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("turnOnMaterialTypePEPlastic")) { return this.turnOnMaterialTypePEPlastic(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeProtectedSteel")) { return this.turnOnMaterialTypeProtectedSteel(data, dataRowID); }
 		else if (actionName.equals("turnOnMaterialTypeUnprotectedSteel")) { return this.turnOnMaterialTypeUnprotectedSteel(data, dataRowID); }
-		else if (actionName.equals("turnOnNotes")) { return this.turnOnNotes(data, dataRowID); }
 		else if (actionName.equals("turnOnSatelliteView")) { return this.turnOnSatelliteView(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllBoundaries")) { return this.turnOnUseAllBoundaries(data, dataRowID); }
 		else if (actionName.equals("turnOnUseAllPipes")) { return this.turnOnUseAllPipes(data, dataRowID); }
@@ -299,7 +295,6 @@ public class SurveyViewPageActions extends BaseMapViewPageActions {
 		else if (actionName.equals("verifyDisplaySwitch8HourHistoryButtonIsVisible")) { return this.verifyDisplaySwitch8HourHistoryButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchWindroseButtonIsVisible")) { return this.verifyDisplaySwitchWindroseButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchConcentrationChartButtonIsVisible")) { return this.verifyDisplaySwitchConcentrationChartButtonIsVisible(data, dataRowID); }
-		else if (actionName.equals("verifyDisplaySwitchNotesButtonIsVisible")) { return this.verifyDisplaySwitchNotesButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIsotopicAnalysisButtonIsVisible")) { return this.verifyDisplaySwitchIsotopicAnalysisButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchIndicationsButtonIsVisible")) { return this.verifyDisplaySwitchIndicationsButtonIsVisible(data, dataRowID); }
 		else if (actionName.equals("verifyDisplaySwitchLisasButtonIsVisible")) { return this.verifyDisplaySwitchLisasButtonIsVisible(data, dataRowID); }

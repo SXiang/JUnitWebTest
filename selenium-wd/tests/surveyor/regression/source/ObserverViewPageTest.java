@@ -174,7 +174,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible("ON", NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsVisible("ON", NOTSET));
 
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
@@ -550,7 +549,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
@@ -614,7 +612,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);

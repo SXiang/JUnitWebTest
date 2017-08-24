@@ -309,7 +309,6 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 		observerViewPageActionList.get(0).getObserverViewPage().setZoomLevel(zoomLevelForIndication);
 		testEnvironmentAction.idleForSeconds("200", NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
-		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		testEnvironmentAction.stopReplay(EMPTY, NOTSET);
 		testEnvironmentAction.idleForSeconds("5", NOTSET);
@@ -318,12 +317,10 @@ public class ObserverViewPageTest_Analytics2 extends BaseMapViewTest {
 			assertTrue(observerViewPageActionList.get(0).getObserverViewPage().isSurveyModeDialogShown());
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 			testEnvironmentAction.idleForSeconds("5", NOTSET);
-			assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 			observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		}
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		testEnvironmentAction.idleForSeconds("5", NOTSET);
-		assertFalse(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).getObserverViewPage().clickDisplayButton();
 		/* Step 4: stopAnalyzerSurvey */
 		// post stopping replay, if method execution does not occur in allocated timeframe 'heartbeat is not received' error event can be thrown.
