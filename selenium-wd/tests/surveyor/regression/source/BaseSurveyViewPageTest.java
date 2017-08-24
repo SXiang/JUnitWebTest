@@ -15,7 +15,7 @@ public class BaseSurveyViewPageTest extends BaseMapViewTest {
 
 	public BaseSurveyViewPageTest() throws IOException {
 	}
-
+	protected static final String SAMPLE_SURVEY_FIELD_NOTES1 = "Ref Gas Canceled";
 	protected static final String SURVEY_INFO_SURVEYOR = "Surveyor: Software Car";
 	protected static final String SURVEY_INFO_ANALYZER = "Analyzer: FDDS2038";
 	protected static final String SURVEY_INFO_SURVEYOR_2 = "Surveyor: Nissan Rogue - Picarro";
