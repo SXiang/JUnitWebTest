@@ -1,6 +1,9 @@
 package androidapp.regression.source;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -11,15 +14,18 @@ import androidapp.entities.source.InvestigationEntity;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
 import common.source.BaseHelper;
+import common.source.ExceptionUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
+import surveyor.dataaccess.source.User;
 
 public class BaseReportTest extends BaseAndroidTest {
 
+	private static final int PAGES_TO_SCROLL_IN_INVESTIGATION_REPORTS_SCREEN = 3 /*numberOfPages*/;
 	protected InvestigationReportDataVerifier invReportDataVerifier;
 
 	public BaseReportTest() {
@@ -45,6 +51,16 @@ public class BaseReportTest extends BaseAndroidTest {
 		mapScreen.enterPassword(password);
 		mapScreen.clickOnSubmit();
 		investigationScreen.waitForScreenLoad();
+	}
+
+	protected void resetInvestigationReportScreenResults(AndroidInvestigationScreen invScreen) {
+		IntStream.rangeClosed(1, PAGES_TO_SCROLL_IN_INVESTIGATION_REPORTS_SCREEN-1).forEach(i -> {
+			try {
+				invScreen.scrollToPreviousPage();
+			} catch (Exception e) {
+				Log.error(String.format("Scroll to previous page failed! Exception -> %s", ExceptionUtility.getStackTraceString(e)));
+			}
+		});
 	}
 
 	protected void searchForReportId(AndroidInvestigationScreen investigationScreen, String reportTitle) throws Exception {
@@ -77,9 +93,23 @@ public class BaseReportTest extends BaseAndroidTest {
 		return true;
 	}
 
-	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) {
+	protected boolean verifyReportsAssignedToUserAndSameCustomerUserAreShown(AndroidInvestigationScreen invScreen, String username) throws Exception {
+		Log.method("verifyReportsAssignedToUserAndSameCustomerUserAreShown", invScreen, username);
+		User user = User.getUser(username);
+		List<String> usernames = User.getUsersForCustomer(user.getCustomerId()).stream()
+			.map(u -> u.getUserName())
+			.collect(Collectors.toList());
+		return verifyReportsAssignedToUserAreShown(invScreen, username, PAGES_TO_SCROLL_IN_INVESTIGATION_REPORTS_SCREEN, s -> usernames.contains(s.getAssignedUserName()));
+	}
+
+	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) throws Exception {
+		return verifyReportsAssignedToUserAreShown(invScreen, username, 1 /*numberOfPages*/, s -> s.getAssignedUserName().equals(username));
+	}
+
+	private boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username, Integer numberOfPages,
+			Predicate<StoredProcLisaInvestigationShowIndication> matchPredicate) throws Exception {
 		Log.method("verifyReportsAssignedToUserAreShown", invScreen, username);
-		List<InvestigationEntity> investigations = invScreen.getInvestigations();
+		List<InvestigationEntity> investigations = invScreen.getInvestigations(numberOfPages);
 		boolean match = investigations.stream()
 			.allMatch(r -> {
 				Report reportObj = Report.getReport(r.getReportTitle());
@@ -97,8 +127,8 @@ public class BaseReportTest extends BaseAndroidTest {
 					return lisaInvestigationfromSP.stream().anyMatch(s -> {
 						if (s.getAssignedUserName()!=null) {
 							if (!BaseHelper.isNullOrEmpty(s.getAssignedUserName().trim())) {
-								Log.info(String.format("Matching assigned username. Expected=[%s], Actual=[%s]", username, s.getAssignedUserName()));
-								return s.getAssignedUserName().equals(username);
+								Log.info("Executing match predicate");
+								return matchPredicate.test(s);
 							}
 						}
 

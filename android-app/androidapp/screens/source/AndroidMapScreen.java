@@ -189,7 +189,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (modeTextDisplayed) {
 			String modeTextValue = getModeText();
 			Log.info(String.format("modeTextValue=%s", modeTextValue));
-			modeTextValid = modeTextValue.contains(METHANE_MODE);
+			modeTextValid = !BaseHelper.isNullOrEmpty(modeTextValue);
 		}
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -393,8 +394,8 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICSU);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			// TBD: Verify reports assigned to supervisor role are shown.
-			//assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICSU));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, SurveyorConstants.SQAPICSU));
+			resetInvestigationReportScreenResults(investigationScreen);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;

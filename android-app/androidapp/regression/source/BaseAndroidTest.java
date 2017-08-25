@@ -231,11 +231,20 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
+	private Long getRunUUID() {
+		Long runUUID = TestContext.INSTANCE.getTestSetup().getRunUUID();
+		if (runUUID == null) {
+			return 0L;
+		}
+
+		return runUUID;
+	}
+
 	private void startTestRecording(String testName, Boolean enableLogging) throws Exception {
 		Log.method("startTestRecording", testName, enableLogging);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
-		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
+		screenRecorder.startRecording(String.format("/sdcard/%s-%d.mp4", testName, getRunUUID()));
 
 		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
 			initPerfmonDataCollector();
@@ -308,7 +317,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void collectServiceInfos(String testName) throws Exception {
 		Log.method("collectServiceInfos", testName);
-		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.svcinfo.dat", testName));
+		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.svcinfo.dat", testName, getRunUUID()));
 
 		if(FileUtility.fileExists(svcInfoFile)) {
 			FileUtility.deleteFile(Paths.get(svcInfoFile));
@@ -325,7 +334,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void collectAdbLogs(String testName) throws IOException {
 		Log.method("collectAdbLogs", testName);
-		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.log", testName));
+		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.log", testName, getRunUUID()));
 		if(FileUtility.fileExists(logcatLog)) {
 			FileUtility.deleteFile(Paths.get(logcatLog));
 		}
@@ -341,7 +350,7 @@ public class BaseAndroidTest extends BaseTest {
 	private void createRecording(String testName) throws Exception {
 		Log.method("createRecording", testName);
 		MobileActions action = MobileActions.newAction();
-		String videoFileName = String.format("%s.mp4", testName);
+		String videoFileName = String.format("%s-%d.mp4", testName, getRunUUID());
 		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", videoFileName);
 		if(FileUtility.fileExists(saveFileLocation)) {
 			FileUtility.deleteFile(Paths.get(saveFileLocation));
