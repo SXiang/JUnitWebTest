@@ -1,11 +1,22 @@
 package surveyor.scommon.mobile.source;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.eclipse.jetty.util.log.Log;
+
+import common.source.BaseHelper;
+import common.source.EnumUtility;
+import common.source.FileUtility;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.dataprovider.DataGenerator.Address;
 import surveyor.scommon.entities.LeakDetailEntity;
+import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.IndicationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakLocationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakPipeMaterialType;
@@ -14,6 +25,7 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakType;
 import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
+import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class LeakDataGenerator {
 
@@ -287,8 +299,9 @@ public class LeakDataGenerator {
 			return this;
 		}
 
-		public LeakDetailEntity toLeakDetailEntity(LeakSourceType leakSourceType, IndicationStatus indicationStatus, IndicationType indicationType, Integer indicationNumber) {
-			LeakDetailEntity entity = new LeakDetailEntity(getAdditionalNotes(), indicationNumber);
+		public LeakDetailEntity toLeakDetailEntity(LeakSourceType leakSourceType, IndicationStatus indicationStatus, IndicationType indicationType, Integer indicationNumber, String username,
+				String latitude, String longitude) {
+			LeakDetailEntity entity = new LeakDetailEntity(username, indicationNumber);
 			entity.setStreetNumber(this.getStreetNumber());
 			entity.setApartmentNumber(this.getAptNumber());
 			entity.setStreetName(this.getStreetName());
@@ -310,6 +323,9 @@ public class LeakDataGenerator {
 			entity.setBoxType(indicationType.toString());
 			entity.setLeakSourceType(leakSourceType.toString());
 			entity.setInvestigationStatus(indicationStatus);
+			entity.setAdditionalNotes(getAdditionalNotes());
+			entity.setLatitude(latitude);
+			entity.setLongitude(longitude);
 			return entity;
 		}
 
@@ -337,6 +353,56 @@ public class LeakDataGenerator {
 			map.put(DataKey.IS_PAVED_WALL2WALL, getIsPavedWallToWall());
 			map.put(DataKey.USE_CURRENT_LOCATION, getUseCurrentLocation());
 			return map;
+		}
+
+		public void toFile(String filePath) throws IOException {
+			StringBuilder builder = new StringBuilder();
+			Map<String, Object> valuesMap = toMap();
+			for (String key : valuesMap.keySet()) {
+				builder.append(String.format("%s = %s", key, valuesMap.get(key)));
+				builder.append(BaseHelper.getLineSeperator());
+			}
+
+			if (FileUtility.fileExists(filePath)) {
+				FileUtility.deleteFile(Paths.get(filePath));
+			}
+
+			FileUtility.writeToFile(filePath, builder.toString());
+		}
+
+		public void fromFile(String filePath) throws IOException {
+			List<String> fileLines = FileUtility.readFileLinesToList(filePath);
+			for (String line: fileLines) {
+				int idx = line.indexOf('=');
+				String key = line.substring(0, idx).trim();
+				String value = line.substring(idx+1, line.length()).trim();
+				if (key.equals(DataKey.LEAK_SOURCE_TYPE)) { setSourceType(EnumUtility.fromName(value, () -> LeakSourceType.values()));  }
+				else if (key.equals(DataKey.LEAK_LOCATION_TYPE)) { setLocationType(EnumUtility.fromName(value, () -> LeakLocationType.values())); }
+				else if (key.equals(DataKey.LEAK_TYPE)) { setLeakType(EnumUtility.fromName(value, () -> LeakType.values())); }
+				else if (key.equals(DataKey.SURFACE_READING_UNIT)) { setSurfaceReadingUnit(EnumUtility.fromName(value, () -> ReadingUnitType.values())); }
+				else if (key.equals(DataKey.BARHOLE_READING_UNIT)) { setBarholeReadingUnit(EnumUtility.fromName(value, () -> ReadingUnitType.values())); }
+				else if (key.equals(DataKey.SURFACE_OVERLEAK_TYPE)) { setSurfaceOverLeakType(EnumUtility.fromName(value, () -> SurfaceOverLeakType.values())); }
+				else if (key.equals(DataKey.PIPE_MATERIAL_TYPE)) { setPipeMaterialType(EnumUtility.fromName(value, () -> LeakPipeMaterialType.values())); }
+				else if (key.equals(DataKey.STREET_NUMBER)) { setStreetNumber(value); }
+				else if (key.equals(DataKey.STREET_NAME)) { setStreetName(value); }
+				else if (key.equals(DataKey.APARTMENT_NUMBER)) { setAptNumber(value); }
+				else if (key.equals(DataKey.CITY)) { setCity(value); }
+				else if (key.equals(DataKey.STATE)) { setState(value); }
+				else if (key.equals(DataKey.MAP_NUMBER)) { setMapNumber(value); }
+				else if (key.equals(DataKey.SURFACE_READING)) { setSurfaceReading(value); }
+				else if (key.equals(DataKey.BARHOLE_READING)) { setBarholeReading(value); }
+				else if (key.equals(DataKey.LEAK_GRADE)) { setLeakGrade(value); }
+				else if (key.equals(DataKey.METER_NUMBER)) { setMeterNumber(value); }
+				else if (key.equals(DataKey.LOCATION_REMARKS)) { setLocationRemarks(value); }
+				else if (key.equals(DataKey.ADDITIONAL_NOTES)) { setAdditionalNotes(value); }
+				else if (key.equals(DataKey.IS_PAVED_WALL2WALL)) { setIsPavedWallToWall(Boolean.valueOf(value)); }
+				else if (key.equals(DataKey.USE_CURRENT_LOCATION)) { setUseCurrentLocation(Boolean.valueOf(value)); }
+			}
+		}
+
+		@Override
+		public String toString() {
+			return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
 		}
 	}
 }

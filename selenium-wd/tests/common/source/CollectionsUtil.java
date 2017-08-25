@@ -41,6 +41,21 @@ public class CollectionsUtil {
 		}
 	}
 
+	public static boolean matchesExpressionList(List<String> listWithMatchStrings, List<String> listToMatch) {
+		Log.method("matchesExpressionList", LogHelper.listToString(listWithMatchStrings), LogHelper.listToString(listToMatch));
+		for(int i=0;i<listToMatch.size();i++) {
+			String actual = listToMatch.get(i).toLowerCase();
+			String expect = listWithMatchStrings.get(i).toLowerCase();
+			if(!actual.matches(expect)){
+				Log.error("NOT matching value found.");
+				Log.error("Actual value: "+actual);
+				Log.error("Match expression: "+expect);
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static boolean isEqualsArrayMap(String[][] arrayValues, Map<String, String> mapValues) {
 		Log.method("isEqualsArrayMap", LogHelper.arrayOfArrayToString(arrayValues), LogHelper.mapToString(mapValues));
 		for(int i=0;i<arrayValues[0].length; i++) {

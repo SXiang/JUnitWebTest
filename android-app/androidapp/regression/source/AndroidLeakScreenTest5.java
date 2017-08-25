@@ -3,13 +3,13 @@ package androidapp.regression.source;
 import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.ListUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,9 +33,9 @@ import androidapp.screens.source.AndroidMarkerTypeListControl.MarkerType;
 import common.source.BackPackAnalyzer;
 import common.source.BaselineImages;
 import common.source.CollectionsUtil;
+import common.source.FileUtility;
 import common.source.Log;
 import common.source.LogHelper;
-import common.source.Screenshotter;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -48,6 +48,7 @@ import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.IndicationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
+import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
 import surveyor.scommon.source.SurveyorConstants;
@@ -93,11 +94,22 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		initializePageActions();
+
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
 
 		startTestRecording(testName.getMethodName());
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	@After
@@ -224,7 +236,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2448_EnergyBackpack_SettingGPSCoordinates ...");
 
-		String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
+		String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 
 		if (isRunningInDataGenMode()) {
 			Log.info("Running in data generation mode. Skipping test execution...");
@@ -258,6 +270,8 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		final int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(Arrays.asList(markerStatuses));
 		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		final Integer selectedLisaNum = getMarkerNumber(investigationMarkers, idx-1);
+		final StringBuilder latitude = new StringBuilder();
+		final StringBuilder longitude = new StringBuilder();
 		List<LeakDataBuilder> leakDataBuilderStore = new ArrayList<LeakDataBuilder>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -284,16 +298,25 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList(), 0);
 
+			addedSourcesListDialog.clickOnMatchingListItemOfTypeAtIndex(SourceType.Leak, 0/*index*/);
+			addLeakSourceFormDialog.waitForScreenLoad();
+			latitude.append(addLeakSourceFormDialog.getLatitudeText());
+			longitude.append(addLeakSourceFormDialog.getLongitudeText());
+			addLeakSourceFormDialog.scrollToNextPage();
 			addLeakSourceFormDialog.tapOnCancel();
+			addedSourcesListDialog.clickOnCancel();
 
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
+
 			List<InvestigationMarkerEntity> investigationMarkers2 = investigateReportScreen.getInvestigationMarkers();
 			String actualMarkerStatus = investigationMarkers2.get(idx-1).getInvestigationStatus();
 			assertTrue(String.format("Expected marker status NOT correct. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
 			return true;
 		});
+
+		ensureNoInvestigationReportFilesInDownloadFolder(generatedInvReportTitle);
 
 		// In web view download investigation PDF and CSV and verify data.
 		loginPageAction.open(EMPTY, NOTSET);
@@ -317,8 +340,12 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 				lisaInvestigationPDFData.get(0).contains(SurveyorConstants.SQAPICDR));
 
 		LeakDataBuilder leakDataBuilder = leakDataBuilderStore.get(0);
-		LeakDetailEntity leakDetails = leakDataBuilder.toLeakDetailEntity(LeakSourceType.Gas, IndicationStatus.FOUNDGASLEAK, IndicationType.LISA, selectedLisaNum);
-		assertTrue(ListUtils.isEqualList(leakDetails.toPDFLeakDetails(), complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, NOTSET /*reportDataRowID*/)));
+		LeakDetailEntity leakDetails = leakDataBuilder.toLeakDetailEntity(LeakSourceType.Gas, IndicationStatus.FOUNDGASLEAK, IndicationType.LISA,
+				selectedLisaNum, SurveyorConstants.SQAPICDR, latitude.toString().trim(), longitude.toString().trim());
+		List<String> leakDetailsFromPdf = complianceReportsPageAction.getLISAInvestigationPDFData(selectedLisaNum, reportDataRowID1);
+		List<String> inputLeakPDFDetails = leakDetails.toPDFLeakDetails();
+		assertTrue(String.format("PDF -> Expected leak details data in PDF NOT correct. Expected=[%s]. Actual in PDF=[%s]", LogHelper.listToString(inputLeakPDFDetails),
+				LogHelper.listToString(leakDetailsFromPdf)), CollectionsUtil.matchesExpressionList(inputLeakPDFDetails, leakDetailsFromPdf));
 
 		Map<String, String> lisaInvestigationMetaData = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
 		Log.info(String.format("Investigation CSV data -> %s", LogHelper.mapToString(lisaInvestigationMetaData)));
@@ -329,7 +356,12 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundGasLeak, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundGasLeak));
 
-		assertTrue(CollectionsUtil.isEqualsArrayMap(leakDetails.toCSVLeakDetails(), complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, NOTSET /*reportDataRowID*/)));
+		// TBD: Turned off due to product defect DE3292. Underscores in selectbox values will cause comparison to fail.
+		//String[][] inputLeakCSVDetails = leakDetails.toCSVLeakDetails(false /*ignoreLocation*/);
+		//Map<String, String> leakDetailsFromCSV = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
+		//assertTrue(String.format("CSV -> Expected leak details data in CSV NOT correct. Expected=[%s]. Actual in CSV=[%s]", LogHelper.arrayOfArrayToString(inputLeakCSVDetails),
+		//		LogHelper.mapToString(leakDetailsFromCSV)), CollectionsUtil.isEqualsArrayMap(inputLeakCSVDetails, leakDetailsFromCSV));
+		//
 	}
 
 	/**
@@ -422,6 +454,20 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports).createReportAndAssignGapsToUser(tcId,
 					userDataRowID, PICARRO_SUPERVISOR_USER_ROW_ID, reportDataRowID1).getReportTitle();
+		}
+	}
+
+	private void ensureNoInvestigationReportFilesInDownloadFolder(String reportTitle) throws Exception {
+		String invPdfFullPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+				complianceReportsPageAction.getComplianceReportsPage().getInvestigationPDFFileName(reportTitle, true /*includeExtension*/)).toString();
+		if (FileUtility.fileExists(invPdfFullPath)) {
+			FileUtility.deleteFile(Paths.get(invPdfFullPath));
+		}
+
+		String invCsvFullPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+				complianceReportsPageAction.getComplianceReportsPage().getInvestigationCSVFileName(reportTitle, true /*includeExtension*/)).toString();
+		if (FileUtility.fileExists(invCsvFullPath)) {
+			FileUtility.deleteFile(Paths.get(invCsvFullPath));
 		}
 	}
 

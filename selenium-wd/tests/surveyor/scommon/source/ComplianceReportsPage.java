@@ -49,6 +49,7 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -2532,34 +2533,58 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		setReportName(reportName);
 		String actualReportString = pdfUtility.extractPDFText(actualReport);
 
+		final String datePrinted = Resources.getResource(ResourceKeys.ReportSSRS_DatePrinted);
+		final Integer numPages = getPageCountInSSRSPDF(actualReportString);
 		List<String> lisaInvestigationDetails = new ArrayList<String>();
-		BufferedReader bufferReader = null;
-		try {
-			String investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
-					_HEADERS_Investigator + " "+ _HEADERS_Duration,
-					LisaInvestigationReportSSRS_InvestigationReport);
-			InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
-			bufferReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			boolean detailsFound = false;
-			while ((line = bufferReader.readLine()) != null) {
-				if (!line.isEmpty()){
-					if(!detailsFound){
-						if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
-							lisaInvestigationDetails.add(line.trim());
-							detailsFound = true;
+		Integer pageTextLength = 0;
+		boolean detailsFound = false;
+		for (int pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+			BufferedReader bufferReader = null;
+			try {
+				String investigationResultTable = "";
+
+				if (pageNumber == 1) {
+					investigationResultTable = RegexUtility.getStringInBetween(actualReportString,
+							_HEADERS_Investigator + " "+ _HEADERS_Duration, LisaInvestigationReportSSRS_InvestigationReport);
+				} else {
+					String remainingPdfText = actualReportString.substring(pageTextLength);
+					investigationResultTable = RegexUtility.getStringInBetween(remainingPdfText, reportTitle, reportTitle);
+				}
+
+				pageTextLength += investigationResultTable.length();
+
+				InputStream inputStream = new ByteArrayInputStream(investigationResultTable.getBytes());
+				bufferReader = new BufferedReader(new InputStreamReader(inputStream));
+				String line = null;
+				while ((line = bufferReader.readLine()) != null) {
+					Log.info("LINE -> " + line);
+					if (!line.isEmpty()){
+						if(!detailsFound){
+							if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
+								Log.info(String.format("DetailsFound=[%b]; LineMatch1=[%b]", false, true));
+								lisaInvestigationDetails.add(line.trim());
+								detailsFound = true;
+							} else {
+								Log.info(String.format("DetailsFound=[%b]; LineMatch1=[%b]", false, false));
+							}
+						}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
+							// skip text in box on top right.
+							if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId.substring(0, 6)) && !BaseHelper.isNullOrEmpty(line.trim())) {
+								Log.info(String.format("DetailsFound=[%b]; !LineMatch2=[%b]", true, true));
+								lisaInvestigationDetails.add(line.trim());
+							}
+						}else{
+							Log.info(String.format("DetailsFound=[%b]; !LineMatch2=[%b]", true, false));
+							detailsFound = false;
+							break;
 						}
-					}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
-						lisaInvestigationDetails.add(line.trim());
-					}else{
-						detailsFound = false;
-						break;
 					}
 				}
+			} finally {
+				bufferReader.close();
 			}
-		} finally {
-			bufferReader.close();
 		}
+
 		Log.info("Investigation Lisa details in PDF: "+lisaInvestigationDetails);
 		return lisaInvestigationDetails;
 	}
@@ -2917,7 +2942,7 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			found = searchReport(reportTitle, reportCreatedBy);
 			reportMode =getElementText(this.reportMode).trim();
 			performSearch("");
-		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);		
+		}while(!found&&numTry++<Constants.DEFAULT_MAX_RETRIES);
 		return reportMode;
 	}
 }

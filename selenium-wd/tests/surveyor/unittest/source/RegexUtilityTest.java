@@ -33,6 +33,14 @@ public class RegexUtilityTest {
 	}
 
 	@Test
+	public void testCustomRegexMatch() {
+		Log.info("Running test - testCustomRegexMatch() ...");
+		String line = "investigator: sqapicdr@picarro.comlatitude: 37.39675, longitude: -121.984397, precison: m";
+		boolean matches = line.matches("Investigator: sqapicdr@picarro.comLatitude: (\\d+\\.\\d+)?, Longitude: \\-?(\\d+\\.\\d+)?, Precison: m".toLowerCase());
+		assertTrue(matches == true);
+	}
+
+	@Test
 	public void testInvAddLeakHeaderMatch() {
 		Log.info("Running test - testInvAddLeakHeaderMatch() ...");
 		String headerText = "CR-A38DB8-LISA-2  (In Progress)";

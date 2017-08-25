@@ -27,6 +27,8 @@ public class LeakDetailEntity extends InvestigationEntity{
 		private String surfaceOverLeak;
 		private String meterNumber;
 		private String leakLocationRemarks;
+		private String latitude;
+		private String longitude;
 
 		public static enum LeakLocation {
 			OTHER ("Other"),
@@ -268,6 +270,18 @@ public class LeakDetailEntity extends InvestigationEntity{
 		public void setLeakLocationRemarks(String leakLocationRemarks) {
 			this.leakLocationRemarks = leakLocationRemarks;
 		}
+		public String getLatitude() {
+			return latitude;
+		}
+		public void setLatitude(String latitude) {
+			this.latitude = latitude;
+		}
+		public String getLongitude() {
+			return longitude;
+		}
+		public void setLongitude(String longitude) {
+			this.longitude = longitude;
+		}
 
 		@Override
 		public void setInvestigationStatus(boolean completed) {
@@ -292,7 +306,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 			List<String> leakDetails = new ArrayList<String>();
 			String header = getIndicationNumber()+" "+investigationStatus+" .* "+userName+" [0-9]+ days [0-9]{2}:[0-9]{2}:[0-9]{2}";
 			String line1 = "Source: "+leakSourceType+" Date/Time: .*";
-			String line2 = "Investigator: "+userName+"Latitude: , Longitude: , Precison: m";
+			String line2 = "Investigator: "+userName+"Latitude: (\\d+\\.\\d+)?, Longitude: \\-?(\\d+\\.\\d+)?, Precison: m";
 			String line3 = "Leak Grade: "+leakGrade+"Address: "+
 						streetNumber+" "+streetName+", ("+apartmentNumber+"+, )?"+city+", "+state;
 			String line4 = "Map Number: "+mapNumber+"Surface Reading: "+surfaceReading+" \\("+surfaceReadingUnit+"\\)";
@@ -320,13 +334,17 @@ public class LeakDetailEntity extends InvestigationEntity{
 		}
 
 		public String[][] toCSVLeakDetails(){
+			return toCSVLeakDetails(true /*ignoreLocation*/);
+		}
+
+		public String[][] toCSVLeakDetails(boolean ignoreLocation){
 			String[][] csvRow ={
 					{boxType+"Number", "InvestigationStatus", "Investigator", "LeakCoordinates", "GpsPrecision",
 					"LeakType", "AddressStreetNumber", "AddressApartmentNumber", "AddressStreetName", "MapNumber",
 					"SurfaceReading", "BarholeReading", "LeakGrade", "LeakLocationType", "PipeMaterialType",
 					"IsPavedWallToWall", "SurfaceOverLeakType","MeterNumber", "LocationRemarks", "Notes",
 					"LeakSourceType"},
-					{boxType+" "+indicationNumber, investigationStatus, userName, "", "m",
+					{boxType+" "+indicationNumber, investigationStatus, userName, ignoreLocation ? "" : latitude+","+longitude, "m",
 					leakType, streetNumber, apartmentNumber, streetName, mapNumber,
 					surfaceReading+" ("+surfaceReadingUnit+")", barholeReading+" ("+barholeReadingUnit+")", leakGrade, leakLocationType, pipeMaterialType,
 					String.valueOf(pavedWallToWall), surfaceOverLeak, meterNumber, leakLocationRemarks, additionalNotes,
