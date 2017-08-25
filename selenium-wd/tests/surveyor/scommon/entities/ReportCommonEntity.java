@@ -113,8 +113,7 @@ public class ReportCommonEntity extends BaseReportEntity {
 		Surveyor ("Surveyor", 0),
 		DateTime ("DateTime", 1),
 		Result ("Result", 2),
-		IsotopicValueUncertainty ("IsotopicValueUncertainty", 3),
-		FieldNotes ("FieldNotes", 4);
+		IsotopicValueUncertainty ("IsotopicValueUncertainty", 3);
 
 		private final String name;
 		private final Integer colIndex;
@@ -147,8 +146,7 @@ public class ReportCommonEntity extends BaseReportEntity {
 		Concentration ("Concentration", 5),
 		EthaneMethanRatio ("EthaneMethanRatio", 6),
 		Disposition ("Disposition", 7),
-		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7),
-		FIeldNotes ("FIeldNotes", 9);
+		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7);
 
 		private final String name;
 		private final Integer colIndex;
@@ -178,11 +176,10 @@ public class ReportCommonEntity extends BaseReportEntity {
 		ShowBreadcrumb ("ShowBreadcrumb", 3),
 		ShowIndications ("ShowIndications", 4),
 		ShowAnalysis ("ShowAnalysis", 5),
-		ShowFieldNotes ("ShowFieldNotes", 6),
-		ShowGaps ("ShowGaps", 7),
-		ShowAssets ("ShowAssets", 8),
-		ShowBoundaries ("ShowBoundaries", 9),
-		BaseMap ("BaseMap", 10);
+		ShowGaps ("ShowGaps", 6),
+		ShowAssets ("ShowAssets", 7),
+		ShowBoundaries ("ShowBoundaries", 8),
+		BaseMap ("BaseMap", 9);
 
 		private final String name;
 		private final Integer colIndex;

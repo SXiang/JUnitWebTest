@@ -492,7 +492,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		this.inputViewBreadCrumb.click();
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 		this.inputViewGaps.click();
 		this.inputViewAssets.click();
 		this.inputViewBoundaries.click();
@@ -1652,7 +1651,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void modifyReportViews() {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 	}
 
 	public boolean deleteAllDrivingSurveys() {
@@ -2509,7 +2507,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split(RatioSdevMetaPattern);
 			reportIsoObj.setDelta(Float.parseFloat(deltaUncertainty[0].trim()));
 			reportIsoObj.setUncertainty(Float.parseFloat(deltaUncertainty[1].trim()));
-			reportIsoObj.setText(csvRow.get("FieldNotes").trim());
 			reportList.add(reportIsoObj);
 		}
 		ArrayList<StoredProcComplianceGetIsotopics> storedPodList = StoredProcComplianceGetIsotopics
@@ -2647,7 +2644,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication
@@ -2799,7 +2795,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication

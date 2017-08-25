@@ -251,9 +251,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[7]/input")
 	protected WebElement inputViewIso;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr/td[8]/input")
-	protected WebElement inputViewAnno;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='datatableViews']/tbody/tr[1]/td[9]/input")
 	protected WebElement inputViewGaps;
 
@@ -706,10 +703,6 @@ public class ReportsBasePage extends SurveyorBasePage {
 
 	public boolean isViewIsotopicSelected() {
 		return inputViewIso.isSelected();
-	}
-
-	public boolean isViewFieldNotesSelected() {
-		return inputViewAnno.isSelected();
 	}
 
 	public boolean isViewGapsSelected() {

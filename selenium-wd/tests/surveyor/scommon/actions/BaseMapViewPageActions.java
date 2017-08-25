@@ -32,7 +32,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	private static final String SURVEY_SPAN_CSS_COLOR_VALUE = "rgb(0, 128, 0)";
 
 	private static final String FN_VERIFY_MAP_ZOOM_LEVEL_IS_CORRECT = "verifyMapShownForZoomLevelIsCorrect";
-	private static final String FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP = "verifyFieldNotesIsShownOnMap";
 	private static final String FN_VERIFY_FIELD_NOTES_IS_NOT_SHOWN_ON_MAP = "verifyFieldNotesIsNotShownOnMap";
 	private static final String FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_PRESENT_ON_MAP = "verifyIsotopicCaptureResultIsPresentOnMap";
 	private static final String FN_VERIFY_ISOTOPIC_CAPTURE_RESULT_IS_NOT_PRESENT_ON_MAP = "verifyIsotopicCaptureResultIsNotPresentOnMap";
@@ -1285,22 +1284,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 		return !getBaseMapViewPageObject().isShutdownAnalyzerButtonVisible();
 	}
 
-	/**
-	 * Executes verifyFieldNotesIsShownOnMap action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyFieldNotesIsShownOnMap(String data, Integer dataRowID) throws Exception {
-		logAction(getRuntimeType() + ".verifyFieldNotesIsShownOnMap", data, dataRowID);
-		ActionArguments.verifyNotNullOrEmpty(CLS_BASEMAP_VIEW_PAGE_ACTIONS + FN_VERIFY_FIELD_NOTES_IS_SHOWN_ON_MAP, ARG_DATA, data);
-		return (new WebDriverWait(this.getDriver(), 5)).until(new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver d) {
-				OLMapUtility mapUtility = new OLMapUtility(d);
-				return mapUtility.isFieldNoteShown(data);
-			}
-		});
-	}
 
 	/**
 	 * Executes verifyFieldNotesIsNotShownOnMap action.

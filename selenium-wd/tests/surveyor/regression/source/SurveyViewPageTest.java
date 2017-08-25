@@ -2051,7 +2051,7 @@ public class SurveyViewPageTest extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().verifyPageLoaded(EMPTY, NOTSET);
 		// wait for elements to paint on the map.
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(10), NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(ETHANE_SAMPLE_FIELD_NOTES, NOTSET));	}
+	}
 
 	/**
 	 * Test Case ID: TC1692_SurveyView_VerifyPeakbubble

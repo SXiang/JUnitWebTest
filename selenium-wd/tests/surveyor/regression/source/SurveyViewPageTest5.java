@@ -55,7 +55,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -102,7 +101,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -428,7 +426,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
@@ -466,7 +463,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
@@ -622,7 +618,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 	}
@@ -666,7 +661,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -773,7 +767,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -820,7 +813,6 @@ public class SurveyViewPageTest5 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}

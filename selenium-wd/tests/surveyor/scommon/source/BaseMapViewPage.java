@@ -227,9 +227,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "blocked_ui")
 	private WebElement divBlockedUI;
 
-	@FindBy(id = "btn_close_annotation")
-	private WebElement fieldNotesDialogCloseButton;
-
 	@FindBy(id = "display_menu")
 	private WebElement displayMenu;
 
@@ -291,11 +288,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public enum GisSwitchType {
 		MaterialTypeCopper, MaterialTypeUnprotectedSteel, MaterialTypeProtectedSteel, MaterialTypeCastIron, MaterialTypeOtherPlastic, MaterialTypePEPlastic, UseAllPipes, SmallBoundary, BigBoundary, UseAllBoundaries
-	}
-
-	public void clickFieldNotesDialogCloseButton() {
-		Log.clickElementInfo("FieldNotes Close");
-		this.fieldNotesDialogCloseButton.click();
 	}
 
 	public BaseMapViewPage clickZoomInButton() {
@@ -570,10 +562,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		// element value changes dynamically on featureInfo click. Seek new each time.
 		featureInfoEpoch = this.driver.findElement(By.id("annotation-epoch"));
 		return featureInfoEpoch;
-	}
-
-	public WebElement getFieldNotesDialogCloseButton() {
-		return fieldNotesDialogCloseButton;
 	}
 
 	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
