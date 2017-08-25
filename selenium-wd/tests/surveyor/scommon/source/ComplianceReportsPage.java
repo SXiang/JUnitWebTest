@@ -2557,24 +2557,18 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 				bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 				String line = null;
 				while ((line = bufferReader.readLine()) != null) {
-					Log.info("LINE -> " + line);
 					if (!line.isEmpty()){
 						if(!detailsFound){
 							if(line.matches("^"+lisaNumber+" [A-Z][a-z]+ .*")) {
-								Log.info(String.format("DetailsFound=[%b]; LineMatch1=[%b]", false, true));
 								lisaInvestigationDetails.add(line.trim());
 								detailsFound = true;
-							} else {
-								Log.info(String.format("DetailsFound=[%b]; LineMatch1=[%b]", false, false));
 							}
 						}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
 							// skip text in box on top right.
 							if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId.substring(0, 6)) && !BaseHelper.isNullOrEmpty(line.trim())) {
-								Log.info(String.format("DetailsFound=[%b]; !LineMatch2=[%b]", true, true));
 								lisaInvestigationDetails.add(line.trim());
 							}
 						}else{
-							Log.info(String.format("DetailsFound=[%b]; !LineMatch2=[%b]", true, false));
 							detailsFound = false;
 							break;
 						}
