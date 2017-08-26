@@ -2566,7 +2566,18 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 						}else if(!line.matches("^[0-9]+ [A-Z][a-z]+ .*")) {
 							// skip text in box on top right.
 							if(!line.matches("^"+datePrinted+" .*") && !line.trim().equals(reportId.substring(0, 6)) && !BaseHelper.isNullOrEmpty(line.trim())) {
-								lisaInvestigationDetails.add(line.trim());
+								if (line.contains(":")) {
+									if (!line.endsWith(": ")) {
+										line = line.trim();
+									}
+
+									lisaInvestigationDetails.add(line);
+								} else {
+									// continuation from previous line.
+									int lastIdx = lisaInvestigationDetails.size()-1;
+									String prevLine = lisaInvestigationDetails.get(lastIdx);
+									lisaInvestigationDetails.set(lastIdx, prevLine + line.trim());
+								}
 							}
 						}else{
 							detailsFound = false;

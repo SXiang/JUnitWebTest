@@ -459,6 +459,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 	}
 
 	private void ensureNoInvestigationReportFilesInDownloadFolder(String reportTitle) throws Exception {
+		Log.method("ensureNoInvestigationReportFilesInDownloadFolder", reportTitle);
 		String invPdfFullPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
 				complianceReportsPageAction.getComplianceReportsPage().getInvestigationPDFFileName(reportTitle, true /*includeExtension*/)).toString();
 		if (FileUtility.fileExists(invPdfFullPath)) {
