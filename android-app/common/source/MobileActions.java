@@ -11,8 +11,6 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
 public class MobileActions {
-	private static final String INPUT_KEYEVENT_CURSOR_AT_END = "input keyevent 123";
-
 	private MobileDriver<?> mobileDriver;
 
 	private final static String[] ESCAPE_CHARS = {"\"", "'", "(", ")", "&", "<", ">", ";", "*", "|", "~", "$"};
@@ -169,7 +167,8 @@ public class MobileActions {
 		KEYCODE_NOTIFICATION ("KEYCODE_NOTIFICATION", 83),
 		KEYCODE_SEARCH ("KEYCODE_SEARCH", 84),
 		TAG_LAST_KEYCODE ("TAG_LAST_KEYCODE", 85),
-		KEYCODE_ESCAPE ("KEYCODE_ESCAPE", 111);
+		KEYCODE_ESCAPE ("KEYCODE_ESCAPE", 111),
+		KEYCODE_MOVE_END ("KEYCODE_MOVE_END", 123);
 
 		private final String name;
 		private final Integer codeValue;
@@ -241,7 +240,7 @@ public class MobileActions {
 
 	public void undoText(String text) throws Exception {
 		Log.method("undoText", text);
-		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), INPUT_KEYEVENT_CURSOR_AT_END);
+		pressKey(KeyCode.KEYCODE_MOVE_END);
 		for (int i = 0; i < text.length(); i++) {
 			pressKey(KeyCode.KEYCODE_DEL);
 		}

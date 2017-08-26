@@ -20,15 +20,15 @@ public class WebDriverFactory {
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppNativeDriver() throws MalformedURLException {
+	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws MalformedURLException {
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
-		webDriverWrapper.createAndroidAppNativeDriver();
+		webDriverWrapper.createAndroidAppNativeDriver(isDevice);
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppWebDriver() throws MalformedURLException {
+	protected static WebDriverWrapper createAndroidAppWebDriver(boolean isDevice) throws MalformedURLException {
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
-		webDriverWrapper.createAndroidAppWebDriver();
+		webDriverWrapper.createAndroidAppWebDriver(isDevice);
 		return webDriverWrapper;
 	}
 
@@ -52,24 +52,24 @@ public class WebDriverFactory {
 		return getDriver(index, true /*reuse*/);
 	}
 
-	public static WebDriver getAndroidAppNativeDriver() {
-		return getAndroidAppDriver(true /*isNative*/);
+	public static WebDriver getAndroidAppNativeDriver(boolean isDevice) {
+		return getAndroidAppDriver(isDevice, true /*isNative*/);
 	}
 
-	public static WebDriver getAndroidAppWebDriver() {
-		return getAndroidAppDriver(false /*isNative*/);
+	public static WebDriver getAndroidAppWebDriver(boolean isDevice) {
+		return getAndroidAppDriver(isDevice, false /*isNative*/);
 	}
 
-	private static WebDriver getAndroidAppDriver(boolean isNative) {
+	private static WebDriver getAndroidAppDriver(boolean isDevice, boolean isNative) {
 		ThreadLocal<WebDriverWrapper> threadLocalDriver = new ThreadLocal<WebDriverWrapper>() {
 		    @Override
 		    protected WebDriverWrapper initialValue() {
 		    	WebDriverWrapper webDriver = null;
 				try {
 					if (isNative) {
-						webDriver = createAndroidAppNativeDriver();
+						webDriver = createAndroidAppNativeDriver(isDevice);
 					} else {
-						webDriver = createAndroidAppWebDriver();
+						webDriver = createAndroidAppWebDriver(isDevice);
 					}
 				} catch (MalformedURLException ex) {
 					Log.error(ExceptionUtility.getStackTraceString(ex));
