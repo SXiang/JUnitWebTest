@@ -118,7 +118,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- 1) User is navigated to report generation page
 	 *	- 2) The report should generate successfully and LISAs, FOV, Gaps, Indications and Breadcrumb will appear in views. Assets and boundaries will not appear
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1730, location = ComplianceReportDataProvider.class)
 	public void TC1730_ReportGenerationWhenAssetsAreSelectedViewsButSurveyAreaNoAssetData(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -155,7 +155,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Report is generated successfully
 	 *	- - Both View PDFs should have Report Title, Report View, Date Generated, Report Mode, Report Author and Report Name details displayed in footer are as expected
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1798, location = ComplianceReportDataProvider.class)
 	public void TC1798_ValidateInformationPresentReportViewsPDFComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -188,7 +188,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Report generation action is canceled
 	 *	- - Delete, Copy buttons are displayed to customer user
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC188, location = ComplianceReportDataProvider.class)
 	public void TC188_ClickCancelButtonPresentProgressComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -240,7 +240,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Verify that the Surveyor units in the Survey Selector section belong to selected customer
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC199, location = ComplianceReportDataProvider.class)
 	public void TC199_VerifySpecifiedCustomersSurveyorUnitsSurveysAreDisplayedWhenUserSelectsPicarroOrAnyOtherCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -269,7 +269,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Standard, Rapid Response and Operator survey mode should be present for rapid response report mode
 	 *	- - Manual survey mode should be present for manual report mode
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC200, location = ComplianceReportDataProvider.class)
 	public void TC200_VerifyCorrectSurveyModeDisplayedDependingReportModeSelection(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -308,7 +308,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - Standard, Rapid Response and Operator survey mode should be present for rapid response report mode
 	 *	- - Manual survey mode should be present for manual report mode
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC201, location = ComplianceReportDataProvider.class)
 	public void TC201_VerifyCorrectSurveyModeDisplayedDependingReportModeSelectionUsingCopyFeature(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -343,7 +343,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Customer Name should presists and is not modified to other
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC205, location = ComplianceReportDataProvider.class)
 	public void TC205_VerifyCustomerNotChangedIfUserClicksNOChangeCustomerButton(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -370,7 +370,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Customer Name should presists and is not modified to other
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC206, location = ComplianceReportDataProvider.class)
 	public void TC206_VerifyCustomerNotChangedIfUserClicksNOChangeCustomerButtonReportsUsingCopyFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -395,7 +395,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Report should be generated successfully and user should be able to download it
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC211, location = ComplianceReportDataProvider.class)
 	public void TC211_GenerateReportSurveyWhichDurationLessThanMin(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -427,7 +427,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Please make sure your selected boundary is more than 0.5kms and less than 25kms
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC236, location = ComplianceReportDataProvider.class)
 	public void TC236_VerySmallOrBigReportAreaSelectionNotAllowedNewComplianceReportScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -464,7 +464,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - The Compliance Viewer dialog should close
 	 *	- - The Compliance Viewer dialog should close
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC522, location = ComplianceReportDataProvider.class)
 	public void TC522_CloseComplianceViewerDialog(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -597,7 +597,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - The Shapefile button should not be present for customer' reports
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC679, location = ComplianceReportDataProvider.class)
 	public void TC679_ShapefileButtonUnavailablePicarroAdminIfCustomersReportReprocessedCustomerDoesNotShapefileGenerationOptionEnabled(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -631,7 +631,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - There should be no Shapefile buttons
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC682, location = ComplianceReportDataProvider.class)
 	public void TC682_ShapefileButtonNotAvailableIfReportDoesNotIncludeFollowingLisasFOVGapsBreadcrumb(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -695,7 +695,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - In the report view, only the segment of Main contained within the LISA box should be highlighted
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC705, location = ComplianceReportDataProvider.class)
 	public void TC705_LISABox10_MainsWithinLISABoxAreHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

@@ -89,7 +89,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - User friendly error messages are displayed: Selected Percent Coverage Forecast, Please select Customer Boundary
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1314, location = ComplianceReportDataProvider.class)
 	public void TC1314_CheckErrorMessageDisplayedIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreensAlongCustomBoundary(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -126,7 +126,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 *	- - Report generated successfully
 	 *	- - Coverage Value should be zero
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1353, location = ComplianceReportDataProvider.class)
 	public void TC1353_GenerateComplianceReportCustomerAdminIncludePercentCoverageForecast3SurveysDifferentTagsWhenNoFOVPresentThese3Surveys(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -603,7 +603,7 @@ public class ComplianceReportsPageTest7 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - In the report view, the segment of Main contained within the LISA should be highlighted. An additional segment of that main up to 50' from the vertex of the LISA should be highlighted as well.
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1567, location = ComplianceReportDataProvider.class)
 	public void TC1567_ClassicLISASurvey_MainsWithinLISAAreHighlighted(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

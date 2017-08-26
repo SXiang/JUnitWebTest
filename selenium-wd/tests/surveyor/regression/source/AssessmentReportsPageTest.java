@@ -98,7 +98,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Assessment report not present
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1437, location = AssessmentReportDataProvider.class)
 	public void TC1437_DisableAssessmentFeatureAssessmentPriviledgedCustomer(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -137,7 +137,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Only Assessment customer's surveys should be present in the searched list
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1438, location = AssessmentReportDataProvider.class)
 	public void TC1438_AssessmentReportCanIncludeOnlyAssessmentSurveysNewScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -166,7 +166,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Only assessment customer's surveys should be present in the searched list on copy screen
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1439, location = AssessmentReportDataProvider.class)
 	public void TC1439_AssessmentReportCanIncludeOnlyAssessmentSurveysCopyScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -196,7 +196,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Assessment surveys should not be displayed in searched survey grid
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1440, location = AssessmentReportDataProvider.class)
 	public void TC1440_NewComplianceReportScreenShouldNotDisplayAssessmentModeSurveysAssessmentReportMode(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -230,7 +230,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Deleted report is not present on assessment report list screen
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1448, location = AssessmentReportDataProvider.class)
 	public void TC1448_DeleteAssessmentReportCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -260,7 +260,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Selected number of reports will be listed in the table
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1478, location = AssessmentReportDataProvider.class)
 	public void TC1478_Pagination_AssessmentReport_CustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -297,7 +297,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Report search successful
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1482, location = AssessmentReportDataProvider.class)
 	public void TC1482_SearchValidAssessmentReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -328,7 +328,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - Message should be displayed : 'No matching records found'
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1483, location = AssessmentReportDataProvider.class)
 	public void TC1483_SearchNonExistingAssessmentReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -485,7 +485,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	-
 	 */
 	// Verified.
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1800, location = AssessmentReportDataProvider.class)
 	public void TC1800_ValidateInformationPresentReportViewsPDFAssessmentReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -533,7 +533,7 @@ public class AssessmentReportsPageTest extends BaseReportsPageActionTest {
 	 *	- - PipeAll, Gap, FOV shape files should not be present
 	 *	-
 	 */
-	@Ignore//UpdateImage@Test
+	@Test
 	@UseDataProvider(value = AssessmentReportDataProvider.ASSESSMENT_REPORT_PAGE_ACTION_DATA_PROVIDER_TC2019, location = AssessmentReportDataProvider.class)
 	public void TC2019_VerifyAssessmentReportViewPDFShapefileExportHighlightedGapAssetsSelected(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
