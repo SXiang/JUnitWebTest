@@ -38,37 +38,34 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_8hour_history']]")
 	private WebElement displaySwitch8HourHistoryDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_windrose']]")
 	private WebElement displaySwitchWindroseDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_concentration_chart']]")
 	private WebElement displaySwitchConcentrationChartDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[4]")
-	private WebElement displaySwitchNotesDivElement;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_isotopic_analysis']]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_indications']]")
 	private WebElement displaySwitchIndicationsDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_possible_natural_gas']]")
 	private WebElement displaySwitchPossibleNaturalGasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_not_natural_gas']]")
 	private WebElement displaySwitchNotNaturalGasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_vehicle_exhaust']]")
 	private WebElement displaySwitchVehicleExhaustDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_lisas']]")
 	private WebElement displaySwitchLisasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[8]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_fovs']]")
 	private WebElement displaySwitchFovsDivElement;
 
 	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
@@ -577,11 +574,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isDisplaySwitchConcentrationChartButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitchConcentrationChartDivElement,"ng-cloak") ||
 					this.displaySwitchConcentrationChartDivElement.getAttribute("class").contains("ng-hide"));
-	}
-
-	public boolean isDisplaySwitchNotesButtonVisible() {
-		return !(WebElementExtender.isAttributePresent(this.displaySwitchNotesDivElement,"ng-cloak") ||
-					this.displaySwitchNotesDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public boolean isDisplaySwitchIsotopicAnalysisButtonVisible() {

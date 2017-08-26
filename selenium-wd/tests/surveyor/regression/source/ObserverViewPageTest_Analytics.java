@@ -153,7 +153,6 @@ public class ObserverViewPageTest_Analytics extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 
 		stopSurveyAndAnalyzer();
 	}

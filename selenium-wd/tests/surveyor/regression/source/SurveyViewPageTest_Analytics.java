@@ -63,9 +63,6 @@ public class SurveyViewPageTest_Analytics extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().getSurveyViewPage().verifyFeatureInfoPopupDispositionEquals(fiEntity.getDisposition(), expectedDisposition));
 		assertTrue(getSurveyViewPageAction().getSurveyViewPage().verifyFeatureInfoPopupEthaneRatioEquals(fiEntity.getEthaneRatio(), expectedEthaneRatio));
 		assertTrue(getSurveyViewPageAction().getSurveyViewPage().verifyFeatureInfoPopupMethaneConcEquals(fiEntity.getMethaneConcentration(), expectedMethaneConcentration));
-
-		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 	}
 
 	/**

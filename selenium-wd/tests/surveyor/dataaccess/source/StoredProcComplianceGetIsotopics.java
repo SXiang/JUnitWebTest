@@ -24,7 +24,7 @@ public class StoredProcComplianceGetIsotopics extends BaseEntity {
 	public String toString() {
 		String delta = String.format("%.2f",this.getDelta());
 		String uncertainty = String.format("%.2f",this.getUncertainty());
-		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-");
+		return this.getSurveyorUnitName().concat(" ").concat(this.getDateTime()).concat(" ").concat(this.getDisposition()).concat(" ").concat(delta).concat("+/-").concat(uncertainty);
 
 	}
 

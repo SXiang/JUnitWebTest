@@ -230,7 +230,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *  - - SSRS PDF should have File_Name at the top of the 1st page
 	 *	- - Lisa_Number present in Indications table should be sequential
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC824_CheckFileNameLisaNumbersArePresentComplianceReportPDF() throws Exception {
 		Log.info("\nRunning TC824_CheckFileNameLisaNumbersArePresentComplianceReportPDF ...");
 
@@ -736,7 +736,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - Field Notes present in Isotopic Analysis and Indications table should be present in both views as well
 	 *	- - Reference gas capture result and note should not be displayed
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1257_GenerateComplianceReportSurveyHavingMultipleFieldNotesIndications() throws Exception {
 		Log.info("\nRunning TC1257_GenerateComplianceReportSurveyHavingMultipleFieldNotesIndications ...");
 
@@ -807,7 +807,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - User is allowed to download the report
 	 *	- - Export image should show the map for the specified Lat-Long boundary
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1267_GenerateComplianceReportCustomerWhoDoesNotAssetLoaded() throws Exception {
 		Log.info("\nRunning TC1267_GenerateComplianceReportCustomerWhoDoesNotAssetLoaded ...");
 
@@ -996,7 +996,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - Eg. ReportName: CR-DC3080
 	 *	- - User can open the files successfully without any error
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively() throws Exception {
 		Log.info("\nRunning TC1299_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectively ...");
 
@@ -1066,7 +1066,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- Selected Asset Layer(s), Please select at least one view with Assets
 	 *	- Selected Boundary Layer(s), Please select at least one view with Boundaries
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1300_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesLayersOptionalViewLayersSection() throws Exception {
 		Log.info("\nRunning TC1300_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesLayersOptionalViewLayersSection ...");
 
@@ -1125,7 +1125,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- View(s) with Assets, Please select at least one Asset Layer
 	 *	- View(s) with Boundaries, Please select at least one Boundary Layer
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1303_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesViews() throws Exception {
 		Log.info("\nRunning TC1303_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesViews ...");
 
@@ -1196,7 +1196,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * - - Selected Asset Layer(s), Please select at least one view with Assets
 	 * - - Selected Boundary Layer(s), Please select at least one view with Boundaries
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1304_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesLayersOptionalViewLayersSection() throws Exception {
 		Log.info("\nRunning TC1304_UserFriendlyMessageShouldDisplayedIfUserIncludeAssetsBoundariesLayersOptionalViewLayersSection ...");
 
@@ -1262,7 +1262,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Percent Coverage Forecast check box is present on UI
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser() throws Exception {
 		Log.info("\nRunning TC1305_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensPicarroUser ...");
 
@@ -1289,7 +1289,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Percent Coverage Forecast check box is present on UI
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets() throws Exception {
 		Log.info("\nRunning TC1306_CheckPercentCoverageForecastCheckBoxPresentNewCopyComplianceReportScreensOfCustomerUserHavingAssets ...");
 
@@ -1363,7 +1363,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *  - - CR-DC3080_ReportLisa.csv
 	 *	- - User can open the files successfully without any error
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports() throws Exception {
 		Log.info("\nRunning TC1310_CheckFileNamesOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyWhenUserReprocessExistingOldReports ...");
 
@@ -1431,7 +1431,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - CR-DC3080_ReportLisa.csv
 	 *	- - User can open the files successfully without any error
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1311_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyUsingCopyFunctionality() throws Exception {
 		Log.info("\nRunning TC1311_CheckFileNameOfCsvShapeFilesPresentMetaDataShapeFileZIPFolderRespectivelyUsingCopyFunctionality ...");
 
@@ -1506,7 +1506,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - User friendly error messages are displayed: "Selected Percent Coverage Forecast, Please select Customer Boundary"
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary() throws Exception {
 		Log.info("\nRunning TC1313_CheckErrorMesageDisplayedIfPercentCoverageForecastCheckBoxSelectedNewComplianceReportScreensAlongCustomBoundary ...");
 
@@ -1575,7 +1575,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - User friendly error messages are displayed:
 	 *	- - "Selected Percent Coverage Forecast, Please select Customer Boundary"
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens() throws Exception {
 		Log.info("\nRunning TC1315_CheckErrorMessagePresentIfPercentCoverageForecastCheckBoxSelectedCopyComplianceReportScreens ...");
 
@@ -1686,7 +1686,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 	 *	- - SSRS Gap table should not show Gaps which are completely covered by FoV and LISA
 	 *	- - Views will have the Gaps
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	public void TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected() throws Exception {
 		Log.info("\nRunning TC1090_GenerateComplianceReportWhenGapTableGapsInViewsSectionSelected ...");
 

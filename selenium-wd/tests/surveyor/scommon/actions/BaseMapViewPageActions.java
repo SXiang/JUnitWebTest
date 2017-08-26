@@ -1098,17 +1098,6 @@ public class BaseMapViewPageActions extends BasePageActions {
 	}
 
 	/**
-	 * Executes verifyDisplaySwitchNotesButtonIsNotVisible action.
-	 * @param data - specifies the input data passed to the action.
-	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.
-	 * @return - returns whether the action was successful or not.
-	 */
-	public boolean verifyDisplaySwitchNotesButtonIsNotVisible(String data, Integer dataRowID) {
-		logAction(getRuntimeType() + ".verifyDisplaySwitchNotesButtonIsNotVisible", data, dataRowID);
-		return !getBaseMapViewPageObject().isDisplaySwitchNotesButtonVisible();
-	}
-
-	/**
 	 * Executes verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible action.
 	 * @param data - specifies the input data passed to the action.
 	 * @param dataRowID - specifies the rowID in the test data sheet from where data for this action is to be read.

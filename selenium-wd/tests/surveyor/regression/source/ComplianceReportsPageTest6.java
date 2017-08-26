@@ -89,7 +89,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Report should have indications as per the min amp for Location i.e. indications should be =& min amp
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC231, location = ComplianceReportDataProvider.class)
 	public void TC231_GenerateReportStandardModeSurveysLocationHavingValuesOtherThanDefaultOne(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -130,7 +130,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- User is allowed to downlaod the report
 	 *	- Zip folder will have the report pdf and maps pdf for specified report area
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC235, location = ComplianceReportDataProvider.class)
 	public void TC235_GenerateComplianceReportByProvidingReportAreaLatLongValuesManually(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -167,7 +167,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- Customer Boundaries are present on map
 	 *	- Boundaries having exact same name or similar to it are searched and displayed to the user in alphabetical list
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC237, location = ComplianceReportDataProvider.class)
 	public void TC237_SearchValidCustomerBoundaryBoundarySelectorScreen(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -204,7 +204,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- - Indication tables should have values sorted by amplitude values
 	 *	- - Isotopic analysis tables should have value sorted by date/time
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC509, location = ComplianceReportDataProvider.class)
 	public void TC509_GenerateComplianceReportUsingCreateNewFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -246,7 +246,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Report with specified modification is generated successfully
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC510, location = ComplianceReportDataProvider.class)
 	public void TC510_GenerateComplianceReportUsingCopyFunctionality(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -279,7 +279,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- - Warning should be present : ?Do you really want to delete report ID + title?
 	 *	- - Deleted report is not present on compliance report list screen
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC514, location = ComplianceReportDataProvider.class)
 	public void TC514_DeleteComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -314,7 +314,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- The view should appear and the thumbnail should accurately reflect the view
 	 *	- The thumbnail should still be present
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC520, location = ComplianceReportDataProvider.class)
 	public void TC520_ReportViewThumbnailsCustomerBoundaryMultipleViewsCustomerSupervisorUser(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -362,7 +362,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- Zip folder will have the maps for the specified boundary
 	 *	- All views should be in the same sequence as created (View 1, View 2, View 3, etc.)
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC521, location = ComplianceReportDataProvider.class)
 	public void TC521_GenerateComplianceReportBySelectingCustomBoundaryMoreThanOneViewUsingCopyFunctionalityDownloadReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -440,7 +440,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- A window will pop up displaying all of the available files for download. Included among them should be a "Compliance ZIP (Shape)" button. This button should appear regardless of which of the named features are selected.
 	 *	- Lisa, FoV, Breadcrumb, PipeIntersectingLisa and PipeIntersectingGaps shape files should be available in downloaded ZIP folder
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC678, location = ComplianceReportDataProvider.class)
 	public void TC678_ShapefileButtonAvailableComplianceReport_PicarroAdmin(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -505,7 +505,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	ID (Attribute column, unique identifier)
 	 *	- There should only be Shapefiles for the selected features (Asset Shape files will appear only if LISAs and/or Gaps are also selected, and as "PipeIntersectingLISA" or "PipeIntersectingGap")
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC680, location = ComplianceReportDataProvider.class)
 	public void TC680_ShapefileExportReportOneView(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -548,7 +548,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- The features should be drawn in ArcGIS should correspond to those in the view
 	 *	- Even if the same feature is included in multiple views, there should only be one Shapefile for that feature
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC681, location = ComplianceReportDataProvider.class)
 	public void TC681_ShapefileExportReportMultipleViews(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -637,7 +637,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- The SSRS report should list the LISA boxes with sequentially-generated numbers
 	 *	- The report view should show all LISA boxes, numbered and corresponding to the SSRS list
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC698, location = ComplianceReportDataProvider.class)
 	public void TC698_LISABoxesUniqueNumbersPrescribedFormat(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -678,7 +678,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *	- The report map view should show the map overlaid with a grid, with columns marked A to Z and rows marked 1 to n
 	 *	- The grid cells should be approximately 200 feet square
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC699, location = ComplianceReportDataProvider.class)
 	public void TC699_CheckGapNumbersArePresentGapTableMapViewComplianceReport(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -794,7 +794,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *  - - The PDF report should have the LISA and Gap data listed in tabular format
 	 *	- - Lisa should be sorted by amplitude value and Gap should be present from A to Z and 1 to n
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC706, location = ComplianceReportDataProvider.class)
 	public void TC706_TabularOutputGapLISABoxes(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -1027,7 +1027,7 @@ public class ComplianceReportsPageTest6 extends BaseReportsPageActionTest {
 	 *  - - Reports list is sorted based on attribute selected
 	 *	- - Pagination and sorting should be working on all available pages
 	 */
-	@Test
+	@Ignore//UpdateImage@Test
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC798, location = ComplianceReportDataProvider.class)
 	public void TC798_CheckPaginationSortingComplianceReportsPage(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
