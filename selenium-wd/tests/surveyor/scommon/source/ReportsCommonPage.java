@@ -3388,7 +3388,7 @@ public class ReportsCommonPage extends ReportsBasePage {
 					idx, actualSoftwareVersion, expectedSoftwareVersion));
 			if (!actualSoftwareVersion.startsWith(expectedSoftwareVersion)) {
 				Log.info("Match=FALSE");
-//VersionDebug				return false;
+				return false;
 			}
 
 			String actualReportAuthor = map.get(SSRSPdfFooterColumns.ReportUser);

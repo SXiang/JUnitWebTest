@@ -1124,7 +1124,7 @@ public class ComplianceReportsPageTest extends BaseReportsPageTest {
 		Log.info(String.format("Verifying web app version matches CI version. WebAppVersion='%s', CIVersion='%s'",
 			webAppVersionNumber, ciVersionNumber));
 		ciVersionNumber = getTestSetup().getCIEnvironmentBuildNumber();
-//VersionDebug		assertTrue(webAppVersionNumber.equals(ciVersionNumber));
+		assertTrue(webAppVersionNumber.equals(ciVersionNumber));
 	}
 
 	/**
