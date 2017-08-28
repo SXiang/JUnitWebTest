@@ -17,6 +17,8 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
+	private static final String MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[2]";
+	private static final String MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[1]";
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 	private static final String LIST_ITEMS_XPATH = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup";
 
@@ -67,7 +69,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		int clickIdx = -1;
 		if (investigationMarkers != null && len > 0) {
 			for (int i = 1; i <= len; i++) {
-				WebElement elemMarkerStatus = getAndroidDriver().findElementByXPath(String.format("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[2]", i));
+				WebElement elemMarkerStatus = getAndroidDriver().findElementByXPath(String.format(MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER, i));
 				String status = elemMarkerStatus.getText();
 				if (markerStatuses.contains(status)) {
 					idx = i;
@@ -84,6 +86,37 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 		return idx;
 	}
 
+	public int clickLastMarkerMatchingStatus(List<String> markerStatuses) {
+		Log.method("clickLastMarkerMatchingStatus", LogHelper.collectionToString(markerStatuses, "markerStatuses"));
+		return clickMarkerMatchingStatusAtIndexFromEnd(markerStatuses, 0 /*indexFromEnd*/);
+	}
+
+	public int clickMarkerMatchingStatusAtIndexFromEnd(List<String> markerStatuses, Integer indexFromEnd) {
+		Log.method("clickLastMarkerMatchingStatus", LogHelper.collectionToString(markerStatuses, "markerStatuses"), indexFromEnd);
+		List<InvestigationMarkerEntity> investigationMarkers = getInvestigationMarkers();
+		int len = investigationMarkers.size();
+		int idx = -1;
+		int clickIdxFromEnd = -1;
+		if (investigationMarkers != null && len > 0) {
+			for (int i = len-1; i >= 0; i--) {
+				WebElement elemMarkerStatus = getAndroidDriver().findElementByXPath(String.format(MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER, i));
+				String status = elemMarkerStatus.getText();
+				if (markerStatuses.contains(status)) {
+					idx = i;
+					clickIdxFromEnd++;
+					if (clickIdxFromEnd == indexFromEnd) {
+						Log.info(String.format("Found matching marker (from end) for status='%s' at index=[%d], clickIndexFromEnd=[%d].. Tapping marker.", status, idx, clickIdxFromEnd));
+						elemMarkerStatus.click();
+						break;
+					}
+				}
+			}
+		}
+
+		return idx;
+	}
+
+
 	public void clickOnInvestigationMarkerType() {
 		Log.method("clickOnInvestigationMarkerType");
 		markerTypeSelector.click();
@@ -91,7 +124,7 @@ public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
 
 	public void clickOnMarkerAtIndex(int index) {
 		Log.method("clickOnMarkerAtIndex", index);
-		WebElement element = getAndroidDriver().findElementByXPath(String.format("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[1]", index));
+		WebElement element = getAndroidDriver().findElementByXPath(String.format(MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER, index));
 		String markerName = element.getText();
 		Log.info(String.format("Found matching marker='%s' at index=[%d].. Tap marker.", markerName, index));
 		element.click();

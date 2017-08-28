@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import common.source.CollectionsUtil;
 import common.source.Log;
 import surveyor.scommon.entities.InvestigationEntity;
 import surveyor.scommon.entities.LeakDetailEntity;
@@ -26,7 +27,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = "#leak_details input[ng-model='leak.AddressStreetNumber']")
 	protected WebElement inputStreetNumber;
-	
+
 	@FindBy(how = How.CSS, using = "#leak_details input[ng-model='leak.AddressApartmentNumber']")
 	protected WebElement inputApartmentNumber;
 
@@ -68,7 +69,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 
 	@FindBy(how = How.CSS, using = "#leak_details input[ng-model='leak.IsPavedWallToWall']")
 	protected WebElement checkboxPaved;
-	
+
 	@FindBy(how = How.CSS, using = "[preselected-item='leak.SurfaceOverLeakTypeId'] button[data-toggle='dropdown']")
 	protected WebElement surfaceOverLeakDropdown;
 
@@ -92,7 +93,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	protected WebElement buttonDelete;
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-footer > button[ng-click='modalOptions.ok()']")
 	protected WebElement buttonConfirmDelete;
-	
+
 	@FindBy(how = How.CSS, using = ".modal-dialog .modal-header > button.close[ng-click='cancel()']")
 	protected WebElement buttonCloseAddSource;
 
@@ -100,7 +101,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	protected WebElement investigateTime;
 
 	public enum InvestigateAction {DELETE, OK, CANCEL};
-	
+
 	public MobileLeakSourcePage(){
 		super(STRURLPath);
 		pageKey = By.cssSelector("#leak_details.form-group");
@@ -110,7 +111,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	public void addLeakDetails(LeakDetailEntity leakDetails){
 		addLeakDetails(leakDetails, InvestigateAction.OK);
 	}
-	
+
 	public void addLeakDetails(LeakDetailEntity leakDetails, InvestigateAction action){
 		setStreetNumber(leakDetails.getStreetNumber());
 		setApartmentNumber(leakDetails.getApartmentNumber());
@@ -139,7 +140,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 			clickDeleteButton();
 			break;
 		case CANCEL:
-			clickCancelButton();			
+			clickCancelButton();
 		}
 	}
 
@@ -168,7 +169,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		clickCancelButton();
 		return isCorrect;
 	}
-	
+
 	public boolean verifyOtherSource(OtherSourceEntity otherSoruce){
 		boolean isCorrect = true;
 		isCorrect &= getLeakSourceTypeDropdown().equalsIgnoreCase(otherSoruce.getLeakSourceType());
@@ -186,14 +187,14 @@ public class MobileLeakSourcePage extends MobileBasePage {
 				Log.warn("Options in leakSourceType include: "+options);
 				Log.warn(lst + " is not an option in the dropdown");
 			}
-		}	
+		}
 		return isCorrect;
 	}
-	
+
 	public void addOtherSource(OtherSourceEntity sourceDetails){
 		setLeakSourceType(sourceDetails.getLeakSourceType());
 		setAdditionalNotes(sourceDetails.getAdditionalNotes());
-		
+
 		clickOkButton(sourceDetails);
 	}
 
@@ -221,7 +222,7 @@ public class MobileLeakSourcePage extends MobileBasePage {
 		this.buttonConfirmDelete.click();
 		waitForPageToLoad();
 	}
-	
+
 	public void closeAddSourceDialog(){
 		buttonCloseAddSource.click();
 		waitForPageToLoad();
@@ -411,7 +412,6 @@ public class MobileLeakSourcePage extends MobileBasePage {
 	}
 
 	public boolean verifyMetaLeakDetails(String[][] expects, Map<String, String> lisaInvestigationDetails) {
-		
 		for(int i=0;i<expects[0].length; i++) {
 			String actual = lisaInvestigationDetails.get(expects[0][i]).toLowerCase().trim();
 			String expect = expects[1][i].toLowerCase();

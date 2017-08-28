@@ -2,8 +2,6 @@ package androidapp.screens.source;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
-
 import common.source.Log;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 

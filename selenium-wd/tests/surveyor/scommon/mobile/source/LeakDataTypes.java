@@ -1,6 +1,21 @@
 package surveyor.scommon.mobile.source;
 
 public class LeakDataTypes {
+	public enum IndicationType {
+		LISA ("LISA"),
+		Gap ("Gap");
+
+		private final String name;
+
+		IndicationType(String nm) {
+			name = nm;
+		}
+
+		public String toString() {
+			return this.name;
+		}
+	}
+
 	public enum SourceType {
 		Leak ("Leak"),
 		OtherSource ("OtherSource");
