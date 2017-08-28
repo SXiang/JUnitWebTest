@@ -455,6 +455,15 @@ public class PageObjectVerificationTest extends SurveyorBaseTest {
 		// Call the various OLMapUtility methods.
 		OLMapUtility mapUtility = new OLMapUtility(getDriver());
 
+		boolean chartDataShowingOnMap = mapUtility.isConcentrationChartDataShowingOnMap();
+		Log.info("chartDataShowingOnMap = " + chartDataShowingOnMap);
+
+		boolean indicationsShownOnMap = mapUtility.isIndicationsShownOnMap();
+		Log.info("indicationsShownOnMap = " + indicationsShownOnMap);
+
+		boolean breadcrumbShownOnMap = mapUtility.isBreadcrumbShownOnMap();
+		Log.info("breadcrumbShownOnMap = " + breadcrumbShownOnMap);
+		
 		boolean fovShownOnMap = mapUtility.isFOVShownOnMap();
 		Log.info("fovShownOnMap = " + fovShownOnMap);
 

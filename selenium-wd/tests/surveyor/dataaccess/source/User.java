@@ -3,11 +3,13 @@ package surveyor.dataaccess.source;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.source.Log;
 
 public class User extends BaseEntity {
 	private static final String CACHE_KEY = "USER.";
-	
+
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -18,10 +20,10 @@ public class User extends BaseEntity {
 	private boolean active;
 	private boolean eulaAccepted;
 	private String userName;
-	private String cultureId;	
-	private String customerId;	
-	private String locationId;	
-	
+	private String cultureId;
+	private String customerId;
+	private String locationId;
+
 	public User() {
 		super();
 	}
@@ -31,9 +33,13 @@ public class User extends BaseEntity {
 		return user;
 	}
 
+	public static List<User> getUsersForCustomer(String customerId) {
+		return new User().getForCustomer(customerId);
+	}
+
 	public User get(String username) {
 		User user = null;
-		
+
 		// Get from cache if present. Else fetch from Database.
 		if (DBCache.INSTANCE.containsKey(CACHE_KEY+username)) {
 			user = (User)DBCache.INSTANCE.get(CACHE_KEY+username);
@@ -46,6 +52,11 @@ public class User extends BaseEntity {
 			}
 		}
 		return user;
+	}
+
+	public List<User> getForCustomer(String customerId) {
+		String SQL = "SELECT * FROM dbo.[User] WHERE CustomerId='" + customerId + "'";
+		return load(SQL);
 	}
 
 	private static User loadFrom(ResultSet resultSet) {
@@ -70,31 +81,31 @@ public class User extends BaseEntity {
 
 		return user;
 	}
-	
+
 	public ArrayList<User> getAll() {
 		String SQL = "SELECT * FROM dbo.[User]";
         return load(SQL);
 	}
-	
+
 	public ArrayList<User> load(String SQL) {
 		ArrayList<User> userList = new ArrayList<User>();
-		
+
 		try {
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(SQL);
-			
+
 			while (resultSet.next()) {
 				User user = loadFrom(resultSet);
 				userList.add(user);
-				
+
 				// add to cache.
 				DBCache.INSTANCE.set(CACHE_KEY + user.getUserName(), user);
 	         }
-			
+
 		} catch (SQLException e) {
 			Log.error(e.toString());
 		}
-		
+
 		return userList;
 	}
 

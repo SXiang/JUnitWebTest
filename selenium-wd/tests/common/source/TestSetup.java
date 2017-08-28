@@ -186,6 +186,8 @@ public class TestSetup {
 	private String backPackServerMachineUser;
 	private String backPackServerMachinePwd;
 
+	private String androidDevicePin;
+
 	private boolean isRunningOnBackPackAnalyzer;
 	private boolean isAndroidTestReleaseEnabled;
 	private boolean isAndroidTestPerfMetricsEnabled;
@@ -657,6 +659,7 @@ public class TestSetup {
 			this.setAndroidTestPerfMetricsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfMetrics.Enabled")));
 			this.setAndroidTestServiceCorrectorsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.ServiceCorrectors.Enabled")));
 			this.setAndroidTestWebSocketPauseResumeEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.WebSocketPauseResume.Enabled")));
+			this.setAndroidDevicePin(this.testProp.getProperty("androidDevicePin"));
 
 			setBackPackServerProperties(this.testProp);
 
@@ -1737,5 +1740,13 @@ public class TestSetup {
 
 	public void setAndroidTestServiceCorrectorsEnabled(boolean isAndroidTestServiceCorrectorsEnabled) {
 		this.isAndroidTestServiceCorrectorsEnabled = isAndroidTestServiceCorrectorsEnabled;
+	}
+
+	public String getAndroidDevicePin() {
+		return androidDevicePin;
+	}
+
+	public void setAndroidDevicePin(String androidDevicePin) {
+		this.androidDevicePin = androidDevicePin;
 	}
 }

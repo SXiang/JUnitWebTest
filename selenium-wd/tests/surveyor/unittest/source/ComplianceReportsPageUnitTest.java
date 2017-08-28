@@ -1,22 +1,32 @@
 package surveyor.unittest.source;
 
+import common.source.FileUtility;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.PDFUtility;
+import common.source.TestContext;
 import common.source.PDFTableUtility.PDFTable;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.support.PageFactory;
+
+import androidapp.data.source.InvestigationReportDataVerifier;
+
 import org.junit.Test;
 import surveyor.scommon.source.SurveyorTestRunner;
+import surveyor.dataaccess.source.Report;
+import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import surveyor.parsers.source.SSRSIsotopicAnalysisTableParser;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.HomePageActions;
@@ -31,6 +41,7 @@ import surveyor.scommon.entities.BaseReportEntity.ReportModeFilter;
 import surveyor.scommon.entities.BaseReportEntity.SurveyModeFilter;
 import surveyor.scommon.source.BaseReportsPageActionTest;
 import surveyor.scommon.source.ComplianceReportsPage;
+import surveyor.scommon.source.SurveyorConstants;
 
 @RunWith(SurveyorTestRunner.class)
 public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
@@ -71,6 +82,30 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 
 		if (getTestRunMode() == ReportTestRunMode.UnitTestRun) {
 			complianceReportsPageAction.fillWorkingDataForReports(getUnitTestReportRowID());
+		}
+	}
+
+	@Test
+	public void getLISAInvestigationPDFData_VerifyUsingReportsPresentInDB() throws Exception {
+		final String[] tcIds = new String[] {"TC2448", "TC2440"};
+		final String username = SurveyorConstants.SQAPICDR;
+		for (String tcId : tcIds) {
+			Report report = InvestigationReportDataVerifier.newVerifier().findReportOfMatchingPrefixWithLeakFoundOrInProgressLisaMarker(new String[] {tcId}, username);
+			if (report != null) {
+				String reportTitle = report.getReportTitle();
+				downloadInvestigationPDFIfNotPresent(reportTitle);
+				Long numMarkers = getNumberOfLISAMarkersInReport(username, report);
+				IntStream.rangeClosed(1, numMarkers.intValue()).forEach(i -> {
+					Integer lisaNumber = i;
+					List<String> investigationPDFData = null;
+					try {
+						investigationPDFData = complianceReportsPage.getLISAInvestigationPDFData(lisaNumber , reportTitle );
+						assertTrue(investigationPDFData != null && investigationPDFData.size()>0);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+			}
 		}
 	}
 
@@ -176,10 +211,31 @@ public class ComplianceReportsPageUnitTest  extends BaseReportsPageActionTest {
 		testSurveyFilters(smode);
 	}
 
+	private void downloadInvestigationPDFIfNotPresent(String reportTitle) throws Exception {
+		String invPdfFullPath = Paths.get(TestContext.INSTANCE.getTestSetup().getDownloadPath(),
+				complianceReportsPage.getInvestigationPDFFileName(reportTitle, true /*includeExtension*/)).toString();
+		if (!FileUtility.fileExists(invPdfFullPath)) {
+			complianceReportsPage.invokeInvestigationPDFFileDownload(reportTitle);
+		}
+	}
+
+	private Long getNumberOfLISAMarkersInReport(final String username, Report report) {
+		Long numMarkers = 0L;
+		String reportId = report.getId();
+		List<StoredProcLisaInvestigationShowIndication> lisaInvestigationfromSP = StoredProcLisaInvestigationShowIndication.getLisaInvestigation(reportId);
+		if (lisaInvestigationfromSP != null && lisaInvestigationfromSP.size()>0) {
+			numMarkers = lisaInvestigationfromSP.stream()
+							.filter(r -> r.getAssignedUserName().equals(username))
+							.count();
+		}
+		return numMarkers;
+	}
+
 	private void testReportFilters(ReportModeFilter rmode){
 		complianceReportsPage.selectReportMode(rmode);
 		Assert.assertTrue(complianceReportsPage.verifySurveyModeFilters(rmode));
 	}
+
 	private void testSurveyFilters(SurveyModeFilter smode){
 		complianceReportsPage.selectSurveyModeForSurvey(smode);
 		complianceReportsPage.clickOnSearchSurveyButton();

@@ -22,6 +22,20 @@ public class LogHelper {
 		return "";
 	}
 
+	public static <T> String arrayOfArrayToString(T[][] array) {
+		StringBuilder builder = new StringBuilder();
+		if (array != null && array.length > 0) {
+			for (T[] subArr : array) {
+				builder.append(arrayToString(subArr));
+				builder.append(";");
+			}
+
+			return builder.toString();
+		}
+
+		return "";
+	}
+
 	public static <T> String collectionToString(Collection<T> collection, String collectionName) {
 		StringBuilder builder = new StringBuilder();
 		if (collection != null && collection.size() > 0) {

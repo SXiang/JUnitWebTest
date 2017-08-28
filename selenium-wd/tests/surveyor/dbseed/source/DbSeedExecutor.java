@@ -116,7 +116,6 @@ public class DbSeedExecutor {
 		FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = null;
 		PeakDbSeedBuilder peakDbSeedBuilder = null;
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
-//		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
 		surveySeedBuilderCache = new DbSeedBuilderCache();
 

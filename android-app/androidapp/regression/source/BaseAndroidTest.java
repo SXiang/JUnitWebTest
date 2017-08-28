@@ -19,6 +19,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.support.PageFactory;
 
+import com.android.ddmlib.IDevice;
+
 import androidapp.screens.source.AndroidMapScreen;
 import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
@@ -44,6 +46,7 @@ import common.source.Timeout;
 import common.source.WebDriverFactory;
 import common.source.WebDriverWrapper;
 import common.source.AndroidAutomationTools.ShellCommands;
+import common.source.AndroidDeviceInterface;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
@@ -54,6 +57,7 @@ import surveyor.scommon.source.SurveyorTestRunner;
 
 @RunWith(SurveyorTestRunner.class)
 public class BaseAndroidTest extends BaseTest {
+	private static final String SYSTEM_PROP_RO_BUILD_CHARACTERISTICS = "ro.build.characteristics";
 	private static final String SIM_DATA_MANAGER_BROADCASTER_PY = "simDataManagerBroadcaster.py";
 	private static final String SIM_LINEAR_FITTER_BROADCASTER_PY = "simLinearFitterBroadcaster.py";
 	private static final String DUMMYLINEARFITTERALARM_PY = "dummylinearfitteralarm.py";
@@ -65,6 +69,7 @@ public class BaseAndroidTest extends BaseTest {
 	private static final double DEFAULT_LATITUDE = 37.3965775;
 	private static final String APK_VERSION_MARKER_FILE_PATH = "C:\\QATestLogs\\installed-apk.md";
 	private static final String LOGS_BASE_FOLDER = "C:\\QATestLogs";
+	private static final String TABLET = "tablet";
 	private static final String ADB_EXE = "adb.exe";
 
 	protected static final String TRUE = "true";
@@ -132,9 +137,36 @@ public class BaseAndroidTest extends BaseTest {
 			cleanupProcesses();
 
 			AdbInterface.init(testSetup.getAdbLocation());
-		    AndroidAutomationTools.start();
-		    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			detectTargetDeviceType();
+
+			if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+				AndroidAutomationTools.startAppiumServer();
+			} else {
+				AndroidAutomationTools.start();
+			    AndroidAutomationTools.disableAnimations();  // perf optimization.
+			}
 		}
+	}
+
+	private static void detectTargetDeviceType() throws Exception {
+		if (areMultipleDevicesConnected()) {
+			throw new Exception("Detected multiple connected devices. Current configuration supports automation run on a single device. Disconnect extra connected devices.");
+		}
+
+		IDevice device = AdbInterface.getConnectedDevice();
+		if (device != null) {
+			String buildCharacteristic = device.getProperty(SYSTEM_PROP_RO_BUILD_CHARACTERISTICS);
+			TestContext.INSTANCE.setIsRunningOnAndroidDevice(buildCharacteristic.toLowerCase().equals(TABLET));
+		}
+	}
+
+	private static boolean areMultipleDevicesConnected() {
+		IDevice[] devices = AdbInterface.getConnectedDevices();
+		if (devices != null) {
+			return (devices.length > 1);
+		}
+
+		return false;
 	}
 
 	@AfterClass
@@ -231,11 +263,20 @@ public class BaseAndroidTest extends BaseTest {
 		}
 	}
 
+	private Long getRunUUID() {
+		Long runUUID = TestContext.INSTANCE.getTestSetup().getRunUUID();
+		if (runUUID == null) {
+			return 0L;
+		}
+
+		return runUUID;
+	}
+
 	private void startTestRecording(String testName, Boolean enableLogging) throws Exception {
 		Log.method("startTestRecording", testName, enableLogging);
 		testName = BaseHelper.toAlphaNumeric(testName, '_');
 		initScreenRecorder();
-		screenRecorder.startRecording(String.format("/sdcard/%s.mp4", testName));
+		screenRecorder.startRecording(String.format("/sdcard/%s-%d.mp4", testName, getRunUUID()));
 
 		if (TestContext.INSTANCE.getTestSetup().isAndroidTestPerfMetricsEnabled()) {
 			initPerfmonDataCollector();
@@ -308,7 +349,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void collectServiceInfos(String testName) throws Exception {
 		Log.method("collectServiceInfos", testName);
-		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.svcinfo.dat", testName));
+		String svcInfoFile = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.svcinfo.dat", testName, getRunUUID()));
 
 		if(FileUtility.fileExists(svcInfoFile)) {
 			FileUtility.deleteFile(Paths.get(svcInfoFile));
@@ -325,7 +366,7 @@ public class BaseAndroidTest extends BaseTest {
 
 	private void collectAdbLogs(String testName) throws IOException {
 		Log.method("collectAdbLogs", testName);
-		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s.log", testName));
+		String logcatLog = String.format(LOGS_BASE_FOLDER + "\\%s", String.format("%s-%d.log", testName, getRunUUID()));
 		if(FileUtility.fileExists(logcatLog)) {
 			FileUtility.deleteFile(Paths.get(logcatLog));
 		}
@@ -341,7 +382,7 @@ public class BaseAndroidTest extends BaseTest {
 	private void createRecording(String testName) throws Exception {
 		Log.method("createRecording", testName);
 		MobileActions action = MobileActions.newAction();
-		String videoFileName = String.format("%s.mp4", testName);
+		String videoFileName = String.format("%s-%d.mp4", testName, getRunUUID());
 		String saveFileLocation = String.format(LOGS_BASE_FOLDER + "\\%s", videoFileName);
 		if(FileUtility.fileExists(saveFileLocation)) {
 			FileUtility.deleteFile(Paths.get(saveFileLocation));
@@ -395,14 +436,18 @@ public class BaseAndroidTest extends BaseTest {
 		return predicate;
 	}
 
-	private static void cleanupProcesses() throws IOException {
+	private static void cleanupProcesses() throws Exception {
 		Log.method("cleanupProcesses");
 
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
 
-		AndroidAutomationTools.stop();
+		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			AndroidAutomationTools.stopAppiumServer();
+		} else {
+			AndroidAutomationTools.stop();
+		}
 
 		ProcessUtility.killProcess(ADB_EXE, false /*killChildProcesses*/);
 
@@ -445,6 +490,10 @@ public class BaseAndroidTest extends BaseTest {
 
 	protected void initializeAppiumTest() throws MalformedURLException, IOException, Exception {
 		Log.method("initializeAppiumTest");
+		if (TestContext.INSTANCE.isRunningOnAndroidDevice()) {
+			ensureDeviceIsTurnedOnAndUnlocked();
+		}
+
 		ensureApkExistsInConnectedDevice();
 		installApkFileVersionMarkerOnDevice();
 		initializeAppiumDriver();
@@ -464,6 +513,21 @@ public class BaseAndroidTest extends BaseTest {
 		waitForAppLoad();
 	}
 
+	private void ensureDeviceIsTurnedOnAndUnlocked() throws Exception {
+		Log.method("ensureDeviceIsTurnedOnAndUnlocked");
+		String pin = TestContext.INSTANCE.getTestSetup().getAndroidDevicePin();
+		if (AndroidDeviceInterface.isScreenTurnedOff()) {
+			AndroidDeviceInterface.turnOnScreen();
+			AndroidDeviceInterface.unlockDevice();
+			AndroidDeviceInterface.enterPin(pin);
+		} else {
+			if (AndroidDeviceInterface.isDeviceLocked()) {
+				AndroidDeviceInterface.unlockDevice();
+				AndroidDeviceInterface.enterPin(pin);
+			}
+		}
+	}
+
 	private void installApkFileVersionMarkerOnDevice() throws IOException {
 		Log.method("installApkFileVersionMarkerOnDevice");
 		String apkFilename = getApkFile().getName();
@@ -475,13 +539,13 @@ public class BaseAndroidTest extends BaseTest {
 	@SuppressWarnings("unchecked")
 	protected void initializeAppiumDriver() throws MalformedURLException {
 		Log.method("initializeAppiumDriver");
-		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver();
+		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver(TestContext.INSTANCE.isRunningOnAndroidDevice());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initializeAppiumWebDriver() throws MalformedURLException {
 		Log.method("initializeAppiumWebDriver");
-		appiumWebDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppWebDriver();
+		appiumWebDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppWebDriver(TestContext.INSTANCE.isRunningOnAndroidDevice());
 	}
 
 	protected void installLaunchApp(String waitActivityName) throws IOException {

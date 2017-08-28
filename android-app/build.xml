@@ -172,6 +172,7 @@
           <include name="**/AndroidLeakScreenTest2.class" />
           <include name="**/AndroidLeakScreenTest3.class" />
           <include name="**/AndroidLeakScreenTest4.class" />
+    	  <include name="**/AndroidLeakScreenTest5.class" />
           <include name="**/AndroidSettingsScreenTest2.class" />
           <include name="**/AndroidSettingsAuthScreenTest.class" />
           <include name="**/AndroidFormCancelVerificationTest.class" />
@@ -196,7 +197,7 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/AndroidLeakScreenTest4.class" />
+          <include name="**/AndroidLeakScreenTest5.class" />
         </fileset>
       </batchtest>
     </junit>

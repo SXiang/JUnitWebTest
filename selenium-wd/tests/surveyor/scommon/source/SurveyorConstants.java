@@ -669,7 +669,6 @@ public final class SurveyorConstants {
 		SQAAuto ("CI-SQAAuto", "SQAAuto", 1),
 		Staging ("CI-STG", "Staging", 2),
 		P3Scale ("CI-P3Scale", "P3Scale", 3);
-
 		private final String ciName;
 		private final String autoDbName;
 		private final Integer index;

@@ -1,3 +1,9 @@
+param
+(
+  [Parameter(Mandatory=$true)]
+  [string] $WorkingDirectory                      # Eg. "C:\repositories\surveyor-qa"
+)
+
 $APPDATA = $env:APPDATA
 $appiumCmdPath = "$APPDATA\npm\appium"
 
@@ -17,5 +23,8 @@ if ($procs -ne $null) {
 }
 
 $uuid = New-GuidNoDashes
-Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override --local-timezone --log c:\QATestLogs\automationappium-$uuid.log"
+$testProperties = "$WorkingDirectory\selenium-wd\tests\surveyor\test.properties"
+$runUUID = 0
+Get-Content $testProperties | % {$line = $_; if ($line -match "runUUID\s+=\s+(\d+)") {$runUUID = $Matches[1]} }
+Start-Process -FilePath "$appiumCmdPath" -ArgumentList "--session-override --local-timezone --log c:\QATestLogs\automationappium-$uuid-$runUUID.log"
 sleep -Seconds 30
