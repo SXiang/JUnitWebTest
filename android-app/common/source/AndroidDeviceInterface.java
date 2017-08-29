@@ -12,6 +12,21 @@ public class AndroidDeviceInterface {
 	private static final String WIFI = "wifi";
 	private static final String GPS = "gps";
 
+	public static void turnOnProfileGfxInfo() throws Exception {
+		Log.method("turnOnProfileGfxInfo");
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_ON_PROFILE_GFXINFO);
+	}
+
+	public static void turnOnProfileVisualBars() throws Exception {
+		Log.method("turnOnProfileVisualBars");
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_ON_PROFILE_VISUAL_BARS);
+	}
+
+	public static void turnOffProfileDebug() throws Exception {
+		Log.method("turnOffProfileDebug");
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_OFF_PROFILE_DEBUG);
+	}
+
 	public static void turnOnGps() throws Exception {
 		Log.method("turnOnGps");
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_ON_GPS);
@@ -30,6 +45,16 @@ public class AndroidDeviceInterface {
 	public static void turnOffNetwork() throws Exception {
 		Log.method("turnOffNetwork");
 		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_OFF_NETWORK);
+	}
+
+	public static void turnOnDebugOverdraw() throws Exception {
+		Log.method("turnOnDebugOverdraw");
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_ON_DEBUG_OVERDRAW);
+	}
+
+	public static void turnOffDebugOverdraw() throws Exception {
+		Log.method("turnOffDebugOverdraw");
+		AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.TURN_OFF_DEBUG_OVERDRAW);
 	}
 
 	public static void turnOnWifi() throws Exception {
