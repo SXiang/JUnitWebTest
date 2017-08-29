@@ -876,15 +876,10 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-<!--  	        	<include name="**/HomePageTest.class" />
+  	            <include name="**/HomePageTest.class" />
   	        	<include name="**/SanityIntegrationTest.class" />	
   	        	<include name="**/SurveyViewPageTest1.class" />
   	        	<include name="**/DriverViewPageTest.class" />
--->
-  	        	<include name="**/ObserverViewPageTest.class" />
-  	        	<include name="**/AnalyticsReportsWithNewSurveyPageTest.class" />
-  	        	<include name="**/ComplianceReportsPageTest10.class" />
-  	        	<include name="**/ComplianceReportsPageTest.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>
