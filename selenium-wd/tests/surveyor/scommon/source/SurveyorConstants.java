@@ -668,7 +668,8 @@ public final class SurveyorConstants {
 	public enum Environment {
 		SQAAuto ("CI-SQAAuto", "SQAAuto", 1),
 		Staging ("CI-STG", "Staging", 2),
-		P3Scale ("CI-P3Scale", "P3Scale", 3);
+		P3Scale ("CI-P3Scale", "P3Scale", 3),
+		P3Dev ("CI-P3DEV", "P3DEV", 12);
 		private final String ciName;
 		private final String autoDbName;
 		private final Integer index;
@@ -712,6 +713,8 @@ public final class SurveyorConstants {
 				environment = Environment.Staging;
 			} else if (url.contains("p3scale.picarro.com")) {
 				environment = Environment.P3Scale;
+			}else if (url.contains("p3dev.picarro.com")) {
+				environment = Environment.P3Dev;
 			}
 			return environment;
 		}
