@@ -17,6 +17,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import androidapp.entities.source.InvestigationEntity;
 
 public class AndroidInvestigationScreen extends AndroidBaseScreen {
+	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.widget.TextView[3]";
 	private static final String LIST_VIEW_ELEMENTS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView";
 	private static final String CONTAINER_VIEW_GROUP_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]";
 	private static final Integer SWIPE_DELTA = 600;
@@ -40,6 +41,9 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement firstRowReportTitle;
 
+	@AndroidFindBy(xpath = MENU_BUTTON_XPATH)
+	@CacheLookup
+	private WebElement menuButton;
 
 	public AndroidInvestigationScreen(WebDriver driver) {
 		super(driver);
@@ -55,6 +59,17 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 		Log.method("tapOnFirstInvestigation");
 		getFirstRowViewGroup();
 		tap(firstRowViewGroup);
+	}
+
+	public void clickOnMenuButton() {
+		Log.method("clickOnMenuButton");
+		getMenuButton().click();
+	}
+
+	public WebElement getMenuButton() {
+		Log.method("getMenuButton");
+		menuButton = getAndroidDriver().findElementByXPath(MENU_BUTTON_XPATH);
+		return menuButton;
 	}
 
 	public List<InvestigationEntity> getInvestigations() {

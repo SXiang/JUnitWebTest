@@ -34,5 +34,10 @@ public class BaselineImages {
 		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
 		public static final String LisaHighlightScreenshotWithIndexPlaceholder = "LISAHighlight%d_Screenshot.png";
 		public static final String GapScreenshotWithIndexPlaceholder = "GAP%d_Screenshot.png";
+		public static final String LoginErrorRedText = "login-error-red-text.png";
+		public static final String LoginFailedError = "login-failed.png";
+		public static final String ErrorMissingHttpOrHttps = "error-missing-http-or-https.png";
+		public static final String ErrorSpecifyPortNumber = "error-specify-port-number.png";
+		public static final String ErrorUrlMustStartWithHttpOrHttps = "url-must-start-with-http-or-https.png";
 	}
 }
