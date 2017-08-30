@@ -193,6 +193,10 @@ public class TestSetup {
 	private boolean isAndroidTestPerfMetricsEnabled;
 	private boolean isAndroidTestServiceCorrectorsEnabled;
 	private boolean isAndroidTestWebSocketPauseResumeEnabled;
+	private boolean isAndroidTestPerfProfileVisualBarsEnabled;
+	private boolean isAndroidTestPerfProfileDumpSysEnabled;
+
+	private String androidPerfTestResultStoreLocation;
 
 	private String awsAccessKeyId;
 	private String awsSecretKeyId;
@@ -659,6 +663,9 @@ public class TestSetup {
 			this.setAndroidTestPerfMetricsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfMetrics.Enabled")));
 			this.setAndroidTestServiceCorrectorsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.ServiceCorrectors.Enabled")));
 			this.setAndroidTestWebSocketPauseResumeEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.WebSocketPauseResume.Enabled")));
+			this.setAndroidTestPerfProfileVisualBarsEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.VisualBars.Enabled")));
+			this.setAndroidTestPerfProfileDumpSysEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.DumpSys.Enabled")));
+			this.setAndroidPerfTestResultStoreLocation(this.testProp.getProperty("androidTests.PerfResults.Store.Location"));
 			this.setAndroidDevicePin(this.testProp.getProperty("androidDevicePin"));
 
 			setBackPackServerProperties(this.testProp);
@@ -1748,5 +1755,29 @@ public class TestSetup {
 
 	public void setAndroidDevicePin(String androidDevicePin) {
 		this.androidDevicePin = androidDevicePin;
+	}
+
+	public boolean isAndroidTestPerfProfileVisualBarsEnabled() {
+		return isAndroidTestPerfProfileVisualBarsEnabled;
+	}
+
+	public void setAndroidTestPerfProfileVisualBarsEnabled(boolean isAndroidTestPerfProfileVisualBarsEnabled) {
+		this.isAndroidTestPerfProfileVisualBarsEnabled = isAndroidTestPerfProfileVisualBarsEnabled;
+	}
+
+	public boolean isAndroidTestPerfProfileDumpSysEnabled() {
+		return isAndroidTestPerfProfileDumpSysEnabled;
+	}
+
+	public void setAndroidTestPerfProfileDumpSysEnabled(boolean isAndroidTestPerfProfileDumpSysEnabled) {
+		this.isAndroidTestPerfProfileDumpSysEnabled = isAndroidTestPerfProfileDumpSysEnabled;
+	}
+
+	public String getAndroidPerfTestResultStoreLocation() {
+		return androidPerfTestResultStoreLocation;
+	}
+
+	public void setAndroidPerfTestResultStoreLocation(String androidPerfTestResultStoreLocation) {
+		this.androidPerfTestResultStoreLocation = androidPerfTestResultStoreLocation;
 	}
 }
