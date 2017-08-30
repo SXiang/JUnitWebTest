@@ -246,7 +246,6 @@ public class GridPOCTestClass8 {
 		surveyViewPageAction.clickOnDisplayButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllDisplayOptions(EMPTY, NOTSET);
 		surveyViewPageAction.turnOnLisas(EMPTY, NOTSET);
-		surveyViewPageAction.turnOnNotes(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnGisButton(EMPTY, NOTSET);
 		surveyViewPageAction.turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		surveyViewPageAction.clickOnMapButton(EMPTY, NOTSET);
@@ -261,7 +260,6 @@ public class GridPOCTestClass8 {
 		assertTrue(surveyViewPageAction.verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 		assertTrue(surveyViewPageAction.verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(surveyViewPageAction.verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(surveyViewPageAction.verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(surveyViewPageAction.verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 	}

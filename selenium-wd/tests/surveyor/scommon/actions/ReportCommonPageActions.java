@@ -1,6 +1,5 @@
 package surveyor.scommon.actions;
 
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYHIGHLIGHTLISAASSETS;
@@ -274,7 +273,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		String showBreadcrumb = reportViewsDataRow.breadcrumbs.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showIndications = reportViewsDataRow.indications.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showIsotopicCapture = reportViewsDataRow.isotopicCapture.equalsIgnoreCase("TRUE") ? "1" : "0";
-		String showAnnotation = reportViewsDataRow.fieldNotes.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showGaps = reportViewsDataRow.gaps.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String showAssets = reportViewsDataRow.assets.equalsIgnoreCase("TRUE") ? "1" : "0";
 		String highlightLisaAssets = reportViewsDataRow.highlightLisa.equalsIgnoreCase("TRUE") ? "1" : "0";
@@ -288,7 +286,6 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 		if (showBreadcrumb != "") viewMap.put(KEYBREADCRUMB, showBreadcrumb);
 		if (showIndications != "") viewMap.put(KEYINDICATIONS, showIndications);
 		if (showIsotopicCapture != "") viewMap.put(KEYISOTOPICCAPTURE, showIsotopicCapture);
-		if (showAnnotation != "") viewMap.put(KEYANNOTATION, showAnnotation);
 		if (showGaps != "") viewMap.put(KEYGAPS, showGaps);
 		if (showAssets != "") viewMap.put(KEYASSETS, showAssets);
 		if (highlightLisaAssets != "") viewMap.put(KEYHIGHLIGHTLISAASSETS, highlightLisaAssets);

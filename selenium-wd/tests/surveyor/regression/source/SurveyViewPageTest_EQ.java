@@ -53,7 +53,6 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
 		
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
@@ -115,7 +114,6 @@ public class SurveyViewPageTest_EQ extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIndicationsButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchIsotopicAnalysisButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchLisasButtonIsNotVisible(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchNotesButtonIsNotVisible(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyDisplaySwitchWindroseButtonIsNotVisible(EMPTY, NOTSET));
 		
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);

@@ -38,37 +38,34 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public static final String STRPageContentText = Resources.getResource(ResourceKeys.Dialog_MapView);
 	private static final int ASSETS_ZOOM_LEVEL_LOWER_BOUND = 17;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_8hour_history']]")
 	private WebElement displaySwitch8HourHistoryDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_windrose']]")
 	private WebElement displaySwitchWindroseDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_concentration_chart']]")
 	private WebElement displaySwitchConcentrationChartDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[4]")
-	private WebElement displaySwitchNotesDivElement;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[5]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_isotopic_analysis']]")
 	private WebElement displaySwitchIsotopicAnalysisDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_indications']]")
 	private WebElement displaySwitchIndicationsDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[2]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_possible_natural_gas']]")
 	private WebElement displaySwitchPossibleNaturalGasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[3]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_not_natural_gas']]")
 	private WebElement displaySwitchNotNaturalGasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[6]/div[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_vehicle_exhaust']]")
 	private WebElement displaySwitchVehicleExhaustDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[7]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_lisas']]")
 	private WebElement displaySwitchLisasDivElement;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']/div[8]")
+	@FindBy(how = How.XPATH, using = "//*[@id='menu_content']//div[div[@id='display_switch_fovs']]")
 	private WebElement displaySwitchFovsDivElement;
 
 	@FindBy(how = How.CSS, using = "[id$='_mode_warning']:not(.ng-hide) > [id=' ']")
@@ -227,9 +224,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	@FindBy(id = "blocked_ui")
 	private WebElement divBlockedUI;
 
-	@FindBy(id = "btn_close_annotation")
-	private WebElement fieldNotesDialogCloseButton;
-
 	@FindBy(id = "display_menu")
 	private WebElement displayMenu;
 
@@ -253,9 +247,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	@FindBy(id = "feature_info")
 	protected WebElement featureInfoText;
-
-	@FindBy(id = "btn_addupdate_annotation")
-	protected WebElement addUpdateNoteButton;
 
     // Survey ID used for opening the specified survey page.
     private String surveyId;
@@ -285,7 +276,7 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	}
 
 	public enum DisplaySwitchType {
-		EightHourHistory, WindRose, ConcentrationChart, Notes, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
+		EightHourHistory, WindRose, ConcentrationChart, IsotopicAnalysis, Indications, PossibleNaturalGas, NotNaturalGas, VehicleExhaust, Lisas, FOVs
 	}
 
 	public enum MapSwitchType {
@@ -294,11 +285,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 
 	public enum GisSwitchType {
 		MaterialTypeCopper, MaterialTypeUnprotectedSteel, MaterialTypeProtectedSteel, MaterialTypeCastIron, MaterialTypeOtherPlastic, MaterialTypePEPlastic, UseAllPipes, SmallBoundary, BigBoundary, UseAllBoundaries
-	}
-
-	public void clickFieldNotesDialogCloseButton() {
-		Log.clickElementInfo("FieldNotes Close");
-		this.fieldNotesDialogCloseButton.click();
 	}
 
 	public BaseMapViewPage clickZoomInButton() {
@@ -419,10 +405,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			clickDisplayButton();
 		}
 		return this;
-	}
-
-	public boolean isAddUpdateNoteButtonVisible() {
-		return WebElementExtender.isElementPresentAndDisplayed(addUpdateNoteButton);
 	}
 
 	/**
@@ -579,10 +561,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		return featureInfoEpoch;
 	}
 
-	public WebElement getFieldNotesDialogCloseButton() {
-		return fieldNotesDialogCloseButton;
-	}
-
 	public boolean isDisplaySwitch8HourHistoryButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitch8HourHistoryDivElement,"ng-cloak") ||
 					this.displaySwitch8HourHistoryDivElement.getAttribute("class").contains("ng-hide"));
@@ -596,11 +574,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 	public boolean isDisplaySwitchConcentrationChartButtonVisible() {
 		return !(WebElementExtender.isAttributePresent(this.displaySwitchConcentrationChartDivElement,"ng-cloak") ||
 					this.displaySwitchConcentrationChartDivElement.getAttribute("class").contains("ng-hide"));
-	}
-
-	public boolean isDisplaySwitchNotesButtonVisible() {
-		return !(WebElementExtender.isAttributePresent(this.displaySwitchNotesDivElement,"ng-cloak") ||
-					this.displaySwitchNotesDivElement.getAttribute("class").contains("ng-hide"));
 	}
 
 	public boolean isDisplaySwitchIsotopicAnalysisButtonVisible() {
@@ -1103,9 +1076,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 		case Lisas:
 			isSelected = this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch");
 			break;
-		case Notes:
-			isSelected = this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch");
-			break;
 		default:
 			throw new IllegalArgumentException("Display switch type unknown and not currently handled.");
 		}
@@ -1158,9 +1128,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 			break;
 		case Lisas:
 			isSelected = this.displaySwitchLisas.getAttribute("class").equalsIgnoreCase("switch on");
-			break;
-		case Notes:
-			isSelected = this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on");
 			break;
 		case WindRose:
 			isSelected = this.displaySwitchWindrose.getAttribute("class").equalsIgnoreCase("switch on");
@@ -1304,19 +1271,6 @@ public class BaseMapViewPage extends SurveyorBasePage {
 				if (!turnOn) {
 					Log.clickElementInfo(switchType.toString(), "to switch off");
 					waitAndClickElement(this.displaySwitchLisas);
-				}
-			}
-			break;
-		case Notes:
-			if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch")) {
-				if (turnOn) {
-					Log.clickElementInfo(switchType.toString());
-					waitAndClickElement(this.displaySwitchNotes);
-				}
-			} else if (this.displaySwitchNotes.getAttribute("class").equalsIgnoreCase("switch on")) {
-				if (!turnOn) {
-					Log.clickElementInfo(switchType.toString(), "to switch off");
-					waitAndClickElement(this.displaySwitchNotes);
 				}
 			}
 			break;

@@ -788,7 +788,6 @@
           <include name="**/RegressionTestSuite3.class" />
           <include name="**/RegressionTestSuite4.class" />
           <include name="**/RegressionTestSuite5.class" />
-          <include name="**/ReportsTestSuite1.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
           <include name="**/LicensedFeatureAndVisibilityTest.class" />
@@ -863,7 +862,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="tc_localrun" depends="compiletestsuite,compileregression,compileUnitIntegrationTest" description="Run local branch tests ">
+  <target name="tc_localrun" depends="compiletestsuite,compileregression,compileSanity" description="Run local branch tests ">
   	<junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
   	      <sysproperty key="testReportCategory" value="JUnitParallel" />
   	      <sysproperty key="maxParallelTestThreads" value="5" />
@@ -877,7 +876,14 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	        	<include name="**/ObserverViewPageTest.class" />
+  	            <include name="**/HomePageTest.class" />
+  	          <include name="**/ComplianceReportsTestSuite1.class" />
+  	          <include name="**/ComplianceReportsTestSuite2.class" />
+  	          <include name="**/ComplianceReportsTestSuite3.class" />
+  	          <include name="**/ComplianceReportsTestSuite4.class" />
+  			  <include name="**/ComplianceReportsTestSuite5.class" />
+  	          <include name="**/ComplianceReportsTestSuite6.class" />
+  	          <include name="**/ComplianceReportsTestSuite7.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

@@ -86,12 +86,6 @@ public class BasePage {
 	@FindBy(id = "report-investigation")
 	private WebElement linkEQReport;
 
-	@FindBy(id = "report-reference-gas")
-	private WebElement linkReferenceGasReport;
-
-	@FindBy(id = "report-system-history")
-	private WebElement linkSystemHistoryReport;
-
 	@FindBy(how = How.XPATH, using = "//li/a[@data-target='#picarro-administration-menu']")
 	private WebElement linkPicarroAdmin;
 
@@ -118,9 +112,6 @@ public class BasePage {
 
 	@FindBy(how = How.XPATH, using = "//li[@id='user-release-notes']/a")
 	private WebElement linkManageReleaseNotes;
-
-	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-manage-surveyor-history']/a")
-	private WebElement linkManageSurveyorHistories;
 
 	@FindBy(how = How.XPATH, using = "//li[@id='picarro-administration-analyzer-logs']/a")
 	private WebElement linkViewAnalyzerLogs;
@@ -236,16 +227,6 @@ public class BasePage {
 		this.linkEQReport.click();
 	}
 
-	public void clickOnReferenceGasReportLink() {
-		Log.clickElementInfo("Reference Gas Report", ElementType.LINK);
-		this.linkReferenceGasReport.click();
-	}
-
-	public void clickOnSystemHistoryReportLink() {
-		Log.clickElementInfo("System History Report", ElementType.LINK);
-		this.linkSystemHistoryReport.click();
-	}
-
 	public void clickOnPicarroAdminLink() {
 		Log.clickElementInfo("Picarro Admin", ElementType.LINK);
 		this.linkPicarroAdmin.click();
@@ -289,11 +270,6 @@ public class BasePage {
 	public void clickOnManageReleaseNotesLink() {
 		Log.clickElementInfo("Manage Release Notes", ElementType.LINK);
 		this.linkManageReleaseNotes.click();
-	}
-
-	public void clickOnManageSurveyorHistoriesLink() {
-		Log.clickElementInfo("Manage Surveyor Histories", ElementType.LINK);
-		this.linkManageSurveyorHistories.click();
 	}
 
 	public void clickOnViewAnalyzerLogsLink(String strBaseURL) {

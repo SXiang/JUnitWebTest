@@ -8,7 +8,6 @@ import static surveyor.scommon.source.SurveyorConstants.CUSBOUNDARY;
 import static surveyor.scommon.source.SurveyorConstants.ENDDATE;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETBOXNUMBER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
@@ -208,7 +207,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public static final String ComplianceReportSSRS_ShowBreadcrumb = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowBreadcrumb);
 	public static final String ComplianceReportSSRS_ShowIndications = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIndications);
 	public static final String ComplianceReportSSRS_ShowIsotopicAnalyses = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowIsotopicAnalyses);
-	public static final String ComplianceReportSSRS_FieldNotes = Resources.getResource(ResourceKeys.ComplianceReportSSRS_FieldNotes);
 	public static final String ComplianceReportSSRS_ShowGaps = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowGaps);
 	public static final String ComplianceReportSSRS_ShowHighlightLISAAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightLISAAssets);
 	public static final String ComplianceReportSSRS_ShowHighlightGAPAssets = Resources.getResource(ResourceKeys.ComplianceReportSSRS_ShowHighlightGAPAssets);
@@ -494,7 +492,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		this.inputViewBreadCrumb.click();
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 		this.inputViewGaps.click();
 		this.inputViewAssets.click();
 		this.inputViewBoundaries.click();
@@ -575,28 +572,24 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 
 			if (selectView(viewMap, KEYLISA)) {
-				colNum = 3;
 				Log.clickElementInfo("LISA", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showlisa", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYFOV)) {
-				colNum = 4;
 				Log.clickElementInfo("FOV", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showfov", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYBREADCRUMB)) {
-				colNum = 5;
 				Log.clickElementInfo("BREADCRUMB", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showbreadcrumb", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYINDICATIONS)) {
-				colNum = 6;
 				Log.clickElementInfo("INDICATIONS", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showindication", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
@@ -605,43 +598,33 @@ public class ReportsCommonPage extends ReportsBasePage {
 			// Non Analytics
 			if(!isAnalyticsReport){
 				if (selectView(viewMap, KEYISOTOPICCAPTURE)) {
-					colNum = 7;
+
 					Log.clickElementInfo("ISOTOPICCAPTURE", ElementType.CHECKBOX);
 					strBaseXPath = getViewsTableInputElementXpath("view-showisotopic", rowNum);
 					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 				}
 
-				if (selectView(viewMap, KEYANNOTATION)) {
-					colNum = 8;
-					Log.clickElementInfo("ANNOTATION", ElementType.CHECKBOX);
-					strBaseXPath = getViewsTableInputElementXpath("view-showannotation", rowNum);
-					SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
-				}
 			}
 
 			if (selectView(viewMap, KEYGAPS)) {
-				colNum = 9;
 				Log.clickElementInfo("GAPS", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showgap", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYASSETS)) {
-				colNum = 10;
 				Log.clickElementInfo("ASSETS", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-showasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTLISAASSETS)) {
-				colNum = 11;
 				Log.clickElementInfo("Highlight LISA Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-highlightlisaasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
 
  				// Check Asset Box Number
  				if (selectView(viewMap, KEYASSETBOXNUMBER)) {
- 					colNum = 13;
  					Log.clickElementInfo("Asset Box Number", ElementType.CHECKBOX);
  					strBaseXPath = getViewsTableInputElementXpath("view-showassetboxasset", rowNum);
 					WebElement boxNumberElement = driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']"));
@@ -651,7 +634,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			}
 
 			if (selectView(viewMap, KEYHIGHLIGHTGAPASSETS)) {
-				colNum = 12;
 				Log.clickElementInfo("Highlight GAP Assets", ElementType.CHECKBOX);
 				strBaseXPath = getViewsTableInputElementXpath("view-highlightgapasset", rowNum);
 				SelectElement(driver.findElement(By.xpath(strBaseXPath + "[@type='checkbox']")));
@@ -1679,7 +1661,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 	public void modifyReportViews() {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 	}
 
 	public boolean deleteAllDrivingSurveys() {
@@ -2536,7 +2517,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split(RatioSdevMetaPattern);
 			reportIsoObj.setDelta(Float.parseFloat(deltaUncertainty[0].trim()));
 			reportIsoObj.setUncertainty(Float.parseFloat(deltaUncertainty[1].trim()));
-			reportIsoObj.setText(csvRow.get("FieldNotes").trim());
 			reportList.add(reportIsoObj);
 		}
 		ArrayList<StoredProcComplianceGetIsotopics> storedPodList = StoredProcComplianceGetIsotopics
@@ -2592,7 +2572,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
 			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
 			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
-			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
 
 			reportList.add(ethaneCapture);
 
@@ -2675,7 +2654,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication
@@ -2827,7 +2805,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication
@@ -4130,7 +4107,6 @@ public class ReportsCommonPage extends ReportsBasePage {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "1");
 		viewMap1.put(KEYASSETS, "1");
 		viewMap1.put(KEYBOUNDARIES, "1");

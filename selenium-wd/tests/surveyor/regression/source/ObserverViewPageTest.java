@@ -174,7 +174,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchFovsButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchConcentrationChartButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchWindroseButtonIsVisible("ON", NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchNotesButtonIsVisible("ON", NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyDisplaySwitchIsotopicAnalysisButtonIsVisible("ON", NOTSET));
 
 		observerViewPageActionList.get(0).clickOnMapButton(EMPTY, NOTSET);
@@ -246,7 +245,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		observerViewPageActionList.get(0).clickOnZoomInButton(EMPTY, NOTSET);
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -290,7 +288,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		// assertTrue(observerViewPageActionList.get(0).verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -348,7 +345,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -494,7 +490,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -554,7 +549,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
@@ -569,7 +563,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).clickOnZoomOutButton(EMPTY, NOTSET);
 
 		assertTrue(observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyCarIconIsNotInCenter(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
@@ -619,7 +612,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		observerViewPageActionList.get(0).turnOnWindRose(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnConcentrationChart(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOffIsotopicAnalysis(EMPTY, NOTSET);
-		observerViewPageActionList.get(0).turnOffNotes(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnIndications(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnLisas(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).turnOnFOVs(EMPTY, NOTSET);
@@ -654,7 +646,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoSurveyorLabelEquals(SURVEY_INFO_SURVEYOR3_ANALYZER3, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoStabilityClassLabelEquals(SURVEY_INFO_STABILITY_CLASS_B, NOTSET));
 
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 
@@ -676,10 +667,9 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		startDrivingSurvey(ANALYZER3_REPLAY_ROW_ID, SURVEY_STANDARD1_ROW_ID, ONE_SECOND * 3);
 		driverViewPageAction.getBaseDrivingViewPage().setZoomLevel(15);
 		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
-		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);
-		driverViewPageAction.clickOnFirstIndicationShownOnMap(EMPTY, NOTSET);
-		driverViewPageAction.clickOnFeatureInfoAddUpdateNote(EMPTY, NOTSET);
-		driverViewPageAction.enterFieldNotes(SAMPLE_FIELD_NOTES1, NOTSET);
+		 getTestEnvironmentAction().stopReplay(EMPTY, NOTSET);	
+		String firstTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+		assertTrue(driverViewPageAction.verifySurveyInfoTagLabelEquals(firstTag, NOTSET));
 		stopSurvey();
 
 		// Start 2st survey with a different tag.
@@ -688,18 +678,18 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		 getTestEnvironmentAction().idleForSeconds(String.valueOf(15), NOTSET);
 
 		loginAsObserver(USER_ROW_ID_PICARRO_ADMIN);
-		// Verify 1st survey field note is NOT shown.
-		// Verify 2nd survey indication is shown.
+		// Verify 2nd survey indication/tag is shown.
 		String analyzer =  getTestEnvironmentAction().getWorkingAnalyzerSerialNumber();
 		homePageActionList.get(0).clickOnFirstMatchingOnlineSurveyorLink(analyzer, NOTSET);
 		observerViewPageActionList.get(0).getObserverViewPage().waitForPageLoad();
 		observerViewPageActionList.get(0).waitForConnectionToComplete(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).getBaseDrivingViewPage().setZoomLevel(15);
-		observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET);
 		observerViewPageActionList.get(0).verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyIndicationsIsShownOnMap(EMPTY, NOTSET);
 		observerViewPageActionList.get(0).verifyLISAIsShownOnMap(EMPTY, NOTSET);
-
+		String secondTag = DriverViewPageActions.workingDataRow.get().surveyTag;
+		assertFalse(secondTag.equals(firstTag));
+		assertTrue(observerViewPageActionList.get(0).verifySurveyInfoTagLabelEquals(secondTag, NOTSET));
 		stopSurveyAndAnalyzer();
 	}
 
@@ -1140,7 +1130,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 		assertTrue(observerViewPageActionList.get(0).verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyWindRoseIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyConcentrationChartIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
@@ -1293,7 +1282,6 @@ public class ObserverViewPageTest extends BaseMapViewTest {
 
 		assertTrue(observerViewPageActionList.get(0).verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(observerViewPageActionList.get(0).verifyFieldNotesIsNotShownOnMap(SAMPLE_FIELD_NOTES1, NOTSET));
 
 		assertTrue(observerViewPageActionList.get(0).verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(observerViewPageActionList.get(0).verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));

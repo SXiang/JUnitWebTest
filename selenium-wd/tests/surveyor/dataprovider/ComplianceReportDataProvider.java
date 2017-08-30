@@ -233,7 +233,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref17 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList17 = new ArrayList<Map<String, String>>();
-		viewList17.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList17.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList17 = new ArrayList<Map<String, String>>();
 		tablesList17.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList17 = null;
@@ -242,13 +242,13 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref19 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", "None"));
-		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0","None"));
+		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
 		tablesList19.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs19 = Arrays.asList(8, 9); // Asset RowIDs from TestCaseData xlsx
@@ -289,9 +289,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref1 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(createViewsMapTable("Second View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList1.add(createViewsMapTable("Third View", "0", "0", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "None"));
+		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(createViewsMapTable("Second View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(createViewsMapTable("Third View", "0", "0", "1", "1", "1", "1", "0", "0", "0", "0", "0","None"));
 		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
 		tablesList1.add(createOptionalTabularPDFContent("1", "1", "1", "1", "0", "0"));
 		List<Integer> assetRowIDs1 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -303,8 +303,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref2 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
 		tablesList2.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs2 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -315,7 +315,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref3 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
-		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "1", "0", "1", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList3 = new ArrayList<Map<String, String>>();
 		tablesList3.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs3 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -326,7 +326,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref4 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList4 = new ArrayList<Map<String, String>>();
-		viewList4.add(createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList4.add(createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList4 = new ArrayList<Map<String, String>>();
 		tablesList4.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList4 = null;
@@ -335,8 +335,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref5 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList5 = new ArrayList<Map<String, String>>();
-		viewList5.add(createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList5.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList5.add(createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList5.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList5 = new ArrayList<Map<String, String>>();
 		tablesList5.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs5 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -347,7 +347,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref6 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList6 = new ArrayList<Map<String, String>>();
-		viewList6.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList6.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList6 = new ArrayList<Map<String, String>>();
 		tablesList6.add(createOptionalTabularPDFContent("0", "0", "1", "0", "0", "0"));
 		List<Integer> assetRowIDs6 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -358,7 +358,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref7 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList7 = new ArrayList<Map<String, String>>();
-		viewList7.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList7.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList7 = new ArrayList<Map<String, String>>();
 		tablesList7.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs7 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -369,7 +369,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref8 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList8 = new ArrayList<Map<String, String>>();
-		viewList8.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList8.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList8 = new ArrayList<Map<String, String>>();
 		tablesList8.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs8 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -380,7 +380,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref9 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList9 = new ArrayList<Map<String, String>>();
-		viewList9.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList9.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList9 = new ArrayList<Map<String, String>>();
 		tablesList9.add(createOptionalTabularPDFContent("0", "0", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs9 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -391,7 +391,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref10 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList10 = new ArrayList<Map<String, String>>();
-		viewList10.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1","0",  Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList10.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList10 = new ArrayList<Map<String, String>>();
 		tablesList10.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs10 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -402,10 +402,10 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref12 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList12 = new ArrayList<Map<String, String>>();
-		viewList12.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList12.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList12.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "None"));
-		viewList12.add(createViewsMapTable("Fourth View", "0", "1", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList12.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList12.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList12.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", "0","None"));
+		viewList12.add(createViewsMapTable("Fourth View", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList12 = new ArrayList<Map<String, String>>();
 		tablesList12.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList12 = null;
@@ -414,8 +414,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref13 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList13 = new ArrayList<Map<String, String>>();
-		viewList13.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList13.add(createViewsMapTable("Second View", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList13.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList13.add(createViewsMapTable("Second View", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList13 = new ArrayList<Map<String, String>>();
 		tablesList13.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList13 = null;
@@ -424,9 +424,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref14 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList14 = new ArrayList<Map<String, String>>();
-		viewList14.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList14.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList14.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", "None"));
+		viewList14.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList14.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList14.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0","None"));
 		List<Map<String, String>> tablesList14 = new ArrayList<Map<String, String>>();
 		tablesList14.add(createOptionalTabularPDFContent("1", "1", "1", "1", "0", "0"));
 		List<Integer> assetRowIDs14 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -438,9 +438,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref15 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList15 = new ArrayList<Map<String, String>>();
-		viewList15.add(createViewsMapTable("First View", "1", "1", "0", "1", "0", "0", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList15.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList15.add(createViewsMapTable("Third View", "0", "1", "0", "0", "0", "0", "1", "1", "0", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList15.add(createViewsMapTable("First View", "1", "1", "0", "1", "0", "0", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList15.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList15.add(createViewsMapTable("Third View", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList15 = new ArrayList<Map<String, String>>();
 		tablesList15.add(createOptionalTabularPDFContent("1", "1", "1", "1", "0", "0"));
 		List<Integer> assetRowIDs15 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -451,8 +451,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref16 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList16 = new ArrayList<Map<String, String>>();
-		viewList16.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList16.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList16.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList16.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList16 = new ArrayList<Map<String, String>>();
 		tablesList16.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList16 = null;
@@ -461,7 +461,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref17 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList17 = new ArrayList<Map<String, String>>();
-		viewList17.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList17.add(createViewsMapTable("First View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList17 = new ArrayList<Map<String, String>>();
 		tablesList17.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList17 = null;
@@ -471,9 +471,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref18 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList18 = new ArrayList<Map<String, String>>();
-		viewList18.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList18.add(createViewsMapTable("Second View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList18.add(createViewsMapTable("Third View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList18.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "0", "1", "1", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList18.add(createViewsMapTable("Second View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList18.add(createViewsMapTable("Third View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList18 = new ArrayList<Map<String, String>>();
 		tablesList18.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs18 = Arrays.asList(8, 9); // Asset RowIDs from TestCaseData xlsx
@@ -485,13 +485,13 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref19 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList19 = new ArrayList<Map<String, String>>();
-		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", "None"));
-		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0","None"));
+		viewList19.add(createViewsMapTable("Fourth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Fifth View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList19.add(createViewsMapTable("Sixth View", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList19.add(createViewsMapTable("Seventh View", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList19 = new ArrayList<Map<String, String>>();
 		tablesList19.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs19 = Arrays.asList(8, 9); // Asset RowIDs from TestCaseData xlsx
@@ -515,7 +515,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref20 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList20 = new ArrayList<Map<String, String>>();
-		viewList20.add(createViewsMapTable("First View", "1", "0", "0", "1", "1", "0", "0", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList20.add(createViewsMapTable("First View", "1", "0", "0", "1", "1", "0", "1", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList20 = new ArrayList<Map<String, String>>();
 		tablesList20.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs20 = Arrays.asList(8, 9); // Asset RowIDs from TestCaseData xlsx
@@ -526,9 +526,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref21 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList21 = new ArrayList<Map<String, String>>();
-		viewList21.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList21.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList21.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "None"));
+		viewList21.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList21.add(createViewsMapTable("Second View", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList21.add(createViewsMapTable("Third View", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", "0","None"));
 		List<Map<String, String>> tablesList21 = new ArrayList<Map<String, String>>();
 		tablesList21.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs21 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -540,9 +540,9 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref22 = SearchAreaPreference.ASSETBOXES;
 		List<Map<String, String>> viewList22 = new ArrayList<Map<String, String>>();
-		viewList22.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList22.add(createViewsMapTable("Second View", "1", "0", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList22.add(createViewsMapTable("Third View", "1", "1", "0", "1", "1", "0", "1", "0", "0", "0", "0", "0", "None"));
+		viewList22.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "0", "1", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList22.add(createViewsMapTable("Second View", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList22.add(createViewsMapTable("Third View", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0","None"));
 		List<Map<String, String>> tablesList22 = new ArrayList<Map<String, String>>();
 		tablesList22.add(createOptionalTabularPDFContent("1", "0", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs22 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -554,7 +554,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref23 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList23 = new ArrayList<Map<String, String>>();
-		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList23.add(createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList23 = new ArrayList<Map<String, String>>();
 		tablesList23.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Map<String, String>> viewLayerList23 = null;
@@ -593,7 +593,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref1 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(createViewsMapTable("First View", "1", "1", "1", "0", "0", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList1 = new ArrayList<Map<String, String>>();
 		tablesList1.add(createOptionalTabularPDFContent("0", "0", "0", "0", "0", "0"));
 		List<String> tagList1 = new ArrayList<String>();
@@ -602,8 +602,8 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref2 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList2.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(createViewsMapTable("Second View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList2 = new ArrayList<Map<String, String>>();
 		tablesList2.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<String> tagList2 = new ArrayList<String>();
@@ -612,7 +612,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref3 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList3 = new ArrayList<Map<String, String>>();
-		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList3.add(createViewsMapTable("First View", "0", "0", "0", "0", "1", "1", "1", "1", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Map)));
 		List<Map<String, String>> tablesList3 = new ArrayList<Map<String, String>>();
 		tablesList3.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<Integer> assetRowIDs23 = Arrays.asList(8, 9, 10, 11, 12, 13); // Asset RowIDs from TestCaseData xlsx
@@ -641,7 +641,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref4 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList4 = new ArrayList<Map<String, String>>();
-		viewList4.add(createViewsMapTable("First View", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList4.add(createViewsMapTable("First View", "0", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList4 = new ArrayList<Map<String, String>>();
 		tablesList4.add(createOptionalTabularPDFContent("0", "0", "0", "0", "0", "0"));
 		List<String> tagList4 = new ArrayList<String>();
@@ -649,7 +649,7 @@ public class ComplianceReportDataProvider extends ReportDataProvider {
 
 		SearchAreaPreference srchAreaPref5 = SearchAreaPreference.LISAS;
 		List<Map<String, String>> viewList5 = new ArrayList<Map<String, String>>();
-		viewList5.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList5.add(createViewsMapTable("First View", "1", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0",Resources.getResource(ResourceKeys.Constant_Satellite)));
 		List<Map<String, String>> tablesList5 = new ArrayList<Map<String, String>>();
 		tablesList5.add(createOptionalTabularPDFContent("1", "1", "0", "0", "0", "0"));
 		List<String> tagList5 = new ArrayList<String>();

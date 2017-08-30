@@ -498,7 +498,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 * Results: -
 	 *	- - Lat and Long co-ordinates should persist
 	 */
-	@Ignore @Test /*Map selector/verification implementation needs to be redefined*/
+	@Ignore /*Map selector/verification implementation needs to be redefined*/
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC524, location = ComplianceReportDataProvider.class)
 	public void TC524_LatLongCo_OrdinatesPersistCustomBoundary(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -566,7 +566,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- 3. Verify that all the load is consumed properly and reports gets generated without error.
 	 *	- 4. Verify all of the above is working as expected.
 	 */
-	@Ignore @Test /* Not Automatable */
+	@Ignore /* Not Automatable */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC579, location = ComplianceReportDataProvider.class)
 	public void TC579_IndicationCallOutsTooSmallIncreaseDPI(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
@@ -662,7 +662,7 @@ public class ComplianceReportsPageTest8 extends BaseReportsPageActionTest {
 	 *	- - In the report view, any Service assets that are contained in or touch a LISA box should be highlighted along its entire length
 	 *	- - The main to which each of the highlighted Services are attached should also be highlighted, up to 25 feet on either side of the T connected to the Service
 	 */
-	@Ignore @Test /* Services asset is not available on sqaauto */
+	@Ignore /* Services asset is not available on sqaauto */
 	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC704, location = ComplianceReportDataProvider.class)
 	public void TC704_LISABox10_ServicesTouchingLISABoxesAreHighlightedAlong25FeetOfMainWhichTheyAreAttachedEitherSideOfT(
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {

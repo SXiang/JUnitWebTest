@@ -6,7 +6,6 @@ package surveyor.grid.poc.source;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static surveyor.scommon.source.SurveyorConstants.CUSNAMEBASE;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCASTIRON;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETCOPPER;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETOTHERPLASTIC;
@@ -54,7 +53,6 @@ import surveyor.scommon.source.ManageCustomersPage;
 import surveyor.scommon.source.ManageLocationsPage;
 import surveyor.scommon.source.ManageRefGasBottlesPage;
 import surveyor.scommon.source.ManageReleaseNotesPage;
-import surveyor.scommon.source.ManageSurveyorHistoriesPage;
 import surveyor.scommon.source.ManageSurveyorPage;
 import surveyor.scommon.source.ManageUsersPage;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -68,7 +66,6 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 	private static ManageSurveyorPage manageSurveyorsPage;
 	private static ManageAnalyzersPage manageAnalyzersPage;
 	private static ManageRefGasBottlesPage manageRefGasBottlesPage;
-	private static ManageSurveyorHistoriesPage manageSurveyorHistoriesPage;
 	private static ManageReleaseNotesPage manageReleaseNotesPage;
 
 	@BeforeClass
@@ -98,10 +95,6 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 		manageRefGasBottlesPage = new ManageRefGasBottlesPage(getDriver(),
 				getBaseURL(), getTestSetup());
 		PageFactory.initElements(getDriver(), manageRefGasBottlesPage);
-
-		manageSurveyorHistoriesPage = new ManageSurveyorHistoriesPage(getDriver(),
-				getBaseURL(), getTestSetup());
-		PageFactory.initElements(getDriver(), manageSurveyorHistoriesPage);
 
 		manageReleaseNotesPage = new ManageReleaseNotesPage(getDriver(), getBaseURL(),
 				getTestSetup());
@@ -146,7 +139,6 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 		viewMap1.put(KEYBREADCRUMB, "1");
 		viewMap1.put(KEYINDICATIONS, "1");
 		viewMap1.put(KEYISOTOPICCAPTURE, "1");
-		viewMap1.put(KEYANNOTATION, "1");
 		viewMap1.put(KEYGAPS, "0");
 		viewMap1.put(KEYASSETS, "0");
 		viewMap1.put(KEYBOUNDARIES, "0");
@@ -158,7 +150,6 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 		viewMap2.put(KEYBREADCRUMB, "1");
 		viewMap2.put(KEYINDICATIONS, "1");
 		viewMap2.put(KEYISOTOPICCAPTURE, "0");
-		viewMap2.put(KEYANNOTATION, "0");
 		viewMap2.put(KEYGAPS, "1");
 		viewMap2.put(KEYASSETS, "0");
 		viewMap2.put(KEYBOUNDARIES, "0");
@@ -170,7 +161,6 @@ public class GridPOCTestClass2 extends GridPOCBaseTest {
 		viewMap3.put(KEYBREADCRUMB, "0");
 		viewMap3.put(KEYINDICATIONS, "0");
 		viewMap3.put(KEYISOTOPICCAPTURE, "1");
-		viewMap3.put(KEYANNOTATION, "1");
 		viewMap3.put(KEYGAPS, "0");
 		viewMap3.put(KEYASSETS, "0");
 		viewMap3.put(KEYBOUNDARIES, "0");

@@ -47,7 +47,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -86,7 +85,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -125,7 +123,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -164,7 +161,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -203,7 +199,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyFOVIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -233,13 +228,11 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnMapView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
@@ -272,13 +265,11 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		getSurveyViewPageAction().clickOnZoomOutButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnDisplayButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllDisplayOptions(EMPTY, NOTSET);
-		getSurveyViewPageAction().turnOnNotes(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnGisButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOffAllAssetsAndBoundaries(EMPTY, NOTSET);
 		getSurveyViewPageAction().clickOnMapButton(EMPTY, NOTSET);
 		getSurveyViewPageAction().turnOnSatelliteView(EMPTY, NOTSET);
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
@@ -320,7 +311,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -359,7 +349,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -402,7 +391,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 	}
@@ -440,8 +428,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
@@ -479,8 +465,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}
@@ -527,7 +511,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsNotShownOnMap(EMPTY, NOTSET));
 
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
@@ -576,7 +559,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyIndicationsIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyLISAIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyIsotopicCaptureResultIsPresentOnMap(ISOTOPIC_CAPTURE_NOT_NATURAL_GAS, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyAssetIsNotShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 	}
@@ -616,8 +598,6 @@ public class SurveyViewPageTest4 extends BaseSurveyViewPageTest {
 		assertTrue(getSurveyViewPageAction().verifyBreadcrumbIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyBoundariesIsShownOnMap(EMPTY, NOTSET));
 		assertTrue(getSurveyViewPageAction().verifyFOVIsNotShownOnMap(EMPTY, NOTSET));
-		assertTrue(getSurveyViewPageAction().verifyFieldNotesIsNotShownOnMap(SAMPLE_SURVEY_FIELD_NOTES1, NOTSET));
-
 		getSurveyViewPageAction().getSurveyViewPage().setZoomLevelForAssets();
 		assertTrue(getSurveyViewPageAction().verifyAssetIsShownOnMap(EMPTY, NOTSET));
 	}

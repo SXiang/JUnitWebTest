@@ -16,7 +16,6 @@ import static surveyor.scommon.source.SurveyorConstants.CUSUSERROLEUA;
 import static surveyor.scommon.source.SurveyorConstants.EULASTRING;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPHEIGHT;
 import static surveyor.scommon.source.SurveyorConstants.IMGMAPWIDTH;
-import static surveyor.scommon.source.SurveyorConstants.KEYANNOTATION;
 import static surveyor.scommon.source.SurveyorConstants.KEYASSETS;
 import static surveyor.scommon.source.SurveyorConstants.KEYBASEMAP;
 import static surveyor.scommon.source.SurveyorConstants.KEYBOUNDARIES;
@@ -204,7 +203,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -266,7 +265,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -349,10 +348,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -442,7 +441,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -523,9 +522,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "0", "1", "1", "None"));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -604,9 +603,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -694,8 +693,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "0", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -766,8 +765,8 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "0", "0", "0", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "0", "0", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("Second View", "0", "0", "0", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Map)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -838,7 +837,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "0", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "0", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -933,10 +932,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1032,7 +1031,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1101,7 +1100,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1161,10 +1160,10 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<Map<String, String>> viewList2 = new ArrayList<Map<String, String>>();
-		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList2.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1231,7 +1230,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1331,7 +1330,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1394,7 +1393,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		tablesList.add(tableMap);
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "0", "0", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1467,7 +1466,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1543,7 +1542,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);
@@ -1616,7 +1615,7 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList1 = new ArrayList<Map<String, String>>();
-		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList1.add(ReportDataProvider.createViewsMapTable("First View", "0", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
 
 		List<String> tagList1 = new ArrayList<String>();
 		tagList1.add(PICADMNSTDTAG);
@@ -1719,9 +1718,9 @@ public class ComplianceReportsPageTest2 extends BaseReportsPageActionTest {
 		viewLayerList.add(ReportDataProvider.createOptionalViewLayersContent(assetRowIDs, boundaryRowIDs));
 
 		List<Map<String, String>> viewList = new ArrayList<Map<String, String>>();
-		viewList.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
-		viewList.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
-		viewList.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1", "1", "1", "1", "None"));
+		viewList.add(ReportDataProvider.createViewsMapTable("First View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Satellite)));
+		viewList.add(ReportDataProvider.createViewsMapTable("Second View", "1", "1", "1", "1", "1", "1", "1", "1", Resources.getResource(ResourceKeys.Constant_Map)));
+		viewList.add(ReportDataProvider.createViewsMapTable("Third View", "1", "1", "1", "1", "1", "1",  "1", "1", "None"));
 
 		List<String> tagList = new ArrayList<String>();
 		tagList.add(PICADMNSTDTAG);

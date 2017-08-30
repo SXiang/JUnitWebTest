@@ -844,7 +844,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 	public void modifyReportViews() {
 		this.inputViewInd.click();
 		this.inputViewIso.click();
-		this.inputViewAnno.click();
 	}
 
 	@Override
@@ -1579,7 +1578,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		expectedReportString.add(ComplianceReportSSRS_ShowBreadcrumb);
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowGaps);
 		expectedReportString.add(ComplianceReportSSRS_ShowAssets);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
@@ -1954,7 +1952,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			String[] deltaUncertainty = csvRow.get("ValueUncertainty").split(RatioSdevMetaPattern);
 			reportIsoObj.setDelta(Float.parseFloat(deltaUncertainty[0].trim()));
 			reportIsoObj.setUncertainty(Float.parseFloat(deltaUncertainty[1].trim()));
-			reportIsoObj.setText(csvRow.get("FieldNotes").trim());
 			reportList.add(reportIsoObj);
 		}
 		ArrayList<StoredProcComplianceGetIsotopics> storedPodList = StoredProcComplianceGetIsotopics
@@ -2010,7 +2007,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			String[] valueUncertainty = csvRow.get("ValueUncertainty").trim().split(RatioSdevMetaPattern);
 			ethaneCapture.setEthaneRatio(Float.parseFloat(valueUncertainty[0].trim()));
 			ethaneCapture.setEthaneRatioSdev(Float.parseFloat(valueUncertainty[1].trim()));
-			ethaneCapture.setText(csvRow.get("FieldNotes").trim());
 
 			reportList.add(ethaneCapture);
 
@@ -2123,7 +2119,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 			reportIndObj.setAmplitude((float) amp);
 			double cH4 = Math.round(Float.parseFloat((csvRow.get("Concentration")).trim()) * 100.0) / 100.0;
 			reportIndObj.setCh4((float) cH4);
-			reportIndObj.setText(csvRow.get("FieldNotes").trim());
 
 			// Covert csv ratio+/sdev to db ratio and sdev - it changed for
 			// indication
@@ -2807,7 +2802,6 @@ public class ComplianceReportsPage extends ReportsCommonPage {
 		List<String> expectedReportString = new ArrayList<String>();
 		expectedReportString.add(ComplianceReportSSRS_ShowIndications);
 		expectedReportString.add(ComplianceReportSSRS_ShowHighlightLISAAssets);
-		expectedReportString.add(ComplianceReportSSRS_FieldNotes);
 		expectedReportString.add(ComplianceReportSSRS_ShowLISAs);
 		expectedReportString.add(ComplianceReportSSRS_ShowIsotopicAnalyses);
 

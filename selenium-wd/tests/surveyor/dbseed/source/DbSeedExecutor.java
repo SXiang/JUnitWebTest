@@ -116,7 +116,6 @@ public class DbSeedExecutor {
 		FieldOfViewDbSeedBuilder fieldOfViewDbSeedBuilder = null;
 		PeakDbSeedBuilder peakDbSeedBuilder = null;
 		SegmentDbSeedBuilder segmentDbSeedBuilder = null;
-		NoteDbSeedBuilder noteDbSeedBuilder = null;
 
 		surveySeedBuilderCache = new DbSeedBuilderCache();
 
@@ -143,7 +142,6 @@ public class DbSeedExecutor {
 					String fieldOfViewSeedKey = String.format("FieldOfView-%s.csv", surveyTag);
 					String peakSeedKey = String.format("Peak-%s.csv", surveyTag);
 					String segmentSeedKey = String.format("Segment-%s.csv", surveyTag);
-					String noteSeedKey = String.format("Note-%s.csv", surveyTag);
 
 					surveyDbSeedBuilder = new SurveyDbSeedBuilder(surveySeedKey);
 					surveyConditionDbSeedBuilder = new SurveyConditionDbSeedBuilder(surveyConditionSeedKey);
@@ -155,7 +153,6 @@ public class DbSeedExecutor {
 					fieldOfViewDbSeedBuilder = new FieldOfViewDbSeedBuilder(fieldOfViewSeedKey);
 					peakDbSeedBuilder = new PeakDbSeedBuilder(peakSeedKey);
 					segmentDbSeedBuilder = new SegmentDbSeedBuilder(segmentSeedKey);
-					noteDbSeedBuilder = new NoteDbSeedBuilder(noteSeedKey);
 
 					// check if survey data is present in database for this survey tag.
 					final String surveyCsvFilePath = surveyDbSeedBuilder.getSeedFilePath();
@@ -169,7 +166,6 @@ public class DbSeedExecutor {
 					final Integer minFieldOfViewCount = FileUtility.getLineCountInFile(Paths.get(fieldOfViewDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minPeakCount = FileUtility.getLineCountInFile(Paths.get(peakDbSeedBuilder.getSeedFilePath())) - 2;
 					final Integer minSegmentCount = FileUtility.getLineCountInFile(Paths.get(segmentDbSeedBuilder.getSeedFilePath())) - 2;
-					final Integer minNoteCount = FileUtility.getLineCountInFile(Paths.get(noteDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minMeasurementCount = FileUtility.getLineCountInFile(Paths.get(measurementDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minGPSRawCount = FileUtility.getLineCountInFile(Paths.get(gpsRawDbSeedBuilder.getSeedFilePath())) - 2;
 					Integer minAnemometerRawCount = FileUtility.getLineCountInFile(Paths.get(anemometerRawDbSeedBuilder.getSeedFilePath())) - 2;
@@ -292,17 +288,7 @@ public class DbSeedExecutor {
 						}
 					}
 
-					// check and execute Note DB seed.
-					if (dbStateVerifier.isNoteSeedPresent(surveyId, analyzerId, startEpoch, endEpoch, minNoteCount)) {
-						Log.info(String.format("Note DB seed is already present for this survey-'%s'. SKIP execution.", surveyId));
-					} else {
-						if (FileUtility.fileExists(noteDbSeedBuilder.getSeedFilePath())) {
-							executeSeed(connection, noteDbSeedBuilder.build());;
-						}
-					}
-
 					// Store all the seed builder in cache for future verification.
-					surveySeedBuilderCache.addDbSeedBuilder(noteSeedKey, noteDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(segmentSeedKey, segmentDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(peakSeedKey, peakDbSeedBuilder);
 					surveySeedBuilderCache.addDbSeedBuilder(fieldOfViewSeedKey, fieldOfViewDbSeedBuilder);
@@ -339,7 +325,6 @@ public class DbSeedExecutor {
 		            closeDbSeedBuilder(fieldOfViewDbSeedBuilder);
 		            closeDbSeedBuilder(peakDbSeedBuilder);
 		            closeDbSeedBuilder(segmentDbSeedBuilder);
-		            closeDbSeedBuilder(noteDbSeedBuilder);
 		        }
 			}
 		} catch (Exception ex) {

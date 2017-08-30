@@ -125,12 +125,6 @@ public class HomePage extends SurveyorBasePage {
 	// Link may NOT be present for all users. Conditionally detect this link.
 	private WebElement linkInvestigation;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='report-reference-gas']")
-	private WebElement linkReferenceGas;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='report-system-history']")
-	private WebElement linkSystemHistory;
-
 	@FindBy(how = How.XPATH, using = "//*[@id='datatable-Surveyor']/tbody/tr[1]/td[3]/a")
 	private WebElement linkFirstOnlineSurveyor;
 
@@ -202,9 +196,6 @@ public class HomePage extends SurveyorBasePage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-ref-gas-bottles']/a")
 	protected WebElement linkPicAdminManageRefGasBottles;
-
-	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-manage-surveyor-history']/a")
-	protected WebElement linkPicAdminManageSurHistories;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='picarro-administration-analyzer-logs']/a")
 	protected WebElement linkPicAdminViewAnlLogs;
@@ -287,10 +278,6 @@ public class HomePage extends SurveyorBasePage {
 
 	public WebElement getLinkPicAdminManageRefGasBottles() {
 		return this.linkPicAdminManageRefGasBottles;
-	}
-
-	public WebElement getLinkPicAdminManageSurHistories() {
-		return this.linkPicAdminManageSurHistories;
 	}
 
 	public WebElement getLinkPicAdminViewAnlLogs() {
@@ -793,14 +780,6 @@ public class HomePage extends SurveyorBasePage {
 			Log.error(e.toString());
 		}
 		return this.linkInvestigation;
-	}
-
-	public WebElement getLinkReferenceGas() {
-		return this.linkReferenceGas;
-	}
-
-	public WebElement getLinkSystemHistory() {
-		return this.linkSystemHistory;
 	}
 
 	public WebElement getLinkDrivingSurveys() {
