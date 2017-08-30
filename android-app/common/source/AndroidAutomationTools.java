@@ -35,6 +35,11 @@ public class AndroidAutomationTools {
 		public static final String GPS_WIFI_NETWORK_STATUS = "settings get secure location_providers_allowed";
 		public static final String DUMPSYS_INPUT_METHOD = "dumpsys input_method";
 		public static final String DUMPSYS_POWER = "dumpsys power";
+		public static final String TURN_ON_PROFILE_GFXINFO = "setprop debug.hwui.profile true";
+		public static final String TURN_ON_PROFILE_VISUAL_BARS = "setprop debug.hwui.profile visual_bars";
+		public static final String TURN_OFF_PROFILE_DEBUG = "setprop debug.hwui.profile false";
+		public static final String TURN_ON_DEBUG_OVERDRAW = "setprop debug.hwui.overdraw true";
+		public static final String TURN_OFF_DEBUG_OVERDRAW = "setprop debug.hwui.overdraw false";
 	}
 
 	public static class AndroidPaths {
