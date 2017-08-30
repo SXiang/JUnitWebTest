@@ -2895,7 +2895,7 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	public boolean verifyLISAsIndicationTableMinAmplitudeValues(String data, Integer dataRowID) throws Exception {
-//		logAction("ReportsCommonPageActions.verifyLISAsIndicationTableMinAmplitudeValues", data, dataRowID);
+		logAction("ReportsCommonPageActions.verifyLISAsIndicationTableMinAmplitudeValues", data, dataRowID);
 		ActionArguments.verifyNotNullOrEmpty("verifyLISAsIndicationTableMinAmplitudeValues", ARG_DATA, data);
 		List<String[]> lisasIndicationTblList = this.getReportsCommonPage().getSSRSPDFTableValues(
 				PDFTable.LISAINDICATIONTABLE, getWorkingReportsDataRow().title);

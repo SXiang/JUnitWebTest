@@ -146,7 +146,7 @@ public class ReportCommonEntity extends BaseReportEntity {
 		Concentration ("Concentration", 5),
 		EthaneMethanRatio ("EthaneMethanRatio", 6),
 		Disposition ("Disposition", 7),
-		PercConfidenceInDisposition ("PercConfidenceInDisposition", 7);
+		PercConfidenceInDisposition ("PercConfidenceInDisposition", 8);
 
 		private final String name;
 		private final Integer colIndex;
