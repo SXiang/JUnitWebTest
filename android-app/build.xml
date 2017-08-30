@@ -182,7 +182,7 @@
       </batchtest>
     </junit>
   </target>
-  <target name="androidperftests" depends="compile_androidapp" description="Run android app perf tests">
+  <target name="androidperftests" depends="compile_androidapp" description="Run android app perf metrics collection tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="AndroidPerfTests" />
 	  <sysproperty key="isRunningInDataGenMode" value="false" />
@@ -221,7 +221,7 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-    	  <include name="**/AndroidLoginErrorCasesTest.class" />
+    	   <include name="**/AndroidLoginErrorCasesTest.class" />
         </fileset>
       </batchtest>
     </junit>
