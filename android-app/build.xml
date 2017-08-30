@@ -36,6 +36,7 @@
     <mkdir dir="${dist}" />
     <mkdir dir="${basedir}/../selenium-wd/reports/androidtests/xml" />
     <mkdir dir="${basedir}/../selenium-wd/reports/androiduitests/xml" />
+    <mkdir dir="${basedir}/../selenium-wd/reports/androidperftests/xml" />
   </target>
   <target name="compile_common" depends="init" description="Compile common source code">
   	<buildnumber file="build.number" />
@@ -83,7 +84,7 @@
   </target>
   <target name="compile_androidapp" depends="compile_scommon" description="Compiles android app source">
     <buildnumber file="build.number" />
-  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/screens/source:${basedir}/androidapp/data/source:${basedir}/androidapp/dataprovider:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
+  	<javac srcdir="${basedir}/androidapp/entities/source:${basedir}/androidapp/regression/source:${basedir}/androidapp/performance/source:${basedir}/androidapp/screens/source:${basedir}/androidapp/data/source:${basedir}/androidapp/dataprovider:${basedir}/backpack/api/entities:${basedir}/backpack/tests:${basedir}/common/source:${basedir}/unittest/source" includeantruntime="false" destdir="${basedir}/build" debug="true">
       <classpath>
       	<fileset dir="${basedir}/../selenium-wd/lib">
           <include name="**/*.jar" />
@@ -176,6 +177,28 @@
           <include name="**/AndroidSettingsScreenTest2.class" />
           <include name="**/AndroidSettingsAuthScreenTest.class" />
           <include name="**/AndroidFormCancelVerificationTest.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  <target name="androidperftests" depends="compile_androidapp" description="Run android app perf tests">
+    <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
+      <sysproperty key="testReportCategory" value="AndroidPerfTests" />
+	  <sysproperty key="isRunningInDataGenMode" value="false" />
+      <sysproperty key="test_run_id" value="${local_date}" />
+      <classpath>
+        <pathelement path="${build}" />
+        <fileset dir="${basedir}/../selenium-wd/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      	<fileset dir="${basedir}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+      <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androidperftests/xml">
+        <formatter type="xml" />
+        <fileset dir="${build}">
+          <include name="**/AndroidPerformanceTest.class" />
         </fileset>
       </batchtest>
     </junit>
