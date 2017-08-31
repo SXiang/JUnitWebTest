@@ -177,11 +177,12 @@
           <include name="**/AndroidSettingsScreenTest2.class" />
           <include name="**/AndroidSettingsAuthScreenTest.class" />
           <include name="**/AndroidFormCancelVerificationTest.class" />
+          <include name="**/AndroidLoginErrorCasesTest.class" />
         </fileset>
       </batchtest>
     </junit>
   </target>
-  <target name="androidperftests" depends="compile_androidapp" description="Run android app perf tests">
+  <target name="androidperftests" depends="compile_androidapp" description="Run android app perf metrics collection tests">
     <junit printsummary="yes" haltonerror="no" haltonfailure="no" showoutput="yes">
       <sysproperty key="testReportCategory" value="AndroidPerfTests" />
 	  <sysproperty key="isRunningInDataGenMode" value="false" />
@@ -220,7 +221,7 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-          <include name="**/AndroidLeakScreenTest5.class" />
+    	   <include name="**/AndroidLoginErrorCasesTest.class" />
         </fileset>
       </batchtest>
     </junit>

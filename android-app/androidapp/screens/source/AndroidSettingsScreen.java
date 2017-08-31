@@ -9,6 +9,11 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidSettingsScreen extends AndroidBaseScreen {
 
+	public static enum ParentScreen {
+		ReportScreen,
+		MapScreen
+	}
+
 	private static final String ALARM_SETTINGS_UI_SELECTOR = "new UiSelector().text(\"Alarm Settings\")";
 	private WebElement alarmSettings;
 	private boolean alarmSettingsDisplayed;
@@ -46,6 +51,14 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement toggleMode;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.widget.TextView[3]")
+	@CacheLookup
+	private WebElement menuButtonOnMapScreen;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]")
+	@CacheLookup
+	private WebElement menuButtonOnReportScreen;
 
 	public AndroidSettingsScreen(WebDriver driver) {
 		super(driver);
@@ -91,6 +104,27 @@ public class AndroidSettingsScreen extends AndroidBaseScreen {
 	public void clickOnToggleMode() {
 		Log.method("clickOnToggleMode");
 		tap(toggleMode);
+	}
+
+	public WebElement getMenuButton(ParentScreen parent) {
+		Log.method("getMenuButton", parent);
+		if (parent.equals(ParentScreen.MapScreen)) {
+			return menuButtonOnMapScreen;
+		} else if (parent.equals(ParentScreen.ReportScreen)) {
+			return menuButtonOnReportScreen;
+		}
+
+		return menuButtonOnMapScreen;
+	}
+
+	public void tapOnMenuButton(ParentScreen parent) {
+		Log.method("tapOnMenuButton", parent);
+		tap(getMenuButton(parent));
+	}
+
+	public void dismissScreen(ParentScreen parent) {
+		Log.method("dismissScreen", parent);
+		tapOnMenuButton(parent);
 	}
 
 	/**** Elements in the Settings dialog. Shown after menuButton is clicked. ****/

@@ -6,15 +6,11 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import common.source.AccessibilityLabel;
 import common.source.BaseHelper;
 import common.source.BaselineImages;
 import common.source.ExceptionUtility;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.RegexUtility;
 import common.source.TestContext;
 import common.source.Timeout;
@@ -147,6 +143,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		TestContext.INSTANCE.stayIdle(2);
 	}
 
+	public void clearUsername() {
+		Log.method("clearUsername");
+		getUsernameEditView().clear();;
+	}
+
 	public void enterServerUrl(String serverUrl) {
 		Log.method("enterServerUrl");
 		getServerEditView().sendKeys(serverUrl);
@@ -209,6 +210,16 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void assertEnterPasswordHintTextIsShown(String folderName, String imageFileName) {
 		Log.method("assertEnterPasswordHintTextIsShown", folderName, imageFileName);
 		screenVerifier.assertImageFoundOnScreen(this, folderName, imageFileName);
+	}
+
+	public void assertIncorrectCredentialsMessageIsShownInRed() {
+		Log.method("assertIncorrectCredentialsMessageIsShownInRed");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginErrorRedText);
+	}
+
+	public void assertLoginFailedErrorIsShownInRed() {
+		Log.method("assertLoginFailedErrorIsShownInRed");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginFailedError);
 	}
 
 	public void assertMapIsLoaded() {

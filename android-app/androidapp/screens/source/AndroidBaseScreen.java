@@ -6,6 +6,7 @@ import common.source.SikuliDecoratedDriver;
 import common.source.MobileActions;
 import common.source.Timeout;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -78,6 +79,11 @@ public class AndroidBaseScreen implements Screen {
 
 	public void clickAndPressKey(WebElement element, KeyCode keyCode) throws Exception {
 		MobileActions.newAction((MobileDriver<?>)driver).clickAndPressKey(element, keyCode);
+	}
+
+	public void hideKeyboard() {
+		Log.method("hideKeyboard");
+		((AppiumDriver)this.driver).hideKeyboard();
 	}
 
 	public void pressKey(KeyCode keyCode) throws Exception {
