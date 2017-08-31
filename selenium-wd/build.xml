@@ -876,14 +876,15 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	            <include name="**/HomePageTest.class" />
-  	          <include name="**/ComplianceReportsTestSuite1.class" />
-  	          <include name="**/ComplianceReportsTestSuite2.class" />
-  	          <include name="**/ComplianceReportsTestSuite3.class" />
-  	          <include name="**/ComplianceReportsTestSuite4.class" />
-  			  <include name="**/ComplianceReportsTestSuite5.class" />
-  	          <include name="**/ComplianceReportsTestSuite6.class" />
-  	          <include name="**/ComplianceReportsTestSuite7.class" />
+  	          <include name="**/ManageLocationsPageTest.class" />
+  	          <include name="**/ACLandVisibilityTest.class" />
+  	          <include name="**/ComplianceReportsPageTest8.class" />
+  	          <include name="**/LatLongSelectionReportsPageTest2.class" />
+  	          <include name="**/SimulatorGeneralTests.class" />
+  	          <include name="**/ComplianceReportsNewCustomerShapeMetadataTest.class" />
+  			  <include name="**/ComplianceReportsWithLicensedFeaturePageTest.class" />
+  	          <include name="**/ComplianceReportsWithNewSurveyPageTest2.class" />
+  	          <!--include name="**/DriverViewPageTests_PipelineRunner1.class" /-->
   	        </fileset>
   	      </batchtest>
   	    </junit>
