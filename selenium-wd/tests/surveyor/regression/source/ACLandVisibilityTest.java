@@ -721,7 +721,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
-		surveyorPage.performSearch(SQACUSLOCSUR);		
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
