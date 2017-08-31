@@ -95,11 +95,17 @@ public class BaseReportTest extends BaseAndroidTest {
 
 	protected boolean verifyReportsAssignedToUserAndSameCustomerUserAreShown(AndroidInvestigationScreen invScreen, String username) throws Exception {
 		Log.method("verifyReportsAssignedToUserAndSameCustomerUserAreShown", invScreen, username);
+		return verifyReportsAssignedToUserAndSameCustomerUserAreShown(invScreen, username, PAGES_TO_SCROLL_IN_INVESTIGATION_REPORTS_SCREEN);
+	}
+
+	protected boolean verifyReportsAssignedToUserAndSameCustomerUserAreShown(AndroidInvestigationScreen invScreen, String username, Integer numberOfPages) throws Exception {
+		Log.method("verifyReportsAssignedToUserAndSameCustomerUserAreShown", invScreen, username, numberOfPages);
 		User user = User.getUser(username);
 		List<String> usernames = User.getUsersForCustomer(user.getCustomerId()).stream()
 			.map(u -> u.getUserName())
 			.collect(Collectors.toList());
-		return verifyReportsAssignedToUserAreShown(invScreen, username, PAGES_TO_SCROLL_IN_INVESTIGATION_REPORTS_SCREEN, s -> usernames.contains(s.getAssignedUserName()));
+		Log.info(String.format("Usernames for customer are -> %s", LogHelper.listToString(usernames)));
+		return verifyReportsAssignedToUserAreShown(invScreen, username, numberOfPages, s -> usernames.contains(s.getAssignedUserName()));
 	}
 
 	protected boolean verifyReportsAssignedToUserAreShown(AndroidInvestigationScreen invScreen, String username) throws Exception {

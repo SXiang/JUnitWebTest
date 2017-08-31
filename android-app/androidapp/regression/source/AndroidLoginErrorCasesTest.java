@@ -119,7 +119,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.clickOnSubmit();
 
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, username));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
 
 			investigationScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
@@ -192,7 +192,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.clickOnSubmit();
 
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, username));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
 
 			investigationScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
@@ -263,7 +263,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.clickOnSubmit();
 
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, username));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
 
 			investigationScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
@@ -439,7 +439,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.clickOnSubmit();
 
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, username));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
 
 			investigationScreen.clickOnMenuButton();
 			settingsScreen.waitForScreenLoad();
@@ -536,7 +536,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 
 			// verify reports for user are shown.
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, username));
+			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
 
 			return true;
 		});
