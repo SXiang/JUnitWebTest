@@ -676,11 +676,15 @@ public class BasePage {
 	}
 
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect, boolean resizeBrowserWindow) throws IOException{
-		if(resizeBrowserWindow)
+		if(resizeBrowserWindow){
 			resizeBrowserWindow();
+	    	waitForAJAXCallsToComplete();
+		}
 		boolean valid = verifyScreenshotWithBaseline(testCaseID, name, rect);
-		if(resizeBrowserWindow)
+		if(resizeBrowserWindow){
 		    maxmizeBrowserWindow();
+	    	waitForAJAXCallsToComplete();
+		}
 		return valid;
 	}
 
