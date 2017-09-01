@@ -27,7 +27,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	private static final String INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]/android.view.ViewGroup[1]";
 	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]";
 	private static final String LOGIN_VALIDATION_LABEL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[2]";
-	private static final String SERVER_URL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
 	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
 	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
 	private static final String METHANE_MODE = "Methane Mode";
@@ -96,8 +95,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	// Following user login elements are currently not used in normal test interaction and therefore NOT fetched at page load time for perf reason.
 	// If tests need to interact with these elements, fetch these using @AndroidFindBy.
-	private WebElement serverEditView = null;
-	private Boolean serverEditViewLocated = false;
 	private WebElement usernameEditView = null;
 	private Boolean usernameEditViewLocated = false;
 	private WebElement cancelButton = null;
@@ -146,11 +143,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void clearUsername() {
 		Log.method("clearUsername");
 		getUsernameEditView().clear();;
-	}
-
-	public void enterServerUrl(String serverUrl) {
-		Log.method("enterServerUrl");
-		getServerEditView().sendKeys(serverUrl);
 	}
 
 	public void enterUsername(String username) {
@@ -315,19 +307,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getInvestigateButtonByAccId() {
 		return getAndroidDriver().findElementByAccessibilityId(AccessibilityLabel.MapScreen.INVESTIGATE_BTN);
-	}
-
-	public WebElement getServerEditView() {
-		if (!serverEditViewLocated) {
-			serverEditView = getAndroidDriver().findElementByXPath(SERVER_URL_XPATH);
-			serverEditViewLocated = true;
-		}
-
-		return serverEditView;
-	}
-
-	public WebElement getServerEditViewByAccId() {
-		return getAndroidDriver().findElementByAccessibilityId(AccessibilityLabel.LoginDialog.SERVER_URL_EDIT_VIEW);
 	}
 
 	public WebElement getUsernameEditView() {

@@ -77,7 +77,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			Log.info("Map screen loaded successfully!");
 
 			final String actualMaxText = mapScreen.getMaxText();
-			final String expectedMaxText = String.format("Max: %s", "2.0 ppm");
+			final String expectedMaxText = String.format("Max %s", "2.0 ppm");
 			final String actualModeText = mapScreen.getModeText();
 			final String expectedModeText = "Methane Mode";
 			final String actualAmplitudeText = mapScreen.getAmplitudeText();
@@ -168,13 +168,11 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			mapScreen.clickOnInvestigate();
 			initializeMapScreen();
 			mapScreen.waitForLoginDialogToShow();
+
 			mapScreen.assertEnterPasswordHintTextIsShown(BaselineImages.Folder.TC2551, BaselineImages.ImageFile.EnterPassword);
 
 			final String actualUsername = mapScreen.getUsernameEditView().getText();
 			final String expectedUsername = SurveyorConstants.SQAPICDR;
-			final String actualServerUrl = mapScreen.getServerEditView().getText();
-			final String expectedServerUrl = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-			assertTrue(String.format("ServerUrl is NOT correct. Expected=[%s]; Actual=[%s]", expectedServerUrl, actualServerUrl), actualServerUrl.equals(expectedServerUrl));
 			assertTrue(String.format("Username is NOT correct. Expected=[%s]; Actual=[%s]", expectedUsername, actualUsername), actualUsername.equals(expectedUsername));
 
 			mapScreen.enterPassword(SurveyorConstants.PICADMINPSWD);
