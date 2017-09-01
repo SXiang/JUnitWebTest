@@ -119,8 +119,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			try {
 				final String actualAmplitudeText = mapScreen.getAmplitudeText();
 				final String expectedAmplitudeText = "2.0";
-
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 					mapScreen.clickOnToggleMode();
 					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
 				} else {
@@ -135,8 +135,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			} finally {
 				// revert back to Methane mode
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-					mapScreen.clickOnToggleMode();
-					mapScreen.assertMethaneModeIsShownInTopPanel();
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 				}
 			}
 

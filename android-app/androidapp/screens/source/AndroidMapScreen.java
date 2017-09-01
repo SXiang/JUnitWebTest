@@ -1,5 +1,6 @@
 package androidapp.screens.source;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -195,7 +196,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultConcChart, 3 /*attempts*/);
 		} else {
-			Log.info("Skipping ConcentrationChart verification. Run test targetting backpack simulator to enable this verification");
+			Log.info("Skipping ConcentrationChart verification. This step is verified in simulator runs. Run test targetting backpack simulator to enable this verification");
 		}
 	}
 
@@ -221,13 +222,11 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public void assertMapIsLoaded() {
 		Log.method("assertMapIsLoaded");
-		if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			List<String> imageFolderNames = Arrays.asList(BaselineImages.Folder.LOADERS, BaselineImages.Folder.LOADERS, BaselineImages.Folder.LOADERS);
-			List<String> imageFileNames = Arrays.asList(BaselineImages.ImageFile.BackPackMapScreen01, BaselineImages.ImageFile.BackPackMapScreen02, BaselineImages.ImageFile.BackPackMapScreen03);
-			screenVerifier.assertAtleastOneImageFoundOnScreen(this, imageFolderNames, imageFileNames);
-		} else {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenTopLeft);
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenBottomRight);
+		} else {
+			Log.info("Skipping map is loaded verification. This step is verified in simulator runs. Run test targetting backpack simulator to enable this verification");
 		}
 	}
 
@@ -236,7 +235,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.LOADERS, BaselineImages.ImageFile.DefaultMapScreenPicarroLoc);
 		} else {
-			Log.info("Skipping map is centered verification. Run test targetting backpack simulator to enable this verification");
+			Log.info("Skipping map is centered verification. This step is verified in simulator runs. Run test targetting backpack simulator to enable this verification");
 		}
 	}
 
@@ -290,6 +289,25 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getResetButton() {
 		return resetMax;
+	}
+
+	public boolean isEthaneModeShown() throws IOException {
+		Log.method("isEthaneModeShown");
+		return this.getModeText().equals(ETHANE_MODE);
+	}
+
+	public boolean isMethaneModeShown() throws IOException {
+		Log.method("isMethaneModeShown");
+		return this.getModeText().equals(METHANE_MODE);
+	}
+
+	public void ensureAnalyzerIsInMethaneMode() throws IOException {
+		Log.method("ensureAnalyzerIsInMethaneMode");
+		if (isEthaneModeShown()) {
+			Log.info("Analyzer detected in Ethane mode. Switching to Methane mode");
+			this.clickOnToggleMode();
+			this.assertMethaneModeIsShownInTopPanel();
+		}
 	}
 
 	public void clickOnResetButton() {
