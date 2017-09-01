@@ -1,9 +1,14 @@
-﻿param (
-   [Parameter(Mandatory=$false)]
-   [string]$uixRootFolder = "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump",      # folder containing .uix files. eg. C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump
+﻿<#
+ INSTRUCTIONS:
+  Execute this script from the folder containing this script file to generate PageScreen code for all .uix files encountered in 'uixRootFolder'.
+#>
 
-   [Parameter(Mandatory=$false)]
-   [string]$outputFolder = "C:\Temp\UIPageObjects"            # output folder when .java files will be created. Eg. C:\Temp\UIPageObjects   
+param (
+   [Parameter(Mandatory=$true)]
+   [string]$uixRootFolder,                           # folder containing .uix files. eg. C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump
+
+   [Parameter(Mandatory=$true)]
+   [string]$outputFolder                             # output folder when .java files will be created. Eg. C:\Temp\UIPageObjects   
 )
 
 function To-FirstCharUpper([string]$text) {

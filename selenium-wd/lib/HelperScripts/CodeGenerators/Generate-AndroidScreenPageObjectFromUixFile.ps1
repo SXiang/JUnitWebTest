@@ -357,14 +357,6 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
         for ($i=0; $i -lt $node.ChildNodes.Count; $i++)
         {
             $childNode = $node.ChildNodes[$i]
-
-            ####### DEBUG CODE
-            $debugText = $node.ChildNodes[$i].Attributes["text"].Value
-            if ($debugText.StartsWith("CR-AB6")) {
-                Write-Host "Found node of interest. Continue debugging ..."
-            }
-            #######
-
             $nodeName = $node.ChildNodes[$i].Name
             if ($node.ChildNodes[$i].Attributes -ne $null) {
                 $className = $node.ChildNodes[$i].Attributes["class"].Value
