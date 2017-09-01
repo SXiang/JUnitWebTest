@@ -16,13 +16,13 @@ public class AndroidSurfaceOverLeakTypeListControl extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Concrete\")")
 	private WebElement concreteListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Un_surfaced\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Un surfaced\")")
 	private WebElement un_surfacedListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Tar_Component\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Tar Component\")")
 	private WebElement tar_ComponentListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"In_Substructure\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"In Substructure\")")
 	private WebElement in_SubstructureListItem;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Other\")")

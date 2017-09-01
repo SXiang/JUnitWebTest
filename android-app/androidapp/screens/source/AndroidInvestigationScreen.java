@@ -17,9 +17,13 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import androidapp.entities.source.InvestigationEntity;
 
 public class AndroidInvestigationScreen extends AndroidBaseScreen {
-	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.widget.TextView[3]";
+
+	private static final String FIRST_ROW_REPORT_TITLE_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView[1]";
+	private static final String FIRST_ROW_VIEW_GROUP_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]";
+	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.widget.TextView[1]";
 	private static final String LIST_VIEW_ELEMENTS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView";
 	private static final String CONTAINER_VIEW_GROUP_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]";
+	private static final String SEARCH_EDIT_VIEW_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.EditText[1]";
 	private static final Integer SWIPE_DELTA = 600;
 
 	@AndroidFindBy(xpath = LIST_VIEW_ELEMENTS_XPATH)
@@ -29,15 +33,15 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement containerViewGroup;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.EditText")
+	@AndroidFindBy(xpath = SEARCH_EDIT_VIEW_XPATH)
 	@CacheLookup
 	private WebElement searchEditView;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = FIRST_ROW_VIEW_GROUP_XPATH)
 	@CacheLookup
 	private WebElement firstRowViewGroup;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[2]")
+	@AndroidFindBy(xpath = FIRST_ROW_REPORT_TITLE_XPATH)
 	@CacheLookup
 	private WebElement firstRowReportTitle;
 
@@ -166,7 +170,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	}
 
 	private void getFirstRowViewGroup() {
-		firstRowViewGroup = getAndroidDriver().findElementByXPath("//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]");
+		firstRowViewGroup = getAndroidDriver().findElementByXPath(FIRST_ROW_VIEW_GROUP_XPATH);
 	}
 
 	private void selectRowGroup(WebElement rowGroup) throws Exception {
@@ -182,7 +186,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 	@SuppressWarnings("unchecked")
 	private boolean isFirstEntryMatchingSearchKeyword(String searchKeyword) {
 		Log.method("isFirstEntryMatchingSearchKeyword", searchKeyword);
-		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
+		firstRowReportTitle = getAndroidDriver().findElementByXPath(FIRST_ROW_REPORT_TITLE_XPATH);
 		if (firstRowReportTitle != null) {
 			String reportId = firstRowReportTitle.getText();
 			Log.method(String.format("Found reportTitle element. Searching for-[%s], found-[%s]. Match = [%b]", searchKeyword, reportId, reportId.contains(searchKeyword)));
@@ -195,7 +199,7 @@ public class AndroidInvestigationScreen extends AndroidBaseScreen {
 
 	private boolean isFirstRowPresent() {
 		Log.method("isFirstRowPresent");
-		firstRowReportTitle = getAndroidDriver().findElementByXPath("//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.widget.TextView[1]");
+		firstRowReportTitle = getAndroidDriver().findElementByXPath(FIRST_ROW_REPORT_TITLE_XPATH);
 		return firstRowReportTitle != null && firstRowReportTitle.isDisplayed();
 	}
 

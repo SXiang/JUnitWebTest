@@ -465,7 +465,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.waitForScreenLoad();
 			addOtherSourceFormDialog.selectLeakSource(leakSourceType);
 			addOtherSourceFormDialog.enterAdditionalNotes(additionalNotesText);
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList2 = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue("Sources list length post edit should be same as list length prior to edit", totalOtherSources == otherSourcesList2.size());
@@ -557,7 +557,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
@@ -649,7 +649,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.clickOnAddCGI();
 			addCgiFormDialog.waitForScreenLoad();
 			addCgiFormDialog.enterCgiText(DataGenerator.getAddressString());
-			addCgiFormDialog.clickOnOK();
+			addCgiFormDialog.clickOnSubmit();
 			investigateMapScreen.clickOnMarkAsComplete();
 			confirmationDialog.waitForScreenLoad();
 			confirmationDialog.clickOnOK();
@@ -725,7 +725,7 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.clickOnAddCGI();
 			addCgiFormDialog.waitForScreenLoad();
 			addCgiFormDialog.enterCgiText(DataGenerator.getAddressString());
-			addCgiFormDialog.clickOnOK();
+			addCgiFormDialog.clickOnSubmit();
 			investigateMapScreen.clickOnMarkAsComplete();
 			confirmationDialog.waitForScreenLoad();
 			confirmationDialog.clickOnCancel();
@@ -850,12 +850,12 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(otherSourceLeakSourceType);
 			addOtherSourceFormDialog.enterAdditionalNotes(otherSourceAdditionalNotes);
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 
 			// Mark as complete.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
@@ -1070,11 +1070,11 @@ public class AndroidLeakScreenTest2 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
 			assertTrue("Sources list length should be greater than 0", otherSourcesList!=null && otherSourcesList.size()>0);
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
 			return true;

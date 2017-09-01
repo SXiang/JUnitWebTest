@@ -445,7 +445,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
@@ -565,7 +565,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.tapOnCancel();
 
 			// cancel leak form. cancel list dialog.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 
 			return true;

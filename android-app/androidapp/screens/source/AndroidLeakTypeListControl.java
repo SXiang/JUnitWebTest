@@ -10,10 +10,10 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakType;
 
 public class AndroidLeakTypeListControl extends AndroidBaseScreen {
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Above_Ground\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Above Ground\")")
 	private WebElement above_GroundListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Below_Ground\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Below Ground\")")
 	private WebElement below_GroundListItem;
 
 	public AndroidLeakTypeListControl(WebDriver driver) {

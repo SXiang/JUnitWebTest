@@ -10,6 +10,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public enum SliderType {
+		Amplitude ("Amplitude"),
 		Volume ("Volume"),
 		Threshold ("Threshold");
 
@@ -26,9 +27,11 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 
 	public static class SliderTransform {
+		public static final Float AMPLITUDE_MIN = 0.0f;
+		public static final Float AMPLITUDE_MAX = 1000.0f;
 		public static final Float VOLUME_MIN = 0.0f;
 		public static final Float VOLUME_MAX = 31.0f;
-		public static final Float THRESHOLD_MIN = 0.05f;
+		public static final Float THRESHOLD_MIN = 0.1f;
 		public static final Float THRESHOLD_MAX = 100.0f;
 
 		public static Float getPercentValue(SliderType sliderType, Float absoluteValue) {
@@ -42,6 +45,9 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 			} else if (sliderType.equals(SliderType.Threshold)) {
 				range = THRESHOLD_MAX - THRESHOLD_MIN;
 				adjustedAbsValue -= THRESHOLD_MIN;
+			} else if (sliderType.equals(SliderType.Amplitude)) {
+				range = AMPLITUDE_MAX - AMPLITUDE_MIN;
+				adjustedAbsValue -= AMPLITUDE_MIN;
 			}
 
 			percent = (adjustedAbsValue * 100.0f)/range;
@@ -53,53 +59,65 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	/****** Button elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
 	@CacheLookup
 	private WebElement apply;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement close;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement investigate;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[2]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement resetMax;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[4]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement toggleMode;
 
 	/****** Slider elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]")
 	@CacheLookup
 	private WebElement volume;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[4]")
+	@CacheLookup
+	private WebElement amplitudeppm;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]")
 	@CacheLookup
 	private WebElement thresholdppm;
 
 	/****** Slider container elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]")
 	@CacheLookup
 	private WebElement volumeContainer;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]")
+	@CacheLookup
+	private WebElement amplitudeppmContainer;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]")
 	@CacheLookup
 	private WebElement thresholdppmContainer;
 
 	/****** Slider left delta elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]")
 	@CacheLookup
 	private WebElement volumeLeftDelta;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[3]")
+	@CacheLookup
+	private WebElement amplitudeppmLeftDelta;
+
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]")
 	@CacheLookup
 	private WebElement thresholdPpmLeftDelta;
 
@@ -178,8 +196,6 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 
 	public void slideToVolume(Float value) {
 		Log.method("slideToVolume");
-		volume = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[4]");
-		volumeContainer = getAndroidDriver().findElementByXPath("//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]");
 		slideBy(volume, volumeContainer, SliderTransform.getPercentValue(SliderType.Volume, value));
 	}
 
@@ -191,6 +207,21 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public Integer getVolumeSliderLocationY() {
 		Log.method("getVolumeSliderLocationY");
 		return volume.getLocation().getY();
+	}
+
+	public void slideToAmplitudeppm(Float value) {
+		Log.method("slideToAmplitudeppm");
+		slideBy(amplitudeppm, amplitudeppmContainer, SliderTransform.getPercentValue(SliderType.Amplitude, value));
+	}
+
+	public Integer getAmplitudeppmSliderLocationX() {
+		Log.method("getAmplitudeppmSliderLocationX");
+		return amplitudeppm.getLocation().getX();
+	}
+
+	public Integer getAmplitudeppmSliderLocationY() {
+		Log.method("getAmplitudeppmSliderLocationY");
+		return amplitudeppm.getLocation().getY();
 	}
 
 	/****** Slider Container Methods ******/
@@ -205,6 +236,11 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 		return volumeContainer.getSize().getWidth();
 	}
 
+	public Integer getAmplitudeppmContainerSliderWidth() {
+		Log.method("getAmplitudeppmContainerSliderWidth");
+		return amplitudeppmContainer.getSize().getWidth();
+	}
+
 	/****** Slider Left Delta Methods ******/
 
 	public Integer getThresholdPpmLeftDeltaWidth() {
@@ -215,6 +251,11 @@ public class AndroidAlarmSettingsScreen extends AndroidBaseScreen {
 	public Integer getVolumeLeftDeltaWidth() {
 		Log.method("getVolumeLeftDeltaWidth");
 		return volumeLeftDelta.getSize().getWidth();
+	}
+
+	public Integer getAmplitudeppmLeftDeltaWidth() {
+		Log.method("getAmplitudeppmLeftDeltaWidth");
+		return amplitudeppmLeftDelta.getSize().getWidth();
 	}
 
 	public void assertSlidersShownAreCorrect() {

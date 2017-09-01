@@ -221,7 +221,8 @@
       <batchtest fork="yes" todir="${basedir}/../selenium-wd/reports/androiduitests/xml">
         <formatter type="xml" />
         <fileset dir="${build}">
-    	   <include name="**/AndroidLoginErrorCasesTest.class" />
+    	   <include name="**/AndroidLeakScreenTest3.class" />
+           <include name="**/AndroidSettingsScreenTest2.class" />
         </fileset>
       </batchtest>
     </junit>

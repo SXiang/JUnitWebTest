@@ -108,7 +108,7 @@ public class AndroidScreenObjectTest extends AndroidLeakScreenTestBase {
 			addSourceDialog.clickOnAddLeak();
 			addLeakSourceFormDialog.waitForScreenLoad();
 			addLeakSourceFormDialog.scrollToNextPage();
-			assertTrue("Scroll did NOT work correctly..", addLeakSourceFormDialog.getOKButton().isDisplayed());
+			assertTrue("Scroll did NOT work correctly..", addLeakSourceFormDialog.getSubmitButton().isDisplayed());
 			return true;
 		});
 	}

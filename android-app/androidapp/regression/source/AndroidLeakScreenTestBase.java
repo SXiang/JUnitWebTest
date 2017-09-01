@@ -57,7 +57,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 		addOtherSourceFormDialog.clickOnUseCurrentLocation();
 		addOtherSourceFormDialog.selectLeakSource(leakSourceType);
 		addOtherSourceFormDialog.enterAdditionalNotes(additionalNotes);
-		addOtherSourceFormDialog.clickOnOK();
+		addOtherSourceFormDialog.clickOnSubmit();
 		initializeAndroidAddedLeakListDialog();
 		addedSourcesListDialog.waitForScreenAndDataLoad();
 		List<OtherSourceListInfoEntity> otherSourcesList = addedSourcesListDialog.getOtherSourcesList();
@@ -178,7 +178,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			addLeakSourceFormDialog.fillForm(leakDataBuilder.toMap());
 			addedSourcesListDialog.waitForScreenLoad();
 			assertLeakListInfoIsCorrect(leakDataBuilder, addedSourcesListDialog.getLeaksList());
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
 			return true;
@@ -205,10 +205,10 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Other_Natural_Source);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 120));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			initializeAndroidAddedLeakListDialog();
 			addedSourcesListDialog.waitForScreenAndDataLoad();
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
 			return true;

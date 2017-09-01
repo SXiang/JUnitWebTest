@@ -181,10 +181,10 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Sewer);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(30, 200));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
 
@@ -432,6 +432,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			alarmSettingsScreen.waitForScreenLoad();
 			alarmSettingsScreen.assertSlidersShownAreCorrect();
 			alarmSettingsScreen.slideToVolume(4.0f);
+			alarmSettingsScreen.slideToAmplitudeppm(40.0f);
 			alarmSettingsScreen.slideToThresholdppm(24.0f);
 			alarmSettingsScreen.clickOnApply();
 			return true;
@@ -459,6 +460,8 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			userDataRowID = (Integer)tc2681[0][1];
 			reportDataRowID1 = (Integer)tc2681[0][2];
 			tcId = "TC2681";
+		} else if (methodName.startsWith("TC2687")) {
+			return;
 		}
 
 		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(new String[] {tcId}, SurveyorConstants.SQAPICDR);
