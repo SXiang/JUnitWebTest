@@ -250,10 +250,9 @@ public class TestEnvironmentActions extends BaseActions {
 
 	public TestEnvironmentDataRow getWorkingDataRow(Integer dataRowID) throws Exception {
 		TestEnvironmentDataRow dataRow = workingDataRow.get();
-		if (dataRow == null) {
+		if (dataRow == null || !dataRow.rowID.equals(String.valueOf(dataRowID))) {
 			dataRow = getDataReader().getDataRow(dataRowID);
 		}
-
 		return dataRow;
 	}
 

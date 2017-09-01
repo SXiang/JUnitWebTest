@@ -1226,7 +1226,7 @@ public class DriverViewPage extends BaseDrivingViewPage {
 	}
 
 	/**
-	 * Waits for StartSurvey button to be visible.
+	 * Waits for StopSurvey button to be visible.
 	 */
 	public void waitForStopSurveyButtonToBeVisible() {
 		(new WebDriverWait(driver, timeout * 10)).until(new ExpectedCondition<Boolean>() {
