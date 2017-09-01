@@ -250,7 +250,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(30, 200));
 			addOtherSourceFormDialog.clickOnCancel();
 			addedSourcesListDialog.waitForScreenLoad();
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			assertTrue("Investigation Map screen did NOT load after Cancel click on Add Other Source form and list dialog", investigateMapScreen.waitForScreenLoad());
 
 			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
@@ -335,7 +335,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			Map<String, Object> leakMap = leakDataBuilder.toMap();
 			addLeakSourceFormDialog.fillFormAndCancel(leakMap);
 			addedSourcesListDialog.waitForScreenLoad();
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			assertTrue("Investigation Map screen did NOT load after Cancel click on Add Leak form and list dialog", investigateMapScreen.waitForScreenLoad());
 
 			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();

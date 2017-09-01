@@ -191,7 +191,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.tapOnCancel();
 
 			// Mark as complete.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
@@ -300,7 +300,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.tapOnCancel();
 
 			// Mark as complete.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
@@ -412,7 +412,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.tapOnCancel();
 
 			// Mark as complete.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();

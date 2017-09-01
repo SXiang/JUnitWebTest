@@ -16,25 +16,25 @@ public class AndroidLeakLocationTypeListControl extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Service\")")
 	private WebElement serviceListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Service_T\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Service T\")")
 	private WebElement service_TListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Service_Branch\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Service Branch\")")
 	private WebElement service_BranchListItem;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Riser\")")
 	private WebElement riserListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Meter_Set\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Meter Set\")")
 	private WebElement meter_SetListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Customer_Equipment\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Customer Equipment\")")
 	private WebElement customer_EquipmentListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Sewer_Manhole\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Sewer Manhole\")")
 	private WebElement sewer_ManholeListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Catch_Basin\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Catch Basin\")")
 	private WebElement catch_BasinListItem;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Substructure\")")

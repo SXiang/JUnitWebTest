@@ -80,7 +80,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 		final String validPort = "3000";
 		final String invalidPort = "3001";
-		mainLoginScreen.saveSettings(backpackAddress.replace(validPort, invalidPort), picServerAddress, SurveyorConstants.SQAPICDR);
+		final String backpackAddressInvalidPort = backpackAddress.replace(validPort, invalidPort);
+		mainLoginScreen.saveSettings(backpackAddressInvalidPort, picServerAddress, SurveyorConstants.SQAPICDR);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
@@ -88,6 +89,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 			Log.info("'Connecting to backpack server' message was shown in Connecting dialog");
 			connectingDialog.assertEditSettingsButtonIsShown();
 			Log.info("Edit settings button was shown in Connecting dialog");
+			assertTrue("'Connecting to backpack server' message shown in Connecting dialog is NOT correct.", connectingDialog.getConnectingLabelText().equals(
+					String.format("Connecting to backpack server at %s, please wait!", backpackAddressInvalidPort)));
 			return true;
 		});
 	}
