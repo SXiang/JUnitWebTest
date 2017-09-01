@@ -501,6 +501,7 @@ public class BasePage {
     public void resizeBrowserWindow(){
     	Log.info("Resize browser window for testing :"+getTestBrowserSize());
     	driver.manage().window().setSize(getTestBrowserSize());
+    	waitForAJAXCallsToComplete();
 	}
 
     public void inputTextValue(WebElement inputElement, String value){
@@ -676,15 +677,11 @@ public class BasePage {
 	}
 
 	public boolean verifyScreenshotWithBaseline(String testCaseID, String name, Rectangle rect, boolean resizeBrowserWindow) throws IOException{
-		if(resizeBrowserWindow){
+		if(resizeBrowserWindow)
 			resizeBrowserWindow();
-	    	waitForAJAXCallsToComplete();
-		}
 		boolean valid = verifyScreenshotWithBaseline(testCaseID, name, rect);
-		if(resizeBrowserWindow){
+		if(resizeBrowserWindow)
 		    maxmizeBrowserWindow();
-	    	waitForAJAXCallsToComplete();
-		}
 		return valid;
 	}
 
