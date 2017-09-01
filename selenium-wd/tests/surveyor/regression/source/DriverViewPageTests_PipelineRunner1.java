@@ -113,11 +113,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 
 		// Compare indications count on driver view and survey view. Comparing index, disposition and text on Indications set objects.
 		assertTrue(indicationsOnDriverView.size() == indicationsOnSurveyView.size());
-		if(indicationsOnDriverView.equals(indicationsOnSurveyView)){
 		assertTrue(indicationsOnDriverView.equals(indicationsOnSurveyView));
-		}else{
-			Log.warn("Debuging");
-		}
 	}
 
 	/**
