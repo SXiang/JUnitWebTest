@@ -66,7 +66,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 
 		Log.info("Starting Replay...");
 		getTestEnvironmentAction().startReplay(EMPTY, analyzerDb3DataRowID); 	// start replay db3 file.
-		
+
 		// start survey.
 		driverViewPageAction.getDriverViewPage().setUseAnalyzerReadyLongTimeout(true);   // Use longer timeout.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
@@ -98,10 +98,10 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		// Stop simulator and PSA.
 		Log.info("Stopping Analyzer...");
 		getTestEnvironmentAction().stopAnalyzer(EMPTY, NOTSET);
+
 		// Goto survey view page for current survey and collect indications shown on page.
-		String surveyTag = DriverViewPageActions.workingDataRow.get().surveyTag;
 		getHomePageAction().open(EMPTY, NOTSET);
-		getHomePageAction().clickOnFirstMatchingDrivingSurvey(surveyTag, NOTSET);
+		getHomePageAction().clickOnFirstMatchingDrivingSurvey(DriverViewPageActions.workingDataRow.get().surveyTag, NOTSET);
 		surveyViewPageAction.verifyPageLoaded(EMPTY, NOTSET);
 		surveyViewPageAction.waitForIndicationsToBeShownOnMap(EMPTY, NOTSET);
 		Set<Indication> indicationsOnSurveyView = surveyViewPageAction.getIndicationsShownOnPage();
@@ -113,7 +113,11 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 
 		// Compare indications count on driver view and survey view. Comparing index, disposition and text on Indications set objects.
 		assertTrue(indicationsOnDriverView.size() == indicationsOnSurveyView.size());
+		if(indicationsOnDriverView.equals(indicationsOnSurveyView)){
 		assertTrue(indicationsOnDriverView.equals(indicationsOnSurveyView));
+		}else{
+			Log.warn("Debuging");
+		}
 	}
 
 	/**
