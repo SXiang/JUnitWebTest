@@ -16,7 +16,7 @@ public class AndroidLeakSourceTypeListControl extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Sewer\")")
 	private WebElement sewerListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Catch_Basin\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Catch Basin\")")
 	private WebElement catch_BasinListItem;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Landfill\")")
@@ -28,10 +28,10 @@ public class AndroidLeakSourceTypeListControl extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Customer\")")
 	private WebElement customerListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Other_Enclosure\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Other Enclosure\")")
 	private WebElement other_EnclosureListItem;
 
-	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Other_Natural_Source\")")
+	@AndroidFindBy(uiAutomator = "new UiSelector().text(\"Other Natural Source\")")
 	private WebElement other_Natural_SourceListItem;
 
 	public AndroidLeakSourceTypeListControl(WebDriver driver) {

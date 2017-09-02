@@ -305,8 +305,7 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 			longitude.append(addLeakSourceFormDialog.getLongitudeText());
 			addLeakSourceFormDialog.scrollToNextPage();
 			addLeakSourceFormDialog.tapOnCancel();
-			addedSourcesListDialog.clickOnCancel();
-
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.clickOnMarkAsComplete();
 			investigateReportScreen.waitForScreenLoad();
 

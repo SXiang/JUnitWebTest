@@ -1,5 +1,6 @@
 package androidapp.screens.source;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,15 +22,14 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	private static final String TOGGLE_MODE_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Toggle Mode\")";
 	private static final String RESET_MAX_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Reset Max\")";
 	private static final String CLEAR_HEATMAP_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Clear Heatmap\")";
+	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
+	private static final String SUBMIT_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Submit\")";
 
-	private static final String INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]";
-	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[3]";
+	private static final String INVESTIGATE_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[4]/android.view.ViewGroup[1]";
+	private static final String MENU_BUTTON_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]";
 	private static final String LOGIN_VALIDATION_LABEL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[2]";
-	private static final String SERVER_URL_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
-	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
-	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[3]/android.widget.EditText[1]";
-	private static final String CANCEL_BTN_XPATH = INVESTIGATE_BUTTON_XPATH;
-	private static final String SUBMIT_BTN_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[5]";
+	private static final String USERNAME_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[1]/android.widget.EditText[1]";
+	private static final String PASSWORD_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.view.ViewGroup[2]/android.widget.EditText[1]";
 	private static final String METHANE_MODE = "Methane Mode";
 	private static final String ETHANE_MODE = "Ethane Mode";
 	private static final String MAX_LABEL = "Max:";
@@ -45,7 +45,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement maxText;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[3]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement amplitude;
 
@@ -53,7 +53,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	@CacheLookup
 	private WebElement c2h6;
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[4]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.widget.TextView[3]")
 	@CacheLookup
 	private WebElement cH4ppm;
 
@@ -89,15 +89,13 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	private WebElement passwordEditView;
 	private Boolean passwordEditViewLocated = true;    // element fetched at page load time. Set to false to detect element post page load.
 
-	@AndroidFindBy(xpath = SUBMIT_BTN_XPATH)
+	@AndroidFindBy(uiAutomator = SUBMIT_BUTTON_UI_SELECTOR)
 	@CacheLookup
 	private WebElement submit;
 	private Boolean submitButtonLocated = true;        // element fetched at page load time. Set to false to detect element post page load.
 
 	// Following user login elements are currently not used in normal test interaction and therefore NOT fetched at page load time for perf reason.
 	// If tests need to interact with these elements, fetch these using @AndroidFindBy.
-	private WebElement serverEditView = null;
-	private Boolean serverEditViewLocated = false;
 	private WebElement usernameEditView = null;
 	private Boolean usernameEditViewLocated = false;
 	private WebElement cancelButton = null;
@@ -146,11 +144,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public void clearUsername() {
 		Log.method("clearUsername");
 		getUsernameEditView().clear();;
-	}
-
-	public void enterServerUrl(String serverUrl) {
-		Log.method("enterServerUrl");
-		getServerEditView().sendKeys(serverUrl);
 	}
 
 	public void enterUsername(String username) {
@@ -217,9 +210,14 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginErrorRedText);
 	}
 
-	public void assertLoginFailedErrorIsShownInRed() {
-		Log.method("assertLoginFailedErrorIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.LoginFailedError);
+	public void assertPleaseEnterYourPasswordMessageIsShownInRed() {
+		Log.method("assertPleaseEnterYourPasswordMessageIsShownInRed");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterYourPassword);
+	}
+
+	public void assertPleaseEnterYourUsernameMessageIsShownInRed() {
+		Log.method("assertPleaseEnterYourUsernameMessageIsShownInRed");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PleaseEnterUsername);
 	}
 
 	public void assertMapIsLoaded() {
@@ -293,6 +291,25 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		return resetMax;
 	}
 
+	public boolean isEthaneModeShown() throws IOException {
+		Log.method("isEthaneModeShown");
+		return this.getModeText().equals(ETHANE_MODE);
+	}
+
+	public boolean isMethaneModeShown() throws IOException {
+		Log.method("isMethaneModeShown");
+		return this.getModeText().equals(METHANE_MODE);
+	}
+
+	public void ensureAnalyzerIsInMethaneMode() throws IOException {
+		Log.method("ensureAnalyzerIsInMethaneMode");
+		if (isEthaneModeShown()) {
+			Log.info("Analyzer detected in Ethane mode. Switching to Methane mode");
+			this.clickOnToggleMode();
+			this.assertMethaneModeIsShownInTopPanel();
+		}
+	}
+
 	public void clickOnResetButton() {
 		Log.method("clickOnResetButton");
 		tap(resetMax);
@@ -308,19 +325,6 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getInvestigateButtonByAccId() {
 		return getAndroidDriver().findElementByAccessibilityId(AccessibilityLabel.MapScreen.INVESTIGATE_BTN);
-	}
-
-	public WebElement getServerEditView() {
-		if (!serverEditViewLocated) {
-			serverEditView = getAndroidDriver().findElementByXPath(SERVER_URL_XPATH);
-			serverEditViewLocated = true;
-		}
-
-		return serverEditView;
-	}
-
-	public WebElement getServerEditViewByAccId() {
-		return getAndroidDriver().findElementByAccessibilityId(AccessibilityLabel.LoginDialog.SERVER_URL_EDIT_VIEW);
 	}
 
 	public WebElement getUsernameEditView() {
@@ -352,7 +356,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 	public WebElement getSubmitButton() {
 		Log.method("getSubmitButton");
 		if (!submitButtonLocated) {
-			submit = getAndroidDriver().findElement(MobileBy.xpath(SUBMIT_BTN_XPATH));
+			submit = getAndroidDriver().findElementByAndroidUIAutomator(SUBMIT_BUTTON_UI_SELECTOR);
 			submitButtonLocated = true;
 		}
 
@@ -365,7 +369,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 
 	public WebElement getCancelButton() {
 		if (!cancelButtonLocated) {
-			cancelButton = getAndroidDriver().findElementByXPath(CANCEL_BTN_XPATH);
+			cancelButton = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
 			cancelButtonLocated = true;
 		}
 

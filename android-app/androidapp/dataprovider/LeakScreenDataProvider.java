@@ -101,7 +101,7 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2687() {
 		return new Object[][] {
-			{ "TC2687" /*TestCaseID*/, 0 /*userDataRowID,  0 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2687" /*TestCaseID*/, 6 /*userDataRowID*/,  -1 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 

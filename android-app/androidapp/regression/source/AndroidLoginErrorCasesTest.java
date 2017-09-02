@@ -30,7 +30,8 @@ import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLoginErrorCasesTest extends BaseReportTest {
-	private static final String LOGIN_FAILED = "Login Failed";
+	private static final String PLEASE_ENTER_YOUR_PASSWORD = "Please enter your password!";
+	private static final String PLEASE_ENTER_USERNAME = "Please enter your user name!";
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidInvestigateMapScreen investigateMapScreen;
@@ -279,9 +280,9 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.waitForLoginDialogToShow();
 			mapScreen.clickOnSubmit();
 
-			mapScreen.assertLoginFailedErrorIsShownInRed();
+			mapScreen.assertPleaseEnterYourPasswordMessageIsShownInRed();
 
-			final String expectedLoginValidationText = LOGIN_FAILED;
+			final String expectedLoginValidationText = PLEASE_ENTER_YOUR_PASSWORD;
 			final String actualLoginValidationText = mapScreen.getLoginValidationLabelText().trim();
 			assertTrue(String.format("Incorrect login validation text found. Expected=[%s]; Actual=[%s]", expectedLoginValidationText, actualLoginValidationText),
 					expectedLoginValidationText.equals(actualLoginValidationText));
@@ -457,9 +458,9 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mapScreen.enterPassword(password);
 			mapScreen.clickOnSubmit();
 
-			mapScreen.assertLoginFailedErrorIsShownInRed();
+			mapScreen.assertPleaseEnterYourUsernameMessageIsShownInRed();
 
-			final String expectedLoginValidationText = LOGIN_FAILED;
+			final String expectedLoginValidationText = PLEASE_ENTER_USERNAME;
 			final String actualLoginValidationText = mapScreen.getLoginValidationLabelText().trim();
 			assertTrue(String.format("Incorrect login validation text found. Expected=[%s]; Actual=[%s]", expectedLoginValidationText, actualLoginValidationText),
 					expectedLoginValidationText.equals(actualLoginValidationText));
@@ -534,9 +535,14 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			settingsScreen.waitForScreenLoad();
 			settingsScreen.dismissScreen(ParentScreen.ReportScreen);
 
+			// TURNED off due to defect DE3319
 			// verify reports for user are shown.
-			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
+			//investigationScreen.waitForScreenLoad();
+			//assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));
+
+			// Steps above turned off and below steps added due to defect DE3319.
+			mapScreen.waitForScreenLoad();
+			mapScreen.assertMapIsCenteredForPicarroUser();
 
 			return true;
 		});

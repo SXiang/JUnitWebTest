@@ -501,6 +501,7 @@ public class BasePage {
     public void resizeBrowserWindow(){
     	Log.info("Resize browser window for testing :"+getTestBrowserSize());
     	driver.manage().window().setSize(getTestBrowserSize());
+    	waitForAJAXCallsToComplete();
 	}
 
     public void inputTextValue(WebElement inputElement, String value){

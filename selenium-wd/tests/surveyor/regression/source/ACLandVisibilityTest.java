@@ -365,7 +365,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.waitForPageLoad();
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 	}
@@ -541,7 +542,8 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.waitForPageLoad();
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);	
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
@@ -719,7 +721,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 		assertTrue(surveyorPage.verifyCustomerSpecificSurveyorsAreShown(SQACUS));
@@ -911,7 +913,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 	}
@@ -1068,7 +1070,7 @@ public class ACLandVisibilityTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
 		surveyorPage.waitForPageLoad();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(PICADMNSURVEYORSHORT);
+		surveyorPage.performSearch(PICADMNSURVEYORSHORT);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 	}

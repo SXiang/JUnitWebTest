@@ -17,10 +17,10 @@ param(
    [string]$UixFilePath,                     # eg. "C:\Repositories\surveyor-qa\selenium-wd\android\ui-dump\settings-screen\alarm-settings\dump_7186364136122891369.uix"
 
    [Parameter(Mandatory=$true)]
-   [string]$ScreenClassName,                  # eg. "AndroidSettingsScreen"
+   [string]$ScreenClassName,                 # eg. "AndroidSettingsScreen"
 
    [Parameter(Mandatory=$false)]
-   [switch]$DetectLabels=$false
+   [switch]$DetectLabels=$true
 )
 
 . "C:\Repositories\surveyor-qa\selenium-wd\lib\HelperScripts\CommonHelpers.ps1"
@@ -368,7 +368,7 @@ function Build-ElementDetectorCode([System.Xml.XmlNode] $node, [int] $level, [st
             $childXpath = "$xpath/$className[$xIdx]"
 
             # Look only for elements of interest in page object model class.
-            if ((($className -eq "android.widget.TextView") -and ($text -ne $null -and $text -ne "") -and ($node.ChildNodes[$i].NextSibling -eq $null)) -or 
+            if ((($className -eq "android.widget.TextView") -and ($text -ne $null -and $text -ne "")) -or 
                 (($className -eq "android.widget.EditText")) -or 
                 (($className -eq "android.view.ViewGroup")) -or 
                 (($className -eq "android.widget.Spinner" -and $node.ChildNodes[$i].HasChildNodes))) {
@@ -765,6 +765,6 @@ add-content $OUTFILE "		return mainFrameLayout!=null && mainFrameLayout.isDispla
 add-content $OUTFILE "	}"
 add-content $OUTFILE "}"
 
-Write-Host "Successfully created file at - $output"
+Write-Host "Successfully created file"
 
 ii $OUTFILE 
