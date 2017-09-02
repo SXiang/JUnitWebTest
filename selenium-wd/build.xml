@@ -590,6 +590,7 @@
           <include name="**/ObserverViewPageTest_EQ.class" />
           <include name="**/EQReportsWithLicensedFeaturesPageTest.class" />
           <include name="**/DriverViewPageTest_EQ.class" />
+          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -650,7 +651,6 @@
           <include name="**/ReferenceGasReportsPageTest.class" />
           <include name="**/ManageLocationsPageTest_Ethane.class" />
           <include name="**/ManageRefGasBottlesPageTests_Ethane.class" />
-          <include name="**/LicensedFeatureAndVisibilityTest.class" />
           <include name="**/SurveyViewPageTest_EQ.class" />
         </fileset>
       </batchtest>
@@ -790,7 +790,6 @@
           <include name="**/RegressionTestSuite5.class" />
     	  <!-- Single thread execution test classes -->
           <include name="**/SurveyViewPageTest6.class" />
-          <include name="**/LicensedFeatureAndVisibilityTest.class" />
         </fileset>
       </batchtest>
     </junit>
@@ -876,14 +875,7 @@
   	      <batchtest fork="yes" todir="${reports}/regression/xml">
   	        <formatter type="xml" />
   	        <fileset dir="${build}">
-  	            <include name="**/HomePageTest.class" />
-  	          <include name="**/ComplianceReportsTestSuite1.class" />
-  	          <include name="**/ComplianceReportsTestSuite2.class" />
-  	          <include name="**/ComplianceReportsTestSuite3.class" />
-  	          <include name="**/ComplianceReportsTestSuite4.class" />
-  			  <include name="**/ComplianceReportsTestSuite5.class" />
-  	          <include name="**/ComplianceReportsTestSuite6.class" />
-  	          <include name="**/ComplianceReportsTestSuite7.class" />
+  	          <include name="**/DriverViewPageTests_PipelineRunner1.class" />
   	        </fileset>
   	      </batchtest>
   	    </junit>

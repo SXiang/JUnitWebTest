@@ -220,7 +220,7 @@ public class LoginPageTest extends SurveyorBaseTest {
 		assertTrue(fleetMapPage.checkIfAtFleetMapPage());
 		assertTrue(fleetMapPage.getFleetMap().isDisplayed());
 		homePage.getLinkSurveyors().click();
-		surveyorPage.getTxtSurveyorSearch().sendKeys(SQACUSLOCSUR);
+		surveyorPage.performSearch(SQACUSLOCSUR);
 		surveyorPage.waitForDataTabletoLoad();
 		assertTrue(surveyorPage.getTableRows().size() > 0);
 
