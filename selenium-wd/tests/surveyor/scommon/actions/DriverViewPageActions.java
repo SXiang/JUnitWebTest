@@ -1501,7 +1501,8 @@ public class DriverViewPageActions extends BaseDrivingViewPageActions {
 			TestContext.INSTANCE.stayIdle(INCREMENT);
 			durationInSec += INCREMENT;
 		}
-
+		Set<Indication> indicationSet = new OLMapUtility(getDriver()).getIndicationsArray();
+		allIndications.addAll(indicationSet);
 		Log.info(String.format("Indications detected in view = %d", allIndications.size()));
 		allIndications.forEach(i -> Log.info(i.toString()));
 		return allIndications;
