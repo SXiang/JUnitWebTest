@@ -398,7 +398,7 @@ public class BaseAndroidTest extends BaseTest {
 		action.removeSdcardFile(videoFileName);
 	}
 
-	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
+	// Perf optimization. pause simulator processes to prevent delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
 	protected boolean executeWithBackPackDataProcessesPaused(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		return executeWithBackPackDataProcessesPausedInternal(applyInitialPause, predicate);

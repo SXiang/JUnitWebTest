@@ -188,12 +188,11 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnMarkAsComplete();
 
-			// [Turned OFF] Disabled due to failure in APK-159. To be enabled when automation test run moved to APK-174+ with product fixes. Tracked in US4698.
-			//investigateReportScreen.waitForScreenLoad();
-			//String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
-			//Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
-			//assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
-			//		actualMarkerStatus.equals(foundOtherSource));
+			investigateReportScreen.waitForScreenLoad();
+			String actualMarkerStatus = investigateReportScreen.getInvestigationMarkers().get(idx-1).getInvestigationStatus();
+			Log.info(String.format("Expected marker status=[%s]. Found marker status=[%s]", foundOtherSource, actualMarkerStatus));
+			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundOtherSource, actualMarkerStatus),
+					actualMarkerStatus.equals(foundOtherSource));
 
 			return true;
 		});
@@ -418,7 +417,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			mapScreen.assertDefaultMethaneValueShownInTopPanelIsCorrect();
 			mapScreen.assertGpsLabelIsGreen();
 
-			// TBD: As discussed with Praki, Gps is RED check skipped. Turn off GPS on emulator does not simulate this condition.
+			// As discussed with Praki, Gps is RED check skipped. Turn off GPS on emulator does not simulate this condition.
 			// Currently no known way to simulate this condition from code. Skipping the GPS is red check.
 
 			mapScreen.clickOnMenuButton();

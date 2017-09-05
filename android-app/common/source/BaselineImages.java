@@ -42,5 +42,7 @@ public class BaselineImages {
 		public static final String PleaseEnterYourPassword = "please-enter-your-password.png";
 		public static final String PleaseEnterUsername = "please-enter-username.png";
 		public static final String PleaseEnterUsernameAndPassword = "please-enter-username-and-password.png";
+		public static final String PavedWallToWallChecked = "paved-wall-to-wall-checked.png";
+		public static final String PavedWallToWallUnChecked = "paved-wall-to-wall-unchecked.png";
 	}
 }

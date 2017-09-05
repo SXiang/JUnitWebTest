@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -356,12 +354,10 @@ public class AndroidLeakScreenTest5 extends AndroidLeakScreenTestBase {
 		assertTrue(String.format("CSV -> Expected InvestigationStatus NOT correct. Expected=[%s]. Actual=[%s]", foundGasLeak, lisaInvestigationMetaData.get("InvestigationStatus")),
 				lisaInvestigationMetaData.get("InvestigationStatus").equals(foundGasLeak));
 
-		// TBD: Turned off due to product defect DE3292. Underscores in selectbox values will cause comparison to fail.
-		//String[][] inputLeakCSVDetails = leakDetails.toCSVLeakDetails(false /*ignoreLocation*/);
-		//Map<String, String> leakDetailsFromCSV = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
-		//assertTrue(String.format("CSV -> Expected leak details data in CSV NOT correct. Expected=[%s]. Actual in CSV=[%s]", LogHelper.arrayOfArrayToString(inputLeakCSVDetails),
-		//		LogHelper.mapToString(leakDetailsFromCSV)), CollectionsUtil.isEqualsArrayMap(inputLeakCSVDetails, leakDetailsFromCSV));
-		//
+		String[][] inputLeakCSVDetails = leakDetails.toCSVLeakDetails(false /*ignoreLocation*/);
+		Map<String, String> leakDetailsFromCSV = complianceReportsPageAction.getLISAInvestigationMetaData(selectedLisaNum, reportDataRowID1);
+		assertTrue(String.format("CSV -> Expected leak details data in CSV NOT correct. Expected=[%s]. Actual in CSV=[%s]", LogHelper.arrayOfArrayToString(inputLeakCSVDetails),
+				LogHelper.mapToString(leakDetailsFromCSV)), CollectionsUtil.isEqualsArrayMap(inputLeakCSVDetails, leakDetailsFromCSV));
 	}
 
 	/**

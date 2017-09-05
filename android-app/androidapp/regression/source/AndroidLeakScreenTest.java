@@ -21,7 +21,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import androidapp.data.source.InvestigationReportDataVerifier.BoxType;
 import androidapp.dataprovider.ReportListDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.LeakListInfoEntity;
@@ -41,11 +40,9 @@ import common.source.CollectionsUtil;
 import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;

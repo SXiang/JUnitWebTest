@@ -1,5 +1,6 @@
 package androidapp.screens.source;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.PageFactory;
 
 import androidapp.entities.source.LeakInfoEntity;
+import common.source.BaselineImages;
 import common.source.Log;
 import common.source.LogHelper;
 import common.source.MobileActions;
@@ -323,6 +325,16 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		clickAndPressKey(this.pavedWallToWall, KeyCode.KEYCODE_ENTER);
 	}
 
+	private Boolean isPavedWallToWallSelected() throws IOException {
+		Log.method("isPavedWallToWallSelected");
+		return screenVerifier.verifyImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PavedWallToWallChecked);
+	}
+
+	private Boolean isPavedWallToWallUnSelected() throws IOException {
+		Log.method("isPavedWallToWallUnSelected");
+		return screenVerifier.verifyImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.PavedWallToWallUnChecked);
+	}
+
 	/****** TextField Methods ******/
 
 	public String getApartmentNumberText() {
@@ -488,7 +500,7 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 	}
 
 	public void clearAndFillForm(Map<String, Object> formValues) throws Exception {
-		Log.method("fillForm", LogHelper.mapToString(formValues));
+		Log.method("clearAndFillForm", LogHelper.mapToString(formValues));
 		clearTextFields();
 		fillForm(formValues, true /*editing*/, true /*clickOkButton*/);
 	}
@@ -652,7 +664,14 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		String actualSurfaceOverleakType = this.getSurfaceOverleakTypeSelectedText();
 		String actualMeterNum = this.getMeterNumberText();
 		String actualLocationRemarks = this.getLeakLocationRemarksText();
-		Boolean actualIsPavedWallToWall = this.pavedWallToWall.isSelected();
+		Boolean actualIsPavedWallToWall = false;
+
+		// use image verification method corresponding to expected value to prevent waits.
+		if (expectedIsPavedWallToWall) {
+			actualIsPavedWallToWall = isPavedWallToWallSelected() ? true : false;
+		} else {
+			actualIsPavedWallToWall = isPavedWallToWallUnSelected() ? false : true;
+		}
 
 		scrollToNextPage();
 
@@ -683,24 +702,6 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 		actualLeakInfo.setLocationRemarks(actualLocationRemarks);
 		actualLeakInfo.setIsPavedWallToWall(actualIsPavedWallToWall);
 		actualLeakInfo.setAdditionalNotes(actualAdditionalNotes);
-
-		// TBD: These are workaround added for issues we are facing with last published APK in CI runs.
-		//  1. Only first 71 characters are getting typed in CI runs in Location Remarks textfield. Comparing only first 71 chars.
-		//  2. Checkbox in React Native is rendered as ViewGroup+TextView. Need to workaround in appium to handle this control. Turn off isPavedWall2Wall check for now.
-		actualLeakInfo.setIsPavedWallToWall(false);
-		expectedLeakInfo.setIsPavedWallToWall(false);
-		if (actualLocationRemarks.length()>70) {
-			actualLeakInfo.setLocationRemarks(actualLocationRemarks.substring(0, 70));
-		}
-		if (expectedLocationRemarks.length()>70) {
-			expectedLeakInfo.setLocationRemarks(expectedLocationRemarks.substring(0, 70));
-		}
-		if (actualAdditionalNotes.length()>88) {
-			actualLeakInfo.setAdditionalNotes(actualAdditionalNotes.substring(0, 88));
-		}
-		if (expectedAdditionalNotes.length()>88) {
-			expectedLeakInfo.setAdditionalNotes(expectedAdditionalNotes.substring(0, 88));
-		}
 
 		// verify
 		Boolean match = actualLatitude.length()>5;
