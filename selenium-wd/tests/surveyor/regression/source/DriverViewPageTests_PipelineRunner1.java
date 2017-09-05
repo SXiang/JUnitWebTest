@@ -80,6 +80,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
 		// stop survey.
+		takeScreenshots();
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
@@ -157,6 +158,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// stop survey.
+		takeScreenshots();
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
