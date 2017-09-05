@@ -79,7 +79,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		// collect indications shown during the survey.
 		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
-//		// stop survey.
+		// stop survey.
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
