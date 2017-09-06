@@ -87,6 +87,21 @@ public class AndroidAutomationToolsTest {
 	}
 
 	@Test
+	public void testEnsureAppiumServerIsRunning() throws IOException {
+		AndroidAutomationTools.ensureAppiumServerIsRunning();
+	}
+
+	@Test
+	public void testStartAppiumServer() throws IOException {
+		AndroidAutomationTools.startAppiumServer();
+	}
+
+	@Test
+	public void testStopAppiumServer() throws Exception {
+		AndroidAutomationTools.stopAppiumServer();
+	}
+
+	@Test
 	public void testRestart() throws IOException {
 		AndroidAutomationTools.restart();
 	}

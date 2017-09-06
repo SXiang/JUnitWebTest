@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -160,7 +161,7 @@ public class WebDriverWrapper {
 		return androidDriver;
 	}
 
-	public RemoteWebDriver createAndroidAppNativeDriver(boolean isDevice) throws MalformedURLException{
+	public RemoteWebDriver createAndroidAppNativeDriver(boolean isDevice) throws IOException{
 		// CAPABILITIES: https://appium.io/slate/en/master/?ruby#appium-server-capabilities, https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 		DesiredCapabilities capabilities=DesiredCapabilities.android();
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.APPIUM);

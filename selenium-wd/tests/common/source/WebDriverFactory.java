@@ -1,5 +1,6 @@
 package common.source;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class WebDriverFactory {
 		return webDriverWrapper;
 	}
 
-	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws MalformedURLException {
+	protected static WebDriverWrapper createAndroidAppNativeDriver(boolean isDevice) throws IOException {
 		WebDriverWrapper webDriverWrapper = new WebDriverWrapper();
 		webDriverWrapper.createAndroidAppNativeDriver(isDevice);
 		return webDriverWrapper;
@@ -71,7 +72,7 @@ public class WebDriverFactory {
 					} else {
 						webDriver = createAndroidAppWebDriver(isDevice);
 					}
-				} catch (MalformedURLException ex) {
+				} catch (IOException ex) {
 					Log.error(ExceptionUtility.getStackTraceString(ex));
 				}
 		        return webDriver;
