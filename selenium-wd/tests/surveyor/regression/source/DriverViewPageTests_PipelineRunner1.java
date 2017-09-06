@@ -8,11 +8,9 @@ import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.relevantcodes.extentreports.LogStatus;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
-import common.source.TestContext;
 import common.source.OLMapEntities.Indication;
 import common.source.Screenshotter;
 import surveyor.dataprovider.DriverViewDataProvider;

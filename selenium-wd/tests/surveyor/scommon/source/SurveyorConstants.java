@@ -11,7 +11,6 @@ import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ConstantDataProvider;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
  * @author zlu

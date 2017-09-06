@@ -215,7 +215,7 @@ public class BaseTest {
 		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
 		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
 	}
-	
+
 	protected static void captureAdditionalDriverScreenshots(String className) {
 		Log.method("captureAdditionalDriverScreenshots", className);
 		int driverCount = WebDriverFactory.getDriversCount();
