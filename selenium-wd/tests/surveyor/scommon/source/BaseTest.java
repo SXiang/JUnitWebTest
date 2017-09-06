@@ -215,14 +215,6 @@ public class BaseTest {
 		String failureMsg = "FAILURE: " + ExceptionUtility.getStackTraceString(e);
 		getExtentTest(className).log(LogStatus.FAIL, failureMsg);
 	}
-
-	public static void takeScreenshots(){
-		takeScreenshots(getDriver());
-	}
-	
-	public static void takeScreenshots(WebDriver driver){
-		getScreenCapture().takeScreenshots(driver, TestContext.INSTANCE.getTestClassName(), true /*takeBrowserScreenShot*/, LogStatus.INFO);
-	}
 	
 	protected static void captureAdditionalDriverScreenshots(String className) {
 		Log.method("captureAdditionalDriverScreenshots", className);
