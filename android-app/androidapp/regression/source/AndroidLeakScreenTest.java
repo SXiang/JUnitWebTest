@@ -21,7 +21,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import androidapp.data.source.InvestigationReportDataVerifier.BoxType;
 import androidapp.dataprovider.ReportListDataProvider;
 import androidapp.entities.source.InvestigationMarkerEntity;
 import androidapp.entities.source.LeakListInfoEntity;
@@ -41,23 +40,21 @@ import common.source.CollectionsUtil;
 import common.source.ExceptionUtility;
 import common.source.FunctionUtil;
 import common.source.Log;
-import common.source.LogHelper;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
-	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
 
@@ -77,6 +74,8 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 	protected AndroidAddOtherSourceFormDialog addOtherSourceFormDialog;
 
+	private static LoginPageActions loginPageAction;
+
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
 	@Rule
@@ -90,6 +89,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 	@Before
 	public void beforeTest() throws Exception {
 		notInvestigated = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Not_Investigated);
+		initializePageActions();
 		createTestCaseData(testName);
 		if (!isRunningInDataGenMode()) {
 			initializeTestDriver();
@@ -110,6 +110,14 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 				BackPackAnalyzer.stopSimulator();
 			}
 		}
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -143,14 +151,15 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 		Log.info("\nRunning TC2434_EnergyBackpackLoggingMultipleLeaksWithinClassicLISAs ...");
 
 		if (isRunningInDataGenMode()) {
-			Log.info("Running "
-					+ "in data generation mode. Skipping test execution...");
+			Log.info("Running in data generation mode. Skipping test execution...");
 			return;
 		}
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -221,9 +230,11 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -293,12 +304,14 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
 		String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -413,9 +426,11 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -445,7 +460,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addOtherSourceFormDialog.clickOnUseCurrentLocation();
 			addOtherSourceFormDialog.selectLeakSource(LeakSourceType.Catch_Basin);
 			addOtherSourceFormDialog.enterAdditionalNotes(DataGenerator.getRandomText(20, 100));
-			addOtherSourceFormDialog.clickOnOK();
+			addOtherSourceFormDialog.clickOnSubmit();
 			addedSourcesListDialog.waitForScreenLoad();
 			assertOtherSourceListInfoIsCorrect(addedSourcesListDialog.getOtherSourcesList());
 			return true;
@@ -486,13 +501,15 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -511,7 +528,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		String[] markerStatuses = {foundGasLeak, inProgress};
 		Integer idx = checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
-				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle);
+				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle, userDataRow.username);
 
 		// Markers screen. Click on LISA marked as Found Gas Leak
 		investigateReportScreen.clickMarkerMatchingStatusAtIndex(Arrays.asList(markerStatuses), idx);
@@ -565,7 +582,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			addLeakSourceFormDialog.tapOnCancel();
 
 			// cancel leak form. cancel list dialog.
-			addedSourcesListDialog.clickOnCancel();
+			investigateMapScreen.dismissPopup();
 			investigateMapScreen.waitForScreenLoad();
 
 			return true;
@@ -635,14 +652,16 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
 		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
 			investigationScreen.waitForResultsToLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -661,7 +680,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 
 		String[] markerStatuses = {foundGasLeak, inProgress};
 		Integer idx = checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog,
-				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle);
+				addLeakSourceFormDialog, addedSourcesListDialog, confirmationDialog, Arrays.asList(markerStatuses), listOfListMarkers, generatedInvReportTitle, userDataRow.username);
 
 		// Markers screen. Click on LISA marked as Found Gas Leak
 		investigateReportScreen.clickMarkerMatchingStatusAtIndex(Arrays.asList(markerStatuses), idx);
@@ -732,61 +751,61 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			userDataRowID = (Integer)tc2434[0][1];
 			reportDataRowID1 = (Integer)tc2434[0][2];
 			tcId = "TC2434";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2435_")) {
 			Object[][] tc2435 = ReportListDataProvider.dataProviderReportList_TC2435();
 			userDataRowID = (Integer)tc2435[0][1];
 			reportDataRowID1 = (Integer)tc2435[0][2];
 			tcId = "TC2435";
-			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2436_")) {
 			Object[][] tc2436 = ReportListDataProvider.dataProviderReportList_TC2436();
 			userDataRowID = (Integer)tc2436[0][1];
 			reportDataRowID1 = (Integer)tc2436[0][2];
 			tcId = "TC2436";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2437_")) {
 			Object[][] tc2437 = ReportListDataProvider.dataProviderReportList_TC2437();
 			userDataRowID = (Integer)tc2437[0][1];
 			reportDataRowID1 = (Integer)tc2437[0][2];
 			tcId = "TC2437";
-			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2438_")) {
 			Object[][] tc2438 = ReportListDataProvider.dataProviderReportList_TC2438();
 			userDataRowID = (Integer)tc2438[0][1];
 			reportDataRowID1 = (Integer)tc2438[0][2];
 			tcId = "TC2438";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2439_")) {
 			Object[][] tc2439 = ReportListDataProvider.dataProviderReportList_TC2439();
 			userDataRowID = (Integer)tc2439[0][1];
 			reportDataRowID1 = (Integer)tc2439[0][2];
 			tcId = "TC2439";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasAndGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers, gapNumbers).getReportTitle();
 		}
 	}
 

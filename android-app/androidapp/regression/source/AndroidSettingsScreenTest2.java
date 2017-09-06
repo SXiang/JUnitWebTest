@@ -12,6 +12,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
+
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import androidapp.dataprovider.AndroidSettingsDataProvider;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
 import androidapp.screens.source.AndroidInvestigationScreen;
@@ -22,12 +26,15 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import surveyor.scommon.source.SurveyorConstants;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 
 public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidInvestigateMapScreen investigateMapScreen;
+
+	private static LoginPageActions loginPageAction;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
@@ -43,6 +50,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	public void beforeTest() throws Exception {
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
@@ -56,6 +64,14 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -77,7 +93,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			Log.info("Map screen loaded successfully!");
 
 			final String actualMaxText = mapScreen.getMaxText();
-			final String expectedMaxText = String.format("Max: %s", "2.0 ppm");
+			final String expectedMaxText = String.format("Max %s", "2.0 ppm");
 			final String actualModeText = mapScreen.getModeText();
 			final String expectedModeText = "Methane Mode";
 			final String actualAmplitudeText = mapScreen.getAmplitudeText();
@@ -119,8 +135,8 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			try {
 				final String actualAmplitudeText = mapScreen.getAmplitudeText();
 				final String expectedAmplitudeText = "2.0";
-
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 					mapScreen.clickOnToggleMode();
 					assertTrue(String.format("Amplitude should be greater than 0.9. Actual=[%s]", actualAmplitudeText), Float.valueOf(actualAmplitudeText) > 0.9f);
 				} else {
@@ -135,8 +151,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			} finally {
 				// revert back to Methane mode
 				if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-					mapScreen.clickOnToggleMode();
-					mapScreen.assertMethaneModeIsShownInTopPanel();
+					mapScreen.ensureAnalyzerIsInMethaneMode();
 				}
 			}
 
@@ -157,10 +172,13 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	 *	- - List of Compliance Reports appears
 	 */
 	@Test
-	public void TC2551_EnergyBackpack_InvestigationScreenTablet() throws Exception {
+	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2551, location = AndroidSettingsDataProvider.class)
+	public void TC2551_EnergyBackpack_InvestigationScreenTablet(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2551_EnergyBackpack_InvestigationScreenTablet ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.waitForScreenLoad();
 			Log.info("Map screen loaded successfully!");
@@ -168,19 +186,17 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 			mapScreen.clickOnInvestigate();
 			initializeMapScreen();
 			mapScreen.waitForLoginDialogToShow();
+
 			mapScreen.assertEnterPasswordHintTextIsShown(BaselineImages.Folder.TC2551, BaselineImages.ImageFile.EnterPassword);
 
 			final String actualUsername = mapScreen.getUsernameEditView().getText();
-			final String expectedUsername = SurveyorConstants.SQAPICDR;
-			final String actualServerUrl = mapScreen.getServerEditView().getText();
-			final String expectedServerUrl = TestContext.INSTANCE.getTestSetup().getBaseUrl();
-			assertTrue(String.format("ServerUrl is NOT correct. Expected=[%s]; Actual=[%s]", expectedServerUrl, actualServerUrl), actualServerUrl.equals(expectedServerUrl));
+			final String expectedUsername = userDataRow.username;
 			assertTrue(String.format("Username is NOT correct. Expected=[%s]; Actual=[%s]", expectedUsername, actualUsername), actualUsername.equals(expectedUsername));
 
-			mapScreen.enterPassword(SurveyorConstants.PICADMINPSWD);
+			mapScreen.enterPassword(userDataRow.password);
 			mapScreen.clickOnSubmit();
 			investigationScreen.waitForScreenLoad();
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			return true;
 		});
 	}

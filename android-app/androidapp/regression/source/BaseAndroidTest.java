@@ -26,6 +26,7 @@ import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.AppConstants;
+import common.source.AppiumServerInterface;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
@@ -212,16 +213,19 @@ public class BaseAndroidTest extends BaseTest {
 			collectPerfmonMetrics(testName);
 		}
 
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
-				collectServiceInfos(testName);
-			}
-		}
-
+		stopServiceCorrectors(testName);
 		createRecording(testName);
 
 		if (isLoggingEnabled) {
 			collectAdbLogs(testName);
+		}
+	}
+
+	private void stopServiceCorrectors(String testName) throws Exception {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				collectServiceInfos(testName);
+			}
 		}
 	}
 
@@ -283,23 +287,27 @@ public class BaseAndroidTest extends BaseTest {
 			perfmonCollector.startCollectors();
 		}
 
-		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
-			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
-				initServiceCorrector();
-				List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
-				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYINSTRMGR_PY, null, getServiceInfoPredicate()));
-				expectedServices.add(new ServiceInfo(PYTHON_EXE, ODORCALL_SERVER_PY, null, getServiceInfoPredicate()));
-				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYLINEARFITTERALARM_PY, null, getServiceInfoPredicate()));
-				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_LINEAR_FITTER_BROADCASTER_PY, null, getServiceInfoPredicate()));
-				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_DATA_MANAGER_BROADCASTER_PY, null, getServiceInfoPredicate()));
-				serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
-			}
-		}
+		startServiceCorrectors();
 
 		if (enableLogging) {
 			initLogCollector();
 			logCollector.startLogging(appiumDriver);
 			isLoggingEnabled = true;
+		}
+	}
+
+	private void startServiceCorrectors() {
+		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+			if (TestContext.INSTANCE.getTestSetup().isAndroidTestServiceCorrectorsEnabled()) {
+				initServiceCorrector();
+				List<ServiceInfo> expectedServices = new ArrayList<ServiceInfo>();
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYINSTRMGR_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, ODORCALL_SERVER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, DUMMYLINEARFITTERALARM_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_LINEAR_FITTER_BROADCASTER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				expectedServices.add(new ServiceInfo(PYTHON_EXE, SIM_DATA_MANAGER_BROADCASTER_PY, null, getBackPackSimulatorServiceInfoPredicate()));
+				serviceCorrector.startCorrector(expectedServices.toArray(new ServiceInfo[expectedServices.size()]));
+			}
 		}
 	}
 
@@ -398,7 +406,7 @@ public class BaseAndroidTest extends BaseTest {
 		action.removeSdcardFile(videoFileName);
 	}
 
-	// Perf optimization. pause simulator processes causing delay in fetching element using Appium driver.
+	// Perf optimization. pause simulator processes to prevent delay in fetching element using Appium driver.
 	// This method will execute test steps specified by pausing the backpack simulator and resume simulator after completion.
 	protected boolean executeWithBackPackDataProcessesPaused(boolean applyInitialPause, CheckedPredicate<Object> predicate) throws Exception {
 		return executeWithBackPackDataProcessesPausedInternal(applyInitialPause, predicate);
@@ -427,7 +435,7 @@ public class BaseAndroidTest extends BaseTest {
 		return retVal;
 	}
 
-	private Predicate<String> getServiceInfoPredicate() {
+	private Predicate<String> getBackPackSimulatorServiceInfoPredicate() {
 		Predicate<String> predicate = el -> {
 			FunctionUtil.warnOnError(() -> BackPackAnalyzer.restartSimulator());
 			return true;
@@ -537,8 +545,10 @@ public class BaseAndroidTest extends BaseTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void initializeAppiumDriver() throws MalformedURLException {
+	protected void initializeAppiumDriver() throws IOException {
 		Log.method("initializeAppiumDriver");
+		// Server must be running, else webdriver creation will fail.
+		AndroidAutomationTools.ensureAppiumServerIsRunning();
 		appiumDriver =  (AppiumDriver<WebElement>) WebDriverFactory.getAndroidAppNativeDriver(TestContext.INSTANCE.isRunningOnAndroidDevice());
 	}
 

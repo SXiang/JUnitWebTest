@@ -9,13 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import common.source.BaselineImages;
 import common.source.Log;
-import common.source.MobileActions;
 import common.source.TestContext;
-import common.source.MobileActions.ZoomDirection;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
+
+	private static final String MARKER_INVESTIGATION_STATUS_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
 
 	private static final String ADD_CGI_BTN_UISELECTOR = "new UiSelector().text(\"Add CGI\")";
 
@@ -63,7 +63,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	/****** Label elements ******/
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = MARKER_INVESTIGATION_STATUS_XPATH)
 	@CacheLookup
 	private WebElement markerInvestigationStatus;
 
@@ -81,6 +81,11 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public AndroidInvestigateMapScreen(WebDriver driver) {
 		super(driver);
+	}
+
+	public void dismissPopup() {
+		Log.method("dismissPopup");
+		tap(getGoogleMapView());
 	}
 
 	/****** Button Methods ******/
@@ -166,7 +171,7 @@ public class AndroidInvestigateMapScreen extends AndroidBaseScreen {
 
 	public String getMarkerInvestigationStatusText() {
 		Log.method("getMarkerInvestigationStatusText");
-		String xPathString = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.TextView[1]";
+		String xPathString = MARKER_INVESTIGATION_STATUS_XPATH;
 		waitForElementToBeClickable(By.xpath(xPathString));
 		markerInvestigationStatus = getAndroidDriver().findElementByXPath(xPathString);
 		return markerInvestigationStatus.getText();

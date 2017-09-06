@@ -17,11 +17,10 @@ import surveyor.scommon.mobile.source.LeakDataTypes.SourceType;
 
 public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 
-	private static final String CANCEL_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Cancel\")";
 	private static final String ADD_OTHER_SOURCES_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Add Other Sources\")";
 	private static final String ADD_LEAK_BUTTON_UI_SELECTOR = "new UiSelector().text(\"Add Leak\")";
 
-	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement headerElement;
 
@@ -33,12 +32,9 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	@AndroidFindBy(uiAutomator = ADD_OTHER_SOURCES_BUTTON_UI_SELECTOR)
 	private WebElement addOtherSources;
 
-	@AndroidFindBy(xpath = CANCEL_BUTTON_UI_SELECTOR)
-	private WebElement cancel;
-
 	/****** ListView elements ******/
 
-	private static final String SOURCES_LIST_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[3]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]";
+	private static final String SOURCES_LIST_XPATH = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]";
 	@AndroidFindBy(xpath = SOURCES_LIST_XPATH)
 	private List<WebElement> sourcesList;
 
@@ -96,17 +92,6 @@ public class AndroidAddedSourceListDialog extends AndroidBaseScreen {
 	public void clickOnAddOtherSources() {
 		Log.method("clickOnAddOtherSources");
 		tap(getAddOtherSourcesButton());
-	}
-
-	public WebElement getCancelButton() {
-		Log.method("getCancelButton");
-		cancel = getAndroidDriver().findElementByAndroidUIAutomator(CANCEL_BUTTON_UI_SELECTOR);
-		return cancel;
-	}
-
-	public void clickOnCancel() {
-		Log.method("clickOnCancel");
-		tap(getCancelButton());
 	}
 
 	public void clickOnFirstMatchingListItemOfType(SourceType sourceType) {

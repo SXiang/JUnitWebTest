@@ -8,15 +8,12 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.eclipse.jetty.util.log.Log;
-
 import common.source.BaseHelper;
 import common.source.EnumUtility;
 import common.source.FileUtility;
 import surveyor.dataprovider.DataGenerator;
 import surveyor.dataprovider.DataGenerator.Address;
 import surveyor.scommon.entities.LeakDetailEntity;
-import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.IndicationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakLocationType;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakPipeMaterialType;
@@ -25,7 +22,6 @@ import surveyor.scommon.mobile.source.LeakDataTypes.LeakType;
 import surveyor.scommon.mobile.source.LeakDataTypes.ReadingUnitType;
 import surveyor.scommon.mobile.source.LeakDataTypes.SurfaceOverLeakType;
 import surveyor.scommon.source.ReportInvestigationsPage.IndicationStatus;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 public class LeakDataGenerator {
 
@@ -101,8 +97,8 @@ public class LeakDataGenerator {
 			 	.setIsPavedWallToWall(true)
 			 	.setSurfaceOverLeakType(SurfaceOverLeakType.Concrete)
 			 	.setMeterNumber(DataGenerator.getNumberBetween(1, 999).toString())
-			 	.setLocationRemarks(DataGenerator.getRandomText(20, 100))
-			 	.setAdditionalNotes(DataGenerator.getRandomText(20, 100));
+			 	.setLocationRemarks(DataGenerator.getRandomText(20, 200))
+			 	.setAdditionalNotes(DataGenerator.getRandomText(20, 200));
 			return this;
 		}
 

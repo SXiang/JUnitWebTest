@@ -17,31 +17,31 @@ import surveyor.dataaccess.source.StoredProcLisaInvestigationShowIndication;
 import androidapp.entities.source.InvestigationMarkerEntity;
 
 public class AndroidInvestigateReportScreen extends AndroidBaseScreen {
-	private static final String MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[2]";
-	private static final String MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[%d]/android.widget.TextView[1]";
+	private static final String MARKER_STATUS_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[%d]/android.widget.TextView[2]";
+	private static final String MARKER_NAME_XPATH_WITH_IDX_PLACEHOLDER = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[%d]/android.widget.TextView[1]";
 	private static final String CHILD_TEXTVIEW_CLSNAME = "android.widget.TextView";
 	private static final String LIST_ITEMS_XPATH = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup";
 
 	@AndroidFindBy(xpath = LIST_ITEMS_XPATH)
 	private List<WebElement> listViewElements;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[1]")
+	@AndroidFindBy(xpath = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[1]")
 	@CacheLookup
 	private WebElement firstRowLisaNumber;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView[2]")
+	@AndroidFindBy(xpath = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement firstRowInvestigationStatus;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView[2]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.TextView[2]")
 	@CacheLookup
 	private WebElement noInvestigationMarkersFoundTextView;
 
-	@AndroidFindBy(xpath = "//android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ScrollView[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]")
 	@CacheLookup
 	private WebElement investigationMarkersContainerView;
 
-	@AndroidFindBy(xpath = "//android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
+	@AndroidFindBy(xpath = "//android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.widget.Spinner[1]")
 	@CacheLookup
 	private WebElement markerTypeSelector;
 

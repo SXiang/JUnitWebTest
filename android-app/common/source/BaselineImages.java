@@ -39,5 +39,10 @@ public class BaselineImages {
 		public static final String ErrorMissingHttpOrHttps = "error-missing-http-or-https.png";
 		public static final String ErrorSpecifyPortNumber = "error-specify-port-number.png";
 		public static final String ErrorUrlMustStartWithHttpOrHttps = "url-must-start-with-http-or-https.png";
+		public static final String PleaseEnterYourPassword = "please-enter-your-password.png";
+		public static final String PleaseEnterUsername = "please-enter-username.png";
+		public static final String PleaseEnterUsernameAndPassword = "please-enter-username-and-password.png";
+		public static final String PavedWallToWallChecked = "paved-wall-to-wall-checked.png";
+		public static final String PavedWallToWallUnChecked = "paved-wall-to-wall-unchecked.png";
 	}
 }

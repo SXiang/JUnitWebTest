@@ -13,6 +13,9 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.support.PageFactory;
 
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
+import androidapp.dataprovider.AndroidSettingsDataProvider;
 import androidapp.screens.source.AndroidConnectingToBackPackServerDialog;
 import androidapp.screens.source.AndroidInvestigateMapScreen;
 import androidapp.screens.source.AndroidInvestigateReportScreen;
@@ -22,6 +25,8 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
@@ -30,6 +35,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidInvestigateMapScreen investigateMapScreen;
 	protected AndroidConnectingToBackPackServerDialog connectingDialog;
+
+	private static LoginPageActions loginPageAction;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
@@ -43,6 +50,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		initializeTestDriver();
 		initializeTestScreenObjects();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
@@ -61,6 +69,14 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	}
 
 	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
+	}
+
+	/**
 	 * Test Case ID: TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing
 	 * Test Description: Energy Backpack Network Configuration settings incorrect or missing
 	 * Script: -
@@ -74,13 +90,18 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	 *	- - If connection to Backpack server is successful, user is navigate to map centered on user's location
 	 */
 	@Test
-	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing() throws Exception {
+	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2443, location = AndroidSettingsDataProvider.class)
+	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing ...");
+
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
 		final String validPort = "3000";
 		final String invalidPort = "3001";
-		mainLoginScreen.saveSettings(backpackAddress.replace(validPort, invalidPort), picServerAddress, SurveyorConstants.SQAPICDR);
+		final String backpackAddressInvalidPort = backpackAddress.replace(validPort, invalidPort);
+		mainLoginScreen.saveSettings(backpackAddressInvalidPort, picServerAddress, userDataRow.username);
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);
@@ -88,6 +109,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 			Log.info("'Connecting to backpack server' message was shown in Connecting dialog");
 			connectingDialog.assertEditSettingsButtonIsShown();
 			Log.info("Edit settings button was shown in Connecting dialog");
+			assertTrue("'Connecting to backpack server' message shown in Connecting dialog is NOT correct.", connectingDialog.getConnectingLabelText().equals(
+					String.format("Connecting to backpack server at %s, please wait!", backpackAddressInvalidPort)));
 			return true;
 		});
 	}
@@ -102,10 +125,13 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	 *	- - User is immediately navigated to map centered on user's location
 	 */
 	@Test
-	public void TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect() throws Exception {
+	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2444, location = AndroidSettingsDataProvider.class)
+	public void TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.waitForScreenLoad();
 			mapScreen.assertMapIsCenteredForPicarroUser();

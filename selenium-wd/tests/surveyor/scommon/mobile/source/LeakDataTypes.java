@@ -34,13 +34,13 @@ public class LeakDataTypes {
 	public enum LeakLocationType {
 		Main ("Main"),
 		Service ("Service"),
-		Service_T ("Service_T"),
-		Service_Branch ("Service_Branch"),
+		Service_T ("Service T"),
+		Service_Branch ("Service Branch"),
 		Riser ("Riser"),
-		Meter_Set ("Meter_Set"),
-		Customer_Equipment ("Customer_Equipment"),
-		Sewer_Manhole ("Sewer_Manhole"),
-		Catch_Basin ("Catch_Basin"),
+		Meter_Set ("Meter Set"),
+		Customer_Equipment ("Customer Equipment"),
+		Sewer_Manhole ("Sewer Manhole"),
+		Catch_Basin ("Catch Basin"),
 		Substructure ("Substructure"),
 		Other ("Other");
 		private final String name;
@@ -57,12 +57,12 @@ public class LeakDataTypes {
 	public enum LeakSourceType {
 		Gas ("Gas"),
 		Sewer ("Sewer"),
-		Catch_Basin ("Catch_Basin"),
+		Catch_Basin ("Catch Basin"),
 		Landfill ("Landfill"),
 		Swamp ("Swamp"),
 		Customer ("Customer"),
-		Other_Enclosure ("Other_Enclosure"),
-		Other_Natural_Source ("Other_Natural_Source");
+		Other_Enclosure ("Other Enclosure"),
+		Other_Natural_Source ("Other Natural Source");
 		private final String name;
 
 		LeakSourceType(String nm) {
@@ -75,8 +75,8 @@ public class LeakDataTypes {
 	}
 
 	public enum LeakType {
-		Above_Ground ("Above_Ground"),
-		Below_Ground ("Below_Ground");
+		Above_Ground ("Above Ground"),
+		Below_Ground ("Below Ground");
 		private final String name;
 
 		LeakType(String nm) {
@@ -107,9 +107,9 @@ public class LeakDataTypes {
 	public enum SurfaceOverLeakType {
 		Above_Ground ("Above_Ground"),
 		Concrete ("Concrete"),
-		Un_surfaced ("Un_surfaced"),
-		Tar_Component ("Tar_Component"),
-		In_Substructure ("In_Substructure"),
+		Un_surfaced ("Un surfaced"),
+		Tar_Component ("Tar Component"),
+		In_Substructure ("In Substructure"),
 		Other ("Other");
 		private final String name;
 

@@ -4,18 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class AndroidAutomationTools {
-	private static final String APPIUM_SERVER_HOSTNAME = "localhost";
 	private static final String DEFAULT_EMULATOR_AVD_NAME = "android_23_google_apis_x86_Tab_S_8.4_Black";
 	private static final String INSTALL_LAUNCH_APK_CMD = "InstallAPKLaunchMainActivity.cmd";
 	private static final String START_ANDROID_TOOLS_CMD = "StartAndroidAutomationTools.cmd";
-	private static final String START_APPIUM_SERVER_CMD = "StartAppiumServer.cmd";
 	private static final String START_REACT_NATIVE_PACKAGER_CMD = "StartReactNativePackager.cmd";
 	private static final String STOP_ANDROID_TOOLS_CMD = "StopAndroidAutomationTools.cmd";
-	private static final Integer APPIUM_SERVER_PORT = 4723;
 	private static final Integer CATCH_UP_TIME_IN_SECS = 3;
 	private static final Integer DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC = 1000;
 	private static final Integer MAX_RETRIES_IN_POLL = 30;
-	private static final Integer PING_TIMEOUT = 1000;
 
 	public static class ShellCommands {
 		public static final String DUMPSYS_ACTIVITY = "dumpsys activity";
@@ -100,6 +96,11 @@ public class AndroidAutomationTools {
 		return AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.DUMPSYS_CPUINFO);
 	}
 
+	public static void ensureAppiumServerIsRunning() throws IOException {
+		Log.method("ensureAppiumServerIsRunning");
+		AppiumServerInterface.ensureAppiumServerIsRunning();
+	}
+
 	public static void startReactNative() throws IOException {
 		Log.method("startReactNative");
 		String startReactNativeCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
@@ -124,19 +125,12 @@ public class AndroidAutomationTools {
 
 	public static void startAppiumServer() throws IOException {
 		Log.method("startAppiumServer");
-		String startAppiumServerCmdFolder = TestSetup.getExecutionPath(TestSetup.getRootPath()) + "lib";
-		String repoRootFolder = TestSetup.getRootPath();
-		String startAppiumServerCmd = START_APPIUM_SERVER_CMD + String.format(" %s", "\"" + repoRootFolder + "\"");
-		String command = "cd \"" + startAppiumServerCmdFolder + "\" && " + startAppiumServerCmd;
-		Log.info("Executing start appium server command. Command -> " + command);
-		ProcessUtility.executeProcess(command, /* isShellCommand */ true, /* waitForExit */ false);
-		waitForAppiumServerToStart();
-		waitForAppiumServerToCatchUp();
+		AppiumServerInterface.startAppiumServer();
 	}
 
-	public static void stopAppiumServer() throws Exception {
+	public static void stopAppiumServer() throws Exception  {
 		Log.method("stopAppiumServer");
-		ProcessUtility.killProcess("node.exe", false /*killChildProcesses*/);
+		AppiumServerInterface.stopAppiumServer();
 	}
 
 	private static void startEmulator() throws IOException {
@@ -157,17 +151,6 @@ public class AndroidAutomationTools {
 		Log.method("waitForDeviceToBoot");
 		PollManager.poll(()-> !AdbInterface.executeShellCmd(AdbInterface.getAdbLocation(), ShellCommands.GETPROP_INIT_SVC_BOOTANIM, result -> result.contains("stopped")),
 				DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, 3 * MAX_RETRIES_IN_POLL);
-	}
-
-	private static void waitForAppiumServerToStart() {
-		Log.method("waitForAppiumServerToStart");
-		PollManager.poll(()-> !PingUtility.isEndPointAlive(APPIUM_SERVER_HOSTNAME, APPIUM_SERVER_PORT, PING_TIMEOUT),
-				DEFAULT_WAIT_BETWEEN_POLL_IN_MSEC, MAX_RETRIES_IN_POLL);
-	}
-
-	private static void waitForAppiumServerToCatchUp() {
-		Log.method("waitForAppiumServerToCatchUp");
-		TestContext.INSTANCE.stayIdle(CATCH_UP_TIME_IN_SECS);
 	}
 
 	private static void waitForReactNativePackagerToCatchUp() {

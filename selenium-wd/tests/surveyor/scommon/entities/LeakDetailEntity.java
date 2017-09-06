@@ -306,7 +306,7 @@ public class LeakDetailEntity extends InvestigationEntity{
 			List<String> leakDetails = new ArrayList<String>();
 			String header = getIndicationNumber()+" "+investigationStatus+" .* "+userName+" [0-9]+ days [0-9]{2}:[0-9]{2}:[0-9]{2}";
 			String line1 = "Source: "+leakSourceType+" Date/Time: .*";
-			String line2 = "Investigator: "+userName+"Latitude: (\\d+\\.\\d+)?, Longitude: \\-?(\\d+\\.\\d+)?, Precison: m";
+			String line2 = "Investigator: "+userName+"Latitude: (\\d+\\.\\d+)?, Longitude: \\-?(\\d+\\.\\d+)?, Precison: (.*)m";
 			String line3 = "Leak Grade: "+leakGrade+"Address: "+
 						streetNumber+" "+streetName+", ("+apartmentNumber+"+, )?"+city+", "+state;
 			String line4 = "Map Number: "+mapNumber+"Surface Reading: "+surfaceReading+" \\("+surfaceReadingUnit+"\\)";
