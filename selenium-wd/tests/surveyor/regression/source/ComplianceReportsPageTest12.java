@@ -97,7 +97,14 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-
+	
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1380 = "dataProviderPageActionsComplianceReports_TC1380";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1381 = "dataProviderPageActionsComplianceReports_TC1381";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1382 = "dataProviderPageActionsComplianceReports_TC1382";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496 = "dataProviderPageActionsComplianceReports_TC1496";
+	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961 = "dataProviderPageActionsComplianceReports_TC1961";
+	
+	
 	/**
 	 * Test Case ID: TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen
 	 * Test Description: Customer boundary area selection persist on Customer Boundary Selector screen
