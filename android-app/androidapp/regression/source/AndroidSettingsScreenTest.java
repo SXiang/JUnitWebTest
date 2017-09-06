@@ -101,19 +101,22 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 	 *	Script:
 	 *	- Log into Backpack tablet
 	 *	- Click on the menu icon at bottom right of the screen
+	 *	- Set Speaker icon to enabled
 	 *	- Click on Alarm Settings
-	 *	- Set Volume to 5, Threshold to 20 and click Apply
+	 *	- Set Volume to 5, Amplitude to 0.2ppm and Threshold to 2ppm and click Apply
 	 *	- Wave wand over controlled leak set just above these levels
-	 *	- Take a few steps back from controlled leak and wave wand again
-	 *	- Reset Alarm settings to levels lower than last measured levels
-	 *	- Wave wand again
+	 *	- Increase volume to 10 and click Apply
+	 *	- Increase volume to 15 and click Apply
+	 *	- Decrease volume to 10 and click Apply
 	 *	Expected Result:
-	 *	- Window will appear with the following choices -  Clear Heatmap, Alarm Settings, App Settings and Shutdown Instrument
-	 *	- Window will pop up with the following settings - Volume, Amplitude, Threshold and Background duration
-	 *	- Alarm should sound when sample is taken
-	 *	- Alarm should not sound when sample is below min levels
-	 *	- Alarm should sound when air sample concentration is higher than new value
+	 *	- Window will appear with the following choices - Alarm Settings, App Settings and Shutdown Instrument
+	 *	- Window will pop up with the following settings - Volume , Amplitude and Threshold
+	 *	- Alarm should sound with faint beeping when sample is taken
+	 *  - Alarm should sound with louder beeping
+	 *	- Alarm should sound with still louder beeping
+	 *	- Alarm should sound with fainter beeping	 *
 	**/
+	// PARTIAL: Analyzer device sound verifications NOT included.
 	@Test
 	public void TC2386_EnergyBackpackAlarmSettings() throws Exception {
 		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettings ...");
