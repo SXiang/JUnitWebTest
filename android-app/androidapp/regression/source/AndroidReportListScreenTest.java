@@ -26,12 +26,11 @@ import common.source.Log;
 import common.source.TestContext;
 import common.source.Timeout;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import surveyor.scommon.actions.LoginPageActions;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidReportListScreenTest extends BaseReportTest {
 
-	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
 	private static String generatedInvReportTitle;
@@ -39,6 +38,8 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 	protected AndroidInvestigationScreen investigationScreen;
 	protected AndroidInvestigateReportScreen investigateReportScreen;
 	protected AndroidMarkerTypeListControl markerTypeDialog;
+
+	private static LoginPageActions loginPageAction;
 
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
@@ -52,6 +53,7 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		createTestCaseData(testName);
 		if (!isRunningInDataGenMode()) {
 			initializeTestDriver();
@@ -72,6 +74,14 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 				BackPackAnalyzer.stopSimulator();
 			}
 		}
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -231,34 +241,34 @@ public class AndroidReportListScreenTest extends BaseReportTest {
 			userDataRowID = (Integer)tc2429[0][1];
 			reportDataRowID1 = (Integer)tc2429[0][2];
 			tcId = "TC2429";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2430_")) {
 			Object[][] tc2430 = ReportListDataProvider.dataProviderReportList_TC2430();
 			userDataRowID = (Integer)tc2430[0][1];
 			reportDataRowID1 = (Integer)tc2430[0][2];
 			tcId = "TC2430";
-			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedGapMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignGapsToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		} else if (methodName.startsWith("TC2431_")) {
 			Object[][] tc2431 = ReportListDataProvider.dataProviderReportList_TC2431();
 			userDataRowID = (Integer)tc2431[0][1];
 			reportDataRowID1 = (Integer)tc2431[0][2];
 			tcId = "TC2431";
-			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, SurveyorConstants.SQAPICDR)) {
+			if (!invReportDataVerifier.hasNotInvestigatedLisaMarker(tcId, loginPageAction.getUsernamePassword(EMPTY, userDataRowID).username)) {
 				reuseReports = false;
 			}
 
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(reuseReports /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1).getReportTitle();
 		}
 	}
 

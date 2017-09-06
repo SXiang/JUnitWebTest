@@ -51,9 +51,9 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		initializeTestDriver();
 		initializeTestScreenObjects();
-		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
