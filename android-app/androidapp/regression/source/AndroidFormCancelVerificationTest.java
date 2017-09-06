@@ -41,14 +41,14 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidFormCancelVerificationTest extends BaseReportTest {
-	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
 	private static String generatedInvReportTitle;
@@ -67,6 +67,8 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 	protected AndroidConfirmationDialog confirmationDialog;
 	protected AndroidAddCgiFormDialog addCgiFormDialog;
 
+	private static LoginPageActions loginPageAction;
+
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
 	@Rule
@@ -79,6 +81,7 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
@@ -95,6 +98,14 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -123,12 +134,14 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2682_EnergyBackpack_LoggingCGI_Cancel ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -197,12 +210,14 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2683_EnergyBackpack_LoggingMultipleOtherSource_Cancel ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -290,12 +305,14 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2684_EnergyBackpack_LoggingGasFound_Cancel ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
 			mapScreen.assertMapIsCenteredForPicarroUser();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -351,17 +368,15 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 	// In case no matching report is found in DB we create a new one.
 	private void createTestCaseData(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
+		generatedInvReportTitle = lookupExistingReportForTestCase(testName);
+		if (generatedInvReportTitle != null) {
+			return;
+		}
+
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
 		String[] lisaNumbers = {"2", "4", "6"};
-		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, SurveyorConstants.SQAPICDR);
-		if (matchingReport != null) {
-			generatedInvReportTitle = matchingReport.getReportTitle();
-			return;
-		}
 
 		if (methodName.startsWith("TC2682")) {
 			Object[][] tc2682 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2682();
@@ -369,22 +384,44 @@ public class AndroidFormCancelVerificationTest extends BaseReportTest {
 			reportDataRowID1 = (Integer)tc2682[0][2];
 			tcId = "TC2682";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2683")) {
 			Object[][] tc2683 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2683();
 			userDataRowID = (Integer)tc2683[0][1];
 			reportDataRowID1 = (Integer)tc2683[0][2];
 			tcId = "TC2683";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2684")) {
 			Object[][] tc2684 = FormCancelReportDataProvider.dataProviderAndroidApp_TC2684();
 			userDataRowID = (Integer)tc2684[0][1];
 			reportDataRowID1 = (Integer)tc2684[0][2];
 			tcId = "TC2684";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		}
+	}
+
+	private String lookupExistingReportForTestCase(TestName testName) throws Exception {
+		String methodName = testName.getMethodName();
+		Integer userDataRowID = defaultUserDataRowID;
+		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684"};
+		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
+		if (methodName.startsWith("TC2682")) {
+			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2682()[0][1];
+		} else if (methodName.startsWith("TC2683")) {
+			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2683()[0][1];
+		} else if (methodName.startsWith("TC2684")) {
+			userDataRowID = (Integer)FormCancelReportDataProvider.dataProviderAndroidApp_TC2684()[0][1];
+		}
+
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, userDataRow.username);
+		if (matchingReport != null) {
+			return matchingReport.getReportTitle();
+		}
+
+		return null;
 	}
 
 	private void initializeTestScreenObjects() {

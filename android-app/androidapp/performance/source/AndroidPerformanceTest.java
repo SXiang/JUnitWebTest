@@ -41,14 +41,14 @@ import surveyor.dataaccess.source.Report;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.DataGenerator;
+import surveyor.scommon.actions.LoginPageActions;
+import surveyor.scommon.actions.data.UserDataReader.UserDataRow;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.ReportDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidPerformanceTest extends BasePerformanceReportTest {
-	private static final Integer defaultAssignedUserDataRowID = 16;
 	private static final Integer defaultUserDataRowID = 6;
 	private static final Integer defaultReportDataRowID = 6;
 	private static String generatedInvReportTitle;
@@ -67,6 +67,8 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 	protected AndroidConfirmationDialog confirmationDialog;
 	protected AndroidAddCgiFormDialog addCgiFormDialog;
 
+	private static LoginPageActions loginPageAction;
+
 	private static ThreadLocal<Boolean> appiumTestInitialized = new ThreadLocal<Boolean>();
 
 	@Rule
@@ -82,6 +84,7 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 		createTestCaseData(testName);
 		initializeTestDriver();
 		initializeTestScreenObjects();
+		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
@@ -95,6 +98,14 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.stopSimulator();
 		}
+	}
+
+	/**
+	 * Initializes the page action objects.
+	 * @throws Exception
+	 */
+	protected static void initializePageActions() throws Exception {
+		loginPageAction = new LoginPageActions(getDriver(), getBaseURL(), getTestSetup());
 	}
 
 	/**
@@ -123,11 +134,13 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_1_PerfTest_EnergyBackpack_AddCGIScreen ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -196,11 +209,13 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_2_PerfTest_EnergyBackpack_AddOtherSourceScreen ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -285,11 +300,13 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_3_PerfTest_EnergyBackpack_AddLeakScreen ...");
 
-		navigateToMapScreen(true /*waitForMapScreenLoad*/, SurveyorConstants.SQAPICDR);
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+
+		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			mapScreen.assertMapIsLoaded();
-			navigateToInvestigationReportScreen(investigationScreen, SurveyorConstants.USERPASSWORD);
-			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, SurveyorConstants.SQAPICDR));
+			navigateToInvestigationReportScreen(investigationScreen, userDataRow.password);
+			assertTrue(verifyReportsAssignedToUserAreShown(investigationScreen, userDataRow.username));
 			searchForReportId(investigationScreen, generatedInvReportTitle);
 			initializeInvestigationScreen();
 			return true;
@@ -341,17 +358,15 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 	// In case no matching report is found in DB we create a new one.
 	private void createTestCaseData(TestName testName) throws Exception {
 		String methodName = testName.getMethodName();
+		generatedInvReportTitle = lookupExistingReportForTestCase(testName);
+		if (generatedInvReportTitle != null) {
+			return;
+		}
+
 		Integer userDataRowID = defaultUserDataRowID;
 		Integer reportDataRowID1 = defaultReportDataRowID;
 		String tcId = "";
 		String[] lisaNumbers = {"2", "4", "6"};
-		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684", "TC2734-1", "TC2734-2", "TC2734-3"};
-		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
-		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, SurveyorConstants.SQAPICDR);
-		if (matchingReport != null) {
-			generatedInvReportTitle = matchingReport.getReportTitle();
-			return;
-		}
 
 		if (methodName.startsWith("TC2734-1")) {
 			Object[][] tc2734_1 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_1();
@@ -359,22 +374,44 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			reportDataRowID1 = (Integer)tc2734_1[0][2];
 			tcId = "TC2734-1";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2734-2")) {
 			Object[][] tc2734_2 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_2();
 			userDataRowID = (Integer)tc2734_2[0][1];
 			reportDataRowID1 = (Integer)tc2734_2[0][2];
 			tcId = "TC2734-2";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		} else if (methodName.startsWith("TC2734-3")) {
 			Object[][] tc2734_3 = AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_3();
 			userDataRowID = (Integer)tc2734_3[0][1];
 			reportDataRowID1 = (Integer)tc2734_3[0][2];
 			tcId = "TC2734-3";
 			generatedInvReportTitle = ReportDataGenerator.newSingleUseGenerator(true /*isReusable*/).createReportAndAssignLisasToUser(tcId,
-					userDataRowID, defaultAssignedUserDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
+					defaultUserDataRowID, userDataRowID, reportDataRowID1, lisaNumbers).getReportTitle();
 		}
+	}
+
+	private String lookupExistingReportForTestCase(TestName testName) throws Exception {
+		String methodName = testName.getMethodName();
+		Integer userDataRowID = defaultUserDataRowID;
+		String[] tcsWithReportsThatHaveLisas = {"TC2434", "TC2436", "TC2438", "TC2440", "TC2682", "TC2683", "TC2684", "TC2734-1", "TC2734-2", "TC2734-3"};
+		ArrayUtility.shuffle(tcsWithReportsThatHaveLisas);     // add randomness to input data.
+		if (methodName.startsWith("TC2734-1")) {
+			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_1()[0][1];
+		} else if (methodName.startsWith("TC2734-2")) {
+			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_2()[0][1];
+		} else if (methodName.startsWith("TC2734-3")) {
+			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_3()[0][1];
+		}
+
+		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, userDataRow.username);
+		if (matchingReport != null) {
+			return matchingReport.getReportTitle();
+		}
+
+		return null;
 	}
 
 	private void initializeTestScreenObjects() {

@@ -51,9 +51,9 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 
 	@Before
 	public void beforeTest() throws Exception {
+		initializePageActions();
 		initializeTestDriver();
 		initializeTestScreenObjects();
-		initializePageActions();
 		if (!TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
 			BackPackAnalyzer.restartSimulator();
 		}
@@ -535,7 +535,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			settingsScreen.waitForScreenLoad();
 			settingsScreen.dismissScreen(ParentScreen.ReportScreen);
 
-			// TURNED off due to defect DE3319
+			// TBD: TURNED off due to defect DE3319 [2017-09-05: Issue currently open]
 			// verify reports for user are shown.
 			//investigationScreen.waitForScreenLoad();
 			//assertTrue(verifyReportsAssignedToUserAndSameCustomerUserAreShown(investigationScreen, username, 1));

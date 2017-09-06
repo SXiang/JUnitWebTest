@@ -26,7 +26,6 @@ import surveyor.dataprovider.DataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator;
 import surveyor.scommon.mobile.source.LeakDataGenerator.LeakDataBuilder;
 import surveyor.scommon.mobile.source.LeakDataTypes.LeakSourceType;
-import surveyor.scommon.source.SurveyorConstants;
 
 public class AndroidLeakScreenTestBase extends BaseReportTest {
 	private static final int SOURCE_ITEMS_SHOWN_IN_ONE_PAGE = 8;
@@ -119,22 +118,22 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 
 	protected Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
 			AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog,AndroidAddedSourceListDialog addedSourcesListDialog,
-			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle)
-			throws Exception {
+			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle,
+			String username) throws Exception {
 		Log.method("checkInvestigateNewMarkerAsComplete", investigateReportScreen, investigateMapScreen, addSourceDialog, addOtherSourceFormDialog,
-				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle, username);
 		return checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog, addOtherSourceFormDialog, null /*addLeakSourceFormDialog*/,
-				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle, username);
 	}
 
 	protected Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
 			AndroidAddSourceDialog addSourceDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog, AndroidAddedSourceListDialog addedSourcesListDialog,
-			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle)
-			throws Exception {
+			AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses, List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle,
+			String username) throws Exception {
 		Log.method("checkInvestigateNewMarkerAsComplete", investigateReportScreen, investigateMapScreen, addSourceDialog, addLeakSourceFormDialog,
-				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle, username);
 		return checkInvestigateNewMarkerAsComplete(investigateReportScreen, investigateMapScreen, addSourceDialog, null /*addOtherSourceFormDialog*/, addLeakSourceFormDialog,
-				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle);
+				addedSourcesListDialog, confirmationDialog, markerStatuses, listOfListMarkers, reportTitle, username);
 	}
 
 	protected void investigateNotInvestigatedMarkerToNoGasFound(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
@@ -218,7 +217,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 	private Integer checkInvestigateNewMarkerAsComplete(AndroidInvestigateReportScreen investigateReportScreen, AndroidInvestigateMapScreen investigateMapScreen,
 			AndroidAddSourceDialog addSourceDialog, AndroidAddOtherSourceFormDialog addOtherSourceFormDialog, AndroidAddLeakSourceFormDialog addLeakSourceFormDialog,
 			AndroidAddedSourceListDialog addedSourcesListDialog, AndroidConfirmationDialog confirmationDialog, final List<String> markerStatuses,
-			List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle) throws Exception {
+			List<List<InvestigationMarkerEntity>> listOfListMarkers, String reportTitle, String username) throws Exception {
 		Log.info(String.format("Checking for presence of existing marker with status -> [%s] ...", LogHelper.collectionToString(markerStatuses, "markerStatuses")));
 		List<InvestigationMarkerEntity> investigationMarkers = listOfListMarkers.get(0);
 		Integer idx = -1;
@@ -230,7 +229,7 @@ public class AndroidLeakScreenTestBase extends BaseReportTest {
 			if (markerStatuses.contains(markerEntity.getInvestigationStatus())) {
 				idx++;
 				if (!invReportDataVerifier.doesMarkerWithBoxNumberHaveSourceItemsSpanningMultiplePages(Report.getReport(reportTitle).getId(),
-						SurveyorConstants.SQAPICDR, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
+						username, markerStatuses, BoxType.Indication, Integer.valueOf(lisaNum), SOURCE_ITEMS_SHOWN_IN_ONE_PAGE)) {
 					Log.info(String.format("Found matching marker -> [%s]", markerEntity.toString()));
 					foundMarker = true;
 					break;
