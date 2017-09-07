@@ -128,13 +128,14 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
 	 *	- -  User will see a map centered on the backpack's location. Pipe data is  displayed on the map Follow and Directions buttons are present on  the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected LISA. Pipe data is displayed on the map
+	 *	- - Map is now centered on selected LISA. Pipe data is displayed on the map. Bubble indicates LISA number and bubble color indicates investigation status.
 	 *	- -  Add Source and Add CGI buttons are added on the right.  Investigate button disappears and is replaced by Mark As Complete  and Pause buttons
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of LISAs
 	 */
+	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2432, location = LeakScreenDataProvider.class)
 	public void TC2432_EnergyBackpack_InvestigateLISA(
@@ -235,14 +236,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User is navigated to the map
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
-	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected LISA Asset Box. Box is outlined in red and pipe is highlighted in green
-	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
+	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left. LISA name is present at top left along with Status of "Not Investigated", Precision, Velocity and Lat Long. Assets are displayed in purple
+	 *	- - Map is now centered on selected LISA Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates LISA asset box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble. Lat Long, Precision and Velocity disappear
+	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons. Status at top left changes to "In Progress"
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of LISAs
 	 */
+	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2639, location = LeakScreenDataProvider.class)
 	public void TC2639_EnergyBackpack_InvestigateLISAAssetBox(
@@ -348,14 +350,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - User will see a list of Compliance Reports
 	 *	- - User will see a list of LISAs for investigation
 	 *	- - User will see a list of Gaps for investigation
-	 *	- - User will see a map centered on the backpack's location. Follow and Directions buttons are present on the right and Investigate button is present at the bottom left
-	 *	- - Map is now centered on selected Gap Box. Box is outlined in red and pipe is highlighted in green
+	 *	- - User will see a map centered on the backpack's location. "Follow" and "Directions" buttons are present on the right and "Investigate" button is present at the bottom left. Gap name is present at top left along with Status of "Not Investigated", Precision, Velocity and Lat Long. Assets are displayed in purple
+	 *	- - Map is now centered on selected Gap Asset Box. Box is outlined in red and pipe is highlighted in green. Bubble indicates Gap box number and bubble color indicates investigation status. Border around highlighted pipe matches color of bubble. Lat Long, Precision and Velocity disappear
 	 *	- - Add Source and Add CGI buttons are added on the right. Investigate button disappears and is replaced by Mark As Complete and Pause buttons
 	 *	- - Dialog appears with Add Leak and Add Other Source buttons
 	 *	- - A form appears where user can log details of the leak
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
-	 *	- - User is navigated back to the list of Gaps
+	 *	- - User is navigated back to the list of Gapss
 	 */
+	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2640, location = LeakScreenDataProvider.class)
 	public void TC2640_EnergyBackpack_InvestigateGapBox(

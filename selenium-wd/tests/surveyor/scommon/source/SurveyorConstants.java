@@ -11,7 +11,6 @@ import common.source.RegexUtility;
 import surveyor.dataaccess.source.ResourceKeys;
 import surveyor.dataaccess.source.Resources;
 import surveyor.dataprovider.ConstantDataProvider;
-import surveyor.scommon.source.SurveyorConstants.LicensedFeatures;
 
 /**
  * @author zlu
@@ -669,7 +668,8 @@ public final class SurveyorConstants {
 		SQAAuto ("CI-SQAAuto", "SQAAuto", 1),
 		Staging ("CI-STG", "Staging", 2),
 		P3Scale ("CI-P3Scale", "P3Scale", 3),
-		P3Dev ("CI-P3DEV", "P3DEV", 12);
+		P3Dev ("CI-P3DEV", "P3DEV", 12),
+		P3SQA2 ("CI-P3SQA2", "P3SQA2", 13);
 		private final String ciName;
 		private final String autoDbName;
 		private final Integer index;
@@ -715,6 +715,8 @@ public final class SurveyorConstants {
 				environment = Environment.P3Scale;
 			}else if (url.contains("p3dev.picarro.com")) {
 				environment = Environment.P3Dev;
+			}else if (url.contains("p3sqa2.picarro.com")) {
+				environment = Environment.P3SQA2;
 			}
 			return environment;
 		}

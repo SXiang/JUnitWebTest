@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import common.source.OLMapUtility;
 import common.source.BrowserCommands;
 import common.source.Log;
@@ -16,9 +14,6 @@ import common.source.TestContext;
 import common.source.OLMapUtility.IconColor;
 import common.source.RegexUtility;
 import common.source.TestSetup;
-import common.source.WebElementExtender;
-import surveyor.dataaccess.source.ResourceKeys;
-import surveyor.dataaccess.source.Resources;
 import surveyor.scommon.actions.data.DriverViewDataReader;
 import surveyor.scommon.actions.data.DriverViewDataReader.DriverViewDataRow;
 import surveyor.scommon.source.BaseMapViewPage.DisplaySwitchType;

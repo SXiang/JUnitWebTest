@@ -7,10 +7,12 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.OLMapEntities.Indication;
+import common.source.Screenshotter;
 import surveyor.dataprovider.DriverViewDataProvider;
 import surveyor.scommon.actions.DriverViewPageActions;
 import surveyor.scommon.source.SurveyorTestRunner;
@@ -80,6 +82,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		Set<Indication> indicationsOnDriverView = driverViewPageAction.collectIndicationsDuringSurvey(surveyRuntimeInSeconds);
 
 		// stop survey.
+		Screenshotter.captureWebDriverScreenshot(getDriver(), "indicationsOnDriverView");
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
@@ -157,6 +160,7 @@ public class DriverViewPageTests_PipelineRunner1 extends DriverViewPageTests_Pip
 		getTestEnvironmentAction().idleForSeconds(String.valueOf(surveyRuntimeInSeconds), NOTSET);
 
 		// stop survey.
+		Screenshotter.captureWebDriverScreenshot(getDriver(), "indicationsOnDriverView");
 		driverViewPageAction.clickOnModeButton(EMPTY, NOTSET);
 		driverViewPageAction.stopDrivingSurvey(EMPTY, NOTSET);
 
