@@ -155,7 +155,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -230,7 +230,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -304,7 +304,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		String inProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
 
@@ -426,7 +426,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -501,7 +501,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);
 		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
@@ -652,7 +652,7 @@ public class AndroidLeakScreenTest extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String foundGasLeak = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Gas_Leak);
 		final String inProgress = Resources.getResource(ResourceKeys.InvestigationStatusTypes_In_Progress);

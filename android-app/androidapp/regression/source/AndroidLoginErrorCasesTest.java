@@ -103,7 +103,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2723_EnergyBackpack_IncorrectUsernamePcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -176,7 +176,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2724_EnergyBackpack_IncorrectPasswordPcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -247,7 +247,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2725_EnergyBackpack_EmptyPasswordPcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -325,7 +325,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2730_EnergyBackpack_PicarroappServerSettingsRequireHttpOrHttps ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String backpackServerAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
@@ -349,22 +349,22 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			Log.info("Check 1 : Missing 'http://' in backpack server ...");
 			String backpackAddressWithoutHttp = backpackServerAddress.replace("http://", "");
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
-			mainLoginScreen.assertMissingHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			Log.info("Check 2 : Missing 'http' in backpack server ...");
 			backpackAddressWithoutHttp = backpackServerAddress.replace("http", "");
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
-			mainLoginScreen.assertMissingHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
-			Log.info("Check 3 : Missing 'http://' in backpack server ...");
+			Log.info("Check 3 : Missing 'https://' in pcubed url ...");
 			String picServerWithoutHttps = picServerAddress.replace("https://", "");
 			mainLoginScreen.clearAndSaveSettings(backpackServerAddress, picServerWithoutHttps, username);
-			mainLoginScreen.assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
-			Log.info("Check 4 : Missing 'http://' in backpack server ...");
+			Log.info("Check 4 : Missing 'https' in pcubed url ...");
 			picServerWithoutHttps = picServerAddress.replace("https", "");
 			mainLoginScreen.clearAndSaveSettings(backpackServerAddress, picServerWithoutHttps, username);
-			mainLoginScreen.assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			// correct values. login successful.
 			Log.info("Login with correct values ...");
@@ -423,7 +423,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2732_EnergyBackpack_EmptyUsernamePcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -492,7 +492,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2733_EnergyBackpack_PicarroappBackpackServerSettingRequiresPortNumber ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 		final String backpackServerAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
@@ -521,11 +521,15 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutPort, picServerAddress, username);
 			mainLoginScreen.assertSpecifyPortNumberErrorIsShownInRed();
 
-			Log.info("Check 2 : Missing 'http://' and 'port' in backpack server ...");
+			Log.info("Check 2 : Missing 'http://' in backpack server ...");
 			String backpackAddressWithoutHttp = backpackServerAddress.replace("http", "");
+			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
+
+			Log.info("Check 3 : Missing 'http://' and 'port' in backpack server ...");
 			String backpackAddressWithoutHttpAndPort = backpackAddressWithoutHttp.substring(0, backpackAddressWithoutHttp.lastIndexOf(":")) ;
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttpAndPort, picServerAddress, username);
-			mainLoginScreen.assertSpecifyPortNumberErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			// correct values. login successful.
 			Log.info("Login with correct values ...");

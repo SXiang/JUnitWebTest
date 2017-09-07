@@ -96,7 +96,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String backpackAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
@@ -131,7 +131,7 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	public void TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2444_EnergyBackpackNetworkConfigurationSettingsCorrect ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

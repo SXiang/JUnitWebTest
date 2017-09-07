@@ -26,7 +26,6 @@ import androidapp.screens.source.AndroidMainLoginScreen;
 import common.source.AdbInterface;
 import common.source.AndroidAutomationTools;
 import common.source.AppConstants;
-import common.source.AppiumServerInterface;
 import common.source.BackPackAnalyzer;
 import common.source.BaseHelper;
 import common.source.CheckedPredicate;
