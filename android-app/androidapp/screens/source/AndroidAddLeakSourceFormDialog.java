@@ -320,6 +320,20 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 	public void selectPavedWall2Wall() throws Exception {
 		Log.method("selectPavedWall2Wall");
+		if (isPavedWallToWallUnSelected()) {
+			tapPressPavedWall2Wall();
+		}
+	}
+
+	public void unselectPavedWall2Wall() throws Exception {
+		Log.method("unselectPavedWall2Wall");
+		if (isPavedWallToWallSelected()) {
+			tapPressPavedWall2Wall();
+		}
+	}
+
+	private void tapPressPavedWall2Wall() throws Exception {
+		Log.method("tapPressPavedWall2Wall");
 		tap(this.pavedWallToWall);
 		press(this.pavedWallToWall);
 		clickAndPressKey(this.pavedWallToWall, KeyCode.KEYCODE_ENTER);
@@ -563,6 +577,8 @@ public class AndroidAddLeakSourceFormDialog extends AndroidBaseScreen {
 
 		if (isPavedWallToWall) {
 			this.selectPavedWall2Wall();
+		} else {
+			this.unselectPavedWall2Wall();
 		}
 
 		this.selectSurfaceOverleakType(surfaceOverLeakType);
