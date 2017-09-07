@@ -349,22 +349,22 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			Log.info("Check 1 : Missing 'http://' in backpack server ...");
 			String backpackAddressWithoutHttp = backpackServerAddress.replace("http://", "");
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
-			mainLoginScreen.assertMissingHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			Log.info("Check 2 : Missing 'http' in backpack server ...");
 			backpackAddressWithoutHttp = backpackServerAddress.replace("http", "");
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
-			mainLoginScreen.assertMissingHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
-			Log.info("Check 3 : Missing 'http://' in backpack server ...");
+			Log.info("Check 3 : Missing 'https://' in pcubed url ...");
 			String picServerWithoutHttps = picServerAddress.replace("https://", "");
 			mainLoginScreen.clearAndSaveSettings(backpackServerAddress, picServerWithoutHttps, username);
-			mainLoginScreen.assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
-			Log.info("Check 4 : Missing 'http://' in backpack server ...");
+			Log.info("Check 4 : Missing 'https' in pcubed url ...");
 			picServerWithoutHttps = picServerAddress.replace("https", "");
 			mainLoginScreen.clearAndSaveSettings(backpackServerAddress, picServerWithoutHttps, username);
-			mainLoginScreen.assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			// correct values. login successful.
 			Log.info("Login with correct values ...");
@@ -521,11 +521,15 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutPort, picServerAddress, username);
 			mainLoginScreen.assertSpecifyPortNumberErrorIsShownInRed();
 
-			Log.info("Check 2 : Missing 'http://' and 'port' in backpack server ...");
+			Log.info("Check 2 : Missing 'http://' in backpack server ...");
 			String backpackAddressWithoutHttp = backpackServerAddress.replace("http", "");
+			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttp, picServerAddress, username);
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
+
+			Log.info("Check 3 : Missing 'http://' and 'port' in backpack server ...");
 			String backpackAddressWithoutHttpAndPort = backpackAddressWithoutHttp.substring(0, backpackAddressWithoutHttp.lastIndexOf(":")) ;
 			mainLoginScreen.clearAndSaveSettings(backpackAddressWithoutHttpAndPort, picServerAddress, username);
-			mainLoginScreen.assertSpecifyPortNumberErrorIsShownInRed();
+			mainLoginScreen.assertUrlIsMalformedErrorIsShownInRed();
 
 			// correct values. login successful.
 			Log.info("Login with correct values ...");

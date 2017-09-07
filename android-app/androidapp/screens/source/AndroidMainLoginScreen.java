@@ -56,19 +56,14 @@ public class AndroidMainLoginScreen extends AndroidBaseScreen {
 		super(driver);
 	}
 
-	public void assertMissingHttpOrHttpsErrorIsShownInRed() {
-		Log.method("assertMissingHttpOrHttpsErrorIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.ErrorMissingHttpOrHttps);
-	}
-
-	public void assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed() {
-		Log.method("assertUrlMustStartWithHttpOrHttpsErrorIsShownInRed");
-		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.ErrorUrlMustStartWithHttpOrHttps);
-	}
-
 	public void assertSpecifyPortNumberErrorIsShownInRed() {
 		Log.method("assertSpecifyPortNumberErrorIsShownInRed");
 		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.ErrorSpecifyPortNumber);
+	}
+
+	public void assertUrlIsMalformedErrorIsShownInRed() {
+		Log.method("assertUrlIsMalformedErrorIsShownInRed");
+		screenVerifier.assertImageFoundOnScreen(this, BaselineImages.Folder.COMMON, BaselineImages.ImageFile.InvalidInputUrlIsMalformed);
 	}
 
 	public void saveSettings(String backpackAddress, String picServerAddress, String username) throws Exception {
