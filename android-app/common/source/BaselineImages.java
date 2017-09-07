@@ -33,6 +33,8 @@ public class BaselineImages {
 		public static final String TopPanelMethaneValue2ppm = "methane-value-2-0-ppm.png";
 		public static final String LisaScreenshotWithIndexPlaceholder = "LISA%d_Screenshot.png";
 		public static final String LisaHighlightScreenshotWithIndexPlaceholder = "LISAHighlight%d_Screenshot.png";
+		public static final String AssetBoxScreenshotWithIndexPlaceholder = "ASSETBOX%d_Screenshot.png";
+		public static final String AssetBoxHighlightScreenshotWithIndexPlaceholder = "ASSETBOXHighlight%d_Screenshot.png";
 		public static final String GapScreenshotWithIndexPlaceholder = "GAP%d_Screenshot.png";
 		public static final String LoginErrorRedText = "login-error-red-text.png";
 		public static final String LoginFailedError = "login-failed.png";
