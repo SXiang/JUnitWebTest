@@ -146,7 +146,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -254,7 +254,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -367,7 +367,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

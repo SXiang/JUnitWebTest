@@ -108,21 +108,21 @@ public class LeakScreenDataProvider extends AndroidDataProvider {
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2432() {
 		return new Object[][] {
-			{ "TC2432" /*TestCaseID*/, 6 /*userDataRowID*/,  262 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2432" /*TestCaseID*/, 16 /*userDataRowID*/,  262 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2639() {
 		return new Object[][] {
-			{ "TC2639" /*TestCaseID*/, 6 /*userDataRowID*/,  263 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2639" /*TestCaseID*/, 16 /*userDataRowID*/,  263 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 
 	@DataProvider
 	public static Object[][] dataProviderAndroidApp_TC2640() {
 		return new Object[][] {
-			{ "TC2640" /*TestCaseID*/, 6 /*userDataRowID*/,  264 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
+			{ "TC2640" /*TestCaseID*/, 16 /*userDataRowID*/,  264 /*reportDataRowID1*/, -1/*reportDataRowID2*/}
 		};
 	}
 

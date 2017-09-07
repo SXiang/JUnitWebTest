@@ -176,7 +176,7 @@ public class AndroidSettingsScreenTest2 extends BaseReportTest {
 	public void TC2551_EnergyBackpack_InvestigationScreenTablet(String testCaseID, Integer userDataRowID) throws Exception {
 		Log.info("\nRunning TC2551_EnergyBackpack_InvestigationScreenTablet ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {

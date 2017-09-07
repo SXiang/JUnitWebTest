@@ -134,7 +134,7 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_1_PerfTest_EnergyBackpack_AddCGIScreen ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -209,7 +209,7 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_2_PerfTest_EnergyBackpack_AddOtherSourceScreen ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -300,7 +300,7 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2734_3_PerfTest_EnergyBackpack_AddLeakScreen ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		navigateToMapScreen(true /*waitForMapScreenLoad*/, userDataRow.username);
 		executeWithBackPackDataProcessesPaused(obj -> {
@@ -405,7 +405,7 @@ public class AndroidPerformanceTest extends BasePerformanceReportTest {
 			userDataRowID = (Integer)AndroidPerfDataProvider.dataProviderAndroidApp_TC2734_3()[0][1];
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		Report matchingReport = invReportDataVerifier.findReportOfMatchingPrefixWithNotInvestigatedLisaMarker(tcsWithReportsThatHaveLisas, userDataRow.username);
 		if (matchingReport != null) {
 			return matchingReport.getReportTitle();

@@ -140,7 +140,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		String foundOtherSource = Resources.getResource(ResourceKeys.InvestigationStatusTypes_Found_Other_Source);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
@@ -245,7 +245,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);
@@ -338,7 +338,7 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 			return;
 		}
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 
 		final String noGasFound = Resources.getResource(ResourceKeys.InvestigationStatusTypes_No_Gas_Found);
 		final String assignmentInProgress = Resources.getResource(ResourceKeys.LisaInvestigationAssignment_InProgress);

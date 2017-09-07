@@ -103,7 +103,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2723_EnergyBackpack_IncorrectUsernamePcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -176,7 +176,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2724_EnergyBackpack_IncorrectPasswordPcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -247,7 +247,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2725_EnergyBackpack_EmptyPasswordPcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -325,7 +325,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2730_EnergyBackpack_PicarroappServerSettingsRequireHttpOrHttps ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String backpackServerAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
 		final String picServerAddress = TestContext.INSTANCE.getTestSetup().getBaseUrl();
@@ -423,7 +423,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2732_EnergyBackpack_EmptyUsernamePcubedLogin ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 
@@ -492,7 +492,7 @@ public class AndroidLoginErrorCasesTest extends BaseReportTest {
 			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
 		Log.info("\nRunning TC2733_EnergyBackpack_PicarroappBackpackServerSettingRequiresPortNumber ...");
 
-		UserDataRow userDataRow = loginPageAction.getUsernamePassword(EMPTY, userDataRowID);
+		UserDataRow userDataRow = loginPageAction.getDataRow(userDataRowID);
 		final String username = userDataRow.username;
 		final String password = userDataRow.password;
 		final String backpackServerAddress = TestContext.INSTANCE.getTestSetup().getBackPackServerIpAddress();
