@@ -16,6 +16,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import common.source.Log;
 import common.source.TestContext;
+import surveyor.dataprovider.ComplianceReportDataProvider;
 import surveyor.dataprovider.InvestigationReportDataProvider;
 import surveyor.scommon.actions.ComplianceReportsPageActions;
 import surveyor.scommon.actions.LoginPageActions;
@@ -81,6 +82,33 @@ public class ComplianceReportsInvestigationPageTest2 extends BaseReportsPageActi
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
 
+	/**
+	 * Test Case ID: TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected
+	 * Test Description: Verify mobile view when only LISA, Gaps and Assets are selected and no assets are highlighted
+	 * Script: 
+	 *	- Survey that includes LISA and customer has Assets
+	 *	- Log in as Picarro Admin
+	 *	- On the Compliance Reports page, click the New Compliance Report" button.
+	 *	- Fill out the required fields
+	 *	- Select a survey that includes LISA boxes that have Assets running through them
+	 *	- In the Views section, select LISAs from the Search Area Preference
+	 *	- Select LISAs, Gaps and  Assets and generate the report
+	 *	- Assign LISA for investigation
+	 *	- Log in to mobile view
+	 *	- Click on above assigned LISA
+	 * Results: 
+	 *	- Assets Intersecting LISA are not highlighted in mobile app
+	 */
+	@Test  //TBD
+	@UseDataProvider(value = InvestigationReportDataProvider.INVESTIGATION_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961, location = ComplianceReportDataProvider.class)
+	public void TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning  TC1961_VerifyMobileViewWhenOnlyLISAGapsAssetsAreSelected...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+	}
+	
 	/**
 	 * Test Case ID: TC234_InvestigateLisaRandomlyAsDriverUser
 	 * Test Description: Investigate Lisa randomly as driver user and check the lisa number on views and pdf reports

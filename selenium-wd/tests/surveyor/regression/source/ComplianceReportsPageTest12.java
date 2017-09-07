@@ -97,13 +97,43 @@ public class ComplianceReportsPageTest12 extends BaseReportsPageActionTest {
 		complianceReportsPageAction = new ComplianceReportsPageActions(getDriver(), getBaseURL(), getTestSetup());
 		setReportsPage((ComplianceReportsPage)complianceReportsPageAction.getPageObject());
 	}
-	
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1380 = "dataProviderPageActionsComplianceReports_TC1380";
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1381 = "dataProviderPageActionsComplianceReports_TC1381";
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1382 = "dataProviderPageActionsComplianceReports_TC1382";
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496 = "dataProviderPageActionsComplianceReports_TC1496";
-	public static final String COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1961 = "dataProviderPageActionsComplianceReports_TC1961";
-	
+
+	/**
+	 * Test Case ID: TC1496_AddLISABoxOptonToExistingCustomer
+	 * Test Description: Add LISA Box option to existing customer
+	 * Script: 
+	 *	- A customer that does not have LISA Box 1.0 option enabled
+	 *	- Customer has license for GIS Layers, Highlight LISA Assets
+	 *	- Log into PCubed as Picarro Admin
+	 *	- Navigate to Picarro Administration -> Manage Customers page
+	 *	- Select a customer and click the Edit button
+	 *	- Check LISA Box 1.0 checkbox, and make sure that the Report Shape File box is checked and click OK
+	 *	- Navigate to Reports -> Compliance Reports and click on the New Compliance Report button
+	 *	- Fill out the necessary fields and select LISAs in the Views section.
+	 *	- Click OK
+	 *	- Once the report has completed generation, click on the Compliance Viewer button and then the View thumbnail
+	 *	- Click on the Shape File button
+	 *	- Run the Shape Files through GIS software like ArcGIS
+	 * Results: 
+	 *	- In the report view, the LISA box should be rectagular in shape and circumscribe the LISA itself
+	 *	- All LISA boxes should have a minimum width of 100 feet, regardless of the shape of the LISA itself
+	 *	- There should be a 50 foot buffer between the LISA bubble and the side of the box perpendicular to the line bisecting the LISA
+	 *	- The segment of Main contained within the LISA box should be highlighted
+	 *	-  Any Service assets that are contained in or touch a LISA box should be highlighted along its entire length 
+	 *	- The main to which each of the highlighted Services are attached should also be highlighted, up to 25 feet on either side of the "T" connected to the Service
+	 *	- Overlapping LISA boxes should not be combined into a single box. Each LISA should have its own LISA box drawn as a distinct box unto itself
+	 *	- The report View should have all LISAs in the shape of boxes, not fans or circles
+	 *	- The shapes drawn by the GIS software should match those of the Compliance Report views
+	 */
+	@Test //TBD
+	@UseDataProvider(value = ComplianceReportDataProvider.COMPLIANCE_REPORT_PAGE_ACTION_DATA_PROVIDER_TC1496, location = ComplianceReportDataProvider.class)
+	public void TC1496_AddLISABoxOptonToExistingCustomer(
+			String testCaseID, Integer userDataRowID, Integer reportDataRowID1, Integer reportDataRowID2) throws Exception {
+		Log.info("\nRunning  TC1496_AddLISABoxOptonToExistingCustomer...");
+
+		loginPageAction.open(EMPTY, getUserRowID(userDataRowID));
+		loginPageAction.login(EMPTY, getUserRowID(userDataRowID));
+	}
 	
 	/**
 	 * Test Case ID: TC1255_CustomerBoundaryAreaSelectionPersistCustomerBoundarySelectorScreen
