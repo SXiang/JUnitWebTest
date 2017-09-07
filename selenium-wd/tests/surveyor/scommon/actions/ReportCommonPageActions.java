@@ -3713,12 +3713,11 @@ public class ReportCommonPageActions extends BaseReportsPageActions {
 	 * @throws Exception
 	 */
 	protected LocationDataRow getLocationDataRow(Integer dataRowID) throws Exception {
-		if (ManageLocationPageActions.workingDataRow.get() != null) {
-			return ManageLocationPageActions.workingDataRow.get();
-		} else {
+		LocationDataRow dataRow = ManageLocationPageActions.workingDataRow.get();
+		if (dataRow == null || !dataRow.rowID.equals(String.valueOf(dataRowID))) {
 			LocationDataReader locationDataReader = new LocationDataReader(excelUtility);
-			LocationDataRow locationDataRow = locationDataReader.getDataRow(dataRowID);
-			return locationDataRow;
+			dataRow = locationDataReader.getDataRow(dataRowID);
 		}
+		return dataRow;
 	}
 }
