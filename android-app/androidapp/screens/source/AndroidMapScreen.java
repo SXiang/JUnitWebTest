@@ -426,7 +426,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 				String maxTextValue = matchingGroups.get(1);
 				fMax = Float.valueOf(maxTextValue);
 			} catch (Exception e) {
-				Log.warn(String.format("Error getting max text value. Exception is -> %s", ExceptionUtility.getStackTraceString(e)));
+				Log.warn(String.format("Error getting max text value. Found on screen -> maxText=[%s]. Exception is -> %s", strMax, ExceptionUtility.getStackTraceString(e)));
 			}
 		}
 
