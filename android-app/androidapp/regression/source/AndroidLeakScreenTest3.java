@@ -427,7 +427,9 @@ public class AndroidLeakScreenTest3 extends AndroidLeakScreenTestBase {
 		executeWithBackPackDataProcessesPaused(obj -> {
 			Log.info("Map screen loaded successfully!");
 
-			mapScreen.ensureAnalyzerIsInMethaneMode();
+			if (TestContext.INSTANCE.getTestSetup().isRunningOnBackPackAnalyzer()) {
+				mapScreen.ensureAnalyzerIsInMethaneMode();
+			}
 
 			mapScreen.assertConcentrationChartIsShown();
 			mapScreen.assertBottomPaneButtonsAreCorrect();
