@@ -182,7 +182,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (modeTextDisplayed) {
 			String modeTextValue = getModeText();
 			Log.info(String.format("modeTextValue=%s", modeTextValue));
-			modeTextValid = !BaseHelper.isNullOrEmpty(modeTextValue);
+			modeTextValid = !BaseHelper.isNullOrEmpty(modeTextValue) && !modeTextValue.trim().equals("ERROR");
 		}
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
