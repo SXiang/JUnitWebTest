@@ -82,13 +82,15 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	 * Script: -
 	 *	- - Log into Backpack tablet
 	 *	- - Launch Backpack app
-	 *	- - Click Edit Settings button
-	 *	- - Enter Backpack Server, Picarro Server and Username and click OK
+	 *  - - Click Menu button at bottom right
+	 *	- - Click App Settings button
+	 *	- - Enter valid Backpack Server, Picarro Server and Username and click OK
 	 * Results: -
 	 *	- - If connecting to the Backpack server for the first time, or if network configuration is incorrect, user is prompted to configure settings
 	 *	- - PicarroApp Settings screen appears.
 	 *	- - If connection to Backpack server is successful, user is navigate to map centered on user's location
 	 */
+	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2443, location = AndroidSettingsDataProvider.class)
 	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing(String testCaseID, Integer userDataRowID) throws Exception {

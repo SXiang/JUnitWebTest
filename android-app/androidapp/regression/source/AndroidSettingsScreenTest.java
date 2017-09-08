@@ -116,6 +116,7 @@ public class AndroidSettingsScreenTest extends BaseAndroidTest {
 	 *	- Alarm should sound with still louder beeping
 	 *	- Alarm should sound with fainter beeping
 	**/
+	// PARTIAL: Analyzer device sound verifications NOT included.
 	@Test
 	public void TC2386_EnergyBackpackAlarmSettingsVolume() throws Exception {
 		Log.info("\nRunning TC2386_EnergyBackpackAlarmSettingsVolume ...");
