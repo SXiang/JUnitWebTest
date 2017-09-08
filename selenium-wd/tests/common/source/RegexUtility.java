@@ -44,7 +44,7 @@ public class RegexUtility {
 	public static final String APP_VERSION_PATTERN = "\\d+\\.\\d+\\.(\\d+\\.)?[a-z0-9]*";
 	public static final String REGEX_PATTERN_DATE = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}";
 	public static final String LISA_REGEX = "(LISA)\\s+\\d+";
-	public static final String PICARRO_APP_MAX_AMPLITUDE_REGEX = "Max:\\s+(\\d+\\.\\d+)\\s+ppm";
+	public static final String PICARRO_APP_MAX_AMPLITUDE_REGEX = "Max\\s+(\\d+\\.\\d+)\\s+ppm";
 
 	public static final String INV_ADD_LEAK_STATUS_HEADER_REGEX = "(.+)\\s+\\((.+)\\)";
 
