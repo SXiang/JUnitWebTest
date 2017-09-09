@@ -182,7 +182,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 		if (modeTextDisplayed) {
 			String modeTextValue = getModeText();
 			Log.info(String.format("modeTextValue=%s", modeTextValue));
-			modeTextValid = !BaseHelper.isNullOrEmpty(modeTextValue);
+			modeTextValid = !BaseHelper.isNullOrEmpty(modeTextValue) && !modeTextValue.trim().equals("ERROR");
 		}
 
 		Log.info(String.format("toggleModeButtonDisplayed=[%b], modeTextDisplayed=[%b], modeTextValid=[%b]",
@@ -426,7 +426,7 @@ public class AndroidMapScreen extends AndroidBaseScreen {
 				String maxTextValue = matchingGroups.get(1);
 				fMax = Float.valueOf(maxTextValue);
 			} catch (Exception e) {
-				Log.warn(String.format("Error getting max text value. Exception is -> %s", ExceptionUtility.getStackTraceString(e)));
+				Log.warn(String.format("Error getting max text value. Found on screen -> maxText=[%s]. Exception is -> %s", strMax, ExceptionUtility.getStackTraceString(e)));
 			}
 		}
 

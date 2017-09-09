@@ -90,7 +90,6 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 	 *	- - PicarroApp Settings screen appears.
 	 *	- - If connection to Backpack server is successful, user is navigate to map centered on user's location
 	 */
-	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = AndroidSettingsDataProvider.SETTINGS_DATA_PROVIDER_TC2443, location = AndroidSettingsDataProvider.class)
 	public void TC2443_EnergyBackpackNetworkConfigurationSettingsIncorrectOrMissing(String testCaseID, Integer userDataRowID) throws Exception {
@@ -104,6 +103,8 @@ public class AndroidSettingsAuthScreenTest extends BaseAndroidTest {
 		final String invalidPort = "3001";
 		final String backpackAddressInvalidPort = backpackAddress.replace(validPort, invalidPort);
 		mainLoginScreen.saveSettings(backpackAddressInvalidPort, picServerAddress, userDataRow.username);
+
+		// successful connection verification happening in multiple other tests.
 
 		executeWithBackPackDataProcessesPaused(obj -> {
 			TestContext.INSTANCE.stayIdle(PRE_DATA_PROCESSES_PAUSED_WAIT_TIME_IN_SECONDS);

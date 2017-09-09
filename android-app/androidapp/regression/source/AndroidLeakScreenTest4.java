@@ -176,14 +176,40 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+
+			// Verify 'not investigated' LISA and bubble color
 			investigateMapScreen.clickOnFollow();
-			// Non-investigated markers color and lisa number verification is being done in this TC.
-			// Verification of investigated markers showing up in correct color with lisa numbers is being done in TC2445.
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnInvestigate();
+
+			// Verify 'in-progress' LISA and bubble color.
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -219,6 +245,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 
 			return true;
 		});
+
+		// Re-open the investigated marker and verify LISA and bubble color are for an investigated marker.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2432, String.format(BaselineImages.ImageFile.LisaFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
+			return true;
+		});
 	}
 
 	/**
@@ -247,7 +282,6 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of LISAs
 	 */
-	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2639, location = LeakScreenDataProvider.class)
 	public void TC2639_EnergyBackpack_InvestigateLISAAssetBox(
@@ -286,11 +320,11 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
 		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
+		final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 
-			final String selectedLisa = investigationMarkers.get(idx-1).getMarkerNumber();
 			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
 			String expectedInvStatusText = String.format("%s (%s)", selectedLisa, notInvestigated);
 			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
@@ -308,8 +342,10 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
 					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
 
+			// Verify Box color for 'Not-Investigated' state
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
 			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
@@ -319,21 +355,45 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Follow button NOT displayed", investigateMapScreen.getFollowButton().isDisplayed());
 			assertTrue("Directions button NOT displayed", investigateMapScreen.getDirectionsButton().isDisplayed());
+			investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
 
-			// TODO: Commented for testing.
-			//investigateMapScreen.assertMarkAsCompleteAndPauseButtonsAreShown();
+			// Status changes to 'In-Progress'
+			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+
+			investigateMapScreen.clickOnInvestigate();
+
+			// Verify Box color in 'In-Progress' state
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
 			addSourceDialog.waitForScreenLoad();
 			assertTrue("Add Leak button is NOT shown.", addSourceDialog.getAddLeakButton().isDisplayed());
 			assertTrue("Add Other Source button is NOT shown.", addSourceDialog.getAddOtherSourcesButton().isDisplayed());
-
-			// Investigation status changed to In-Progress.
-			actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
-			expectedInvStatusText = String.format("%s (%s)", selectedLisa, inProgress);
-			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
-					actualInvStatusText.equals(expectedInvStatusText));
 
 			// Add new leak.
 			addSourceDialog.clickOnAddLeak();
@@ -364,13 +424,12 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			return true;
 		});
 
-		// TBD: Baseline image creation for investigated markers pending.
 		// Re-open the investigated marker and verify assetbox and bubble color are for an investigated marker.
 		investigateReportScreen.clickOnMarkerAtIndex(idx);
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
 			investigateMapScreen.clickOnFollow();
-			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxHighlightScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2639, String.format(BaselineImages.ImageFile.AssetBoxFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}
@@ -447,8 +506,29 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
+			final String selectedGap = investigationMarkers.get(idx-1).getMarkerNumber();
+			String actualInvStatusText = investigateMapScreen.getMarkerInvestigationStatusText().trim();
+			String expectedInvStatusText = String.format("%s (%s)", selectedGap, notInvestigated);
+			assertTrue(String.format("Investigation marker text NOT correct. Expected=[%s]; Actual=[%s]", expectedInvStatusText, actualInvStatusText),
+					actualInvStatusText.equals(expectedInvStatusText));
+
+			String actualLatLong = investigateMapScreen.getLatitudeLongitudeText().trim();
+			assertTrue(String.format("Latitude Longitude text - [%s] did NOT match expression - [%s]", actualLatLong,
+					RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN), RegexUtility.matchesPattern(actualLatLong, RegexUtility.PICARRO_APP_MARKER_LAT_LONG_MATCH_PATTERN));
+
+			String actualPrecisonText = investigateMapScreen.getPrecisonText().trim();
+			assertTrue(String.format("Precison text - [%s] did NOT match expression - [%s]", actualPrecisonText,
+					RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN), RegexUtility.matchesPattern(actualPrecisonText, RegexUtility.PICARRO_APP_MARKER_PRECISON_MATCH_PATTERN));
+
+			String actualVelocityText = investigateMapScreen.getVelocityText().trim();
+			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
+					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
+
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapScreenshotWithIndexPlaceholder, idx));
+
+			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
+			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
 
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
