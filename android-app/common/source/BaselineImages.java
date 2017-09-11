@@ -39,6 +39,8 @@ public class BaselineImages {
 		public static final String AssetBoxInProgressScreenshotWithIndexPlaceholder = "ASSETBOX-InProgress%d_Screenshot.png";
 		public static final String AssetBoxFoundGasLeakScreenshotWithIndexPlaceholder = "ASSETBOX-FoundGasLeak%d_Screenshot.png";
 		public static final String GapScreenshotWithIndexPlaceholder = "GAP%d_Screenshot.png";
+		public static final String GapInProgressScreenshotWithIndexPlaceholder = "GAP-InProgress%d_Screenshot.png";
+		public static final String GapFoundGasLeakScreenshotWithIndexPlaceholder = "GAP-FoundGasLeak%d_Screenshot.png";
 		public static final String LoginErrorRedText = "login-error-red-text.png";
 		public static final String LoginFailedError = "login-failed.png";
 		public static final String ErrorSpecifyPortNumber = "error-specify-port-number.png";

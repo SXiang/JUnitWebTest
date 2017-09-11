@@ -462,7 +462,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 	 *	- - The previous dialog appears with a summary of the leak details that were just entered
 	 *	- - User is navigated back to the list of Gapss
 	 */
-	// PARTIAL: Some test step updates in Rally. Make corresponding changes in automation code. Tracked by US4735.
+	// PARTIAL: Pending product defect DE3340 fix for Lat/Long, Precison, Velocity labels NOT shown in follow screen.
 	@Test
 	@UseDataProvider(value = LeakScreenDataProvider.LEAK_SCREEN_DATA_PROVIDER_TC2640, location = LeakScreenDataProvider.class)
 	public void TC2640_EnergyBackpack_InvestigateGapBox(
@@ -502,7 +502,7 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 
 		List<String> markerStatuses = Arrays.asList(notInvestigated);
 		int idx = investigateReportScreen.clickFirstMarkerMatchingStatus(markerStatuses);
-
+		int markerNum = getMarkerNumber(investigationMarkers, idx-1);
 		List<Map<String, Object>> listStoreMap = new ArrayList<Map<String, Object>>();
 		executeWithBackPackDataProcessesPaused(obj -> {
 			investigateMapScreen.waitForScreenLoad();
@@ -524,8 +524,36 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Velocity text - [%s] did NOT match expression - [%s]", actualVelocityText,
 					RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN), RegexUtility.matchesPattern(actualVelocityText, RegexUtility.PICARRO_APP_MARKER_VELOCITY_MATCH_PATTERN));
 
+			// Verify 'not-investigated' Gap and bubble color.
 			investigateMapScreen.clickOnFollow();
 			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapScreenshotWithIndexPlaceholder, idx));
+			investigateMapScreen.clickOnFollow();
+
+			investigateMapScreen.clickOnInvestigate();
+			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
+			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			investigateMapScreen.clickOnFooterInvestigate();
+			investigationScreen.waitForScreenLoad();
+			searchForReportId(investigationScreen, generatedInvReportTitle);
+			initializeInvestigationScreen();
+			return true;
+		});
+
+		clickOnFirstInvestigationReport(investigationScreen);
+		executeWithBackPackDataProcessesPaused(true /*applyInitialPause*/, obj -> {
+			investigateReportScreen.waitForScreenLoad();
+			assertTrue(investigateReportScreen.verifyMarkersForReportAreShown(generatedInvReportTitle));
+			investigateReportScreen.clickOnInvestigationMarkerType();
+			markerTypeDialog.selectMarkerType(MarkerType.Gap);
+			initializeInvestigateReportScreen();
+			return true;
+		});
+
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
 
 			// TBD: Post product defect DE3340 fixed, add correct verification as per screen updates in the fix.
 			//assertTrue(investigateMapScreen.verifyLatLongPrecisonVelocityLabelsAreNotShown());
@@ -533,6 +561,11 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			investigateMapScreen.clickOnInvestigate();
 			assertTrue("Add Source button NOT displayed", investigateMapScreen.getAddSourceButton().isDisplayed());
 			assertTrue("Add CGI button NOT displayed", investigateMapScreen.getAddCGIButton().isDisplayed());
+
+			// Verify 'in-progress' Gap and bubble color.
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapInProgressScreenshotWithIndexPlaceholder, markerNum));
+			investigateMapScreen.clickOnFollow();
 
 			// Verify buttons are displayed.
 			investigateMapScreen.clickOnAddSource();
@@ -569,6 +602,15 @@ public class AndroidLeakScreenTest4 extends AndroidLeakScreenTestBase {
 			assertTrue(String.format("Incorrect marker status found. Expected=[%s]. Actual=[%s]", foundGasLeak, actualMarkerStatus),
 					actualMarkerStatus.equals(foundGasLeak));
 
+			return true;
+		});
+
+		// Re-open the investigated marker and verify Gap and bubble color are for an investigated marker.
+		investigateReportScreen.clickOnMarkerAtIndex(idx);
+		executeWithBackPackDataProcessesPaused(obj -> {
+			investigateMapScreen.waitForScreenLoad();
+			investigateMapScreen.clickOnFollow();
+			investigateMapScreen.assertPipesAndMarkerShownAreCorrect(BaselineImages.Folder.TC2640, String.format(BaselineImages.ImageFile.GapFoundGasLeakScreenshotWithIndexPlaceholder, markerNum));
 			return true;
 		});
 	}
