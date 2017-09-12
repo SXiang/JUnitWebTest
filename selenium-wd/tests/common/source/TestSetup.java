@@ -196,6 +196,12 @@ public class TestSetup {
 	private boolean isAndroidTestPerfProfileVisualBarsEnabled;
 	private boolean isAndroidTestPerfProfileDumpSysEnabled;
 
+	private boolean isAndroidNetworkThrottleEnabled;
+	private String androidNetworkDelay;
+	private String androidNetworkSpeed;
+
+	private NetworkEmulation androidNetworkEmulation;
+
 	private String androidPerfTestResultStoreLocation;
 
 	private String awsAccessKeyId;
@@ -667,6 +673,9 @@ public class TestSetup {
 			this.setAndroidTestPerfProfileDumpSysEnabled(Boolean.valueOf(this.testProp.getProperty("androidTests.PerfProfile.DumpSys.Enabled")));
 			this.setAndroidPerfTestResultStoreLocation(this.testProp.getProperty("androidTests.PerfResults.Store.Location"));
 			this.setAndroidDevicePin(this.testProp.getProperty("androidDevicePin"));
+			this.setAndroidNetworkThrottleEnabled(Boolean.valueOf(this.testProp.getProperty("androidEmulator.Network.Throttle.Enabled")));
+			this.setAndroidNetworkDelay(this.testProp.getProperty("androidEmulator.Network.Delay"));
+			this.setAndroidNetworkSpeed(this.testProp.getProperty("androidEmulator.Network.Speed"));
 
 			setBackPackServerProperties(this.testProp);
 
@@ -1779,5 +1788,37 @@ public class TestSetup {
 
 	public void setAndroidPerfTestResultStoreLocation(String androidPerfTestResultStoreLocation) {
 		this.androidPerfTestResultStoreLocation = androidPerfTestResultStoreLocation;
+	}
+
+	public boolean isAndroidNetworkThrottleEnabled() {
+		return isAndroidNetworkThrottleEnabled;
+	}
+
+	public void setAndroidNetworkThrottleEnabled(boolean isAndroidNetworkThrottleEnabled) {
+		this.isAndroidNetworkThrottleEnabled = isAndroidNetworkThrottleEnabled;
+	}
+
+	public String getAndroidNetworkDelay() {
+		return androidNetworkDelay;
+	}
+
+	public void setAndroidNetworkDelay(String androidNetworkDelay) {
+		this.androidNetworkDelay = androidNetworkDelay;
+	}
+
+	public String getAndroidNetworkSpeed() {
+		return androidNetworkSpeed;
+	}
+
+	public void setAndroidNetworkSpeed(String androidNetworkSpeed) {
+		this.androidNetworkSpeed = androidNetworkSpeed;
+	}
+
+	public NetworkEmulation getAndroidNetworkEmulation() {
+		return androidNetworkEmulation;
+	}
+
+	public void setAndroidNetworkEmulation(NetworkEmulation androidNetworkEmulation) {
+		this.androidNetworkEmulation = androidNetworkEmulation;
 	}
 }
